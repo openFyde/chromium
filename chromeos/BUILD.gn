@@ -47,6 +47,7 @@ component("chromeos") {
       "//google_apis",
       "//services/network/public/cpp:cpp",
       "//third_party/protobuf:protobuf_lite",
+      "//fydeos/switches", # FydeOS switches
     ]
     sources += [
       "hugepage_text/hugepage_text.cc",
