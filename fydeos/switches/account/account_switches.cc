@@ -27,6 +27,10 @@ bool IsFydeAccountEnabled() {
 const char kFydeAccountEnable[] = "fyde-account-enabled";
 const char kFydeAccountForceDisabledForTest[] = "fyde-account-force-disabled";
 
+bool IsFydeExtendAccountEnabled() {
+  return IsFydeAccountEnabled();
+}
+
 const char kFydeOSGaiaUrl[] = "fydeos-gaia-url";
 const char kFydeOSApisUrl[] = "fydeos-apis-url";
 const char kFydeOSDeviceManagementUrl[] = "fydeos-device-management-url";
