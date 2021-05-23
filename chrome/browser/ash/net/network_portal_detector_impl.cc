@@ -28,6 +28,8 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash {
 
@@ -313,7 +315,9 @@ void NetworkPortalDetectorImpl::StartAttempt() {
 
   NET_LOG(EVENT) << "Starting captive portal detection.";
   captive_portal_detector_->DetectCaptivePortal(
-      GURL(CaptivePortalDetector::kDefaultURL),
+      // ---***FYDEOS BEGIN***---
+      GURL(fydeos::switches::IsFydeExtendAccountEnabled() ? fydeos::constants::kDefaultTestUrl : CaptivePortalDetector::kDefaultURL),
+      // ---***FYDEOS END***---
       base::BindOnce(&NetworkPortalDetectorImpl::OnAttemptCompleted,
                      weak_factory_.GetWeakPtr()),
       NO_TRAFFIC_ANNOTATION_YET);
