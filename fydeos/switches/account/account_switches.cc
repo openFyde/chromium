@@ -81,6 +81,10 @@ bool IsFydeAccountEnabled() {
   return command_line->HasSwitch(kFydeAccountEnable) && !command_line->HasSwitch(kFydeAccountForceDisabledForTest);
 }
 
+bool IsFydeExtendAccountEnabled() {
+  return IsFydeAccountEnabled();
+}
+
 const char kFydeOSGaiaUrl[] = "fydeos-gaia-url";
 const char kFydeOSApisUrl[] = "fydeos-apis-url";
 const char kFydeOSDeviceManagementUrl[] = "fydeos-device-management-url";
