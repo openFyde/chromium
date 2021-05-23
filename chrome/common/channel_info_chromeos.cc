@@ -14,7 +14,7 @@ namespace {
 
 version_info::Channel g_chromeos_channel = version_info::Channel::UNKNOWN;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 // Sets the |g_chromeos_channel|.
 void SetChannel(const std::string& channel) {
   if (channel == crosapi::kReleaseChannelStable)
@@ -28,12 +28,12 @@ void SetChannel(const std::string& channel) {
   else
     g_chromeos_channel = version_info::Channel::UNKNOWN;
 }
-#endif
+//#endif
 
 }  // namespace
 
 std::string GetChannelName(WithExtendedStable with_extended_stable) {
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   switch (GetChannel()) {
     case version_info::Channel::STABLE:
       return std::string();
@@ -46,9 +46,9 @@ std::string GetChannelName(WithExtendedStable with_extended_stable) {
     default:
       return "unknown";
   }
-#else
-  return std::string();
-#endif
+//#else
+//  return std::string();
+//#endif
 }
 
 version_info::Channel GetChannel() {
@@ -56,14 +56,16 @@ version_info::Channel GetChannel() {
   if (is_channel_set)
     return g_chromeos_channel;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+// ---***FYDEOS BEGIN***---
+// #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+// ---***FYDEOS END***---
   std::string channel;
   if (base::SysInfo::GetLsbReleaseValue(crosapi::kChromeOSReleaseTrack,
                                         &channel)) {
     SetChannel(channel);
     is_channel_set = true;
   }
-#endif
+//#endif
   return g_chromeos_channel;
 }
 

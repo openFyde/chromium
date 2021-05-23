@@ -33,7 +33,7 @@ struct ChannelState {
 // function returns `channel` = UNKNOWN and `is_extended_stable` = false for any
 // unexpected $CHROME_VERSION_EXTRA value.
 ChannelState GetChannelImpl() {
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   const char* const env = getenv("CHROME_VERSION_EXTRA");
   const base::StringPiece env_str =
       env ? base::StringPiece(env) : base::StringPiece();
@@ -47,7 +47,7 @@ ChannelState GetChannelImpl() {
     return {version_info::Channel::BETA, /*is_extended_stable=*/false};
   if (env_str == "unstable")  // linux version of "dev"
     return {version_info::Channel::DEV, /*is_extended_stable=*/false};
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
   return {version_info::Channel::UNKNOWN, /*is_extended_stable=*/false};
 }
@@ -55,7 +55,7 @@ ChannelState GetChannelImpl() {
 }  // namespace
 
 std::string GetChannelName(WithExtendedStable with_extended_stable) {
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   const auto channel_state = GetChannelImpl();
   switch (channel_state.channel) {
     case version_info::Channel::UNKNOWN:
@@ -72,10 +72,10 @@ std::string GetChannelName(WithExtendedStable with_extended_stable) {
         return "extended";
       return std::string();
   }
-#else   // BUILDFLAG(GOOGLE_CHROME_BRANDING)
-  const char* const env = getenv("CHROME_VERSION_EXTRA");
-  return env ? std::string(base::StringPiece(env)) : std::string();
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#else   // BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//  const char* const env = getenv("CHROME_VERSION_EXTRA");
+//  return env ? std::string(base::StringPiece(env)) : std::string();
+//#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 }
 
 std::string GetChannelSuffixForDataDir() {
