@@ -25,6 +25,9 @@
 #include "base/win/windows_version.h"
 #endif
 
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/urls/urls_constants.h"
+
 namespace captive_portal {
 
 namespace {
@@ -123,7 +126,9 @@ CaptivePortalService::CaptivePortalService(
       state_(STATE_IDLE),
       enabled_(false),
       last_detection_result_(RESULT_INTERNET_CONNECTED),
-      test_url_(CaptivePortalDetector::kDefaultURL),
+      // ---***FYDEOS BEGIN***---
+      test_url_(fydeos::switches::IsFydeExtendAccountEnabled() ? fydeos::constants::kDefaultTestUrl : CaptivePortalDetector::kDefaultURL),
+      // ---***FYDEOS END***---
       tick_clock_for_testing_(clock_for_testing) {
   network::mojom::URLLoaderFactory* loader_factory;
   if (loader_factory_for_testing) {
