@@ -137,6 +137,10 @@
       </div>
       <div id="[[pageStatusEnum_.CONFIGURE]]"
           hidden$="[[!isStatus_(pageStatusEnum_.CONFIGURE, pageStatus_)]]">
+        <template is="dom-if" if="[[isFydeProfile_]]">
+          <settings-sync-controls sync-status="[[syncStatus]]">
+          </settings-sync-controls>
+        </template>
         <div id="other-sync-items" class="list-frame">
           <cr-link-row id="sync-advanced-row"
               label="$i18n{syncAdvancedPageTitle}"

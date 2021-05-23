@@ -13,6 +13,7 @@ import '//resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
 import '../settings_shared_css.js';
 
 import {assert} from '//resources/js/assert_ts.js';
+import {BaseMixin} from '../base_mixin.js';
 import {WebUIListenerMixin} from '//resources/js/web_ui_listener_mixin.js';
 import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
@@ -39,7 +40,7 @@ enum RadioButtonNames {
  * 'settings-sync-controls' contains all sync data type controls.
  */
 
-const SettingsSyncControlsElementBase = WebUIListenerMixin(PolymerElement);
+const SettingsSyncControlsElementBase = WebUIListenerMixin(BaseMixin(PolymerElement));
 
 export class SettingsSyncControlsElement extends
     SettingsSyncControlsElementBase {
@@ -131,6 +132,57 @@ export class SettingsSyncControlsElement extends
     if (!this.syncPrefs.autofillRegistered || !this.syncPrefs.autofillSynced) {
       this.set('syncPrefs.paymentsIntegrationEnabled', false);
     }
+
+    this.fydeosHidden_();
+  }
+
+  private fydeosHidden_() {
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    if (!isFydeProfile) return;
+
+    const hideSyncSectionRadio = () => {
+      const node = this.$$('#sync-data-radio') as HTMLElement;
+      if (node) {
+        node.style.display = 'none';
+      }
+    };
+
+    const hideOtherTitle = () => {
+      const node = this.$$('#sync-data-radio + .cr-row.first h2.cr-title-text') as HTMLElement;
+      if (node) {
+        node.style.display = 'none';
+        if (node.parentNode) {
+          const parent = node.parentNode as HTMLElement;
+          parent.setAttribute('hidden', 'true');
+        }
+      }
+    };
+
+    const hideToggles = () => {
+      const elements = this.shadowRoot!.querySelectorAll('cr-toggle');
+      const enabledItems = [
+        'settingsCheckboxLabel',
+        'bookmarksCheckboxLabel',
+        'themesAndWallpapersCheckboxLabel',
+        'appCheckboxLabel',
+        'extensionsCheckboxLabel',
+      ];
+      elements.forEach((e: HTMLElement) => {
+        const ele = e as HTMLInputElement;
+        const parent = ele.parentNode as HTMLElement;
+        if (!parent) return;
+        const label = parent.querySelector('div:first-child');
+        if (!label) return;
+        if (enabledItems.indexOf(label.id) === -1) {
+          ele.disabled = true;
+          parent.style.display = 'none';
+        }
+      });
+    };
+
+    hideToggles();
+    hideOtherTitle();
+    hideSyncSectionRadio();
   }
 
   /**
