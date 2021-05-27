@@ -66,6 +66,6 @@ component("manager") {
       "update_display_configuration_task.cc",
       "update_display_configuration_task.h",
     ]
-    deps += [ "//chromeos/system" ]
+    deps += [ "//chromeos/system", "//fydeos/switches" ]
   }
 }
