@@ -71,6 +71,7 @@ component("manager") {
     deps += [
       "//chromeos/system",
       "//chromeos/ui/base",
+      "//fydeos/switches",
     ]
   }
 }
