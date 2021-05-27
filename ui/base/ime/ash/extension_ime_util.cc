@@ -27,7 +27,7 @@ const int kExtensionIdLength = 32;
 
 namespace extension_ime_util {
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+#if !BUILDFLAG(GOOGLE_CHROME_BRANDING)
 const char kXkbExtensionId[] = "jkghodnilhceideoidjikpgommlajknk";
 const char kM17nExtensionId[] = "jkghodnilhceideoidjikpgommlajknk";
 const char kHangulExtensionId[] = "bdgdidmhaijohebebipajioienkglgfo";
