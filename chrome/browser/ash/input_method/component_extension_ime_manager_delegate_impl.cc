@@ -46,7 +46,7 @@ struct AllowlistedComponentExtensionIME {
   const char* id;
   int manifest_resource_id;
 } allowlisted_component_extensions[] = {
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+#if !BUILDFLAG(GOOGLE_CHROME_BRANDING)
     {
         // Official Google XKB Input.
         extension_ime_util::kXkbExtensionId,
