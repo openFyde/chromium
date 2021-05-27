@@ -17,6 +17,8 @@ static_library("switches") {
     "//skia",
   ]
   sources = [
+    "display/display_switches.cc",
+    "display/display_switches.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }
