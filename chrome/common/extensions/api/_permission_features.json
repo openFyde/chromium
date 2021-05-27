@@ -783,6 +783,7 @@
     "extension_types": ["extension"],
     "allowlist": [
       "63ED55E43214C211F82122ED56407FF1A807F2A3",  // Media Router Dev
+      "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E",   //FydeOS System Control Extension
       "226CF815E39A363090A1E547D53063472B8279FA"   // Media Router Release
     ]
   },
@@ -878,6 +879,7 @@
     "platforms": ["chromeos"],
     "extension_types": ["extension", "platform_app"],
     "allowlist": [
+      "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E",  //FydeOS System Control Extension
       // ChromeOS Autotest extension.
       "0D209B5E4401BB8E7873B5AB5B1346A1CB067015"
     ]
@@ -962,9 +964,12 @@
   },
   "webstorePrivate": {
     "channel": "stable",
-    "extension_types": ["extension", "legacy_packaged_app", "hosted_app"],
+    "extension_types": ["extension", "legacy_packaged_app", "hosted_app", "platform_app"],
     "allowlist": [
       "B44D08FD98F1523ED5837D78D0A606EA9D6206E5",  // Web Store
+      "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E",  //FydeOS System Control Extension
+      "040DC0863AC1A19D3B3D2A02143865CB697A649E",  //FydeOS Web Store
+      "9393A095080260FE92DE9B6ACAD334A2567390BE",   //FydeOS Stage Web Store
       "2653F6F6C39BC6EEBD36A09AFB92A19782FF7EB4"   // Enterprise Web Store
     ]
   },
