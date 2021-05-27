@@ -9,7 +9,7 @@ declare_args() {
   # Set to true make a build that disables activation of field trial tests
   # specified in testing/variations/fieldtrial_testing_config.json.
   # Note: this setting is ignored if is_chrome_branded.
-  disable_fieldtrial_testing_config = false
+  disable_fieldtrial_testing_config = true
 }
 
 fieldtrial_testing_enabled =
