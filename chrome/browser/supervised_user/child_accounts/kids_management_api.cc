@@ -7,6 +7,7 @@
 #include "base/feature_list.h"
 #include "components/variations/variations_associated_data.h"
 #include "url/gurl.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace kids_management_api {
 
@@ -31,6 +32,11 @@ GURL GetBaseURL() {
       kKidsManagementAPIFeature, kURLParamName));
   if (url.is_valid())
     return url;
+  // ---***FYDEOS BEGIN***---
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    return GURL(fydeos::switches::GetFydeOSKidsManagementAPIBaseUrl());
+  }
+  // ---***FYDEOS END***---
   return GURL(kDefaultBaseURL);
 }
 
