@@ -227,6 +227,7 @@
 #include "ui/wm/core/shadow_controller.h"
 #include "ui/wm/core/visibility_controller.h"
 #include "ui/wm/core/window_modality_controller.h"
+#include "fydeos/switches/display/display_switches.h"
 
 namespace ash {
 
@@ -476,6 +477,13 @@ void Shell::UpdateCursorCompositingEnabled() {
 void Shell::SetCursorCompositingEnabled(bool enabled) {
   CursorWindowController* cursor_window_controller =
       window_tree_host_manager_->cursor_window_controller();
+
+//---***FYDEOS BEGIN***---
+  if (fydeos::switches::ForceCursorCompositing()){
+    enabled = true;
+    VLOG(1) << "force cursor compositing:" << enabled;
+  }
+//---***FYDEOS END***---
 
   if (cursor_window_controller->is_cursor_compositing_enabled() == enabled)
     return;
@@ -1254,6 +1262,11 @@ void Shell::Init(
   if (full_restore::features::IsFullRestoreEnabled())
     window_restore_controller_ = std::make_unique<WindowRestoreController>();
 
+//---***FYDEOS BEGIN***---
+  if (fydeos::switches::ForceShowCursor()){
+    cursor_manager_->SetNoHideCursor();
+  }
+//---***FYDEOS END***---
   cursor_manager_->HideCursor();  // Hide the mouse cursor on startup.
   cursor_manager_->SetCursor(ui::mojom::CursorType::kPointer);
 

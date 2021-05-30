@@ -16,6 +16,9 @@
 #include "ui/base/cursor/mojom/cursor_type.mojom-shared.h"
 #include "ui/base/layout.h"
 #include "ui/wm/core/native_cursor_manager_delegate.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/switches/display/display_switches.h"
+//---***FYDEOS END***---
 
 namespace ash {
 namespace {
@@ -132,6 +135,10 @@ void NativeCursorManagerAsh::SetVisibility(
   if (visible) {
     SetCursor(delegate->GetCursor(), delegate);
   } else {
+    //---***FYDEOS BEGIN***---
+    if (fydeos::switches::ForceShowCursor())
+      return;
+    //---***FYDEOS END***---
     gfx::NativeCursor invisible_cursor(ui::mojom::CursorType::kNone);
     cursor_loader_.SetPlatformCursor(&invisible_cursor);
     SetCursorOnAllRootWindows(invisible_cursor);

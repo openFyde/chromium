@@ -281,6 +281,9 @@ class DrmDevice : public base::RefCountedThreadSafe<DrmDevice> {
   const bool is_primary_device_;
 
   bool is_atomic_ = false;
+  //---***FYDEOS BEGIN***---
+  bool force_show_cursor_ = false;
+  //---***FYDEOS END***---
 
   bool allow_addfb2_modifiers_ = false;
 

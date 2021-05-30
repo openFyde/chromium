@@ -365,6 +365,7 @@
 #include "components/user_manager/user_manager.h"
 #include "services/service_manager/public/mojom/interface_provider_spec.mojom.h"
 #include "storage/browser/file_system/external_mount_points.h"
+#include "fydeos/switches/display/display_switches.h"
 #elif defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
 #include "chrome/browser/chrome_browser_main_linux.h"
 #elif defined(OS_ANDROID)
@@ -2206,6 +2207,10 @@ void ChromeContentBrowserClient::AppendExtraCommandLineSwitches(
   static const char* const kCommonSwitchNames[] = {
       embedder_support::kUserAgent,
       switches::kUserDataDir,  // Make logs go to the right file.
+      //---***FYDEOS BEGIN***---
+      fydeos::switches::kForceLegacyPlaneManager,
+      fydeos::switches::kForceShowCursor,
+      //---***FYDEOS END***---
   };
   command_line->CopySwitchesFrom(browser_command_line, kCommonSwitchNames,
                                  base::size(kCommonSwitchNames));

@@ -67,6 +67,9 @@ class WM_CORE_EXPORT CursorManager : public aura::client::CursorClient,
   void AddObserver(aura::client::CursorClientObserver* observer) override;
   void RemoveObserver(aura::client::CursorClientObserver* observer) override;
   bool ShouldHideCursorOnKeyEvent(const ui::KeyEvent& event) const override;
+  //---***FYDEOS BEGIN***---
+  void SetNoHideCursor();
+  //---***FYDEOS END***---
 
  private:
   // Overridden from NativeCursorManagerDelegate:
@@ -85,6 +88,10 @@ class WM_CORE_EXPORT CursorManager : public aura::client::CursorClient,
   // Number of times LockCursor() has been invoked without a corresponding
   // UnlockCursor().
   int cursor_lock_count_;
+
+  //---***FYDEOS BEGIN***---
+  bool no_hide_;
+  //---***FYDEOS END***---
 
   // The current state of the cursor.
   std::unique_ptr<internal::CursorState> current_state_;

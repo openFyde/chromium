@@ -84,6 +84,9 @@ CursorManager::CursorManager(std::unique_ptr<NativeCursorManager> delegate)
       state_on_unlock_(new internal::CursorState) {
   // Restore the last cursor visibility state.
   current_state_->SetVisible(last_cursor_visibility_state_);
+  //---***FYDEOS BEGIN***---
+  no_hide_ = false;
+  //---***FYDEOS END***---
 }
 
 CursorManager::~CursorManager() {
@@ -120,7 +123,17 @@ void CursorManager::ShowCursor() {
   }
 }
 
+//---***FYDEOS BEGIN***---
+void CursorManager::SetNoHideCursor() {
+  no_hide_ = true;
+}
+//---***FYDEOS END***---
+
 void CursorManager::HideCursor() {
+  //---***FYDEOS BEGIN***---
+  if (no_hide_)
+    return;
+  //---***FYDEOS END***---
   last_cursor_visibility_state_ = false;
   state_on_unlock_->SetVisible(false);
   if (cursor_lock_count_ == 0 &&

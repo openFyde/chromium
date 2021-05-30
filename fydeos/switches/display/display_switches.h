@@ -6,12 +6,19 @@
 #define CHROMEOS_FYDEOS_SWITCHES_DISPLAY_SWITCHES_H_
 
 #include "chromeos/chromeos_export.h"
+#define EXPORT_ALL __attribute__((visibility("default")))
 
 namespace fydeos {
 namespace switches {
+EXPORT_ALL extern const char kForceLegacyPlaneManager[];
+EXPORT_ALL extern const char kForceShowCursor[];
+EXPORT_ALL bool ForceLegacyPlaneManager();
+EXPORT_ALL bool ForceShowCursor();
 
 CHROMEOS_EXPORT float GetDefaultDSF(float default_value);
 CHROMEOS_EXPORT float GetDefaultScreenDpi(float default_value);
+
+CHROMEOS_EXPORT bool ForceCursorCompositing();
 
 } // switches
 } // fydeos

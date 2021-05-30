@@ -27,6 +27,9 @@
 #include "ui/ozone/platform/drm/common/drm_util.h"
 #include "ui/ozone/platform/drm/gpu/hardware_display_plane_manager_atomic.h"
 #include "ui/ozone/platform/drm/gpu/hardware_display_plane_manager_legacy.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/switches/display/display_switches.h"
+//---***FYDEOS END***---
 
 namespace ui {
 
@@ -263,7 +266,13 @@ bool DrmDevice::Initialize() {
   }
 
   // Use atomic only if kernel allows it.
-  is_atomic_ = SetCapability(DRM_CLIENT_CAP_ATOMIC, 1);
+  //---***FYDEOS BEGIN***---
+  if (fydeos::switches::ForceLegacyPlaneManager())
+    is_atomic_=false;
+  else
+    is_atomic_ = SetCapability(DRM_CLIENT_CAP_ATOMIC, 1);
+  force_show_cursor_ = fydeos::switches::ForceShowCursor();
+  //---***FYDEOS END***---
   if (is_atomic_)
     plane_manager_ = std::make_unique<HardwareDisplayPlaneManagerAtomic>(this);
   else
@@ -487,6 +496,10 @@ bool DrmDevice::SetCursor(uint32_t crtc_id,
   DCHECK(file_.IsValid());
   TRACE_EVENT2("drm", "DrmDevice::SetCursor", "crtc_id", crtc_id, "handle",
                handle);
+  //---***FYDEOS BEGIN***---
+  if(force_show_cursor_ && size.IsEmpty())
+    return true;
+  //---***FYDEOS END***---
   return !drmModeSetCursor(file_.GetPlatformFile(), crtc_id, handle,
                            size.width(), size.height());
 }

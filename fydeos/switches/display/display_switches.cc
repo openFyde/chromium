@@ -15,6 +15,14 @@ namespace {
 const char kDefaultDSF[] = "fydeos-default-dsf";
 const char kScreenDpi[] = "fydeos-default-screen-dpi";
 
+const char kForceCursorCompositing[] = "fydeos-force-cursor-compositing";
+}
+
+const char kForceLegacyPlaneManager[] = "use-legacy-plane-manager";
+const char kForceShowCursor[] = "fydeos-force-show-cursor";
+
+bool ForceLegacyPlaneManager() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(kForceLegacyPlaneManager);  
 }
 
 float GetDefaultDSF(float default_value) {
@@ -29,6 +37,14 @@ float GetDefaultScreenDpi(float default_value) {
   if (factorStr.empty())
     return default_value;
   return std::stof(factorStr);
+}
+
+bool ForceCursorCompositing() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(kForceCursorCompositing);
+}
+
+bool ForceShowCursor() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(kForceShowCursor);
 }
 
 } // switches
