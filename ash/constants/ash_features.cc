@@ -1685,7 +1685,7 @@ BASE_FEATURE(kReleaseNotesNotificationAllChannels,
 // Enables or disables Release Notes suggestion chip on ChromeOS.
 BASE_FEATURE(kReleaseNotesSuggestionChip,
              "ReleaseNotesSuggestionChip",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables or disables display of the release track in the system tray and quick
 // settings, for devices running on channels other than "stable."
