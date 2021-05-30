@@ -45,7 +45,9 @@ HeaderModificationDelegateImpl::HeaderModificationDelegateImpl(
 #else
 HeaderModificationDelegateImpl::HeaderModificationDelegateImpl(Profile* profile)
     : profile_(profile),
-      cookie_settings_(CookieSettingsFactory::GetForProfile(profile_)) {}
+      cookie_settings_(CookieSettingsFactory::GetForProfile(profile_)) {
+  dontProcessHeader_ = profile_->IsFydeProfile();
+}
 #endif
 
 HeaderModificationDelegateImpl::~HeaderModificationDelegateImpl() = default;
@@ -67,6 +69,10 @@ void HeaderModificationDelegateImpl::ProcessRequest(
     ChromeRequestAdapter* request_adapter,
     const GURL& redirect_url) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  //---***FYDEOS BEGIN***---
+  if (dontProcessHeader_)
+    return;
+  //---***FYDEOS END***---
   const PrefService* prefs = profile_->GetPrefs();
 #if BUILDFLAG(ENABLE_DICE_SUPPORT)
   syncer::SyncService* sync_service =

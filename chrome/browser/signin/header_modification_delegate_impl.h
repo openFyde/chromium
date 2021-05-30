@@ -55,6 +55,9 @@ class HeaderModificationDelegateImpl : public HeaderModificationDelegate {
 
  private:
   Profile* profile_;
+  //---***FYDEOS BEGIN***---
+  bool dontProcessHeader_;
+  //---***FYDEOS END***---
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 
 #if defined(OS_ANDROID)
