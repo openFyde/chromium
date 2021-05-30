@@ -178,6 +178,12 @@ void CrxInstaller::InstallCrx(const base::FilePath& source_file) {
                 base::CommandLine::ForCurrentProcess()->HasSwitch(
                     ::switches::kAppsGalleryURL))
           : GetExternalVerifierFormat();
+  // ---***FYDEOS BEGIN***---
+  // if (profile_->IsFydeProfile()) {
+  // allow google account install from fydeos store
+  format = GetExternalVerifierFormat();
+  // }
+  // ---***FYDEOS END***---
   InstallCrxFile(CRXFileInfo(source_file, format));
 }
 
