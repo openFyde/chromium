@@ -1196,7 +1196,7 @@ const base::Feature kReleaseNotesNotificationAllChannels{
 
 // Enables or disables Release Notes suggestion chip on Chrome OS.
 const base::Feature kReleaseNotesSuggestionChip{
-    "ReleaseNotesSuggestionChip", base::FEATURE_ENABLED_BY_DEFAULT};
+    "ReleaseNotesSuggestionChip", base::FEATURE_DISABLED_BY_DEFAULT};
 
 // When enabled, the overivew and desk reverse scrolling behaviors are changed
 // and if the user performs the old gestures, a notification or toast will show

@@ -32,6 +32,7 @@ class HelpAppSystemAppDelegate : public web_app::SystemWebAppDelegate {
   absl::optional<web_app::SystemAppBackgroundTaskInfo> GetTimerInfo()
       const override;
   bool ShouldCaptureNavigations() const override;
+  bool IsAppEnabled() const override;
 };
 
 // Return a WebAppInstallInfo used to install the app.

@@ -177,9 +177,11 @@ std::unique_ptr<SearchController> CreateSearchController(
         std::make_unique<KeyboardShortcutProvider>(profile));
   }
 
+  /*
   size_t help_app_group_id = controller->AddGroup(kGenericMaxResults);
   controller->AddProvider(help_app_group_id,
                           std::make_unique<HelpAppProvider>(profile));
+  */
 
   if (search_features::IsLauncherGameSearchEnabled()) {
     size_t games_group_id = controller->AddGroup(kGenericMaxResults);
