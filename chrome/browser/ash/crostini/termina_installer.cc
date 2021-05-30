@@ -24,8 +24,17 @@
 #include "content/public/browser/network_service_instance.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
+//---***FYDEOS BEGIN***---
+#include "base/files/file_util.h"
+//---***FYDEOS END***---
 
 namespace crostini {
+//---***FYDEOS BEGIN***---
+namespace {
+  const base::FilePath::CharType kFydeminaImageDirName[] =
+    FILE_PATH_LITERAL("/run/imageloader/cros-termina/99999.0.0");
+}// namespace
+//---***FYDEOS END***---
 
 namespace {
 
@@ -62,6 +71,12 @@ void TerminaInstaller::Install(base::OnceCallback<void(InstallResult)> callback,
 
   // Remove whichever version of termina we're *not* using and install the right
   // one.
+  //---***FYDEOS BEGIN***---
+  if (!base::IsDirectoryEmpty(base::FilePath(kFydeminaImageDirName))) {
+    InstallFydemina(std::move(callback));
+    return;
+  }
+  //---***FYDEOS END***---
   if (base::FeatureList::IsEnabled(chromeos::features::kCrostiniUseDlc)) {
     InstallDlc(
         base::BindOnce(
@@ -98,6 +113,15 @@ void TerminaInstaller::Install(base::OnceCallback<void(InstallResult)> callback,
     InstallComponent(std::move(callback));
   }
 }
+
+//---***FYDEOS BEGIN***---
+void TerminaInstaller::InstallFydemina(
+    base::OnceCallback<void(InstallResult)> callback) {
+  termina_location_ = base::FilePath(kFydeminaImageDirName);
+  component_update_check_needed_ = false;
+  std::move(callback).Run(InstallResult::Success);
+}
+//---***FYDEOS END***---
 
 void TerminaInstaller::InstallDlc(
     base::OnceCallback<void(InstallResult)> callback,

@@ -80,6 +80,9 @@ class TerminaInstaller {
                     const chromeos::DlcserviceClient::InstallResult& result);
 
   void InstallComponent(base::OnceCallback<void(InstallResult)> callback);
+  //---***FYDEOS BEGIN***---
+  void InstallFydemina(base::OnceCallback<void(InstallResult)> callback);
+  //---***FYDEOS END***---
   void OnInstallComponent(base::OnceCallback<void(InstallResult)> callback,
                           bool is_update_checked,
                           component_updater::CrOSComponentManager::Error error,
