@@ -41,6 +41,14 @@
 #include "dbus/scoped_dbus_error.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
+// ---***FYDEOS BEGIN***---
+#include "chromeos/dbus/dbus_thread_manager.h"
+#include "fydeos/dbus/fydeos_shell_client.h"
+#include "fydeos/dbus/shell_state.h"
+
+#include "fydeos/switches/misc/misc_switches.h"
+#include "chromeos/dbus/power/power_manager_client.h"
+// ---***FYDEOS END***---
 
 namespace chromeos {
 
@@ -349,9 +357,32 @@ class SessionManagerClientImpl : public SessionManagerClient {
                                        base::DoNothing());
   }
 
+  // ---***FYDEOS BEGIN***---
+  void ShellStateCallback(absl::optional<fydeos::ShellState> state) {
+    if (state) {
+      VLOG(1) << "Device wipe call FydeOSShellClient, shell state callback, state code:" << state->code;
+      chromeos::PowerManagerClient::Get()->RequestRestart(
+          power_manager::REQUEST_RESTART_FOR_USER, "login reset screen restart");
+    } else {
+      if(!fydeos::switches::IsFydeCustomEnabled()) {
+        // if fydeos_shell_client state null(error calling fydeos shell daemon),
+        // and fyde-disable-custom flags in chrome_dev.conf, then try to fallback to original behavior
+        // SimpleMethodCallToSessionManager in function StartDeviceWipe
+        SimpleMethodCallToSessionManager(
+            login_manager::kSessionManagerStartDeviceWipe);
+      }
+    }
+  }
+  // ---***FYDEOS END***---
+
   void StartDeviceWipe() override {
-    SimpleMethodCallToSessionManager(
-        login_manager::kSessionManagerStartDeviceWipe);
+//---***FYDEOS BEGIN***---
+  // try to echo 'clobber' to /mnt/stateful_partition/.update_available, then reboot in ShellStateCallback
+    chromeos::DBusThreadManager::Get()->GetFydeOSShellClient()->SyncExec(
+      "/usr/sbin/clobber",
+      base::BindOnce(&SessionManagerClientImpl::ShellStateCallback, weak_ptr_factory_.GetWeakPtr())
+    );
+//---***FYDEOS END***---
   }
 
   void StartRemoteDeviceWipe(
