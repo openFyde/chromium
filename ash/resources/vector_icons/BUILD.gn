@@ -494,6 +494,9 @@ aggregate_vector_icons("ash_vector_icons") {
     "wm_mode_on.icon",
     "zoom_in.icon",
     "zoom_out.icon",
+#---***FYDEOS BEGIN***---
+    "unified_menu_reboot.icon",
+#---***FYDEOS END***---
   ]
 
   if (is_chrome_branded) {

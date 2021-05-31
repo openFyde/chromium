@@ -249,6 +249,15 @@ TopShortcutsView::TopShortcutsView(UnifiedSystemTrayController* controller) {
       reboot ? IDS_ASH_STATUS_TRAY_REBOOT : IDS_ASH_STATUS_TRAY_SHUTDOWN));
   power_button_->SetID(VIEW_ID_QS_POWER_BUTTON);
 
+  if (!reboot) {
+    reboot_button_ = button_container->AddChildView(std::make_unique<IconButton>(
+        base::BindRepeating(&UnifiedSystemTrayController::HandleRebootAction,
+                            base::Unretained(controller)),
+        IconButton::Type::kSmall, &kUnifiedMenuRebootIcon,
+        IDS_ASH_STATUS_TRAY_REBOOT));
+    reboot_button_->SetID(VIEW_ID_QS_REBOOT_BUTTON);
+  }
+
   if (can_show_settings && can_lock_screen) {
     lock_button_ = button_container->AddChildView(std::make_unique<IconButton>(
         base::BindRepeating(lock_button_lambda, base::Unretained(controller)),

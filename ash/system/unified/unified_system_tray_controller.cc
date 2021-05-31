@@ -262,6 +262,15 @@ void UnifiedSystemTrayController::HandlePowerAction() {
   }
 }
 
+//---***FYDEOS BEGIN***---
+void UnifiedSystemTrayController::HandleRebootAction() {
+  base::RecordAction(base::UserMetricsAction("Tray_Reboot"));
+  Shell::Get()->lock_state_controller()->RequestShutdown(
+      ShutdownReason::TRAY_REBOOT_BUTTON);
+  CloseBubble();
+}
+//---***FYDEOS END***---
+
 void UnifiedSystemTrayController::HandlePageSwitchAction(int page) {
   // TODO(amehfooz) Record Pagination Metrics here.
   model_->pagination_model()->SelectPage(page, true);
