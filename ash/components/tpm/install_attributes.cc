@@ -28,6 +28,8 @@
 #include "components/policy/proto/install_attributes.pb.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace ash {
 
@@ -206,6 +208,9 @@ void InstallAttributes::ReadAttributesIfReady(
         kAttrEnterpriseDeviceId,   kAttrEnterpriseDomain, kAttrEnterpriseRealm,
         kAttrEnterpriseMode,       kAttrEnterpriseOwned,  kAttrEnterpriseUser,
         kAttrConsumerKioskEnabled,
+        // ---***FYDEOS BEGIN***---
+        kAttrEnterpriseService,
+        // ---***FYDEOS END***---
     };
     std::map<std::string, std::string> attr_map;
     for (size_t i = 0; i < std::size(kEnterpriseAttributes); ++i) {
@@ -343,6 +348,18 @@ void InstallAttributes::LockDeviceIfAttributesIsReady(
     enterprise_owned = "true";
   }
   std::string mode = GetDeviceModeString(device_mode);
+  // ---***FYDEOS BEGIN***---
+  std::string service;
+  if (device_mode == policy::DEVICE_MODE_ENTERPRISE ||
+      device_mode == policy::DEVICE_MODE_ENTERPRISE_AD ||
+      device_mode == policy::DEVICE_MODE_DEMO) {
+    if (fydeos::switches::IsFydeAccountEnabled()) {
+      service = "fydeos";
+    } else {
+      service = "default";
+    }
+  }
+  // ---***FYDEOS END***---
   if (!install_attributes_util::InstallAttributesSet(kAttrConsumerKioskEnabled,
                                                      kiosk_enabled) ||
       !install_attributes_util::InstallAttributesSet(kAttrEnterpriseOwned,
@@ -353,6 +370,10 @@ void InstallAttributes::LockDeviceIfAttributesIsReady(
                                                      domain) ||
       !install_attributes_util::InstallAttributesSet(kAttrEnterpriseRealm,
                                                      realm) ||
+      // ---***FYDEOS BEGIN***---
+      !install_attributes_util::InstallAttributesSet(kAttrEnterpriseService,
+                                                     service) ||
+      // ---***FYDEOS END***---
       !install_attributes_util::InstallAttributesSet(kAttrEnterpriseDeviceId,
                                                      device_id)) {
     LOG(ERROR) << "Failed writing attributes.";
@@ -368,6 +389,8 @@ void InstallAttributes::LockDeviceIfAttributesIsReady(
     std::move(callback).Run(LOCK_FINALIZE_ERROR);
     return;
   }
+
+  fydeos::switches::SetDeviceManagedFlag(true);
 
   ReadImmutableAttributes(
       base::BindOnce(&InstallAttributes::OnReadImmutableAttributes,
@@ -491,6 +514,9 @@ const char InstallAttributes::kDemoDeviceMode[] = "demo_mode";
 const char InstallAttributes::kAttrEnterpriseDeviceId[] =
     "enterprise.device_id";
 const char InstallAttributes::kAttrEnterpriseDomain[] = "enterprise.domain";
+// ---***FYDEOS BEGIN***---
+const char InstallAttributes::kAttrEnterpriseService[] = "enterprise.service";
+// ---***FYDEOS END***---
 const char InstallAttributes::kAttrEnterpriseRealm[] = "enterprise.realm";
 const char InstallAttributes::kAttrEnterpriseMode[] = "enterprise.mode";
 const char InstallAttributes::kAttrEnterpriseOwned[] = "enterprise.owned";
@@ -554,6 +580,9 @@ void InstallAttributes::DecodeInstallAttributes(
   registration_domain_.clear();
   registration_realm_.clear();
   registration_device_id_.clear();
+  // ---***FYDEOS BEGIN***---
+  registration_service_.clear();
+  // ---***FYDEOS END***---
 
   const std::string enterprise_owned =
       ReadMapKey(attr_map, kAttrEnterpriseOwned);
@@ -561,6 +590,9 @@ void InstallAttributes::DecodeInstallAttributes(
       ReadMapKey(attr_map, kAttrConsumerKioskEnabled);
   const std::string mode = ReadMapKey(attr_map, kAttrEnterpriseMode);
   const std::string domain = ReadMapKey(attr_map, kAttrEnterpriseDomain);
+  // ---***FYDEOS BEGIN***---
+  const std::string service = ReadMapKey(attr_map, kAttrEnterpriseService);
+  // ---***FYDEOS END***---
   const std::string realm = ReadMapKey(attr_map, kAttrEnterpriseRealm);
   const std::string device_id = ReadMapKey(attr_map, kAttrEnterpriseDeviceId);
   const std::string user_deprecated = ReadMapKey(attr_map, kAttrEnterpriseUser);
@@ -579,6 +611,13 @@ void InstallAttributes::DecodeInstallAttributes(
       }
       registration_mode_ = policy::DEVICE_MODE_ENTERPRISE;
     }
+    // ---***FYDEOS BEGIN***---
+    if (registration_mode_ == policy::DEVICE_MODE_ENTERPRISE ||
+        registration_mode_ == policy::DEVICE_MODE_ENTERPRISE_AD ||
+        registration_mode_ == policy::DEVICE_MODE_DEMO) {
+      registration_service_ = service;
+    }
+    // ---***FYDEOS END***---
 
     if (registration_mode_ == policy::DEVICE_MODE_ENTERPRISE ||
         registration_mode_ == policy::DEVICE_MODE_DEMO) {

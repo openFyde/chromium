@@ -119,6 +119,10 @@ class COMPONENT_EXPORT(ASH_COMPONENTS_TPM) InstallAttributes {
   // is not a cloud-managed enterprise device.
   std::string GetDomain() const { return registration_domain_; }
 
+  // ---***FYDEOS BEGIN***---
+  std::string GetServiceName() const { return registration_service_; }
+  // ---***FYDEOS END***---
+
   // Return the realm this device belongs to or an empty string if the device is
   // not an AD enterprise device.
   std::string GetRealm() const { return registration_realm_; }
@@ -149,6 +153,9 @@ class COMPONENT_EXPORT(ASH_COMPONENTS_TPM) InstallAttributes {
   // exclusively.
   policy::DeviceMode registration_mode_ = policy::DEVICE_MODE_PENDING;
   std::string registration_domain_;
+  // ---***FYDEOS BEGIN***---
+  std::string registration_service_;
+  // ---***FYDEOS END***---
   std::string registration_realm_;
   std::string registration_device_id_;
 
@@ -171,6 +178,9 @@ class COMPONENT_EXPORT(ASH_COMPONENTS_TPM) InstallAttributes {
   // Field names in the lockbox.
   static const char kAttrEnterpriseDeviceId[];
   static const char kAttrEnterpriseDomain[];
+  // ---***FYDEOS BEGIN***---
+  static const char kAttrEnterpriseService[];
+  // ---***FYDEOS END***---
   static const char kAttrEnterpriseRealm[];
   static const char kAttrEnterpriseMode[];
   static const char kAttrEnterpriseOwned[];
