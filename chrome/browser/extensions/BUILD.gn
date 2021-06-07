@@ -1320,6 +1320,12 @@ static_library("extensions") {
   } else {
     sources += [ "api/braille_display_private/braille_controller_stub.cc" ]
   }
+
+#---***FYDEOS BEGIN***---
+  if (is_chromeos) {
+    deps += [ "//fydeos/extensions/browser" ]
+  }
+#---***FYDEOS END***---
 }
 
 static_library("test_support") {

@@ -1,0 +1,69 @@
+# Copyright 2018 The FydeOS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+# Author: Simon Tsao(yang@fydeos.io)
+
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//fydeos/extensions/common/api/fydeos_schema.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//rlz/buildflags/buildflags.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+assert(enable_extensions)
+assert(is_chromeos)
+
+static_library("fydeos_extensions_api") {
+  sources = [
+    "api/native_windows/native_windows_api.cc",
+    "api/native_windows/native_windows_api.h",
+    "api/app_management/app_management_api.cc",
+    "api/app_management/app_management_api.h",
+    "api/command_line/command_line_api.cc",
+    "api/command_line/command_line_api.h",
+  ]
+
+  configs += [
+    "//build/config:precompiled_headers",
+    "//build/config/compiler:wexit_time_destructors",
+  ]
+  defines = []
+
+  public_deps = [
+    "//fydeos/extensions/common/api",
+    "//ipc:ipc_buildflags",
+  ]
+
+  deps = [
+    "//extensions/browser",
+    "//ash/public/cpp",
+    "//ash",
+    "//ui/aura",
+  ]
+}
+
+function_registration("fydeos_extensions_api_registration") {
+  sources = extensions_api_schema_files
+  impl_dir = "//fydeos/extensions/browser/api"
+  bundle_name = "FydeOS"
+  root_namespace = extensions_api_root_namespace
+  schema_include_rules = extensions_api_schema_include_rules
+  deps = [
+    "//base",
+    "//extensions/buildflags",
+    "//skia",
+    "//extensions/browser",
+    "//fydeos/extensions/common/api",
+  ]
+}
+
+group("browser"){
+  deps = [
+    ":fydeos_extensions_api",
+    ":fydeos_extensions_api_registration",
+  ]
+
+  public_deps = [
+    "//fydeos/extensions/common/api",
+  ]
+}

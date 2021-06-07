@@ -29575,6 +29575,18 @@ Called by update_extension_histograms.py.-->
   <int value="1592" label="FILEMANAGERPRIVATEINTERNAL_STARTIOTASK"/>
   <int value="1593" label="WALLPAPERPRIVATE_ISSWAENABLED"/>
   <int value="1594" label="INPUTMETHODPRIVATE_GETTEXTFIELDBOUNDS"/>
+  <int value="1595" label="NATIVE_WINDOWS_GET"/>
+  <int value="1596" label="NATIVE_WINDOWS_GETALL"/>
+  <int value="1597" label="NATIVE_WINDOWS_UPDATE"/>
+  <int value="1598" label="NATIVE_WINDOWS_REMOVE"/>
+  <int value="1599" label="NATIVE_WINDOWS_CREATE"/>
+  <int value="1600" label="APP_MANAGEMENT_GETAPPLIST"/>
+  <int value="1601" label="APP_MANAGEMENT_INSTALLWEBAPP"/>
+  <int value="1602" label="APP_MANAGEMENT_INSTALLARCAPP"/>
+  <int value="1603" label="COMMAND_LINE_HASSWITCH"/>
+  <int value="1604" label="COMMAND_LINE_REMOVESWITCH"/>
+  <int value="1605" label="COMMAND_LINE_ADDSWITCH"/>
+  <int value="1606" label="APP_MANAGEMENT_GETARCPOLICY"/>
 </enum>
 
 <enum name="ExtensionIconState">
@@ -30202,6 +30214,7 @@ Called by update_extension_permission.py.-->
   <int value="235" label="kSpeechRecognitionPrivate"/>
   <int value="236" label="kChromeOSDiagnostics"/>
   <int value="237" label="kChromeOSTelemetrySerialNumber"/>
+  <int value="238" label="kFydeOSPrivate"/>
 </enum>
 
 <enum name="ExtensionPointEnableState">

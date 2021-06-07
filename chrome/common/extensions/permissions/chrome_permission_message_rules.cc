@@ -17,6 +17,9 @@
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/extensions/common/grit/fydeos_extensions_resources.h"
+//---***FYDEOS END***---
 
 using extensions::mojom::APIPermissionID;
 
@@ -797,6 +800,11 @@ ChromePermissionMessageRule::GetAllRules() {
            IDS_EXTENSION_PROMPT_WARNING_DEVICE_INFO_MAYBE_SHARED_WITH_MANUFACTURER}),
        {APIPermissionID::kChromeOSTelemetrySerialNumber},
        {}},
+      //---***FYDEOS BEGIN***---
+      {IDS_EXTENSION_PROMPT_WARNING_FYDEOS_PRIVATE_API,
+       {APIPermissionID::kFydeOSPrivate},
+       {}},
+       //---***FYDEOS END***---
   };
 
   return std::vector<ChromePermissionMessageRule>(

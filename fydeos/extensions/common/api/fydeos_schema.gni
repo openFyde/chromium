@@ -1,0 +1,30 @@
+# Copyright 2019 The FydeOS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+# Author: Simon Tsao(yang@fydeos.io)
+
+extensions_api_schema_files_ = []
+
+if (is_chromeos) {
+  extensions_api_schema_files_ += [
+    "native_windows.json",
+    "app_management.json",
+    "command_line.json",
+  ]
+}
+
+extensions_api_schema_files =
+    get_path_info(extensions_api_schema_files_, "abspath")
+
+# extensions_api_uncompiled_sources =
+#    get_path_info([  ], "abspath")
+
+# extensions_api_uncompiled_bundle_schema_sources =
+#    get_path_info([
+#                  ],
+#                  "abspath")
+
+extensions_api_root_namespace = "extensions::api::%(namespace)s"
+
+extensions_api_schema_include_rules =
+   "fydeos/extensions/common/api:extensions::api::%(namespace)s"

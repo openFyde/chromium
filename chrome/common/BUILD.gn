@@ -326,6 +326,11 @@ static_library("common") {
       "//media/cast:net",
       "//services/device/public/cpp/usb",
     ]
+    #---***FYDEOS BEGIN***--- add fydeos extensions api provider
+    if (is_chromeos) {
+      public_deps += [ "//fydeos/extensions/common" ]
+    }
+    #---***FYDEOS END***---
   }
 
   if (!is_fuchsia) {

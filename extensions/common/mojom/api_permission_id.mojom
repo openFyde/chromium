@@ -261,6 +261,9 @@ enum APIPermissionID {
   kSpeechRecognitionPrivate = 235,
   kChromeOSDiagnostics = 236,
   kChromeOSTelemetrySerialNumber = 237,
+  //---***FYDEOS BEGIN***---
+  kFydeOSPrivate = 238,
+  //---***FYDEOS END***---
 
   // Add new entries at the end of the enum and be sure to update the
   // "ExtensionPermission3" enum in tools/metrics/histograms/enums.xml

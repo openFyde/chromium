@@ -38,6 +38,9 @@
 #include "services/network/public/mojom/cors_origin_pattern.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/extensions/common/fydeos_extensions_api_provider.h"
+//---***FYDEOS END***---
 
 namespace extensions {
 
@@ -56,6 +59,9 @@ const char kThumbsWhiteListedExtension[] = "khopmbdjffemhegeeobelklnbglcdgfh";
 ChromeExtensionsClient::ChromeExtensionsClient() {
   AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());
   AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());
+  //---***FYDEOS BEGIN***---
+  AddAPIProvider(std::make_unique<FydeOSExtensionsAPIProvider>());
+  //---***FYDEOS END***---
 }
 
 ChromeExtensionsClient::~ChromeExtensionsClient() {
