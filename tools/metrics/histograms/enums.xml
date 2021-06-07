@@ -30607,6 +30607,9 @@ Called by update_extension_histograms.py.-->
       label="WEB_AUTHENTICATION_PROXY_ON_REMOTE_SESSION_STATE_CHANGE"/>
   <int value="492" label="LOGIN_ON_REQUEST_EXTERNAL_LOGOUT"/>
   <int value="493" label="LOGIN_ON_EXTERNAL_LOGOUT_DONE"/>
+  <int value="494" label="FYDEOS_SHELL_CLIENT_SYSTEM_NOTIFICATION"/>
+  <int value="495" label="FYDEOS_SHELL_CLIENT_COMMAND_NOTIFICATION"/>
+  <int value="496" label="FYDEOS_SHELL_CLIENT_CUSTOM_NOTIFICATION"/>
 </enum>
 
 <enum name="ExtensionFileWriteResult">
@@ -32346,6 +32349,12 @@ Called by update_extension_histograms.py.-->
   <int value="1659" label="COMMAND_LINE_REMOVESWITCH"/>
   <int value="1660" label="COMMAND_LINE_ADDSWITCH"/>
   <int value="1661" label="APP_MANAGEMENT_GETARCPOLICY"/>
+  <int value="1662" label="SHELL_SYNC_EXEC"/>
+  <int value="1663" label="SHELL_ASYNC_EXEC"/>
+  <int value="1664" label="SHELL_GET_TASK_STATE"/>
+  <int value="1665" label="SHELL_GET_TASK_OUTPUT"/>
+  <int value="1666" label="SHELL_GET_DAEMON_STATE"/>
+  <int value="1667" label="SHELL_FORCE_CLOSE_TASK"/>
 </enum>
 
 <enum name="ExtensionIconState">
@@ -32974,6 +32983,7 @@ Called by update_extension_permission.py.-->
   <int value="236" label="kChromeOSDiagnostics"/>
   <int value="237" label="kChromeOSTelemetrySerialNumber"/>
   <int value="238" label="kFydeOSPrivate"/>
+  <int value="239" label="kFydeOSShellClient"/>
 </enum>
 
 <enum name="ExtensionPointEnableState">

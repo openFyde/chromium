@@ -61,6 +61,7 @@ component("dbus") {
     "//components/policy/proto",
     "//net",
     "//url",
+    "//fydeos/dbus:dbus_fydeos",
   ]
   sources = [
     "dbus_clients_browser.cc",

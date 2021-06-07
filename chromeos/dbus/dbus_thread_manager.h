@@ -11,6 +11,7 @@
 #include "base/callback.h"
 #include "base/component_export.h"
 #include "chromeos/dbus/init/dbus_thread_manager_base.h"
+#include "fydeos/dbus/fydeos_shell_client.h"
 
 namespace chromeos {
 
@@ -46,6 +47,9 @@ class SMSClient;
 class UpdateEngineClient;
 class VirtualFileProviderClient;
 class VmPluginDispatcherClient;
+//---***FYDEOS BEGIN***---
+class DBusClientsFydeOS;
+//---***FYDEOS END***---
 
 // THIS CLASS IS BEING DEPRECATED. See README.md for guidelines and
 // https://crbug.com/647367 for details.
@@ -103,6 +107,9 @@ class COMPONENT_EXPORT(CHROMEOS_DBUS) DBusThreadManager
   UpdateEngineClient* GetUpdateEngineClient();
   VirtualFileProviderClient* GetVirtualFileProviderClient();
   VmPluginDispatcherClient* GetVmPluginDispatcherClient();
+  //---***FYDEOS BEGIN***---
+  fydeos::FydeOSShellClient* GetFydeOSShellClient();
+  //---***FYDEOS END***---
 
   // DEPRECATED, DO NOT USE. The static getter for each of these classes should
   // be used instead. TODO(stevenjb): Remove. https://crbug.com/948390.
@@ -127,6 +134,8 @@ class COMPONENT_EXPORT(CHROMEOS_DBUS) DBusThreadManager
 
   // Owns the clients.
   std::unique_ptr<DBusClientsBrowser> clients_browser_;
+
+  std::unique_ptr<DBusClientsFydeOS> clients_fydeos_;
 };
 
 // TODO(jamescook): Replace these with FooClient::InitializeForTesting().
@@ -139,6 +148,9 @@ class COMPONENT_EXPORT(CHROMEOS_DBUS) DBusThreadManagerSetter {
   void SetImageLoaderClient(std::unique_ptr<ImageLoaderClient> client);
   void SetSmbProviderClient(std::unique_ptr<SmbProviderClient> client);
   void SetUpdateEngineClient(std::unique_ptr<UpdateEngineClient> client);
+  //---***FYDEOS BEGIN***---
+  void SetFydeOSShellClient(std::unique_ptr<fydeos::FydeOSShellClient> client);
+  //---***FYDEOS END***---
 
  private:
   friend class DBusThreadManager;
@@ -156,6 +168,7 @@ class COMPONENT_EXPORT(CHROMEOS_DBUS) DBusThreadManagerSetter {
   std::unique_ptr<ImageLoaderClient> image_loader_client_;
   std::unique_ptr<SmbProviderClient> smb_provider_client_;
   std::unique_ptr<UpdateEngineClient> update_engine_client_;
+  std::unique_ptr<fydeos::FydeOSShellClient> fydeos_shell_client_;
 };
 
 }  // namespace chromeos

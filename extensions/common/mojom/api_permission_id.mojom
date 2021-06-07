@@ -263,6 +263,7 @@ enum APIPermissionID {
   kChromeOSTelemetrySerialNumber = 237,
   //---***FYDEOS BEGIN***---
   kFydeOSPrivate = 238,
+  kFydeOSShellClient = 239,
   //---***FYDEOS END***---
 
   // Add new entries at the end of the enum and be sure to update the

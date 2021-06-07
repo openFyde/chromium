@@ -21,6 +21,8 @@ static_library("fydeos_extensions_api") {
     "api/app_management/app_management_api.h",
     "api/command_line/command_line_api.cc",
     "api/command_line/command_line_api.h",
+    "api/shell_client/shell_client_api.cc",
+    "api/shell_client/shell_client_api.h",
   ]
 
   configs += [
@@ -39,6 +41,7 @@ static_library("fydeos_extensions_api") {
     "//ash/public/cpp",
     "//ash",
     "//ui/aura",
+    "//fydeos/dbus:dbus_fydeos",
   ]
 }
 

@@ -9,5 +9,10 @@
       "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E"  //FydeOS System Control Extension
 
     ]
+  },
+  "FydeOSShellClient": {
+    "channel": "stable",
+    "platforms": ["chromeos"],
+    "extension_types": ["platform_app", "legacy_packaged_app"]
   }
 }
