@@ -954,6 +954,13 @@
     "includes": [4960],
   },
 
+  #//---***FYDEOS BEGIN***---
+  "fydeos/extensions/common/fydeos_extensions_resources.grd": {
+    "includes": [3900],
+    "messages": [3910],
+  },
+  #//---***FYDEOS END***---
+
   # END "everything else" section.
   # Everything but chrome/, components/, content/, and ios/
 
