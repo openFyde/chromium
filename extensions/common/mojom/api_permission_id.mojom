@@ -269,6 +269,9 @@ enum APIPermissionID {
   kDownloadsUi = 242,
   kWebRequestAuthProvider = 243,
   kChromeOSTelemetryNetworkInformation = 244,
+  //---***FYDEOS BEGIN***---
+  kFydeOSPrivate = 245,
+  //---***FYDEOS END***---
 
   // Add new entries at the end of the enum and be sure to update the
   // "ExtensionPermission3" enum in tools/metrics/histograms/enums.xml

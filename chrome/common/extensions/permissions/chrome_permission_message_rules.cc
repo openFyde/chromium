@@ -19,6 +19,9 @@
 #include "components/device_signals/core/common/signals_features.h"
 #include "extensions/common/mojom/api_permission_id.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/extensions/common/grit/fydeos_extensions_resources.h"
+//---***FYDEOS END***---
 
 using extensions::mojom::APIPermissionID;
 
@@ -754,6 +757,9 @@ ChromePermissionMessageRule::GetAllRules() {
        {}},
       {IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_NETWORK_INFORMATION,
        {APIPermissionID::kChromeOSTelemetryNetworkInformation},
+       {}},
+      {IDS_EXTENSION_PROMPT_WARNING_FYDEOS_PRIVATE_API,
+       {APIPermissionID::kFydeOSPrivate},
        {}}};
 
   return std::vector<ChromePermissionMessageRule>(

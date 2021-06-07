@@ -1,0 +1,66 @@
+# Copyright 2018 The FydeOS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+# Author: Simon Tsao(yang@flintos.io)
+import("//build/config/features.gni")
+import("//fydeos/extensions/common/api/fydeos_schema.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+import("//tools/json_schema_compiler/json_features.gni")
+
+
+assert(enable_extensions)
+
+generated_json_strings("fydeos_api") {
+  sources = extensions_api_schema_files
+  bundle_name = "FydeOS"
+  root_namespace = extensions_api_root_namespace
+  schema_include_rules = extensions_api_schema_include_rules
+  deps = [
+      "//chromeos",
+  ]
+  visibility = [ ":api" ]
+}
+
+generated_types("fydeos_api_types") {
+  sources = extensions_api_schema_files
+  root_namespace = extensions_api_root_namespace
+  deps = [
+    "//base",
+    "//extensions/buildflags",
+    "//chromeos",
+  ]
+  visibility = [ ":api" ]
+}
+
+group("api"){
+  deps = [
+    ":fydeos_api",
+    ":fydeos_api_types",
+  ]
+}
+
+group("fydeos_features") {
+  public_deps = [
+    ":api_features",
+    ":permission_features",
+  ]
+}
+
+json_features("api_features") {
+  feature_type = "APIFeature"
+  method_name = "AddFydeOSAPIFeatures"
+  sources = [
+    "_api_features.json",
+  ]
+  visibility = [ ":fydeos_features" ]
+}
+
+json_features("permission_features") {
+  feature_type = "PermissionFeature"
+  method_name = "AddFydeOSPermissionFeatures"
+  sources = [
+    "_permission_features.json",
+  ]
+  visibility = [ ":fydeos_features" ]
+}

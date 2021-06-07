@@ -1,0 +1,68 @@
+# Copyright 2018 The FlintOS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+# Author: Simon Tsao(yang@flintos.io)
+
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//fydeos/extensions/common/api/fydeos_schema.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//rlz/buildflags/buildflags.gni")
+import("//tools/grit/grit_rule.gni")
+
+assert(enable_extensions)
+assert(is_chromeos)
+
+grit("resources") {
+  source = "fydeos_extensions_resources.grd"
+  outputs = [
+    "grit/fydeos_extensions_resources.h",
+    "fydeos_extensions_resources.pak",
+  ]
+}
+
+static_library("fydeos_extensions_provider") {
+  sources = [
+    "fydeos_api_permissions.h",
+    "fydeos_api_permissions.cc",
+    "fydeos_extensions_api_provider.h",
+    "fydeos_extensions_api_provider.cc",
+  ]
+
+  configs += [
+    "//build/config:precompiled_headers",
+    "//build/config/compiler:wexit_time_destructors",
+  ]
+  defines = []
+
+  public_deps = [
+    "//extensions:extensions_resources",
+    "//extensions/common",
+    "//extensions/common:core_api_provider",
+    "//extensions/common/api",
+    "//extensions/strings",
+    ":resources",
+    "//fydeos/extensions/common/api",
+    "//fydeos/extensions/common/api:fydeos_features",
+    "//ipc:ipc_buildflags",
+  ]
+
+  deps = [
+#    "//extensions/browser",
+    "//ash/public/cpp",
+    "//ash",
+    "//ui/aura",
+  ]
+}
+
+group("common"){
+  deps = [
+    ":fydeos_extensions_provider",
+  ]
+
+  public_deps = [
+    "//fydeos/extensions/common/api",
+    "//fydeos/extensions/common/api:fydeos_features",
+#    "//fydeos/extensions/browser"
+  ]
+}

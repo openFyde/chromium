@@ -1,0 +1,41 @@
+{
+  "nativeWindows": [{
+    "dependencies": ["permission:FydeOSPrivate"],
+    "extension_types": ["extension"],
+    "platforms" : ["chromeos"],
+    "contexts": ["blessed_extension"]
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://settings/*",
+      "chrome://os-settings/*"
+    ]
+  }],
+  "appManagement": [{
+    "dependencies": ["permission:FydeOSPrivate"],
+    "extension_types": ["extension"],
+    "platforms" : ["chromeos"],
+    "contexts": ["blessed_extension"]
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://settings/*",
+      "chrome://os-settings/*"
+    ]
+  }],
+  "commandLine":[{
+    "dependencies": ["permission:FydeOSPrivate"],
+    "extension_types": ["extension"],
+    "platforms" : ["chromeos"],
+    "contexts": ["blessed_extension"]
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "dependencies": [],
+    "matches": [
+      "chrome://oobe/*"
+    ]
+  }]
+}
