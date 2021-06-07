@@ -804,6 +804,9 @@ ChromePermissionMessageRule::GetAllRules() {
       {IDS_EXTENSION_PROMPT_WARNING_FYDEOS_PRIVATE_API,
        {APIPermissionID::kFydeOSPrivate},
        {}},
+      {IDS_EXTENSION_PROMPT_WARNING_FYDEOS_SHELL_CLIENT_API,
+       {APIPermissionID::kFydeOSShellClient},
+       {}},
        //---***FYDEOS END***---
   };
 

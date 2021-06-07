@@ -37,5 +37,24 @@
     "matches": [
       "chrome://oobe/*"
     ]
+  }],
+  "shellClient":[{
+    "dependencies": ["permission:FydeOSPrivate"],
+    "extension_types": ["extension"],
+    "platforms": ["chromeos"],
+    "contexts": ["blessed_extension"]
+  },{
+    "dependencies": ["permission:FydeOSShellClient"],
+    "extension_types": ["platform_app", "legacy_packaged_app", "hosted_app"],
+    "platforms": ["chromeos"],
+    "contexts": ["blessed_extension" ]
+  },{
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://oobe/*",
+      "chrome://settings/*",
+      "chrome://os-settings/*"
+    ] 
   }]
 }

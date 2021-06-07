@@ -27904,6 +27904,9 @@ Called by update_extension_histograms.py.-->
   <int value="481" label="SPEECH_RECOGNITION_PRIVATE_ON_STOP"/>
   <int value="482" label="SPEECH_RECOGNITION_PRIVATE_ON_RESULT"/>
   <int value="483" label="SPEECH_RECOGNITION_PRIVATE_ON_ERROR"/>
+  <int value="484" label="FYDEOS_SHELL_CLIENT_SYSTEM_NOTIFICATION"/>
+  <int value="485" label="FYDEOS_SHELL_CLIENT_COMMAND_NOTIFICATION"/>
+  <int value="486" label="FYDEOS_SHELL_CLIENT_CUSTOM_NOTIFICATION"/>
 </enum>
 
 <enum name="ExtensionFileWriteResult">
@@ -29587,6 +29590,12 @@ Called by update_extension_histograms.py.-->
   <int value="1604" label="COMMAND_LINE_REMOVESWITCH"/>
   <int value="1605" label="COMMAND_LINE_ADDSWITCH"/>
   <int value="1606" label="APP_MANAGEMENT_GETARCPOLICY"/>
+  <int value="1607" label="SHELL_SYNC_EXEC"/>
+  <int value="1608" label="SHELL_ASYNC_EXEC"/>
+  <int value="1609" label="SHELL_GET_TASK_STATE"/>
+  <int value="1610" label="SHELL_GET_TASK_OUTPUT"/>
+  <int value="1611" label="SHELL_GET_DAEMON_STATE"/>
+  <int value="1612" label="SHELL_FORCE_CLOSE_TASK"/>
 </enum>
 
 <enum name="ExtensionIconState">
@@ -30215,6 +30224,7 @@ Called by update_extension_permission.py.-->
   <int value="236" label="kChromeOSDiagnostics"/>
   <int value="237" label="kChromeOSTelemetrySerialNumber"/>
   <int value="238" label="kFydeOSPrivate"/>
+  <int value="239" label="kFydeOSShellClient"/>
 </enum>
 
 <enum name="ExtensionPointEnableState">

@@ -1,0 +1,164 @@
+// Copyright 2018 The FydeOS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Author: Simon Tsao(yang@fydeos.io)
+
+[
+{
+  "namespace": "shellClient",
+  "description": "chrome.shellClient functions",
+  "compiler_options": {
+    "implemented_in": "fydeos/extensions/browser/api/shell_client/shell_client_api.h"
+  },
+  "types":[
+    {
+      "id": "ExecState",
+      "type": "object",
+      "description": "The result of exec shell command",
+      "properties": {
+        "code": { "type": "integer", "description": "The shell command returned code (sync) or task key (async)"},
+        "result": { "type":"string", "description":"The std output of command"}
+      }
+    }
+  ],
+  "properties": {
+    "ON_PROCESS": {
+      "value": 1,
+      "description": "The command is on running"
+    },
+    "ON_CLOSED": {
+      "value": 2,
+      "description": "The command is over"
+    },
+    "ON_ERROR": {
+      "value": 3,
+      "description": "The command is over but got error"
+    },
+    "ON_NONE": {
+      "value": 0,
+      "description": "The command is over, was removed by server"
+    }
+  },
+  "functions" : [
+    {
+      "name" : "execSync",
+      "type" : "function",
+      "description" : "Execute shell command synchronically",
+      "parameters": [
+        {"type":"string", "name": "command", "description" : "the bash command with args"},
+        {
+          "type" : "function",
+          "name" : "callback",
+          "parameters": [
+            {"name": "state", "$ref": "ExecState"}
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "execAsync",
+      "type" : "function",
+      "description" : "Execute shell command asynchronically",
+      "parameters": [
+        {"type":"string", "name": "command", "description" : "the bash command with args"},
+        {
+          "type" : "function",
+          "name" : "callback",
+          "parameters": [
+            {"name": "state", "$ref": "ExecState"}
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "getTaskState",
+      "type" : "function",
+      "description" : "Get async command state",
+      "parameters": [
+        {"type" : "integer", "name" : "key", "description" : "Async task's key"},
+        {
+          "type" : "function",
+          "name" : "callback",
+          "parameters": [
+            {"name": "state", "$ref": "ExecState"}
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "forceCloseTask",
+      "type" : "function",
+      "description" : "Force quit a long time running task",
+      "parameters": [
+        {"type" : "integer", "name" : "key", "description" : "Async task's key"},
+        {
+          "type" : "function",
+          "name" : "callback",
+          "parameters": [
+            {"name": "state", "$ref": "ExecState"}
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "getTaskOutput",
+      "type" : "function",
+      "description" : "Get async command std output",
+      "parameters": [
+        {"type" : "integer", "name" : "key", "description" : "Async task's key"},
+	{"type" : "integer", "name" : "lines", "description" : "How many lines you want from stdout"},
+        {
+          "type" : "function",
+          "name" : "callback",
+          "parameters": [
+            {"name": "state", "$ref": "ExecState"}
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "getDaemonState",
+      "type" : "function",
+      "description" : "Get shell daemon running state",
+      "parameters": [
+        {
+          "type" : "function",
+          "name" : "callback",
+          "parameters": [
+            {"name": "state", "$ref": "ExecState"}
+          ]
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "onSystemNotifying",
+      "type": "function",
+      "description": "Fired when received system message",
+      "parameters": [
+        {"type": "integer", "name": "level", "description":"message level"},
+        {"type": "string", "name": "message", "description":"system message"}
+      ]
+    },{
+      "name": "onShellCommandNotifying",
+      "type": "function",
+      "description": "Fired when received shell command warning/error",
+      "parameters": [
+        {"type": "integer", "name": "handler", "description": "shell command index, -1 for system"},
+        {"type": "integer", "name": "state", "description": "shell command return state"},
+        {"type": "string", "name": "message", "description": "real message"}
+      ]
+    },{
+      "name": "onShellCustomNotifying",
+      "type": "function",
+      "description": "Fired when received custom signal",
+      "parameters": [
+        {"type": "integer", "name": "data", "description": "first data"},
+        {"type": "integer", "name": "exdata", "description": "extra data"},
+        {"type": "string", "name": "extra", "description": "Any string"}
+      ]
+    }
+  ]
+}
+]

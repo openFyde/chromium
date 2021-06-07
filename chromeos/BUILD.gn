@@ -42,6 +42,7 @@ component("chromeos") {
       ":chromeos_export",
       "//base",
       "//base:i18n",
+      "//fydeos/dbus:dbus_fydeos", # FydeOS dbus
       "//chromeos/dbus",
       "//google_apis",
       "//services/network/public/cpp:cpp",

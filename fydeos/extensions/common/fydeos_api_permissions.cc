@@ -24,6 +24,7 @@ namespace {
       // Register permissions for all extension types.
     {mojom::APIPermissionID::kFydeOSPrivate, "FydeOSPrivate",
        APIPermissionInfo::kFlagCannotBeOptional},
+    {mojom::APIPermissionID::kFydeOSShellClient, "FydeOSShellClient"}
   };
 
 }  // namespace

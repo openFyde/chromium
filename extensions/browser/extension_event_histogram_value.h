@@ -503,6 +503,11 @@ enum HistogramValue {
   SPEECH_RECOGNITION_PRIVATE_ON_STOP = 481,
   SPEECH_RECOGNITION_PRIVATE_ON_RESULT = 482,
   SPEECH_RECOGNITION_PRIVATE_ON_ERROR = 483,
+  //---***FYDEOS BEGIN***---
+  FYDEOS_SHELL_CLIENT_SYSTEM_NOTIFICATION = 484,
+  FYDEOS_SHELL_CLIENT_COMMAND_NOTIFICATION = 485,
+  FYDEOS_SHELL_CLIENT_CUSTOM_NOTIFICATION = 486,
+  //---***FYDEOS END***---
   // Last entry: Add new entries above, then run:
   // python tools/metrics/histograms/update_extension_histograms.py
   ENUM_BOUNDARY

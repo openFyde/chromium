@@ -15,6 +15,10 @@
       <message name="IDS_EXTENSION_PROMPT_WARNING_FYDEOS_PRIVATE_API" desc="Permission string for implementing FydeOS Private Api">
     FydeOS proprietary API and essential element for FydeOS System Control extension.
       </message>
+
+      <message name="IDS_EXTENSION_PROMPT_WARNING_FYDEOS_SHELL_CLIENT_API" desc="Permission for excuting shell command">
+    Read and write files to your hard drive, executing shell commands on your behalf
+      </message>
     </messages>
   </release>
 </grit>
