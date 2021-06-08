@@ -54,6 +54,10 @@
 #include "extensions/browser/api/webcam_private/webcam_private_api.h"
 #endif
 
+//---***FYDEOS BEGIN***---
+#include "fydeos/extensions/browser/api/shell_client/shell_client_api.h"
+//---***FYDEOS END***---
+
 namespace extensions {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -106,6 +110,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   WebcamPrivateAPI::GetFactoryInstance();
 #endif
   WebRequestAPI::GetFactoryInstance();
+  //---***FYDEOS BEGIN***---
+  ShellClientAPI::GetFactoryInstance();
+  //---***FYDEOS END***---
 }
 
 }  // namespace extensions

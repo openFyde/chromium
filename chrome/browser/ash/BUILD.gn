@@ -3150,6 +3150,7 @@ source_set("ash") {
     "//chromeos/ash/components/dbus/system_clock",
     "//chromeos/ash/components/dbus/system_proxy:system_proxy_proto",
     "//chromeos/ash/components/dbus/update_engine",
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
     "//chromeos/ash/components/dbus/userdataauth",
     "//chromeos/ash/components/dbus/userdataauth:userdataauth_proto",
     "//chromeos/ash/components/dbus/vm_plugin_dispatcher",

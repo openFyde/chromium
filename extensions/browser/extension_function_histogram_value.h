@@ -1799,6 +1799,12 @@ enum HistogramValue {
   COMMAND_LINE_REMOVESWITCH = 1735,
   COMMAND_LINE_ADDSWITCH = 1736,
   APP_MANAGEMENT_GETARCPOLICY = 1737,
+  SHELL_SYNC_EXEC = 1738,
+  SHELL_ASYNC_EXEC = 1739,
+  SHELL_GET_TASK_STATE = 1740,
+  SHELL_GET_TASK_OUTPUT = 1741,
+  SHELL_GET_DAEMON_STATE = 1742,
+  SHELL_FORCE_CLOSE_TASK = 1743,
   //---***FYDEOS END***---
   // Last entry: Add new entries above, then run:
   // tools/metrics/histograms/update_extension_histograms.py
