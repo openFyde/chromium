@@ -398,10 +398,17 @@ void GaiaUrls::InitializeDefault() {
     secure_google_url_ = google_url_.ReplaceComponents(scheme_replacement);
   }
 
-  oauth2_chrome_client_id_ =
-      google_apis::GetOAuth2ClientID(google_apis::CLIENT_MAIN);
-  oauth2_chrome_client_secret_ =
-      google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_MAIN);
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    oauth2_chrome_client_id_ =
+        google_apis::GetOAuth2ClientID(google_apis::CLIENT_FYDEOS_MAIN);
+    oauth2_chrome_client_secret_ =
+        google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_FYDEOS_MAIN);
+  } else {
+    oauth2_chrome_client_id_ =
+        google_apis::GetOAuth2ClientID(google_apis::CLIENT_MAIN);
+    oauth2_chrome_client_secret_ =
+        google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_MAIN);
+  }
 
   CHECK(!gaia_origin_.opaque());
   const GURL gaia_url = gaia_origin_.GetURL();
