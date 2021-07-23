@@ -42,6 +42,9 @@ extern const char kOAuth2ClientID[];
 // Specifies custom OAuth2 client secret for testing purposes.
 extern const char kOAuth2ClientSecret[];
 
+extern const char kOAuth2FydeOsClientID[];
+extern const char kOAuth2FydeOsClientSecret[];
+
 }  // namespace switches
 
 #endif  // GOOGLE_APIS_GAIA_GAIA_SWITCHES_H_

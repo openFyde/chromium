@@ -105,6 +105,8 @@ enum OAuth2Client {
   CLIENT_REMOTING,
   CLIENT_REMOTING_HOST,
 
+  CLIENT_FYDEOS_MAIN,
+
   CLIENT_NUM_ITEMS  // Must be last item.
 };
 

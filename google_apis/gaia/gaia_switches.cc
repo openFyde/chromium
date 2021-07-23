@@ -15,5 +15,7 @@ const char kLsoUrl[]                        = "lso-url";
 const char kOAuthAccountManagerUrl[] = "oauth-account-manager-url";
 const char kOAuth2ClientID[] = "oauth2-client-id";
 const char kOAuth2ClientSecret[] = "oauth2-client-secret";
+const char kOAuth2FydeOsClientID[] = "oauth2-fydeos-client-id";
+const char kOAuth2FydeOsClientSecret[] = "oauth2-fydeos-client-secret";
 
 }  // namespace switches

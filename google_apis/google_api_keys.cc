@@ -50,6 +50,14 @@
 #define GOOGLE_CLIENT_SECRET_MAIN DUMMY_API_TOKEN
 #endif
 
+#if !defined(FYDEOS_CLIENT_ID_MAIN)
+#define FYDEOS_CLIENT_ID_MAIN DUMMY_API_TOKEN
+#endif
+
+#if !defined(FYDEOS_CLIENT_SECRET_MAIN)
+#define FYDEOS_CLIENT_SECRET_MAIN DUMMY_API_TOKEN
+#endif
+
 #if !defined(GOOGLE_CLIENT_ID_REMOTING)
 #define GOOGLE_CLIENT_ID_REMOTING DUMMY_API_TOKEN
 #endif
@@ -104,6 +112,13 @@
 #endif
 #if !defined(GOOGLE_DEFAULT_CLIENT_SECRET)
 #define GOOGLE_DEFAULT_CLIENT_SECRET ""
+#endif
+
+#if !defined(FYDEOS_DEFAULT_CLIENT_ID)
+#define FYDEOS_DEFAULT_CLIENT_ID ""
+#endif
+#if !defined(FYDEOS_DEFAULT_CLIENT_SECRET)
+#define FYDEOS_DEFAULT_CLIENT_SECRET ""
 #endif
 
 namespace google_apis {
@@ -169,6 +184,15 @@ class APIKeyCache {
         STRINGIZE_NO_EXPANSION(GOOGLE_DEFAULT_CLIENT_SECRET), nullptr,
         std::string(), environment.get(), command_line, gaia_config);
 
+    std::string fydeos_default_client_id = CalculateKeyValue(
+        FYDEOS_DEFAULT_CLIENT_ID,
+        STRINGIZE_NO_EXPANSION(FYDEOS_DEFAULT_CLIENT_ID), nullptr,
+        std::string(), environment.get(), command_line, gaia_config);
+    std::string fydeos_default_client_secret = CalculateKeyValue(
+        FYDEOS_DEFAULT_CLIENT_SECRET,
+        STRINGIZE_NO_EXPANSION(FYDEOS_DEFAULT_CLIENT_SECRET), nullptr,
+        std::string(), environment.get(), command_line, gaia_config);
+
     // We currently only allow overriding the baked-in values for the
     // default OAuth2 client ID and secret using a command-line
     // argument and gaia config, since that is useful to enable testing against
@@ -183,6 +207,16 @@ class APIKeyCache {
         GOOGLE_CLIENT_SECRET_MAIN,
         STRINGIZE_NO_EXPANSION(GOOGLE_CLIENT_SECRET_MAIN),
         ::switches::kOAuth2ClientSecret, default_client_secret,
+        environment.get(), command_line, gaia_config);
+
+    client_ids_[CLIENT_FYDEOS_MAIN] = CalculateKeyValue(
+        FYDEOS_CLIENT_ID_MAIN, STRINGIZE_NO_EXPANSION(FYDEOS_CLIENT_ID_MAIN),
+        ::switches::kOAuth2FydeOsClientID, fydeos_default_client_id, environment.get(),
+        command_line, gaia_config);
+    client_secrets_[CLIENT_FYDEOS_MAIN] = CalculateKeyValue(
+        FYDEOS_CLIENT_SECRET_MAIN,
+        STRINGIZE_NO_EXPANSION(FYDEOS_CLIENT_SECRET_MAIN),
+        ::switches::kOAuth2FydeOsClientSecret, fydeos_default_client_secret,
         environment.get(), command_line, gaia_config);
 
     client_ids_[CLIENT_REMOTING] = CalculateKeyValue(
