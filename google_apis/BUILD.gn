@@ -52,6 +52,10 @@ declare_args() {
 
   # See google_api_key.
   google_default_client_secret = ""
+
+  fydeos_default_client_id = ""
+
+  fydeos_default_client_secret = ""
 }
 
 if (use_official_google_api_keys == "") {
@@ -81,6 +85,13 @@ config("key_defines") {
   if (google_default_client_secret != "") {
     defines +=
         [ "GOOGLE_DEFAULT_CLIENT_SECRET=\"$google_default_client_secret\"" ]
+  }
+  if (fydeos_default_client_id != "") {
+    defines += [ "FYDEOS_DEFAULT_CLIENT_ID=\"$fydeos_default_client_id\"" ]
+  }
+  if (fydeos_default_client_secret != "") {
+    defines +=
+        [ "FYDEOS_DEFAULT_CLIENT_SECRET=\"$fydeos_default_client_secret\"" ]
   }
 }
 

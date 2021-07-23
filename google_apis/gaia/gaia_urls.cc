@@ -389,10 +389,17 @@ void GaiaUrls::InitializeDefault() {
              (gaia_url_.has_port() ? ":" + gaia_url_.port() : ""));
   }
 
-  oauth2_chrome_client_id_ =
-      google_apis::GetOAuth2ClientID(google_apis::CLIENT_MAIN);
-  oauth2_chrome_client_secret_ =
-      google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_MAIN);
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    oauth2_chrome_client_id_ =
+        google_apis::GetOAuth2ClientID(google_apis::CLIENT_FYDEOS_MAIN);
+    oauth2_chrome_client_secret_ =
+        google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_FYDEOS_MAIN);
+  } else {
+    oauth2_chrome_client_id_ =
+        google_apis::GetOAuth2ClientID(google_apis::CLIENT_MAIN);
+    oauth2_chrome_client_secret_ =
+        google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_MAIN);
+  }
 
   // URLs from |gaia_url_|.
   ResolveURLIfInvalid(&client_login_url_, gaia_url_, kClientLoginUrlSuffix);
