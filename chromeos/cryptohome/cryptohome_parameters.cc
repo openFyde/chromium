@@ -29,6 +29,11 @@ const std::string GetCryptohomeId(const AccountId& account_id) {
         return account_id.GetAccountIdKey();
       return account_id.GetUserEmail();  // Migrated.
     }
+    //---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT: {
+      return account_id.GetUserEmail();
+    }
+    //---***FYDEOS END***---
     case AccountType::ACTIVE_DIRECTORY: {
       // Always use the account id key, authpolicyd relies on it!
       return account_id.GetAccountIdKey();

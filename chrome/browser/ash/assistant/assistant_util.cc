@@ -61,6 +61,9 @@ AssistantAllowedState GetErrorForUserType(const Profile* profile) {
       return AssistantAllowedState::DISALLOWED_BY_KIOSK_MODE;
 
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
+    //---***FYDEOS BEGIN***---
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    //---***FYDEOS END***---
       return AssistantAllowedState::DISALLOWED_BY_ACCOUNT_TYPE;
 
     case user_manager::USER_TYPE_GUEST:

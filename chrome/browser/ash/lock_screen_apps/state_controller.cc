@@ -136,7 +136,9 @@ void StateController::Initialize() {
 void StateController::SetPrimaryProfile(Profile* profile) {
   const user_manager::User* user =
       chromeos::ProfileHelper::Get()->GetUserByProfile(profile);
-  if (!user || !user->HasGaiaAccount()) {
+  //---***FYDEOS BEGIN***---
+  if (!user || (!user->HasGaiaAccount() && !user->IsFydeExtendAccountUser())) {
+  //---***FYDEOS END***---
     if (!ready_callback_.is_null())
       std::move(ready_callback_).Run();
     return;

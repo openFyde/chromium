@@ -386,6 +386,12 @@ bool ProfileHelper::IsEphemeralUserProfile(const Profile* profile) {
   // Otherwise, users are ephemeral when the policy is enabled.
   return ChromeUserManager::Get()->AreEphemeralUsersEnabled();
 }
+// ---***FYDEOS BEGIN***---
+// static
+bool ProfileHelper::IsFydeProfile(const Profile* profile) {
+  return profile && profile->IsFydeProfile();
+}
+// ---***FYDEOS END***---
 
 // static
 bool ProfileHelper::IsRegularProfile(const Profile* profile) {

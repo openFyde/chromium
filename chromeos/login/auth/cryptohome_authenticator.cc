@@ -295,6 +295,10 @@ void EnsureCryptohomeMigratedToGaiaId(
   if (account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY) {
     cryptohome::SetGaiaIdMigrationStatusDone(account_id);
   }
+  //---***FYDEOS BEGIN***---
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT)
+    cryptohome::SetGaiaIdMigrationStatusDone(account_id);
+  //---***FYDEOS END***---
 
   // Only Google accounts have to be migrated.
   if (account_id.GetAccountType() != AccountType::GOOGLE) {
@@ -602,6 +606,9 @@ void CryptohomeAuthenticator::AuthenticateToLogin(
     const UserContext& user_context) {
   DCHECK(user_context.GetUserType() == user_manager::USER_TYPE_REGULAR ||
          user_context.GetUserType() == user_manager::USER_TYPE_CHILD ||
+         //---***FYDEOS BEGIN***---
+         user_context.GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         //---***FYDEOS END***---
          user_context.GetUserType() ==
              user_manager::USER_TYPE_ACTIVE_DIRECTORY);
   current_state_ =
@@ -617,6 +624,7 @@ void CryptohomeAuthenticator::AuthenticateToLogin(
 void CryptohomeAuthenticator::CompleteLogin(const UserContext& user_context) {
   DCHECK(user_context.GetUserType() == user_manager::USER_TYPE_REGULAR ||
          user_context.GetUserType() == user_manager::USER_TYPE_CHILD ||
+         user_context.GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
          user_context.GetUserType() ==
              user_manager::USER_TYPE_ACTIVE_DIRECTORY);
   current_state_ =

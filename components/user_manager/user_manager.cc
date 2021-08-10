@@ -137,6 +137,11 @@ UserType UserManager::CalculateUserType(const AccountId& account_id,
   if (account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY)
     return USER_TYPE_ACTIVE_DIRECTORY;
 
+  // ---***FYDEOS BEGIN***---
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT)
+    return USER_TYPE_FLINT_ACCOUNT;
+  // ---***FYDEOS END***---
+
   return USER_TYPE_REGULAR;
 }
 

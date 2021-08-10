@@ -145,6 +145,9 @@ em::ExtensionInstallReportLogEvent_UserType ConvertUserTypeToProto(
     user_manager::UserType user_type) {
   switch (user_type) {
     case user_manager::USER_TYPE_REGULAR:
+    // ---***FYDEOS BEGIN***---
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    // ---***FYDEOS END***---
       return em::ExtensionInstallReportLogEvent::USER_TYPE_REGULAR;
     case user_manager::USER_TYPE_GUEST:
       return em::ExtensionInstallReportLogEvent::USER_TYPE_GUEST;

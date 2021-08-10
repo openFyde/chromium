@@ -12,7 +12,11 @@
 #include <string>
 
 
-enum class AccountType { UNKNOWN, GOOGLE, ACTIVE_DIRECTORY };
+enum class AccountType { UNKNOWN, GOOGLE, ACTIVE_DIRECTORY,
+//---***FYDEOS BEGIN***---
+  FLINT_ACCOUNT = 99,
+//---***FYDEOS END***---
+ };
 
 // Type that contains enough information to identify user.
 //
@@ -97,6 +101,12 @@ class AccountId {
   static bool Deserialize(const std::string& serialized,
                           AccountId* out_account_id);
 
+  //---***FYDEOS BEGIN***---
+  const std::string& GetFlintId() const;
+  static AccountId FtFromUserEmailFlintId(const std::string& email,
+                                          const std::string& flint_id);
+  static AccountId FtFromFlintId(const std::string& flint_id);
+  //---***FYDEOS END***---
  private:
   friend std::ostream& operator<<(std::ostream&, const AccountId&);
 

@@ -147,6 +147,7 @@ const auto policy_value_to_enum =
 bool IsUserTypeAllowed(const User* user) {
   switch (user->GetType()) {
     case user_manager::USER_TYPE_REGULAR:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
     case user_manager::USER_TYPE_WEB_KIOSK_APP:
       return true;
     case user_manager::USER_TYPE_GUEST:

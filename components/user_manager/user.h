@@ -106,6 +106,9 @@ class USER_MANAGER_EXPORT User : public UserInfo {
   // Returns true if it's Active Directory user.
   virtual bool IsActiveDirectoryUser() const;
 
+  virtual bool IsFlintAccountUser() const;
+  virtual bool IsFydeExtendAccountUser() const;
+
   // Returns true if user is child.
   virtual bool IsChild() const;
 
