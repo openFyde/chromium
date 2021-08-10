@@ -119,6 +119,10 @@ class ProfileHelper
   // Returns true when |profile| is for an ephemeral user.
   static bool IsEphemeralUserProfile(const Profile* profile);
 
+  // ---***FYDEOS BEGIN***---
+  static bool IsFydeProfile(const Profile* profile);
+  // ---***FYDEOS END***---
+
   // Return true if |profile| or |profile_path| corrrespond to a regular
   // (non-sign-in and non-lockscreen) profile.
   static bool IsRegularProfile(const Profile* profile);

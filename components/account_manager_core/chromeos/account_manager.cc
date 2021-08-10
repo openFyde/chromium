@@ -101,6 +101,13 @@ absl::optional<::account_manager::AccountType> FromProtoAccountType(
                             ::account_manager::AccountType::kActiveDirectory),
                     "Underlying enum values must match");
       return ::account_manager::AccountType::kActiveDirectory;
+    case internal::AccountType::ACCOUNT_TYPE_FLINT:
+      static_assert(static_cast<int>(
+                        internal::AccountType::ACCOUNT_TYPE_FLINT) ==
+                        static_cast<int>(
+                            ::account_manager::AccountType::kFlint),
+                    "Underlying enum values must match");
+      return ::account_manager::AccountType::kFlint;
   }
 }
 
@@ -111,6 +118,8 @@ internal::AccountType ToProtoAccountType(
       return internal::AccountType::ACCOUNT_TYPE_GAIA;
     case ::account_manager::AccountType::kActiveDirectory:
       return internal::AccountType::ACCOUNT_TYPE_ACTIVE_DIRECTORY;
+    case ::account_manager::AccountType::kFlint:
+      return internal::AccountType::ACCOUNT_TYPE_FLINT;
   }
 }
 

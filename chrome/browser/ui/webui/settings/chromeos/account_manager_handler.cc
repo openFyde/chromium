@@ -61,7 +61,9 @@ constexpr char kAccountRemovedToastId[] =
   DCHECK((account_type_int >=
           static_cast<int>(account_manager::AccountType::kGaia)) &&
          (account_type_int <=
-          static_cast<int>(account_manager::AccountType::kActiveDirectory)));
+          // ---***FYDEOS BEGIN***---
+          static_cast<int>(account_manager::AccountType::kFlint)));
+          // ---***FYDEOS END***---
   const account_manager::AccountType account_type =
       static_cast<account_manager::AccountType>(account_type_int);
 
@@ -85,6 +87,9 @@ bool IsSameAccount(const ::account_manager::AccountKey& account_key,
     case account_manager::AccountType::kActiveDirectory:
       return (account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY) &&
              (account_id.GetObjGuid() == account_key.id());
+    case account_manager::AccountType::kFlint:
+      return (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) &&
+             (account_id.GetFlintId() == account_key.id());
   }
 }
 

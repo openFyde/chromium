@@ -244,6 +244,9 @@ bool IsArcAllowedForUser(const user_manager::User* user) {
   //   user session. The same for USER_TYPE_PUBLIC_ACCOUNT.
   if (!user->HasGaiaAccount() && !user->IsActiveDirectoryUser() &&
       user->GetType() != user_manager::USER_TYPE_ARC_KIOSK_APP &&
+      //---***FYDEOS BEGIN***---
+      !user->IsFydeExtendAccountUser() &&
+      //---***FYDEOS END***---
       user->GetType() != user_manager::USER_TYPE_PUBLIC_ACCOUNT) {
     VLOG(1) << "Users without GAIA or AD accounts, or not ARC kiosk apps are "
                "not supported in ARC.";

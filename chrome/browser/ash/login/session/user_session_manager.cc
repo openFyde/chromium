@@ -175,6 +175,10 @@
 #include "ui/base/ime/ash/input_method_manager.h"
 #include "ui/base/ime/ash/input_method_util.h"
 #include "url/gurl.h"
+//---***FYDEOS BEGIN***---
+#include "components/omnibox/browser/omnibox_prefs.h"
+#include "components/embedder_support/pref_names.h"
+//---***FYDEOS END***---
 
 namespace ash {
 namespace {
@@ -830,6 +834,12 @@ void UserSessionManager::InitNonKioskExtensionFeaturesSessionType(
     return;
   }
 
+//---***FYDEOS BEGIN***---
+  if (user->IsFydeExtendAccountUser())
+    extensions::SetCurrentFeatureSessionType(extensions::mojom::FeatureSessionType::kRegular);
+  else
+//---***FYDEOS END***---
+
   extensions::SetCurrentFeatureSessionType(
       user->HasGaiaAccount() ? extensions::mojom::FeatureSessionType::kRegular
                              : extensions::mojom::FeatureSessionType::kUnknown);
@@ -842,6 +852,12 @@ void UserSessionManager::SetFirstLoginPrefs(
   VLOG(1) << "Setting first login prefs";
   InitLocaleAndInputMethodsForNewUser(this, profile, public_session_locale,
                                       public_session_input_method);
+  // ---***FYDEOS BEGIN***---
+  if (profile->IsFydeProfile()) {
+    profile->GetPrefs()->SetBoolean(omnibox::kDocumentSuggestEnabled, false);
+    profile->GetPrefs()->SetBoolean(embedder_support::kAlternateErrorPagesEnabled, false);
+  }
+  // ---***FYDEOS END***---
 }
 
 bool UserSessionManager::GetAppModeChromeClientOAuthInfo(
@@ -1182,6 +1198,7 @@ void UserSessionManager::OnUsersSignInConstraintsChanged() {
   for (auto* user : logged_in_users) {
     if (user->GetType() != user_manager::USER_TYPE_REGULAR &&
         user->GetType() != user_manager::USER_TYPE_GUEST &&
+        user->GetType() != user_manager::USER_TYPE_FLINT_ACCOUNT &&
         user->GetType() != user_manager::USER_TYPE_CHILD) {
       continue;
     }
@@ -2071,7 +2088,11 @@ void UserSessionManager::RestorePendingUserSessions() {
         user_manager::UserManager::Get()->FindUser(account_id);
     UserContext user_context =
         user ? UserContext(*user)
-             : UserContext(user_manager::UserType::USER_TYPE_REGULAR,
+//---***FYDEOS BEGIN***---
+             : UserContext(account_id.GetAccountType() == AccountType::FLINT_ACCOUNT ?
+               user_manager::UserType::USER_TYPE_FLINT_ACCOUNT :
+               user_manager::UserType::USER_TYPE_REGULAR,
+//---***FYDEOS END***---
                            account_id);
     user_context.SetUserIDHash(user_id_hash);
     user_context.SetIsUsingOAuth(false);

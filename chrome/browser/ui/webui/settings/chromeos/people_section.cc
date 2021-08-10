@@ -540,6 +540,9 @@ bool IsSameAccount(const ::account_manager::AccountKey& account_key,
     case account_manager::AccountType::kActiveDirectory:
       return account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY &&
              account_id.GetObjGuid() == account_key.id();
+    case account_manager::AccountType::kFlint:
+      return account_id.GetAccountType() == AccountType::FLINT_ACCOUNT &&
+             account_id.GetFlintId() == account_key.id();
   }
 }
 

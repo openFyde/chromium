@@ -45,6 +45,9 @@ class COMPONENT_EXPORT(ASH_LOGIN_AUTH) UserContext {
     AUTH_FLOW_EASY_UNLOCK,
     // Authentication against Active Directory server.
     AUTH_FLOW_ACTIVE_DIRECTORY,
+    //---***FYDEOS BEGIN***---
+    AUTH_FLOW_FLINT_ACCOUNT,
+    //---***FYDEOS END***---
   };
 
   UserContext();

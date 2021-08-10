@@ -1719,6 +1719,7 @@ bool WallpaperControllerImpl::ShouldShowWallpaperSetting() {
   // everything resets.
   user_manager::UserType active_user_type = active_user_session->user_info.type;
   return active_user_type == user_manager::USER_TYPE_REGULAR ||
+         active_user_type == user_manager::USER_TYPE_FLINT_ACCOUNT ||
          active_user_type == user_manager::USER_TYPE_CHILD;
 }
 

@@ -547,6 +547,16 @@ void LoginDisplayHostMojo::HandleAuthenticateUserWithPasswordOrPin(
     }
     user_context.SetIsUsingOAuth(false);
   }
+  //---***FYDEOS BEGIN***---
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) {
+    if (user_context.GetUserType() !=
+        user_manager::UserType::USER_TYPE_FLINT_ACCOUNT) {
+      LOG(FATAL) << "Incorrect Flint Account user type "
+                 << user_context.GetUserType();
+    }
+    user_context.SetIsUsingOAuth(false);
+  }
+  //---***FYDEOS END***---
 
   if (owner_verified_callback_) {
     CheckOwnerCredentials(user_context);

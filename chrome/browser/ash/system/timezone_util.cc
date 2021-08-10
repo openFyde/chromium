@@ -174,6 +174,9 @@ bool CanSetSystemTimezone(const user_manager::User* user) {
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
     case user_manager::USER_TYPE_WEB_KIOSK_APP:
     case user_manager::USER_TYPE_CHILD:
+    //---***FYDEOS BEGIN***---
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    //---***FYDEOS END***---
       return true;
 
     case user_manager::USER_TYPE_GUEST:

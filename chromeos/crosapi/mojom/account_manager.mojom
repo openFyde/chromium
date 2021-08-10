@@ -16,6 +16,9 @@ enum AccountType {
   kUnspecified = 0,
   kGaia = 1,
   kActiveDirectory = 2,
+  // ---***FYDEOS BEGIN***---
+  kFlint = 3,
+  // ---***FYDEOS END***---
 };
 
 // Uniquely identifies an account in Account Manager.

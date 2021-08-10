@@ -51,6 +51,10 @@ constexpr char kProfileSigninNotificationId[] = "chrome://settings/signin/";
 // |profile| is a non-owning pointer to |Profile|.
 // |account_id| is the |AccountId| for the Device Account.
 void SetupAccountManager(Profile* profile, const AccountId& account_id) {
+  //---***FYDEOS BEGIN***---
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT)
+    return;
+  //---***FYDEOS END***---
   auto* factory =
       g_browser_process->platform_part()->GetAccountManagerFactory();
   DCHECK(factory);

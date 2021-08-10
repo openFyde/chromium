@@ -29,6 +29,11 @@ UserContext::UserContext(user_manager::UserType user_type,
   if (user_type_ == user_manager::USER_TYPE_REGULAR)
     account_id_.SetUserEmail(
         user_manager::CanonicalizeUserID(account_id_.GetUserEmail()));
+    //---***FYDEOS BEGIN***---
+  if (user_type_ == user_manager::USER_TYPE_FLINT_ACCOUNT)
+    account_id_.SetUserEmail(
+        user_manager::CanonicalizeUserID(account_id_.GetUserEmail()));
+    //---***FYDEOS END***---
 }
 
 UserContext::~UserContext() = default;

@@ -564,6 +564,7 @@ LoginStatus SessionControllerImpl::CalculateLoginStatusForActiveSession()
       return LoginStatus::KIOSK_APP;
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
       // TODO(jamescook): There is no LoginStatus for this.
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
       return LoginStatus::USER;
     case user_manager::USER_TYPE_WEB_KIOSK_APP:
       return LoginStatus::KIOSK_APP;

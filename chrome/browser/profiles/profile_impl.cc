@@ -457,6 +457,9 @@ ProfileImpl::ProfileImpl(
                user->GetAccountId()))
         << "Attempting to construct the profile before starting the user "
            "session";
+    //---***FYDEOS BEGIN***---
+    set_is_fyde_profile(user->IsFydeExtendAccountUser());
+    //---***FYDEOS END***---
   }
 #endif
 
@@ -921,6 +924,13 @@ ProfileImpl::~ProfileImpl() {
 }
 
 std::string ProfileImpl::GetProfileUserName() const {
+  //---***FYDEOS BEGIN***---
+  const user_manager::User* user =
+      chromeos::ProfileHelper::Get()->GetUserByProfile(this);
+  if (user && user->IsFlintAccountUser()) {
+    return user->display_email();
+  }
+  //---***FYDEOS END***---
   const signin::IdentityManager* identity_manager =
       IdentityManagerFactory::GetForProfileIfExists(this);
   if (identity_manager) {

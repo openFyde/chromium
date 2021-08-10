@@ -255,6 +255,9 @@ user_manager::UserType CalculateUserType(const AccountId& account_id) {
   if (account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY)
     return user_manager::USER_TYPE_ACTIVE_DIRECTORY;
 
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT)
+    return user_manager::USER_TYPE_FLINT_ACCOUNT;
+
   return user_manager::USER_TYPE_REGULAR;
 }
 

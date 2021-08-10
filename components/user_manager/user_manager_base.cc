@@ -93,6 +93,8 @@ std::string UserTypeToString(UserType user_type) {
       return "regular";
     case USER_TYPE_CHILD:
       return "child";
+    case USER_TYPE_FLINT_ACCOUNT:
+      return "flint";
     case USER_TYPE_GUEST:
       return "guest";
     case USER_TYPE_PUBLIC_ACCOUNT:
@@ -209,6 +211,9 @@ void UserManagerBase::UserLoggedIn(const AccountId& account_id,
   switch (user_type) {
     case USER_TYPE_REGULAR:  // fallthrough
     case USER_TYPE_CHILD:    // fallthrough
+    // ---***FYDEOS BEGIN***---
+    case USER_TYPE_FLINT_ACCOUNT:
+    // ---***FYDEOS END***---
     case USER_TYPE_ACTIVE_DIRECTORY:
       if (account_id != GetOwnerAccountId() && !user &&
           (AreEphemeralUsersEnabled() || browser_restart)) {
@@ -772,7 +777,7 @@ void UserManagerBase::NotifyUserRemoved(const AccountId& account_id,
 
 bool UserManagerBase::CanUserBeRemoved(const User* user) const {
   // Only regular users are allowed to be manually removed.
-  if (!user || !(user->HasGaiaAccount() || user->IsActiveDirectoryUser()))
+  if (!user || !(user->HasGaiaAccount() || user->IsActiveDirectoryUser() || user->IsFydeExtendAccountUser()))
     return false;
 
   // Sanity check: we must not remove single user unless it's an enterprise
@@ -1064,7 +1069,9 @@ User* UserManagerBase::RemoveRegularOrSupervisedUserFromList(
       user = *it;
       it = users_.erase(it);
     } else {
-      if ((*it)->HasGaiaAccount() || (*it)->IsActiveDirectoryUser()) {
+      // ---***FYDEOS BEGIN***---
+      if ((*it)->HasGaiaAccount() || (*it)->IsActiveDirectoryUser() || (*it)->IsFydeExtendAccountUser()) {
+      // ---***FYDEOS END***---
         const std::string user_email = (*it)->GetAccountId().GetUserEmail();
         prefs_users_update->Append(user_email);
       }
