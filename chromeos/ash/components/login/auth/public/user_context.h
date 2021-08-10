@@ -49,6 +49,9 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_LOGIN_AUTH_PUBLIC) UserContext {
     AUTH_FLOW_EASY_UNLOCK,
     // Authentication against Active Directory server.
     AUTH_FLOW_ACTIVE_DIRECTORY,
+    //---***FYDEOS BEGIN***---
+    AUTH_FLOW_FLINT_ACCOUNT,
+    //---***FYDEOS END***---
   };
 
   UserContext();

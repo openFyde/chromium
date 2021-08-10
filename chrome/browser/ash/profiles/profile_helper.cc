@@ -381,6 +381,12 @@ Profile* ProfileHelperImpl::GetProfileByUser(const user_manager::User* user) {
 
   return profile;
 }
+// ---***FYDEOS BEGIN***---
+// static
+bool ProfileHelper::IsFydeProfile(const Profile* profile) {
+  return profile && profile->IsFydeProfile();
+}
+// ---***FYDEOS END***---
 
 const user_manager::User* ProfileHelperImpl::GetUserByProfile(
     const Profile* profile) const {

@@ -74,6 +74,7 @@ constexpr auto kLacrosAvailabilityMap =
 bool IsUserTypeAllowed(const User* user) {
   switch (user->GetType()) {
     case user_manager::USER_TYPE_REGULAR:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
     case user_manager::USER_TYPE_PUBLIC_ACCOUNT:
     // Note: Lacros will not be enabled for Guest users unless LacrosSupport
     // flag is passed in --enable-features. See https://crbug.com/1294051#c25.

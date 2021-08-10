@@ -145,6 +145,10 @@ void CreateConfigurationPolicyProvider(
       CHECK(connector->GetInstallAttributes()->IsActiveDirectoryManaged());
       is_active_directory = true;
       break;
+    //---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+      return;
+    //---***FYDEOS END***---
   }
 
   const ProfileRequiresPolicy requires_policy_user_property =
