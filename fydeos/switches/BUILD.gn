@@ -17,6 +17,9 @@ source_set("switches") {
 
     "urls/urls_constants.cc",
     "urls/urls_constants.h",
+
+    "account/account_switches.cc",
+    "account/account_switches.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }
