@@ -70,6 +70,7 @@ Polymer({
     'showPinDialog',
     'closePinDialog',
     'clickPrimaryButtonForTesting',
+    'requestUseLocalAccount',
   ],
 
   properties: {
@@ -1028,6 +1029,10 @@ Polymer({
     this.pinDialogParameters_ = parameters;
 
     this.pinDialogResultReported_ = false;
+  },
+
+  requestUseLocalAccount() {
+    this.userActed('useLocalAccount');
   },
 
   /**

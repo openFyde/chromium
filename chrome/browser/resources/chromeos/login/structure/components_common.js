@@ -23,6 +23,7 @@ function loadCommonComponents() {
 // <include src="../screen_gaia_signin.js">
 // <include src="../saml_confirm_password.js">
 // <include src="../offline_ad_login.js">
+// <include src="../fyde_local_signin.js">
 // <include src="../arc_terms_of_service.js">
 // <include src="../oobe_adb_sideloading_screen.js">
 // <include src="../oobe_enable_kiosk.js">

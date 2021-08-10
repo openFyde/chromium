@@ -18,6 +18,7 @@ namespace {
 constexpr char kUserActionBack[] = "back";
 constexpr char kUserActionCancel[] = "cancel";
 constexpr char kUserActionStartEnrollment[] = "startEnrollment";
+constexpr char kUserActionUseLocalAccount[] = "useLocalAccount";
 
 }  // namespace
 
@@ -30,6 +31,8 @@ std::string GaiaScreen::GetResultString(Result result) {
       return "Cancel";
     case Result::ENTERPRISE_ENROLL:
       return "EnterpriseEnroll";
+    case Result::USE_LOCAL_ACCOUNT:
+      return "UseLocalAccount";
     case Result::START_CONSUMER_KIOSK:
       return "StartConsumerKiosk";
   }
@@ -96,6 +99,8 @@ void GaiaScreen::OnUserAction(const std::string& action_id) {
     exit_callback_.Run(Result::CANCEL);
   } else if (action_id == kUserActionStartEnrollment) {
     exit_callback_.Run(Result::ENTERPRISE_ENROLL);
+  } else if (action_id == kUserActionUseLocalAccount) {
+    exit_callback_.Run(Result::USE_LOCAL_ACCOUNT);
   } else {
     BaseScreen::OnUserAction(action_id);
   }
@@ -111,6 +116,11 @@ bool GaiaScreen::HandleAccelerator(LoginAcceleratorAction action) {
     return true;
   }
   return false;
+}
+
+void GaiaScreen::RequestUseLocalAccount() {
+  if (!view_) return;
+  view_->RequestUseLocalAccount();
 }
 
 }  // namespace ash

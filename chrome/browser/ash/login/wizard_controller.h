@@ -334,6 +334,7 @@ class WizardController {
   void OnOobeFlowFinished();
   void OnPackagedLicenseScreenExit(PackagedLicenseScreen::Result result);
   void OnActiveDirectoryPasswordChangeScreenExit();
+  void OnFydeLocalSigninScreenExit();
   void OnFamilyLinkNoticeScreenExit(FamilyLinkNoticeScreen::Result result);
   void OnUserCreationScreenExit(UserCreationScreen::Result result);
   void OnGaiaScreenExit(GaiaScreen::Result result);

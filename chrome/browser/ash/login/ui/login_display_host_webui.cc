@@ -1027,6 +1027,10 @@ void LoginDisplayHostWebUI::ShowGuestTosScreen() {
   StartWizard(GuestTosScreenView::kScreenId);
 }
 
+void LoginDisplayHostWebUI::ShowLocalDialog() {
+  ShowLocalDialogCommon();
+}
+
 void LoginDisplayHostWebUI::HideOobeDialog() {
   NOTREACHED();
 }

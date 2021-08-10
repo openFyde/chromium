@@ -388,6 +388,14 @@ void LoginDisplayHostMojo::ShowGuestTosScreen() {
   ShowDialog();
 }
 
+void LoginDisplayHostMojo::ShowLocalDialog() {
+  DCHECK(GetOobeUI());
+
+  ShowLocalDialogCommon();
+
+  ShowDialog();
+}
+
 void LoginDisplayHostMojo::HideOobeDialog() {
   DCHECK(dialog_);
 
