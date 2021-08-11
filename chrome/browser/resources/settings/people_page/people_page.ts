@@ -145,6 +145,13 @@ class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
         readOnly: true,
       },
 
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
+
       /**
        * The current profile name.
        */
@@ -196,6 +203,7 @@ class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
   private profileIconUrl_: string;
   private isProfileActionable_: boolean;
   private profileName_: String;
+  private isFydeLocalAccount_: boolean;
 
   // <if expr="not chromeos">
   storedAccounts: Array<StoredAccount>|null;

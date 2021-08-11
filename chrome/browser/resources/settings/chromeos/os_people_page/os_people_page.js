@@ -210,6 +210,13 @@ Polymer({
           return 'subpage-arrow';
         },
     },
+
+    isFydeLocalAccount_: {
+      type: Boolean,
+      value() {
+        return loadTimeData.getBoolean('isFydeLocalAccount');
+      },
+    },
     // ---***FYDEOS END***---
   },
 
