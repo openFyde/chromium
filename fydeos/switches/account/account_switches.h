@@ -8,6 +8,11 @@
 #include <string>
 #include "chromeos/chromeos_export.h"
 
+namespace base {
+  class CommandLine;
+}
+class AccountId;
+
 namespace fydeos {
 namespace switches {
 
@@ -23,6 +28,15 @@ extern std::string GetFydeOSKidsManagementAPIBaseUrl();
 extern std::string GetClassifyURLRequestApiPath();
 CHROMEOS_EXPORT int GetFydeOSSupervisedUserSettingsSyncInterval();
 CHROMEOS_EXPORT bool IsPolicyManagedByFyde();
+
+CHROMEOS_EXPORT void EnableFydeAccountFlag();
+CHROMEOS_EXPORT void DisableFydeAccountFlag();
+CHROMEOS_EXPORT void ToggleFydeAccountFlagByAccountId(const AccountId& account_id);
+CHROMEOS_EXPORT void ToggleFydeAccountFlagForCommandLine(base::CommandLine* command_line);
+CHROMEOS_EXPORT void ToggleFydeAccountFlagForCommandLineByAccountId(base::CommandLine* command_line, const AccountId& account_id);
+CHROMEOS_EXPORT void ToggleFydeAccountFlagByActiveUser();
+CHROMEOS_EXPORT void EnableFydeAccountFlagForManagedDevice();
+CHROMEOS_EXPORT void DisableFydeAccountFlagForManagedDevice();
 
 }
 }
