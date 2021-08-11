@@ -28,6 +28,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "third_party/icu/source/i18n/unicode/regex.h"
+#include "chrome/browser/policy/device_management_service_configuration.h"
 #include "fydeos/switches/account/account_switches.h"
 #include "fydeos/switches/account/account_constants.h"
 
@@ -122,6 +123,26 @@ void BrowserPolicyConnector::Shutdown() {
   BrowserPolicyConnectorBase::Shutdown();
   device_management_service_.reset();
 }
+
+// ---***FYDEOS BEGIN***---
+void BrowserPolicyConnector::ResetDeviceManagementServiceConfiguration() {
+  if (!device_management_service_) return;
+
+  std::unique_ptr<DeviceManagementService::Configuration> configuration(
+      new DeviceManagementServiceConfiguration(
+        GetDeviceManagementUrl(),
+        GetRealtimeReportingUrl(),
+        GetEncryptedReportingUrl()));
+
+  const DeviceManagementService::Configuration* current_config = device_management_service_->configuration();
+  if (configuration->GetDMServerUrl() == current_config->GetDMServerUrl()) {
+    return;
+  }
+
+  VLOG(2) << "replace device management service configuration";
+  device_management_service_->ResetConfiguration(std::move(configuration));
+}
+// ---***FYDEOS END***---
 
 void BrowserPolicyConnector::ScheduleServiceInitialization(
     int64_t delay_milliseconds) {

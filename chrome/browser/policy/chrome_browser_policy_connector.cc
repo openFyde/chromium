@@ -156,6 +156,12 @@ void ChromeBrowserPolicyConnector::Shutdown() {
   BrowserPolicyConnector::Shutdown();
 }
 
+// ---***FYDEOS BEGIN***---
+void ChromeBrowserPolicyConnector::ResetDeviceManagementServiceConfiguration() {
+  BrowserPolicyConnector::ResetDeviceManagementServiceConfiguration();
+}
+// ---***FYDEOS END***---
+
 ConfigurationPolicyProvider*
 ChromeBrowserPolicyConnector::GetPlatformProvider() {
   ConfigurationPolicyProvider* provider =

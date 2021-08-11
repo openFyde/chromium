@@ -17,6 +17,9 @@
 class GaiaUrls {
  public:
   static GaiaUrls* GetInstance();
+  // ---***FYDEOS BEGIN***---
+  void Reset();
+  // ---***FYDEOS END***---
 
   // The URLs for different calls in the Google Accounts programmatic login API.
   const GURL& google_url() const;
