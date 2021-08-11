@@ -136,10 +136,14 @@ url::Origin GetOriginSwitchValueWithDefault(base::StringPiece switch_value,
   return url::Origin::Create(GURL(default_value));
 }
 
+bool g_require_reset = false;
+
 void SetDefaultURLIfInvalid(GURL* url_to_set,
                             base::StringPiece switch_value,
                             base::StringPiece default_value) {
-  if (!url_to_set->is_valid()) {
+  // ---***FYDEOS BEGIN***---
+  if (!url_to_set->is_valid() || g_require_reset) {
+  // ---***FYDEOS END***---
     *url_to_set = GetURLSwitchValueWithDefault(switch_value, default_value);
   }
 }
@@ -148,7 +152,7 @@ void SetDefaultOriginIfOpaqueOrInvalidScheme(url::Origin* origin_to_set,
                                              base::StringPiece switch_value,
                                              base::StringPiece default_value) {
   if (origin_to_set->opaque() ||
-      !origin_to_set->GetURL().SchemeIsHTTPOrHTTPS()) {
+      !origin_to_set->GetURL().SchemeIsHTTPOrHTTPS() || g_require_reset) {
     *origin_to_set =
         GetOriginSwitchValueWithDefault(switch_value, default_value);
   }
@@ -157,7 +161,9 @@ void SetDefaultOriginIfOpaqueOrInvalidScheme(url::Origin* origin_to_set,
 void ResolveURLIfInvalid(GURL* url_to_set,
                          const GURL& base_url,
                          base::StringPiece suffix) {
-  if (!url_to_set->is_valid()) {
+  // ---***FYDEOS BEGIN***---
+  if (!url_to_set->is_valid() || g_require_reset) {
+  // ---***FYDEOS END***---
     *url_to_set = base_url.Resolve(suffix);
   }
 }
@@ -357,6 +363,14 @@ GURL GaiaUrls::GetCheckConnectionInfoURLWithSource(const std::string& source) {
                         : get_check_connection_info_url_.Resolve(
                               base::StringPrintf("?source=%s", source.c_str()));
 }
+
+// ---***FYDEOS BEGIN***---
+void GaiaUrls::Reset() {
+  g_require_reset = true;
+  InitializeDefault();
+  g_require_reset = false;
+}
+// ---***FYDEOS END***---
 
 void GaiaUrls::InitializeDefault() {
   SetDefaultURLIfInvalid(&google_url_, switches::kGoogleUrl, kDefaultGoogleUrl);
