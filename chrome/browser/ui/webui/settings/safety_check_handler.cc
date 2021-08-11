@@ -406,6 +406,13 @@ void SafetyCheckHandler::CheckUpdates() {
 }
 
 void SafetyCheckHandler::CheckPasswords() {
+  // ---***FYDEOS BEGIN***---
+  Profile* profile = Profile::FromWebUI(web_ui());
+  if (profile && profile->IsFydeProfile()) {
+    UpdatePasswordsResultOnCheckIdle();
+    return;
+  }
+  // ---***FYDEOS END***---
   // Reset the tracking for callbacks with compromised passwords.
   compromised_passwords_exist_ = false;
   // Remove |this| as an existing observer for BulkLeakCheck if it is
