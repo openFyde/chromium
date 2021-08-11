@@ -21,4 +21,7 @@
   <message name="IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD_CONFIRM_ERROR" desc="Error message of oobe fydeos local signin page, password_confirm input">
     Your passwords do not match
   </message>
+  <message name="IDS_FYDE_LOCAL_SIGNIN_HTML" desc="Text shown on network error screen, suggest user to use fyde local account">
+    You can <ph name="LINK_START">$1<ex>&gt;a&lt;</ex></ph>signin with a FydeOS local account<ph name="LINK_END">$2<ex>&gt;/a&lt;</ex></ph>.
+  </message>
 </grit-part>

@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/webui/chromeos/login/error_screen_handler.h"
 #include "chrome/browser/ui/webui/chromeos/login/gaia_screen_handler.h"
 #include "chrome/browser/ui/webui/chromeos/login/network_state_informer.h"
+#include "chrome/browser/ui/webui/chromeos/login/fyde_local_signin_screen_handler.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_source.h"
 
@@ -99,6 +100,7 @@ void SigninScreenHandler::DeclareLocalizedValues(
 void SigninScreenHandler::RegisterMessages() {
   AddCallback("showLoadingTimeoutError",
               &SigninScreenHandler::HandleShowLoadingTimeoutError);
+  AddCallback("fydeLocalSignin", &SigninScreenHandler::HandleFydeLocalSignin);
 }
 
 void SigninScreenHandler::Show() {
@@ -326,6 +328,12 @@ void SigninScreenHandler::ReenableNetworkStateUpdatesAfterProxyAuth() {
 void SigninScreenHandler::OnErrorScreenHide() {
   histogram_helper_->OnErrorHide();
   ShowScreenDeprecated(GaiaView::kScreenId);
+}
+
+void SigninScreenHandler::HandleFydeLocalSignin() {
+  HideOfflineMessage(NetworkStateInformer::OFFLINE,
+                     NetworkError::ERROR_REASON_NONE);
+  LoginDisplayHost::default_host()->StartWizard(FydeLocalSigninView::kScreenId);
 }
 
 void SigninScreenHandler::HandleShowLoadingTimeoutError() {

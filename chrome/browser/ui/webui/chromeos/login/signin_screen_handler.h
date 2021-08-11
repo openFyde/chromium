@@ -89,6 +89,7 @@ class SigninScreenHandler
                const content::NotificationSource& source,
                const content::NotificationDetails& details) override;
 
+  void HandleFydeLocalSignin();
   // WebUI message handlers.
   void HandleShowLoadingTimeoutError();
 
