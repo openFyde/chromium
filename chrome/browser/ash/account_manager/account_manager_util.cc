@@ -24,6 +24,9 @@
 namespace ash {
 
 bool IsAccountManagerAvailable(const Profile* const profile) {
+  if (profile->IsFydeProfile()) {
+    return false;
+  }
   // Signin Profile does not have any accounts associated with it,
   // LockScreenAppProfile and LockScreenProfile do not link to the user's
   // cryptohome.
