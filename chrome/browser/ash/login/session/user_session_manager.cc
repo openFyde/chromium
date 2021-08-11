@@ -172,6 +172,7 @@
 #include "ui/base/ime/ash/input_method_util.h"
 #include "url/gurl.h"
 //---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/embedder_support/pref_names.h"
 //---***FYDEOS END***---
@@ -652,6 +653,7 @@ void UserSessionManager::StartSession(const UserContext& user_context,
   start_session_type_ = start_session_type;
 
   VLOG(1) << "Starting user session.";
+  fydeos::switches::ToggleFydeAccountFlagByAccountId(user_context.GetAccountId());
   PreStartSession(start_session_type);
   CreateUserSession(user_context, has_auth_cookies);
 

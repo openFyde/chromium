@@ -672,6 +672,12 @@ void GaiaScreenHandler::Initialize() {
 }
 
 void GaiaScreenHandler::RegisterMessages() {
+  // ---***FYDEOS BEGIN***---
+  AddCallback("userSelectGoogleAccount",
+              &GaiaScreenHandler::HandleUserSelectGoogleAccount);
+  AddCallback("resetAccountFlag",
+              &GaiaScreenHandler::HandleResetAccountFlag);
+  // ---***FYDEOS END***---
   AddCallback("webviewLoadAborted",
               &GaiaScreenHandler::HandleWebviewLoadAborted);
   AddCallback("completeLogin", &GaiaScreenHandler::HandleCompleteLogin);
@@ -883,6 +889,22 @@ void GaiaScreenHandler::OnCookieWaitTimeout() {
   LoginDisplayHost::default_host()->GetSigninUI()->ShowSigninError(
       SigninError::kCookieWaitTimeout, /*details=*/std::string());
 }
+
+// ---***FYDEOS BEGIN***---
+void GaiaScreenHandler::HandleUserSelectGoogleAccount() {
+  fydeos::switches::DisableFydeAccountFlag();
+  LoadGaiaAsync(EmptyAccountId());
+  LoginDisplayHost::default_host()->StartWizard(UserCreationView::kScreenId);
+}
+
+void GaiaScreenHandler::HandleResetAccountFlag() {
+  if (g_browser_process->platform_part()
+      ->browser_policy_connector_ash()
+      ->IsDeviceEnterpriseManaged()) return;
+  fydeos::switches::EnableFydeAccountFlag();
+  ReloadGaia(true/* force_reload */);
+}
+// ---***FYDEOS END***---
 
 void GaiaScreenHandler::HandleCompleteLogin(const std::string& gaia_id,
                                             const std::string& typed_email,

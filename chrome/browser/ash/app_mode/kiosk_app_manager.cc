@@ -56,6 +56,9 @@
 #include "extensions/common/manifest_handlers/kiosk_mode_info.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/cros_system_api/switches/chrome_switches.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+// ---***FYDEOS END***---
 
 namespace ash {
 
@@ -213,6 +216,9 @@ void KioskAppManager::InitSession(Profile* profile,
 
   base::CommandLine session_flags(base::CommandLine::NO_PROGRAM);
   if (GetSwitchesForSessionRestore(app_id, &session_flags)) {
+    // ---***FYDEOS BEGIN***---
+    fydeos::switches::ToggleFydeAccountFlagForCommandLine(&session_flags);
+    // ---***FYDEOS END***---
     base::CommandLine::StringVector flags;
     // argv[0] is the program name |base::CommandLine::NO_PROGRAM|.
     flags.assign(session_flags.argv().begin() + 1, session_flags.argv().end());

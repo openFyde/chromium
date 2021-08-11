@@ -67,6 +67,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/chromeos/resources/grit/ui_chromeos_resources.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace ash {
 namespace {
@@ -664,6 +665,9 @@ void UserSelectionScreen::HandleFocusPod(const AccountId& account_id) {
     pending_focused_account_id_ = account_id;
     return;
   }
+  // ---***FYDEOS BEGIN***---
+  fydeos::switches::ToggleFydeAccountFlagByAccountId(account_id);
+  // ---***FYDEOS END***---
   proximity_auth::ScreenlockBridge::Get()->SetFocusedUser(account_id);
   if (focused_pod_account_id_ == account_id)
     return;

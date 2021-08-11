@@ -13,6 +13,9 @@
 #include "google_apis/gaia/gaia_urls.h"
 #include "google_apis/gaia/oauth2_access_token_fetcher.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+// ---***FYDEOS END***---
 
 namespace {
 void RecordOAuth2TokenFetchResult(GoogleServiceAuthError::State state) {
@@ -242,6 +245,7 @@ OAuth2AccessTokenManager::Fetcher::CreateAndStart(
     const ScopeSet& scopes,
     const std::string& consumer_name,
     base::WeakPtr<RequestImpl> waiting_request) {
+  fydeos::switches::ToggleFydeAccountFlagByActiveUser();
   std::unique_ptr<OAuth2AccessTokenManager::Fetcher> fetcher =
       base::WrapUnique(new Fetcher(oauth2_access_token_manager, account_id,
                                    url_loader_factory, client_id, client_secret,
@@ -627,6 +631,9 @@ OAuth2AccessTokenManager::CreateAccessTokenFetcher(
     const CoreAccountId& account_id,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     OAuth2AccessTokenConsumer* consumer) {
+  // ---***FYDEOS BEGIN***---
+  fydeos::switches::ToggleFydeAccountFlagByActiveUser();
+  // ---***FYDEOS END***---
   return delegate_->CreateAccessTokenFetcher(account_id, url_loader_factory,
                                              consumer);
 }

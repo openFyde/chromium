@@ -560,6 +560,11 @@ void LoginDisplayHostCommon::OnStartSignInScreenCommon() {
 
 void LoginDisplayHostCommon::ShowGaiaDialogCommon(
     const AccountId& prefilled_account) {
+  // ---***FYDEOS BEGIN***---
+  if (prefilled_account.is_valid()) {
+    fydeos::switches::ToggleFydeAccountFlagByAccountId(prefilled_account);
+  }
+  // ---***FYDEOS END***---
   if (prefilled_account.is_valid()) {
     LoadWallpaper(prefilled_account);
     if (GetLoginDisplay()->delegate()->IsSigninInProgress()) {

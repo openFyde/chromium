@@ -207,6 +207,9 @@
 #include "services/service_manager/public/cpp/connector.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
 #include "ui/base/accelerators/accelerator.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+// ---***FYDEOS END***---
 
 namespace ash {
 namespace {
@@ -813,6 +816,9 @@ void WizardController::ShowLoginScreen() {
     UMA_HISTOGRAM_MEDIUM_TIMES("OOBE.EULAToSignInTime", delta);
   }
   VLOG(1) << "Showing login screen.";
+  if (!wizard_context_->is_user_creation_enabled) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
   UpdateStatusAreaVisibilityForScreen(GaiaView::kScreenId);
   GetLoginDisplayHost()->StartSignInScreen();
   login_screen_started_ = true;
@@ -1021,7 +1027,16 @@ void WizardController::OnUserCreationScreenExit(
       ShowEnrollmentScreenIfEligible();
       break;
     case UserCreationScreen::Result::CANCEL:
-      LoginDisplayHost::default_host()->HideOobeDialog();
+      // ---***FYDEOS BEGIN***---
+      if (!fydeos::switches::IsFydeAccountEnabled()) {
+        // back to fydeos signin webview page
+        fydeos::switches::EnableFydeAccountFlag();
+        GetScreen<GaiaScreen>()->LoadOnline(EmptyAccountId());
+        AdvanceToScreen(GaiaView::kScreenId);
+      } else {
+        LoginDisplayHost::default_host()->HideOobeDialog();
+      }
+      // ---***FYDEOS END***---
       break;
   }
 }
@@ -1045,8 +1060,18 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
       }
       if (LoginDisplayHost::default_host()->HasUserPods() &&
           !wizard_context_->is_user_creation_enabled) {
+        // ---***FYDEOS BEGIN***---
+        if (!fydeos::switches::IsFydeAccountEnabled()) {
+          fydeos::switches::EnableFydeAccountFlag();
+        }
+        // ---***FYDEOS END***---
         LoginDisplayHost::default_host()->HideOobeDialog();
       } else {
+        // ---***FYDEOS BEGIN***---
+        if (!fydeos::switches::IsFydeAccountEnabled()) {
+          fydeos::switches::EnableFydeAccountFlag();
+        }
+        // ---***FYDEOS END***---
         GetScreen<GaiaScreen>()->LoadOnline(EmptyAccountId());
       }
       break;
@@ -2386,6 +2411,9 @@ bool WizardController::SetOnTimeZoneResolvedForTesting(
 }
 
 void WizardController::StartEnrollmentScreen(bool force_interactive) {
+  if (!(current_screen_ && IsSigninScreen(current_screen_->screen_id()))) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
   VLOG(1) << "Showing enrollment screen."
           << " Forcing interactive enrollment: " << force_interactive << ".";
 
