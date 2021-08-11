@@ -13,6 +13,17 @@ namespace switches {
 
 CHROMEOS_EXPORT bool IsFydeAccountEnabled();
 
+CHROMEOS_EXPORT extern const char kFydeOSGaiaUrl[];
+CHROMEOS_EXPORT extern const char kFydeOSApisUrl[];
+CHROMEOS_EXPORT extern const char kFydeOSDeviceManagementUrl[];
+CHROMEOS_EXPORT extern const char kFydeOSRealtimeReportingUrl[];
+CHROMEOS_EXPORT extern const char kFydeOSEncryptedReportingUrl[];
+CHROMEOS_EXPORT extern const char kFydeOSSyncServiceURL[];
+extern std::string GetFydeOSKidsManagementAPIBaseUrl();
+extern std::string GetClassifyURLRequestApiPath();
+CHROMEOS_EXPORT int GetFydeOSSupervisedUserSettingsSyncInterval();
+CHROMEOS_EXPORT bool IsPolicyManagedByFyde();
+
 }
 }
 
