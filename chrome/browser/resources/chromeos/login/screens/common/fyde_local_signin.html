@@ -28,7 +28,10 @@
         [[i18nDynamic(locale, 'fydeosLocalSigninTitle')]]
       </h1>
       <div slot="subtitle"></div>
-      <div slot="content" class="landscape-vertical-centered">
+      <paper-progress slot="progress" hidden="[[!loading]]" indeterminate>
+      </paper-progress>
+      <div slot="content" class="landscape-vertical-centered"
+          hidden="[[loading]]">
         <div class="layout vertical">
           <cr-input slot="inputs" id="userInput" required
               class="focus-on-show"
@@ -55,10 +58,10 @@
           </cr-input>
         </div>
       </div>
-      <div slot="back-navigation">
+      <div slot="back-navigation" hidden="[[loading]]">
         <oobe-back-button id="backButton" on-click="onBackButton_"></oobe-back-button>
       </div>
-      <div slot="bottom-buttons">
+      <div slot="bottom-buttons" hidden="[[loading]]">
         <oobe-next-button id="nextButton" on-click="onSubmit_"></oobe-next-button>
       </div>
     </oobe-adaptive-dialog>

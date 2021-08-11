@@ -43,6 +43,7 @@ class FydeLocalSignin extends FydeLocalSigninBase {
 
   static get properties() {
     return {
+      loading: {type: Boolean, value: false},
       userRealm: {type: String, value: ''},
       userName: {type: String, value: '', observer: 'userNameObserver_'},
       errorState: {
@@ -86,6 +87,7 @@ class FydeLocalSignin extends FydeLocalSigninBase {
   setErrorState(username, errorState) {
     this.userName = username;
     this.errorState = errorState;
+    this.loading = false;
   }
 
   reset() {
@@ -134,6 +136,7 @@ class FydeLocalSignin extends FydeLocalSigninBase {
       'username': user,
       'password': this.$.passwordInput.value,
     };
+    this.loading = true;
     chrome.send('completeFtAuthentication', [msg.username, msg.password]);
   }
 
