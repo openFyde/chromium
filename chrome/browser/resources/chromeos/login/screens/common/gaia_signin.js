@@ -1108,6 +1108,25 @@ class GaiaSigninElement extends GaiaSigninElementBase {
 
   requestUseLocalAccount() {
     if (this.authCompleted_) return;
+    this.showConfirmGotoLocalAccountDlg_();
+  }
+
+  showConfirmGotoLocalAccountDlg_() {
+    if (this.$.confirmGotoLocalAccountDlg.open) return;
+    chrome.send('enableShelfButtons', [false]);
+    this.$.confirmGotoLocalAccountDlg.showModal();
+  }
+
+  onConfirmGotoLocalAccountClosed_() {
+    chrome.send('enableShelfButtons', [true]);
+  }
+
+  onUseOnlineAccountTap_() {
+    this.$.confirmGotoLocalAccountDlg.close();
+  }
+
+  onUseLocalAccountTap_() {
+    this.$.confirmGotoLocalAccountDlg.close();
     this.userActed('useLocalAccount');
   }
 

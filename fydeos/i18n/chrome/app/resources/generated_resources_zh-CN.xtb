@@ -14,4 +14,9 @@
 <translation id="482190417986201746">你输入的用户名或密码不正确</translation>
 <translation id="6934660397349137001">你可以<ph name="LINK_START" />使用 FydeOS 本地帐号登录<ph name="LINK_END" />。</translation>
 <translation id="5291842596976929391">邮箱 <ph name="EMAIL_ADDRESS" /> 已存在，请使用其他邮箱重试。</translation>
+<translation id="6867476688065565618">切换到本地帐号</translation>
+<translation id="2689220299234238277">如果使用本地帐户，你将无法在多个设备间同步个人资料和设置项，也无法在 Chromium 中自动登录诸多在线服务。</translation>
+<translation id="8777053473529329751">我们建议你使用在线帐户以获得最佳 FydeOS 体验。</translation>
+<translation id="7215016743510876720">使用本地帐号</translation>
+<translation id="6657635042185516718">继续使用在线帐号</translation>
 </translationbundle>

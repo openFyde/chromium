@@ -39,4 +39,19 @@
   <message name="IDS_FYDEOS_ADD_USER_DUP_EMAIL_ERROR_MESSAGE" desc="error message when user want to add existed email with different account type (fydeos or google)">
     Email <ph name="EMAIL_ADDRESS">$1</ph> already exists. Please retry with another email.
   </message>
+  <message name="IDS_FYDEOS_USE_LOCAL_ACCOUNT_BUTTON_TEXT" desc="text on button of modal dialog in gaia_signin screen">
+    Use local account
+  </message>
+  <message name="IDS_FYDEOS_USE_ONLINE_ACCOUNT_BUTTON_TEXT" desc="text on button of modal dialog in gaia_signin screen">
+    Continue to use online account
+  </message>
+  <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_ACCOUNT_TITLE" desc="title of modal dialog in gaia_signin screen">
+    Switch to local account?
+  </message>
+  <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_1" desc="first hint message of modal dialog in gaia_signin screen">
+    If you opt to use a local account, useful features include synchronising your data and preferences across multiple FydeOS devices and automatically signing in web apps using your FydeOS account will not work.
+  </message>
+  <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2" desc="first hint message of modal dialog in gaia_signin screen">
+    We recommend using an online account to utilise FydeOS to its fullest.
+  </message>
 </grit-part>

@@ -139,6 +139,25 @@
       [[dupEmailErrorMessage_(dupEmail_)]]
     </notification-card>
     <!-- FYDEOS END -->
+    <cr-dialog id="confirmGotoLocalAccountDlg" on-close="onConfirmGotoLocalAccountClosed_">
+      <div slot="title">
+        [[i18nDynamic(locale, 'fydeosConfirmGotoLocalAccountTitle')]]
+      </div>
+      <div slot="body">
+        <p>
+          [[i18nDynamic(locale, 'fydeosConfirmGotoLocalAccountHintMessage1')]]
+        </p>
+        <p>
+          [[i18nDynamic(locale, 'fydeosConfirmGotoLocalAccountHintMessage2')]]
+        </p>
+      </div>
+      <div slot="button-container">
+        <oobe-text-button text-key="fydeosUseLocalAccount"
+            on-click="onUseLocalAccountTap_" autofocus></oobe-text-button>
+        <oobe-text-button text-key="fydeosUseOnlineAccount"
+            on-click="onUseOnlineAccountTap_" inverse></oobe-text-button>
+      </div>
+    </cr-dialog>
   </template>
   <script src="gaia_signin.js"></script>
 </dom-module>
