@@ -135,6 +135,10 @@ bool HasDedicatedAssistantKey() {
 namespace assistant {
 
 AssistantAllowedState IsAssistantAllowedForProfile(const Profile* profile) {
+  //---***FYDEOS BEGIN***---
+  if (profile->IsFydeProfile())
+    return AssistantAllowedState::DISALLOWED_BY_ACCOUNT_TYPE;
+  //---***FYDEOS END***---
   // Primary account might be missing during unittests.
   if (!HasPrimaryAccount(profile))
     return AssistantAllowedState::DISALLOWED_BY_NONPRIMARY_USER;
