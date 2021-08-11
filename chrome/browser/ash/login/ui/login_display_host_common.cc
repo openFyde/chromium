@@ -55,9 +55,8 @@
 #include "ui/base/ime/ash/input_method_util.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/ui_base_features.h"
-// ---***FYDEOS BEGIN***---
 #include "fydeos/switches/account/account_switches.h"
-// ---***FYDEOS END***---
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace ash {
 namespace {
@@ -601,6 +600,11 @@ void LoginDisplayHostCommon::OnStartSignInScreenCommon() {
 
 void LoginDisplayHostCommon::ShowGaiaDialogCommon(
     const AccountId& prefilled_account) {
+  // ---***FYDEOS BEGIN***---
+  if (prefilled_account.is_valid()) {
+    fydeos::switches::ToggleFydeAccountFlagByAccountId(prefilled_account);
+  }
+  // ---***FYDEOS END***---
   if (prefilled_account.is_valid()) {
     LoadWallpaper(prefilled_account);
     if (GetLoginDisplay()->delegate()->IsSigninInProgress()) {

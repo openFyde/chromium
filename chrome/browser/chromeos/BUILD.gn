@@ -558,6 +558,7 @@ source_set("chromeos") {
     "//ui/wm",
     "//ui/wm/public",
     "//url",
+    "//fydeos/switches/account/toggle:account_toggle",
   ]
   if (is_chromeos_ash) {
     deps += [ "//remoting/host/chromeos:host_event_reporter_impl" ]

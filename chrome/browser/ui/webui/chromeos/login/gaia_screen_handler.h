@@ -225,6 +225,11 @@ class GaiaScreenHandler : public BaseScreenHandler,
                            bool using_saml);
   void HandleLaunchSAMLPublicSession(const std::string& email);
 
+  // ---***FYDEOS BEGIN***---
+  void HandleUserSelectGoogleAccount();
+  void HandleResetAccountFlag();
+  // ---***FYDEOS END***---
+
   // Handles SAML/GAIA login flow metrics
   // is_third_party_idp == false means GAIA-based authentication
   void HandleUsingSAMLAPI(bool is_third_party_idp);

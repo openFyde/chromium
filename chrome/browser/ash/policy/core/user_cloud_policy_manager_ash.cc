@@ -60,6 +60,7 @@
 #include "content/public/browser/network_service_instance.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace em = enterprise_management;
 
@@ -562,6 +563,9 @@ void UserCloudPolicyManagerAsh::SetPolicyRequired(bool policy_required) {
         base::CommandLine(base::CommandLine::NO_PROGRAM);
     command_line.AppendSwitchASCII(ash::switches::kProfileRequiresPolicy,
                                    policy_required ? "true" : "false");
+    // ---***FYDEOS BEGIN***---
+    fydeos::switches::ToggleFydeAccountFlagForCommandLineByAccountId(&command_line, account_id_);
+    // ---***FYDEOS END***---
     base::CommandLine::StringVector flags;
     flags.assign(command_line.argv().begin() + 1, command_line.argv().end());
     DCHECK_EQ(1u, flags.size());
