@@ -81,6 +81,8 @@ enum class OobeDialogState {
   // Showing marketing opt-in screen.
   MARKETING_OPT_IN = 19,
 
+  FYDE_LOCAL_SIGNIN = 20,
+
 };
 
 // Modes of the managed device, which is used to update the visibility of

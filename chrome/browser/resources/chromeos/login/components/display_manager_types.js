@@ -44,6 +44,7 @@
   ENROLLMENT_SUCCESS: 17,
   THEME_SELECTION: 18,
   MARKETING_OPT_IN: 19,
+  FYDE_LOCAL_SIGNIN: 20,
 };
 
 // TODO(crbug.com/1229130) - Refactor/remove these constants.
