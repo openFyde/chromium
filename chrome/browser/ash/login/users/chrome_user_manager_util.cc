@@ -61,6 +61,8 @@ bool IsUserAllowed(const user_manager::User& user,
   DCHECK(user.GetType() == user_manager::USER_TYPE_REGULAR ||
          user.GetType() == user_manager::USER_TYPE_GUEST ||
          user.GetType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         user.GetType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         user.GetType() == user_manager::USER_TYPE_FYDE_CHILD ||
          user.GetType() == user_manager::USER_TYPE_CHILD);
 
   if (user.GetType() == user_manager::USER_TYPE_GUEST && !is_guest_allowed) {
@@ -80,6 +82,7 @@ bool IsPublicSessionOrEphemeralLogin() {
           user_manager->GetActiveUser()->GetType() !=
           // ---***FYDEOS BEGIN***---
               user_manager::USER_TYPE_REGULAR &&
+          user_manager->GetActiveUser()->GetType() != user_manager::USER_TYPE_FYDE_ACCOUNT &&
           user_manager->GetActiveUser()->GetType() != user_manager::USER_TYPE_FLINT_ACCOUNT);
           // ---***FYDEOS END***---
 }

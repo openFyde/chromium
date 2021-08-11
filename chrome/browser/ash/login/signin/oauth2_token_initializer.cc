@@ -43,9 +43,11 @@ void OAuth2TokenInitializer::OnOAuth2TokensAvailable(
   const bool support_usm =
       base::FeatureList::IsEnabled(features::kCrOSEnableUSMUserService);
   if (result.is_child_account &&
-      user_context_.GetUserType() != user_manager::USER_TYPE_CHILD) {
+      user_context_.GetUserType() != user_manager::USER_TYPE_CHILD &&
+      user_context_.GetUserType() != user_manager::USER_TYPE_FYDE_CHILD) {
     LOG(FATAL) << "Incorrect child user type " << user_context_.GetUserType();
-  } else if (user_context_.GetUserType() == user_manager::USER_TYPE_CHILD &&
+  } else if ((user_context_.GetUserType() == user_manager::USER_TYPE_CHILD ||
+              user_context_.GetUserType() == user_manager::USER_TYPE_FYDE_CHILD) &&
              !result.is_child_account && !support_usm) {
     LOG(FATAL) << "Incorrect non-child token for the child user.";
   }

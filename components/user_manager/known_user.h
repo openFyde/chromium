@@ -428,6 +428,8 @@ void USER_MANAGER_EXPORT UpdateId(const AccountId& account_id);
 // instead.
 bool USER_MANAGER_EXPORT FindGaiaID(const AccountId& account_id,
                                     std::string* out_value);
+bool USER_MANAGER_EXPORT FindFydeID(const AccountId& account_id,
+                                    std::string* out_value);
 
 // Setter and getter for DeviceId known user string preference.
 // TODO(https://crbug.com/1150434): Deprecated, use KnownUser::SetDeviceId

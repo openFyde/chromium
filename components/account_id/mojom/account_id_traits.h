@@ -25,6 +25,8 @@ struct EnumTraits<signin::mojom::AccountType, AccountType> {
 //---***FYDEOS BEGIN***---
       case AccountType::FLINT_ACCOUNT:
         return signin::mojom::AccountType::FLINT_ACCOUNT;
+      case AccountType::FYDE_ACCOUNT:
+        return signin::mojom::AccountType::FYDE_ACCOUNT;
 //---***FYDEOS END***---
     }
     NOTREACHED();
@@ -45,6 +47,9 @@ struct EnumTraits<signin::mojom::AccountType, AccountType> {
 //---***FYDEOS BEGIN***---
       case signin::mojom::AccountType::FLINT_ACCOUNT:
         *out = AccountType::FLINT_ACCOUNT;
+        return true;
+      case signin::mojom::AccountType::FYDE_ACCOUNT:
+        *out = AccountType::FYDE_ACCOUNT;
         return true;
 //---***FYDEOS END***---
     }
@@ -67,6 +72,8 @@ struct StructTraits<signin::mojom::AccountIdDataView, AccountId> {
       //---***FYDEOS BEGIN***---
       case AccountType::FLINT_ACCOUNT:
         return r.GetFlintId();
+      case AccountType::FYDE_ACCOUNT:
+        return r.GetFydeId();
       //---***FYDEOS END***---
       case AccountType::UNKNOWN:
         // UNKNOWN type is used for users that have only email (e.g. in tests
@@ -98,6 +105,9 @@ struct StructTraits<signin::mojom::AccountIdDataView, AccountId> {
      //---***FYDEOS BEGIN***---
       case AccountType::FLINT_ACCOUNT:
         *out = AccountId::FtFromUserEmailFlintId(user_email, id);
+        break;
+      case AccountType::FYDE_ACCOUNT:
+        *out = AccountId::FyFromUserEmailFydeId(user_email, id);
         break;
      //---***FYDEOS END***---
       case AccountType::UNKNOWN:

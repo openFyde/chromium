@@ -11,6 +11,7 @@ enum AccountType {
   ACTIVE_DIRECTORY,
 //---***FYDEOS BEGIN***---
   FLINT_ACCOUNT = 99,
+  FYDE_ACCOUNT = 100,
 //---***FYDEOS END***---
 };
 

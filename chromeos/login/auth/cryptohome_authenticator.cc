@@ -296,7 +296,8 @@ void EnsureCryptohomeMigratedToGaiaId(
     cryptohome::SetGaiaIdMigrationStatusDone(account_id);
   }
   //---***FYDEOS BEGIN***---
-  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT)
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT ||
+      account_id.GetAccountType() == AccountType::FYDE_ACCOUNT)
     cryptohome::SetGaiaIdMigrationStatusDone(account_id);
   //---***FYDEOS END***---
 
@@ -608,6 +609,8 @@ void CryptohomeAuthenticator::AuthenticateToLogin(
          user_context.GetUserType() == user_manager::USER_TYPE_CHILD ||
          //---***FYDEOS BEGIN***---
          user_context.GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         user_context.GetUserType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         user_context.GetUserType() == user_manager::USER_TYPE_FYDE_CHILD ||
          //---***FYDEOS END***---
          user_context.GetUserType() ==
              user_manager::USER_TYPE_ACTIVE_DIRECTORY);
@@ -625,6 +628,8 @@ void CryptohomeAuthenticator::CompleteLogin(const UserContext& user_context) {
   DCHECK(user_context.GetUserType() == user_manager::USER_TYPE_REGULAR ||
          user_context.GetUserType() == user_manager::USER_TYPE_CHILD ||
          user_context.GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         user_context.GetUserType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         user_context.GetUserType() == user_manager::USER_TYPE_FYDE_CHILD ||
          user_context.GetUserType() ==
              user_manager::USER_TYPE_ACTIVE_DIRECTORY);
   current_state_ =

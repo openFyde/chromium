@@ -41,6 +41,7 @@ const char kGAIAIdKey[] = "gaia_id";
 const char kObjGuidKey[] = "obj_guid";
 //---***FYDEOS BEGIN***---
 const char kFlintIdKey [] = "flint_id";
+const char kFydeIdKey [] = "fyde_id";
 //---***FYDEOS END***---
 
 // Key of account type.
@@ -180,6 +181,12 @@ bool UserMatches(const AccountId& account_id,
         return true;
       break;
     }
+    case AccountType::FYDE_ACCOUNT: {
+      bool has_fyde_id = dict.GetString(kFydeIdKey, &value);
+      if (has_fyde_id && account_id.GetFydeId() == value)
+        return true;
+      break;
+    }
     //---***FYDEOS END***---
     case AccountType::UNKNOWN: {
     }
@@ -210,6 +217,10 @@ void UpdateIdentity(const AccountId& account_id, base::DictionaryValue& dict) {
     case AccountType::FLINT_ACCOUNT:
       if (!account_id.GetFlintId().empty())
         dict.SetString(kFlintIdKey, account_id.GetFlintId());
+      break;
+    case AccountType::FYDE_ACCOUNT:
+      if (!account_id.GetFydeId().empty())
+        dict.SetString(kFydeIdKey, account_id.GetFydeId());
       break;
     //---***FYDEOS END***---
     case AccountType::UNKNOWN:
@@ -387,6 +398,7 @@ AccountId KnownUser::GetAccountId(const std::string& user_email,
   std::string stored_obj_guid;
   //---***FYDEOS BEGIN***---
   std::string stored_flint_id;
+  std::string stored_fyde_id;
   //---***FYDEOS END***---
   const std::string sanitized_email =
       user_email.empty()
@@ -431,6 +443,18 @@ AccountId KnownUser::GetAccountId(const std::string& user_email,
     return AccountId::FtFromUserEmailFlintId(sanitized_email,
                                 stored_flint_id);
     }
+    if (GetStringPref(AccountId::FromUserEmail(sanitized_email), kFydeIdKey,
+                      &stored_fyde_id)) {
+    if (!id.empty()) {
+      DCHECK(account_type == AccountType::FYDE_ACCOUNT);
+      if (id != stored_fyde_id)
+        LOG(ERROR) << "User object guid has changed. Sync will not work.";
+    }
+
+    // obj_guid is associated with cryptohome.
+    return AccountId::FyFromUserEmailFydeId(sanitized_email,
+                                stored_fyde_id);
+    }
     //---***FYDEOS END***---
   }
 
@@ -454,6 +478,11 @@ AccountId KnownUser::GetAccountId(const std::string& user_email,
         return AccountId::FtFromUserEmailFlintId(stored_email, id);
       }
       return AccountId::FtFromUserEmailFlintId(sanitized_email, id);
+    case AccountType::FYDE_ACCOUNT:
+      if (GetStringPref(AccountId::FyFromFydeId(id),kCanonicalEmail, &stored_email)){
+        return AccountId::FyFromUserEmailFydeId(stored_email, id);
+      }
+      return AccountId::FyFromUserEmailFydeId(sanitized_email, id);
     //---***FYDEOS END***---
     case AccountType::UNKNOWN:
       return AccountId::FromUserEmail(sanitized_email);
@@ -474,7 +503,9 @@ std::vector<AccountId> KnownUser::GetKnownAccountIds() {
       std::string obj_guid;
       //---***FYDEOS BEGIN***---
       std::string flint_id;
+      std::string fyde_id;
       const bool has_flint_id = element->GetString(kFlintIdKey, &flint_id);
+      const bool has_fyde_id = element->GetString(kFydeIdKey, &fyde_id);
       //---***FYDEOS END***---
       const bool has_email = element->GetString(kCanonicalEmail, &email);
       const bool has_gaia_id = element->GetString(kGAIAIdKey, &gaia_id);
@@ -500,6 +531,10 @@ std::vector<AccountId> KnownUser::GetKnownAccountIds() {
         case AccountType::FLINT_ACCOUNT:
           if (has_email && has_flint_id)
             result.push_back(AccountId::FtFromUserEmailFlintId(email, flint_id));
+          break;
+        case AccountType::FYDE_ACCOUNT:
+          if (has_email && has_fyde_id)
+            result.push_back(AccountId::FyFromUserEmailFydeId(email, fyde_id));
           break;
         //---***FYDEOS END***---
         default:
@@ -559,6 +594,9 @@ void KnownUser::UpdateId(const AccountId& account_id) {
     //---***FYDEOS BEGIN***---
     case AccountType::FLINT_ACCOUNT:
       SetStringPref(account_id, kFlintIdKey, account_id.GetFlintId());
+      break;
+    case AccountType::FYDE_ACCOUNT:
+      SetStringPref(account_id, kFydeIdKey, account_id.GetFydeId());
       break;
     //---***FYDEOS END***---
     case AccountType::UNKNOWN:
@@ -1064,6 +1102,8 @@ AccountId GetAccountId(const std::string& user_email,
     // ---***FYDEOS BEGIN***---
     case AccountType::FLINT_ACCOUNT:
       return AccountId::FtFromUserEmailFlintId(sanitized_email, id);
+    case AccountType::FYDE_ACCOUNT:
+      return AccountId::FyFromUserEmailFydeId(sanitized_email, id);
     // ---***FYDEOS END***---
     case AccountType::UNKNOWN:
       return AccountId::FromUserEmail(sanitized_email);
@@ -1122,6 +1162,12 @@ bool FindGaiaID(const AccountId& account_id, std::string* out_value) {
     return false;
   return KnownUser(local_state).FindGaiaID(account_id, out_value);
 }
+
+// ---***FYDEOS BEGIN***---
+bool FindFydeID(const AccountId& account_id, std::string* out_value) {
+  return GetStringPref(account_id, kFydeIdKey, out_value);
+}
+// ---***FYDEOS END***---
 
 void SetDeviceId(const AccountId& account_id, const std::string& device_id) {
   PrefService* local_state = GetLocalStateLegacy();

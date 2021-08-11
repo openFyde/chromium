@@ -22,6 +22,7 @@ enum class AccountType : int {
   kActiveDirectory = 2,
   //---***FYDEOS BEGIN***---
   kFlint = 3,
+  kFyde = 4,
   //---***FYDEOS END***---
 };
 

@@ -63,6 +63,8 @@ AssistantAllowedState GetErrorForUserType(const Profile* profile) {
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
     //---***FYDEOS BEGIN***---
     case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
     //---***FYDEOS END***---
       return AssistantAllowedState::DISALLOWED_BY_ACCOUNT_TYPE;
 
