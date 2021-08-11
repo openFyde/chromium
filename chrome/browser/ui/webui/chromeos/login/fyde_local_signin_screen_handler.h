@@ -5,6 +5,10 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/webui/chromeos/login/base_screen_handler.h"
 
+namespace ash {
+class Key;
+}
+
 namespace chromeos {
 class FydeLocalSigninView
     : public base::SupportsWeakPtr<FydeLocalSigninView> {
@@ -40,6 +44,9 @@ class FydeLocalSigninScreenHandler : public FydeLocalSigninView,
   private:
     void HandleCompleteAuth(const std::string& username,
                             const std::string& password);
+
+    void DoCompleteLogin(const std::string& username,
+                         const ash::Key& key);
 
     void Show() override;
     void Reset() override;
