@@ -60,6 +60,7 @@
       </template>
       <template is="dom-if" if="[[!havePlayStoreApp]]" restamp>
         <cr-link-row id="manageApps" label="$i18n{androidAppsManageApps}"
+            hidden="[[!fydeosArcSettingsExists]]"
             on-click="onManageAndroidAppsTap_" external
             deep-link-focus-id$="[[Setting.kManageAndroidPreferences]]">
         </cr-link-row>

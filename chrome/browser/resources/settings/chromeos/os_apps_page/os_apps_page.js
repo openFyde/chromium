@@ -144,6 +144,12 @@ Polymer({
      * @type {boolean}
      */
     showPluginVm: Boolean,
+    //---***FYDEOS BEGIN***---
+    fydeosArcSettingsExists: {
+      type: Boolean,
+      value: false,
+    },
+    //---***FYDEOS END***---
 
     /**
      * Show On startup settings and sub-page.
@@ -220,6 +226,7 @@ Polymer({
 
   attached() {
     this.watch('app_', state => getSelectedApp(state));
+    this.checkFydeOSArcSettingsExists_();
 
     this.mojoInterfaceProvider_ = getAppNotificationProvider();
 
@@ -311,10 +318,23 @@ Polymer({
    * @private
    */
   onManageAndroidAppsTap_(event) {
+    if (this.fydeosArcSettingsExists) {
+      const ANDROID_APPID = 'iakadpgajjigiaojnbdmodlngmbkfhag';
+      chrome.nativeWindows.create(ANDROID_APPID);
+      return;
+    }
     // |event.detail| is the click count. Keyboard events will have 0 clicks.
     const isKeyboardAction = event.detail === 0;
     AndroidAppsBrowserProxyImpl.getInstance().showAndroidAppsSettings(
         isKeyboardAction);
+  },
+
+  checkFydeOSArcSettingsExists_: function() {
+    const ANDROID_APPID = 'iakadpgajjigiaojnbdmodlngmbkfhag';
+    chrome.appManagement.getAppList(apps => {
+      const androidApp = apps.find(item => item.appId === ANDROID_APPID);
+      this.fydeosArcSettingsExists = !!androidApp;
+    });
   },
 
   /** Override chromeos.settings.appNotification.onNotificationAppChanged */

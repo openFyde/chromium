@@ -254,4 +254,10 @@ Polymer({
   onFindAppsTap_() {
     this.browserProxy_.showPlayStore(FIND_MORE_APPS_URL);
   },
+
+  // ---***FYDEOS BEGIN***---
+  showStylusFindMoreApps_(arcEnabled) {
+    return arcEnabled && !loadTimeData.getBoolean('isFydeProfile');
+  },
+  // ---***FYDEOS END***---
 });

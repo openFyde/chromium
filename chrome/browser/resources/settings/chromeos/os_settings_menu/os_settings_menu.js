@@ -149,4 +149,22 @@ Polymer({
   boolToString_(bool) {
     return bool.toString();
   },
+  //---***FYDEOS BEGIN***---
+  attached: function() {
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    if (!isFydeProfile) return;
+    const elementsToHide = [
+      'multidevice',
+    ];
+    const that = this;
+    setTimeout(() => {
+      // hide this menu item, even for google account
+      // if (!isFydeProfile) return;
+      elementsToHide.forEach((ele) => {
+        const node = that.$$(`a#${ele}`)
+        if (node) node.style.display = 'none';
+      });
+    }, 0);
+  },
+  //---***FYDEOS END***---
 });

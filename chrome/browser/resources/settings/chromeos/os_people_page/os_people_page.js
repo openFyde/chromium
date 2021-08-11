@@ -155,7 +155,11 @@ Polymer({
       type: Boolean,
       value() {
         return loadTimeData.valueExists('showParentalControls') &&
-            loadTimeData.getBoolean('showParentalControls');
+            loadTimeData.getBoolean('showParentalControls') &&
+            // ---***FYDEOS BEGIN***---
+            (!loadTimeData.valueExists('isFydeProfile') ||
+            !loadTimeData.getBoolean('isFydeProfile'));
+            // ---***FYDEOS END***---
       },
     },
 
@@ -213,6 +217,27 @@ Polymer({
         chromeos.settings.mojom.Setting.kGoogleDriveSearchSuggestions,
       ]),
     },
+    // ---***FYDEOS BEGIN***---
+    isProfileActionable_: {
+      type: Boolean,
+      value: function() {
+        if (loadTimeData.getBoolean('isFydeProfile')) {
+          return true;
+        }
+        return loadTimeData.getBoolean('isAccountManagerEnabled');
+      },
+    },
+
+    profileActionButtonIcon_: {
+      type: String,
+        value: function() {
+          if (loadTimeData.getBoolean('isFydeProfile')) {
+            return 'icon-external';
+          }
+          return 'subpage-arrow';
+        },
+    },
+    // ---***FYDEOS END***---
   },
 
   /** @private {?SyncBrowserProxy} */
@@ -479,6 +504,13 @@ Polymer({
    * @private
    */
   onAccountManagerTap_(e) {
+    // ---***FYDEOS BEGIN***---
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      const url = `https://account.fydeos.com/personalInfo/`;
+      window.open(url);
+      return;
+    }
+    // ---***FYDEOS END***---
     if (this.isAccountManagerEnabled_) {
       Router.getInstance().navigateTo(routes.ACCOUNT_MANAGER);
     }

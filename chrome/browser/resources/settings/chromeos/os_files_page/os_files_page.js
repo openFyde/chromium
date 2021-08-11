@@ -60,6 +60,15 @@ Polymer({
       value: () =>
           new Set([chromeos.settings.mojom.Setting.kGoogleDriveConnection]),
     },
+
+    // ---***FYDEOS BEGIN***---
+    hideDisconnectGoogleDriveAccount_: {
+      type: Boolean,
+      value: () => {
+        return loadTimeData.getBoolean('isFydeProfile');
+      }
+    },
+    // ---***FYDEOS END***---
   },
 
   /**

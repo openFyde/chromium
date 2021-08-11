@@ -28,6 +28,8 @@ import {Route, RouteObserverMixin, RouteObserverMixinInterface, Router} from '..
 
 import {getTemplate} from './settings_menu.html.js';
 
+import {loadTimeData} from '../i18n_setup.js';
+
 export interface SettingsMenuElement {
   $: {
     autofill: HTMLLinkElement,
@@ -41,6 +43,8 @@ export interface SettingsMenuElement {
 
 const SettingsMenuElementBase = RouteObserverMixin(PolymerElement) as
     {new (): PolymerElement & RouteObserverMixinInterface};
+
+const FYDEOS_STORE_APPID: string = 'hidnajblbifdkmheebalalchohohmaef';
 
 export class SettingsMenuElement extends SettingsMenuElementBase {
   static get is() {
@@ -63,11 +67,23 @@ export class SettingsMenuElement extends SettingsMenuElementBase {
        * Dictionary defining page visibility.
        */
       pageVisibility: Object,
+
+      storeAppExists_: {
+        type: Boolean,
+        value: true,
+      },
+
+      showExtensionsLink_: {
+        type: Boolean,
+        computed: 'shouldShowExtensionsLink_(pageVisibility, storeAppExists_)',
+      },
     };
   }
 
   advancedOpened: boolean;
   pageVisibility: PageVisibility;
+  private storeAppExists_: boolean;
+
 
   override currentRouteChanged(newRoute: Route) {
     // Focus the initially selected path.
@@ -132,13 +148,36 @@ export class SettingsMenuElement extends SettingsMenuElementBase {
     return opened ? 'cr:arrow-drop-up' : 'cr:arrow-drop-down';
   }
 
-  private onExtensionsLinkClick_() {
-    chrome.metricsPrivate.recordUserAction(
-        'SettingsMenu_ExtensionsLinkClicked');
+  private onExtensionsLinkClick_(e: Event) {
+    // chrome.metricsPrivate.recordUserAction(
+    //     'SettingsMenu_ExtensionsLinkClicked');
+    if (!loadTimeData.getBoolean('isFydeProfile')) {
+      chrome.metricsPrivate.recordUserAction('SettingsMenu_ExtensionsLinkClicked');
+      return;
+    }
+    e.preventDefault();
+    if (!this.storeAppExists_) {
+      console.error('store app does not exists, but the extensions link is clicked');
+      return;
+    }
+    chrome.nativeWindows.create(FYDEOS_STORE_APPID);
   }
 
   private boolToString_(bool: boolean): string {
     return bool.toString();
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    chrome.appManagement.getAppList(apps => {
+      const app = apps.find(app => app.appId === FYDEOS_STORE_APPID);
+      this.storeAppExists_ = !!app;
+    });
+  }
+
+  private shouldShowExtensionsLink_() {
+    return this.pageVisibility.extensions && (!loadTimeData.getBoolean('isFydeProfile') || this.storeAppExists_);
   }
 }
 

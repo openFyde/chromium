@@ -4,6 +4,7 @@
   <div route-path="default">
     <settings-toggle-button
         id="disconnectGoogleDriveAccount"
+        hidden=[[hideDisconnectGoogleDriveAccount_]]
         pref="{{prefs.gdata.disabled}}"
         label="$i18n{disconnectGoogleDriveAccount}"
         deep-link-focus-id$="[[Setting.kGoogleDriveConnection]]">

@@ -35,6 +35,7 @@ import {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu
 import {CrLinkRowElement} from 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';
 import {assert, assertNotReached} from 'chrome://resources/js/assert_ts.js';
 import {focusWithoutInk} from 'chrome://resources/js/cr/ui/focus_without_ink.m.js';
+import {BaseMixin} from '../base_mixin.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {getDeepActiveElement} from 'chrome://resources/js/util.m.js';
 import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
@@ -111,7 +112,7 @@ export interface PasswordsSectionElement {
 const PasswordsSectionElementBase = MergePasswordsStoreCopiesMixin(
     PasswordRequestorMixin(PrefsMixin(GlobalScrollTargetMixin(
         MergeExceptionsStoreCopiesMixin(WebUIListenerMixin(
-            I18nMixin(PasswordCheckMixin(PolymerElement))))))));
+            I18nMixin(PasswordCheckMixin(BaseMixin(PolymerElement)))))))));
 
 export class PasswordsSectionElement extends PasswordsSectionElementBase {
   static get is() {
@@ -426,6 +427,23 @@ export class PasswordsSectionElement extends PasswordsSectionElementBase {
 
     HatsBrowserProxyImpl.getInstance().trustSafetyInteractionOccurred(
         TrustSafetyInteraction.OPENED_PASSWORD_MANAGER);
+
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      [
+        'manageLink',
+        'checkPasswordsLinkRow',
+        'checkPasswordsButtonRow',
+        'checkPasswordsBannerContainer',
+      ].forEach(id => {
+        const node = this.$$(`#${id}`) as HTMLElement;
+        if (node) {
+          node.style.display = 'none';
+        }
+      })
+    }, 0);
+    // ***FYDEOS END***
   }
 
   override disconnectedCallback() {

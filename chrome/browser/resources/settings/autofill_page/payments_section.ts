@@ -25,6 +25,7 @@ import {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu
 import {CrButtonElement} from 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
 import {assert} from 'chrome://resources/js/assert_ts.js';
 import {focusWithoutInk} from 'chrome://resources/js/cr/ui/focus_without_ink.m.js';
+import {BaseMixin} from '../base_mixin.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
@@ -64,7 +65,7 @@ export interface SettingsPaymentsSectionElement {
   };
 }
 
-const SettingsPaymentsSectionElementBase = I18nMixin(PolymerElement);
+const SettingsPaymentsSectionElementBase = I18nMixin(BaseMixin(PolymerElement));
 
 export class SettingsPaymentsSectionElement extends
     SettingsPaymentsSectionElementBase {
@@ -174,6 +175,16 @@ export class SettingsPaymentsSectionElement extends
     this.addEventListener(
         'remote-card-menu-click', this.onRemoteEditCreditCardClick_);
     this.addEventListener('unenroll-virtual-card', this.unenrollVirtualCard_);
+
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      const id = 'manageLink';
+      const node = this.$$(`#${id}`) as HTMLElement;
+      if (node) {
+        node.style.display = 'none';
+      }
+    }, 0);
   }
 
   override connectedCallback() {
