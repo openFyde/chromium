@@ -188,7 +188,7 @@ found in the LICENSE file.
           <oobe-text-button id="secondary-action-button"
               label-for-aria="[[secondaryActionButtonLabel_]]"
               on-click="onSecondaryActionButtonClicked_"
-              hidden$="[[!secondaryActionButtonLabel_]]"
+              hidden$="[[!shouldShowSecondaryActionButton_]]"
               disabled="[[!isButtonEnabled_(navigationEnabled,
                                             secondaryActionButtonEnabled_)]]">
             <div slot="text">[[secondaryActionButtonLabel_]]</div>
@@ -196,7 +196,7 @@ found in the LICENSE file.
           <oobe-text-button id="primary-action-button"
               label-for-aria="[[primaryActionButtonLabel_]]"
               on-click="onPrimaryActionButtonClicked_"
-              hidden$="[[!primaryActionButtonLabel_]]"
+              hidden$="[[!shouldShowPrimaryActionButton_]]"
               disabled="[[!isButtonEnabled_(navigationEnabled,
                                             primaryActionButtonEnabled_)]]"
               inverse>

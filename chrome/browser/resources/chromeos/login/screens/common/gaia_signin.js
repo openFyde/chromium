@@ -68,6 +68,7 @@ const DialogMode = {
   LOADING: 'loading',
   PIN_DIALOG: 'pin',
   GAIA_ALLOWLIST_ERROR: 'allowlist-error',
+  GAIA_DUP_EMAIL_ERROR: 'dup-email-error',
 };
 
 /**
@@ -277,6 +278,11 @@ class GaiaSigninElement extends GaiaSigninElementBase {
         type: String,
         value: 'allowlistErrorConsumer',
       },
+
+      isDupEmailErrorShown_: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -288,6 +294,9 @@ class GaiaSigninElement extends GaiaSigninElementBase {
      * @private
      */
     this.authenticatorParams_ = null;
+
+    this.dupEmail_ = '';
+    this.knownAccountList_ = [];
 
     /**
      * Email of the user, which is logging in using offline mode.
@@ -359,7 +368,7 @@ class GaiaSigninElement extends GaiaSigninElementBase {
   static get observers() {
     return [
       'refreshDialogStep_(isShown_, pinDialogParameters_,' +
-          'isLoadingUiShown_, isAllowlistErrorShown_)',
+          'isLoadingUiShown_, isAllowlistErrorShown_, isDupEmailErrorShown_)',
     ];
   }
 
@@ -382,6 +391,7 @@ class GaiaSigninElement extends GaiaSigninElementBase {
         this.onInsecureContentBlocked_.bind(this);
     this.authenticator_.missingGaiaInfoCallback =
         this.missingGaiaInfo_.bind(this);
+    this.authenticator_.accountTypeGoogleSelectedCallback = this.accountTypeGoogleSelectedCallback_.bind(this);
     this.authenticator_.samlApiUsedCallback = this.samlApiUsed_.bind(this);
     this.authenticator_.recordSAMLProviderCallback =
         this.recordSAMLProvider_.bind(this);
@@ -584,6 +594,9 @@ class GaiaSigninElement extends GaiaSigninElementBase {
   loadAuthExtension(data) {
     this.authenticator_.setWebviewPartition(data.webviewPartitionName);
 
+    this.knownAccountList_ = data.knownAccountList;
+    this.dupEmail_ = '';
+
     this.authCompleted_ = false;
     this.navigationButtonsHidden_ = false;
 
@@ -608,6 +621,12 @@ class GaiaSigninElement extends GaiaSigninElementBase {
         !(data.enterpriseManagedDevice || data.hasDeviceOwner);
     params.isFirstUser = !(data.enterpriseManagedDevice || data.hasDeviceOwner);
     params.obfuscatedOwnerId = data.obfuscatedOwnerId;
+
+    params.enableFydeAccount = data.enableFydeAccount;
+    params.disableResetFydeAccountFlag = data.enterpriseManagedDevice;
+    if (data.enableFydeAccount) {
+      params.menuEnterpriseEnrollment = params.menuEnterpriseEnrollment && data.isDMServerSet;
+    }
 
     this.authenticatorParams_ = params;
 
@@ -816,8 +835,43 @@ class GaiaSigninElement extends GaiaSigninElementBase {
    * @private
    */
   onAuthCompletedMessage_(e) {
+    if (this.checkIsDupEmail_(e.detail)) {
+      this.onDupEmailError_();
+      this.dupEmail_ = e.detail.email;
+      return;
+    }
     this.onAuthCompleted_(e.detail);
   }
+
+  checkIsDupEmail_(credentials) {
+    const { email } = credentials;
+    let targetAccountType;
+    if (this.authenticatorParams_.enableFydeAccount) {
+      // kFyde in account_id.cc
+      targetAccountType = 'fy';
+    } else {
+      // kGoogle in account_id.cc
+      targetAccountType = 'google';
+    }
+    const dup = this.knownAccountList_.find(a => a.email === email && a.type !== targetAccountType);
+    return !!dup;
+  }
+
+  onDupEmailError_() {
+    this.isDupEmailErrorShown_ = true;
+  }
+
+  onDupEmailErrorButtonClicked_() {
+    this.isDupEmailErrorShown_ = false;
+    this.userActed('retry');
+  }
+
+  dupEmailErrorMessage_(dupEmail) {
+    return this.i18nAdvanced('fydeosAddUserDupEmailErrorMessage', {
+      substitutions: [dupEmail],
+    });
+  }
+
 
   /**
    * Invoked when onLoadAbort message received.
@@ -927,6 +981,12 @@ class GaiaSigninElement extends GaiaSigninElementBase {
     this.cancel();
   }
 
+  // ---***FYDEOS BEGIN***---
+  accountTypeGoogleSelectedCallback_() {
+    chrome.send('userSelectGoogleAccount');
+  }
+  // ---***FYDEOS END***---
+
   /**
    * Show/Hide error when user is not in allowlist. When UI is hidden GAIA is
    * reloaded.
@@ -1013,6 +1073,7 @@ class GaiaSigninElement extends GaiaSigninElementBase {
   }
 
   requestUseLocalAccount() {
+    if (this.authCompleted_) return;
     this.userActed('useLocalAccount');
   }
 
@@ -1042,7 +1103,7 @@ class GaiaSigninElement extends GaiaSigninElementBase {
    * @param {boolean} isAllowlistError
    * @private
    */
-  refreshDialogStep_(isScreenShown, pinParams, isLoading, isAllowlistError) {
+  refreshDialogStep_(isScreenShown, pinParams, isLoading, isAllowlistError, isDupEmailError) {
     if (!isScreenShown) {
       return;
     }
@@ -1056,6 +1117,10 @@ class GaiaSigninElement extends GaiaSigninElementBase {
     }
     if (isAllowlistError) {
       this.setUIStep(DialogMode.GAIA_ALLOWLIST_ERROR);
+      return;
+    }
+    if (isDupEmailError) {
+      this.setUIStep(DialogMode.GAIA_DUP_EMAIL_ERROR);
       return;
     }
     this.setUIStep(DialogMode.GAIA);

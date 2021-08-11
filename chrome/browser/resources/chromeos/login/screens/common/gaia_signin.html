@@ -78,3 +78,9 @@ found in the LICENSE file.
     link-label="[[i18nDynamic(locale, 'learnMoreButton')]]">
   [[i18nDynamic(locale, allowlistError_)]]
 </notification-card>
+<notification-card id="gaia-dup-email-error" type="fail" class="fit"
+    for-step="dup-email-error"
+    on-buttonclick="onDupEmailErrorButtonClicked_"
+    button-label="[[i18nDynamic(locale, 'tryAgainButton')]]">
+  [[dupEmailErrorMessage_(dupEmail_)]]
+</notification-card>
