@@ -831,6 +831,8 @@ void PeopleSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       user->IsActiveDirectoryUser() ||
           profile()->GetProfilePolicyConnector()->IsManaged());
 
+  html_source->AddBoolean("isFydeLocalAccount", user->GetType() == user_manager::UserType::USER_TYPE_FLINT_ACCOUNT);
+
   if (chromeos::features::ShouldUseBrowserSyncConsent()) {
     static constexpr webui::LocalizedString kTurnOffStrings[] = {
         {"syncDisconnect", IDS_SETTINGS_PEOPLE_SYNC_TURN_OFF},
