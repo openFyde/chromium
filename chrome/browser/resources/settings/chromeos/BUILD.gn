@@ -314,6 +314,7 @@ preprocess_if_expr("copy_browser_settings_tsc") {
     "controls/settings_textarea.js",
     "controls/settings_toggle_button.js",
     "extension_control_browser_proxy.js",
+    "base_mixin.js",
     "i18n_setup.js",
     "icons.js",
     "lifetime_browser_proxy.js",

@@ -25,6 +25,7 @@ import './safety_check_updates_child.js';
 import './safety_check_chrome_cleaner_child.js';
 // </if>
 
+import {BaseMixin} from '../base_mixin.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
 import {IronA11yAnnouncer} from 'chrome://resources/polymer/v3_0/iron-a11y-announcer/iron-a11y-announcer.js';
@@ -44,7 +45,7 @@ type ParentChangedEvent = {
 };
 
 const SettingsSafetyCheckPageElementBase =
-    WebUIListenerMixin(I18nMixin(PolymerElement));
+    WebUIListenerMixin(I18nMixin(BaseMixin(PolymerElement)));
 
 export class SettingsSafetyCheckPageElement extends
     SettingsSafetyCheckPageElementBase {
@@ -95,6 +96,10 @@ export class SettingsSafetyCheckPageElement extends
         Router.getInstance().getQueryParameters().has('activateSafetyCheck')) {
       this.runSafetyCheck_();
     }
+  }
+
+  private shouldShowCheckPasswordsChild_(): boolean {
+    return !loadTimeData.getBoolean('isFydeProfile');
   }
 
   /** Triggers the safety check. */

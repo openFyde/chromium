@@ -84,15 +84,19 @@
         <div class="settings-box first two-line">
           <template is="dom-if" if="[[syncStatus]]">
             <!-- Does not use <cr-link-row> due to custom aria label. -->
+            <!-- FYDEOS BEGIN -->
             <div id="profile-icon"
                 style="background-image: [[getIconImageSet_(profileIconUrl_)]]"
                 on-click="onAccountManagerTap_"
-                actionable$="[[isAccountManagerEnabled_]]">
+                actionable$="[[isProfileActionable_]]">
+            <!-- FYDEOS END -->
             </div>
+            <!-- FYDEOS BEGIN -->
             <div class="middle two-line no-min-width"
                 id="profile-row"
                 on-click="onAccountManagerTap_"
-                actionable$="[[isAccountManagerEnabled_]]">
+                actionable$="[[isProfileActionable_]]">
+            <!-- FYDEOS END -->
               <div class="flex text-elide settings-box-text">
                 <span id="profile-name" aria-hidden="true">
                   [[getProfileName_(profileName_)]]
@@ -102,12 +106,13 @@
                   [[profileLabel_]]
                 </div>
               </div>
-              <cr-icon-button class="subpage-arrow"
-                  hidden="[[!isAccountManagerEnabled_]]"
+              <!-- FYDEOS BEGIN -->
+              <cr-icon-button class$=[[profileActionButtonIcon_]]
+                  hidden="[[!isProfileActionable_]]"
                   id="account-manager-subpage-trigger"
                   aria-label="$i18n{accountManagerSubMenuLabel}"
-                  aria-describedby="profile-name profile-label"
-                  aria-roledescription="$i18n{subpageArrowRoleDescription}">
+                  aria-describedby="profile-name profile-label">
+              <!-- FYDEOS END -->
               </cr-icon-button>
             </div>
           </template>

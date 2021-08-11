@@ -33,6 +33,7 @@ import './avatar_icon.js';
 import {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
 import {assert} from 'chrome://resources/js/assert.m.js';
 import {focusWithoutInk} from 'chrome://resources/js/cr/ui/focus_without_ink.m.js';
+import {BaseMixin, BaseMixinInterface} from '../base_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/js/i18n_mixin.js';
 import {getDeepActiveElement} from 'chrome://resources/js/util.m.js';
 import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/js/web_ui_listener_mixin.js';
@@ -94,10 +95,11 @@ const PasswordsSectionElementBase =
         ],
         PrefsMixin(GlobalScrollTargetMixin(
             MergeExceptionsStoreCopiesMixin(WebUIListenerMixin(
-                I18nMixin(PasswordCheckMixin(PolymerElement))))))) as {
+                I18nMixin(PasswordCheckMixin(BaseMixin(PolymerElement)))))))) as {
       new (): PolymerElement & I18nMixinInterface &
       WebUIListenerMixinInterface & MergeExceptionsStoreCopiesMixinInterface &
-      MergePasswordsStoreCopiesBehaviorInterface & PasswordCheckMixinInterface
+      MergePasswordsStoreCopiesBehaviorInterface & PasswordCheckMixinInterface &
+      BaseMixinInterface
     };
 
 class PasswordsSectionElement extends PasswordsSectionElementBase {
@@ -413,6 +415,23 @@ class PasswordsSectionElement extends PasswordsSectionElementBase {
 
     HatsBrowserProxyImpl.getInstance().trustSafetyInteractionOccurred(
         TrustSafetyInteraction.OPENED_PASSWORD_MANAGER);
+
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      [
+        'manageLink',
+        'checkPasswordsLinkRow',
+        'checkPasswordsButtonRow',
+        'checkPasswordsBannerContainer',
+      ].forEach(id => {
+        const node = this.$$(`#${id}`) as HTMLElement;
+        if (node) {
+          node.style.display = 'none';
+        }
+      })
+    }, 0);
+    // ***FYDEOS END***
   }
 
   disconnectedCallback() {

@@ -23,6 +23,7 @@ import './payments_list.js';
 import {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
 import {assert} from 'chrome://resources/js/assert.m.js';
 import {focusWithoutInk} from 'chrome://resources/js/cr/ui/focus_without_ink.m.js';
+import {BaseMixin, BaseMixinInterface} from '../base_mixin.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {html, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
@@ -166,7 +167,7 @@ interface SettingsPaymentsSectionElement {
   };
 }
 
-const SettingsPaymentsSectionElementBase = I18nMixin(PolymerElement);
+const SettingsPaymentsSectionElementBase = I18nMixin(BaseMixin(PolymerElement));
 
 class SettingsPaymentsSectionElement extends
     SettingsPaymentsSectionElementBase {
@@ -257,6 +258,16 @@ class SettingsPaymentsSectionElement extends
         'dots-card-menu-click', this.onCreditCardDotsMenuTap_);
     this.addEventListener(
         'remote-card-menu-click', this.onRemoteEditCreditCardTap_);
+
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      const id = 'manageLink';
+      const node = this.$$(`#${id}`) as HTMLElement;
+      if (node) {
+        node.style.display = 'none';
+      }
+    }, 0);
   }
 
   connectedCallback() {

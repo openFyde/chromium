@@ -22,6 +22,7 @@ import '../settings_page/settings_subpage.js';
 import './live_caption_section.js';
 // </if>
 
+import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
 import {html, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
@@ -36,7 +37,7 @@ import {CaptionsBrowserProxyImpl} from './captions_browser_proxy.js';
 // </if>
 
 const SettingsA11YPageElementBase =
-    WebUIListenerMixin(BaseMixin(PolymerElement));
+    WebUIListenerMixin(I18nMixin(BaseMixin(PolymerElement)));
 
 class SettingsA11YPageElement extends SettingsA11YPageElementBase {
   static get is() {
@@ -204,6 +205,16 @@ class SettingsA11YPageElement extends SettingsA11YPageElementBase {
     } else {
       Router.getInstance().navigateTo(routes.CAPTIONS);
     }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    if (!isFydeProfile) return;
+    setTimeout(() => {
+      const node = this.$$(`cr-link-row.hr[label="${this.i18n('moreFeaturesLink')}"]`);
+      if (node) node.setAttribute('hidden', 'true');
+    }, 0);
   }
 }
 

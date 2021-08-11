@@ -70,7 +70,7 @@
 </div>
 
 <cr-link-row class="hr" on-click="onFindAppsTap_"
-    hidden$="[[!prefs.arc.enabled.value]]"
+    hidden$="[[!showStylusFindMoreApps_(prefs.arc.enabled.value)]]"
     label="$i18n{stylusFindMoreAppsPrimary}"
     sub-label="$i18n{stylusFindMoreAppsSecondary}" external></cr-link-row>
 

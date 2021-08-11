@@ -167,6 +167,13 @@ cr.define('settings', function() {
         inputMethodsList: true,
       },
     };
+    // ---***FYDEOS BEGIN***---
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+
+    if (isFydeProfile) {
+      osPageVisibility.downloads.googleDrive = false;
+    }
+    // ---***FYDEOS END***---
   }
 
   // #cr_define_end
