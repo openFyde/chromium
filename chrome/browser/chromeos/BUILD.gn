@@ -582,6 +582,7 @@ source_set("chromeos") {
     "//ui/wm",
     "//ui/wm/public",
     "//url",
+    "//fydeos/switches/account/toggle:account_toggle",
   ]
 
   data_deps = [ ":dbus_service_files" ]
