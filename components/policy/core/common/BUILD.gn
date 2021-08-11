@@ -429,6 +429,7 @@ source_set("common_constants") {
   deps = [
     "//base",
     "//build:chromeos_buildflags",
+    "//fydeos/switches",
   ]
   sources = [
     "../../policy_export.h",

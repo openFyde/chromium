@@ -10,6 +10,8 @@
 #include "build/build_config.h"
 #include "build/chromeos_buildflags.h"
 #include "components/policy/core/common/policy_switches.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace policy {
 
@@ -137,6 +139,13 @@ const char kPolicyVerificationKeyHash[] = "1:356l7w";
 const char kDemoModeDomain[] = "cros-demo-mode.com";
 
 std::string GetPolicyVerificationKey() {
+  //---***FYDEOS BEGIN***---
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    const char *kKey = reinterpret_cast<const char*>(
+           fydeos::constants::kFydeOSPolicyVerificationKey);
+    return std::string(kKey, fydeos::constants::kFydeOSPolicyVerificationKeyLength);
+  }
+  //---***FYDEOS END***---
   return std::string(reinterpret_cast<const char*>(kPolicyVerificationKey),
                      sizeof(kPolicyVerificationKey));
 }
