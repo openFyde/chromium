@@ -29,6 +29,8 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "third_party/icu/source/i18n/unicode/regex.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/account_constants.h"
 
 namespace policy {
 
@@ -144,16 +146,28 @@ bool BrowserPolicyConnector::ProviderHasPolicies(
 }
 
 std::string BrowserPolicyConnector::GetDeviceManagementUrl() const {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return GetUrlOverride(fydeos::switches::kFydeOSDeviceManagementUrl,
+                          fydeos::constants::kDefaultFydeOSDeviceManagementServerUrl);
+  }
   return GetUrlOverride(switches::kDeviceManagementUrl,
                         kDefaultDeviceManagementServerUrl);
 }
 
 std::string BrowserPolicyConnector::GetRealtimeReportingUrl() const {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return GetUrlOverride(fydeos::switches::kFydeOSRealtimeReportingUrl,
+                          fydeos::constants::kDefaultFydeOSRealtimeReportingServerUrl);
+  }
   return GetUrlOverride(switches::kRealtimeReportingUrl,
                         kDefaultRealtimeReportingServerUrl);
 }
 
 std::string BrowserPolicyConnector::GetEncryptedReportingUrl() const {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return GetUrlOverride(fydeos::switches::kFydeOSEncryptedReportingUrl,
+                          fydeos::constants::kDefaultFydeOSEncryptedReportingServerUrl);
+  }
   return GetUrlOverride(switches::kEncryptedReportingUrl,
                         kDefaultEncryptedReportingServerUrl);
 }
