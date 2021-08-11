@@ -669,6 +669,8 @@ void GaiaScreenHandler::DeclareLocalizedValues(
                IDS_SAML_SECURITY_TOKEN_PIN_DIALOG_TITLE);
   builder->Add("securityTokenPinDialogSubtitle",
                IDS_SAML_SECURITY_TOKEN_PIN_DIALOG_SUBTITLE);
+  builder->Add("fydeosAddUserDupEmailErrorMessage",
+               IDS_FYDEOS_ADD_USER_DUP_EMAIL_ERROR_MESSAGE);
 }
 
 void GaiaScreenHandler::GetAdditionalParameters(base::Value::Dict* dict) {

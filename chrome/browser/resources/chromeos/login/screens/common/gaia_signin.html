@@ -62,6 +62,7 @@
         auth-flow="{{authFlow}}"
         navigation-enabled="{{navigationEnabled_}}"
         navigation-hidden="[[navigationButtonsHidden_]]"
+        action-buttons-hidden="[[actionButtonsHidden_]]"
         webview-name="signin-frame"
         can-go-back="{{canGaiaGoBack_}}"
         on-authcompleted="onAuthCompletedMessage_"
@@ -130,6 +131,14 @@
         link-label="[[i18nDynamic(locale, 'learnMoreButton')]]">
       [[i18nDynamic(locale, allowlistError_)]]
     </notification-card>
+    <!-- FYDEOS BEGIN -->
+    <notification-card id="gaia-dup-email-error" type="fail" class="fit"
+        for-step="dup-email-error"
+        on-buttonclick="onDupEmailErrorButtonClicked_"
+        button-label="[[i18nDynamic(locale, 'tryAgainButton')]]">
+      [[dupEmailErrorMessage_(dupEmail_)]]
+    </notification-card>
+    <!-- FYDEOS END -->
   </template>
   <script src="gaia_signin.js"></script>
 </dom-module>

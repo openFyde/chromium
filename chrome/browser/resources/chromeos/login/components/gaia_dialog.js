@@ -159,6 +159,21 @@ class GaiaDialog extends GaiaDialogBase {
         value: true,
       },
 
+      actionButtonsHidden: {
+        type: Boolean,
+        value: false,
+      },
+
+      shouldShowPrimaryActionButton_: {
+        type: Boolean,
+        computed: 'computedShouldShowActionButton_(actionButtonsHidden, primaryActionButtonLabel_)',
+      },
+
+      shouldShowSecondaryActionButton_: {
+        type: Boolean,
+        computed: 'computedShouldShowActionButton_(actionButtonsHidden, secondaryActionButtonLabel_)',
+      },
+
       /**
        * True if Gaia indicates that it can go back (e.g. on the password page)
        */
@@ -222,6 +237,10 @@ class GaiaDialog extends GaiaDialogBase {
 
   getAuthenticator() {
     return this.authenticator_;
+  }
+
+  computedShouldShowActionButton_(buttonHidden, buttonLabel) {
+    return !buttonHidden && buttonLabel;
   }
 
   /** @override */
