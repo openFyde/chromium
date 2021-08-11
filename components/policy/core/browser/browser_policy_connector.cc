@@ -123,6 +123,20 @@ void BrowserPolicyConnector::Shutdown() {
   device_management_service_.reset();
 }
 
+// ---***FYDEOS BEGIN***---
+void BrowserPolicyConnector::ResetDeviceManagementServiceConfiguration(std::unique_ptr<DeviceManagementService::Configuration> configuration) {
+  if (!device_management_service_) return;
+
+  const DeviceManagementService::Configuration* current_config = device_management_service_->configuration();
+  if (configuration->GetDMServerUrl() == current_config->GetDMServerUrl()) {
+    return;
+  }
+
+  VLOG(2) << "replace device management service configuration";
+  device_management_service_->ResetConfiguration(std::move(configuration));
+}
+// ---***FYDEOS END***---
+
 void BrowserPolicyConnector::ScheduleServiceInitialization(
     int64_t delay_milliseconds) {
   // Skip device initialization if the BrowserPolicyConnector was never

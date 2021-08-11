@@ -16,6 +16,9 @@
 class GaiaUrls {
  public:
   static GaiaUrls* GetInstance();
+  // ---***FYDEOS BEGIN***---
+  void Reset();
+  // ---***FYDEOS END***---
 
   GaiaUrls(const GaiaUrls&) = delete;
   GaiaUrls& operator=(const GaiaUrls&) = delete;

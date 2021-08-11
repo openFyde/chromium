@@ -168,6 +168,18 @@ void ChromeBrowserPolicyConnector::Shutdown() {
   BrowserPolicyConnector::Shutdown();
 }
 
+// ---***FYDEOS BEGIN***---
+void ChromeBrowserPolicyConnector::ResetDeviceManagementServiceConfiguration() {
+  std::unique_ptr<DeviceManagementService::Configuration> configuration(
+      new DeviceManagementServiceConfiguration(
+        GetDeviceManagementUrl(),
+        GetRealtimeReportingUrl(),
+        GetEncryptedReportingUrl()));
+
+  BrowserPolicyConnector::ResetDeviceManagementServiceConfiguration(std::move(configuration));
+}
+// ---***FYDEOS END***---
+
 ConfigurationPolicyProvider*
 ChromeBrowserPolicyConnector::GetPlatformProvider() {
   ConfigurationPolicyProvider* provider =

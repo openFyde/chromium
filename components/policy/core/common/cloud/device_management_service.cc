@@ -688,6 +688,11 @@ void DeviceManagementService::SetRetryDelayForTesting(long retry_delay_ms) {
   g_retry_delay_ms = retry_delay_ms;
 }
 
+void DeviceManagementService::ResetConfiguration(std::unique_ptr<Configuration> configuration) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  configuration_ = std::move(configuration);
+}
+
 void DeviceManagementService::AddJob(JobImpl* job) {
   if (initialized_)
     job->Start();
