@@ -416,6 +416,13 @@ js_library("fyde_local_signin.m") {
   sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/fyde_local_signin.m.js" ]
   deps = [
     "../../components/behaviors:login_screen_behavior.m",
+    "../../components/behaviors:oobe_dialog_host_behavior.m",
+    "../../components/behaviors:oobe_i18n_behavior.m",
+    "../../components/buttons:oobe_back_button.m",
+    "../../components/buttons:oobe_next_button.m",
+    "../../components/buttons:oobe_text_button.m",
+    "../../components/dialogs:oobe_adaptive_dialog.m",
+    "//ui/webui/resources/cr_elements/cr_input:cr_input.m",
   ]
   extra_deps = [ ":fyde_local_signin_module" ]
 }

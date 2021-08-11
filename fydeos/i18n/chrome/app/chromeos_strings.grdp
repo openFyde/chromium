@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_TITLE" desc="Title of oobe fydeos local signin page">
+    Create your local FydeOS account
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_USERNAME" desc="Label of oobe fydeos local signin page, username input">
+    Username
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_INVALID_USERNAME" desc="Error message of oobe fydeos local signin page, username input">
+    Invalid username
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD" desc="Label of oobe fydeos local signin page, password input">
+    Password
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_INVALID_PASSWORD" desc="Error message of oobe fydeos local signin page, password input">
+    Please input a password
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD_CONFIRM" desc="Label of oobe fydeos local signin page, password_confirm input">
+    Confirm password
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD_CONFIRM_ERROR" desc="Error message of oobe fydeos local signin page, password_confirm input">
+    Your passwords do not match
+  </message>
+</grit-part>
