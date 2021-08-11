@@ -96,6 +96,14 @@ void FydeLocalSigninScreenHandler::HandleCompleteAuth(const std::string& usernam
     SetErrorState(username, static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_AUTH_PASSWORD));
     return;
   }
+  const std::vector<AccountId> known_account_ids =
+      user_manager::known_user::GetKnownAccountIds();
+  for (const AccountId& known_id : known_account_ids) {
+    if (known_id.GetUserEmail() == username) {
+      SetErrorState(username, static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_USERNAME));
+      return;
+    }
+  }
 
   if (LoginDisplayHost::default_host())
     LoginDisplayHost::default_host()->SetDisplayEmail(username);
