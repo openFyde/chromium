@@ -957,6 +957,7 @@ void LoginShelfView::UpdateButtonUnionBounds() {
 bool LoginShelfView::ShouldShowGuestAndAppsButtons() const {
   bool dialog_state_allowed = false;
   if (dialog_state_ == OobeDialogState::USER_CREATION ||
+      dialog_state_ == OobeDialogState::FYDE_LOCAL_SIGNIN ||
       dialog_state_ == OobeDialogState::GAIA_SIGNIN) {
     dialog_state_allowed = !login_screen_has_users_ && is_first_signin_step_;
   } else if (dialog_state_ == OobeDialogState::ERROR ||
