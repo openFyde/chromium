@@ -28,6 +28,7 @@ Polymer({
   ],
 
   properties: {
+    loading: {type: Boolean, value: false},
     userRealm: {type: String, value: ''},
     userName: {type: String, value: '', observer: 'userNameObserver_'},
     errorState: {
@@ -61,6 +62,7 @@ Polymer({
   setErrorState(username, errorState) {
     this.userName = username;
     this.errorState = errorState;
+    this.loading = false;
   },
 
   reset() {
@@ -68,6 +70,7 @@ Polymer({
     this.$.passwordInput.value = '';
     this.$.passwordConfirmInput.value = '';
     this.errorState = FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE;
+    this.loading = false;
   },
 
   focus() {
@@ -109,6 +112,7 @@ Polymer({
       'username': user,
       'password': this.$.passwordInput.value,
     };
+    this.loading = true;
     chrome.send('completeFtAuthentication', [msg.username, msg.password]);
   },
 
