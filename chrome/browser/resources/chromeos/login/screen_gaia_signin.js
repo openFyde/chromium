@@ -45,6 +45,7 @@ const DialogMode = {
   LOADING: 'loading',
   PIN_DIALOG: 'pin',
   GAIA_ALLOWLIST_ERROR: 'allowlist-error',
+  GAIA_DUP_EMAIL_ERROR: 'dup-email-error',
   SAML_INTERSTITIAL: 'saml-interstitial',
 };
 
@@ -197,6 +198,11 @@ Polymer({
       value: false,
     },
 
+    actionButtonsHidden_: {
+      type: Boolean,
+      value: false,
+    },
+
     /**
      * Bound to gaia-dialog::canGoBack.
      * @private
@@ -225,11 +231,17 @@ Polymer({
       type: Boolean,
       value: false,
     },
+    // ---***FYDEOS BEGIN***---
+    isDupEmailErrorShown_: {
+      type: Boolean,
+      value: false,
+    },
+    // ---***FYDEOS END***---
   },
 
   observers: [
     'refreshDialogStep_(isShown_, screenMode_, pinDialogParameters_,' +
-        'isLoadingUiShown_, isAllowlistErrorShown_)',
+        'isLoadingUiShown_, isAllowlistErrorShown_, isDupEmailErrorShown_)',
   ],
 
   /**
@@ -245,6 +257,11 @@ Polymer({
    * @private
    */
   email_: '',
+
+  // ---***FYDEOS BEGIN***---
+  dupEmail_: '',
+  knownAccountList_: [],
+  // ---***FYDEOS END***---
 
   /**
    * Timer id of pending load.
@@ -319,6 +336,9 @@ Polymer({
         this.onInsecureContentBlocked_.bind(this);
     this.authenticator_.missingGaiaInfoCallback =
         this.missingGaiaInfo_.bind(this);
+    // ---***FYDEOS BEGIN***---
+    this.authenticator_.accountTypeGoogleSelectedCallback = this.accountTypeGoogleSelectedCallback_.bind(this);
+    // ---***FYDEOS END***---
     this.authenticator_.samlApiUsedCallback = this.samlApiUsed_.bind(this);
     this.authenticator_.recordSAMLProviderCallback =
         this.recordSAMLProvider_.bind(this);
@@ -332,6 +352,10 @@ Polymer({
     this.$['gaia-allowlist-error'].addEventListener('linkclick', function() {
       chrome.send('launchHelpApp', [HELP_CANT_ACCESS_ACCOUNT]);
     });
+
+    this.$['gaia-dup-email-error'].addEventListener('buttonclick', function() {
+      this.onDupEmailErrorButtonClicked();
+    }.bind(this));
 
     this.initializeLoginScreen('GaiaSigninScreen', {
       resetAllowed: true,
@@ -553,8 +577,14 @@ Polymer({
     this.authenticator_.setWebviewPartition(data.webviewPartitionName);
 
     this.screenMode_ = data.screenMode;
+    // ---***FYDEOS BEGIN***---
+    this.knownAccountList_ = data.knownAccountList;
+    // ---***FYDEOS END***---
+    this.email_ = '';
     this.authCompleted_ = false;
     this.navigationButtonsHidden_ = false;
+
+    this.actionButtonsHidden_ = false;
 
     // Reset SAML
     this.isSaml_ = false;
@@ -577,11 +607,21 @@ Polymer({
     params.isFirstUser = !(data.enterpriseManagedDevice || data.hasDeviceOwner);
     params.obfuscatedOwnerId = data.obfuscatedOwnerId;
     params.enableGaiaActionButtons = true;
+    // ---***FYDEOS BEGIN***---
+    params.enableFydeAccount = data.enableFydeAccount;
+    params.disableResetFydeAccountFlag = data.enterpriseManagedDevice;
+    if (data.enableFydeAccount) {
+      params.menuEnterpriseEnrollment = params.menuEnterpriseEnrollment && data.isDMServerSet;
+    }
+    // ---***FYDEOS END***---
 
     this.authenticatorParams_ = params;
 
     switch (this.screenMode_) {
       case AuthMode.DEFAULT:
+        if (data.enableFydeAccount) {
+          this.actionButtonsHidden_ = true;
+        }
         this.loadAuthenticator_(false /* doSamlRedirect */);
         break;
       case AuthMode.SAML_INTERSTITIAL:
@@ -810,6 +850,12 @@ Polymer({
     this.showFatalAuthError_(OobeTypes.FatalErrorCode.MISSING_GAIA_INFO);
   },
 
+  // ---***FYDEOS BEGIN***---
+  accountTypeGoogleSelectedCallback_() {
+    chrome.send('userSelectGoogleAccount');
+  },
+  // ---***FYDEOS END***---
+
   /**
    * Record that SAML API was used during sign-in.
    * @param {boolean} isThirdPartyIdP is login flow SAML with external IdP
@@ -860,7 +906,43 @@ Polymer({
    * @private
    */
   onAuthCompletedMessage_(e) {
+    if (this.checkIsDupEmail_(e.detail)) {
+      this.onDupEmailError_();
+      this.dupEmail_ = e.detail.email;
+      return;
+    }
     this.onAuthCompleted_(e.detail);
+  },
+
+  checkIsDupEmail_(credentials) {
+    if (this.screenMode_ !== AuthMode.DEFAULT) return false;
+
+    const { email } = credentials;
+    let targetAccountType;
+    if (this.authenticatorParams_.enableFydeAccount) {
+      // kFyde in account_id.cc
+      targetAccountType = 'fy';
+    } else {
+      // kGoogle in account_id.cc
+      targetAccountType = 'google';
+    }
+    const dup = this.knownAccountList_.find(a => a.email === email && a.type !== targetAccountType);
+    return !!dup;
+  },
+
+  onDupEmailError_() {
+    this.isDupEmailErrorShown_ = true;
+  },
+
+  onDupEmailErrorButtonClicked() {
+    this.isDupEmailErrorShown_ = false;
+    Oobe.showSigninUI();
+  },
+
+  dupEmailErrorMessage_(dupEmail) {
+    return this.i18nAdvanced('fydeosAddUserDupEmailErrorMessage', {
+      substitutions: [dupEmail],
+    });
   },
 
   /**
@@ -909,6 +991,12 @@ Polymer({
    * @param {boolean} takeFocus True to take focus.
    */
   reset(takeFocus) {
+    // ---***FYDEOS BEGIN***---
+    if (!this.authenticatorParams_.enableFydeAccount && !this.authenticatorParams_.disableResetFydeAccountFlag) {
+      chrome.send('resetAccountFlag');
+      return;
+    }
+    // ---***FYDEOS END***---
     // Reload and show the sign-in UI if needed.
     this.authenticator_.resetStates();
     if (takeFocus) {
@@ -1032,6 +1120,7 @@ Polymer({
   },
 
   requestUseLocalAccount() {
+    if (this.authCompleted_) return;
     this.userActed('useLocalAccount');
   },
 
@@ -1106,7 +1195,7 @@ Polymer({
    * @private
    */
   refreshDialogStep_(
-      isScreenShown, mode, pinParams, isLoading, isAllowlistError) {
+      isScreenShown, mode, pinParams, isLoading, isAllowlistError, isDupEmailError) {
     if (!isScreenShown)
       return;
     if (pinParams !== null) {
@@ -1125,6 +1214,12 @@ Polymer({
       this.setUIStep(DialogMode.GAIA_ALLOWLIST_ERROR);
       return;
     }
+    // ---***FYDEOS BEGIN***---
+    if (isDupEmailError) {
+      this.setUIStep(DialogMode.GAIA_DUP_EMAIL_ERROR);
+      return;
+    }
+    // ---***FYDEOS END***---
     switch (mode) {
       case AuthMode.DEFAULT:
         this.setUIStep(DialogMode.GAIA);

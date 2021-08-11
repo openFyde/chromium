@@ -97,6 +97,7 @@ cr.define('cr.login', function() {
    *   flow: string,
    *   ignoreCrOSIdpSetting: boolean,
    *   enableGaiaActionButtons: boolean,
+   *   enableFydeAccount: boolean,
    *   enterpriseEnrollmentDomain: string,
    *   samlAclUrl: string,
    *   isSupervisedUser: boolean,
@@ -292,6 +293,17 @@ cr.define('cr.login', function() {
         this.maybeCompleteAuth_();
       }
     },
+    // ---***FYDEOS BEGIN***---
+    'selectAccountType'(msg) {
+      if (this.isExistedUser_) {
+        return;
+      }
+      this.selectedAccountType_ = msg.type;
+      if (this.email_ && this.gaiaId_ && this.sessionIndex_) {
+        this.maybeCompleteAuth_();
+      }
+    },
+    // ---***FYDEOS END***---
     'showIncognito'(msg) {
       this.dispatchEvent(new Event('showIncognito'));
     },
@@ -389,6 +401,9 @@ cr.define('cr.login', function() {
       this.password_ = null;
       this.gaiaId_ = null, this.sessionIndex_ = null;
       this.chooseWhatToSync_ = false;
+      // ---***FYDEOS BEGIN***---
+      this.selectedAccountType_ = null;
+      // ---***FYDEOS END***---
       this.skipForNow_ = false;
       this.authFlow = AuthFlow.DEFAULT;
       /** @type {AuthMode} */
@@ -416,6 +431,10 @@ cr.define('cr.login', function() {
           webview;
       assert(this.webview_);
       this.enableGaiaActionButtons_ = false;
+      // ---***FYDEOS BEGIN***---
+      this.enableFydeAccount_ = true;
+      this.isExistedUser_ = false;
+      // ---***FYDEOS END***---
       this.enableCloseView_ = false;
       this.webviewEventManager_ = WebviewEventManager.create();
 
@@ -428,6 +447,9 @@ cr.define('cr.login', function() {
       this.samlApiUsedCallback = null;
       this.recordSAMLProviderCallback = null;
       this.missingGaiaInfoCallback = null;
+      // ---***FYDEOS BEGIN***---
+      this.accountTypeGoogleSelectedCallback = null;
+      // ---***FYDEOS END***---
       /**
        * Callback allowing to request whether the specified user which
        * authenticates via SAML is a user without a password (neither a manually
@@ -482,6 +504,9 @@ cr.define('cr.login', function() {
       this.password_ = null;
       this.readyFired_ = false;
       this.chooseWhatToSync_ = false;
+      // ---***FYDEOS BEGIN***---
+      this.selectedAccountType_ = null;
+      // ---***FYDEOS END***---
       this.skipForNow_ = false;
       this.sessionIndex_ = null;
       this.trusted_ = true;
@@ -657,6 +682,11 @@ cr.define('cr.login', function() {
       this.dontResizeNonEmbeddedPages = data.dontResizeNonEmbeddedPages;
       this.enableGaiaActionButtons_ = data.enableGaiaActionButtons;
       this.enableCloseView_ = !!data.enableCloseView;
+
+      // ---***FYDEOS BEGIN***---
+      this.enableFydeAccount_ = data.enableFydeAccount;
+      this.isExistedUser_ = data.email && data.readOnlyEmail;
+      // ---***FYDEOS END***---
 
       this.initialFrameUrl_ = this.constructInitialFrameUrl_(data);
       this.reloadUrl_ = data.frameUrl || this.initialFrameUrl_;
@@ -1038,6 +1068,17 @@ cr.define('cr.login', function() {
       if (this.authCompletedFired_) {
         return;
       }
+      // ---***FYDEOS BEGIN***---
+      if (this.enableFydeAccount_ && !this.isExistedUser_) {
+        if (!this.selectedAccountType_) {
+          return;
+        }
+        if (this.selectedAccountType_ === 'google') {
+          this.accountTypeGoogleSelectedCallback();
+          return;
+        }
+      }
+      // ---***FYDEOS END***---
       const missingGaiaInfo =
           !this.email_ || !this.gaiaId_ || !this.sessionIndex_;
       if (missingGaiaInfo && !this.skipForNow_) {
