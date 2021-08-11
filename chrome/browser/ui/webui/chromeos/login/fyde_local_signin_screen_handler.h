@@ -9,6 +9,9 @@ class FydeLocalSigninScreen;
 }
 
 namespace chromeos {
+
+class Key;
+
 class FydeLocalSigninView {
   public:
     constexpr static StaticOobeScreenId kScreenId{"fyde-local-signin"};
@@ -49,6 +52,7 @@ class FydeLocalSigninScreenHandler : public FydeLocalSigninView,
   private:
     void HandleCompleteAuth(const std::string& username,
                             const std::string& password);
+    void DoCompleteLogin(const std::string& username, const Key& key);
 
     void Show() override;
     void Bind(ash::FydeLocalSigninScreen* screen) override;
