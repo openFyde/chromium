@@ -250,6 +250,13 @@ class OsSettingsPeoplePageElement extends OsSettingsPeoplePageElementBase {
           },
       },
 
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
+
     };
   }
 
