@@ -27,6 +27,8 @@ static_library("switches") {
     "account/account_switches.h",
     "account/account_constants.cc",
     "account/account_constants.h",
+    "account/policy_constants.cc",
+    "account/policy_constants.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }
