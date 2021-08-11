@@ -21,6 +21,8 @@ import '//resources/cr_elements/cr_toast/cr_toast.js';
 
 // </if>
 
+import {BaseMixin} from '../base_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {CrToastElement} from '//resources/cr_elements/cr_toast/cr_toast.js';
 import {assert} from '//resources/js/assert_ts.js';
 import {WebUIListenerMixin} from '//resources/cr_elements/web_ui_listener_mixin.js';
@@ -48,7 +50,7 @@ export interface SettingsPersonalizationOptionsElement {
 }
 
 const SettingsPersonalizationOptionsElementBase =
-    RelaunchMixin(WebUIListenerMixin(PrefsMixin(PolymerElement)));
+    RelaunchMixin(WebUIListenerMixin(PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))));
 
 export class SettingsPersonalizationOptionsElement extends
     SettingsPersonalizationOptionsElementBase {
@@ -370,6 +372,23 @@ export class SettingsPersonalizationOptionsElement extends
           [toggle.label, toggle.subLabel]);
       toggle.sendPrefChange();
     }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      [
+        'settings-toggle-button#driveSuggestControl',
+        `settings-toggle-button[label="${this.i18n('urlKeyedAnonymizedDataCollection')}"]`,
+      ].forEach((selector) => {
+        const node = this.$$(selector) as HTMLElement;
+        if (node) {
+          node.style.display = 'none';
+        }
+      });
+    }, 0);
   }
 }
 

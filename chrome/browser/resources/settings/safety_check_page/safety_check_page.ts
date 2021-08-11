@@ -26,6 +26,7 @@ import './safety_check_chrome_cleaner_child.js';
 // </if>
 
 import {getInstance as getAnnouncerInstance} from 'chrome://resources/cr_elements/cr_a11y_announcer/cr_a11y_announcer.js';
+import {BaseMixin} from '../base_mixin.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {WebUIListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {flush, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
@@ -46,7 +47,7 @@ interface ParentChangedEvent {
 }
 
 const SettingsSafetyCheckPageElementBase =
-    WebUIListenerMixin(I18nMixin(PolymerElement));
+    WebUIListenerMixin(I18nMixin(BaseMixin(PolymerElement)));
 
 export class SettingsSafetyCheckPageElement extends
     SettingsSafetyCheckPageElementBase {
@@ -132,6 +133,10 @@ export class SettingsSafetyCheckPageElement extends
 
     this.notificationPermissionSites_ =
         await this.siteSettingsBrowserProxy_.getNotificationPermissionReview();
+  }
+
+  private shouldShowCheckPasswordsChild_(): boolean {
+    return !loadTimeData.getBoolean('isFydeProfile');
   }
 
   /** Triggers the safety check. */

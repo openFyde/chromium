@@ -161,6 +161,23 @@ class OsSettingsMenuElement extends OsSettingsMenuElementBase {
   private boolToString_(bool: boolean): string {
     return bool.toString();
   }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    if (!isFydeProfile) return;
+    const elementsToHide = [
+      'multidevice',
+    ];
+    setTimeout(() => {
+      // hide this menu item, even for google account
+      // if (!isFydeProfile) return;
+      elementsToHide.forEach((ele) => {
+        const node = this.shadowRoot!.querySelector<HTMLElement>(`a#${ele}`)
+        if (node) node.style.display = 'none';
+      });
+    }, 0);
+  }
 }
 
 declare global {

@@ -35,6 +35,7 @@ import './avatar_icon.js';
 import {getInstance as getAnnouncerInstance} from 'chrome://resources/cr_elements/cr_a11y_announcer/cr_a11y_announcer.js';
 import {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
 import {CrDialogElement} from 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
+import {BaseMixin, BaseMixinInterface} from '../base_mixin.js';
 import {CrLinkRowElement} from 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
@@ -114,11 +115,12 @@ export interface PasswordsSectionElement {
 const PasswordsSectionElementBase =
     UserUtilMixin(MergePasswordsStoreCopiesMixin(PrefsMixin(
         GlobalScrollTargetMixin(RouteObserverMixin(WebUIListenerMixin(
-            I18nMixin(PasswordCheckMixin(PolymerElement)))))))) as {
+            I18nMixin(PasswordCheckMixin(BaseMixin(PolymerElement))))))))) as {
       new (): PolymerElement & PasswordCheckMixinInterface &
           I18nMixinInterface & WebUIListenerMixinInterface &
           RouteObserverMixinInterface & GlobalScrollTargetMixinInterface &
           PrefsMixinInterface & MergePasswordsStoreCopiesMixinInterface &
+          BaseMixinInterface &
           UserUtilMixinInterface,
     };
 
@@ -376,6 +378,23 @@ export class PasswordsSectionElement extends PasswordsSectionElementBase {
 
     HatsBrowserProxyImpl.getInstance().trustSafetyInteractionOccurred(
         TrustSafetyInteraction.OPENED_PASSWORD_MANAGER);
+
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      [
+        'manageLink',
+        'checkPasswordsLinkRow',
+        'checkPasswordsButtonRow',
+        'checkPasswordsBannerContainer',
+      ].forEach(id => {
+        const node = this.$$(`#${id}`) as HTMLElement;
+        if (node) {
+          node.style.display = 'none';
+        }
+      })
+    }, 0);
+    // ***FYDEOS END***
   }
 
   override disconnectedCallback() {

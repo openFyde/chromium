@@ -18,6 +18,7 @@ import {HelpBubbleMixin, HelpBubbleMixinInterface} from 'chrome://resources/cr_c
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {assert} from 'chrome://resources/js/assert_ts.js';
 import {focusWithoutInk} from 'chrome://resources/js/focus_without_ink.js';
+import {BaseMixin, BaseMixinInterface} from '../base_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {SettingsRadioGroupElement} from '../controls/settings_radio_group.js';
@@ -62,9 +63,10 @@ export interface SettingsSecurityPageElement {
 
 const SettingsSecurityPageElementBase =
     HelpBubbleMixin(
-        RouteObserverMixin(I18nMixin(PrefsMixin(PolymerElement)))) as {
+        RouteObserverMixin(I18nMixin(PrefsMixin(BaseMixin(PolymerElement))))) as {
       new (): PolymerElement & I18nMixinInterface &
           RouteObserverMixinInterface & PrefsMixinInterface &
+          BaseMixinInterface &
           HelpBubbleMixinInterface,
     };
 
@@ -443,6 +445,24 @@ export class SettingsSecurityPageElement extends
     this.metricsBrowserProxy_.recordAction(
         confirmed ? 'SafeBrowsing.Settings.DisableSafeBrowsingDialogConfirmed' :
                     'SafeBrowsing.Settings.DisableSafeBrowsingDialogDenied');
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    if (!isFydeProfile) return;
+    setTimeout(() => {
+      [
+        '#advanced-protection-program-link',
+        'settings-toggle-button#safeBrowsingReportingToggle',
+        `settings-toggle-button[label="${this.i18n('linkDoctorPref')}"]`, // actually this i18n key is not used in html/js files
+      ].forEach((selector) => {
+        const node = this.$$(selector) as HTMLElement;
+        if (node) {
+          node.style.display = 'none';
+        }
+      });
+    }, 0);
   }
 }
 

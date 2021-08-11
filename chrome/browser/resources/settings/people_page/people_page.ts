@@ -136,6 +136,9 @@ export class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
             // Opens profile manager.
             return true;
           }
+          if (loadTimeData.getBoolean('isFydeProfile')) {
+            return true;
+          }
           // Post-SplitSettings links out to account manager if it is available.
           return loadTimeData.getBoolean('isAccountManagerEnabled');
         },
@@ -343,6 +346,11 @@ export class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
 
   private onProfileTap_() {
     // <if expr="chromeos_ash">
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      const url = `https://account.fydeos.com/personalInfo/`;
+      window.open(url);
+      return;
+    }
     if (loadTimeData.getBoolean('isAccountManagerEnabled')) {
       // Post-SplitSettings. The browser C++ code loads OS settings in a window.
       // Don't use window.open() because that creates an extra empty tab.

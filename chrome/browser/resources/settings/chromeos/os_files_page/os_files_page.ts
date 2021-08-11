@@ -21,6 +21,8 @@ import {DeepLinkingBehavior, DeepLinkingBehaviorInterface} from '../deep_linking
 import {routes} from '../os_route.js';
 import {RouteObserverBehavior, RouteObserverBehaviorInterface} from '../route_observer_behavior.js';
 
+import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+
 import {getTemplate} from './os_files_page.html.js';
 
 const OsSettingsFilesPageElementBase =
@@ -55,6 +57,13 @@ class OsSettingsFilesPageElement extends OsSettingsFilesPageElementBase {
       supportedSettingIds: {
         type: Object,
         value: () => new Set([Setting.kGoogleDriveConnection]),
+      },
+
+      hideDisconnectGoogleDriveAccount_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeProfile');
+        }
       },
 
       focusConfig_: {

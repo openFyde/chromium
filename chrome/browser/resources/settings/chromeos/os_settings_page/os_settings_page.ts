@@ -193,6 +193,21 @@ class OsSettingsPageElement extends OsSettingsPageElementBase {
     this.addWebUIListener(
         'android-apps-info-update', this.androidAppsInfoUpdate_.bind(this));
     AndroidAppsBrowserProxyImpl.getInstance().requestAndroidAppsInfo();
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      const sectionsToHide = [
+        'multidevice',
+      ];
+      setTimeout(() => {
+        // hide this section, even for google account
+        // if (!isFydeProfile) return;
+        sectionsToHide.forEach(section => {
+          const node = this.shadowRoot!.querySelector<HTMLElement>(`settings-section[section="${section}"]`);
+          if (node) {
+            node.setAttribute('hidden', 'true');
+          }
+        })
+      }, 0);
+    }
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {

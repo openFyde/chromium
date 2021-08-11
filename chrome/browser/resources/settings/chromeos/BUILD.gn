@@ -372,6 +372,7 @@ preprocess_if_expr("preprocess_browser_settings_tsc") {
   in_files = [
     "appearance_page/fonts_browser_proxy.js",
     "extension_control_browser_proxy.js",
+    "base_mixin.js",
     "icons.html.js",
     "people_page/profile_info_browser_proxy.js",
     "people_page/sync_browser_proxy.js",

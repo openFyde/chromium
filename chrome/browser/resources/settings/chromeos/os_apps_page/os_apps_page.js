@@ -149,6 +149,11 @@ class OsSettingsAppsPageElement extends OsSettingsAppsPageElementBase {
        */
       showPluginVm: Boolean,
 
+      fydeosArcSettingsExists: {
+        type: Boolean,
+        value: false,
+      },
+
       /**
        * Show On startup settings and sub-page.
        * @type {boolean}
@@ -233,6 +238,8 @@ class OsSettingsAppsPageElement extends OsSettingsAppsPageElementBase {
       // accept `null`, use `undefined` instead.
       return getSelectedApp(state) || undefined;
     });
+
+    this.checkFydeOSArcSettingsExists_();
 
     /**
      * @private {!ash.settings.appNotification.mojom.AppNotificationsHandlerInterface}
@@ -329,10 +336,23 @@ class OsSettingsAppsPageElement extends OsSettingsAppsPageElementBase {
    * @private
    */
   onManageAndroidAppsTap_(event) {
+    if (this.fydeosArcSettingsExists) {
+      const ANDROID_APPID = 'iakadpgajjigiaojnbdmodlngmbkfhag';
+      chrome.nativeWindows.create(ANDROID_APPID);
+      return;
+    }
     // |event.detail| is the click count. Keyboard events will have 0 clicks.
     const isKeyboardAction = event.detail === 0;
     AndroidAppsBrowserProxyImpl.getInstance().showAndroidAppsSettings(
         isKeyboardAction);
+  }
+
+  checkFydeOSArcSettingsExists_() {
+    const ANDROID_APPID = 'iakadpgajjigiaojnbdmodlngmbkfhag';
+    chrome.appManagement.getAppList(apps => {
+      const androidApp = apps.find(item => item.appId === ANDROID_APPID);
+      this.fydeosArcSettingsExists = !!androidApp;
+    });
   }
 
   /** Override ash.settings.appNotification.onNotificationAppChanged */

@@ -45,12 +45,12 @@
         <div id="profile-icon"
             style="background-image: [[getIconImageSet_(profileIconUrl_)]]"
             on-click="onAccountManagerTap_"
-            actionable$="[[isAccountManagerEnabled_]]">
+            actionable$="[[isProfileActionable_]]">
         </div>
         <div class="middle two-line no-min-width"
             id="profile-row"
             on-click="onAccountManagerTap_"
-            actionable$="[[isAccountManagerEnabled_]]">
+            actionable$="[[isProfileActionable_]]">
           <div class="flex text-elide settings-box-text">
             <span id="profile-name" aria-hidden="true">
               [[getProfileName_(profileName_)]]
@@ -60,12 +60,11 @@
               [[profileLabel_]]
             </div>
           </div>
-          <cr-icon-button class="subpage-arrow"
-              hidden="[[!isAccountManagerEnabled_]]"
+          <cr-icon-button class$=[[profileActionButtonIcon_]]
+              hidden="[[!isProfileActionable_]]"
               id="account-manager-subpage-trigger"
               aria-label="$i18n{accountManagerSubMenuLabel}"
-              aria-describedby="profile-name profile-label"
-              aria-roledescription="$i18n{subpageArrowRoleDescription}">
+              aria-describedby="profile-name profile-label">
           </cr-icon-button>
         </div>
       </template>
