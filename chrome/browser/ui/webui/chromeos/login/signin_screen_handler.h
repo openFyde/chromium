@@ -193,6 +193,7 @@ class SigninScreenHandler
   void HandleLaunchIncognito();
   void HandleLaunchSAMLPublicSession(const std::string& email);
   void HandleOfflineLogin();
+  void HandleFydeLocalSignin();
   void HandleToggleEnrollmentScreen();
   void HandleToggleResetScreen();
   void HandleToggleKioskAutolaunchScreen();

@@ -62,6 +62,7 @@
 #include "chrome/browser/ui/webui/chromeos/login/l10n_util.h"
 #include "chrome/browser/ui/webui/chromeos/login/network_state_informer.h"
 #include "chrome/browser/ui/webui/chromeos/login/offline_login_screen_handler.h"
+#include "chrome/browser/ui/webui/chromeos/login/fyde_local_signin_screen_handler.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
@@ -356,6 +357,7 @@ void SigninScreenHandler::RegisterMessages() {
               &SigninScreenHandler::HandleLoginUIStateChanged);
   AddCallback("showLoadingTimeoutError",
               &SigninScreenHandler::HandleShowLoadingTimeoutError);
+  AddCallback("fydeLocalSignin", &SigninScreenHandler::HandleFydeLocalSignin);
 }
 
 void SigninScreenHandler::Show(bool oobe_ui) {
@@ -686,6 +688,12 @@ void SigninScreenHandler::HandleOfflineLogin() {
   LoginDisplayHost::default_host()->StartWizard(OfflineLoginView::kScreenId);
 
   UpdateUIState(UI_STATE_GAIA_SIGNIN);
+}
+
+void SigninScreenHandler::HandleFydeLocalSignin() {
+  HideOfflineMessage(NetworkStateInformer::OFFLINE,
+                     NetworkError::ERROR_REASON_NONE);
+  LoginDisplayHost::default_host()->StartWizard(FydeLocalSigninView::kScreenId);
 }
 
 void SigninScreenHandler::HandleToggleEnrollmentScreen() {

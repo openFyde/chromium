@@ -184,6 +184,7 @@ void ErrorScreenHandler::DeclareLocalizedValues(
   builder->Add("proxySettingsMenuName",
                IDS_NETWORK_PROXY_SETTINGS_LIST_ITEM_NAME);
   builder->Add("addWiFiNetworkMenuName", IDS_NETWORK_ADD_WI_FI_LIST_ITEM_NAME);
+  builder->Add("fydeLocalSignin", IDS_FYDE_LOCAL_SIGNIN_HTML);
   ui::network_element::AddLocalizedValuesToBuilder(builder);
 }
 
