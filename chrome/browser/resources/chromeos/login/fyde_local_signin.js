@@ -76,6 +76,10 @@ Polymer({
     });
   },
 
+  getOobeUIInitialState() {
+    return OOBE_UI_STATE.FYDE_LOCAL_SIGNIN;
+  },
+
   onBeforeShow(data) {
     if (data && 'emailDomain' in data) {
       this.userRealm = '@' + data['emailDomain'];

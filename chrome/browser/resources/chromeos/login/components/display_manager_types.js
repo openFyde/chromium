@@ -54,6 +54,7 @@ DisplayManagerScreenAttributes.resetAllowed;
   MIGRATION: 12,
   USER_CREATION: 15,
   ENROLLMENT_CANCEL_ENABLED: 16,
+  FYDE_LOCAL_SIGNIN: 17,
 };
 
 /**

@@ -72,6 +72,8 @@ enum class OobeDialogState {
 
   // Showing enrollment screen with the possibility to cancel.
   ENROLLMENT_CANCEL_ENABLED = 16,
+
+  FYDE_LOCAL_SIGNIN = 17,
 };
 
 // Supported multi-profile user behavior values.
