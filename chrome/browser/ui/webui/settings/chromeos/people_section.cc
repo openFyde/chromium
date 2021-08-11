@@ -631,6 +631,9 @@ void PeopleSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       user->IsActiveDirectoryUser() ||
           profile()->GetProfilePolicyConnector()->IsManaged());
 
+  html_source->AddBoolean("isFydeLocalAccount",
+                          user->GetType() == user_manager::UserType::USER_TYPE_FLINT_ACCOUNT);
+
   static constexpr webui::LocalizedString kSignOutStrings[] = {
       {"syncDisconnect", IDS_SETTINGS_PEOPLE_SIGN_OUT},
       {"syncDisconnectTitle", IDS_SETTINGS_SYNC_DISCONNECT_TITLE},

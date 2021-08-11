@@ -1414,6 +1414,9 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
   html_source->AddBoolean("isAccountManagerEnabled",
                           ash::IsAccountManagerAvailable(profile));
   html_source->AddBoolean("isFydeProfile", profile->IsFydeProfile());
+  const user_manager::User* user =
+      chromeos::ProfileHelper::Get()->GetUserByProfile(profile);
+  html_source->AddBoolean("isFydeLocalAccount", user->GetType() == user_manager::UserType::USER_TYPE_FLINT_ACCOUNT);
 #elif BUILDFLAG(IS_CHROMEOS_LACROS)
   html_source->AddBoolean(
       "isAccountManagerEnabled",

@@ -138,7 +138,7 @@ export class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
             return true;
           }
           if (loadTimeData.getBoolean('isFydeProfile')) {
-            return true;
+            return !loadTimeData.getBoolean('isFydeLocalAccount');
           }
           // Post-SplitSettings links out to account manager if it is available.
           return loadTimeData.getBoolean('isAccountManagerEnabled');
@@ -348,6 +348,9 @@ export class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
   private onProfileTap_() {
     // <if expr="chromeos_ash">
     if (loadTimeData.getBoolean('isFydeProfile')) {
+      if (loadTimeData.getBoolean('isFydeLocalAccount')) {
+        return;
+      }
       const url = `https://account.fydeos.com/personalInfo/`;
       window.open(url);
       return;

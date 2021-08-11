@@ -222,7 +222,7 @@ Polymer({
       type: Boolean,
       value: function() {
         if (loadTimeData.getBoolean('isFydeProfile')) {
-          return true;
+          return !loadTimeData.getBoolean('isFydeLocalAccount');
         }
         return loadTimeData.getBoolean('isAccountManagerEnabled');
       },
@@ -506,6 +506,9 @@ Polymer({
   onAccountManagerTap_(e) {
     // ---***FYDEOS BEGIN***---
     if (loadTimeData.getBoolean('isFydeProfile')) {
+      if (loadTimeData.getBoolean('isFydeLocalAccount')) {
+        return;
+      }
       const url = `https://account.fydeos.com/personalInfo/`;
       window.open(url);
       return;
