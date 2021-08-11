@@ -131,6 +131,8 @@ class SigninScreenHandler
   void HandleLaunchIncognito();
   void HandleOfflineLogin();
 
+  void HandleFydeLocalSignin();
+
   void HandleShowLoadingTimeoutError();
 
   // Returns true if current visible screen is the Gaia sign-in page.

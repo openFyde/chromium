@@ -136,6 +136,9 @@
           <span id="error-guest-signin" hidden="[[!guestSessionAllowed_]]">
           </span>
         </div>
+        <div hidden="[[!isOneOf_(uiState_, 'ui-state-signin')]]">
+          <span id="fyde-local-signin"></span>
+        </div>
         <div hidden="[[!isOneOf_(uiState_, 'ui-state-auto-enrollment-error')]]">
           <span id="error-guest-signin-fix-network"
               hidden="[[!guestSessionAllowed_]]">

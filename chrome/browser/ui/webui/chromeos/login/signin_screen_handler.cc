@@ -61,6 +61,7 @@
 #include "chrome/browser/ui/webui/chromeos/login/l10n_util.h"
 #include "chrome/browser/ui/webui/chromeos/login/network_state_informer.h"
 #include "chrome/browser/ui/webui/chromeos/login/offline_login_screen_handler.h"
+#include "chrome/browser/ui/webui/chromeos/login/fyde_local_signin_screen_handler.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
@@ -211,6 +212,7 @@ void SigninScreenHandler::RegisterMessages() {
 
   AddCallback("showLoadingTimeoutError",
               &SigninScreenHandler::HandleShowLoadingTimeoutError);
+  AddCallback("fydeLocalSignin", &SigninScreenHandler::HandleFydeLocalSignin);
 }
 
 void SigninScreenHandler::Show() {
@@ -444,6 +446,12 @@ void SigninScreenHandler::HandleLaunchIncognito() {
   UserContext context(user_manager::USER_TYPE_GUEST, EmptyAccountId());
   if (delegate_)
     delegate_->Login(context, SigninSpecifics());
+}
+
+void SigninScreenHandler::HandleFydeLocalSignin() {
+  HideOfflineMessage(NetworkStateInformer::OFFLINE,
+                     NetworkError::ERROR_REASON_NONE);
+  LoginDisplayHost::default_host()->StartWizard(FydeLocalSigninView::kScreenId);
 }
 
 void SigninScreenHandler::HandleOfflineLogin() {

@@ -373,6 +373,11 @@ class ErrorMessageScreen extends ErrorMessageScreenBase {
         .addEventListener('click', this.launchGuestSession_.bind(this));
 
     this.updateElementWithStringAndAnchorTag_(
+        'fyde-local-signin', 'fydeLocalSignin', {}, 'fyde-local-signin-link');
+    this.$$('#fyde-local-signin-link')
+        .addEventListener('click', this.advanceToFydeLocalSignin_.bind(this));
+
+    this.updateElementWithStringAndAnchorTag_(
         'error-guest-signin-fix-network', 'guestSigninFixNetwork', {},
         'error-guest-fix-network-signin-link');
     this.shadowRoot.querySelector('#error-guest-fix-network-signin-link')
@@ -423,6 +428,10 @@ class ErrorMessageScreen extends ErrorMessageScreenBase {
    */
   allowGuestSignin(allowed) {
     this.guestSessionAllowed_ = allowed;
+  }
+
+  advanceToFydeLocalSignin_() {
+    chrome.send('fydeLocalSignin');
   }
 
   /**
