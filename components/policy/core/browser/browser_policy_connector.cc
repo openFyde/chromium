@@ -28,6 +28,8 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "third_party/icu/source/i18n/unicode/regex.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/account_constants.h"
 
 namespace policy {
 
@@ -142,6 +144,15 @@ bool BrowserPolicyConnector::ProviderHasPolicies(
 
 std::string BrowserPolicyConnector::GetDeviceManagementUrl() const {
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+
+  // ---***FYDEOS BEGIN***---
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    if (command_line->HasSwitch(fydeos::switches::kFydeOSDeviceManagementUrl))
+      return command_line->GetSwitchValueASCII(fydeos::switches::kFydeOSDeviceManagementUrl);
+    else
+      return fydeos::constants::kDefaultFydeOSDeviceManagementServerUrl;
+  }
+  // ---***FYDEOS END***---
   if (command_line->HasSwitch(switches::kDeviceManagementUrl) &&
       IsCommandLineSwitchSupported())
     return command_line->GetSwitchValueASCII(switches::kDeviceManagementUrl);
@@ -151,6 +162,12 @@ std::string BrowserPolicyConnector::GetDeviceManagementUrl() const {
 
 std::string BrowserPolicyConnector::GetRealtimeReportingUrl() const {
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    if (command_line->HasSwitch(fydeos::switches::kFydeOSRealtimeReportingUrl))
+      return command_line->GetSwitchValueASCII(fydeos::switches::kFydeOSRealtimeReportingUrl);
+    else
+      return fydeos::constants::kDefaultFydeOSRealtimeReportingServerUrl;
+  }
   if (command_line->HasSwitch(switches::kRealtimeReportingUrl) &&
       IsCommandLineSwitchSupported())
     return command_line->GetSwitchValueASCII(switches::kRealtimeReportingUrl);
@@ -160,6 +177,12 @@ std::string BrowserPolicyConnector::GetRealtimeReportingUrl() const {
 
 std::string BrowserPolicyConnector::GetEncryptedReportingUrl() const {
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    if (command_line->HasSwitch(fydeos::switches::kFydeOSEncryptedReportingUrl))
+      return command_line->GetSwitchValueASCII(fydeos::switches::kFydeOSEncryptedReportingUrl);
+    else
+      return fydeos::constants::kDefaultFydeOSEncryptedReportingServerUrl;
+  }
   if (command_line->HasSwitch(switches::kEncryptedReportingUrl) &&
       IsCommandLineSwitchSupported())
     return command_line->GetSwitchValueASCII(switches::kEncryptedReportingUrl);
