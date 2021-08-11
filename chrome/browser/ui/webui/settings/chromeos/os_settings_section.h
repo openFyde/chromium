@@ -161,6 +161,8 @@ class OsSettingsSection {
   const Profile* profile() const { return profile_; }
   SearchTagRegistry* registry() { return search_tag_registry_; }
 
+  bool IsFydeProfile() const;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(OsSettingsSectionTest, Section);
   FRIEND_TEST_ALL_PREFIXES(OsSettingsSectionTest, Subpage);

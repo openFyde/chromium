@@ -166,6 +166,7 @@ void MainSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   html_source->AddBoolean("isPersonalizationHubEnabled",
                           ash::features::IsPersonalizationHubEnabled());
 
+  html_source->AddBoolean("isFydeProfile", IsFydeProfile());
   // Add the System Web App resources for Settings.
   html_source->AddResourcePath("icon-192.png", IDR_SETTINGS_LOGO_192);
 
