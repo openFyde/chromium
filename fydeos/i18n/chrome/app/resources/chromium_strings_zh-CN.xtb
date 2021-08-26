@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<translation id="5142122574074815690">关于 openFyde</translation>
+<translation id="2055174438424593651">版权所有 <ph name="YEAR" /> 燧炻创新及 openFyde 参与者，保留所有权利。</translation>
+<translation id="5926649962158120628">openFyde 的问世还有其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />的一份贡献。</translation>
+<translation id="2228658997317193454">openFyde 是借助了其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />才得以问世，<ph name="BEGIN_LINK_LINUX_OSS" />Linux（测试版）<ph name="END_LINK_LINUX_OSS" />也是如此。</translation>
+<translation id="2052041943247591012">获取 openFyde 使用帮助</translation>
+</translationbundle>

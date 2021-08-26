@@ -268,12 +268,14 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/chromium_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/chromium_strings_zu.xtb" lang="zu" />
+    <file path="../../fydeos/i18n/chrome/app/resources/chromium_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
       <!-- Settings specific strings -->
       <if expr="not is_android">
         <part file="settings_chromium_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/settings_chromium_strings.override.grdp" />
       </if>
 
       <message name="IDS_PRODUCT_NAME" desc="The Chrome application name">
@@ -1470,6 +1472,9 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “in Chrome settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice.">
         You can learn more about these features in Chromium settings.
       </message>
+
+      <part file="../../fydeos/i18n/chrome/app/chromium_strings.override.grdp" />
+
     </messages>
   </release>
 </grit>
