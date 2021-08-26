@@ -177,6 +177,7 @@
     <file path="translations/ui_chromeos_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="translations/ui_chromeos_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="translations/ui_chromeos_strings_zu.xtb" lang="zu" />
+    <file path="../../fydeos/i18n/ui/chromeos/translations/ui_chromeos_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -1830,6 +1831,8 @@
       <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings > Internet > Network details: Label for the checkbox determining whether to automatically connect to the network.">
         Automatically connect to this network
       </message>
+
+      <part file="../../fydeos/i18n/ui/chromeos/ui_chromeos_strings.override.grdp" />
     </messages>
   </release>
 </grit>
