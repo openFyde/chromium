@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_ABOUT_OS" desc="Menu title for the About Chromium OS page.">
+      About openFyde
+    </message>
+    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME_OS" desc="Text of the button which takes the user to the Chrome help page.">
+      Get help with openFyde
+    </message>
+  </if>
+</grit-part>

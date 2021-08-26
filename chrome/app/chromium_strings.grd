@@ -182,12 +182,14 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/chromium_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/chromium_strings_zu.xtb" lang="zu" />
+    <file path="../../fydeos/i18n/chrome/app/resources/chromium_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
       <!-- Settings specific strings -->
       <if expr="not is_android">
         <part file="settings_chromium_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/settings_chromium_strings.override.grdp" />
       </if>
 
       <message name="IDS_PRODUCT_NAME" desc="The Chrome application name">
@@ -1284,6 +1286,9 @@ Chromium is unable to recover your settings.
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH" desc="Text shown in the Chooser when browser does not have Bluetooth permission. The '&#10;' is a newline character to force the desired line wrapping.">
         Chromium needs Bluetooth access to continue &#10; pairing. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK">$1<ex>Open Preferences</ex></ph>
       </message>
+
+      <part file="../../fydeos/i18n/chrome/app/chromium_strings.override.grdp" />
+
     </messages>
   </release>
 </grit>
