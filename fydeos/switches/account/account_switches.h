@@ -37,6 +37,7 @@ CHROMEOS_EXPORT void ToggleFydeAccountFlagForCommandLineByAccountId(base::Comman
 CHROMEOS_EXPORT void ToggleFydeAccountFlagByActiveUser();
 CHROMEOS_EXPORT void EnableFydeAccountFlagForManagedDevice();
 CHROMEOS_EXPORT void DisableFydeAccountFlagForManagedDevice();
+CHROMEOS_EXPORT void AppendAccountSwitchesIfNeed(const AccountId& account_id, std::vector<std::string>* switches);
 
 }
 }

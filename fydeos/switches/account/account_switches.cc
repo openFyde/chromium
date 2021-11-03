@@ -162,5 +162,16 @@ void DisableFydeAccountFlagForManagedDevice() {
   is_device_managed = true;
 }
 
+void AppendAccountSwitchesIfNeed(const AccountId& account_id, std::vector<std::string>* switches) {
+  // GetSwitchString
+  base::CommandLine cmd_line(base::CommandLine::NO_PROGRAM);
+  cmd_line.AppendSwitch(kFydeAccountEnable);
+  const std::string account_switch = cmd_line.argv()[1];
+
+  if (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT && std::find(switches->begin(), switches->end(), account_switch) == switches->end()) {
+    switches->push_back(account_switch);
+  }
+}
+
 }// namespace switches
 }// namespace fydeos
