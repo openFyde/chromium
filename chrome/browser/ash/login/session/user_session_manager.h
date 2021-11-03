@@ -327,6 +327,7 @@ class UserSessionManager
                           CommandLineSwitchesType switches_type,
                           const std::vector<std::string>& switches);
 
+  void AppendAccountSwitchesIfNeed(const AccountId& account_id);
   // This should only be called when the primary user session is being
   // initialized. Calls outside of the primary user session initialization will
   // be ignored.

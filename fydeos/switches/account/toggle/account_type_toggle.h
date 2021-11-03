@@ -6,6 +6,7 @@
 #define FYDEOS_SWITCHES_ACCOUNT_TOGGLE_ACCOUNT_TYPE_TOGGLE_H_
 
 #include "chromeos/chromeos_export.h"
+#include <string>
 
 namespace base {
   class CommandLine;
@@ -24,6 +25,7 @@ CHROMEOS_EXPORT void ToggleFydeAccountFlagByActiveUser();
 CHROMEOS_EXPORT void EnableFydeAccountFlagForManagedDevice();
 CHROMEOS_EXPORT void DisableFydeAccountFlagForManagedDevice();
 CHROMEOS_EXPORT void SetDeviceManagedFlag(bool is_managed);
+CHROMEOS_EXPORT void AppendAccountSwitchesIfNeed(const AccountId& account_id, std::vector<std::string>* switches);
 
 
 } // namespace switches
