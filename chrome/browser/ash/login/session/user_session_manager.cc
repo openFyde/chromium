@@ -1027,6 +1027,7 @@ bool UserSessionManager::RestartToApplyPerSessionFlagsIfNeed(
   LOG(WARNING) << "Restarting to apply per-session flags...";
 
   update.UpdateSessionManager();
+  AppendAccountSwitchesIfNeed(user_manager::UserManager::Get()->GetActiveUser()->GetAccountId());
   attempt_restart_closure_.Run();
   return true;
 }
@@ -2512,6 +2513,16 @@ void UserSessionManager::SetSwitchesForUser(
   SessionManagerClient::Get()->SetFlagsForUser(
       cryptohome::CreateAccountIdentifierFromAccountId(account_id),
       all_switches);
+}
+
+void UserSessionManager::AppendAccountSwitchesIfNeed(const AccountId& account_id) {
+  std::vector<std::string> switches;
+  fydeos::switches::AppendAccountSwitchesIfNeed(user_manager::UserManager::Get()->GetActiveUser()->GetAccountId(), &switches);
+  if (switches.size() > 0) {
+    SetSwitchesForUser(user_manager::UserManager::Get()->GetActiveUser()->GetAccountId(),
+                       CommandLineSwitchesType::kSessionControl,
+                       switches);
+  }
 }
 
 void UserSessionManager::MaybeShowU2FNotification() {

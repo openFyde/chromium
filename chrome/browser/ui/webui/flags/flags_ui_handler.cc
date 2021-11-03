@@ -20,6 +20,8 @@
 #include "chrome/browser/ash/settings/about_flags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ash/login/session/user_session_manager.h"
+#include "components/user_manager/user_manager.h"
 #endif
 
 FlagsUIHandler::FlagsUIHandler()
@@ -184,6 +186,8 @@ void FlagsUIHandler::HandleRestartBrowser(const base::Value::List& args) {
   ash::about_flags::FeatureFlagsUpdate(*flags_storage_,
                                        Profile::FromWebUI(web_ui())->GetPrefs())
       .UpdateSessionManager();
+  ash::UserSessionManager::GetInstance()->AppendAccountSwitchesIfNeed(
+      user_manager::UserManager::Get()->GetActiveUser()->GetAccountId());
   // Call `ClearMigrationStep()` so that we can run migration for the following
   // case.
   // 1. User has lacros enabled.
