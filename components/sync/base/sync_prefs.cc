@@ -17,6 +17,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/pref_names.h"
 #include "components/sync/base/user_selectable_type.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace syncer {
 
@@ -71,7 +72,9 @@ void SyncPrefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   // Actual user-controlled preferences.
   registry->RegisterBooleanPref(prefs::kSyncFirstSetupComplete, false);
   registry->RegisterBooleanPref(prefs::kSyncRequested, false);
-  registry->RegisterBooleanPref(prefs::kSyncKeepEverythingSynced, true);
+  //---***FYDEOS BEGIN***---
+  registry->RegisterBooleanPref(prefs::kSyncKeepEverythingSynced, !fydeos::switches::IsFydeAccountEnabled());
+  //---***FYDEOS END***---
   for (UserSelectableType type : UserSelectableTypeSet::All()) {
     RegisterTypeSelectedPref(registry, type);
   }
@@ -336,7 +339,14 @@ void SyncPrefs::RegisterTypeSelectedPref(PrefRegistrySimple* registry,
                                          UserSelectableType type) {
   const char* pref_name = GetPrefNameForType(type);
   DCHECK(pref_name);
-  registry->RegisterBooleanPref(pref_name, false);
+  //---***FYDEOS BEGIN***---
+  registry->RegisterBooleanPref(pref_name, fydeos::switches::IsFydeAccountEnabled()
+    && (type == UserSelectableType::kPreferences
+    || type == UserSelectableType::kBookmarks
+    || type == UserSelectableType::kThemes
+    || type == UserSelectableType::kExtensions
+    || type == UserSelectableType::kApps));
+  //---***FYDEOS END***---
 }
 
 #if defined(OS_ANDROID)
