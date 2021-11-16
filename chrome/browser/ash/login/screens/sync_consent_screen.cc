@@ -278,7 +278,9 @@ void SyncConsentScreen::MaybeEnableSyncForSkip() {
     case SyncScreenBehavior::kSkipAndEnableScreenPolicy:
       // Sync is autostarted during SyncService
       // creation with "sync everything" toggle off. We need to turn it on here.
-      SetSyncEverythingEnabled(/*enabled=*/true);
+      if (!profile_->IsFydeProfile()) {
+        SetSyncEverythingEnabled(/*enabled=*/true);
+      }
       return;
   }
 }
