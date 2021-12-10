@@ -692,7 +692,8 @@ void UserSelectionScreen::OnBeforeShow() {
 void UserSelectionScreen::OnUserStatusChecked(
     const AccountId& account_id,
     TokenHandleUtil::TokenHandleStatus status) {
-  if (status == TokenHandleUtil::INVALID) {
+  if (status == TokenHandleUtil::INVALID &&
+      account_id.GetAccountType() != AccountType::FLINT_ACCOUNT) {
     RecordReauthReason(account_id, ReauthReason::INVALID_TOKEN_HANDLE);
     SetAuthType(account_id, proximity_auth::mojom::AuthType::ONLINE_SIGN_IN,
                 std::u16string());

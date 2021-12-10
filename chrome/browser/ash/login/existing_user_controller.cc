@@ -784,6 +784,7 @@ void ExistingUserController::OnAuthFailure(const AuthFailure& failure) {
 
   const bool is_known_user = user_manager::UserManager::Get()->IsKnownUser(
       last_login_attempt_account_id_);
+  const bool is_fyde_local_user = last_login_attempt_account_id_.GetAccountType() == AccountType::FLINT_ACCOUNT;
   if (failure.reason() == AuthFailure::OWNER_REQUIRED) {
     ShowError(SigninError::kOwnerRequired, error);
     // Using Untretained here is safe because SessionTerminationManager is
@@ -801,12 +802,12 @@ void ExistingUserController::OnAuthFailure(const AuthFailure& failure) {
     ShowError(SigninError::kTpmUpdateRequired, error);
   } else if (last_login_attempt_account_id_ == user_manager::GuestAccountId()) {
     StartAutoLoginTimer();
-  } else if (is_known_user &&
+  } else if (is_known_user && !is_fyde_local_user &&
              failure.reason() == AuthFailure::MISSING_CRYPTOHOME) {
     ForceOnlineLoginForAccountId(last_login_attempt_account_id_);
     RecordReauthReason(last_login_attempt_account_id_,
                        ReauthReason::MISSING_CRYPTOHOME);
-  } else if (is_known_user &&
+  } else if (is_known_user && !is_fyde_local_user &&
              failure.reason() == AuthFailure::UNRECOVERABLE_CRYPTOHOME) {
     // TODO(chromium:1140868, dlunev): for now we route unrecoverable the same
     // way as missing because it is removed under the hood in cryptohomed when
