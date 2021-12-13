@@ -76,6 +76,8 @@
 #include "components/policy/core/common/policy_loader_lacros.h"
 #endif
 
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+
 namespace policy {
 namespace {
 bool command_line_enabled_for_testing = false;
@@ -106,6 +108,7 @@ void ChromeBrowserPolicyConnector::OnResourceBundleCreated() {
 void ChromeBrowserPolicyConnector::Init(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  fydeos::switches::ToggleFydeAccountFlagByActiveUser();
   std::unique_ptr<DeviceManagementService::Configuration> configuration(
       new DeviceManagementServiceConfiguration(GetDeviceManagementUrl(),
                                                GetRealtimeReportingUrl(),

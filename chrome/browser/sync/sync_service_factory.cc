@@ -76,12 +76,15 @@
 #include "chrome/browser/ash/printing/synced_printers_manager_factory.h"
 #include "chrome/browser/sync/desk_sync_service_factory.h"
 #include "chrome/browser/sync/wifi_configuration_sync_service_factory.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 
 namespace {
 
 std::unique_ptr<KeyedService> BuildSyncService(
     content::BrowserContext* context) {
+  fydeos::switches::ToggleFydeAccountFlagByActiveUser();
+
   syncer::SyncServiceImpl::InitParams init_params;
 
   Profile* profile = Profile::FromBrowserContext(context);
