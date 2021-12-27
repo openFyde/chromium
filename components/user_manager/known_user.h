@@ -146,6 +146,8 @@ class USER_MANAGER_EXPORT KnownUser final {
   // (crbug.com/548926).
   bool FindGaiaID(const AccountId& account_id, std::string* out_value);
 
+  bool FindFydeID(const AccountId& account_id, std::string* out_value);
+
   // Setter and getter for DeviceId known user string preference.
   void SetDeviceId(const AccountId& account_id, const std::string& device_id);
 

@@ -573,7 +573,7 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
   bool is_reauth = !context.email.empty();
   if (is_reauth && features::IsGaiaReauthEndpointEnabled()) {
     const AccountId account_id =
-        GetAccountId(context.email, context.gaia_id, AccountType::GOOGLE);
+        GetAccountId(context.email, context.gaia_id, fydeos::switches::IsFydeAccountEnabled() ? AccountType::FYDE_ACCOUNT : AccountType::GOOGLE);
     auto* user = user_manager::UserManager::Get()->FindUser(account_id);
     DCHECK(user);
     bool is_child_account = user && user->IsChild();
@@ -1403,10 +1403,16 @@ void GaiaScreenHandler::LoadAuthExtension(bool force) {
   context.email = populated_account_id_.GetUserEmail();
 
   std::string gaia_id;
-  if (!context.email.empty() &&
+  if (!context.email.empty()) {
+    if (fydeos::switches::IsFydeAccountEnabled() &&
+      user_manager::known_user::FindFydeID(
+          AccountId::FromUserEmail(context.email), &gaia_id)) {
+      context.gaia_id = gaia_id;
+    } else if (!fydeos::switches::IsFydeAccountEnabled() &&
       user_manager::known_user::FindGaiaID(
           AccountId::FromUserEmail(context.email), &gaia_id)) {
-    context.gaia_id = gaia_id;
+      context.gaia_id = gaia_id;
+    }
   }
 
   if (!context.email.empty()) {

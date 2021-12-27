@@ -28,6 +28,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace chromeos {
 namespace {
@@ -112,10 +113,16 @@ void LockScreenReauthHandler::LoadAuthenticatorParam() {
   context.email = email_;
 
   std::string gaia_id;
-  if (!context.email.empty() &&
+  if (!context.email.empty()) {
+    if (fydeos::switches::IsFydeAccountEnabled() &&
+      user_manager::known_user::FindFydeID(
+          AccountId::FromUserEmail(context.email), &gaia_id)) {
+      context.gaia_id = gaia_id;
+    } else if (!fydeos::switches::IsFydeAccountEnabled() &&
       user_manager::known_user::FindGaiaID(
           AccountId::FromUserEmail(context.email), &gaia_id)) {
-    context.gaia_id = gaia_id;
+      context.gaia_id = gaia_id;
+    }
   }
 
   if (!context.email.empty()) {

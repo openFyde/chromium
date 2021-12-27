@@ -611,6 +611,11 @@ bool KnownUser::FindGaiaID(const AccountId& account_id,
   return GetStringPref(account_id, kGAIAIdKey, out_value);
 }
 
+bool KnownUser::FindFydeID(const AccountId& account_id,
+                           std::string* out_value) {
+  return GetStringPref(account_id, kFydeIdKey, out_value);
+}
+
 void KnownUser::SetDeviceId(const AccountId& account_id,
                             const std::string& device_id) {
   const std::string known_device_id = GetDeviceId(account_id);
@@ -1165,7 +1170,10 @@ bool FindGaiaID(const AccountId& account_id, std::string* out_value) {
 
 // ---***FYDEOS BEGIN***---
 bool FindFydeID(const AccountId& account_id, std::string* out_value) {
-  return GetStringPref(account_id, kFydeIdKey, out_value);
+  PrefService* local_state = GetLocalStateLegacy();
+  if (!local_state)
+    return false;
+  return KnownUser(local_state).FindFydeID(account_id, out_value);
 }
 // ---***FYDEOS END***---
 
