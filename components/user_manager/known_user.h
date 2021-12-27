@@ -140,6 +140,8 @@ class USER_MANAGER_EXPORT KnownUser final {
 
   const std::string* FindFydeID(const AccountId& account_id);
 
+  bool FindFydeID(const AccountId& account_id, std::string* out_value);
+
   // Setter and getter for DeviceId known user string preference.
   void SetDeviceId(const AccountId& account_id, const std::string& device_id);
 

@@ -574,7 +574,7 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
   bool is_reauth = !context.email.empty();
   if (is_reauth && features::IsGaiaReauthEndpointEnabled()) {
     const AccountId account_id =
-        GetAccountId(context.email, context.gaia_id, AccountType::GOOGLE);
+        GetAccountId(context.email, context.gaia_id, fydeos::switches::IsFydeAccountEnabled() ? AccountType::FYDE_ACCOUNT : AccountType::GOOGLE);
     auto* user = user_manager::UserManager::Get()->FindUser(account_id);
     DCHECK(user);
     bool is_child_account = user && user->IsChild();
@@ -1417,9 +1417,16 @@ void GaiaScreenHandler::LoadAuthExtension(bool force) {
 
   user_manager::KnownUser known_user(g_browser_process->local_state());
   if (!context.email.empty()) {
-    if (const std::string* gaia_id =
-            known_user.FindGaiaID(AccountId::FromUserEmail(context.email))) {
-      context.gaia_id = *gaia_id;
+    if (fydeos::switches::IsFydeAccountEnabled()) {
+      if (const std::string* fyde_id =
+              known_user.FindFydeID(AccountId::FromUserEmail(context.email))) {
+        context.gaia_id = *fyde_id;
+      }
+    } else {
+      if (const std::string* gaia_id =
+              known_user.FindGaiaID(AccountId::FromUserEmail(context.email))) {
+        context.gaia_id = *gaia_id;
+      }
     }
 
     context.gaps_cookie = known_user.GetGAPSCookie(
