@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <message translateable="false" name="IDS_CHROMIUM_OS_NAME" desc="The device operational system name for Chromium OS">
+   openFyde
+  </message>
+</grit-part>
