@@ -113,6 +113,7 @@ enum OAuth2Client {
 // Returns true if no dummy OAuth2 client ID and secret are set.
 bool HasOAuthClientConfigured();
 
+bool HasFydeOAuthClientConfigured();
 // Retrieves the OAuth2 client ID for the specified client, or the
 // empty string if not set.
 //
