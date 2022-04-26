@@ -413,8 +413,20 @@ std::string GetMetricsKey() {
   return g_api_key_cache.Get().metrics_key();
 }
 
+bool HasFydeOAuthClientConfigured() {
+  OAuth2Client client = CLIENT_FYDEOS_MAIN;
+  if (GetOAuth2ClientID(client) == DUMMY_API_TOKEN ||
+      GetOAuth2ClientSecret(client) == DUMMY_API_TOKEN) {
+    return false;
+  }
+  return true;
+}
+
 bool HasOAuthClientConfigured() {
   for (size_t client_id = 0; client_id < CLIENT_NUM_ITEMS; ++client_id) {
+    if (client_id == CLIENT_FYDEOS_MAIN) {
+      continue;
+    }
     OAuth2Client client = static_cast<OAuth2Client>(client_id);
     if (GetOAuth2ClientID(client) == DUMMY_API_TOKEN ||
         GetOAuth2ClientSecret(client) == DUMMY_API_TOKEN) {
