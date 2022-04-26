@@ -54,4 +54,10 @@
   <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2" desc="first hint message of modal dialog in gaia_signin screen">
     We recommend using an online account to utilise FydeOS to its fullest.
   </message>
+  <message name="IDS_LOGIN_GOOGLE_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+    You will not be able to add Google accounts because Google API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+  </message>
+  <message name="IDS_LOGIN_FYDE_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+    You will not be able to add FydeOS accounts because FydeOS API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+  </message>
 </grit-part>

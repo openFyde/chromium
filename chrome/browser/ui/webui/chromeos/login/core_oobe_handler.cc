@@ -50,6 +50,7 @@
 #include "ui/display/screen.h"
 #include "ui/events/event_sink.h"
 #include "ui/gfx/geometry/size.h"
+#include "fydeos/switches/account/account_constants.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -111,9 +112,17 @@ void CoreOobeHandler::DeclareLocalizedValues(
 
   const bool has_api_keys_configured = google_apis::HasAPIKeyConfigured() &&
                                        google_apis::HasOAuthClientConfigured();
-  if (!has_api_keys_configured && is_oobe_display_) {
+  const bool has_fyde_oauth_client_configured =
+      google_apis::HasFydeOAuthClientConfigured();
+  if (!has_api_keys_configured && !has_fyde_oauth_client_configured && is_oobe_display_) {
     builder->AddF("missingAPIKeysNotice", IDS_LOGIN_API_KEYS_NOTICE,
-                  base::ASCIIToUTF16(google_apis::kAPIKeysDevelopersHowToURL));
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
+  } else if (has_api_keys_configured && !has_fyde_oauth_client_configured && is_oobe_display_) {
+    builder->AddF("missingAPIKeysNotice", IDS_LOGIN_FYDE_API_KEYS_NOTICE,
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
+  } else if (!has_api_keys_configured && has_fyde_oauth_client_configured && is_oobe_display_) {
+    builder->AddF("missingAPIKeysNotice", IDS_LOGIN_GOOGLE_API_KEYS_NOTICE,
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
   }
 
   builder->Add("playAnimationAriaLabel", IDS_OOBE_PLAY_ANIMATION_MESSAGE);
