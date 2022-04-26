@@ -23,6 +23,8 @@ CHROMEOS_EXPORT extern const char kDefaultFydeOSFamilyLinkApisUrl[];
 CHROMEOS_EXPORT extern const char kDefaultFydeOSClassifyURLRequestApiPath[];
 extern const size_t kFydeOSSupervisedUserSettingsDefaultSyncIntervalInSeconds;
 
+CHROMEOS_EXPORT extern const char kFydeAPIKeysDevelopersHowToURL[];
+
 }//constants
 }//fydeos
 
