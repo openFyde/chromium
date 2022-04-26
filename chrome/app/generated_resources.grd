@@ -301,6 +301,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
       <if expr="chromeos_ash">
         <part file="chromeos_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/chromeos_strings.override.grdp" />
         <part file="../../fydeos/i18n/chrome/app/chromeos_strings.grdp" />
         <part file="os_settings_strings.grdp" />
         <part file="os_settings_search_tag_strings.grdp" />

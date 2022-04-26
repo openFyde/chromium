@@ -19,5 +19,6 @@ const char kDefaultFydeOSFamilyLinkApisUrl[] = "https://familylink-apis.fydeos.c
 const char kDefaultFydeOSClassifyURLRequestApiPath[] = "https://familylink-apis.fydeos.com/kidsmanagement/v1/people/me:classifyUrl";
 const size_t kFydeOSSupervisedUserSettingsDefaultSyncIntervalInSeconds = 600;
 
+const char kFydeAPIKeysDevelopersHowToURL[] = "https://openfyde.com/docs/developers/how-to-get-api-keys";
 } //constants
 } //fydeos

@@ -52,6 +52,7 @@
 #include "ui/display/screen.h"
 #include "ui/events/event_sink.h"
 #include "ui/gfx/geometry/size.h"
+#include "fydeos/switches/account/account_constants.h"
 
 namespace chromeos {
 
@@ -81,8 +82,16 @@ void CoreOobeHandler::DeclareLocalizedValues(
   // Strings for Asset Identifier shown in version string.
   builder->Add("assetIdLabel", IDS_OOBE_ASSET_ID_LABEL);
 
-  builder->AddF("missingAPIKeysNotice", IDS_LOGIN_API_KEYS_NOTICE,
-                base::ASCIIToUTF16(google_apis::kAPIKeysDevelopersHowToURL));
+  if (google_apis::HasOAuthClientConfigured() && !google_apis::HasFydeOAuthClientConfigured()) {
+    builder->AddF("missingAPIKeysNotice", IDS_LOGIN_FYDE_API_KEYS_NOTICE,
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
+  } else if (!google_apis::HasOAuthClientConfigured() && google_apis::HasFydeOAuthClientConfigured()) {
+    builder->AddF("missingAPIKeysNotice", IDS_LOGIN_GOOGLE_API_KEYS_NOTICE,
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
+  } else {
+    builder->AddF("missingAPIKeysNotice", IDS_LOGIN_API_KEYS_NOTICE,
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
+  }
 
   builder->Add("playAnimationAriaLabel", IDS_OOBE_PLAY_ANIMATION_MESSAGE);
   builder->Add("pauseAnimationAriaLabel", IDS_OOBE_PAUSE_ANIMATION_MESSAGE);
@@ -234,6 +243,7 @@ void CoreOobeHandler::ForwardAccelerator(std::string accelerator_name) {
 void CoreOobeHandler::UpdateOobeUIVisibility() {
   const std::string& display = GetOobeUI()->display_type();
   bool has_api_keys_configured = google_apis::HasAPIKeyConfigured() &&
+                                 google_apis::HasFydeOAuthClientConfigured() &&
                                  google_apis::HasOAuthClientConfigured();
   CallJS("cr.ui.Oobe.showAPIKeysNotice",
          !has_api_keys_configured && (display == OobeUI::kOobeDisplay ||
