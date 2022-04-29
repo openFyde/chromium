@@ -235,7 +235,7 @@ Styles related to the `md-screen-container`
 
 #api-keys-notice-container {
   display: flex;
-  justify-content: center;
+  justify-content: right;
   min-height: 0;
   position: fixed;
   top: 10px;
@@ -244,11 +244,10 @@ Styles related to the `md-screen-container`
 }
 
 #api-keys-notice {
-  background-color: rgba(0, 0, 0, 0.75);
   border-radius: 4px;
-  color: whitesmoke;
-  font-size: 15px;
+  color: var(--google-grey-700);
+  font-size: 13px;
   padding: 20px;
-  text-align: center;
+  text-align: right;
   width: 722px; /* same as #signin-banner */
 }
