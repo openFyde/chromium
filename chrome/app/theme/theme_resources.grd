@@ -373,6 +373,9 @@
         <structure type="chrome_scaled_image" name="IDR_TAILORED_SECURITY_CONSENTED_DARK" file="common/safer_with_google_shield_dark.png" />
         <structure type="chrome_scaled_image" name="IDR_TAILORED_SECURITY_UNCONSENTED" file="common/tailored_security_unconsented.png" />
       </if>
+      <!--FYDEOS BEGIN-->
+      <part file="../../../openfyde/resources/theme/app/fydeos_theme_resources.grdp" />
+      <!--FYDEOS END-->
     </structures>
   </release>
 </grit>
