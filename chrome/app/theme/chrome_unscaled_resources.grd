@@ -47,9 +47,11 @@
         </if>
       </if>
       <if expr="not _google_chrome">
-        <include name="IDR_PRODUCT_LOGO_64" file="chromium/product_logo_64.png" type="BINDATA" />
-        <include name="IDR_PRODUCT_LOGO_128" file="chromium/product_logo_128.png" type="BINDATA" />
-        <include name="IDR_PRODUCT_LOGO_256" file="chromium/product_logo_256.png" type="BINDATA" />
+        <!--FYDEOS BEGIN-->
+        <include name="IDR_PRODUCT_LOGO_64" file="../../../openfyde/resources/theme/app/product_logo_64.png" type="BINDATA" />
+        <include name="IDR_PRODUCT_LOGO_128" file="../../../openfyde/resources/theme/app/product_logo_128.png" type="BINDATA" />
+        <include name="IDR_PRODUCT_LOGO_256" file="../../../openfyde/resources/theme/app/product_logo_64.png" type="BINDATA" />
+        <!--FYDEOS END-->
         <!-- NOTE: product_logo_*.* files beyond what's listed above are
              referenced by installer code; don't remove them unless you know
              what you're doing! -->
@@ -57,10 +59,15 @@
           <include name="IDR_STATUS_TRAY_ICON" file="chromium/product_logo_22_mono.png" type="BINDATA" />
         </if>
         <if expr="chromeos">
-          <include name="IDR_CHROME_APP_ICON_32" file="chromium/chromeos/chrome_app_icon_32.png" type="BINDATA" />
-          <include name="IDR_CHROME_APP_ICON_192" file="chromium/chromeos/chrome_app_icon_192.png" type="BINDATA" />
+          <!--FYDEOS BEGIN-->
           <include name="IDR_WEBSTORE_APP_ICON_16" file="chromium/chromeos/webstore_app_icon_16.png" type="BINDATA" />
           <include name="IDR_WEBSTORE_APP_ICON_128" file="chromium/chromeos/webstore_app_icon_128.png" type="BINDATA" />
+          <include name="IDR_CHROME_APP_ICON_32" file="../../../openfyde/resources/theme/app/chrome_app_icon_32.png" type="BINDATA" />
+          <include name="IDR_CHROME_APP_ICON_192" file="../../../openfyde/resources/theme/app/chrome_app_icon_192.png" type="BINDATA" />
+          <include name="IDR_FYDEOS_WEBSTORE_APP_ICON_16" file="../../../openfyde/resources/theme/app/webstore_app_icon_16.png" type="BINDATA" />
+          <include name="IDR_FYDEOS_WEBSTORE_APP_ICON_128" file="../../../openfyde/resources/theme/app/webstore_app_icon_128.png" type="BINDATA" />
+          <include name="IDR_STATUS_TRAY_ICON" file="../../../openfyde/resources/theme/app/product_logo_22.png" type="BINDATA" />
+          <!--FYDEOS END-->
         </if>
       </if>
       <if expr="is_win">
@@ -118,6 +125,9 @@
         <include name="IDR_PLUGIN_VM_INSTALLER" file="plugin_vm/plugin_vm_installer.png" type="BINDATA" />
         <include name="IDR_PLUGIN_VM_INSTALLER_ERROR" file="plugin_vm/plugin_vm_installer_error.png" type="BINDATA" />
       </if>
+      <!--FYDEOS BEGIN-->
+      <part file="../../../openfyde/resources/theme/app/fydeos_unscaled_resources.grdp" />
+      <!--FYDEOS END-->
     </includes>
   </release>
 </grit>
