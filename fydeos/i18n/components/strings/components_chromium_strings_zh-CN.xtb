@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<!-- components_chromium_strings.override.grdp -->
+<translation id="1344748716332981032">openFyde 尚未完成其初始设置。</translation>
+<translation id="3831483999456024710">openFyde 和 Chromium 的诞生离不开 <ph name="BEGIN_LINK_CHROMIUM" />Chromium<ph name="END_LINK_CHROMIUM" /> 开放源代码项目以及其他<ph name="BEGIN_LINK_OSS" />开放源代码软件<ph name="END_LINK_OSS" />。</translation>
+</translationbundle>
