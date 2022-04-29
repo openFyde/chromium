@@ -189,6 +189,7 @@
     <file path="strings/components_chromium_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="strings/components_chromium_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="strings/components_chromium_strings_zu.xtb" lang="zu" />
+    <file path="../fydeos/i18n/components/strings/components_chromium_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -298,6 +299,9 @@
       <message name="IDS_SESSION_CRASHED_VIEW_MESSAGE" desc="Message shown when the last session didn't exit cleanly.">
         Chromium didn't shut down correctly.
       </message>
+
+      <part file="../fydeos/i18n/components/components_chromium_strings.override.grdp" />
+
     </messages>
   </release>
 </grit>
