@@ -2,8 +2,8 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
 <!-- chromeos_strings.grdp -->
-<translation id="5666923774785845494">创建您的 FydeOS 本地账号</translation>
-<translation id="4316532326266260626">登录您的 FydeOS 本地账号</translation>
+<translation id="4967320386096768929">创建你的 openFyde 本地账号</translation>
+<translation id="3057311352310891410">登录你的 openFyde 本地账号</translation>
 <translation id="3325117507482096812">请输入密码</translation>
 <translation id="1838206877831947154">你两次输入的密码不匹配，请重新输入</translation>
 <translation id="8592849747346274067">登录已存在的本地帐号</translation>
