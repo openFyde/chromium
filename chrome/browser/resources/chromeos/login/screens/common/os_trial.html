@@ -20,11 +20,15 @@
           --radio-button-height: 155px;
         }
       }
+      img.logo {
+        width: 132px;
+        height: 32px;
+      }
     </style>
 
     <oobe-adaptive-dialog id="osTrialDialog" role="dialog"
         aria-label$="[[i18nDynamic(locale, 'osTrialTitle')]]">
-      <iron-icon slot="icon" icon="oobe-32:googleg"></iron-icon>
+      <img class="logo" slot="icon" srcset="images/openfyde_logo.png" />
       <h1 slot="title">[[i18nDynamic(locale, 'osTrialTitle')]]</h1>
       <span inner-h-t-m-l="[[i18nAdvancedDynamic(locale, 'osTrialSubtitle')]]"
           slot="subtitle"></span>

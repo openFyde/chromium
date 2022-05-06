@@ -21,6 +21,12 @@ found in the LICENSE file.
     height: 20px;
     width: 20px;
   }
+
+  img.logo {
+    width: 132px;
+    height: 32px;
+  }
+
 </style>
 <gaia-dialog id="signin-frame-dialog"
     for-step="online-gaia"
@@ -61,7 +67,8 @@ found in the LICENSE file.
 </security-token-pin>
 <oobe-loading-dialog title-key="gaiaLoading"
     id="step-loading" for-step="loading">
-  <iron-icon slot="icon" icon="oobe-32:googleg"></iron-icon>
+  <img class="logo" slot="icon"
+       src="images/openfyde_logo.png" />
 </oobe-loading-dialog>
 <notification-card id="gaia-allowlist-error" class="fit"
     for-step="allowlist-error"
