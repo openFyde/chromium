@@ -41,6 +41,11 @@
         overflow: hidden;
         width: 380px;
       }
+
+      img.logo {
+        width: 132px;
+        height: 32px;
+      }
     </style>
     <oobe-adaptive-dialog for-step="cellular" tabindex="0"
         aria-live="polite" footer-shrinkable
@@ -68,7 +73,7 @@
     </oobe-adaptive-dialog>
     <oobe-adaptive-dialog footer-shrinkable id="checking-for-updates-dialog"
         for-step="checking" aria-live="polite">
-      <iron-icon slot="icon" icon="oobe-32:googleg"></iron-icon>
+      <img class="logo" slot="icon" srcset="images/openfyde_logo.png" />
       <h1 slot="title">
         [[i18nDynamic(locale, 'checkingForUpdates')]]
       </h1>

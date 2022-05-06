@@ -54,13 +54,17 @@ found in the LICENSE file. -->
       .intro-footer {
         color: var(--oobe-footer-text-color);
       }
+      img.logo {
+        width: 132px;
+        height: 32px;
+      }
     </style>
 
     <oobe-adaptive-dialog id="osInstallDialogIntro"
         role="dialog" for-step="intro"
         aria-label$="[[i18nDynamic(
             locale, 'osInstallDialogIntroTitle')]]">
-      <iron-icon slot="icon" icon="oobe-32:googleg"></iron-icon>
+      <img class="logo" slot="icon" srcset="images/openfyde_logo.png" />
       <h1 slot="title" id="osInstallDialogIntroTitleId">
         [[i18nDynamic(locale, 'osInstallDialogIntroTitle')]]</h1>
       <div slot="subtitle">
@@ -113,7 +117,7 @@ found in the LICENSE file. -->
         role="dialog" for-step="in-progress"
         subtitle-key="osInstallDialogInProgressSubtitle"
         aria-label$="[[i18nDynamic(locale, 'osInstallDialogInProgressTitle')]]">
-      <iron-icon slot="icon" icon="oobe-32:googleg"></iron-icon>
+      <img class="logo" slot="icon" srcset="images/openfyde_logo.png" />
       <div slot="title" id="osInstallDialogInProgressTitleId">
         [[i18nDynamic(locale, 'osInstallDialogInProgressTitle')]]</div>
     </oobe-loading-dialog>
@@ -164,7 +168,7 @@ found in the LICENSE file. -->
     <oobe-adaptive-dialog id="osInstallDialogSuccess"
         role="dialog" for-step="success"
         aria-label$="[[i18nDynamic(locale, 'osInstallDialogSuccessTitle')]]">
-      <iron-icon slot="icon" icon="oobe-32:googleg"></iron-icon>
+      <img class="logo" slot="icon" srcset="images/openfyde_logo.png" />
       <h1 slot="title">[[i18nDynamic(locale, 'osInstallDialogSuccessTitle')]]
       </h1>
       <div slot="subtitle" id="osInstallDialogSuccessSubtitile">

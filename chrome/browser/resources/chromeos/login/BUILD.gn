@@ -123,6 +123,7 @@ generate_grd("build_oobe_grd") {
     "images/2x/thumbnail-theme-dark-2x.png",
     "images/1x/thumbnail-theme-auto-1x.png",
     "images/2x/thumbnail-theme-auto-2x.png",
+    "images/openfyde_logo.png",
   ]
   input_files_base_dir = rebase_path(".", "//")
   resource_path_rewrites = [
