@@ -14,6 +14,9 @@ source_set("switches") {
   sources = [
     "display/display_switches.cc",
     "display/display_switches.h",
+
+    "urls/urls_constants.cc",
+    "urls/urls_constants.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }
