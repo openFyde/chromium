@@ -23,6 +23,8 @@ COMPONENT_EXPORT(UI_BASE_IME_ASH) extern const char kT13nExtensionId[];
 COMPONENT_EXPORT(UI_BASE_IME_ASH)
 extern const char kChinesePinyinExtensionId[];
 COMPONENT_EXPORT(UI_BASE_IME_ASH)
+extern const char kChineseRimeExtensionId[];
+COMPONENT_EXPORT(UI_BASE_IME_ASH)
 extern const char kChineseZhuyinExtensionId[];
 COMPONENT_EXPORT(UI_BASE_IME_ASH)
 extern const char kChineseCangjieExtensionId[];
