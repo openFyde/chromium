@@ -67,7 +67,7 @@ const struct {
 } kDefaultInputMethodRecommendation[] = {
   { "ja", "jp", "nacl_mozc_jp" },
   { "ja", "", "nacl_mozc_us" },
-  { "zh-CN", "", "zh-t-i0-pinyin" },
+  { "zh-CN", "", "zh-rime" },
   { "zh-TW", "", "zh-hant-t-i0-und" },
   { "th", "", "vkd_th" },
   { "vi", "", "vkd_vi_tcvn" },
@@ -224,6 +224,7 @@ const struct InputMethodNameMap {
     {"__MSG_INPUTMETHOD_MOZC_US__", IDS_IME_NAME_INPUTMETHOD_MOZC_US},
     {"__MSG_INPUTMETHOD_PINYIN__", IDS_IME_NAME_INPUTMETHOD_PINYIN},
     {"__MSG_INPUTMETHOD_QUICK__", IDS_IME_NAME_INPUTMETHOD_QUICK},
+    {"__MSG_INPUTMETHOD_RIME__", IDS_IME_NAME_INPUTMETHOD_RIME},
     {"__MSG_INPUTMETHOD_TRADITIONAL_PINYIN__",
      IDS_IME_NAME_INPUTMETHOD_TRADITIONAL_PINYIN},
     {"__MSG_INPUTMETHOD_WUBI__", IDS_IME_NAME_INPUTMETHOD_WUBI},

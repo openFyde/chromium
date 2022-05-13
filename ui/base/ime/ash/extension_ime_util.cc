@@ -33,7 +33,8 @@ const char kM17nExtensionId[] = "jkghodnilhceideoidjikpgommlajknk";
 const char kHangulExtensionId[] = "bdgdidmhaijohebebipajioienkglgfo";
 const char kMozcExtensionId[] = "jkghodnilhceideoidjikpgommlajknk";
 const char kT13nExtensionId[] = "jkghodnilhceideoidjikpgommlajknk";
-const char kChinesePinyinExtensionId[] = "jkghodnilhceideoidjikpgommlajknk";
+const char kChinesePinyinExtensionId[] = "jkghodnilhceideoidjikpgommlajknk"; 
+const char kChineseRimeExtensionId[] = "cpgalbafkoofkjmaeonnfijgpfennjjn";
 const char kChineseZhuyinExtensionId[] = "jkghodnilhceideoidjikpgommlajknk";
 const char kChineseCangjieExtensionId[] = "jkghodnilhceideoidjikpgommlajknk";
 #else
@@ -124,6 +125,10 @@ std::string GetInputMethodIDByEngineID(const std::string& engine_id) {
   if (base::StartsWith(engine_id, "zh-", base::CompareCase::SENSITIVE) &&
       engine_id.find("pinyin") != std::string::npos) {
     return GetComponentInputMethodID(kChinesePinyinExtensionId, engine_id);
+  }
+  if (base::StartsWith(engine_id, "zh-", base::CompareCase::SENSITIVE) &&
+      engine_id.find("rime") != std::string::npos) {
+    return GetComponentInputMethodID(kChineseRimeExtensionId, engine_id);
   }
   if (base::StartsWith(engine_id, "zh-", base::CompareCase::SENSITIVE) &&
       engine_id.find("zhuyin") != std::string::npos) {

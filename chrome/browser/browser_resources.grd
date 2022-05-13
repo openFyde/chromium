@@ -287,6 +287,7 @@
         <if expr="not _google_chrome">
           <then>
             <include name="IDR_GOOGLE_XKB_MANIFEST" file="resources\chromeos\input_method\google_xkb_manifest.json" type="BINDATA" />
+            <include name="IDR_PINYIN_MANIFEST" file="resources\chromeos\input_method\pinyin_manifest.json" type="BINDATA" />
           </then>
           <else>
             <include name="IDR_XKB_MANIFEST" file="resources\chromeos\input_method\xkb_manifest.json" type="BINDATA" />

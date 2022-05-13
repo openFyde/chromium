@@ -52,6 +52,11 @@ struct AllowlistedComponentExtensionIME {
         extension_ime_util::kXkbExtensionId,
         IDR_GOOGLE_XKB_MANIFEST,
     },
+    {
+        // Open-sourced Pinyin Chinese Input Method.
+        extension_ime_util::kChineseRimeExtensionId,
+        IDR_PINYIN_MANIFEST,
+    },
 #else
     {
         // Open-sourced ChromeOS xkb extension.
