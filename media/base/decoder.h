@@ -50,7 +50,10 @@ enum class VideoDecoderType : int {
   // kChromeOs = 15,  // DEPRECATED, should be kVaapi or kV4L2 instead.
   kV4L2 = 16,       // V4L2VideoDecoder
 
-  kTesting = 17,  // Never send this to UKM, for tests only.
+//---***FYDEOS BEGIN***---
+  kRpi = 17,
+//---***FYDEOS END***---
+  kTesting = 18,  // Never send this to UKM, for tests only.
 
   // Keep this at the end and equal to the last entry.
   kMaxValue = kTesting

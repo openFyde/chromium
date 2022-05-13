@@ -176,6 +176,8 @@ source_set("filters") {
       sources += [
         "ffmpeg_video_decoder.cc",
         "ffmpeg_video_decoder.h",
+        "//fydeos/media/filters/rpi_video_decoder.cc",
+        "//fydeos/media/filters/rpi_video_decoder.h",
       ]
     }
 

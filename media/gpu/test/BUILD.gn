@@ -133,6 +133,7 @@ static_library("video_test_environment") {
     "//media:test_support",
     "//media/gpu",
     "//mojo/core/embedder:embedder",
+    "//fydeos/switches",
   ]
 
   public_deps = [

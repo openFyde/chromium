@@ -36,6 +36,10 @@
 
 #if BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS)
 #include "media/filters/ffmpeg_video_decoder.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/switches/display/display_switches.h"
+#include "fydeos/media/filters/rpi_video_decoder.h"
+//---***FYDEOS END***---
 #endif
 
 #if BUILDFLAG(ENABLE_LIBVPX)
@@ -125,6 +129,14 @@ DefaultDecoderFactory::GetSupportedVideoDecoderConfigsForWebRTC() {
 #if BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS)
   // When the FFmpegVideoDecoder has been updated for RTC add
   // `FFmpegVideoDecoder::SupportedConfigsForWebRTC()` to `supported_configs`.
+  //---***FYDEOS BEGIN***---
+  if (fydeos::switches::UseRpiVideoDecoder()) {
+    SupportedVideoDecoderConfigs rpi_configs =
+      RpiVideoDecoder::SupportedConfigsForWebRTC();
+    supported_configs.insert(supported_configs.end(), rpi_configs.begin(),
+                             rpi_configs.end());
+  }
+  //---***FYDEOS END***---
 #endif
 
   return supported_configs;
@@ -199,6 +211,10 @@ void DefaultDecoderFactory::CreateVideoDecoders(
   }
 
 #if BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS)
+//---***FYDEOS BEGIN***---
+  if (fydeos::switches::UseRpiVideoDecoder())
+    video_decoders->push_back(std::make_unique<RpiVideoDecoder>(media_log));
+//---***FYDEOS END***---
   video_decoders->push_back(std::make_unique<FFmpegVideoDecoder>(media_log));
 #endif
 }

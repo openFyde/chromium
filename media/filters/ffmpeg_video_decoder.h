@@ -64,16 +64,21 @@ class MEDIA_EXPORT FFmpegVideoDecoder : public VideoDecoder {
   void force_allocation_error_for_testing() { force_allocation_error_ = true; }
 
  private:
+  friend class RpiVideoDecoder;
   enum class DecoderState { kUninitialized, kNormal, kDecodeFinished, kError };
 
   // Handles decoding of an unencrypted encoded buffer. A return value of false
   // indicates that an error has occurred.
-  bool FFmpegDecode(const DecoderBuffer& buffer);
-  bool OnNewFrame(AVFrame* frame);
+  //---***FYDEOS BEGIN***---
+  virtual bool FFmpegDecode(const DecoderBuffer& buffer);
+  virtual bool OnNewFrame(AVFrame* frame);
+  //---***FYDEOS END***---
 
   // Handles (re-)initializing the decoder with a (new) config.
   // Returns true if initialization was successful.
-  bool ConfigureDecoder(const VideoDecoderConfig& config, bool low_delay);
+  //---***FYDEOS BEGIN***---
+  virtual bool ConfigureDecoder(const VideoDecoderConfig& config, bool low_delay);
+  //---***FYDEOS END***---
 
   // Releases resources associated with |codec_context_|.
   void ReleaseFFmpegResources();

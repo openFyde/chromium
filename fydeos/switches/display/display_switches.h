@@ -12,8 +12,10 @@ namespace fydeos {
 namespace switches {
 EXPORT_ALL extern const char kForceLegacyPlaneManager[];
 EXPORT_ALL extern const char kForceShowCursor[];
+EXPORT_ALL extern const char kUseRpiVideoDecoder[];
 EXPORT_ALL bool ForceLegacyPlaneManager();
 EXPORT_ALL bool ForceShowCursor();
+CHROMEOS_EXPORT bool UseRpiVideoDecoder();
 
 CHROMEOS_EXPORT float GetDefaultDSF(float default_value);
 CHROMEOS_EXPORT float GetDefaultScreenDpi(float default_value);

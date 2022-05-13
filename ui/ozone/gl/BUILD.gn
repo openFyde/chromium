@@ -14,6 +14,7 @@ test("ozone_gl_unittests") {
     "//ui/gl:run_all_unittests",
     "//ui/gl:test_support",
     "//ui/ozone",
+    "//fydeos/switches",
   ]
 
   data_deps = [ "//third_party/mesa_headers" ]

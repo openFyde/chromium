@@ -50,6 +50,10 @@ std::string GetDecoderName(VideoDecoderType type) {
       return "VDAVideoDecoder";
     case VideoDecoderType::kV4L2:
       return "V4L2VideoDecoder";
+      //---***FYDEOS BEGIN***---
+    case VideoDecoderType::kRpi:
+      return "RpiVideoDecoder";
+      //---***FYDEOS END***---
     case VideoDecoderType::kTesting:
       return "Testing or Mock Video decoder";
     default:

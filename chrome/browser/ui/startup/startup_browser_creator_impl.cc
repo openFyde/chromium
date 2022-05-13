@@ -97,6 +97,9 @@
 #include "chrome/browser/sessions/app_session_service_factory.h"
 #endif
 
+//---***FYDEOS BEGIN***---
+#include "fydeos/switches/display/display_switches.h"
+//---***FYDEOS END***---
 namespace {
 
 // Utility functions ----------------------------------------------------------
@@ -161,6 +164,11 @@ bool ShouldShowBadFlagsSecurityWarnings() {
   if (pref->IsManaged())
     return pref->GetValue()->GetBool();
 #endif
+  //---***FYDEOS BEGIN***---
+  // TODO add rpi mmal decoder related files to sandbox to remove no-sandbox
+  if (fydeos::switches::UseRpiVideoDecoder())
+    return false;
+  //---***FYDEOS END***---
   return true;
 }
 

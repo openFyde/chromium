@@ -20,9 +20,14 @@ const char kForceCursorCompositing[] = "fydeos-force-cursor-compositing";
 
 const char kForceLegacyPlaneManager[] = "use-legacy-plane-manager";
 const char kForceShowCursor[] = "fydeos-force-show-cursor";
+const char kUseRpiVideoDecoder[] = "enable-rpi-video-decoder";
 
 bool ForceLegacyPlaneManager() {
   return base::CommandLine::ForCurrentProcess()->HasSwitch(kForceLegacyPlaneManager);  
+}
+
+bool UseRpiVideoDecoder() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(kUseRpiVideoDecoder);
 }
 
 float GetDefaultDSF(float default_value) {
