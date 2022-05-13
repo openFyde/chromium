@@ -50,9 +50,10 @@ class FydeLocalSigninScreenHandler : public FydeLocalSigninView,
         const FydeLocalSigninScreenHandler&) = delete;
 
   private:
-    void HandleCompleteAuth(const std::string& username,
+    void HandleCompleteAuth(const bool newUser,
+                            const std::string& username,
                             const std::string& password);
-    void DoCompleteLogin(const std::string& username, const Key& key);
+    void DoCompleteLogin(const bool newUser, const std::string& username, const Key& key);
 
     void Show() override;
     void Bind(ash::FydeLocalSigninScreen* screen) override;

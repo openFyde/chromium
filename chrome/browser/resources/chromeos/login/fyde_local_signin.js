@@ -6,11 +6,17 @@
 
 (function() {
 
+const UIState = {
+  SIGNUP: 'signup',
+  SIGNIN: 'signin',
+};
+
 /** @enum {number} */ var FYDE_LOCAL_SIGNIN_ERROR_STATE = {
   NONE: 0,
   BAD_USERNAME: 1,
   BAD_AUTH_PASSWORD: 2,
   BAD_CONFIRM_PASSWORD: 3,
+  BAD_USERNAME_OR_PASSWORD_ERROR: 4,
 };
 
 Polymer({
@@ -20,6 +26,7 @@ Polymer({
     OobeDialogHostBehavior,
     LoginScreenBehavior,
     OobeI18nBehavior,
+    MultiStepBehavior,
   ],
 
   EXTERNAL_API: [
@@ -36,15 +43,32 @@ Polymer({
       value: FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE,
       observer: 'errorStateObserver_',
     },
+    showUsersOnSignin_: {
+      type: Boolean,
+      value: true,
+    },
+    showSigninButton_: {
+      type: Boolean,
+      value: false,
+      computed: 'computeShowSigninButton_(showUsersOnSignin_, uiStep)',
+    },
     userInvalid:
         {type: Boolean, value: false, observer: 'userInvalidObserver_'},
     authPasswordInvalid:
         {type: Boolean, value: false, observer: 'authPasswordInvalidObserver_'},
     authPasswordConfirmInvalid:
         {type: Boolean, value: false, observer: 'authPasswordConfirmInvalidObserver_'},
+    authSigninPasswordInvalid:
+        {type: Boolean, value: false, observer: 'authSigninPasswordInvalidObserver_'},
   },
 
   errorStateLocked_: false,
+
+  defaultUIStep() {
+    return UIState.SIGNUP;
+  },
+
+  UI_STEPS: UIState,
 
   ready() {
     this.initializeLoginScreen('FydeLocalSigninScreen', {
@@ -55,6 +79,9 @@ Polymer({
   onBeforeShow(data) {
     if (data && 'emailDomain' in data) {
       this.userRealm = '@' + data['emailDomain'];
+    }
+    if (data && 'showUsersOnSignin' in data) {
+      this.showUsersOnSignin_ = data.showUsersOnSignin;
     }
     this.focus();
   },
@@ -69,6 +96,7 @@ Polymer({
     this.$.userInput.value = '';
     this.$.passwordInput.value = '';
     this.$.passwordConfirmInput.value = '';
+    this.$.signinPasswordInput.value = '';
     this.errorState = FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE;
     this.loading = false;
   },
@@ -90,6 +118,7 @@ Polymer({
     this.userInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_USERNAME;
     this.authPasswordInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_AUTH_PASSWORD;
     this.authPasswordConfirmInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_CONFIRM_PASSWORD;
+    this.authSigninPasswordInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_USERNAME_OR_PASSWORD_ERROR;
 
     this.errorStateLocked_ = false;
   },
@@ -98,22 +127,39 @@ Polymer({
     this.userInvalid = !this.$.userInput.validate();
     if (this.userInvalid)
       return;
-    this.authPasswordInvalid = !this.$.passwordInput.validate();
-    if (this.authPasswordInvalid)
+    if (this.uiStep === UIState.SIGNUP) {
+      this.authPasswordInvalid = !this.$.passwordInput.validate();
+      if (this.authPasswordInvalid)
+        return;
+      this.authPasswordConfirmInvalid = !this.$.passwordConfirmInput.validate() || (this.$.passwordInput.value !== this.$.passwordConfirmInput.value);
+      if (this.authPasswordConfirmInvalid)
+        return;
+    } else if (this.uiStep === UIState.SIGNIN) {
+      this.authSigninPasswordInvalid = !this.$.signinPasswordInput.validate();
+      if (this.authSigninPasswordInvalid)
+        return;
+    } else {
       return;
-    this.authPasswordConfirmInvalid = !this.$.passwordConfirmInput.validate() || (this.$.passwordInput.value !== this.$.passwordConfirmInput.value);
-    if (this.authPasswordConfirmInvalid)
-      return;
+    }
 
     var user = /** @type {string} */ (this.$.userInput.value);
     if (!user.includes('@') && this.userRealm)
       user += this.userRealm;
+    let username = user;
+    let password = '';
+    let newUser = this.uiStep === UIState.SIGNUP;
+    if (newUser) {
+      password = this.$.passwordInput.value;
+    } else {
+      password = this.$.signinPasswordInput.value;
+    }
     var msg = {
-      'username': user,
-      'password': this.$.passwordInput.value,
+      newUser,
+      username,
+      password,
     };
     this.loading = true;
-    chrome.send('completeFtAuthentication', [msg.username, msg.password]);
+    chrome.send('completeFtAuthentication', [msg.newUser, msg.username, msg.password]);
   },
 
   onBackButton_() {
@@ -122,8 +168,13 @@ Polymer({
 
   onKeydownUserInput_(e) {
     this.errorState = FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE;
-    if (e.key == 'Enter')
-      this.switchTo_('passwordInput');
+    if (e.key == 'Enter') {
+      if (this.uiStep === UIState.SIGNUP) {
+        this.switchTo_('passwordInput');
+      } else if (this.uiStep === UIState.SIGNIN) {
+        this.switchTo_('signinPasswordInput');
+      }
+    }
   },
 
   userNameObserver_() {
@@ -141,6 +192,12 @@ Polymer({
 
   onKeydownAuthPasswordConfirmInput_(e) {
     this.authPasswordConfirmInvalid = false;
+    if (e.key == 'Enter')
+      this.onSubmit_();
+  },
+
+  onKeydownAuthSigninPasswordInput_(e) {
+    this.errorState = FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE;
     if (e.key == 'Enter')
       this.onSubmit_();
   },
@@ -167,6 +224,11 @@ Polymer({
         isInvalid, FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_CONFIRM_PASSWORD);
   },
 
+  authSigninPasswordInvalidObserver_(isInvalid) {
+    this.setErrorState_(
+        isInvalid, FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_USERNAME_OR_PASSWORD_ERROR);
+  },
+
   setErrorState_(isInvalid, error) {
     if (this.errorStateLocked_)
       return;
@@ -178,6 +240,20 @@ Polymer({
       this.errorState = FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE;
 
     this.errorStateLocked_ = false;
+  },
+
+  onGotoSignupClicked_() {
+    this.reset();
+    this.setUIStep(UIState.SIGNUP);
+  },
+
+  onGotoSigninClicked_() {
+    this.reset();
+    this.setUIStep(UIState.SIGNIN);
+  },
+
+  computeShowSigninButton_(showUsersOnSignin, uiStep) {
+    return !showUsersOnSignin && uiStep === UIState.SIGNUP;
   },
 
 });
