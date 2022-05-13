@@ -3145,6 +3145,7 @@ Try tapping the mic to ask me anything.
         Report this query
       </message>
 
+      <part file="../fydeos/i18n/chromeos/chromeos_strings.override.grdp" />
       <part file="../fydeos/i18n/chromeos/chromeos_strings.grdp" />
 
     </messages>
