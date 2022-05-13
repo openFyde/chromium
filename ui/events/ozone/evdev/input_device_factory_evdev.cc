@@ -133,7 +133,7 @@ std::unique_ptr<EventConverterEvdev> CreateConverter(
       useLibinput = overridden_state.value();
     } else {
       useLibinput = !devinfo.HasMultitouch() || !devinfo.HasValidMTAbsXY() ||
-                    !devinfo.IsSemiMultitouch() || IsForceLibinput(devinfo);
+                    devinfo.IsSemiMultitouch() || IsForceLibinput(devinfo);
     }
     if (useLibinput) {
       return LibInputEventConverter::Create(params.path, params.id, devinfo,
