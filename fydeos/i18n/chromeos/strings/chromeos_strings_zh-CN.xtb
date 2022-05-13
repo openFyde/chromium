@@ -3,4 +3,6 @@
 <translationbundle lang="zh-CN">
 <!-- chromeos_strings.grdp -->
 <translation id="7215016743510876720">使用本地帐号</translation>
+<!-- chromeos_strings.override.grdp -->
+<translation id="676750809707619649">安装 openFyde</translation>
 </translationbundle>

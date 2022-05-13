@@ -3598,6 +3598,7 @@ Try tapping the mic to ask me anything.
       </message>
       <!-- End of Shortcut Customization -->
 
+      <part file="../fydeos/i18n/chromeos/chromeos_strings.override.grdp" />
       <part file="../fydeos/i18n/chromeos/chromeos_strings.grdp" />
 
     </messages>
