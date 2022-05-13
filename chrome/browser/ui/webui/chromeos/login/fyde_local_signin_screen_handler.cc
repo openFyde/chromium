@@ -22,6 +22,7 @@ enum class FYDE_LOCAL_SIGNIN_ERROR_STATE {
   BAD_USERNAME = 1,
   BAD_AUTH_PASSWORD = 2,
   BAD_CONFIRM_PASSWORD = 3,
+  BAD_USERNAME_OR_PASSWORD_ERROR = 4,
 };
 
 std::string CreateFydeLocalAccountID(const std::string& username){
@@ -46,6 +47,7 @@ void FydeLocalSigninScreenHandler::RegisterMessages() {
 
 void FydeLocalSigninScreenHandler::DeclareLocalizedValues(
     ::login::LocalizedValuesBuilder* builder) {
+  builder->Add("fydeosLocalSignupTitle", IDS_FYDEOS_LOCAL_SIGNUP_TITLE);
   builder->Add("fydeosLocalSigninTitle", IDS_FYDEOS_LOCAL_SIGNIN_TITLE);
   builder->Add("fydeosLocalSigninUsername", IDS_FYDEOS_LOCAL_SIGNIN_USERNAME);
   builder->Add("fydeosLocalSigninInvalidUsername", IDS_FYDEOS_LOCAL_SIGNIN_INVALID_USERNAME);
@@ -53,15 +55,23 @@ void FydeLocalSigninScreenHandler::DeclareLocalizedValues(
   builder->Add("fydeosLocalSigninInvalidPassword", IDS_FYDEOS_LOCAL_SIGNIN_INVALID_PASSWORD);
   builder->Add("fydeosLocalSigninPasswordConfirm", IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD_CONFIRM);
   builder->Add("fydeosLocalSigninPasswordConfirmError", IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD_CONFIRM_ERROR);
+  builder->Add("fydeosLocalSigninNewLocalAccountButtonText", IDS_FYDEOS_LOCAL_SIGNIN_NEW_LOCAL_ACCOUNT_BUTTON_TEXT);
+  builder->Add("fydeosLocalSigninExistLocalAccountButtonText", IDS_FYDEOS_LOCAL_SIGNIN_EXIST_LOCAL_ACCOUNT_BUTTON_TEXT);
+  builder->Add("fydeosLocalSigninExistLocalAccountErrorMessage", IDS_FYDEOS_LOCAL_SIGNIN_EXIST_LOCAL_ACCOUNT_ERROR_MESSAGE);
 }
 
 void FydeLocalSigninScreenHandler::Show() {
   base::Value::Dict data;
   data.Set("emailDomain", "fydeos.local");
+  bool show_users_on_signin;
+  chromeos::CrosSettings::Get()->GetBoolean(
+      ash::kAccountsPrefShowUserNamesOnSignIn, &show_users_on_signin);
+  data.Set("showUsersOnSignin", show_users_on_signin);
   ShowInWebUI(std::move(data));
 }
 
-void FydeLocalSigninScreenHandler::HandleCompleteAuth(const std::string& username,
+void FydeLocalSigninScreenHandler::HandleCompleteAuth(const bool newUser,
+                                                      const std::string& username,
                                                       const std::string& password) {
   if (username.empty()) {
     SetErrorState(username, static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_USERNAME));
@@ -71,13 +81,24 @@ void FydeLocalSigninScreenHandler::HandleCompleteAuth(const std::string& usernam
     SetErrorState(username, static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_AUTH_PASSWORD));
     return;
   }
+  bool exist = false;
   const std::vector<AccountId> known_account_ids =
       user_manager::known_user::GetKnownAccountIds();
   for (const AccountId& known_id : known_account_ids) {
     if (known_id.GetUserEmail() == username) {
-      SetErrorState(username, static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_USERNAME));
-      return;
+      exist = true;
+      break;
     }
+  }
+
+  if (exist && newUser) {
+    // signup an existing account
+    SetErrorState(username, static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_USERNAME));
+    return;
+  } else if (!exist && !newUser) {
+    // signin an non-existent account
+    SetErrorState(username, static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_USERNAME_OR_PASSWORD_ERROR));
+    return;
   }
 
   if (LoginDisplayHost::default_host())
@@ -85,10 +106,11 @@ void FydeLocalSigninScreenHandler::HandleCompleteAuth(const std::string& usernam
 
   Key key(password);
   key.SetLabel(kCryptohomeGaiaKeyLabel);
-  DoCompleteLogin(username, key);
+  DoCompleteLogin(newUser, username, key);
 }
 
-void FydeLocalSigninScreenHandler::DoCompleteLogin(const std::string& username,
+void FydeLocalSigninScreenHandler::DoCompleteLogin(const bool newUser,
+                                                   const std::string& username,
                                                    const Key& key) {
   std::string userId = CreateFydeLocalAccountID(username);
   user_manager::KnownUser known_user(g_browser_process->local_state());
@@ -100,7 +122,18 @@ void FydeLocalSigninScreenHandler::DoCompleteLogin(const std::string& username,
   user_context.SetKey(key);
   user_context.SetAuthFlow(UserContext::AUTH_FLOW_FLINT_ACCOUNT);
   user_context.SetIsUsingOAuth(false);
-  LoginDisplayHost::default_host()->CompleteLogin(user_context);
+  if (newUser) {
+    LoginDisplayHost::default_host()->CompleteLogin(user_context);
+  } else {
+    if (ExistingUserController::current_controller()) {
+      ExistingUserController::current_controller()->Login(user_context,
+                                                          SigninSpecifics());
+    } else {
+      LOG(ERROR) << "FydeLocalSigninScreenHandler::DoCompleteLogin: "
+                 << "ExistingUserController not available.";
+      SetErrorState(username, static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_USERNAME_OR_PASSWORD_ERROR));
+    }
+  }
 }
 
 void FydeLocalSigninScreenHandler::Reset() {
