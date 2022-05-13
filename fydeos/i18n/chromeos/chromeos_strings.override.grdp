@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chromeos/chromeos_strings.grd -->
+<grit-part>
+  <message name="IDS_ASH_SHELF_OS_INSTALL_BUTTON" desc="Text shown on install cloudready button on login screen.">
+    Install openFyde
+  </message>
+</grit-part>
