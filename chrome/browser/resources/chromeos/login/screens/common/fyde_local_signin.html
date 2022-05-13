@@ -15,16 +15,20 @@
 <link rel="import" href="../../components/dialogs/oobe_adaptive_dialog.html">
 <link rel="import" href="../../components/behaviors/oobe_i18n_behavior.html">
 <link rel="import" href="../../components/behaviors/oobe_dialog_host_behavior.html">
+<link rel="import" href="../../components/behaviors/multi_step_behavior.html">
 <link rel="import" href="../../components/oobe_icons.html">
 
 <dom-module id="fyde-local-signin-element">
   <template>
     <style include="oobe-dialog-host-styles"></style>
-    <oobe-adaptive-dialog role="dialog"
+    <oobe-adaptive-dialog role="dialog" for-step="signup,signin"
        aria-label$="[[i18nDynamic(locale, 'fydeosLocalSigninTitle')]]"
     >
       <iron-icon slot="icon" icon="oobe-32:avatar"></iron-icon>
-      <h1 slot="title">
+      <h1 slot="title" for-step="signup">
+        [[i18nDynamic(locale, 'fydeosLocalSignupTitle')]]
+      </h1>
+      <h1 slot="title" for-step="signin">
         [[i18nDynamic(locale, 'fydeosLocalSigninTitle')]]
       </h1>
       <div slot="subtitle"></div>
@@ -44,13 +48,22 @@
               [[userRealm]]
             </span>
           </cr-input>
+          <cr-input slot="inputs" id="signinPasswordInput" type="password" required
+              for-step="signin"
+              invalid="[[authSigninPasswordInvalid]]"
+              label="[[i18nDynamic(locale, 'fydeosLocalSigninPassword')]]"
+              on-keydown="onKeydownAuthSigninPasswordInput_"
+              error-message="[[i18nDynamic(locale, 'fydeosLocalSigninExistLocalAccountErrorMessage')]]">
+          </cr-input>
           <cr-input slot="inputs" id="passwordInput" type="password" required
+              for-step="signup"
               invalid="[[authPasswordInvalid]]"
               label="[[i18nDynamic(locale, 'fydeosLocalSigninPassword')]]"
               on-keydown="onKeydownAuthPasswordInput_"
               error-message="[[i18nDynamic(locale, 'fydeosLocalSigninInvalidPassword')]]">
           </cr-input>
           <cr-input slot="inputs" id="passwordConfirmInput" type="password" required
+              for-step="signup"
               invalid="[[authPasswordConfirmInvalid]]"
               label="[[i18nDynamic(locale, 'fydeosLocalSigninPasswordConfirm')]]"
               on-keydown="onKeydownAuthPasswordConfirmInput_"
@@ -62,6 +75,8 @@
         <oobe-back-button id="backButton" on-click="onBackButton_"></oobe-back-button>
       </div>
       <div slot="bottom-buttons" hidden="[[loading]]">
+        <oobe-text-button id="signinButton" on-click="onGotoSigninClicked_" text-key="fydeosLocalSigninExistLocalAccountButtonText" hidden="[[!showSigninButton_]]"></oobe-text-button>
+        <oobe-text-button for-step="signin" id="signupButton" on-click="onGotoSignupClicked_" text-key="fydeosLocalSigninNewLocalAccountButtonText"></oobe-text-button>
         <oobe-next-button id="nextButton" on-click="onSubmit_"></oobe-next-button>
       </div>
     </oobe-adaptive-dialog>
