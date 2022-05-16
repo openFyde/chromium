@@ -40,6 +40,7 @@ const AuthMode = {
  * @enum {string}
  */
 const DialogMode = {
+  ACCOUNT_TYPE_SELECTION: 'account-type-selection',
   GAIA: 'online-gaia',
   GAIA_LOADING: 'gaia-loading',
   LOADING: 'loading',
@@ -53,7 +54,7 @@ const DialogMode = {
  * Steps that could be the first one in the flow.
  */
 const POSSIBLE_FIRST_SIGNIN_STEPS =
-    [DialogMode.GAIA, DialogMode.GAIA_LOADING, DialogMode.SAML_INTERSTITIAL];
+    [DialogMode.ACCOUNT_TYPE_SELECTION, DialogMode.GAIA, DialogMode.GAIA_LOADING, DialogMode.SAML_INTERSTITIAL];
 
 Polymer({
   is: 'gaia-signin-element',
@@ -236,13 +237,19 @@ Polymer({
       type: Boolean,
       value: false,
     },
+    isAccountTypeSelected_: {
+      type: Boolean,
+      value: false,
+    },
     // ---***FYDEOS END***---
   },
 
   observers: [
-    'refreshDialogStep_(isShown_, screenMode_, pinDialogParameters_,' +
+    'refreshDialogStep_(isAccountTypeSelected_, isShown_, screenMode_, pinDialogParameters_,' +
         'isLoadingUiShown_, isAllowlistErrorShown_, isDupEmailErrorShown_)',
   ],
+
+  userCreationContext_: false,
 
   /**
    * Saved authenticator load params.
@@ -316,7 +323,7 @@ Polymer({
   pinDialogResultReported_: false,
 
   defaultUIStep() {
-    return DialogMode.GAIA;
+    return DialogMode.ACCOUNT_TYPE_SELECTION;
   },
 
   UI_STEPS: DialogMode,
@@ -360,6 +367,20 @@ Polymer({
     this.initializeLoginScreen('GaiaSigninScreen', {
       resetAllowed: true,
     });
+
+    this.onUserCreationCanceledWithThis_ = this.onUserCreationCanceled_.bind(this);
+    this.onUserCreationNextWithThis_ = this.onUserCreationNext_.bind(this);
+
+  },
+
+  attached() {
+    window.addEventListener('user-creation-canceled', this.onUserCreationCanceledWithThis_);
+    window.addEventListener('user-creation-next', this.onUserCreationNextWithThis_);
+  },
+
+  detached() {
+    window.removeEventListener('user-creation-canceled', this.onUserCreationCanceledWithThis_);
+    window.removeEventListener('user-creation-next', this.onUserCreationNextWithThis_);
   },
 
   /**
@@ -395,6 +416,10 @@ Polymer({
    */
   onBackButtonCancel_() {
     if (!this.authCompleted_) {
+      if (!this.userCreationContext_) {
+        // from fydoe signin page back to account type selection page
+        this.isAccountTypeSelected_ = false;
+      }
       this.cancel(true /* isBackClicked */);
     }
   },
@@ -1214,9 +1239,14 @@ Polymer({
    * @private
    */
   refreshDialogStep_(
+      isAccountTypeSelected,
       isScreenShown, mode, pinParams, isLoading, isAllowlistError, isDupEmailError) {
     if (!isScreenShown)
       return;
+    if (!isAccountTypeSelected) {
+      this.setUIStep(DialogMode.ACCOUNT_TYPE_SELECTION);
+      return;
+    }
     if (pinParams !== null) {
       this.setUIStep(DialogMode.PIN_DIALOG);
       return;
@@ -1296,6 +1326,32 @@ Polymer({
 
   clickPrimaryButtonForTesting() {
     this.$['signin-frame-dialog'].clickPrimaryButtonForTesting();
+  },
+
+  onAccountTypeSelectionBack_() {
+    this.userActed('accountTypeSelectionBack');
+  },
+
+  onAccountTypeSelected_(e) {
+    this.isAccountTypeSelected_ = true;
+    if (e.detail === 'google') {
+      chrome.send('userSelectGoogleAccount');
+    } else if (e.detail === 'fyde') {
+      chrome.send('resetAccountFlag');
+    }
+  },
+
+  onUserCreationCanceled_(e) {
+    // back from user creation page
+    this.isAccountTypeSelected_ = false;
+    this.userCreationContext_ = false;
+  },
+
+  onUserCreationNext_(e) {
+    // user may enter signin page from user_creation,
+    // and back to user_creation, (set userCreationContext_ true, cannot set isAccountTypeSelected_ false)
+    // then goto signin page again, (otherwise, this page will show account type selection again)
+    this.userCreationContext_ = true;
   },
 });
 })();

@@ -396,6 +396,7 @@ cr.define('cr.login', function() {
     constructor(webview) {
       super();
 
+      this.requireSelectAccountTypeAfterSignin_ = false;
       this.isLoaded_ = false;
       this.email_ = null;
       this.password_ = null;
@@ -1069,13 +1070,15 @@ cr.define('cr.login', function() {
         return;
       }
       // ---***FYDEOS BEGIN***---
-      if (this.enableFydeAccount_ && !this.isExistedUser_) {
-        if (!this.selectedAccountType_) {
-          return;
-        }
-        if (this.selectedAccountType_ === 'google') {
-          this.accountTypeGoogleSelectedCallback();
-          return;
+      if (this.requireSelectAccountTypeAfterSignin_) {
+        if (this.enableFydeAccount_ && !this.isExistedUser_) {
+          if (!this.selectedAccountType_) {
+            return;
+          }
+          if (this.selectedAccountType_ === 'google') {
+            this.accountTypeGoogleSelectedCallback();
+            return;
+          }
         }
       }
       // ---***FYDEOS END***---

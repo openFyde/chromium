@@ -13,6 +13,7 @@ function loadCommonComponents() {
 // <include src="../components/html-echo.js">
 // <include src="../notification_card.js">
 // <include src="../gaia_dialog.js">
+// <include src="../account_type_selection.js">
 
 // <include src="../gaia_buttons.js">
 // <include src="../gaia_header.js">
