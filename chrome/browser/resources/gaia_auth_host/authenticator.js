@@ -407,6 +407,8 @@ export class Authenticator extends EventTarget {
     this.videoEnabled = false;
     // --------------------  SPECIAL PROPERTIES ---------------------
 
+    this.requireSelectAccountTypeAfterSignin_ = false;
+
     this.isLoaded_ = false;
     this.email_ = null;
     this.password_ = null;
@@ -1048,13 +1050,15 @@ export class Authenticator extends EventTarget {
     if (this.authCompletedFired_) {
       return;
     }
-    if (this.shouldWaitForFydeAccountTypeSelection_()) {
-      if (!this.selectedAccountType_) {
-        return;
-      }
-      if (this.selectedAccountType_ === 'google') {
-        this.accountTypeGoogleSelectedCallback();
-        return;
+    if (this.requireSelectAccountTypeAfterSignin_) {
+      if (this.shouldWaitForFydeAccountTypeSelection_()) {
+        if (!this.selectedAccountType_) {
+          return;
+        }
+        if (this.selectedAccountType_ === 'google') {
+          this.accountTypeGoogleSelectedCallback();
+          return;
+        }
       }
     }
     const missingGaiaInfo =

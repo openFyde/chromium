@@ -25,6 +25,7 @@ group("polymer3_elements") {
     ":smart_privacy_protection_module",
     ":sync_consent_module",
     ":user_creation_module",
+    ":account_type_selection_module",
   ]
 }
 
@@ -81,6 +82,7 @@ js_type_check("closure_compile_local") {
     ":theme_selection",
     ":tpm_error",
     ":user_creation.m",
+    ":account_type_selection.m",
     ":wrong_hwid",
   ]
 }
@@ -660,6 +662,19 @@ js_library("user_creation.m") {
   extra_deps = [ ":user_creation_module" ]
 }
 
+js_library("account_type_selection.m") {
+  sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/account_type_selection.m.js" ]
+  deps = [
+    "//third_party/polymer/v3_0/components-chromium/polymer:polymer_bundled",
+    "../../components/behaviors:oobe_i18n_behavior.m",
+    "../../components/dialogs:oobe_adaptive_dialog.m",
+    "../../components/buttons:oobe_back_button.m",
+    "../../components/buttons:oobe_text_button.m",
+    "../../components/behaviors:oobe_dialog_host_behavior.m",
+  ]
+  extra_deps = [ ":account_type_selection_module" ]
+}
+
 js_library("wrong_hwid") {
   sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/wrong_hwid.js" ]
   deps = [
@@ -793,6 +808,15 @@ polymer_modulizer("fyde_local_signin") {
   html_file = "fyde_local_signin.html"
   html_type = "dom-module"
   auto_imports = oobe_auto_imports
+  namespace_rewrites = oobe_namespace_rewrites
+}
+
+polymer_modulizer("account_type_selection") {
+  js_file = "account_type_selection.js"
+  html_file = "account_type_selection.html"
+  html_type = "dom-module"
+  auto_imports = oobe_auto_imports
+  migrated_imports = oobe_migrated_imports
   namespace_rewrites = oobe_namespace_rewrites
 }
 

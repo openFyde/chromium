@@ -20,6 +20,7 @@ import '../../components/common_styles/oobe_dialog_host_styles.m.js';
 import '../../components/dialogs/oobe_adaptive_dialog.m.js';
 import '../../components/dialogs/oobe_loading_dialog.m.js';
 import '../../components/throbber_notice.m.js';
+import './account_type_selection.m.js';
 
 import {assert} from '//resources/js/assert.js';
 import {afterNextRender, html, mixinBehaviors, PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
@@ -64,6 +65,7 @@ const ScreenAuthMode = {
  * @enum {string}
  */
 const DialogMode = {
+  ACCOUNT_TYPE_SELECTION: 'account-type-selection',
   GAIA: 'online-gaia',
   LOADING: 'loading',
   PIN_DIALOG: 'pin',
@@ -74,7 +76,7 @@ const DialogMode = {
 /**
  * Steps that could be the first one in the flow.
  */
-const POSSIBLE_FIRST_SIGNIN_STEPS = [DialogMode.GAIA, DialogMode.LOADING];
+const POSSIBLE_FIRST_SIGNIN_STEPS = [DialogMode.ACCOUNT_TYPE_SELECTION, DialogMode.GAIA, DialogMode.LOADING];
 
 /**
  * @constructor
@@ -283,6 +285,10 @@ class GaiaSigninElement extends GaiaSigninElementBase {
         type: Boolean,
         value: false,
       },
+      isAccountTypeSelected_: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -298,6 +304,7 @@ class GaiaSigninElement extends GaiaSigninElementBase {
     this.dupEmail_ = '';
     this.knownAccountList_ = [];
 
+    this.userCreationContext_ = false;
     /**
      * Email of the user, which is logging in using offline mode.
      * @type {string}
@@ -367,13 +374,13 @@ class GaiaSigninElement extends GaiaSigninElementBase {
 
   static get observers() {
     return [
-      'refreshDialogStep_(isShown_, pinDialogParameters_,' +
+      'refreshDialogStep_(isAccountTypeSelected_, isShown_, pinDialogParameters_,' +
           'isLoadingUiShown_, isAllowlistErrorShown_, isDupEmailErrorShown_)',
     ];
   }
 
   defaultUIStep() {
-    return DialogMode.GAIA;
+    return DialogMode.ACCOUNT_TYPE_SELECTION;
   }
 
   get UI_STEPS() {
@@ -422,6 +429,10 @@ class GaiaSigninElement extends GaiaSigninElementBase {
    */
   onBackButtonCancel_() {
     if (!this.authCompleted_) {
+      if (!this.userCreationContext_) {
+        // from fydoe signin page back to account type selection page
+        this.isAccountTypeSelected_ = false;
+      }
       this.cancel(true /* isBackClicked */);
     }
   }
@@ -870,6 +881,18 @@ class GaiaSigninElement extends GaiaSigninElementBase {
     return this.i18nAdvanced('fydeosAddUserDupEmailErrorMessage', {
       substitutions: [dupEmail],
     });
+    this.onUserCreationCanceledWithThis_ = this.onUserCreationCanceled_.bind(this);
+    this.onUserCreationNextWithThis_ = this.onUserCreationNext_.bind(this);
+  }
+
+  attached() {
+    window.addEventListener('user-creation-canceled', this.onUserCreationCanceledWithThis_);
+    window.addEventListener('user-creation-next', this.onUserCreationNextWithThis_);
+  }
+
+  detached() {
+    window.removeEventListener('user-creation-canceled', this.onUserCreationCanceledWithThis_);
+    window.removeEventListener('user-creation-next', this.onUserCreationNextWithThis_);
   }
 
 
@@ -1122,8 +1145,12 @@ class GaiaSigninElement extends GaiaSigninElementBase {
    * @param {boolean} isAllowlistError
    * @private
    */
-  refreshDialogStep_(isScreenShown, pinParams, isLoading, isAllowlistError, isDupEmailError) {
+  refreshDialogStep_(isAccountTypeSelected, isScreenShown, pinParams, isLoading, isAllowlistError, isDupEmailError) {
     if (!isScreenShown) {
+      return;
+    }
+    if (!isAccountTypeSelected) {
+      this.setUIStep(DialogMode.ACCOUNT_TYPE_SELECTION);
       return;
     }
     if (pinParams !== null) {
@@ -1212,6 +1239,32 @@ class GaiaSigninElement extends GaiaSigninElementBase {
 
   onAllowlistErrorLinkClick_() {
     chrome.send('launchHelpApp', [HELP_CANT_ACCESS_ACCOUNT]);
+  }
+
+  onAccountTypeSelectionBack_() {
+    this.userActed('accountTypeSelectionBack');
+  }
+
+  onAccountTypeSelected_(e) {
+    this.isAccountTypeSelected_ = true;
+    if (e.detail === 'google') {
+      chrome.send('userSelectGoogleAccount');
+    } else if (e.detail === 'fyde') {
+      chrome.send('resetAccountFlag');
+    }
+  }
+
+  onUserCreationCanceled_(e) {
+    // back from user creation page
+    this.isAccountTypeSelected_ = false;
+    this.userCreationContext_ = false;
+  }
+
+  onUserCreationNext_(e) {
+    // user may enter signin page from user_creation,
+    // and back to user_creation, (set userCreationContext_ true, cannot set isAccountTypeSelected_ false)
+    // then goto signin page again, (otherwise, this page will show account type selection again)
+    this.userCreationContext_ = true;
   }
 }
 

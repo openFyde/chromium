@@ -28,6 +28,12 @@ found in the LICENSE file.
   }
 
 </style>
+<account-type-selection-element
+    id="account-type-selection"
+    for-step="account-type-selection"
+    on-account-type-selection-back="onAccountTypeSelectionBack_"
+    on-account-type-selected="onAccountTypeSelected_">
+</account-type-selection-element>
 <gaia-dialog id="signin-frame-dialog"
     for-step="online-gaia"
     is-saml-sso-visible="[[isSamlSsoVisible_]]"
