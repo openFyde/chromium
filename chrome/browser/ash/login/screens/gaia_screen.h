@@ -26,6 +26,7 @@ class GaiaScreen : public BaseScreen {
     CANCEL,
     ENTERPRISE_ENROLL,
     USE_LOCAL_ACCOUNT,
+    ACCOUNT_TYPE_SELECTION_BACK,
     START_CONSUMER_KIOSK,
     SAML_VIDEO_TIMEOUT,
   };

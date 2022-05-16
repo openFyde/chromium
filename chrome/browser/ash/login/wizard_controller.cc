@@ -1095,6 +1095,7 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
       break;
     case GaiaScreen::Result::BACK:
     case GaiaScreen::Result::CANCEL:
+    case GaiaScreen::Result::ACCOUNT_TYPE_SELECTION_BACK:
       if (result == GaiaScreen::Result::BACK &&
           wizard_context_->is_user_creation_enabled) {
         // `Result::BACK` is only triggered when pressing back button. It goes
@@ -1105,6 +1106,7 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
         break;
       }
       if (LoginDisplayHost::default_host()->HasUserPods() &&
+          result == GaiaScreen::Result::ACCOUNT_TYPE_SELECTION_BACK &&
           !wizard_context_->is_user_creation_enabled) {
         // ---***FYDEOS BEGIN***---
         if (!fydeos::switches::IsFydeAccountEnabled()) {

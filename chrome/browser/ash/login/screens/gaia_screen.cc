@@ -22,6 +22,7 @@ constexpr char kUserActionUseLocalAccount[] = "useLocalAccount";
 constexpr char kUserActionReloadDefault[] = "reloadDefault";
 constexpr char kUserActionSAMLVideoTimeout[] = "samlVideoTimeout";
 constexpr char kUserActionRetry[] = "retry";
+constexpr char kUserActionAccountTypeSelectionBack[] = "accountTypeSelectionBack";
 
 }  // namespace
 
@@ -40,6 +41,8 @@ std::string GaiaScreen::GetResultString(Result result) {
       return "StartConsumerKiosk";
     case Result::SAML_VIDEO_TIMEOUT:
       return "SAMLVideoTimeout";
+    case Result::ACCOUNT_TYPE_SELECTION_BACK:
+      return "AccountTypeSelectionBack";
   }
 }
 
@@ -112,6 +115,8 @@ void GaiaScreen::OnUserActionDeprecated(const std::string& action_id) {
     exit_callback_.Run(Result::ENTERPRISE_ENROLL);
   } else if (action_id == kUserActionUseLocalAccount) {
     exit_callback_.Run(Result::USE_LOCAL_ACCOUNT);
+  } else if (action_id == kUserActionAccountTypeSelectionBack) {
+    exit_callback_.Run(Result::ACCOUNT_TYPE_SELECTION_BACK);
   } else if (action_id == kUserActionReloadDefault) {
     DCHECK(features::IsRedirectToDefaultIdPEnabled());
     LoadOnline(EmptyAccountId());

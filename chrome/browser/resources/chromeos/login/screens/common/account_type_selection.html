@@ -1,0 +1,80 @@
+<!-- Copyright 2022 Fyde Innovations. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file. -->
+
+<link rel="import" href="chrome://resources/html/polymer.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_radio_button/cr_card_radio_button.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_radio_group/cr_radio_group.html">
+
+<link rel="import" href="../../components/behaviors/oobe_dialog_host_behavior.html">
+<link rel="import" href="../../components/behaviors/oobe_i18n_behavior.html">
+<link rel="import" href="../../components/buttons/oobe_back_button.html">
+<link rel="import" href="../../components/buttons/oobe_text_button.html">
+<link rel="import" href="../../components/common_styles/common_styles.html">
+<link rel="import" href="../../components/common_styles/cr_card_radio_group_styles.html">
+<link rel="import" href="../../components/common_styles/oobe_dialog_host_styles.html">
+<link rel="import" href="../../components/dialogs/oobe_adaptive_dialog.html">
+
+<dom-module id="account-type-selection-element">
+  <template>
+    <style include="oobe-dialog-host-styles cr-card-radio-group-styles">
+      @media screen and (max-width: 920px) {
+      :host {
+          --radio-button-height: 155px;
+        }
+      }
+      img.logo {
+        width: 132px;
+        height: 32px;
+      }
+    </style>
+    <oobe-adaptive-dialog id="accountTypeSelectionDialog" role="dialog">
+      <img class="logo" slot="icon" srcset="images/openfyde_logo.png" />
+      <h1 slot="title">
+        Title of user type selection
+      </h1>
+      <div slot="subtitle">
+        subtitle of user type selection
+      </div>
+      <div slot="content" class="layout vertical landscape-vertical-centered">
+        <cr-radio-group id="accountType" selected="{{selectedAccountType_}}">
+          <cr-card-radio-button id="fydeButton" class="flex" name="fyde">
+            <div class="card-container">
+              <div class="card-content">
+                <div class="card-label">
+                  FydeOS account
+                </div>
+                <div class="card-text">
+                  Use FydeOS account
+                </div>
+              </div>
+            </div>
+          </cr-card-radio-button>
+          <cr-card-radio-button id="googleButton" class="flex" name="google">
+            <div class="card-container">
+              <div class="card-content">
+                <div class="card-label">
+                  Google account
+                </div>
+                <div class="card-text">
+                  use Google account
+                </div>
+              </div>
+            </div>
+          </cr-card-radio-button>
+        </cr-radio-group>
+      </div>
+      <div slot="back-navigation" hidden="[[hideBackButton_]]">
+        <oobe-back-button id="account-type-selection-back-button"
+            on-click="onBackButtonClicked_">
+        </oobe-back-button>
+      </div>
+      <div slot="bottom-buttons">
+        <oobe-next-button id="nextButton" class="focus-on-show"
+            on-click="onNextClicked_">
+        </oobe-next-button>
+      </div>
+    </oobe-adaptive-dialog>
+  </template>
+  <script src="account_type_selection.js"></script>
+</dom-module>
