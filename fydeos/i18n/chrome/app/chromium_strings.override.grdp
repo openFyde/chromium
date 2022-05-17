@@ -16,6 +16,25 @@
     <message name="IDS_ABOUT_CROS_WITH_LINUX_VERSION_LICENSE" desc="Additional text displayed beneath the Chromium open source URLs for Chrome OS when Crostini is installed.">
       openFyde is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>, as is <ph name="BEGIN_LINK_LINUX_OSS">&lt;a target="_blank" href="$2"&gt;</ph>Linux (Beta)<ph name="END_LINK_LINUX_OSS">&lt;/a&gt;</ph>.
     </message>
+    <!-- Strings for the OOBE user selection screen -->
+    <message name="IDS_OOBE_ACCOUNT_TYPE_SELECTION_TITLE" desc="Title of the screen which allows users to select account type.">
+        Which online account would you like to use?
+    </message>
+    <message name="IDS_OOBE_ACCOUNT_TYPE_SELECTION_SUBTITLE" desc="Subtitle of the screen which allows users to select account type.">
+        Please choose your preferred online account type to sign in to openFyde. Please note that once signed in you won’t be able to change account type; you can however sign in new accounts of different types.
+    </message>
+    <message name="IDS_OOBE_ACCOUNT_TYPE_SELECTION_FYDEOS_TITLE" desc="Title of user select FydeOS account type.">
+        FydeOS account
+    </message>
+    <message name="IDS_OOBE_ACCOUNT_TYPE_SELECTION_FYDEOS_SUBTITLE" desc="Subtitle of user select FydeOS account type.">
+        Sign in with a FydeOS account and use cloud services associated by your FydeOS account.
+    </message>
+    <message name="IDS_OOBE_ACCOUNT_TYPE_SELECTION_GOOGLE_TITLE" desc="Title of user select Google account type.">
+        Google account
+    </message>
+    <message name="IDS_OOBE_ACCOUNT_TYPE_SELECTION_GOOGLE_SUBTITLE" desc="Subtitle of user select Google account type.">
+        Sign in with a Google account and use cloud services provided by Google.
+    </message>
   </if>
   <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="Copyright information on the about pages">
     Copyright <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> Fyde Innovations and the openFyde Authors. All rights reserved.

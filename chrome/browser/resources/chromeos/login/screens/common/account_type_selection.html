@@ -31,10 +31,10 @@ found in the LICENSE file. -->
     <oobe-adaptive-dialog id="accountTypeSelectionDialog" role="dialog">
       <img class="logo" slot="icon" srcset="images/openfyde_logo.png" />
       <h1 slot="title">
-        Title of user type selection
+        [[i18nDynamic(locale, 'accountTypeSelectionTitle')]]
       </h1>
       <div slot="subtitle">
-        subtitle of user type selection
+        [[i18nDynamic(locale, 'accountTypeSelectionSubtitle')]]
       </div>
       <div slot="content" class="layout vertical landscape-vertical-centered">
         <cr-radio-group id="accountType" selected="{{selectedAccountType_}}">
@@ -42,10 +42,10 @@ found in the LICENSE file. -->
             <div class="card-container">
               <div class="card-content">
                 <div class="card-label">
-                  FydeOS account
+                  [[i18nDynamic(locale, 'accountTypeSelectionFydeOSTitle')]]
                 </div>
                 <div class="card-text">
-                  Use FydeOS account
+                  [[i18nDynamic(locale, 'accountTypeSelectionFydeOSSubtitle')]]
                 </div>
               </div>
             </div>
@@ -54,10 +54,10 @@ found in the LICENSE file. -->
             <div class="card-container">
               <div class="card-content">
                 <div class="card-label">
-                  Google account
+                  [[i18nDynamic(locale, 'accountTypeSelectionGoogleTitle')]]
                 </div>
                 <div class="card-text">
-                  use Google account
+                  [[i18nDynamic(locale, 'accountTypeSelectionGoogleSubtitle')]]
                 </div>
               </div>
             </div>
