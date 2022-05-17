@@ -312,6 +312,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_android">
         <part file="settings_strings.grdp" />
         <part file="shared_settings_strings.grdp"/>
+        <part file="../../fydeos/i18n/chrome/app/shared_settings_strings.override.grdp" />
       </if>
 
       <!-- MD Extensions specific strings -->
@@ -322,6 +323,7 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Nearby Share specific strings -->
       <if expr="not is_android">
         <part file="nearby_share_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/nearby_share_strings.override.grdp" />
       </if>
 
       <!-- Welcome strings -->
