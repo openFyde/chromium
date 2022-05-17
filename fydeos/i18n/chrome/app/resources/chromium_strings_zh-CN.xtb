@@ -6,4 +6,10 @@
 <translation id="5926649962158120628">openFyde 的问世还有其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />的一份贡献。</translation>
 <translation id="2228658997317193454">openFyde 是借助了其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />才得以问世，<ph name="BEGIN_LINK_LINUX_OSS" />Linux（测试版）<ph name="END_LINK_LINUX_OSS" />也是如此。</translation>
 <translation id="2052041943247591012">获取 openFyde 使用帮助</translation>
+<translation id="7400849558479249342">想用哪种在线账号登录系统？</translation>
+<translation id="3617027712666644574">请选择你想要用来登录 openFyde 的在线账号种类。请注意：登录系统之后账号种类不支持修改；仅可以添加新的不同种类的账号。</translation>
+<translation id="4733308832188623874">FydeOS 账号</translation>
+<translation id="5521171551853454842">使用 FydeOS 账号登录系统并使用由 FydeOS 在线账号所提供的附属云服务。</translation>
+<translation id="153879296658682960">Google 账号</translation>
+<translation id="9095510991952324841">使用 Google 账号登录系统并使用由 Google 提供的附属云服务。</translation>
 </translationbundle>
