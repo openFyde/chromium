@@ -21,6 +21,7 @@ namespace {
 constexpr char kUserActionBack[] = "back";
 constexpr char kUserActionCancel[] = "cancel";
 constexpr char kUserActionStartEnrollment[] = "startEnrollment";
+constexpr char kUserActionUseLocalAccount[] = "useLocalAccount";
 constexpr char kUserActionReloadDefault[] = "reloadDefault";
 constexpr char kUserActionRetry[] = "retry";
 
@@ -35,6 +36,8 @@ std::string GaiaScreen::GetResultString(Result result) {
       return "Cancel";
     case Result::ENTERPRISE_ENROLL:
       return "EnterpriseEnroll";
+    case Result::USE_LOCAL_ACCOUNT:
+      return "UseLocalAccount";
     case Result::START_CONSUMER_KIOSK:
       return "StartConsumerKiosk";
   }
@@ -125,6 +128,8 @@ void GaiaScreen::OnUserAction(const base::Value::List& args) {
     exit_callback_.Run(Result::CANCEL);
   } else if (action_id == kUserActionStartEnrollment) {
     exit_callback_.Run(Result::ENTERPRISE_ENROLL);
+  } else if (action_id == kUserActionUseLocalAccount) {
+    exit_callback_.Run(Result::USE_LOCAL_ACCOUNT);
   } else if (action_id == kUserActionReloadDefault) {
     Reset();
     LoadOnline(EmptyAccountId());
@@ -152,6 +157,11 @@ void GaiaScreen::OnScreenBacklightStateChanged(
   if (screen_backlight_state == ScreenBacklightState::ON)
     return;
   exit_callback_.Run(Result::CANCEL);
+}
+
+void GaiaScreen::RequestUseLocalAccount() {
+  if (!view_) return;
+  view_->RequestUseLocalAccount();
 }
 
 }  // namespace ash

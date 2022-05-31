@@ -287,6 +287,7 @@ preprocess_if_expr("preprocess_gen_js_files") {
     "screens/common/managed_terms_of_service.js",
     "screens/common/marketing_opt_in.js",
     "screens/common/offline_ad_login.js",
+    "screens/common/fyde_local_signin.js",
     "screens/common/oobe_reset.js",
     "screens/common/oobe_eula.js",
     "screens/common/os_install.js",

@@ -98,6 +98,7 @@ constexpr LoginShelfView::ButtonId kButtonIds[] = {
     LoginShelfView::kEnterpriseEnrollment,
     LoginShelfView::kSignIn,
     LoginShelfView::kOsInstall,
+    LoginShelfView::kUseLocalAccount,
 };
 
 // TODO(1190978): Remove this check once light mode is the default mode.
@@ -139,12 +140,16 @@ LoginMetricsRecorder::ShelfButtonClickTarget GetUserClickTarget(int button_id) {
       return LoginMetricsRecorder::ShelfButtonClickTarget::kSignIn;
     case LoginShelfView::kOsInstall:
       return LoginMetricsRecorder::ShelfButtonClickTarget::kOsInstallButton;
+    case LoginShelfView::kUseLocalAccount:
+      return LoginMetricsRecorder::ShelfButtonClickTarget::kUseLocalAccount;
   }
   return LoginMetricsRecorder::ShelfButtonClickTarget::kTargetCount;
 }
 
 void ButtonPressed(int id, base::RepeatingClosure callback) {
-  UserMetricsRecorder::RecordUserClickOnShelfButton(GetUserClickTarget(id));
+  if (id != LoginShelfView::kUseLocalAccount) {
+    UserMetricsRecorder::RecordUserClickOnShelfButton(GetUserClickTarget(id));
+  }
   std::move(callback).Run();
 }
 
@@ -580,6 +585,12 @@ LoginShelfView::LoginShelfView(
                  base::Unretained(Shell::Get()->login_screen_controller())),
              IDS_ASH_SHELF_OS_INSTALL_BUTTON, kShelfOsInstallButtonIcon);
 
+  add_button(kUseLocalAccount,
+             base::BindRepeating(
+                 &LoginScreenController::ShowLocalSignin,
+                 base::Unretained(Shell::Get()->login_screen_controller())),
+             IDS_ASH_USE_LOCAL_ACCOUNT_BUTTON, kShelfUseLocalAccountButtonIcon);
+
   // Adds observers for states that affect the visibility of different buttons.
   tray_action_observation_.Observe(Shell::Get()->tray_action());
   shutdown_controller_observation_.Observe(Shell::Get()->shutdown_controller());
@@ -934,6 +945,8 @@ void LoginShelfView::UpdateUi() {
 
   GetViewByID(kOsInstall)->SetVisible(ShouldShowOsInstallButton());
 
+  GetViewByID(kUseLocalAccount)->SetVisible(ShouldShowUseLocalAccountButton());
+
   // If there is no visible (and thus focusable) buttons, we shouldn't focus
   // LoginShelfView. We update it here, so we don't need to check visibility
   // every time we move focus to system tray.
@@ -974,6 +987,7 @@ void LoginShelfView::UpdateButtonsColors() {
       ->UpdateButtonColors();
   static_cast<LoginShelfButton*>(GetViewByID(kSignIn))->UpdateButtonColors();
   static_cast<LoginShelfButton*>(GetViewByID(kOsInstall))->UpdateButtonColors();
+  static_cast<LoginShelfButton*>(GetViewByID(kUseLocalAccount))->UpdateButtonColors();
   kiosk_apps_button_->UpdateButtonColors();
 }
 
@@ -1072,6 +1086,12 @@ bool LoginShelfView::ShouldShowSignInButton() const {
       Shell::Get()->session_controller()->GetSessionState();
   return session_state == SessionState::OOBE &&
          dialog_state_ == OobeDialogState::ENROLLMENT_CANCEL_ENABLED;
+}
+
+bool LoginShelfView::ShouldShowUseLocalAccountButton() const {
+  const bool user_session_started =
+      Shell::Get()->session_controller()->NumberOfLoggedInUsers() != 0;
+  return dialog_state_ == OobeDialogState::GAIA_SIGNIN && !user_session_started;
 }
 
 bool LoginShelfView::ShouldShowAppsButton() const {

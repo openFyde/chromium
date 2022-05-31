@@ -66,6 +66,7 @@ js_type_check("closure_compile_local") {
     ":managed_terms_of_service",
     ":marketing_opt_in",
     ":offline_ad_login",
+    ":fyde_local_signin",
     ":oobe_eula",
     ":oobe_reset",
     ":os_install",
@@ -409,6 +410,14 @@ js_library("offline_ad_login") {
   externs_list = [
     "//ui/webui/resources/cr_elements/cr_input/cr_input_externs.js",
     "//ui/webui/resources/cr_elements/cr_toggle/cr_toggle_externs.js",
+  ]
+  extra_deps = [ ":web_components" ]
+}
+
+js_library("fyde_local_signin") {
+  sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/fyde_local_signin.js" ]
+  deps = [
+    "../../components/behaviors:login_screen_behavior.m",
   ]
   extra_deps = [ ":web_components" ]
 }
@@ -768,6 +777,14 @@ polymer_modulizer("smart_privacy_protection") {
   namespace_rewrites = oobe_namespace_rewrites
 }
 
+polymer_modulizer("fyde_local_signin") {
+  js_file = "fyde_local_signin.js"
+  html_file = "fyde_local_signin.html"
+  html_type = "dom-module"
+  auto_imports = oobe_auto_imports
+  namespace_rewrites = oobe_namespace_rewrites
+}
+
 polymer_modulizer("sync_consent") {
   js_file = "sync_consent.js"
   html_file = "sync_consent.html"
@@ -794,6 +811,7 @@ html_to_js("web_components") {
     "managed_terms_of_service.js",
     "marketing_opt_in.js",
     "offline_ad_login.js",
+    "fyde_local_signin.js",
     "oobe_eula.js",
     "oobe_reset.js",
     "os_install.js",

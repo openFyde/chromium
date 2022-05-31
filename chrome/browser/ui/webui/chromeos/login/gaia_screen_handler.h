@@ -95,6 +95,8 @@ class GaiaView : public base::SupportsWeakPtr<GaiaView> {
                                        const std::string& services) = 0;
   // Reset authenticator.
   virtual void Reset() = 0;
+
+  virtual void RequestUseLocalAccount() = 0;
 };
 
 // A class that handles WebUI hooks in Gaia screen.
@@ -140,6 +142,8 @@ class GaiaScreenHandler : public BaseScreenHandler,
                                const std::string& password,
                                const std::string& services) override;
   void Reset() override;
+
+  void RequestUseLocalAccount() override;
 
   // SecurityTokenPinDialogHost:
   void ShowSecurityTokenPinDialog(

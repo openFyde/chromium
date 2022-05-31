@@ -45,6 +45,7 @@
 #include "chrome/browser/ui/webui/chromeos/login/signin_fatal_error_screen_handler.h"
 #include "chrome/browser/ui/webui/chromeos/login/terms_of_service_screen_handler.h"
 #include "chrome/browser/ui/webui/chromeos/login/user_creation_screen_handler.h"
+#include "chrome/browser/ui/webui/chromeos/login/fyde_local_signin_screen_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -669,6 +670,24 @@ LoginDisplayHostCommon::GetQuickStartBootstrapController() {
 void LoginDisplayHostCommon::NotifyWizardCreated() {
   if (on_wizard_controller_created_for_tests_)
     on_wizard_controller_created_for_tests_.Run();
+}
+
+void LoginDisplayHostCommon::ShowLocalDialogCommon() {
+  BaseScreen* current_screen = GetWizardController()->current_screen();
+  if (!current_screen) {
+    return;
+  }
+  // In user_creation screen, if `child` type is chosen, user_creation.js called updateOobeDialogState
+  // and set the state to gaia_screen, there's no proper way to hide `use local account` in this situation
+  // so here's the solution:
+  // if it's not gaia screen currently, then just go to local signin screen
+  // otherwise, let gaia_screen handle the request
+  if (current_screen->screen_id() != GaiaView::kScreenId) {
+    StartWizard(FydeLocalSigninView::kScreenId);
+    return;
+  }
+  GaiaScreen* gaia_screen = GetWizardController()->GetScreen<GaiaScreen>();
+  gaia_screen->RequestUseLocalAccount();
 }
 
 void LoginDisplayHostCommon::Cleanup() {

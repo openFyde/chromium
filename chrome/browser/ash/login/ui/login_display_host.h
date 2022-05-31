@@ -167,6 +167,8 @@ class LoginDisplayHost {
   // Show the guest terms of service screen.
   virtual void ShowGuestTosScreen() = 0;
 
+  virtual void ShowLocalDialog() = 0;
+
   // Hide any visible oobe dialog.
   virtual void HideOobeDialog(bool saml_page_closed = false) = 0;
 
