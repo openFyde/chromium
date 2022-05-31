@@ -32,6 +32,7 @@ group("polymer3_elements") {
     ":marketing_opt_in_module",
     ":multidevice_setup_module",
     ":offline_ad_login_module",
+    ":fyde_local_signin_module",
     ":oobe_eula_module",
     ":oobe_reset_module",
     ":os_install_module",
@@ -82,6 +83,7 @@ js_type_check("closure_compile_local") {
     ":managed_terms_of_service.m",
     ":marketing_opt_in.m",
     ":offline_ad_login.m",
+    ":fyde_local_signin.m",
     ":oobe_eula.m",
     ":oobe_reset.m",
     ":os_install.m",
@@ -408,6 +410,14 @@ js_library("offline_ad_login.m") {
     "//ui/webui/resources/js:load_time_data.m",
   ]
   extra_deps = [ ":offline_ad_login_module" ]
+}
+
+js_library("fyde_local_signin.m") {
+  sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/fyde_local_signin.m.js" ]
+  deps = [
+    "../../components/behaviors:login_screen_behavior.m",
+  ]
+  extra_deps = [ ":fyde_local_signin_module" ]
 }
 
 js_library("oobe_eula.m") {
@@ -822,6 +832,14 @@ polymer_modulizer("multidevice_setup") {
 polymer_modulizer("offline_ad_login") {
   js_file = "offline_ad_login.js"
   html_file = "offline_ad_login.html"
+  html_type = "dom-module"
+  auto_imports = oobe_auto_imports
+  namespace_rewrites = oobe_namespace_rewrites
+}
+
+polymer_modulizer("fyde_local_signin") {
+  js_file = "fyde_local_signin.js"
+  html_file = "fyde_local_signin.html"
   html_type = "dom-module"
   auto_imports = oobe_auto_imports
   namespace_rewrites = oobe_namespace_rewrites

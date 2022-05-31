@@ -2609,6 +2609,8 @@ static_library("ui") {
       "webui/chromeos/launcher_internals/launcher_internals_ui.h",
       "webui/chromeos/login/active_directory_login_screen_handler.cc",
       "webui/chromeos/login/active_directory_login_screen_handler.h",
+      "webui/chromeos/login/fyde_local_signin_screen_handler.cc",
+      "webui/chromeos/login/fyde_local_signin_screen_handler.h",
       "webui/chromeos/login/active_directory_password_change_screen_handler.cc",
       "webui/chromeos/login/active_directory_password_change_screen_handler.h",
       "webui/chromeos/login/app_downloading_screen_handler.cc",

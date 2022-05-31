@@ -121,6 +121,8 @@ class LoginDisplayHostCommon : public LoginDisplayHost,
   // Triggers |on_wizard_controller_created_for_tests_| callback.
   void NotifyWizardCreated();
 
+  void ShowLocalDialogCommon();
+
   // Kiosk launch controller.
   std::unique_ptr<KioskLaunchController> kiosk_launch_controller_;
 

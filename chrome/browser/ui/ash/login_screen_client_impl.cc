@@ -242,6 +242,12 @@ void LoginScreenClientImpl::ShowOsInstallScreen() {
   }
 }
 
+void LoginScreenClientImpl::ShowLocalSignin() {
+  if (chromeos::LoginDisplayHost::default_host()) {
+    chromeos::LoginDisplayHost::default_host()->ShowLocalDialog();
+  }
+}
+
 void LoginScreenClientImpl::OnRemoveUserWarningShown() {
   ProfileMetrics::LogProfileDeleteUser(
       ProfileMetrics::DELETE_PROFILE_USER_MANAGER_SHOW_WARNING);

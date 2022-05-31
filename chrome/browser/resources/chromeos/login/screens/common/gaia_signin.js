@@ -345,7 +345,8 @@ class GaiaSigninElement extends GaiaSigninElementBase {
   get EXTERNAL_API() {
     return [
       'loadAuthExtension', 'doReload', 'showAllowlistCheckFailedError',
-      'showPinDialog', 'closePinDialog', 'clickPrimaryButtonForTesting'
+      'showPinDialog', 'closePinDialog', 'clickPrimaryButtonForTesting',
+      'requestUseLocalAccount',
     ];
   }
 
@@ -1033,6 +1034,10 @@ class GaiaSigninElement extends GaiaSigninElementBase {
       // before reporting the result.
       chrome.send('securityTokenPinEntered', [/*user_input=*/ '']);
     }
+  }
+
+  requestUseLocalAccount() {
+    this.userActed('useLocalAccount');
   }
 
   /**

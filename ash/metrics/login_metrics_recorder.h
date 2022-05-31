@@ -84,6 +84,7 @@ class ASH_EXPORT LoginMetricsRecorder {
     kEnterpriseEnrollmentButton,
     kOsInstallButton,
     kSignIn,
+    kUseLocalAccount,
     kTargetCount,
   };
 

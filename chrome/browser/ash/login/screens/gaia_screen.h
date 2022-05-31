@@ -25,6 +25,7 @@ class GaiaScreen : public BaseScreen {
     BACK,
     CANCEL,
     ENTERPRISE_ENROLL,
+    USE_LOCAL_ACCOUNT,
     START_CONSUMER_KIOSK,
     SAML_VIDEO_TIMEOUT,
   };
@@ -49,6 +50,8 @@ class GaiaScreen : public BaseScreen {
   // Loads online Gaia (for child signin) into the webview.
   void LoadOnlineForChildSignin();
   void ShowAllowlistCheckFailedError();
+
+  void RequestUseLocalAccount();
 
  private:
   void ShowImpl() override;

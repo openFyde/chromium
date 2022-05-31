@@ -18,6 +18,7 @@ namespace {
 constexpr char kUserActionBack[] = "back";
 constexpr char kUserActionCancel[] = "cancel";
 constexpr char kUserActionStartEnrollment[] = "startEnrollment";
+constexpr char kUserActionUseLocalAccount[] = "useLocalAccount";
 constexpr char kUserActionReloadDefault[] = "reloadDefault";
 constexpr char kUserActionSAMLVideoTimeout[] = "samlVideoTimeout";
 constexpr char kUserActionRetry[] = "retry";
@@ -33,6 +34,8 @@ std::string GaiaScreen::GetResultString(Result result) {
       return "Cancel";
     case Result::ENTERPRISE_ENROLL:
       return "EnterpriseEnroll";
+    case Result::USE_LOCAL_ACCOUNT:
+      return "UseLocalAccount";
     case Result::START_CONSUMER_KIOSK:
       return "StartConsumerKiosk";
     case Result::SAML_VIDEO_TIMEOUT:
@@ -107,6 +110,8 @@ void GaiaScreen::OnUserActionDeprecated(const std::string& action_id) {
     exit_callback_.Run(Result::CANCEL);
   } else if (action_id == kUserActionStartEnrollment) {
     exit_callback_.Run(Result::ENTERPRISE_ENROLL);
+  } else if (action_id == kUserActionUseLocalAccount) {
+    exit_callback_.Run(Result::USE_LOCAL_ACCOUNT);
   } else if (action_id == kUserActionReloadDefault) {
     DCHECK(features::IsRedirectToDefaultIdPEnabled());
     LoadOnline(EmptyAccountId());
@@ -130,6 +135,11 @@ bool GaiaScreen::HandleAccelerator(LoginAcceleratorAction action) {
     return true;
   }
   return false;
+}
+
+void GaiaScreen::RequestUseLocalAccount() {
+  if (!view_) return;
+  view_->RequestUseLocalAccount();
 }
 
 }  // namespace ash

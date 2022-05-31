@@ -117,6 +117,7 @@ class LoginScreenClientImpl : public ash::LoginScreenClient {
   void FocusLockScreenApps(bool reverse) override;
   void FocusOobeDialog() override;
   void ShowGaiaSignin(const AccountId& prefilled_account) override;
+  void ShowLocalSignin() override;
   void ShowOsInstallScreen() override;
   void OnRemoveUserWarningShown() override;
   void RemoveUser(const AccountId& account_id) override;

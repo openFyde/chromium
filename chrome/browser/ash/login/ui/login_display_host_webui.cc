@@ -1013,6 +1013,10 @@ void LoginDisplayHostWebUI::ShowGuestTosScreen() {
   StartWizard(GuestTosScreenView::kScreenId);
 }
 
+void LoginDisplayHostWebUI::ShowLocalDialog() {
+  ShowLocalDialogCommon();
+}
+
 void LoginDisplayHostWebUI::HideOobeDialog(bool video_timeout) {
   NOTREACHED();
 }

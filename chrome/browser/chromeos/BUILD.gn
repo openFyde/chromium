@@ -2033,6 +2033,8 @@ source_set("chromeos") {
     "../ash/login/screen_manager.h",
     "../ash/login/screens/active_directory_login_screen.cc",
     "../ash/login/screens/active_directory_login_screen.h",
+    "../ash/login/screens/fyde_local_signin_screen.cc",
+    "../ash/login/screens/fyde_local_signin_screen.h",
     "../ash/login/screens/active_directory_password_change_screen.cc",
     "../ash/login/screens/active_directory_password_change_screen.h",
     "../ash/login/screens/app_downloading_screen.cc",

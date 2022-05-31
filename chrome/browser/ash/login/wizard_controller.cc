@@ -58,6 +58,7 @@
 #include "chrome/browser/ash/login/oobe_screen.h"
 #include "chrome/browser/ash/login/quick_unlock/quick_unlock_utils.h"
 #include "chrome/browser/ash/login/screens/active_directory_login_screen.h"
+#include "chrome/browser/ash/login/screens/fyde_local_signin_screen.h"
 #include "chrome/browser/ash/login/screens/active_directory_password_change_screen.h"
 #include "chrome/browser/ash/login/screens/app_downloading_screen.h"
 #include "chrome/browser/ash/login/screens/arc_terms_of_service_screen.h"
@@ -130,6 +131,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/webui/chromeos/login/active_directory_login_screen_handler.h"
 #include "chrome/browser/ui/webui/chromeos/login/active_directory_password_change_screen_handler.h"
+#include "chrome/browser/ui/webui/chromeos/login/fyde_local_signin_screen_handler.h"
 #include "chrome/browser/ui/webui/chromeos/login/app_downloading_screen_handler.h"
 #include "chrome/browser/ui/webui/chromeos/login/app_launch_splash_screen_handler.h"
 #include "chrome/browser/ui/webui/chromeos/login/arc_terms_of_service_screen_handler.h"
@@ -735,6 +737,11 @@ WizardController::CreateScreens() {
       base::BindRepeating(&WizardController::OnActiveDirectoryLoginScreenExit,
                           weak_factory_.GetWeakPtr())));
 
+  append(std::make_unique<FydeLocalSigninScreen>(
+      oobe_ui->GetView<FydeLocalSigninScreenHandler>(),
+      base::BindRepeating(&WizardController::OnFydeLocalSigninScreenExit,
+                          weak_factory_.GetWeakPtr())));
+
   append(std::make_unique<EduCoexistenceLoginScreen>(
       base::BindRepeating(&WizardController::OnEduCoexistenceLoginScreenExit,
                           weak_factory_.GetWeakPtr())));
@@ -1067,6 +1074,9 @@ void WizardController::OnUserCreationScreenExit(
 void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
   OnScreenExit(GaiaView::kScreenId, GaiaScreen::GetResultString(result));
   switch (result) {
+    case GaiaScreen::Result::USE_LOCAL_ACCOUNT:
+      AdvanceToScreen(FydeLocalSigninView::kScreenId);
+      break;
     case GaiaScreen::Result::BACK:
     case GaiaScreen::Result::CANCEL:
       if (result == GaiaScreen::Result::BACK &&
@@ -1132,6 +1142,15 @@ void WizardController::OnPasswordChangeScreenExit(
 void WizardController::OnActiveDirectoryLoginScreenExit() {
   OnScreenExit(ActiveDirectoryLoginView::kScreenId, kDefaultExitReason);
   LoginDisplayHost::default_host()->HideOobeDialog();
+}
+
+void WizardController::OnFydeLocalSigninScreenExit() {
+  OnScreenExit(FydeLocalSigninView::kScreenId, kDefaultExitReason);
+  if (wizard_context_->is_user_creation_enabled) {
+    AdvanceToScreen(UserCreationView::kScreenId);
+  } else {
+    AdvanceToScreen(GaiaView::kScreenId);
+  }
 }
 
 void WizardController::OnEduCoexistenceLoginScreenExit(
@@ -2211,6 +2230,7 @@ void WizardController::AdvanceToScreen(OobeScreenId screen_id) {
              screen_id == SignInFatalErrorView::kScreenId ||
              screen_id == LocaleSwitchView::kScreenId ||
              screen_id == OfflineLoginView::kScreenId ||
+             screen_id == FydeLocalSigninView::kScreenId ||
              screen_id == OsInstallScreenView::kScreenId ||
              screen_id == OsTrialScreenView::kScreenId ||
              screen_id == ParentalHandoffScreenView::kScreenId ||

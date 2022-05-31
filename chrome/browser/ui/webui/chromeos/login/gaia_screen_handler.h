@@ -99,6 +99,7 @@ class GaiaView {
   virtual void ShowSigninScreenForTest(const std::string& username,
                                        const std::string& password,
                                        const std::string& services) = 0;
+  virtual void RequestUseLocalAccount() = 0;
 };
 
 // A class that handles WebUI hooks in Gaia screen.
@@ -147,6 +148,7 @@ class GaiaScreenHandler : public BaseScreenHandler,
   void ShowSigninScreenForTest(const std::string& username,
                                const std::string& password,
                                const std::string& services) override;
+  void RequestUseLocalAccount() override;
 
   // SecurityTokenPinDialogHost:
   void ShowSecurityTokenPinDialog(
