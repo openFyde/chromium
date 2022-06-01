@@ -179,6 +179,7 @@ template("google_apis_tmpl") {
       "//crypto",
       "//mojo/public/cpp/bindings:struct_traits",
       "//services/network/public/cpp",
+      "//fydeos/switches",
     ]
 
     if (_use_official_google_keys_and_generate_metrics_key_header) {

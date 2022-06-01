@@ -16,6 +16,8 @@
 #include "google_apis/google_api_keys.h"
 #include "url/url_canon.h"
 #include "url/url_constants.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/account_constants.h"
 
 #define CONCAT_HIDDEN(a, b) a##b
 #define CONCAT(a, b) CONCAT_HIDDEN(a, b)
@@ -358,11 +360,18 @@ GURL GaiaUrls::GetCheckConnectionInfoURLWithSource(const std::string& source) {
 
 void GaiaUrls::InitializeDefault() {
   SetDefaultURLIfInvalid(&google_url_, switches::kGoogleUrl, kDefaultGoogleUrl);
-  SetDefaultOriginIfOpaqueOrInvalidScheme(&gaia_origin_, switches::kGaiaUrl,
-                                          kDefaultGaiaUrl);
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    SetDefaultOriginIfOpaqueOrInvalidScheme(&gaia_origin_, fydeos::switches::kFydeOSGaiaUrl,
+                                            fydeos::constants::kDefaultFydeOSGaiaUrl);
+    SetDefaultURLIfInvalid(&google_apis_origin_url_, fydeos::switches::kFydeOSApisUrl,
+                           fydeos::constants::kDefaultFydeOSApisBaseUrl);
+  } else {
+    SetDefaultOriginIfOpaqueOrInvalidScheme(&gaia_origin_, switches::kGaiaUrl,
+                                            kDefaultGaiaUrl);
+    SetDefaultURLIfInvalid(&google_apis_origin_url_, switches::kGoogleApisUrl,
+                           kDefaultGoogleApisBaseUrl);
+  }
   SetDefaultURLIfInvalid(&lso_origin_url_, switches::kLsoUrl, kDefaultGaiaUrl);
-  SetDefaultURLIfInvalid(&google_apis_origin_url_, switches::kGoogleApisUrl,
-                         kDefaultGoogleApisBaseUrl);
   SetDefaultURLIfInvalid(&oauth_account_manager_origin_url_,
                          switches::kOAuthAccountManagerUrl,
                          kDefaultOAuthAccountManagerBaseUrl);
