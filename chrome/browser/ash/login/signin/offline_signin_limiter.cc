@@ -43,7 +43,7 @@ void OfflineSigninLimiter::SignedIn(UserContext::AuthFlow auth_flow) {
     return;
   }
   const AccountId account_id = user->GetAccountId();
-  if (auth_flow == UserContext::AUTH_FLOW_GAIA_WITHOUT_SAML) {
+  if (auth_flow == UserContext::AUTH_FLOW_GAIA_WITHOUT_SAML || auth_flow == UserContext::AUTH_FLOW_FYDE_ONLINE) {
     // The user went through online authentication and GAIA did not redirect to
     // a SAML IdP. Update the time of last login without SAML. Clear the flag
     // enforcing online login, the flag will be set again when the limit

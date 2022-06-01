@@ -36,6 +36,9 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+// ---***FYDEOS END***---
 
 namespace {
 
@@ -122,6 +125,9 @@ CreateResourceRequestForUrlClassifier() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url =
       kids_management_api::GetURL(kClassifyUrlRequestApiPath);
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    resource_request->url = GURL(fydeos::switches::GetClassifyURLRequestApiPath());
+  }
   resource_request->method = "POST";
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   return resource_request;
@@ -258,6 +264,11 @@ void KidsChromeManagementClient::OnAccessTokenFetchComplete(
   }
 
   KidsChromeManagementRequest* req = it->get();
+  // ---***FYDEOS BEGIN***---
+  // FYDEOS NOTE
+  // Call StartFetching from OnSimpleLoaderComplete, response_code == net::HTTP_UNAUTHORIZED && !req->access_token_expired
+  // req->resource_request is nullptr, make chrome crash
+  // ---***FYDEOS END***---
 
   req->resource_request->headers.SetHeader(
       net::HttpRequestHeaders::kAuthorization,

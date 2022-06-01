@@ -43,6 +43,7 @@ const char kGAIAIdKey[] = "gaia_id";
 const char kObjGuidKey[] = "obj_guid";
 //---***FYDEOS BEGIN***---
 const char kFlintIdKey [] = "flint_id";
+const char kFydeIdKey [] = "fyde_id";
 //---***FYDEOS END***---
 
 // Key of account type.
@@ -182,6 +183,12 @@ bool UserMatches(const AccountId& account_id, const base::Value& dict) {
         return true;
       break;
     }
+    case AccountType::FYDE_ACCOUNT: {
+      const std::string* fyde_id = dict.FindStringKey(kFydeIdKey);
+      if (fyde_id && account_id.GetFydeId() == *fyde_id)
+        return true;
+      break;
+    }
     //---***FYDEOS END***---
     case AccountType::UNKNOWN: {
     }
@@ -215,6 +222,10 @@ void UpdateIdentity(const AccountId& account_id, base::Value& dict) {
     case AccountType::FLINT_ACCOUNT:
       if (!account_id.GetFlintId().empty())
         dict.SetStringKey(kFlintIdKey, account_id.GetFlintId());
+      break;
+    case AccountType::FYDE_ACCOUNT:
+      if (!account_id.GetFydeId().empty())
+        dict.SetStringKey(kFydeIdKey, account_id.GetFydeId());
       break;
     //---***FYDEOS END***---
     case AccountType::UNKNOWN:
@@ -451,6 +462,18 @@ AccountId KnownUser::GetAccountId(const std::string& user_email,
     return AccountId::FtFromUserEmailFlintId(sanitized_email,
                                              *stored_flint_id);
     }
+    if (const std::string* stored_fyde_id =
+            FindStringPath(account_id, kFydeIdKey)) {
+    if (!id.empty()) {
+      DCHECK(account_type == AccountType::FYDE_ACCOUNT);
+      if (id != *stored_fyde_id)
+        LOG(ERROR) << "User object guid has changed. Sync will not work.";
+    }
+
+    // obj_guid is associated with cryptohome.
+    return AccountId::FyFromUserEmailFydeId(sanitized_email,
+                                            *stored_fyde_id);
+    }
     //---***FYDEOS END***---
   }
 
@@ -466,6 +489,12 @@ AccountId KnownUser::GetAccountId(const std::string& user_email,
         return AccountId::FtFromUserEmailFlintId(*stored_email, id);
       }
       return AccountId::FtFromUserEmailFlintId(sanitized_email, id);
+    case AccountType::FYDE_ACCOUNT:
+      if (const std::string* stored_email = 
+          FindStringPath(AccountId::FyFromFydeId(id),kCanonicalEmail)){
+        return AccountId::FyFromUserEmailFydeId(*stored_email, id);
+      }
+      return AccountId::FyFromUserEmailFydeId(sanitized_email, id);
     //---***FYDEOS END***---
     case AccountType::UNKNOWN:
       return AccountId::FromUserEmail(sanitized_email);
@@ -484,6 +513,7 @@ std::vector<AccountId> KnownUser::GetKnownAccountIds() {
       const std::string* gaia_id = element_value.FindStringKey(kGAIAIdKey);
       const std::string* obj_guid = element_value.FindStringKey(kObjGuidKey);
       const std::string* flint_id = element_value.FindStringKey(kFlintIdKey);
+      const std::string* fyde_id = element_value.FindStringKey(kFydeIdKey);
       AccountType account_type = AccountType::GOOGLE;
       if (const std::string* account_type_string =
               element_value.FindStringKey(kAccountTypeKey)) {
@@ -507,6 +537,10 @@ std::vector<AccountId> KnownUser::GetKnownAccountIds() {
         case AccountType::FLINT_ACCOUNT:
           if (email && flint_id)
             result.push_back(AccountId::FtFromUserEmailFlintId(*email, *flint_id));
+          break;
+        case AccountType::FYDE_ACCOUNT:
+          if (email && fyde_id)
+            result.push_back(AccountId::FyFromUserEmailFydeId(*email, *fyde_id));
           break;
         //---***FYDEOS END***---
         default:
@@ -548,6 +582,9 @@ void KnownUser::UpdateId(const AccountId& account_id) {
     case AccountType::FLINT_ACCOUNT:
       SetStringPref(account_id, kFlintIdKey, account_id.GetFlintId());
       break;
+    case AccountType::FYDE_ACCOUNT:
+      SetStringPref(account_id, kFydeIdKey, account_id.GetFydeId());
+      break;
     //---***FYDEOS END***---
     case AccountType::UNKNOWN:
       return;
@@ -558,6 +595,10 @@ void KnownUser::UpdateId(const AccountId& account_id) {
 
 const std::string* KnownUser::FindGaiaID(const AccountId& account_id) {
   return FindStringPath(account_id, kGAIAIdKey);
+}
+
+const std::string* KnownUser::FindFydeID(const AccountId& account_id) {
+  return FindStringPath(account_id, kFydeIdKey);
 }
 
 void KnownUser::SetDeviceId(const AccountId& account_id,
