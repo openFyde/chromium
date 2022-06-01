@@ -27,7 +27,8 @@ const std::string GetCryptohomeId(const AccountId& account_id) {
       return account_id.GetUserEmail();
     }
     //---***FYDEOS BEGIN***---
-    case AccountType::FLINT_ACCOUNT: {
+    case AccountType::FLINT_ACCOUNT:
+    case AccountType::FYDE_ACCOUNT: {
       return account_id.GetUserEmail();
     }
     //---***FYDEOS END***---

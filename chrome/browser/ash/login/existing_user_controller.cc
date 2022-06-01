@@ -209,7 +209,10 @@ void RecordPasswordLoginEvent(const UserContext& user_context) {
 
   EasyUnlockService* easy_unlock_service =
       EasyUnlockService::Get(ProfileHelper::GetSigninProfile());
-  if (user_context.GetUserType() == user_manager::USER_TYPE_REGULAR &&
+    //---***FYDEOS BEGIN***---
+  if ((user_context.GetUserType() == user_manager::USER_TYPE_REGULAR ||
+      user_context.GetUserType() == user_manager::USER_TYPE_FYDE_ACCOUNT) &&
+    //---***FYDEOS END***---
       user_context.GetAuthFlow() == UserContext::AUTH_FLOW_OFFLINE &&
       easy_unlock_service) {
     easy_unlock_service->RecordPasswordLoginEvent(user_context.GetAccountId());
@@ -463,6 +466,8 @@ void ExistingUserController::UpdateLoginDisplay(
     // has already logged in.
     if (user->GetType() == user_manager::USER_TYPE_REGULAR ||
         user->GetType() == user_manager::USER_TYPE_CHILD ||
+        user->GetType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+        user->GetType() == user_manager::USER_TYPE_FYDE_CHILD ||
         user->GetType() == user_manager::USER_TYPE_ACTIVE_DIRECTORY) {
       ErrorScreen::AllowOfflineLogin(true /* allowed */);
       regular_users_counter++;
@@ -574,7 +579,10 @@ void ExistingUserController::Login(const UserContext& user_context,
 
   is_login_in_progress_ = true;
 
-  if (user_context.GetUserType() != user_manager::USER_TYPE_REGULAR &&
+//---***FYDEOS BEGIN***---
+  if ((user_context.GetUserType() != user_manager::USER_TYPE_REGULAR  ||
+      user_context.GetUserType() != user_manager::USER_TYPE_FYDE_ACCOUNT) &&
+//---***FYDEOS END***---
       user_manager::UserManager::Get()->IsUserLoggedIn()) {
     // Multi-login is only allowed for regular users. If we are attempting to
     // do multi-login as another type of user somehow, bail out. Do not

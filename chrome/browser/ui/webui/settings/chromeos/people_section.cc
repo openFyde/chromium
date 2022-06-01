@@ -543,6 +543,9 @@ bool IsSameAccount(const ::account_manager::AccountKey& account_key,
     case account_manager::AccountType::kFlint:
       return account_id.GetAccountType() == AccountType::FLINT_ACCOUNT &&
              account_id.GetFlintId() == account_key.id();
+    case account_manager::AccountType::kFyde:
+      return account_id.GetAccountType() == AccountType::FYDE_ACCOUNT &&
+             account_id.GetFydeId() == account_key.id();
   }
 }
 

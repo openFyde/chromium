@@ -1720,6 +1720,8 @@ bool WallpaperControllerImpl::ShouldShowWallpaperSetting() {
   user_manager::UserType active_user_type = active_user_session->user_info.type;
   return active_user_type == user_manager::USER_TYPE_REGULAR ||
          active_user_type == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         active_user_type == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         active_user_type == user_manager::USER_TYPE_FYDE_CHILD ||
          active_user_type == user_manager::USER_TYPE_CHILD;
 }
 
@@ -2091,7 +2093,7 @@ void WallpaperControllerImpl::SetDefaultWallpaperImpl(
                                           ? switches::kGuestWallpaperSmall
                                           : switches::kGuestWallpaperLarge;
     file_path = command_line->GetSwitchValuePath(switch_string);
-  } else if (user_type == user_manager::USER_TYPE_CHILD) {
+  } else if (user_type == user_manager::USER_TYPE_CHILD || user_type == user_manager::USER_TYPE_FYDE_CHILD) {
     const std::string switch_string = use_small
                                           ? switches::kChildWallpaperSmall
                                           : switches::kChildWallpaperLarge;

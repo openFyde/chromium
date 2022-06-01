@@ -212,6 +212,8 @@ crosapi::mojom::AccountType ToMojoAccountType(
     // ---***FYDEOS BEGIN***---
     case account_manager::AccountType::kFlint:
       return crosapi::mojom::AccountType::kFlint;
+    case account_manager::AccountType::kFyde:
+      return crosapi::mojom::AccountType::kFyde;
     // ---***FYDEOS END***---
   }
 }

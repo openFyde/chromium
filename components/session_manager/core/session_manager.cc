@@ -56,8 +56,10 @@ void SessionManager::CreateSessionForRestart(const AccountId& user_account_id,
     return;
   const user_manager::User* user = user_manager->FindUser(user_account_id);
   // Tests do not always create users.
+  // ---***FYDEOS BEGIN***---
   const bool is_child =
-      user && user->GetType() == user_manager::USER_TYPE_CHILD;
+      user && (user->GetType() == user_manager::USER_TYPE_CHILD || user->GetType() == user_manager::USER_TYPE_FYDE_CHILD);
+  // ---***FYDEOS END***---
   CreateSessionInternal(user_account_id, user_id_hash,
                         true /* browser_restart */, is_child);
 }

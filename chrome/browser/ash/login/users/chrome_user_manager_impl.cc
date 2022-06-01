@@ -491,7 +491,10 @@ user_manager::UserList ChromeUserManagerImpl::GetUsersAllowedForMultiProfile()
     const {
   // Supervised users are not allowed to use multi-profiles.
   if (GetLoggedInUsers().size() == 1 &&
-      GetPrimaryUser()->GetType() != user_manager::USER_TYPE_REGULAR) {
+      // ---***FYDEOS BEGIN***---
+      GetPrimaryUser()->GetType() != user_manager::USER_TYPE_REGULAR &&
+      GetPrimaryUser()->GetType() != user_manager::USER_TYPE_FYDE_ACCOUNT) {
+      // ---***FYDEOS END***---
     return user_manager::UserList();
   }
 
@@ -1223,6 +1226,8 @@ bool ChromeUserManagerImpl::IsUserAllowed(
   DCHECK(user.GetType() == user_manager::USER_TYPE_REGULAR ||
          user.GetType() == user_manager::USER_TYPE_GUEST ||
          user.GetType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         user.GetType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         user.GetType() == user_manager::USER_TYPE_FYDE_CHILD ||
          user.GetType() == user_manager::USER_TYPE_CHILD);
 
   return chrome_user_manager_util::IsUserAllowed(

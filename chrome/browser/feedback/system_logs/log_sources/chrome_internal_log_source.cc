@@ -145,6 +145,10 @@ std::string GetPrimaryAccountTypeString() {
       //---***FYDEOS BEGIN***---
     case user_manager::USER_TYPE_FLINT_ACCOUNT:
       return "flint_account";
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+      return "fyde_account";
+    case user_manager::USER_TYPE_FYDE_CHILD:
+      return "fyde_child";
       //---***FYDEOS END***---
     case user_manager::USER_TYPE_WEB_KIOSK_APP:
       return "web_kiosk_app";

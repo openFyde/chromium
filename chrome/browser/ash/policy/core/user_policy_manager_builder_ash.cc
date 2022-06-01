@@ -116,6 +116,7 @@ void CreateConfigurationPolicyProvider(
   // All other user types do not have user policy.
   const AccountId& account_id = user->GetAccountId();
   if (user->GetType() != user_manager::USER_TYPE_CHILD &&
+      user->GetType() != user_manager::USER_TYPE_FYDE_CHILD &&
       BrowserPolicyConnector::IsNonEnterpriseUser(account_id.GetUserEmail())) {
     DLOG(WARNING) << "No policy loaded for known non-enterprise user";
     // Mark this profile as not requiring policy.
@@ -147,6 +148,9 @@ void CreateConfigurationPolicyProvider(
     //---***FYDEOS BEGIN***---
     case AccountType::FLINT_ACCOUNT:
       return;
+    case AccountType::FYDE_ACCOUNT:
+      is_active_directory = false;
+      break;
     //---***FYDEOS END***---
   }
 
@@ -222,7 +226,8 @@ void CreateConfigurationPolicyProvider(
   // block signin. Policy refresh will fail without the token that is available
   // only after profile initialization.
   const bool policy_refresh_requires_oauth_token =
-      user->GetType() == user_manager::USER_TYPE_CHILD &&
+      (user->GetType() == user_manager::USER_TYPE_CHILD ||
+       user->GetType() == user_manager::USER_TYPE_FYDE_CHILD) &&
       base::FeatureList::IsEnabled(features::kDMServerOAuthForChildUser);
 
   base::TimeDelta policy_refresh_timeout;

@@ -17,7 +17,9 @@ UserContext::UserContext(const UserContext& other) = default;
 
 UserContext::UserContext(const user_manager::User& user)
     : account_id_(user.GetAccountId()), user_type_(user.GetType()) {
-  if (user_type_ == user_manager::USER_TYPE_REGULAR) {
+      // ---***FYDEOS BEGIN***---
+  if (user_type_ == user_manager::USER_TYPE_REGULAR || user_type_ == user_manager::USER_TYPE_FYDE_ACCOUNT) {
+      // ---***FYDEOS END***---
     account_id_.SetUserEmail(
         user_manager::CanonicalizeUserID(account_id_.GetUserEmail()));
   }
@@ -30,7 +32,8 @@ UserContext::UserContext(user_manager::UserType user_type,
     account_id_.SetUserEmail(
         user_manager::CanonicalizeUserID(account_id_.GetUserEmail()));
     //---***FYDEOS BEGIN***---
-  if (user_type_ == user_manager::USER_TYPE_FLINT_ACCOUNT)
+  if (user_type_ == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+      user_type_ == user_manager::USER_TYPE_FYDE_ACCOUNT)
     account_id_.SetUserEmail(
         user_manager::CanonicalizeUserID(account_id_.GetUserEmail()));
     //---***FYDEOS END***---
@@ -61,7 +64,7 @@ const AccountId& UserContext::GetAccountId() const {
 }
 
 const std::string& UserContext::GetGaiaID() const {
-  return account_id_.GetGaiaId();
+  return account_id_.GetAccountType() == AccountType::FYDE_ACCOUNT ? account_id_.GetFydeId() : account_id_.GetGaiaId();
 }
 
 const Key* UserContext::GetKey() const {

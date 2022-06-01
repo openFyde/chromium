@@ -148,7 +148,9 @@ void UserSessionInitializer::OnUserProfileLoaded(const AccountId& account_id) {
     FamilyUserMetricsServiceFactory::GetForBrowserContext(profile);
   }
 
-  if (user->GetType() == user_manager::USER_TYPE_CHILD)
+  // ---***FYDEOS BEGIN***---
+  if (user->GetType() == user_manager::USER_TYPE_CHILD || user->GetType() == user_manager::USER_TYPE_FYDE_CHILD)
+  // ---***FYDEOS END***---
     InitializeChildUserServices(profile);
 }
 

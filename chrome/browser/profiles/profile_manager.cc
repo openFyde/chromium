@@ -1283,8 +1283,10 @@ void ProfileManager::InitProfileUserPrefs(Profile* profile) {
   const user_manager::User* user =
       ash::ProfileHelper::Get()->GetUserByProfile(profile);
   if (user) {
+    // ---***FYDEOS BEGIN***---
     const bool user_is_child =
-        (user->GetType() == user_manager::USER_TYPE_CHILD);
+        (user->GetType() == user_manager::USER_TYPE_CHILD || user->GetType() == user_manager::USER_TYPE_FYDE_CHILD);
+    // ---***FYDEOS END***---
     const bool profile_is_child = profile->IsChild();
     const bool profile_is_new = profile->IsNewProfile();
     const bool profile_is_managed = !profile->IsOffTheRecord() &&

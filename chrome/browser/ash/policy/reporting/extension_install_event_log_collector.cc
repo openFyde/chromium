@@ -147,6 +147,7 @@ em::ExtensionInstallReportLogEvent_UserType ConvertUserTypeToProto(
     case user_manager::USER_TYPE_REGULAR:
     // ---***FYDEOS BEGIN***---
     case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
     // ---***FYDEOS END***---
       return em::ExtensionInstallReportLogEvent::USER_TYPE_REGULAR;
     case user_manager::USER_TYPE_GUEST:
@@ -156,6 +157,9 @@ em::ExtensionInstallReportLogEvent_UserType ConvertUserTypeToProto(
     case user_manager::USER_TYPE_KIOSK_APP:
       return em::ExtensionInstallReportLogEvent::USER_TYPE_KIOSK_APP;
     case user_manager::USER_TYPE_CHILD:
+    // ---***FYDEOS BEGIN***---
+    case user_manager::USER_TYPE_FYDE_CHILD:
+    // ---***FYDEOS END***---
       return em::ExtensionInstallReportLogEvent::USER_TYPE_CHILD;
     case user_manager::USER_TYPE_ARC_KIOSK_APP:
       return em::ExtensionInstallReportLogEvent::USER_TYPE_ARC_KIOSK_APP;

@@ -477,6 +477,8 @@ void CryptohomeAuthenticator::AuthenticateToLogin(
   DCHECK(user_context->GetUserType() == user_manager::USER_TYPE_REGULAR ||
          user_context->GetUserType() == user_manager::USER_TYPE_CHILD ||
          user_context->GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         user_context->GetUserType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         user_context->GetUserType() == user_manager::USER_TYPE_FYDE_CHILD ||
          user_context->GetUserType() ==
              user_manager::USER_TYPE_ACTIVE_DIRECTORY);
   current_state_ = std::make_unique<AuthAttemptState>(std::move(user_context));
@@ -494,6 +496,8 @@ void CryptohomeAuthenticator::CompleteLogin(
   DCHECK(user_context->GetUserType() == user_manager::USER_TYPE_REGULAR ||
          user_context->GetUserType() == user_manager::USER_TYPE_CHILD ||
          user_context->GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         user_context->GetUserType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         user_context->GetUserType() == user_manager::USER_TYPE_FYDE_CHILD ||
          user_context->GetUserType() ==
              user_manager::USER_TYPE_ACTIVE_DIRECTORY);
   current_state_ = std::make_unique<AuthAttemptState>(std::move(user_context));

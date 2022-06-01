@@ -95,6 +95,10 @@ std::string UserTypeToString(UserType user_type) {
       return "child";
     case USER_TYPE_FLINT_ACCOUNT:
       return "flint";
+    case USER_TYPE_FYDE_ACCOUNT:
+      return "fyde";
+    case USER_TYPE_FYDE_CHILD:
+      return "fyde-child";
     case USER_TYPE_GUEST:
       return "guest";
     case USER_TYPE_PUBLIC_ACCOUNT:
@@ -213,6 +217,8 @@ void UserManagerBase::UserLoggedIn(const AccountId& account_id,
     case USER_TYPE_CHILD:    // fallthrough
     // ---***FYDEOS BEGIN***---
     case USER_TYPE_FLINT_ACCOUNT:
+    case USER_TYPE_FYDE_ACCOUNT:
+    case USER_TYPE_FYDE_CHILD:
     // ---***FYDEOS END***---
     case USER_TYPE_ACTIVE_DIRECTORY:
       if (account_id != GetOwnerAccountId() && !user &&
@@ -612,7 +618,10 @@ bool UserManagerBase::IsLoggedInAsUserWithGaiaAccount() const {
 
 bool UserManagerBase::IsLoggedInAsChildUser() const {
   DCHECK(!task_runner_ || task_runner_->RunsTasksInCurrentSequence());
-  return IsUserLoggedIn() && active_user_->GetType() == USER_TYPE_CHILD;
+  return IsUserLoggedIn() && (active_user_->GetType() == USER_TYPE_CHILD ||
+                              // ---***FYDEOS BEGIN***---
+                              active_user_->GetType() == USER_TYPE_FYDE_CHILD);
+                              // ---***FYDEOS END***---
 }
 
 bool UserManagerBase::IsLoggedInAsPublicAccount() const {

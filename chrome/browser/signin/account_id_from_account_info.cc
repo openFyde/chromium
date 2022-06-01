@@ -8,12 +8,13 @@
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
 #include "components/user_manager/known_user.h"
+#include "fydeos/switches/account//account_switches.h"
 #endif
 
 AccountId AccountIdFromAccountInfo(const CoreAccountInfo& account_info) {
 #if BUILDFLAG(IS_CHROMEOS_ASH)
   return user_manager::known_user::GetAccountId(
-      account_info.email, account_info.gaia, AccountType::GOOGLE);
+      account_info.email, account_info.gaia, fydeos::switches::IsFydeAccountEnabled() ? AccountType::FYDE_ACCOUNT : AccountType::GOOGLE);
 #else
   if (account_info.email.empty() || account_info.gaia.empty())
     return EmptyAccountId();

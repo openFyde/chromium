@@ -160,7 +160,10 @@ bool SessionControllerImpl::IsUserChild() const {
     return false;
 
   user_manager::UserType active_user_type = GetUserSession(0)->user_info.type;
-  return active_user_type == user_manager::USER_TYPE_CHILD;
+  return active_user_type == user_manager::USER_TYPE_CHILD ||
+         // ---***FYDEOS BEGIN***---
+         active_user_type == user_manager::USER_TYPE_FYDE_CHILD;
+         // ---***FYDEOS END***---
 }
 
 bool SessionControllerImpl::IsUserPublicAccount() const {
@@ -559,12 +562,16 @@ LoginStatus SessionControllerImpl::CalculateLoginStatusForActiveSession()
     case user_manager::USER_TYPE_KIOSK_APP:
       return LoginStatus::KIOSK_APP;
     case user_manager::USER_TYPE_CHILD:
+    // ---***FYDEOS BEGIN***---
+    case user_manager::USER_TYPE_FYDE_CHILD:
+    // ---***FYDEOS END***---
       return LoginStatus::CHILD;
     case user_manager::USER_TYPE_ARC_KIOSK_APP:
       return LoginStatus::KIOSK_APP;
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
       // TODO(jamescook): There is no LoginStatus for this.
     case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
       return LoginStatus::USER;
     case user_manager::USER_TYPE_WEB_KIOSK_APP:
       return LoginStatus::KIOSK_APP;

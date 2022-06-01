@@ -48,9 +48,11 @@ typedef enum {
 
   //---***FYDEOS BEGIN***---
   USER_TYPE_FLINT_ACCOUNT = 10,
+  USER_TYPE_FYDE_ACCOUNT = 11,
+  USER_TYPE_FYDE_CHILD = 12,
   //---***FYDEOS END***---
   // Maximum histogram value.
-  NUM_USER_TYPES = 11
+  NUM_USER_TYPES = 13
 } UserType;
 
 }  // namespace user_manager

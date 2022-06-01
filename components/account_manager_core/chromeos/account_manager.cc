@@ -108,6 +108,14 @@ absl::optional<::account_manager::AccountType> FromProtoAccountType(
                             ::account_manager::AccountType::kFlint),
                     "Underlying enum values must match");
       return ::account_manager::AccountType::kFlint;
+    case internal::AccountType::ACCOUNT_TYPE_FYDE:
+      static_assert(
+          static_cast<int>(
+              internal::AccountType::ACCOUNT_TYPE_FYDE) ==
+              static_cast<int>(
+                  ::account_manager::AccountType::kFyde),
+                    "Underlying enum values must match");
+      return ::account_manager::AccountType::kFyde;
   }
 }
 
@@ -120,6 +128,8 @@ internal::AccountType ToProtoAccountType(
       return internal::AccountType::ACCOUNT_TYPE_ACTIVE_DIRECTORY;
     case ::account_manager::AccountType::kFlint:
       return internal::AccountType::ACCOUNT_TYPE_FLINT;
+    case ::account_manager::AccountType::kFyde:
+      return internal::AccountType::ACCOUNT_TYPE_FYDE;
   }
 }
 

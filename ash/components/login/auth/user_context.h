@@ -47,6 +47,7 @@ class COMPONENT_EXPORT(ASH_LOGIN_AUTH) UserContext {
     AUTH_FLOW_ACTIVE_DIRECTORY,
     //---***FYDEOS BEGIN***---
     AUTH_FLOW_FLINT_ACCOUNT,
+    AUTH_FLOW_FYDE_ONLINE,
     //---***FYDEOS END***---
   };
 

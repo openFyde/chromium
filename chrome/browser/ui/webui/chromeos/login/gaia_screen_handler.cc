@@ -110,6 +110,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/account/account_switches.h"
 
 using content::BrowserThread;
 namespace em = enterprise_management;
@@ -257,6 +258,9 @@ user_manager::UserType CalculateUserType(const AccountId& account_id) {
 
   if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT)
     return user_manager::USER_TYPE_FLINT_ACCOUNT;
+
+  if (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT)
+    return user_manager::USER_TYPE_FYDE_ACCOUNT;
 
   return user_manager::USER_TYPE_REGULAR;
 }
@@ -462,6 +466,13 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
         owner_user->GetType() == user_manager::UserType::USER_TYPE_CHILD) {
       params.SetStringKey("obfuscatedOwnerId", owner_account_id.GetGaiaId());
     }
+    // ---***FYDEOS BEGIN***---
+    if (owner_user &&
+        owner_user->GetType() == user_manager::UserType::USER_TYPE_FYDE_CHILD) {
+      params.SetStringKey("obfuscatedOwnerId", owner_account_id.GetFydeId());
+    }
+
+    // ---***FYDEOS END***---
   }
 
   params.SetStringKey("chromeType", GetChromeType());
@@ -522,6 +533,24 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
                     login::ExtractSamlPasswordAttributesEnabled());
   params.SetBoolKey("enableCloseView",
                     ash::features::IsGaiaCloseViewMessageEnabled());
+
+  // ---***FYDEOS BEGIN***---
+  params.SetBoolKey("enableFydeAccount", fydeos::switches::IsFydeAccountEnabled());
+  params.SetBoolKey("isDMServerSet", base::CommandLine::ForCurrentProcess()->HasSwitch(fydeos::switches::kFydeOSDeviceManagementUrl));
+  // add all user email and account_type
+  const std::vector<AccountId> known_account_ids =
+      user_manager::known_user::GetKnownAccountIds();
+
+  std::vector<base::Value> emailList;
+
+  for (const AccountId& known_id : known_account_ids) {
+    base::Value account(base::Value::Type::DICTIONARY);
+    account.SetStringKey("email", known_id.GetUserEmail());
+    account.SetStringKey("type", AccountId::AccountTypeToString(known_id.GetAccountType()));
+    emailList.emplace_back(std::move(account));
+  }
+  params.SetKey("knownAccountList", base::Value(std::move(emailList)));
+  // ---***FYDEOS END***---
 
   if (public_saml_url_fetcher_) {
     params.SetBoolKey("startsOnSamlPage", true);
@@ -857,7 +886,7 @@ void GaiaScreenHandler::HandleCompleteAuthentication(
   SigninError error;
   if (!login::BuildUserContextForGaiaSignIn(
           login::GetUsertypeFromServicesString(services),
-          GetAccountId(email, gaia_id, AccountType::GOOGLE), using_saml,
+          GetAccountId(email, gaia_id, fydeos::switches::IsFydeAccountEnabled() ? AccountType::FYDE_ACCOUNT : AccountType::GOOGLE), using_saml,
           using_saml_api_, password,
           SamlPasswordAttributes::FromJs(password_attributes),
           GetSyncTrustedVaultKeysForUserContext(sync_trusted_vault_keys,
@@ -1035,8 +1064,14 @@ void GaiaScreenHandler::DoCompleteLogin(const std::string& gaia_id,
   DCHECK(!gaia_id.empty());
   const std::string sanitized_email = gaia::SanitizeEmail(typed_email);
   LoginDisplayHost::default_host()->SetDisplayEmail(sanitized_email);
+//---***FYDEOS BEGIN***---
+  AccountType account_type = fydeos::switches::IsFydeAccountEnabled() ?
+     AccountType::FYDE_ACCOUNT : AccountType::GOOGLE;
+//---***FYDEOS END***---
   const AccountId account_id =
-      GetAccountId(typed_email, gaia_id, AccountType::GOOGLE);
+//---***FYDEOS BEGIN***---
+      GetAccountId(typed_email, gaia_id, account_type);
+//---***FYDEOS END***---
   const user_manager::User* const user =
       user_manager::UserManager::Get()->FindUser(account_id);
 
@@ -1044,7 +1079,9 @@ void GaiaScreenHandler::DoCompleteLogin(const std::string& gaia_id,
   SigninError error;
   if (!login::BuildUserContextForGaiaSignIn(
           user ? user->GetType() : CalculateUserType(account_id),
-          GetAccountId(typed_email, gaia_id, AccountType::GOOGLE), using_saml,
+          // ---***FYDEOS BEGIN***---
+          GetAccountId(typed_email, gaia_id, account_type), using_saml,
+          // ---***FYDEOS END***---
           using_saml_api_, password, SamlPasswordAttributes(),
           /*sync_trusted_vault_keys=*/absl::nullopt,
           *extension_provided_client_cert_usage_observer_, &user_context,
