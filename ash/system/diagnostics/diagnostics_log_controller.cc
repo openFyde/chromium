@@ -23,6 +23,9 @@
 #include "base/task/thread_pool.h"
 #include "components/session_manager/session_manager_types.h"
 
+#include "fydeos/switches/misc/misc_constants.h"
+#include "third_party/zlib/google/zip.h"
+
 namespace ash {
 namespace diagnostics {
 
@@ -130,10 +133,49 @@ void DiagnosticsLogController::Initialize(
                      g_instance->log_base_path_));
 }
 
+bool DiagnosticsLogController::FydeosCreateSystemInfoTempDirectory() {
+  if (!base::CreateNewTempDirectory(FILE_PATH_LITERAL(fydeos::constants::kFydeOSSystemTempPrefix),
+                                    &fydeos_system_info_temp_path_)) {
+    return false;
+  }
+
+  fydeos_system_info_temp_path_ = fydeos_system_info_temp_path_.Append(
+      base::FilePath(fydeos::constants::kFydeOSSystemInfoFileName));
+
+  return true;
+}
+
+bool DiagnosticsLogController::CompressSessionLog(const base::FilePath& file_path,
+                                                  const base::FilePath& dest) {
+
+  const base::FilePath base_dir = file_path.DirName();
+
+  base::File file(dest, base::File::FLAG_CREATE_ALWAYS | base::File::FLAG_WRITE);
+  if (!file.IsValid())
+    return false;
+
+  std::vector<base::FilePath> files_to_zip;
+  files_to_zip.push_back(file_path.BaseName());
+  return zip::ZipFiles(base_dir, files_to_zip, file.GetPlatformFile());
+}
+
+
 bool DiagnosticsLogController::GenerateSessionLogOnBlockingPool(
-    const base::FilePath& save_file_path) {
+    const base::FilePath& save_file_path,
+    const std::string& fydeos_system_info) {
   DCHECK(!save_file_path.empty());
+
+  if (!FydeosCreateSystemInfoTempDirectory()) {
+    LOG(ERROR) << "Failed to create system info temp directory";
+    return false;
+  }
+
   std::vector<std::string> log_pieces;
+
+  if (!fydeos_system_info.empty()) {
+    log_pieces.push_back(fydeos::constants::kFydeOSSystemInfoHeader);
+    log_pieces.push_back(fydeos_system_info);
+  }
 
   // Fetch system data from TelemetryLog.
   const std::string system_log_contents = telemetry_log_->GetContents();
@@ -164,7 +206,11 @@ bool DiagnosticsLogController::GenerateSessionLogOnBlockingPool(
     log_pieces.push_back(networking_log_->GetNetworkEvents());
   }
 
-  return base::WriteFile(save_file_path, base::JoinString(log_pieces, "\n"));
+  if (!base::WriteFile(fydeos_system_info_temp_path_, base::JoinString(log_pieces, "\n"))) {
+    LOG(ERROR) << "Failed to write system info to temp file";
+    return false;
+  }
+  return CompressSessionLog(fydeos_system_info_temp_path_, save_file_path);
 }
 
 void DiagnosticsLogController::ResetAndInitializeLogWriters() {
