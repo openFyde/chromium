@@ -15,6 +15,9 @@
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_policy.h"
 
+#include "chrome/browser/feedback/system_logs/about_system_logs_fetcher.h"
+#include "components/feedback/system_logs/system_logs_fetcher.h"
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -79,6 +82,16 @@ class SessionLogHandler : public content::WebUIMessageHandler,
   void SetLogCreatedClosureForTest(base::OnceClosure closure);
 
  private:
+
+  // Create temporary directory before log creation
+  bool FydeosCreateSystemInfoTempDirectory();
+
+  bool PrepareSessionLog(const base::FilePath& file_path);
+
+  // Zip `file_path` to `zip_path`
+  bool CompressSessionLog(const base::FilePath& file_path,
+                          const base::FilePath& zip_path);
+
   // Creates a session log at `file_path`. The session log includes the contents
   // of both `telemetry_log_` and `routine_log_`. Returns true if the file was
   // successfully written. Retrns false otherwise.
@@ -90,12 +103,18 @@ class SessionLogHandler : public content::WebUIMessageHandler,
   // Initializes Javascript.
   void HandleInitialize(const base::ListValue* args);
 
+  void HandleGetFydeOsSystemInfo(const base::ListValue* args);
+
+  void OnFydeOSSystemInfoReceived(std::unique_ptr<system_logs::SystemLogsResponse> sys_info);
+
   SelectFilePolicyCreator select_file_policy_creator_;
   std::unique_ptr<TelemetryLog> telemetry_log_;
   std::unique_ptr<RoutineLog> routine_log_;
   std::unique_ptr<NetworkingLog> networking_log_;
   ash::HoldingSpaceClient* const holding_space_client_;
+  std::string fydeos_system_info_;
   std::string save_session_log_callback_id_;
+  base::FilePath fydeos_system_info_temp_path_;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
   base::OnceClosure log_created_closure_;
   // Task runner for tasks posted by save session log handler. Used to ensure

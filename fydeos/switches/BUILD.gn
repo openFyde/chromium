@@ -27,6 +27,8 @@ source_set("switches") {
 
     "misc/misc_switches.cc",
     "misc/misc_switches.h",
+    "misc/misc_constants.cc",
+    "misc/misc_constants.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }

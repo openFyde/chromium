@@ -18,6 +18,13 @@
     width: 20px;
   }
 
+  #learn-more-icon {
+    --iron-icon-height: 14px;
+    --iron-icon-width: 14px;
+    margin-inline-start: -10px;
+    margin-bottom: 4px;
+  }
+
   .session-log-button {
     border-radius: 16px;
     height: 32px;
@@ -51,6 +58,9 @@
           <iron-icon icon="diagnostics:download" id="download-icon"></iron-icon>
           <span>[[i18n('sessionLog')]]</span>
         </cr-button>
+        <a href="https://fydeos.com/docs/manual/fix-problems/use-diagnostics-to-troubleshoot" target="_blank">
+          <iron-icon icon="diagnostics:question" id="learn-more-icon"></iron-icon>
+        </a>
       </div>
       <div slot="bottom-nav-content-drawer" class="session-log-container">
         <cr-button on-click="onSessionLogClick_" class="session-log-button"
@@ -58,6 +68,9 @@
           <iron-icon icon="diagnostics:download" id="download-icon"></iron-icon>
           <span>[[i18n('sessionLog')]]</span>
         </cr-button>
+        <a href="https://fydeos.com/docs/manual/fix-problems/use-diagnostics-to-troubleshoot" target="_blank">
+          <iron-icon icon="diagnostics:question" id="learn-more-icon"></iron-icon>
+        </a>
       </div>
     </navigation-view-panel>
   </div>

@@ -121,6 +121,7 @@ Polymer({
       }
       navPanel.addSelectors(pages);
     }
+    this.browserProxy_.getFydeOsSystemInfo();
   },
 
   /** @protected */

@@ -37,6 +37,8 @@ export class DiagnosticsBrowserProxy {
    * @return {!Promise<string>}
    */
   getPluralString(name, count) {}
+
+  getFydeOsSystemInfo() {}
 }
 
 /** @implements {DiagnosticsBrowserProxy} */
@@ -79,6 +81,12 @@ export class DiagnosticsBrowserProxyImpl {
   getPluralString(name, count) {
     return sendWithPromise('getPluralString', name, count);
   }
+
+  /** @override */
+  getFydeOsSystemInfo() {
+    chrome.send('getFydeOsSystemInfo');
+  }
+
 }
 
 // The singleton instance_ can be replaced with a test version of this wrapper

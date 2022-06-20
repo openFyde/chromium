@@ -12,6 +12,7 @@
 #include "ash/system/diagnostics/telemetry_log.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/file.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
@@ -22,6 +23,14 @@
 #include "ui/gfx/native_widget_types.h"
 #include "ui/shell_dialogs/select_file_policy.h"
 
+#include "chrome/browser/feedback/system_logs/about_system_logs_fetcher.h"
+#include "components/feedback/system_logs/system_logs_fetcher.h"
+#include "third_party/zlib/google/zip.h"
+
+#include "fydeos/switches/misc/misc_constants.h"
+
+using system_logs::SystemLogsResponse;
+
 namespace ash {
 namespace diagnostics {
 namespace {
@@ -31,7 +40,7 @@ const char kSystemLogSectionHeader[] = "=== System === \n";
 const char kNetworkingLogSectionHeader[] = "=== Networking === \n";
 const char kNoRoutinesRun[] =
     "No routines of this type were run in the session.\n";
-const char kDefaultSessionLogFileName[] = "session_log.txt";
+const char kDefaultSessionLogFileName[] = "about_system.zip";
 
 std::string GetRoutineResultsString(const std::string& results) {
   const std::string section_header =
@@ -87,6 +96,10 @@ void SessionLogHandler::RegisterMessages() {
       "saveSessionLog",
       base::BindRepeating(&SessionLogHandler::HandleSaveSessionLogRequest,
                           weak_ptr_));
+  web_ui()->RegisterDeprecatedMessageCallback(
+      "getFydeOsSystemInfo",
+      base::BindRepeating(&SessionLogHandler::HandleGetFydeOsSystemInfo,
+                          weak_ptr_));
 }
 
 void SessionLogHandler::FileSelected(const base::FilePath& path,
@@ -103,10 +116,24 @@ void SessionLogHandler::FileSelected(const base::FilePath& path,
         base::BindOnce(&SessionLogHandler::OnSessionLogCreated, weak_ptr_,
                        path));
   } else {
+    bool ret;
+
+    ret = PrepareSessionLog(path);
+    if (!ret) {
+      LOG(ERROR) << "failed to prepare "<< path;
+      return;
+    }
+
+    ret = CreateSessionLog(fydeos_system_info_temp_path_);
+    if (!ret) {
+      LOG(ERROR) << "failed to create " << fydeos_system_info_temp_path_;
+      return;
+    }
+
     task_runner_->PostTaskAndReplyWithResult(
         FROM_HERE,
-        base::BindOnce(&SessionLogHandler::CreateSessionLog,
-                       base::Unretained(this), path),
+        base::BindOnce(&SessionLogHandler::CompressSessionLog,
+                       base::Unretained(this), fydeos_system_info_temp_path_, path),
         base::BindOnce(&SessionLogHandler::OnSessionLogCreated, weak_ptr_,
                        path));
   }
@@ -171,6 +198,12 @@ bool SessionLogHandler::CreateSessionLog(const base::FilePath& file_path) {
 
   std::vector<std::string> pieces;
   pieces.push_back(kSystemLogSectionHeader);
+
+  if (!fydeos_system_info_.empty()) {
+    pieces.push_back(fydeos::constants::kFydeOSSystemInfoHeader);
+    pieces.push_back(fydeos_system_info_);
+  }
+
   if (!system_log_contents.empty()) {
     pieces.push_back(system_log_contents);
   }
@@ -193,6 +226,60 @@ bool SessionLogHandler::CreateSessionLog(const base::FilePath& file_path) {
   }
 
   return base::WriteFile(file_path, base::JoinString(pieces, "\n"));
+}
+
+void SessionLogHandler::HandleGetFydeOsSystemInfo(const base::ListValue* args) {
+  system_logs::SystemLogsFetcher* fetcher =
+    system_logs::BuildAboutSystemLogsFetcher();
+  fetcher->Fetch(base::BindOnce(&SessionLogHandler::OnFydeOSSystemInfoReceived,
+                                weak_factory_.GetWeakPtr()));
+}
+
+void SessionLogHandler::OnFydeOSSystemInfoReceived(std::unique_ptr<SystemLogsResponse> sys_info) {
+  if (!sys_info) {
+    LOG(WARNING) << "Failed to get FydeOS system info";
+    return;
+  }
+
+  fydeos_system_info_ = "";
+
+  for (SystemLogsResponse::const_iterator it = sys_info->begin();
+       it != sys_info->end(); ++it) {
+    auto val = std::make_unique<base::DictionaryValue>();
+    fydeos_system_info_ += it->first;
+    fydeos_system_info_ += ":\n";
+    fydeos_system_info_ += it->second;
+    fydeos_system_info_ += "\n";
+  }
+}
+
+bool SessionLogHandler::FydeosCreateSystemInfoTempDirectory() {
+  if (!base::CreateNewTempDirectory(FILE_PATH_LITERAL(fydeos::constants::kFydeOSSystemTempPrefix),
+                                    &fydeos_system_info_temp_path_))
+    return false;
+
+  fydeos_system_info_temp_path_ = fydeos_system_info_temp_path_.Append(base::FilePath(fydeos::constants::kFydeOSSystemInfoFileName));
+
+  return true;
+}
+
+bool SessionLogHandler::CompressSessionLog(const base::FilePath& file_path,
+                                           const base::FilePath& dest) {
+
+  const base::FilePath base_dir = file_path.DirName();
+
+  base::File file(dest, base::File::FLAG_CREATE_ALWAYS | base::File::FLAG_WRITE);
+  if (!file.IsValid())
+    return false;
+
+  std::vector<base::FilePath> files_to_zip;
+  files_to_zip.push_back(file_path.BaseName());
+  return zip::ZipFiles(base_dir, files_to_zip, file.GetPlatformFile());
+}
+
+bool SessionLogHandler::PrepareSessionLog(const base::FilePath& file_path) {
+  FydeosCreateSystemInfoTempDirectory();
+  return true;
 }
 
 void SessionLogHandler::HandleSaveSessionLogRequest(
