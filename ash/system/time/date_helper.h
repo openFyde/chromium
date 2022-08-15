@@ -7,6 +7,7 @@
 
 #include <string>
 #include "ash/components/settings/timezone_settings.h"
+#include "ash/public/cpp/locale_update_controller.h"
 #include "base/memory/singleton.h"
 #include "base/scoped_observation.h"
 #include "base/time/time.h"
@@ -17,6 +18,13 @@
 
 namespace ash {
 
+namespace {
+// Default week title for a few special languages that cannot find the start of
+// a week. So far the known languages that cannot return their day of week are:
+// 'bn', 'fa', 'mr', 'pa-PK'.
+std::vector<std::u16string> kDefaultWeekTitle = {u"S", u"M", u"T", u"W",
+                                                 u"T", u"F", u"S"};
+}  // namespace
 // A singleton class used to create and cache `GregorianCalendar ` and
 // `icu::SimpleDateFormat` objects, so that they don't have to be recreated each
 // time when querying the time difference or formating a time. This improves
@@ -67,6 +75,7 @@ class DateHelper : public system::TimezoneSettings::Observer {
 
   icu::SimpleDateFormat& year_formatter() { return year_formatter_; }
 
+  std::vector<std::u16string> week_titles() { return week_titles_; }
  private:
   friend base::DefaultSingletonTraits<DateHelper>;
   DateHelper();
@@ -78,6 +87,9 @@ class DateHelper : public system::TimezoneSettings::Observer {
 
   // Resets the icu::SimpleDateFormat objects after a time zone change.
   void ResetFormatters();
+
+  // Calculates the week titles based on the language setting.
+  void CalculateLocalWeekTitles();
 
   // system::TimezoneSettings::Observer:
   void TimezoneChanged(const icu::TimeZone& timezone) override;
@@ -106,8 +118,17 @@ class DateHelper : public system::TimezoneSettings::Observer {
   // Formatter for 24 hour clock hours and minutes.
   icu::SimpleDateFormat twenty_four_hour_clock_formatter_;
 
+  // Formatter for getting the day of week. Returns 1 - 7.
+  icu::SimpleDateFormat day_of_week_formatter_;
+
+  // Formatter for getting the week title. e.g. M, T, W.
+  icu::SimpleDateFormat week_title_formatter_;
+
   // Formatter for getting the year.
   icu::SimpleDateFormat year_formatter_;
+
+  // Week title list based on the language setting. e.g. SMTWTFS in English.
+  std::vector<std::u16string> week_titles_;
 
   std::unique_ptr<icu::GregorianCalendar> gregorian_calendar_;
 
