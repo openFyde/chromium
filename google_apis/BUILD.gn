@@ -47,6 +47,8 @@ declare_args() {
   # keys will be used instead.
   google_api_key = ""
 
+  fydeos_api_key = ""
+
   # See google_api_key.
   google_default_client_id = ""
 
@@ -78,6 +80,9 @@ config("key_defines") {
   }
   if (google_api_key != "") {
     defines += [ "GOOGLE_API_KEY=\"$google_api_key\"" ]
+  }
+  if (fydeos_api_key != "") {
+    defines += [ "FYDEOS_API_KEY=\"$fydeos_api_key\"" ]
   }
   if (google_default_client_id != "") {
     defines += [ "GOOGLE_DEFAULT_CLIENT_ID=\"$google_default_client_id\"" ]

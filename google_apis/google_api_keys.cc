@@ -38,6 +38,10 @@
 #define GOOGLE_API_KEY DUMMY_API_TOKEN
 #endif
 
+#if !defined(FYDEOS_API_KEY)
+#define FYDEOS_API_KEY DUMMY_API_TOKEN
+#endif
+
 #if !defined(GOOGLE_METRICS_SIGNING_KEY)
 #define GOOGLE_METRICS_SIGNING_KEY DUMMY_API_TOKEN
 #endif
@@ -136,6 +140,10 @@ class APIKeyCache {
 
     api_key_ = CalculateKeyValue(
         GOOGLE_API_KEY, STRINGIZE_NO_EXPANSION(GOOGLE_API_KEY), nullptr,
+        std::string(), environment.get(), command_line, gaia_config);
+
+    fydeos_api_key_ = CalculateKeyValue(
+        FYDEOS_API_KEY, STRINGIZE_NO_EXPANSION(FYDEOS_API_KEY), nullptr,
         std::string(), environment.get(), command_line, gaia_config);
 
 // A special non-stable key is at the moment defined only for Android Chrome.
@@ -239,6 +247,7 @@ class APIKeyCache {
   }
 
   std::string api_key() const { return api_key_; }
+  std::string fydeos_api_key() const { return fydeos_api_key_; }
 #if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_FUCHSIA)
   void set_api_key(const std::string& api_key) { api_key_ = api_key; }
 #endif
@@ -357,6 +366,7 @@ class APIKeyCache {
   }
 
   std::string api_key_;
+  std::string fydeos_api_key_;
   std::string api_key_non_stable_;
   std::string api_key_remoting_;
   std::string api_key_sharing_;
@@ -375,8 +385,16 @@ bool HasAPIKeyConfigured() {
   return GetAPIKey() != DUMMY_API_TOKEN;
 }
 
+bool HasFydeOSAPIKeyConfigured() {
+  return GetFydeOSAPIKey() != DUMMY_API_TOKEN;
+}
+
 std::string GetAPIKey() {
   return g_api_key_cache.Get().api_key();
+}
+
+std::string GetFydeOSAPIKey() {
+  return g_api_key_cache.Get().fydeos_api_key();
 }
 
 std::string GetNonStableAPIKey() {

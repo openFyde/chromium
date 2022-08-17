@@ -179,6 +179,10 @@ GURL TimeZoneRequestURL(const GURL& url,
       "%s=%f,%f", kLocationString, geoposition.latitude, geoposition.longitude);
   if (url == DefaultTimezoneProviderURL()) {
     std::string api_key = google_apis::GetAPIKey();
+    if (!fydeos::switches::DisableFydeOSTimezoneAPI() &&
+        google_apis::HasFydeOSAPIKeyConfigured()) {
+        api_key = google_apis::GetFydeOSAPIKey();
+    }
     if (!api_key.empty()) {
       query += "&";
       query += kKeyString;

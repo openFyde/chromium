@@ -64,12 +64,15 @@ extern const char kAPIKeysDevelopersHowToURL[];
 // Returns true if no dummy API key is set.
 bool HasAPIKeyConfigured();
 
+bool HasFydeOSAPIKeyConfigured();
+
 // Retrieves the API key, a.k.a. developer key, or a dummy string
 // if not set.
 //
 // Note that the key should be escaped for the context you use it in,
 // e.g. URL-escaped if you use it in a URL.
 std::string GetAPIKey();
+std::string GetFydeOSAPIKey();
 
 // Non-stable channels may have a different Google API key.
 std::string GetNonStableAPIKey();
