@@ -24,6 +24,9 @@ source_set("switches") {
     "account/account_constants.h",
     "account/policy_constants.cc",
     "account/policy_constants.h",
+
+    "misc/misc_switches.cc",
+    "misc/misc_switches.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }
