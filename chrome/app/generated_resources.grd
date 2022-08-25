@@ -273,6 +273,7 @@ are declared in tools/grit/grit_rule.gni.
     <file path="resources/generated_resources_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/generated_resources_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/generated_resources_zu.xtb" lang="zu" />
+    <file path="../../fydeos/i18n/chrome/app/resources/generated_resources_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -13017,6 +13018,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_OPEN_SETTINGS_BUTTON" desc="The user can choose “Settings” to visit chrome://settings/privacySandbox. If they do, they’ll find the toggle on for Sandbox trials, which include everything they’ve read above. They can leave trials on or turn them off on this page. Choosing “Settings”, the user will navigate away from this page and won’t be able to return here.">
       Settings
     </message>
+
+    <part file="../../fydeos/i18n/chrome/app/generated_resources.grdp" />
+
   </messages>
 </release>
 </grit>
