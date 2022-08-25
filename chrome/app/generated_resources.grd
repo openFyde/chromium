@@ -273,6 +273,7 @@ are declared in tools/grit/grit_rule.gni.
     <file path="resources/generated_resources_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/generated_resources_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/generated_resources_zu.xtb" lang="zu" />
+    <file path="../../fydeos/i18n/chrome/app/resources/generated_resources_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -14003,6 +14004,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_SIDEBAR_WEBVIEW_TITLE" desc="The menu entry name for the sidebar webview.">
       Webview
     </message>
+
+    <part file="../../fydeos/i18n/chrome/app/generated_resources.grdp" />
+
   </messages>
 </release>
 </grit>
