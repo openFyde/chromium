@@ -48,6 +48,9 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/webui/web_ui_util.h"
+#if BUILDFLAG(IS_CHROMEOS_ASH)
+#include "chrome/browser/ash/profiles/profile_helper.h"
+#endif
 
 namespace {
 
@@ -117,7 +120,10 @@ content::WebUIDataSource* CreateHistoryUIHTMLSource(Profile* profile) {
   bool allow_deleting_history =
       prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory);
   source->AddBoolean("allowDeletingHistory", allow_deleting_history);
-
+  const user_manager::User* user =
+      chromeos::ProfileHelper::Get()->GetUserByProfile(profile);
+  source->AddBoolean("isFydeLocalAccount",
+                          user->GetType() == user_manager::UserType::USER_TYPE_FLINT_ACCOUNT);
   source->AddBoolean("isGuestSession", profile->IsGuestSession());
   source->AddBoolean("isSignInAllowed",
                      prefs->GetBoolean(prefs::kSigninAllowed));

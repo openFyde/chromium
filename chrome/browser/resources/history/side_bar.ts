@@ -105,6 +105,12 @@ export class HistorySideBarElement extends PolymerElement {
         computed: 'computeShowToggleHistoryClusters_(' +
             'historyClustersEnabled, historyClustersVisibleManagedByPolicy_)',
       },
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
     };
   }
 
