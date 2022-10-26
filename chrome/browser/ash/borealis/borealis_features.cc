@@ -55,6 +55,11 @@ class FullChecker : public TokenHardwareChecker {
   explicit FullChecker(Data data) : TokenHardwareChecker(std::move(data)) {}
 
   AllowStatus Check() const {
+    if (!IsBoard("")) {
+      LOG(INFO) << "bypassing hardware checks.";
+      VLOG(2) << GetDebugString();
+      return AllowStatus::kAllowed;
+    }
     // Tokens provide more fine-grained control over whether borealis can be run
     // on a specific device. The different kinds of token are:
     //  * "Super" token: Allows borealis on any device.
