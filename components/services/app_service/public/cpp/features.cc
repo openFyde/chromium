@@ -32,6 +32,6 @@ BASE_FEATURE(kAppServiceCapabilityAccessWithoutMojom,
 
 BASE_FEATURE(kStopMojomAppService,
              "StopMojomAppService",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace apps
