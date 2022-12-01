@@ -240,9 +240,9 @@ AllowStatus BorealisFeatures::MightBeAllowed() {
     return AllowStatus::kUserPrefBlocked;
   }
 
-  version_info::Channel c = chrome::GetChannel();
-  if (c == version_info::Channel::STABLE)
-    return AllowStatus::kBlockedOnStable;
+  // version_info::Channel c = chrome::GetChannel();
+  // if (c == version_info::Channel::STABLE)
+  //   return AllowStatus::kBlockedOnStable;
 
   if (!base::FeatureList::IsEnabled(chromeos::features::kBorealisPermitted))
     return AllowStatus::kBlockedByFlag;
