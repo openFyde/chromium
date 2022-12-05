@@ -8,6 +8,7 @@
 
 #include "ash/constants/app_types.h"
 #include "ash/constants/notifier_catalogs.h"
+#include "ash/constants/ash_features.h"
 #include "ash/public/cpp/keyboard/keyboard_controller.h"
 #include "ash/public/cpp/system/toast_manager.h"
 #include "ash/public/cpp/tablet_mode.h"
@@ -68,7 +69,8 @@ CrostiniUnsupportedActionNotifier::~CrostiniUnsupportedActionNotifier() {
 // IMEs but no non-xkb IMEs.
 bool CrostiniUnsupportedActionNotifier::IsIMESupportedByCrostini(
     const ash::input_method::InputMethodDescriptor& method) {
-  return method.id().find("xkb:") != std::string::npos;
+  const bool supported = base::FeatureList::IsEnabled(ash::features::kCrostiniImeSupport);
+  return supported || method.id().find("xkb:") != std::string::npos;
 }
 
 void CrostiniUnsupportedActionNotifier::OnTabletModeStarted() {
