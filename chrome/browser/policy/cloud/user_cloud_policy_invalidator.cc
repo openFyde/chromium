@@ -68,7 +68,7 @@ void UserCloudPolicyInvalidator::Observe(
   if (!invalidation_provider)
     return;
   Initialize(invalidation_provider->GetInvalidationServiceForCustomSender(
-      policy::kPolicyFCMInvalidationSenderID));
+      policy::GetPolicyFCMInvalidationSenderID()));
 }
 
 }  // namespace policy

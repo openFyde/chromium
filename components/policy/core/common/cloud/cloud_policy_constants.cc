@@ -153,5 +153,15 @@ std::string GetPolicyVerificationKey() {
 // anything bound to it.
 
 const char kPolicyFCMInvalidationSenderID[] = "1013309121859";
+  
+//---***FYDEOS BEGIN***---  
+std::string GetPolicyFCMInvalidationSenderID() {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID;
+  }
+
+  return kPolicyFCMInvalidationSenderID;
+}
+//---***FYDEOS END***---  
 
 }  // namespace policy

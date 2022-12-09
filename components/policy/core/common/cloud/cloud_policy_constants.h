@@ -200,6 +200,8 @@ extern const char kPolicyFCMInvalidationSenderID[];
 // exists on the server side.
 inline static const char kKioskSkuName[] = "GOOGLE.CHROME_KIOSK_ANNUAL";
 
+POLICY_EXPORT std::string GetPolicyFCMInvalidationSenderID();
+  
 }  // namespace policy
 
 #endif  // COMPONENTS_POLICY_CORE_COMMON_CLOUD_CLOUD_POLICY_CONSTANTS_H_

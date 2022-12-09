@@ -26,6 +26,10 @@
 #include "components/invalidation/impl/status.h"
 #include "components/invalidation/public/invalidator_state.h"
 
+//---***FYDEOS BEGIN***---  
+#include "components/policy/core/common/cloud/cloud_policy_constants.h"
+//---***FYDEOS END***---  
+
 using instance_id::InstanceID;
 
 namespace invalidation {
@@ -58,7 +62,7 @@ base::TimeDelta GetTimeToLive(const std::string& sender_id) {
 
   // This magic value is identical to kPolicyFCMInvalidationSenderID, i.e. the
   // value that ChromeOS policy uses for its invalidations.
-  if (sender_id == "1013309121859") {
+  if (sender_id == policy::GetPolicyFCMInvalidationSenderID()) {
     if (!base::FeatureList::IsEnabled(switches::kPolicyInstanceIDTokenTTL)) {
       return base::TimeDelta();
     }

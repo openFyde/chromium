@@ -447,7 +447,7 @@ IN_PROC_BROWSER_TEST_F(CloudPolicyTest, MAYBE_InvalidatePolicy) {
   base::TimeDelta now =
       base::Time::NowFromSystemTime() - base::Time::UnixEpoch();
 
-  GetInvalidationServiceForSenderId(kPolicyFCMInvalidationSenderID)
+  GetInvalidationServiceForSenderId(GetPolicyFCMInvalidationSenderID())
       ->EmitInvalidationForTest(invalidation::Invalidation::Init(
           kPolicyInvalidationTopic, now.InMicroseconds() /* version */,
           "payload"));

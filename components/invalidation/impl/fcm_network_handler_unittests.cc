@@ -494,7 +494,7 @@ TEST_F(FCMNetworkHandlerTestWithTTL, ShouldProvideTTLWithSyncSenderID) {
 TEST_F(FCMNetworkHandlerTestWithTTL, ShouldProvideTTLWithPolicySenderID) {
   EXPECT_CALL(*mock_instance_id(),
               GetToken(_, _, Eq(base::Seconds(kTimeToLiveInSeconds)), _, _));
-  MakeHandler(/*sender_id=*/"1013309121859")->StartListening();
+  MakeHandler(/*sender_id=*/GetPolicyFCMInvalidationSenderID())->StartListening();
 }
 
 TEST_F(FCMNetworkHandlerTestWithTTL, ShouldNotProvideTTLWithFakeSenderID) {

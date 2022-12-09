@@ -36,5 +36,7 @@ const uint8_t kFydeOSPolicyVerificationKey[] = {
 
 const size_t kFydeOSPolicyVerificationKeyLength = sizeof(kFydeOSPolicyVerificationKey);
 
+const char kFydeOSPolicyFCMInvalidationSenderID[] = "384261808202";
+
 }
 }
