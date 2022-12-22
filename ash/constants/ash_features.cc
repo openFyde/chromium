@@ -1550,12 +1550,12 @@ BASE_FEATURE(kProductivityLauncher,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Controls whether to enable Projector.
-BASE_FEATURE(kProjector, "Projector", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kProjector, "Projector", base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Controls whether to enable Projector for managed users.
 BASE_FEATURE(kProjectorManagedUser,
              "ProjectorManagedUser",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Controls whether to enable Projector annotator tools.
 // The annotator tools are based on the ink library.
