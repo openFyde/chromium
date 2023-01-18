@@ -1805,6 +1805,7 @@ enum HistogramValue {
   SHELL_GET_TASK_OUTPUT = 1741,
   SHELL_GET_DAEMON_STATE = 1742,
   SHELL_FORCE_CLOSE_TASK = 1743,
+  FYDEOS_ARC_STATUS_GET = 1744,
   //---***FYDEOS END***---
   // Last entry: Add new entries above, then run:
   // tools/metrics/histograms/update_extension_histograms.py

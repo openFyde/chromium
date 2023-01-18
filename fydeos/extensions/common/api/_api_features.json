@@ -56,5 +56,15 @@
       "chrome://settings/*",
       "chrome://os-settings/*"
     ] 
-  }]
+  }],
+  "fydeosArcStatus": {
+    "dependencies": ["permission:FydeOSShellClient"],
+    "extension_types": ["extension", "platform_app", "legacy_packaged_app", "hosted_app"],
+    "platforms": ["chromeos"],
+    "contexts": ["blessed_extension"],
+    "allowlist": [
+      "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E",   //FydeOS System Control Extension
+      "040DC0863AC1A19D3B3D2A02143865CB697A649E"    // fydeos store
+    ]
+  }
 }
