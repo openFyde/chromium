@@ -18,7 +18,7 @@ namespace ime {
 const base::FilePath::CharType kInputMethodsDirName[] =
     FILE_PATH_LITERAL(IME_DIR_STRING);
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+#if !BUILDFLAG(GOOGLE_CHROME_BRANDING)
 const base::FilePath::CharType kBundledInputMethodsDirPath[] =
     FILE_PATH_LITERAL("/usr/share/chromeos-assets/input_methods/input_tools");
 const base::FilePath::CharType kUserInputMethodsDirPath[] =
