@@ -391,6 +391,8 @@ build_webui("build") {
     "//tools/typescript/definitions/runtime.d.ts",
     "//tools/typescript/definitions/settings_private.d.ts",
     "//tools/typescript/definitions/tabs.d.ts",
+    "//tools/typescript/definitions/app_management.d.ts",
+    "//tools/typescript/definitions/native_windows.d.ts",
   ]
   if (is_chromeos) {
     ts_definitions +=

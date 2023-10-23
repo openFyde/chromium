@@ -61,6 +61,7 @@
 #include "ui/aura/window.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -607,6 +608,9 @@ ArcManagementTransition GetManagementTransition(const Profile* profile) {
 
 bool IsPlayStoreAvailable() {
   if (ShouldArcAlwaysStartWithNoPlayStore())
+    return false;
+
+  if (fydeos::switches::IsFydeCustomEnabled())
     return false;
 
   if (!IsRobotOrOfflineDemoAccountMode())

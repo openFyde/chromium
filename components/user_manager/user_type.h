@@ -46,8 +46,13 @@ typedef enum {
   // Gaia account. Could be ephemeral depending on the device policy.
   USER_TYPE_ACTIVE_DIRECTORY = 8,
 
+  // ---***FYDEOS BEGIN***---
+  USER_TYPE_FLINT_ACCOUNT = 10,
+  USER_TYPE_FYDE_ACCOUNT = 11,
+  USER_TYPE_FYDE_CHILD = 12,
+  // ---***FYDEOS END***---
   // Maximum histogram value.
-  NUM_USER_TYPES = 10
+  NUM_USER_TYPES = 13
 } UserType;
 
 }  // namespace user_manager

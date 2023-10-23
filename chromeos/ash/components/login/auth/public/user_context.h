@@ -47,6 +47,10 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_LOGIN_AUTH_PUBLIC) UserContext {
     AUTH_FLOW_OFFLINE,
     // Authentication against Active Directory server.
     AUTH_FLOW_ACTIVE_DIRECTORY,
+    //---***FYDEOS BEGIN***---
+    AUTH_FLOW_FLINT_ACCOUNT,
+    AUTH_FLOW_FYDE_ONLINE,
+    //---***FYDEOS END***---
   };
 
   UserContext();

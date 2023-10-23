@@ -83,6 +83,9 @@ void AuthSessionAuthenticator::CompleteLoginImpl(
     std::unique_ptr<UserContext> context) {
   DCHECK(context);
   DCHECK(context->GetUserType() == user_manager::USER_TYPE_REGULAR ||
+         context->GetUserType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         context->GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         context->GetUserType() == user_manager::USER_TYPE_FYDE_CHILD ||
          context->GetUserType() == user_manager::USER_TYPE_CHILD ||
          context->GetUserType() == user_manager::USER_TYPE_ACTIVE_DIRECTORY);
   // For now we don't support empty passwords:
@@ -342,6 +345,9 @@ void AuthSessionAuthenticator::AuthenticateToLogin(
     std::unique_ptr<UserContext> context) {
   DCHECK(context);
   DCHECK(context->GetUserType() == user_manager::USER_TYPE_REGULAR ||
+         context->GetUserType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         context->GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         context->GetUserType() == user_manager::USER_TYPE_FYDE_CHILD ||
          context->GetUserType() == user_manager::USER_TYPE_CHILD ||
          context->GetUserType() == user_manager::USER_TYPE_ACTIVE_DIRECTORY ||
          context->GetUserType() == user_manager::USER_TYPE_PUBLIC_ACCOUNT);
@@ -367,6 +373,9 @@ void AuthSessionAuthenticator::AuthenticateToUnlock(
     std::unique_ptr<UserContext> user_context) {
   DCHECK(user_context);
   DCHECK(user_context->GetUserType() == user_manager::USER_TYPE_REGULAR ||
+         user_context->GetUserType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         user_context->GetUserType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         user_context->GetUserType() == user_manager::USER_TYPE_FYDE_CHILD ||
          user_context->GetUserType() == user_manager::USER_TYPE_CHILD ||
          user_context->GetUserType() ==
              user_manager::USER_TYPE_ACTIVE_DIRECTORY ||

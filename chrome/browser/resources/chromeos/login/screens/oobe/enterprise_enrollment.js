@@ -167,6 +167,11 @@ class EnterpriseEnrollmentElement extends EnterpriseEnrollmentElementBase {
         value: false,
       },
 
+      isFallbackEnabled_: {
+        type: Boolean,
+        value: true,
+      },
+
       /**
        * Bound to gaia-dialog::authFlow.
        * @private
@@ -310,6 +315,9 @@ class EnterpriseEnrollmentElement extends EnterpriseEnrollmentElementBase {
         undefined;
     this.isAutoEnroll_ =
         'attestationBased' in data ? data.attestationBased : undefined;
+    this.isAutoEnroll_ = this.isAutoEnroll_
+      || ('fydeBased' in data ? data.fydeBased : undefined);
+    this.isFallbackEnabled_ = 'fallbackEnabled' in data ? data.fallbackEnabled : undefined;
     this.hasAccountCheck_ = 'flow' in data ?
         ((data.flow === 'enterpriseLicense') ||
          (data.flow === 'educationLicense')) :
@@ -430,7 +438,7 @@ class EnterpriseEnrollmentElement extends EnterpriseEnrollmentElementBase {
     // TODO(b/238175743) Do not set `ENROLLMENT_CANCEL_ENABLED` if enrollment is
     // forced. Keep setting `isCancelDisabled` to false if enrollment is forced,
     // otherwise the manual fallback button does nothing.
-    if (this.isCancelDisabled ||
+    if (this.isCancelDisabled || this.isForced_ ||
         step === OobeTypes.EnrollmentStep.ATTRIBUTE_PROMPT) {
       Oobe.getInstance().setOobeUIState(
           OOBE_UI_STATE.ENROLLMENT_CANCEL_DISABLED);
@@ -729,8 +737,8 @@ class EnterpriseEnrollmentElement extends EnterpriseEnrollmentElementBase {
    * @param {Boolean} enforced  - Whether the enrollment is enforced
    * @private
    */
-  isGenericCancel_(automatic, enforced) {
-    return automatic || (!automatic && !enforced);
+  isGenericCancel_(automatic, enforced, fallbackEnabled) {
+    return (automatic && fallbackEnabled) || (!automatic && !enforced);
   }
 
   /**

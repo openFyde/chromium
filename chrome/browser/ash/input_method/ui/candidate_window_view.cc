@@ -37,11 +37,18 @@ namespace ime {
 
 namespace {
 
+const int kOuterCornerRadius = 8;
+const int kInnerCornerRadius = kOuterCornerRadius;
+
 class CandidateWindowBorder : public views::BubbleBorder {
  public:
   CandidateWindowBorder()
       : views::BubbleBorder(views::BubbleBorder::TOP_CENTER,
-                            views::BubbleBorder::STANDARD_SHADOW) {}
+                            views::BubbleBorder::NO_SHADOW) {
+    // 这里比 OnThemeChanged 里设置的 border radius 小的话，最终 candidate view 背景会突出来一点点
+    // 如果大的话，OnThemeChanged 里设置的 border 边上会有一点点空白，可以通过 gfx::Insets(1) 来解决
+    // SetCornerRadius(kOuterCornerRadius);
+  }
   CandidateWindowBorder(const CandidateWindowBorder&) = delete;
   CandidateWindowBorder& operator=(const CandidateWindowBorder&) = delete;
   ~CandidateWindowBorder() override = default;
@@ -112,7 +119,8 @@ class InformationTextArea : public views::View {
       : min_width_(min_width) {
     label_ = new views::Label;
     label_->SetHorizontalAlignment(align);
-    label_->SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(2, 2, 2, 4)));
+    label_->SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(8, 2, 8, 8)));
+    label_->SetFontList(label_->font_list().DeriveWithSizeDelta(kFontSizeDelta));
 
     SetLayoutManager(std::make_unique<views::FillLayout>());
     AddChildView(label_.get());
@@ -124,9 +132,10 @@ class InformationTextArea : public views::View {
   // views::View:
   void OnThemeChanged() override {
     View::OnThemeChanged();
-    SetBackground(views::CreateSolidBackground(color_utils::AlphaBlend(
-        SK_ColorBLACK, GetColorProvider()->GetColor(ui::kColorWindowBackground),
-        0.0625f)));
+    // SetBackground(views::CreateSolidBackground(color_utils::AlphaBlend(
+    //     SK_ColorBLACK, GetColorProvider()->GetColor(ui::kColorWindowBackground),
+    //     0.0625f)));
+    SetBackground(nullptr);
     UpdateBorder();
   }
 
@@ -186,7 +195,8 @@ CandidateWindowView::CandidateWindowView(gfx::NativeView parent)
   // We want to disable the use of round corners here to ensure that the radius
   // of the frame view created by the BubbleDialogDelegateView is consistent
   // with what CandidateWindowView expects.
-  set_use_round_corners(false);
+  set_use_round_corners(kOuterCornerRadius != 0);
+  set_corner_radius(kOuterCornerRadius);
 
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
@@ -201,7 +211,7 @@ CandidateWindowView::CandidateWindowView(gfx::NativeView parent)
     AddChildView(preedit_.get());
     AddChildView(candidate_area_.get());
     AddChildView(auxiliary_text_.get());
-    auxiliary_text_->SetBorderFromPosition(InformationTextArea::TOP);
+    // auxiliary_text_->SetBorderFromPosition(InformationTextArea::TOP);
     candidate_area_->SetLayoutManager(std::make_unique<views::BoxLayout>(
         views::BoxLayout::Orientation::kVertical));
   } else {
@@ -209,7 +219,7 @@ CandidateWindowView::CandidateWindowView(gfx::NativeView parent)
     AddChildView(auxiliary_text_.get());
     AddChildView(candidate_area_.get());
     auxiliary_text_->SetAlignment(gfx::ALIGN_LEFT);
-    auxiliary_text_->SetBorderFromPosition(InformationTextArea::BOTTOM);
+    // auxiliary_text_->SetBorderFromPosition(InformationTextArea::BOTTOM);
     candidate_area_->SetLayoutManager(std::make_unique<views::BoxLayout>(
         views::BoxLayout::Orientation::kHorizontal));
   }
@@ -225,14 +235,22 @@ views::Widget* CandidateWindowView::InitWidget() {
 
   GetBubbleFrameView()->SetBubbleBorder(
       std::make_unique<CandidateWindowBorder>());
+  GetBubbleFrameView()->SetCornerRadius(kOuterCornerRadius);
   GetBubbleFrameView()->OnThemeChanged();
   return widget;
 }
 
 void CandidateWindowView::OnThemeChanged() {
   BubbleDialogDelegateView::OnThemeChanged();
-  SetBorder(views::CreateSolidBorder(
-      1, GetColorProvider()->GetColor(ui::kColorMenuBorder)));
+  // SetBorder(views::CreateSolidBorder(
+  //     1, GetColorProvider()->GetColor(ui::kColorMenuBorder)));
+  // 这里会决定候选词边框的 radius
+  // 不设置 bubble radius 时（set_use_corner_radius(false) 并且 CandidateWindowBorder 不调用 SetCornerRadius(X))
+  //  候选词的背景会突出总体边框
+  // 如果设置了
+  // SetBorder(nullptr);
+  SetBorder(views::CreateRoundedRectBorder(
+      1, kInnerCornerRadius, GetColorProvider()->GetColor(ui::kColorMenuBorder)));
 }
 
 void CandidateWindowView::UpdateVisibility() {
@@ -280,13 +298,13 @@ void CandidateWindowView::UpdateCandidates(
       if (new_candidate_window.orientation() == ui::CandidateWindow::VERTICAL) {
         ReorderChildView(auxiliary_text_, children().size());
         auxiliary_text_->SetAlignment(gfx::ALIGN_RIGHT);
-        auxiliary_text_->SetBorderFromPosition(InformationTextArea::TOP);
+        // auxiliary_text_->SetBorderFromPosition(InformationTextArea::TOP);
         candidate_area_->SetLayoutManager(std::make_unique<views::BoxLayout>(
             views::BoxLayout::Orientation::kVertical));
       } else {
         ReorderChildView(auxiliary_text_, 1);
         auxiliary_text_->SetAlignment(gfx::ALIGN_LEFT);
-        auxiliary_text_->SetBorderFromPosition(InformationTextArea::BOTTOM);
+        // auxiliary_text_->SetBorderFromPosition(InformationTextArea::BOTTOM);
         candidate_area_->SetLayoutManager(std::make_unique<views::BoxLayout>(
             views::BoxLayout::Orientation::kHorizontal));
       }
@@ -306,10 +324,15 @@ void CandidateWindowView::UpdateCandidates(
 
     int max_shortcut_width = 0;
     int max_candidate_width = 0;
-    for (size_t i = 0; i < candidate_views_.size(); ++i) {
+    const bool auxiliary_text_visible =
+        new_candidate_window.is_auxiliary_text_visible();
+    const size_t candidate_views_size = candidate_views_.size();
+    for (size_t i = 0; i < candidate_views_size; ++i) {
       const size_t index_in_page = i;
       const size_t candidate_index = start_from + index_in_page;
       CandidateView* candidate_view = candidate_views_[index_in_page];
+      candidate_view->SetIndexData(index_in_page, candidate_views_size + (auxiliary_text_visible ? 1 : 0));
+      candidate_view->SetBackgroundRadius(kInnerCornerRadius - 1.25);
       // Set the candidate text.
       if (candidate_index < new_candidate_window.candidates().size()) {
         const ui::CandidateWindow::Entry& entry =
@@ -344,6 +367,7 @@ void CandidateWindowView::UpdateCandidates(
     else
       border->set_offset(0);
     GetBubbleFrameView()->SetBubbleBorder(std::move(border));
+    GetBubbleFrameView()->SetCornerRadius(kOuterCornerRadius);
     GetBubbleFrameView()->OnThemeChanged();
   }
   // Update the current candidate window. We'll use candidate_window_ from here.

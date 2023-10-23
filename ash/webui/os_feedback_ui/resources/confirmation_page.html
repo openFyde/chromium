@@ -29,6 +29,12 @@
     margin: 24px 0 12px 0;
   }
 
+  #unique-report-id {
+    text-align: center;
+    margin-top: 20px;
+    text-transform: uppercase;
+  }
+
   .label {
     color: var(--cros-text-color-primary);
     font-family: var(--feedback-roboto-font-family);
@@ -74,18 +80,12 @@
   <div id="shadowElevation"></div>
   <div id="content" on-scroll="onContainerScroll_">
     <div id="message" class="sub-label">[[getMessage_(sendReportStatus)]]</div>
+    <div id="unique-report-id" class="sub-label" hidden="[[!uniqueReportId]]">
+      <code>[[uniqueReportId]]</code>
+    </div>
     <div id="helpResources">
       <h2 id="helpResourcesLabel">[[i18n('helpResourcesLabel')]]</h2>
-      <cr-link-row id="explore" start-icon="help-resources:explore"
-          external using-slotted-label
-          button-aria-description=""
-          on-click="handleLinkClicked_">
-          <span slot="label" class="label">[[i18n('exploreAppLabel')]]</span>
-          <span slot="sub-label"
-              class="sub-label">[[i18n('exploreAppDescription')]]
-          </span>
-      </cr-link-row>
-      <cr-link-row id="diagnostics" start-icon="help-resources:diagnostics"
+      <cr-link-row id="diagnostics"
           external using-slotted-label
           button-aria-description=""
           on-click="handleLinkClicked_">
@@ -94,14 +94,22 @@
               class="sub-label">[[i18n('diagnosticsAppDescription')]]
           </span>
       </cr-link-row>
-      <cr-link-row id="chromebookCommunity"
-          start-icon="help-resources2:chromebook-community"
+      <cr-link-row id="fydeosCommunity"
           hidden="[[isOffline_(sendReportStatus)]]" external using-slotted-label
           button-aria-description=""
           on-click="handleLinkClicked_">
           <span slot="label" class="label">[[i18n('askCommunityLabel')]]</span>
           <span slot="sub-label"
               class="sub-label">[[i18n('askCommunityDescription')]]
+          </span>
+      </cr-link-row>
+      <cr-link-row id="help"
+          hidden="[[isOffline_(sendReportStatus)]]" external using-slotted-label
+          button-aria-description=""
+          on-click="handleLinkClicked_">
+          <span slot="label" class="label">[[i18n('helpPageLabel')]]</span>
+          <span slot="sub-label"
+              class="sub-label">[[i18n('helpPageDescription')]]
           </span>
       </cr-link-row>
     </div>

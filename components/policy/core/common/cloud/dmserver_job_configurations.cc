@@ -16,6 +16,8 @@
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
+#include "chromeos/ash/components/system/statistics_provider.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace em = enterprise_management;
 
@@ -108,6 +110,18 @@ const char* JobTypeToRequestType(
   return "";
 }
 
+std::string GetFydeOsLicenseId() {
+  ash::system::StatisticsProvider* provider =
+      ash::system::StatisticsProvider::GetInstance();
+  std::string fydeos_license_id = "";
+  const absl::optional<base::StringPiece> str =
+    provider->GetMachineStatistic(ash::system::kFydeOsLicenseIdKey);
+  if (str) {
+    fydeos_license_id = std::string(str.value());
+  }
+  return fydeos_license_id;
+}
+
 }  // namespace
 
 DMServerJobConfiguration::DMServerJobConfiguration(
@@ -131,6 +145,11 @@ DMServerJobConfiguration::DMServerJobConfiguration(
   AddParameter(dm_protocol::kParamPlatform,
                service->configuration()->GetPlatformParameter());
   AddParameter(dm_protocol::kParamDeviceID, client_id);
+
+
+  if (fydeos::switches::IsFydeDMServerUrl(server_url_)) {
+    AddParameter(dm_protocol::kParamFydeOsLicenseId, GetFydeOsLicenseId());
+  }
 
   if (critical)
     AddParameter(dm_protocol::kParamCritical, "true");

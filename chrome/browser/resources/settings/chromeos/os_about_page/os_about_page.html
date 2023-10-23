@@ -91,6 +91,16 @@
             role="presentation">
         <h1 class="product-title">$i18n{aboutOsProductTitle}</h1>
       </div>
+      <if expr="not openfyde">
+      <div class="settings-box two-line" >
+        <div class="start padded">
+          $i18n{aboutKeepFydeOsUpdateToDate}
+          <div class="secondary">[[fydeosOTAStateMessage_(fydeOTAToggleState_, isOwner_)]]</div>
+        </div>
+        <cr-toggle id="enableFydeOTA" disabled="[[!canToggleFydeOTA_(currentUpdateStatusEvent_, isOwner_)]]" role="button" checked="[[fydeOTAToggleState_]]" on-change="onEnableFydeOTAChange_">
+        </cr-toggle>
+      </div>
+      </if>
       <div class="settings-box two-line">
         <!-- Set the icon from the iconset (when it's obsolete/EOL and
           when update is done) or set the src (when it's updating). -->
@@ -100,18 +110,19 @@
             them. -->
           <iron-icon
               icon$="[[getUpdateStatusIcon_(
-                  hasEndOfLife_, currentUpdateStatusEvent_)]]"
+                  hasEndOfLife_, currentUpdateStatusEvent_, renewalStatus_)]]"
               src="[[getThrobberSrcIfUpdating_(
                   isDarkModeActive_,
                   hasEndOfLife_,
-                  currentUpdateStatusEvent_)]]">
+                  currentUpdateStatusEvent_,
+                  renewalStatus_)]]">
           </iron-icon>
         </div>
         <div class="start padded">
           <div id="updateStatusMessage" hidden="[[!showUpdateStatus_]]">
             <div id="updateStatusMessageInner" tabindex="-1"
                 inner-h-t-m-l="[[getUpdateStatusMessage_(
-                currentUpdateStatusEvent_, targetChannel_)]]"></div>
+                currentUpdateStatusEvent_, targetChannel_, renewalStatus_)]]"></div>
             <a hidden$="[[!shouldShowLearnMoreLink_(
                 currentUpdateStatusEvent_)]]" target="_blank"
                 href="https://support.google.com/chrome?p=update_error">
@@ -130,7 +141,7 @@
           <div class="secondary" hidden="[[!hasDeferredUpdate_]]">
             $i18n{aboutDeferredUpdate}
           </div>
-          <div class="secondary">$i18n{aboutBrowserVersion}</div>
+          <div class="secondary">[[getFydeOSVersion_()]]</div>
         </div>
         <div class="separator" hidden="[[!showButtonContainer_]]"></div>
         <span id="buttonContainer" hidden="[[!showButtonContainer_]]">
@@ -140,9 +151,14 @@
                               currentUpdateStatusEvent_)]]
           </cr-button>
           <cr-button id="checkForUpdates" hidden="[[!showCheckUpdates_]]"
+              disabled="[[!fydeOTAToggleState_]]"
               on-click="onCheckUpdatesClick_"
               deep-link-focus-id$="[[Setting.kCheckForOsUpdate]]">
             $i18n{aboutCheckForUpdates}
+          </cr-button>
+          <cr-button id="renewLearnMore" hidden="[[!showRenewLearnMore_]]"
+            on-click="onRenewLearnMoreClick_">
+            $i18n{learnMore}
           </cr-button>
         </span>
       </div>
@@ -172,6 +188,7 @@
           </a>
         </div>
       </cr-link-row>
+      <!--
       <template is="dom-if" if="[[hasInternetConnection_]]">
         <cr-link-row class="hr" id="releaseNotesOnline"
             on-click="onReleaseNotesClick_"
@@ -194,7 +211,7 @@
           external
           deep-link-focus-id$="[[Setting.kGetHelpWithChromeOs]]">
       </cr-link-row>
-<if expr="_google_chrome">
+      -->
       <cr-link-row class="hr" id="reportIssue"
           on-click="onReportIssueClick_"
           hidden="[[!prefs.feedback_allowed.value]]"
@@ -202,7 +219,6 @@
           external
           deep-link-focus-id$="[[Setting.kReportAnIssue]]">
       </cr-link-row>
-</if>
       <cr-link-row class="hr" id="diagnostics"
           on-click="onDiagnosticsClick_"
           label="$i18n{aboutDiagnostics}"
@@ -211,6 +227,7 @@
       </cr-link-row>
       <cr-link-row class="hr" id="firmwareUpdates"
           on-click="onFirmwareUpdatesClick_"
+          hidden$="[[!showFirmwareUpdatesApp_]]"
           label="$i18n{aboutFirmwareUpdates}"
           external
           using-slotted-label

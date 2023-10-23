@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<translation id="599991153802693165">在平板电脑模式下，使用手势快速切换应用以及与 openFyde 设备互动。</translation>
+<translation id="8504544056037928244">在平板电脑模式下，使用手势快速切换应用以及与 FydeOS 设备互动。</translation>
+<translation id="125640132000960723">检测到 Linux 子系统有可用重要更新。强烈建议尽早执行更新，否则 Linux 子系统有可能停止工作。</translation>
+<!-- <translation id="473775607612524610">更新</translation> -->
+<translation id="7568790562536448087">更新中</translation>
+<translation id="4877626530957804912">Linux 子系统正在更新…</translation>
+<translation id="5922853866070715753">即将更新完毕</translation>
+<translation id="2392185428200468457">Linux 子系统即将更新完毕，请重启系统完成更新</translation>
+<translation id="4463105096332878535">桌面模式</translation>
+<translation id="5367350932098892883">平板模式</translation>
+<translation id="102310946874312210">默认模式</translation>
+</translationbundle>

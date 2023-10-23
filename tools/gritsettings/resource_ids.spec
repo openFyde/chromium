@@ -1131,6 +1131,18 @@
     "includes": [4960],
   },
 
+  #//---***FYDEOS BEGIN***---
+  "fydeos/extensions/common/fydeos_extensions_resources.grd": {
+    "includes": [4980],
+    "messages": [5000],
+  },
+
+  "<(SHARED_INTERMEDIATE_DIR)/ash/webui/fyde_assistant_app_ui/resources/ash_fyde_assistant_app_resources.grd": {
+    "META": {"sizes": {"includes": [50],}},
+    "includes": [5020],
+  },
+  #//---***FYDEOS END***---
+
   # END "everything else" section.
   # Everything but chrome/, components/, content/, and ios/
 

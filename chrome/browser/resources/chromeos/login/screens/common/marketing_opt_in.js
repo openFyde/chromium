@@ -98,6 +98,7 @@ class MarketingOptIn extends MarketingScreenElementBase {
        */
       marketingOptInVisible_: {
         type: Boolean,
+        observer: 'marketingOptInVisibleObserver_',
         value: false,
       },
 
@@ -160,6 +161,7 @@ class MarketingOptIn extends MarketingScreenElementBase {
 
   /** Shortcut method to control animation */
   setAnimationPlay_(played) {
+    if (!this.$.animation) return;
     this.$.animation.playing = played;
   }
 
@@ -186,7 +188,7 @@ class MarketingOptIn extends MarketingScreenElementBase {
    */
   onGetStarted_() {
     this.setAnimationPlay_(false);
-    this.userActed(['get-started', this.$.chromebookUpdatesOption.checked]);
+    this.userActed(['get-started', this.$.chromebookUpdatesOption.checked, this.$.fydeOSImprovementPlanOption.checked]);
   }
 
   /**
@@ -264,6 +266,16 @@ class MarketingOptIn extends MarketingScreenElementBase {
    */
   getAnimationUrl_() {
     return this.isDarkModeActive_ ? ANIMATION_DARK_URL : ANIMATION_LIGHT_URL;
+  }
+
+  marketingOptInVisibleObserver_() {
+    const row = this.$$('#fydeOSImprovementPlanToggleRow');
+    if (!row) return;
+    if (this.marketingOptInVisible_) {
+      row.classList.remove('top-toggle-row');
+    } else {
+      row.classList.add('top-toggle-row');
+    }
   }
 }
 

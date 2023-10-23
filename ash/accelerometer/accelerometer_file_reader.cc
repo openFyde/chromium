@@ -30,10 +30,34 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/platform_thread.h"
+#include "fydeos/switches/accelerometer/accelerometer_switches.h"
+#include "base/sys_byteorder.h"
 
 namespace ash {
 
 namespace {
+
+// ---***FYDEOS BEGIN***---
+const base::FilePath::CharType kFydeOSScaleFileName[] = "in_accel_scale";
+const char kFydeOSConfig[6][3][2] ={
+        {"x", "y", "z"},
+        {"y", "x", "z"},
+        {"z", "y", "x"},
+        {"z", "x", "y"},
+        {"x", "z", "y"},
+        {"y", "z", "x"},
+    };
+struct DataPattern {
+  int data_size;
+  int data_index[3];
+};
+const struct DataPattern KFydeOSDataPattern[3] = {
+    {6, {0, 1, 2}},
+    {12, {0, 1, 3}},
+    {12, {0, 1, 2}},
+  };
+const int kRead32BitPattern = 2;
+// ---***FYDEOS END***---
 
 // Paths to access necessary data from the accelerometer device.
 constexpr base::FilePath::CharType kAccelerometerDevicePath[] =
@@ -152,7 +176,16 @@ void AccelerometerFileReader::PrepareAndInitialize() {
 
   initialization_state_ = State::INITIALIZING;
 
-  initialization_timeout_ = base::TimeTicks::Now() + kInitializeTimeout;
+  int fydeos_initialize_timeout = fydeos::switches::GetFydeOSAccelerometerInitializeTimeoutInSeconds();
+  if (fydeos_initialize_timeout > 0) {
+    initialization_timeout_ = base::TimeTicks::Now() + base::Seconds(fydeos_initialize_timeout);
+  } else {
+    initialization_timeout_ = base::TimeTicks::Now() + kInitializeTimeout;
+  }
+
+  // ---***FYDEOS BEGIN***---
+  delay_between_reads_ = kDelayBetweenReads;
+  // ---***FYDEOS END***---
 
   TryScheduleInitialize();
 }
@@ -189,6 +222,7 @@ void AccelerometerFileReader::CancelRead() {
         base::BindOnce(&AccelerometerFileReader::DisableAccelerometerReading,
                        this));
   }
+  VLOG(1) << "Cancel accel Read";
 }
 
 AccelerometerFileReader::InitializationResult::InitializationResult()
@@ -204,9 +238,15 @@ AccelerometerFileReader::ReadingData::~ReadingData() = default;
 AccelerometerFileReader::ConfigurationData::ConfigurationData() : count(0) {
   for (int i = 0; i < ACCELEROMETER_SOURCE_COUNT; ++i) {
     has[i] = false;
+    // ---***FYDEOS BEGIN***---
+    right_move[i] = 0;
+    // ---***FYDEOS END***---
     for (int j = 0; j < 3; ++j) {
       scale[i][j] = 0;
       index[i][j] = -1;
+      // ---***FYDEOS BEGIN***---
+      revert[i][j] = 1;
+      // ---***FYDEOS END***---
     }
   }
 }
@@ -316,10 +356,19 @@ AccelerometerFileReader::InitializeInternal() {
         base::FilePath(iio_path).Append(kAccelerometerLocationFileName),
         &location);
     if (legacy_cross_accel) {
-      if (!InitializeLegacyAccelerometers(iio_path, name)) {
-        result.initialization_state = State::FAILED;
-        return result;
+      //---***FYDEOS BEGIN***---
+      if (fydeos::switches::IsFydeOSAccelerometer()) {
+        if (!InitializeFydeOSAccelerometer(iio_path, name)) {
+          result.initialization_state = State::FAILED;
+          return result;
+        }
+      } else {
+        if (!InitializeLegacyAccelerometers(iio_path, name)) {
+          result.initialization_state = State::FAILED;
+          return result;
+        }
       }
+      //---***FYDEOS END***---
     } else {
       base::TrimWhitespaceASCII(location, base::TRIM_ALL, &location);
       if (!InitializeAccelerometer(iio_path, name, location)) {
@@ -330,6 +379,9 @@ AccelerometerFileReader::InitializeInternal() {
   }
 
   // Verify indices are within bounds.
+// ---***FYDEOS BEGIN***---
+ if (!fydeos::switches::GetAccelDataPattern()) {
+// ---***FYDEOS END***---
   for (int i = 0; i < ACCELEROMETER_SOURCE_COUNT; ++i) {
     if (!configuration_.has[i])
       continue;
@@ -346,6 +398,16 @@ AccelerometerFileReader::InitializeInternal() {
       }
     }
   }
+// ---***FYDEOS BEGIN***---
+ }
+// ---***FYDEOS END***---
+
+  //---***FYDEOS BEGIN***---
+  int delayMS = fydeos::switches::GetFydeOSAccelerometerReadIntervalInMS();
+  if (delayMS)
+    delay_between_reads_ = base::Milliseconds(delayMS);
+  VLOG(1) << "delay between reads:" << delay_between_reads_.InMillisecondsF();
+  //---***FYDEOS END***---
 
   result.initialization_state = State::SUCCESS;
   result.ec_lid_angle_driver_status =
@@ -371,7 +433,9 @@ void AccelerometerFileReader::SetStatesWithInitializationResult(
             FROM_HERE,
             base::BindOnce(&AccelerometerFileReader::TryScheduleInitialize,
                            this),
-            kDelayBetweenReads);
+            // ---***FYDEOS BEGIN***---
+            delay_between_reads_);
+            // ---***FYDEOS END***---
       } else {
         LOG(ERROR) << "Failed to initialize for accelerometer read.\n";
         initialization_state_ = State::FAILED;
@@ -412,6 +476,10 @@ bool AccelerometerFileReader::InitializeAccelerometer(
     const std::string& location) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  //---***FYDEOS BEGIN***---
+  VLOG(1) << __func__ << " in " << location << std::endl;
+  //---***FYDEOS END***---
+
   size_t config_index = 0;
   for (; config_index < std::size(kLocationStrings); ++config_index) {
     if (location == kLocationStrings[config_index])
@@ -449,15 +517,82 @@ bool AccelerometerFileReader::InitializeAccelerometer(
   reading_data.sources.push_back(
       static_cast<AccelerometerSource>(config_index));
 
+  //---***FYDEOS BEGIN***---
+  reading_data.data_size = kDataSize * kNumberOfAxes;
+  reading_data.is_32bit = false;
+  //---***FYDEOS END***---
+
   configuration_.reading_data.push_back(reading_data);
 
   return true;
 }
 
+//---***FYDEOS BEGIN***---
+bool AccelerometerFileReader::InitializeFydeOSAccelerometer(
+  const base::FilePath& iio_path,
+    const base::FilePath& name){
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  double scale;
+  size_t pattern = fydeos::switches::GetAccelDataPattern();
+  if (!ReadFileToDouble(iio_path.Append(kFydeOSScaleFileName), &scale))
+          return false;
+  VLOG(1) << __func__ << " Scale:" << scale;
+  int config = fydeos::switches::GetAccelConfig();
+  for (size_t i = 0; i < kNumberOfAxes; ++i) {
+    std::string accelerometer_index_path = base::StringPrintf(
+        kAccelerometerScanIndexPathFormatString, kFydeOSConfig[config][i]);
+     VLOG(1) << "scan index:" << i << " path" << accelerometer_index_path;
+    if (!ReadFileToInt(iio_path.Append(accelerometer_index_path.c_str()),
+                       &(configuration_.index[ACCELEROMETER_SOURCE_SCREEN][i]))) {
+      LOG(ERROR) << "Index file " << accelerometer_index_path
+                 << " could not be parsed\n";
+      return false;
+    }
+    if (pattern >= 0 && pattern < std::size(KFydeOSDataPattern))
+    configuration_.index[ACCELEROMETER_SOURCE_SCREEN][i] =
+      KFydeOSDataPattern[pattern].data_index[configuration_.index[ACCELEROMETER_SOURCE_SCREEN][i]];
+
+    VLOG(1) << "Axe:" << kAccelerometerAxes[i] << " index:" << configuration_.index[ACCELEROMETER_SOURCE_SCREEN][i];
+    configuration_.scale[ACCELEROMETER_SOURCE_SCREEN][i] = scale;
+  }
+  configuration_.has[ACCELEROMETER_SOURCE_SCREEN] = true;
+  configuration_.right_move[ACCELEROMETER_SOURCE_SCREEN] = fydeos::switches::GetAccelRightMoveBits();
+  if (fydeos::switches::IsAccelRevertX())
+      configuration_.revert[ACCELEROMETER_SOURCE_SCREEN][0] = -1;
+  if (fydeos::switches::IsAccelRevertY())
+      configuration_.revert[ACCELEROMETER_SOURCE_SCREEN][1] = -1;
+  if (fydeos::switches::IsAccelRevertZ())
+      configuration_.revert[ACCELEROMETER_SOURCE_SCREEN][2] = -1;
+  configuration_.count++;
+  configuration_.swap_bytes = fydeos::switches::FydeOSAccelerometerSwapBytes();
+
+  ReadingData reading_data;
+  reading_data.path =
+      base::FilePath(kAccelerometerDevicePath).Append(name.BaseName());
+  if (pattern >= 0 && pattern < std::size(KFydeOSDataPattern)){
+    reading_data.data_size = KFydeOSDataPattern[pattern].data_size;
+    reading_data.is_32bit = (pattern == kRead32BitPattern);
+  }else {
+    reading_data.data_size = kSizeOfReading;
+    reading_data.is_32bit = false;
+  }
+  reading_data.sources.push_back(
+      static_cast<AccelerometerSource>(ACCELEROMETER_SOURCE_SCREEN));
+
+  configuration_.reading_data.push_back(reading_data);
+
+  return true;
+}
+//---***FYDEOS END***---
+
 bool AccelerometerFileReader::InitializeLegacyAccelerometers(
     const base::FilePath& iio_path,
     const base::FilePath& name) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  //---***FYDEOS BEGIN***---
+  VLOG(1) << __func__ << name;
+  //---***FYDEOS END***---
 
   ReadingData reading_data;
   reading_data.path =
@@ -501,6 +636,11 @@ bool AccelerometerFileReader::InitializeLegacyAccelerometers(
     }
   }
 
+  //---***FYDEOS BEGIN***---
+  reading_data.data_size = kDataSize * kNumberOfAxes;
+  reading_data.is_32bit = false;
+  //---***FYDEOS END***---
+
   // Adjust the directions of accelerometers to match the AccelerometerUpdate
   // type specified in ash/accelerometer/accelerometer_types.h.
   configuration_.scale[ACCELEROMETER_SOURCE_SCREEN][1] *= -1.0f;
@@ -515,8 +655,10 @@ void AccelerometerFileReader::EnableAccelerometerReading() {
   if (read_refresh_timer_.IsRunning())
     return;
 
-  read_refresh_timer_.Start(FROM_HERE, kDelayBetweenReads, this,
+  // ---***FYDEOS BEGIN***---
+  read_refresh_timer_.Start(FROM_HERE, delay_between_reads_, this,
                             &AccelerometerFileReader::ReadSample);
+  // ---***FYDEOS END***---
 }
 
 void AccelerometerFileReader::DisableAccelerometerReading() {
@@ -537,7 +679,10 @@ void AccelerometerFileReader::ReadSample() {
   // Read resulting sample from /dev/cros-ec-accel.
   AccelerometerUpdate update;
   for (auto reading_data : configuration_.reading_data) {
-    int reading_size = reading_data.sources.size() * kSizeOfReading;
+    // ---***FYDEOS BEGIN***---
+    // int reading_size = reading_data.sources.size() * kSizeOfReading;
+    int reading_size = reading_data.data_size;
+    // ---***FYDEOS END***---
     DCHECK_GT(reading_size, 0);
     char reading[reading_size];
     int bytes_read = base::ReadFile(reading_data.path, reading, reading_size);
@@ -558,14 +703,41 @@ void AccelerometerFileReader::ReadSample() {
     }
     for (AccelerometerSource source : reading_data.sources) {
       DCHECK(configuration_.has[source]);
-      int16_t* values = reinterpret_cast<int16_t*>(reading);
-      update.Set(source,
-                 values[configuration_.index[source][0]] *
-                     configuration_.scale[source][0],
-                 values[configuration_.index[source][1]] *
-                     configuration_.scale[source][1],
-                 values[configuration_.index[source][2]] *
-                     configuration_.scale[source][2]);
+      //---***FYDEOS BEGIN***---
+      if (reading_data.is_32bit) {
+        int32_t* values = reinterpret_cast<int32_t*>(reading);
+        for (uint32_t i=0; i < kNumberOfAxes; i++){
+          if (configuration_.swap_bytes)
+            values[configuration_.index[source][i]] = (int32_t) base::ByteSwap((uint32_t) values[configuration_.index[source][i]]);
+          values[configuration_.index[source][i]] >>= configuration_.right_move[source];
+        }
+        update.Set(source,
+                   values[configuration_.index[source][0]] *
+                       configuration_.scale[source][0] * configuration_.revert[source][0],
+                   values[configuration_.index[source][1]] *
+                       configuration_.scale[source][1] * configuration_.revert[source][1],
+                   values[configuration_.index[source][2]] *
+                       configuration_.scale[source][2] * configuration_.revert[source][2]);
+
+      } else {
+        int16_t* values = reinterpret_cast<int16_t*>(reading);
+        for (uint32_t i=0; i < kNumberOfAxes; i++) {
+          if (configuration_.swap_bytes)
+            values[configuration_.index[source][i]] = (int16_t) base::ByteSwap((uint16_t) values[configuration_.index[source][i]]);
+          values[configuration_.index[source][i]] >>= configuration_.right_move[source];
+        }
+        update.Set(source,
+                   values[configuration_.index[source][0]] *
+                       configuration_.scale[source][0] * configuration_.revert[source][0],
+                   values[configuration_.index[source][1]] *
+                       configuration_.scale[source][1] * configuration_.revert[source][1],
+                   values[configuration_.index[source][2]] *
+                       configuration_.scale[source][2] * configuration_.revert[source][2]);
+
+      }
+      VLOG(1) << "update: x:" << update.get(source).x << " y:" << update.get(source).y
+        << " z:" << update.get(source).z << " length:" << update.GetVector(source).Length();
+      //---***FYDEOS END***---
     }
   }
 

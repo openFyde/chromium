@@ -266,6 +266,10 @@ class ASH_EXPORT AcceleratorControllerImpl
   base::DelayTimer output_volume_metric_delay_timer_;
 };
 
+// ---***FYDEOS BEGIN***---
+void RotateScreenFydeOS();
+// ---***FYDEOS END***---
+
 }  // namespace ash
 
 #endif  // ASH_ACCELERATORS_ACCELERATOR_CONTROLLER_IMPL_H_

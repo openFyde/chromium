@@ -47,6 +47,7 @@
 #include "components/sync/model/type_entities_count.h"
 #include "google_apis/gaia/google_service_auth_error.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace syncer {
 
@@ -135,7 +136,8 @@ SyncServiceImpl::InitParams::InitParams(InitParams&& other) = default;
 SyncServiceImpl::InitParams::~InitParams() = default;
 
 SyncServiceImpl::SyncServiceImpl(InitParams init_params)
-    : sync_client_(std::move(init_params.sync_client)),
+    : family_link_timer_(std::make_unique<base::RepeatingTimer>()),
+      sync_client_(std::move(init_params.sync_client)),
       sync_prefs_(sync_client_->GetPrefService()),
       identity_manager_(init_params.identity_manager),
       auth_manager_(std::make_unique<SyncAuthManager>(
@@ -269,6 +271,30 @@ void SyncServiceImpl::StartSyncingWithServer() {
   if (IsLocalSyncEnabled()) {
     TriggerRefresh(ModelTypeSet::All());
   }
+  // ---***FYDEOS BEGIN***---
+  if(!fydeos::switches::IsFydeAccountEnabled()) return;
+
+  ModelTypeSet all_types = GetActiveDataTypes();
+  bool is_supervised_user_setting_active = false;
+  for (ModelType type : all_types) {
+    if (type == SUPERVISED_USER_SETTINGS) {
+      is_supervised_user_setting_active = true;
+      break;
+    }
+  }
+  if (!is_supervised_user_setting_active) {
+    return;
+  }
+
+  if (engine_ && !family_link_timer_->IsRunning()) {
+    int interval = fydeos::switches::GetFydeOSSupervisedUserSettingsSyncInterval();
+    VLOG(1) << "check for fydeos supervised user settings sync data every " << interval << " seconds";
+    family_link_timer_->Start(
+        FROM_HERE,
+        base::Seconds(interval),
+        base::BindRepeating(&SyncServiceImpl::TriggerManagedUserSettingsRefresh, base::Unretained(this)));
+  }
+  // ---***FYDEOS END***---
 }
 
 ModelTypeSet SyncServiceImpl::GetRegisteredDataTypesForTest() const {
@@ -297,6 +323,11 @@ void SyncServiceImpl::GetThrottledDataTypesForTest(
 
   engine_->GetThrottledDataTypesForTest(std::move(cb));
 }
+// ---***FYDEOS BEGIN***---
+void SyncServiceImpl::TriggerManagedUserSettingsRefresh() {
+  TriggerRefresh(ModelTypeSet(SUPERVISED_USER_SETTINGS));
+}
+// ---***FYDEOS END***---
 
 bool SyncServiceImpl::IsDataTypeControllerRunningForTest(ModelType type) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -491,6 +522,9 @@ void SyncServiceImpl::Shutdown() {
 
 void SyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
                                   ResetEngineReason reset_reason) {
+  if (family_link_timer_->IsRunning()) {
+    family_link_timer_->AbandonAndStop();
+  }
   if (!engine_) {
     // If the engine hasn't started or is already shut down when a DISABLE_SYNC
     // happens, the Directory needs to be cleaned up here.

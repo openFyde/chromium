@@ -22,6 +22,7 @@
 #include "components/policy/core/common/cloud/cloud_policy_client.h"
 #include "components/policy/core/common/cloud/cloud_policy_core.h"
 #include "components/policy/core/common/cloud/device_management_service.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace policy {
 
@@ -131,7 +132,7 @@ void DeviceCloudPolicyInitializer::TryToStartConnection() {
   // also don't support FRE/AutoRE so don't block initialization of device
   // policy on state keys being available on reven.
   // TODO(b/208705225): Remove this special case when reven supports state keys.
-  const bool allow_init_without_state_keys = ash::switches::IsRevenBranding();
+  const bool allow_init_without_state_keys = ash::switches::IsRevenBranding() || fydeos::switches::IsInitDevicePolicyWithoutStateKeysAllowed();
 
   // TODO(b/181140445): If we had a separate state keys upload request to DM
   // Server we could drop the `state_keys_broker_->available()` requirement.

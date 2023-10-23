@@ -45,6 +45,7 @@ const char kRlzEmbargoEndDateKey[] = "rlz_embargo_end_date";
 const char kEnterpriseManagementEmbargoEndDateKey[] =
     "enterprise_management_embargo_end_date";
 const char kCustomizationIdKey[] = "customization_id";
+const char kFydeOsLicenseIdKey[] = "fydeos_license_id";
 const char kDevSwitchBootKey[] = "devsw_boot";
 const char kDevSwitchBootValueDev[] = "1";
 const char kDevSwitchBootValueVerified[] = "0";

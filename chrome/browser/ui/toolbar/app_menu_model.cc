@@ -1209,6 +1209,8 @@ void AppMenuModel::Build() {
 #else
 #if BUILDFLAG(IS_CHROMEOS_ASH)
   AddItem(IDC_ABOUT, l10n_util::GetStringUTF16(IDS_ABOUT));
+  if (browser_->profile()->GetPrefs()->GetBoolean(prefs::kUserFeedbackAllowed))
+    AddItemWithStringId(IDC_FEEDBACK, IDS_FEEDBACK);
 #else
   AddItem(IDC_ABOUT, l10n_util::GetStringUTF16(IDS_ABOUT));
 #endif

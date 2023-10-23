@@ -253,6 +253,11 @@ class POLICY_EXPORT CloudPolicyClient {
                                  const ClientDataDelegate& client_data_delegate,
                                  bool is_mandatory);
 
+  virtual void RegisterWithFydeToken(
+      const RegistrationParameters& parameters,
+      const std::string& client_id,
+      const std::string& token);
+
   // Sets information about a policy invalidation. Subsequent fetch operations
   // will use the given info, and callers can use fetched_invalidation_version
   // to determine which version of policy was fetched.

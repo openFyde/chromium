@@ -295,6 +295,8 @@ aggregate_vector_icons("ash_vector_icons") {
     "shelf_apps_button.icon",
     "shelf_back.icon",
     "shelf_browse_as_guest_button.icon",
+    "shelf_use_local_account_button.icon",
+    "shelf_fydeos_data_restore_button.icon",
     "shelf_cancel_button.icon",
     "shelf_enterprise.icon",
     "shelf_globe.icon",
@@ -537,6 +539,13 @@ aggregate_vector_icons("ash_vector_icons") {
     "wm_mode_on.icon",
     "zoom_in.icon",
     "zoom_out.icon",
+#---***FYDEOS BEGIN***---
+    "unified_menu_reboot.icon",
+    "unified_menu_rotate_screen.icon",
+    "unified_menu_tablet_mode.icon",
+    "unified_menu_desktop_mode.icon",
+    "unified_menu_default_mode.icon",
+#---***FYDEOS END***---
   ]
 
   if (is_chrome_branded) {

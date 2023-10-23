@@ -20,6 +20,8 @@
 #include "components/version_info/channel.h"
 #include "components/version_info/version_info.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "fydeos/switches/misc/misc_switches.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace {
 
@@ -27,6 +29,7 @@ namespace {
 // milestone the user has seen the notification is before this, a new
 // notification will be shown.
 constexpr int kLastChromeVersionWithDiscoverTabContent = 97;
+#if !BUILDFLAG(IS_OPENFYDE)
 constexpr int kTimesToShowSuggestionChip = 3;
 
 int CurrentMilestone() {
@@ -49,6 +52,7 @@ bool IsNotificationShownForCurrentMilestone(Profile* profile) {
   }
   return last_shown_milestone == CurrentMilestone();
 }
+#endif
 
 }  // namespace
 
@@ -109,6 +113,9 @@ bool HelpAppNotificationController::ShouldShowDiscoverNotification() {
 }
 
 void HelpAppNotificationController::MaybeShowDiscoverNotification() {
+#if BUILDFLAG(IS_OPENFYDE)
+  return;
+#else
   if (IsNotificationShownForCurrentMilestone(profile_))
     return;
   if (ShouldShowDiscoverNotification() && !discover_tab_notification_) {
@@ -125,10 +132,14 @@ void HelpAppNotificationController::MaybeShowDiscoverNotification() {
         prefs::kDiscoverTabSuggestionChipTimesLeftToShow,
         kTimesToShowSuggestionChip);
   }
+#endif
 }
 
 void HelpAppNotificationController::MaybeShowReleaseNotesNotification() {
-  if (IsNotificationShownForCurrentMilestone(profile_))
+#if BUILDFLAG(IS_OPENFYDE)
+  return;
+#else
+  if (IsNotificationShownForCurrentMilestone(profile_) && !fydeos::switches::IsFydeCustomEnabled())
     return;
   if (!release_notes_notification_) {
     release_notes_notification_ =
@@ -136,6 +147,7 @@ void HelpAppNotificationController::MaybeShowReleaseNotesNotification() {
   }
   // Let the ReleaseNotesNotification decide if it should show itself.
   release_notes_notification_->MaybeShowReleaseNotes();
+#endif
 }
 
 }  // namespace ash

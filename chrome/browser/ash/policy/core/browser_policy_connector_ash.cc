@@ -89,6 +89,7 @@
 #include "components/variations/pref_names.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace policy {
 
@@ -187,6 +188,19 @@ void BrowserPolicyConnectorAsh::Init(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   local_state_ = local_state;
+  // ---***FYDEOS BEGIN***---
+  auto install_attributes = ash::InstallAttributes::Get();
+  if (install_attributes &&(install_attributes->IsCloudManaged()
+                            || install_attributes->IsEnterpriseManaged())) {
+    const std::string management_service = install_attributes->GetServiceName();
+    VLOG(2) << "enterprise management_service: " << management_service;
+    if (management_service == "fydeos") {
+      fydeos::switches::EnableFydeAccountFlagForManagedDevice();
+    } else {
+      fydeos::switches::DisableFydeAccountFlagForManagedDevice();
+    }
+  }
+  // ---***FYDEOS END***---
   ChromeBrowserPolicyConnector::Init(local_state, url_loader_factory);
 
   affiliated_invalidation_service_provider_ =

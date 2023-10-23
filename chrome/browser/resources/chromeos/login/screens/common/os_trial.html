@@ -4,11 +4,27 @@
       --radio-button-height: 155px;
     }
   }
+  img.logo.openfyde {
+    width: 132px;
+    height: 32px;
+  }
+  img.logo.fydeos {
+    width: 42px;
+    height: 42px;
+  }
 </style>
 
 <oobe-adaptive-dialog id="osTrialDialog" role="dialog"
     aria-label$="[[i18nDynamic(locale, 'osTrialTitle')]]">
-  <iron-icon slot="icon" icon="oobe-32:googleg"></iron-icon>
+  <if expr="openfyde">
+    <img class="logo openfyde" slot="icon"
+         src="images/openfyde_logo.png" />
+  </if>
+  <if expr="not openfyde">
+    <img class="logo fydeos" slot="icon"
+        srcset="images/fyde_logo_1x.png 1x,
+                images/fyde_logo_2x.png 2x" />
+  </if>
   <h1 slot="title">[[i18nDynamic(locale, 'osTrialTitle')]]</h1>
   <span inner-h-t-m-l="[[i18nAdvancedDynamic(locale, 'osTrialSubtitle')]]"
       slot="subtitle"></span>

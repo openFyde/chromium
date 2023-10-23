@@ -27,6 +27,12 @@ const std::string GetCryptohomeId(const AccountId& account_id) {
     case AccountType::GOOGLE: {
       return account_id.GetUserEmail();
     }
+    //---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+    case AccountType::FYDE_ACCOUNT: {
+      return account_id.GetUserEmail();
+    }
+    //---***FYDEOS END***---
     case AccountType::ACTIVE_DIRECTORY: {
       // Always use the account id key, authpolicyd relies on it!
       return account_id.GetAccountIdKey();

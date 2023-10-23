@@ -22,17 +22,24 @@
 #include "components/version_info/version_info.h"
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_auth_util.h"
+#include "chromeos/version/version_loader.h"
 
 namespace {
 
 // This stores the latest milestone with new Release Notes content. If the last
 // milestone the user has seen the notification is before this, a new
 // notification will be shown.
-constexpr int kLastChromeVersionWithReleaseNotes = 114;
+// constexpr int kLastChromeVersionWithReleaseNotes = 114;
 constexpr int kTimesToShowSuggestionChip = 3;
 
 int GetMilestone() {
   return version_info::GetVersion().components()[0];
+}
+
+std::string GetOSVersion() {
+  auto version = chromeos::version_loader::GetVersion(
+      chromeos::version_loader::VERSION_SHORT);
+  return version.has_value() ? version.value() : std::string();
 }
 
 bool IsEligibleProfile(Profile* profile) {
@@ -60,7 +67,8 @@ bool IsEligibleProfile(Profile* profile) {
     return false;
 
   // Otherwise, show the notification for Consumer profiles.
-  return ash::ProfileHelper::Get()->GetUserByProfile(profile)->HasGaiaAccount();
+  return ash::ProfileHelper::Get()->GetUserByProfile(profile)->HasGaiaAccount() ||
+         ash::ProfileHelper::Get()->GetUserByProfile(profile)->IsFydeExtendAccountUser();
 }
 
 bool ShouldShowForCurrentChannel() {
@@ -76,6 +84,8 @@ namespace ash {
 void ReleaseNotesStorage::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(
       prefs::kReleaseNotesSuggestionChipTimesLeftToShow, 0);
+  registry->RegisterStringPref(
+      prefs::kFydeOSReleaseNotesLastShownVersion, "0.0.0.0");
 }
 
 ReleaseNotesStorage::ReleaseNotesStorage(Profile* profile)
@@ -91,6 +101,7 @@ bool ReleaseNotesStorage::ShouldNotify() {
   if (!IsEligibleProfile(profile_))
     return false;
 
+  /*
   int last_milestone = profile_->GetPrefs()->GetInteger(
       prefs::kHelpAppNotificationLastShownMilestone);
   if (profile_->GetPrefs()
@@ -104,11 +115,29 @@ bool ReleaseNotesStorage::ShouldNotify() {
     last_milestone = profile_version.components()[0];
   }
   return last_milestone < kLastChromeVersionWithReleaseNotes;
+  */
+
+  base::Version last_version(
+      profile_->GetPrefs()->GetString(prefs::kFydeOSReleaseNotesLastShownVersion));
+  base::Version current_version(GetOSVersion());
+  if (!last_version.IsValid()) {
+    VLOG(2) << "get last os version invalid";
+    last_version = base::Version("0.0.0.0");
+  }
+  if (!current_version.IsValid()) {
+    VLOG(2) << "get current os version invalid";
+    return false;
+  }
+  VLOG(3) << "last osversion: " << last_version << ", current os version: " << current_version;
+  return last_version < current_version;
 }
 
 void ReleaseNotesStorage::MarkNotificationShown() {
   profile_->GetPrefs()->SetInteger(
       prefs::kHelpAppNotificationLastShownMilestone, GetMilestone());
+
+  profile_->GetPrefs()->SetString(prefs::kFydeOSReleaseNotesLastShownVersion,
+                                  GetOSVersion());
   // When the notification is shown we should also show the suggestion chip a
   // number of times.
   profile_->GetPrefs()->SetInteger(

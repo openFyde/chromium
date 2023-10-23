@@ -55,6 +55,14 @@
       show-kerberos-section="[[showKerberosSection]]">
   </os-settings-page>
 </template>
+<template is="dom-if" if="[[showPages_.fydeos]]">
+  <os-settings-fyde-page
+      class="cr-centered-card-container"
+      in-search-mode="[[inSearchMode_]]"
+      on-subpage-expand="onShowingSubpage_"
+      on-showing-main-page="onShowingMainPage_">
+  </os-settings-fyde-page>
+</template>
 <template is="dom-if" if="[[showPages_.about]]">
   <os-settings-about-page role="main"
       class="cr-centered-card-container"

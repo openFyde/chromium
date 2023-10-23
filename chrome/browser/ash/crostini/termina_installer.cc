@@ -24,8 +24,14 @@
 #include "content/public/browser/network_service_instance.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
+#include "base/files/file_util.h"
 
 namespace crostini {
+
+namespace {
+  const base::FilePath::CharType kFydeminaImageDirName[] =
+    FILE_PATH_LITERAL("/run/imageloader/cros-termina/99999.0.0");
+}  // namespace
 
 TerminaInstaller::TerminaInstaller() = default;
 TerminaInstaller::~TerminaInstaller() = default;
@@ -50,6 +56,10 @@ void TerminaInstaller::Install(base::OnceCallback<void(InstallResult)> callback,
       [](std::unique_ptr<UninstallResult> ptr) {}, std::move(ptr));
   RemoveComponentIfPresent(std::move(remove_callback), uninstall_result_ptr);
 
+  if (!base::IsDirectoryEmpty(base::FilePath(kFydeminaImageDirName))) {
+    InstallFydemina(std::move(callback));
+    return;
+  }
   // Crostini should retry installation only if it is the first-time
   // installation (with a cancel button).
   bool retry = is_initial_install;
@@ -58,6 +68,12 @@ void TerminaInstaller::Install(base::OnceCallback<void(InstallResult)> callback,
       base::BindOnce(&TerminaInstaller::OnInstallDlc,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
       base::DoNothing()));
+}
+
+void TerminaInstaller::InstallFydemina(
+    base::OnceCallback<void(InstallResult)> callback) {
+  termina_location_ = base::FilePath(kFydeminaImageDirName);
+  std::move(callback).Run(InstallResult::Success);
 }
 
 void TerminaInstaller::OnInstallDlc(

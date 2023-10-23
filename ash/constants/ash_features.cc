@@ -270,7 +270,7 @@ BASE_FEATURE(kBorealisDiskManagement,
 // might fail subsequent checks.
 BASE_FEATURE(kBorealisPermitted,
              "BorealisPermitted",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Force the steam client to be on its beta version. If not set, the client will
 // be on its stable version.
@@ -299,7 +299,7 @@ BASE_FEATURE(kBorealisStorageBallooning,
 // Enable or disable calendar jelly.
 BASE_FEATURE(kCalendarJelly,
              "CalendarJelly",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables to allow time-lapse video recording in the camera app.
 BASE_FEATURE(kCameraAppTimeLapse,
@@ -413,7 +413,7 @@ BASE_FEATURE(kCrostiniMultiContainer,
 // Enables or disables Crostini IME support.
 BASE_FEATURE(kCrostiniImeSupport,
              "CrostiniImeSupport",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables or disables Crostini Virtual Keyboard support.
 BASE_FEATURE(kCrostiniVirtualKeyboardSupport,
@@ -627,7 +627,7 @@ BASE_FEATURE(kEnable16Desks,
 // may have choppier app list animations while in this mode. crbug.com/765292.
 BASE_FEATURE(kEnableBackgroundBlur,
              "EnableBackgroundBlur",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables external keyboard testers in the diagnostics app.
 BASE_FEATURE(kEnableExternalKeyboardsInDiagnostics,
@@ -654,7 +654,7 @@ BASE_FEATURE(kEnableInputInDiagnosticsApp,
 // jelly-colors flag to also be enabled.
 BASE_FEATURE(kDiagnosticsAppJelly,
              "kDiagnosticsAppJelly",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables or disables keyboard backlight toggle.
 BASE_FEATURE(kEnableKeyboardBacklightToggle,
@@ -974,7 +974,7 @@ BASE_FEATURE(kFilesTrashDrive,
 // Requires jelly-colors flag to also be enabled.
 BASE_FEATURE(kFirmwareUpdateJelly,
              "FirmwareUpdateJelly",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables first party Vietnamese input method.
 BASE_FEATURE(kFirstPartyVietnameseInput,
@@ -1589,7 +1589,7 @@ BASE_FEATURE(kSearchInShortcutsApp,
 // This tool under development will be rolled out via Finch.
 // Enabling this flag will use the new feedback tool instead of the current
 // tool on CrOS.
-BASE_FEATURE(kOsFeedback, "OsFeedback", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kOsFeedback, "OsFeedback", base::FEATURE_ENABLED_BY_DEFAULT);
 
 // If enabled, a new App Notifications subpage will appear in CrOS Apps section.
 BASE_FEATURE(kOsSettingsAppNotificationsPage,
@@ -1606,7 +1606,7 @@ BASE_FEATURE(kOsSyncConsentRevamp,
 // jelly-colors flag to also be enabled.
 BASE_FEATURE(kOsFeedbackJelly,
              "OsFeedbackJelly",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables app badging toggle to be displayed in app notification page in
 // ChromeOS Settings.
@@ -1655,7 +1655,7 @@ BASE_FEATURE(kPerDeskShelf, "PerDeskShelf", base::FEATURE_DISABLED_BY_DEFAULT);
 // Enables Jelly features in Personalization App.
 BASE_FEATURE(kPersonalizationJelly,
              "PersonalizationJelly",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Provides a UI for users to view information about their Android phone
 // and perform phone-side actions within ChromeOS.
@@ -1717,7 +1717,7 @@ BASE_FEATURE(kPreferConstantFrameRate,
 // Requires jelly-colors flag to also be enabled.
 BASE_FEATURE(kPrintManagementJelly,
              "PrintManagementJelly",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables the new OS Printer Settings UI.
 BASE_FEATURE(kPrinterSettingsRevamp,
@@ -1744,12 +1744,12 @@ BASE_FEATURE(kProductivityLauncher,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Controls whether to enable Projector.
-BASE_FEATURE(kProjector, "Projector", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kProjector, "Projector", base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Controls whether to enable Projector for managed users.
 BASE_FEATURE(kProjectorManagedUser,
              "ProjectorManagedUser",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Controls whether the Projector app launches in debug mode, with more detailed
 // error messages.
@@ -1869,7 +1869,7 @@ BASE_FEATURE(kReleaseNotesNotificationAllChannels,
 // Enables or disables Release Notes suggestion chip on ChromeOS.
 BASE_FEATURE(kReleaseNotesSuggestionChip,
              "ReleaseNotesSuggestionChip",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables rendering ARC notifications using ChromeOS notification framework
 BASE_FEATURE(kRenderArcNotificationsByChrome,
@@ -1890,7 +1890,7 @@ BASE_FEATURE(kRgbKeyboard, "RgbKeyboard", base::FEATURE_ENABLED_BY_DEFAULT);
 // jelly-colors flag to also be enabled.
 BASE_FEATURE(kScanningAppJelly,
              "ScanningAppJelly",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables screensaver customized running time.
 BASE_FEATURE(kScreenSaverDuration,
@@ -1985,7 +1985,7 @@ BASE_FEATURE(kShimlessRMADiagnosticPage,
 // Requires jelly-colors flag to also be enabled.
 BASE_FEATURE(kShortcutCustomizationJelly,
              "ShortcutCustomizationJelly",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables or disables a toggle to enable Bluetooth debug logs.
 BASE_FEATURE(kShowBluetoothDebugLogToggle,

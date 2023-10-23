@@ -134,6 +134,10 @@ VolumeManagerCommon.RootType = {
 
   // Trash.
   TRASH: 'trash',
+  //---***FYDEOS BEGIN***---
+  // Fake root for FydeDrop.
+  FYDEDROP: 'fydedrop',
+  //---***FYDEOS END***---
 };
 Object.freeze(VolumeManagerCommon.RootType);
 
@@ -176,6 +180,7 @@ VolumeManagerCommon.RootTypesForUMA = [
   'DEPRECATED_RECENT_VIDEOS',                             // 26
   VolumeManagerCommon.RootType.TRASH,                     // 27
   VolumeManagerCommon.RootType.GUEST_OS,                  // 28
+  VolumeManagerCommon.RootType.FYDEDROP,                  // 29
 ];
 
 /**
@@ -236,6 +241,7 @@ VolumeManagerCommon.VolumeType = {
   SMB: 'smb',
   SYSTEM_INTERNAL: 'system_internal',
   TRASH: 'trash',
+  FYDEDROP: 'fydedrop',
 };
 
 /**
@@ -313,6 +319,8 @@ VolumeManagerCommon.getVolumeTypeFromRootType = rootType => {
       return VolumeManagerCommon.VolumeType.SMB;
     case VolumeManagerCommon.RootType.TRASH:
       return VolumeManagerCommon.VolumeType.TRASH;
+    case VolumeManagerCommon.RootType.FYDEDROP:
+      return VolumeManagerCommon.VolumeType.FYDEDROP;
   }
 
   assertNotReached('Unknown root type: ' + rootType);
@@ -353,6 +361,8 @@ VolumeManagerCommon.getRootTypeFromVolumeType = volumeType => {
       return VolumeManagerCommon.RootType.SMB;
     case VolumeManagerCommon.VolumeType.TRASH:
       return VolumeManagerCommon.RootType.TRASH;
+    case VolumeManagerCommon.VolumeType.FYDEDROP:
+      return VolumeManagerCommon.RootType.FYDEDROP;
   }
 
   assertNotReached('Unknown volume type: ' + volumeType);

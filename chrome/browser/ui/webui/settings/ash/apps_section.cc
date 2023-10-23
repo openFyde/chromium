@@ -537,18 +537,18 @@ void AppsSection::RegisterHierarchy(HierarchyGenerator* generator) const {
       mojom::kPluginVmUsbPreferencesSubpagePath);
 
   // Google Play Store.
-  generator->RegisterTopLevelSubpage(IDS_SETTINGS_ANDROID_APPS_LABEL,
-                                     mojom::Subpage::kGooglePlayStore,
-                                     mojom::SearchResultIcon::kGooglePlay,
-                                     mojom::SearchResultDefaultRank::kMedium,
-                                     mojom::kGooglePlayStoreSubpagePath);
-  static constexpr mojom::Setting kGooglePlayStoreSettings[] = {
-      mojom::Setting::kManageAndroidPreferences,
-      mojom::Setting::kRemovePlayStore,
-  };
-  RegisterNestedSettingBulk(mojom::Subpage::kGooglePlayStore,
-                            kGooglePlayStoreSettings, generator);
-  generator->RegisterTopLevelAltSetting(
+  // generator->RegisterTopLevelSubpage(IDS_SETTINGS_ANDROID_APPS_LABEL,
+  //                                    mojom::Subpage::kGooglePlayStore,
+  //                                    mojom::SearchResultIcon::kGooglePlay,
+  //                                    mojom::SearchResultDefaultRank::kMedium,
+  //                                    mojom::kGooglePlayStoreSubpagePath);
+  // static constexpr mojom::Setting kGooglePlayStoreSettings[] = {
+  //     mojom::Setting::kManageAndroidPreferences,
+  //     mojom::Setting::kRemovePlayStore,
+  // };
+  // RegisterNestedSettingBulk(mojom::Subpage::kGooglePlayStore,
+  //                           kGooglePlayStoreSettings, generator);
+  generator->RegisterTopLevelSetting(
       mojom::Setting::kManageAndroidPreferences);
 
   generator->RegisterNestedSubpage(

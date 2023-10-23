@@ -194,7 +194,7 @@ ash::ImeInfo ImeControllerClientImpl::GetAshImeInfo(
   info.id = ime.id();
   info.name = util->GetInputMethodLongName(ime);
   info.short_name = ime.GetIndicator();
-  info.third_party = ash::extension_ime_util::IsExtensionIME(ime.id());
+  info.third_party = ash::extension_ime_util::IsExtensionIME(ime.id()) && !ash::extension_ime_util::IsFydeOSProvidedIME(ime.id());
   return info;
 }
 

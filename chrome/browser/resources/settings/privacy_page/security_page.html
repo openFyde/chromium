@@ -68,7 +68,7 @@
             name="[[safeBrowsingSettingEnum_.ENHANCED]]"
             pref="[[prefs.generated.safe_browsing]]"
             label="$i18n{safeBrowsingEnhanced}"
-            sub-label="$i18n{safeBrowsingEnhancedDesc}"
+            sub-label="[[safeBrowsingEnhancedDesc_()]]"
             indicator-aria-label="$i18n{controlledSettingPolicy}"
             expand-aria-label="$i18n{safeBrowsingEnhancedExpandA11yLabel}"
             on-expand-clicked="onEnhancedProtectionExpandButtonClicked_"
@@ -80,7 +80,7 @@
                 $i18n{safeBrowsingEnhancedBulOne}
               </div>
             </div>
-            <div class="bullet-line">
+            <div class="bullet-line" hidden="[[shouldHideGoogle_]]">
               <iron-icon icon="settings20:googleg"></iron-icon>
               <div class="secondary">
                 $i18n{safeBrowsingEnhancedBulTwo}
@@ -92,13 +92,13 @@
                 $i18n{safeBrowsingEnhancedBulThree}
               </div>
             </div>
-            <div class="bullet-line">
+            <div class$="[[maybeLastCollapseItemClass_(shouldHideGoogle_)]]">
               <iron-icon icon="settings20:vpn-key"></iron-icon>
               <div class="secondary">
                 $i18n{safeBrowsingEnhancedBulFour}
               </div>
             </div>
-            <div class="bullet-line last-collapse-item">
+            <div class="bullet-line last-collapse-item" hidden="[[shouldHideGoogle_]]">
               <iron-icon icon="settings20:data"></iron-icon>
               <div class="secondary cr-padded-text">
                 $i18n{safeBrowsingEnhancedBulFive}
@@ -132,6 +132,7 @@
           </div>
           <div slot="noSelectionCollapse">
             <settings-toggle-button id="safeBrowsingReportingToggle"
+                hidden="[[shouldHideGoogle_]]"
                 pref="{{prefs.safebrowsing.scout_reporting_enabled}}"
                 label="$i18n{safeBrowsingStandardReportingLabel}"
                 sub-label="$i18n{safeBrowsingEnableExtendedReportingDesc}"
@@ -152,7 +153,7 @@
             name="[[safeBrowsingSettingEnum_.DISABLED]]"
             pref="[[prefs.generated.safe_browsing]]"
             label="$i18n{safeBrowsingNone}"
-            sub-label="$i18n{safeBrowsingNoneDesc}"
+            sub-label="[[safeBrowsingNoneDesc_()]]"
             indicator-aria-label="$i18n{controlledSettingPolicy}">
         </settings-collapse-radio-button>
       </settings-radio-group>
@@ -242,6 +243,7 @@
 
     <cr-link-row id="advanced-protection-program-link"
         class="hr"
+        hidden="[[shouldHideGoogle_]]"
         label="$i18n{advancedProtectionProgramTitle}"
         sub-label="$i18n{advancedProtectionProgramDesc}"
         on-click="onAdvancedProtectionProgramLinkClick_"

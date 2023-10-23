@@ -21,6 +21,7 @@ import {CrSettingsPrefs} from 'chrome://resources/cr_components/settings_prefs/p
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {assert} from 'chrome://resources/js/assert_ts.js';
 import {focusWithoutInk} from 'chrome://resources/js/focus_without_ink.js';
+import {BaseMixin} from '../base_mixin.js';
 // <if expr="is_chromeos or chrome_root_store_supported">
 import {OpenWindowProxyImpl} from 'chrome://resources/js/open_window_proxy.js';
 // </if>
@@ -61,7 +62,7 @@ export interface SettingsSecurityPageElement {
 }
 
 const SettingsSecurityPageElementBase =
-    HelpBubbleMixin(RouteObserverMixin(I18nMixin(PrefsMixin(PolymerElement))));
+    HelpBubbleMixin(RouteObserverMixin(I18nMixin(PrefsMixin(BaseMixin(PolymerElement)))));
 
 export class SettingsSecurityPageElement extends
     SettingsSecurityPageElementBase {
@@ -167,6 +168,14 @@ export class SettingsSecurityPageElement extends
       },
 
       showDisableSafebrowsingDialog_: Boolean,
+
+      shouldHideGoogle_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
     };
   }
   // <if expr="chrome_root_store_supported">
@@ -182,6 +191,7 @@ export class SettingsSecurityPageElement extends
   private enableSecurityKeysSubpage_: boolean;
   focusConfig: FocusConfig;
   private showDisableSafebrowsingDialog_: boolean;
+  private shouldHideGoogle_: boolean;
 
   private browserProxy_: PrivacyPageBrowserProxy =
       PrivacyPageBrowserProxyImpl.getInstance();
@@ -289,7 +299,7 @@ export class SettingsSecurityPageElement extends
     // added.
     const generatedPref = this.getPref('generated.password_leak_detection');
     if (this.getPref('profile.password_manager_leak_detection').value &&
-        !generatedPref.value && generatedPref.userControlDisabled) {
+        !generatedPref.value && generatedPref.userControlDisabled && !this.shouldHideGoogle_) {
       subLabel +=
           ' ' +  // Whitespace is a valid sentence separator w.r.t. i18n.
           this.i18n('passwordsLeakDetectionSignedOutEnabledDescription');
@@ -452,6 +462,29 @@ export class SettingsSecurityPageElement extends
     this.metricsBrowserProxy_.recordAction(
         confirmed ? 'SafeBrowsing.Settings.DisableSafeBrowsingDialogConfirmed' :
                     'SafeBrowsing.Settings.DisableSafeBrowsingDialogDenied');
+  }
+
+  maybeLastCollapseItemClass_() {
+    if (this.shouldHideGoogle_) {
+      return 'bullet-line last-collapse-item';
+    }
+    return 'bullet-line';
+  }
+
+  private safeBrowsingEnhancedDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingEnhancedFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingEnhancedDesc');
+    }
+  }
+
+  private safeBrowsingNoneDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingNoneFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingNoneDesc');
+    }
   }
 }
 

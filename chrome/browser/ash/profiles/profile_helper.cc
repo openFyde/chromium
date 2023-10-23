@@ -322,5 +322,11 @@ void ProfileHelperImpl::RemoveUserFromListForTesting(
   if (it != user_list_for_testing_.end())
     user_list_for_testing_.erase(it);
 }
+// ---***FYDEOS BEGIN***---
+// static
+bool ProfileHelper::IsFydeProfile(const Profile* profile) {
+  return profile && profile->IsFydeProfile();
+}
+// ---***FYDEOS END***---
 
 }  // namespace ash

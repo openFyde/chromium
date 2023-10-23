@@ -33,6 +33,15 @@ const char kUnknown[] = "unknown";
 const char kKeyGaiaIdPrefix[] = "g-";
 const char kKeyAdIdPrefix[] = "a-";
 
+//  ---***FYDEOS BEGIN***---
+const char kFlintIdKey[] = "flint_id";
+const char kFlint[] = "ft";
+const char kKeyFtIdPrefix[] = "f-";
+const char kFydeIdKey[] = "fyde_id";
+const char kFyde[] = "fy";
+const char kKeyFyIdPrefix[] = "y-";
+//  ---***FYDEOS END***---
+
 }  // anonymous namespace
 
 AccountId::AccountId() = default;
@@ -44,6 +53,19 @@ AccountId::AccountId(const std::string& id,
   DCHECK_EQ(user_email, gaia::CanonicalizeEmail(user_email));
   DCHECK(account_type != AccountType::UNKNOWN || id.empty());
   DCHECK(account_type != AccountType::ACTIVE_DIRECTORY || !id.empty());
+    // ---***FYDEOS BEGIN***---
+    if (account_type == AccountType::FLINT_ACCOUNT)
+        LOG_ASSERT(!base::StartsWith(user_email, kKeyFtIdPrefix,
+                                 base::CompareCase::SENSITIVE) ||
+               user_email.find('@') != std::string::npos)
+        << "Bad e-mail: '" << user_email << "' with flint_id='" << id << "'";
+    else if (account_type == AccountType::FYDE_ACCOUNT)
+        LOG_ASSERT(!base::StartsWith(user_email, kKeyFyIdPrefix,
+                                 base::CompareCase::SENSITIVE) ||
+               user_email.find('@') != std::string::npos)
+        << "Bad e-mail: '" << user_email << "' with fyde_id='" << id << "'";
+    else
+    // ---***FYDEOS END***---
   // Fail if e-mail looks similar to GaiaIdKey.
   LOG_ASSERT(!base::StartsWith(user_email, kKeyGaiaIdPrefix,
                                base::CompareCase::SENSITIVE) ||
@@ -68,6 +90,10 @@ bool AccountId::operator==(const AccountId& other) const {
     return false;
   switch (account_type_) {
     case AccountType::GOOGLE:
+    // ---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+    case AccountType::FYDE_ACCOUNT:
+    // ---***FYDEOS END***---
       return (id_ == other.id_ && user_email_ == other.user_email_) ||
              (!id_.empty() && id_ == other.id_) ||
              (!user_email_.empty() && user_email_ == other.user_email_);
@@ -96,6 +122,10 @@ bool AccountId::empty() const {
 bool AccountId::is_valid() const {
   switch (account_type_) {
     case AccountType::GOOGLE:
+    // ---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+    case AccountType::FYDE_ACCOUNT:
+    // ---***FYDEOS END***---
       return /* !id_.empty() && */ !user_email_.empty();
     case AccountType::ACTIVE_DIRECTORY:
       return !id_.empty() && !user_email_.empty();
@@ -149,6 +179,12 @@ const std::string AccountId::GetAccountIdKey() const {
       return std::string(kKeyGaiaIdPrefix) + id_;
     case AccountType::ACTIVE_DIRECTORY:
       return std::string(kKeyAdIdPrefix) + id_;
+    // ---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+      return std::string(kKeyFtIdPrefix) + id_;
+    case AccountType::FYDE_ACCOUNT:
+      return std::string(kKeyFyIdPrefix) + id_;
+    // ---***FYDEOS END***---
     default:
       NOTREACHED() << "Unknown account type";
   }
@@ -190,11 +226,57 @@ AccountId AccountId::AdFromUserEmailObjGuid(const std::string& email,
   return AccountId(obj_guid, email, AccountType::ACTIVE_DIRECTORY);
 }
 
+// ---***FYDEOS BEGIN***---
+const std::string& AccountId::GetFlintId() const {
+  if (account_type_ != AccountType::FLINT_ACCOUNT)
+    NOTIMPLEMENTED()
+        << "Failed to get flint_id for non-FLINT account.";
+  return id_;
+}
+
+AccountId AccountId::FtFromUserEmailFlintId(const std::string& email,
+                                            const std::string& flint_id) {
+  DCHECK(!email.empty() && !flint_id.empty());
+  return AccountId(flint_id, email, AccountType::FLINT_ACCOUNT);
+}
+
+AccountId AccountId::FtFromFlintId(const std::string& flint_id) {
+  DCHECK(!flint_id.empty());
+  return AccountId(flint_id, std::string() /* email */,
+                   AccountType::FLINT_ACCOUNT);
+}
+
+const std::string& AccountId::GetFydeId() const {
+  if (account_type_ != AccountType::FYDE_ACCOUNT)
+    NOTIMPLEMENTED()
+        << "Failed to get fyde_id for non-FYDE account.";
+  return id_;
+}
+
+AccountId AccountId::FyFromUserEmailFydeId(const std::string& email,
+                                          const std::string& fyde_id) {
+  DCHECK(!email.empty() && !fyde_id.empty());
+  return AccountId(fyde_id, email, AccountType::FYDE_ACCOUNT);
+}
+
+AccountId AccountId::FyFromFydeId(const std::string& fyde_id) {
+  DCHECK(!fyde_id.empty());
+  return AccountId(fyde_id, std::string() /* email */,
+                   AccountType::FYDE_ACCOUNT);
+}
+// ---***FYDEOS END***---
+
 // static
 AccountType AccountId::StringToAccountType(
     const std::string& account_type_string) {
   if (account_type_string == kGoogle)
     return AccountType::GOOGLE;
+  // ---***FDYEOS BEGIN***---
+  if (account_type_string == kFlint)
+    return AccountType::FLINT_ACCOUNT;
+  if (account_type_string == kFyde)
+    return AccountType::FYDE_ACCOUNT;
+  // ---***FYDEOS END***---
   if (account_type_string == kAd)
     return AccountType::ACTIVE_DIRECTORY;
   if (account_type_string == kUnknown)
@@ -210,6 +292,12 @@ std::string AccountId::AccountTypeToString(const AccountType& account_type) {
       return kGoogle;
     case AccountType::ACTIVE_DIRECTORY:
       return kAd;
+    // ---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+      return kFlint;
+    case AccountType::FYDE_ACCOUNT:
+      return kFyde;
+    // ---***FYDEOS END***---
     case AccountType::UNKNOWN:
       return kUnknown;
   }
@@ -225,6 +313,14 @@ std::string AccountId::Serialize() const {
     case AccountType::ACTIVE_DIRECTORY:
       value.Set(kObjGuid, id_);
       break;
+    // ---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+      value.Set(kFlintIdKey, id_);
+      break;
+    case AccountType::FYDE_ACCOUNT:
+      value.Set(kFydeIdKey, id_);
+      break;
+    // ---***FYDEOS END***---
     case AccountType::UNKNOWN:
       break;
   }
@@ -246,6 +342,8 @@ bool AccountId::Deserialize(const std::string& serialized,
   AccountType account_type = AccountType::GOOGLE;
   base::Value::Dict& dict = value->GetDict();
   const std::string* gaia_id = dict.FindString(kGaiaIdKey);
+  const std::string* flint_id = dict.FindString(kFlintIdKey);
+  const std::string* fyde_id = dict.FindString(kFydeIdKey);
   const std::string* user_email = dict.FindString(kEmailKey);
   const std::string* obj_guid = dict.FindString(kObjGuid);
   const std::string* account_type_string = dict.FindString(kAccountTypeKey);
@@ -295,6 +393,24 @@ bool AccountId::Deserialize(const std::string& serialized,
       *account_id = AdFromUserEmailObjGuid(*user_email, *obj_guid);
       return true;
 
+// ---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+      if (!flint_id || !user_email) {
+        DLOG(ERROR) << "flint_id or user_email is not found in '"
+          << serialized << "'";
+        return false;
+      }
+      *account_id = FtFromUserEmailFlintId(*user_email, *flint_id);
+      return true;
+    case AccountType::FYDE_ACCOUNT:
+      if (!fyde_id || !user_email) {
+        DLOG(ERROR) << "fyde_id or user_email is not found in '"
+          << serialized << "'";
+        return false;
+      }
+      *account_id = FyFromUserEmailFydeId(*user_email, *fyde_id);
+      return true;
+// ---***FYDEOS END***---
     case AccountType::UNKNOWN:
       if (!user_email)
         return false;

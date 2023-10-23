@@ -22,6 +22,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/extension_set.h"
 #include "extensions/common/manifest_constants.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace safe_browsing {
 
@@ -55,7 +56,8 @@ void PopulateExtensionInfo(
   extension_info->set_type(extension.GetType());
   if (const std::string* update_url = extension.manifest()->FindStringPath(
           extensions::manifest_keys::kUpdateURL)) {
-    extension_info->set_update_url(*update_url);
+    extension_info->set_update_url(
+        fydeos::switches::MayConvertWebStoreUpdateUrl(*update_url));
   }
 
   extension_info->set_installed_by_default(

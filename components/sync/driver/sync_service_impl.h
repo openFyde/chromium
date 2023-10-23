@@ -339,6 +339,12 @@ class SyncServiceImpl : public SyncService,
   // type.
   void MaybeRecordTrustedVaultHistograms();
 
+  // ---***FYDEOS BEGIN***---
+  void TriggerManagedUserSettingsRefresh();
+
+  std::unique_ptr<base::RepeatingTimer> family_link_timer_;
+  // ---***FYDEOS END***---
+
   // This profile's SyncClient, which abstracts away non-Sync dependencies and
   // the Sync API component factory.
   const std::unique_ptr<SyncClient> sync_client_;

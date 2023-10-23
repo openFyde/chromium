@@ -67,6 +67,10 @@
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
 #endif
+//---***FYDEOS BEGIN***---
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
+//---***FYDEOS END***---
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
     BUILDFLAG(IS_FUCHSIA)
@@ -111,6 +115,13 @@ void LaunchReleaseNotesImpl(Profile* profile, apps::LaunchSource source) {
   LaunchSystemWebAppAsync(profile, ash::SystemWebAppType::HELP, params);
 }
 #endif
+
+//---***FYDEOS BEGIN***---
+void LaunchReleaseNotesInTab(Profile* profile) {
+  auto displayer = std::make_unique<ScopedTabbedBrowserDisplayer>(profile);
+  ShowSingletonTab(displayer->browser(), GURL(kChromeUIWhatsNewURL));
+}
+//---***FYDEOS END***---
 
 // Shows either the help app or the appropriate help page for |source|. If
 // |browser| is NULL and the help page is used (vs the app), the help page is
@@ -170,6 +181,10 @@ void ShowHelpImpl(Browser* browser, Profile* profile, HelpSource source) {
       NOTREACHED() << "Unhandled help source " << source;
   }
 #endif  // BUILDFLAG_IS_CHROMEOS_LACROS)
+  //---***FYDEOS BEGIN***---
+  // if (profile->IsFydeProfile())
+  url = GURL(fydeos::constants::kFydeOSHelpURL);
+  //---***FYDEOS END***---
   std::unique_ptr<ScopedTabbedBrowserDisplayer> displayer;
   if (!browser) {
     displayer = std::make_unique<ScopedTabbedBrowserDisplayer>(profile);
@@ -330,10 +345,15 @@ void LaunchReleaseNotes(Profile* profile, apps::LaunchSource source) {
 #if BUILDFLAG(IS_CHROMEOS_ASH) && BUILDFLAG(GOOGLE_CHROME_BRANDING)
   LaunchReleaseNotesImpl(profile, source);
 #endif
+  // ---***FYDEOS BEGIN***---
+  LaunchReleaseNotesInTab(profile);
+  // ---***FYDEOS END***---
 }
 
 void ShowBetaForum(Browser* browser) {
-  ShowSingletonTab(browser, GURL(kChromeBetaForumURL));
+  //---***FYDEOS BEGIN***---
+  ShowSingletonTab(browser, GURL(fydeos::constants::kFydeOSForumURL));
+  //---***FYDEOS END***---
 }
 
 void ShowPolicy(Browser* browser) {

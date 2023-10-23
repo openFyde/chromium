@@ -33,6 +33,7 @@ build_webui("build") {
       "cr_grid/cr_grid.ts",
       "cr_icon_button/cr_icon_button.ts",
       "cr_input/cr_input.ts",
+      "cr_input_oobe/cr_input_oobe.ts",
       "cr_link_row/cr_link_row.ts",
       "cr_lottie/cr_lottie.ts",
       "cr_textarea/cr_textarea.ts",
@@ -101,6 +102,7 @@ build_webui("build") {
       "mwb_shared_vars.css",
       "search_highlight_style.css",
       "cr_input/cr_input_style.css",
+      "cr_input_oobe/cr_input_oobe_style.css",
     ]
 
     if (is_chromeos_ash) {

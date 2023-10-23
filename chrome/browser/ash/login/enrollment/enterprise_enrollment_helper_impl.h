@@ -41,6 +41,7 @@ class EnterpriseEnrollmentHelperImpl : public EnterpriseEnrollmentHelper {
   // EnterpriseEnrollmentHelper:
   void EnrollUsingAuthCode(const std::string& auth_code) override;
   void EnrollUsingToken(const std::string& token) override;
+  void EnrollUsingFydeToken(const std::string& token) override;
   void EnrollUsingAttestation() override;
   void ClearAuth(base::OnceClosure callback) override;
   void GetDeviceAttributeUpdatePermission() override;

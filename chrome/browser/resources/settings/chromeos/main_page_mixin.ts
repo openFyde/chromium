@@ -35,7 +35,7 @@ function classifyRoute(route: Route|undefined): RouteState {
     return RouteState.INITIAL;
   }
   const routes = Router.getInstance().routes;
-  if (route === routes.BASIC || route === routes.ABOUT) {
+  if (route === routes.BASIC || route === routes.ABOUT || route === routes.FYDEOS) {
     return RouteState.TOP_LEVEL;
   }
   if (route.isSubpage()) {

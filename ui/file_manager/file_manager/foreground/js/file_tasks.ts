@@ -451,9 +451,51 @@ export class FileTasks {
 
       const text = strf(textMessageId, str('NO_TASK_FOR_FILE_URL'));
       const title = titleMessageId ? str(titleMessageId) : filename;
+      if (extension === '.apk') {
+        this.mightShowApkAlert(() => {
+          // fallback
+          this.ui_.alertDialog.showHtml(title, text);
+        });
+        return;
+      }
       this.ui_.alertDialog.showHtml(title, text);
     }
   }
+
+  async mightShowApkAlert(fallback: () => void) {
+    const fydeosArcSettingAppId = 'iakadpgajjigiaojnbdmodlngmbkfhag';
+    let appAvailable = false;
+    try {
+      const app: chrome.management.ExtensionInfo = await chrome.management.get(fydeosArcSettingAppId);
+      if (!chrome.runtime.lastError && app.enabled) {
+        appAvailable = true;
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
+    console.log('fydeos arc app available:', appAvailable);
+    if (appAvailable) {
+      this.showArcAlert(fydeosArcSettingAppId);
+      return;
+    }
+    if (fallback) {
+      fallback();
+    }
+  }
+
+  showArcAlert(appId: string) {
+    const text = str('NO_TASK_FOR_APK');
+    const title = '\u00a0'; // this is the &nbsp; (no-break-space) character
+    this.ui_.alertDialog.showHtml(title, text);
+    const a = this.ui_.alertDialog.findLinkElementInText();
+    if (a) {
+      a.addEventListener('click', (e: Event) => {
+        chrome.nativeWindows.create(appId);
+        this.ui_.alertDialog.hide();
+        e.preventDefault();
+      });
+    }
+  };
 
   /** Executes a single task.  */
   execute(task: chrome.fileManagerPrivate.FileTask) {

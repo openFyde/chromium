@@ -110,6 +110,7 @@ source_set("base") {
     "//third_party/libyuv",
     "//third_party/webrtc_overrides:webrtc_component",
     "//url",
+    "//fydeos/switches",
   ]
 
   if (is_win) {

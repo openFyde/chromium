@@ -48,7 +48,10 @@ bool IsChild(Profile* profile) {
   if (!user)
     return false;
 
-  return user->GetType() == user_manager::UserType::USER_TYPE_CHILD;
+  // ---***FYDEOS BEGIN***---
+  return user->GetType() == user_manager::UserType::USER_TYPE_CHILD ||
+         user->GetType() == user_manager::UserType::USER_TYPE_FYDE_CHILD;
+  // ---***FYDEOS END***---
 }
 
 bool IsOwnerProfile(Profile* profile) {

@@ -2,8 +2,13 @@
   network-select-login {
     --cr-network-row-height: var(--oobe-network-row-height);
   }
+  :host-context([orientation=horizontal]) #contentArea {
+    margin-top: var(--oobe-adaptive-dialog-header-top-padding);
+  }
 </style>
 <oobe-adaptive-dialog id="networkDialog" role="dialog"
+    fydeos-layout
+    animation-url="animations/fydeos_network_select.json"
     on-show-dialog="onShown_"
     aria-label$="[[i18nDynamic(locale, 'networkSectionTitle')]]">
   <iron-icon slot="icon" icon="oobe-32:wifi">
@@ -17,7 +22,7 @@
   <div slot="subtitle" hidden$="[[!errorMessage_]]">
     [[errorMessage_]]
   </div>
-  <div slot="content" class="layout vertical">
+  <div id="contentArea" slot="content" class="layout vertical">
     <network-select-login id="networkSelectLogin"
         enable-wifi-scans="[[enableWifiScans_]]"
         on-selected-network-connected="onNetworkConnected_"

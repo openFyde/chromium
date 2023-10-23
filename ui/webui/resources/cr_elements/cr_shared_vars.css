@@ -10,6 +10,37 @@
 
 /* Common css variables for Material Design WebUI */
 html {
+  --fydeos-pink-50-rgb: 253, 227, 232; /* #fde3e8 */
+  --fydeos-pink-50: rgb(var(--fydeos-pink-50-rgb));
+  --fydeos-pink-100-rgb: 250, 183, 197; /* #fab7c5 */
+  --fydeos-pink-100: rgb(var(--fydeos-pink-100-rgb));
+  --fydeos-pink-200-rgb: 246, 137, 159; /* #f6899f */
+  --fydeos-pink-200: rgb(var(--fydeos-pink-200-rgb));
+  --fydeos-pink-300-rgb: 240, 89, 122; /* #f0597a */
+  --fydeos-pink-300: rgb(var(--fydeos-pink-300-rgb));
+  --fydeos-pink-400-rgb: 234, 51, 94; /* #ea335e */
+  --fydeos-pink-400: rgb(var(--fydeos-pink-400-rgb));
+  --fydeos-pink-500-rgb: 228, 0, 68; /* #e40044 */
+  --fydeos-pink-500: rgb(var(--fydeos-pink-500-rgb));
+  --fydeos-pink-600-rgb: 212, 0, 67; /* #d40043 */
+  --fydeos-pink-600: rgb(var(--fydeos-pink-600-rgb));
+  --fydeos-pink-700-rgb: 192, 0, 65; /* #c00041 */
+  --fydeos-pink-700: rgb(var(--fydeos-pink-700-rgb));
+
+  --fydeos-oobe-welcome-blue-50-rgb: 229, 241, 252;
+  --fydeos-oobe-welcome-blue-50: rgb(var(--fydeos-oobe-welcome-blue-50-rgb));
+  --fydeos-oobe-welcome-blue-400-rgb: 93, 162, 246;
+  --fydeos-oobe-welcome-blue-400: rgb(var(--fydeos-oobe-welcome-blue-400-rgb));
+  --fydeos-oobe-welcome-blue-500-rgb: 77, 146, 232;
+  --fydeos-oobe-welcome-blue-500: rgb(var(--fydeos-oobe-welcome-blue-500-rgb));
+
+  --fydeos-oobe-welcome-purple-50-rgb: 230, 228, 238;
+  --fydeos-oobe-welcome-purple-50: rgb(var(--fydeos-oobe-welcome-purple-50-rgb));
+  --fydeos-oobe-welcome-purple-100-rgb: 191, 188, 214;
+  --fydeos-oobe-welcome-purple-100: rgb(var(--fydeos-oobe-welcome-purple-100-rgb));
+  --fydeos-oobe-welcome-purple-200-rgb: 150, 145, 188;
+  --fydeos-oobe-welcome-purple-200: rgb(var(--fydeos-oobe-welcome-purple-200-rgb));
+
   --google-blue-50-rgb: 232, 240, 254;  /* #e8f0fe */
   --google-blue-50: rgb(var(--google-blue-50-rgb));
   --google-blue-100-rgb: 210, 227, 252;  /* #d2e3fc */
@@ -133,6 +164,14 @@ html {
   --cr-focus-outline-color: rgba(var(--google-blue-600-rgb), .4);
 }
 
+html body.fydeos {
+  --cr-checked-color: var(--fydeos-pink-600);
+  --cr-link-color: var(--fydeos-pink-700);
+  --cr-toggle-color: var(--fydeos-pink-500);
+  --cr-toolbar-background-color: var(--fydeos-pink-700);
+  --cr-focus-outline-color: rgba(var(--fydeos-pink-600-rgb), .4);
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     --cr-primary-text-color: var(--google-grey-200);
@@ -159,6 +198,11 @@ html {
     --cr-hover-background-color: rgba(255, 255, 255, .1);
     --cr-active-background-color: rgba(var(--google-grey-200-rgb), .16);
     --cr-focus-outline-color: rgba(var(--google-blue-300-rgb), .4);
+  }
+  html body.fydeos {
+    --cr-checked-color: var(--fydeos-pink-300);
+    --cr-link-color: var(--fydeos-pink-300);
+    --cr-focus-outline-color: rgba(var(--fydeos-pink-300-rgb), .4);
   }
 }
 

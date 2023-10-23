@@ -371,6 +371,8 @@ class USER_MANAGER_EXPORT UserManagerBase : public UserManager {
 
   void RemoveLegacySupervisedUser(const AccountId& account_id);
 
+  void RemoveLocalAutoSigninCredential(const AccountId& account_id);
+
   // Indicates stage of loading user from prefs.
   UserLoadStage user_loading_stage_ = STAGE_NOT_LOADED;
 

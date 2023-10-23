@@ -24,6 +24,8 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 
+#include "fydeos/prefs/fydeos_pref_names.h"
+
 namespace chrome {
 namespace {
 
@@ -58,6 +60,8 @@ void AttemptUserExit() {
       TRACE_EVENT0("shutdown", "CommitPendingWrite");
       state->CommitPendingWrite();
     }
+    state->SetBoolean(fydeos::prefs::kOfflineAutoSigninIsChromeLastSignout, true);
+    state->CommitPendingWrite();
   }
   SetSendStopRequestToSessionManager();
   // On ChromeOS, always terminate the browser, regardless of the result of

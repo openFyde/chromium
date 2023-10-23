@@ -119,6 +119,16 @@ UserType UserManager::CalculateUserType(const AccountId& account_id,
                      << new_user_type;
       }
       return new_user_type;
+    // ---***FYDEOS BEGIN***---
+    } else if (user_type == USER_TYPE_FYDE_CHILD || user_type == USER_TYPE_FYDE_ACCOUNT) {
+      const UserType new_user_type =
+          is_child ? USER_TYPE_FYDE_CHILD : USER_TYPE_FYDE_ACCOUNT;
+      if (new_user_type != user_type) {
+        LOG(WARNING) << "FydeOS child user type has changed: " << user_type << " => "
+                     << new_user_type;
+      }
+      return new_user_type;
+    // ---***FYDEOS END***---
     } else if (is_child) {
       LOG(FATAL) << "Incorrect child user type " << user_type;
     }
@@ -135,10 +145,20 @@ UserType UserManager::CalculateUserType(const AccountId& account_id,
 
   // User is new
   if (is_child)
-    return USER_TYPE_CHILD;
+    // ---***FYDEOS BEGIN***---
+    return account_id.GetAccountType() == AccountType::FYDE_ACCOUNT ? USER_TYPE_FYDE_CHILD : USER_TYPE_CHILD;
+    // ---***FYDEOS END***---
 
   if (account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY)
     return USER_TYPE_ACTIVE_DIRECTORY;
+
+  // ---***FYDEOS BEGIN***---
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT)
+    return USER_TYPE_FLINT_ACCOUNT;
+
+  if (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT)
+    return USER_TYPE_FYDE_ACCOUNT;
+  // ---***FYDEOS END***---
 
   return USER_TYPE_REGULAR;
 }

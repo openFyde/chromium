@@ -176,12 +176,14 @@ class UserCreation extends UserCreationScreenElementBase {
       this.setUIStep(UserCreationUIState.CREATE);
     } else {
       this.userActed('cancel');
+      this.fire('user-creation-canceled');
     }
   }
 
   onNextClicked_() {
     if (this.uiStep === UserCreationUIState.CREATE) {
       if (this.selectedUserType === UserCreationUserType.SELF) {
+        this.fire('user-creation-next');
         this.userActed('signin');
       } else if (this.selectedUserType === UserCreationUserType.CHILD) {
         Oobe.getInstance().setOobeUIState(OOBE_UI_STATE.GAIA_SIGNIN);
@@ -189,9 +191,11 @@ class UserCreation extends UserCreationScreenElementBase {
       }
     } else if (this.uiStep === UserCreationUIState.CHILD) {
       if (this.selectedSignInMethod === UserCreationSignInMethod.CREATE) {
+        this.fire('user-creation-next');
         this.userActed('child-account-create');
       } else if (
           this.selectedSignInMethod === UserCreationSignInMethod.SIGNIN) {
+        this.fire('user-creation-next');
         this.userActed('child-signin');
       }
     }

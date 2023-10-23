@@ -20,6 +20,8 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
+#include "base/strings/utf_string_conversions.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -83,6 +85,18 @@ const std::vector<SearchConcept>& GetFilesGoogleDriveSearchConcepts() {
   return *tags;
 }
 
+const std::vector<SearchConcept>& GetNonFydeAccountSearchConcepts() {
+  static const base::NoDestructor<std::vector<SearchConcept>> tags({
+      {IDS_OS_SETTINGS_TAG_FILES_DISCONNECT_GOOGLE_DRIVE,
+       mojom::kFilesSectionPath,
+       mojom::SearchResultIcon::kDrive,
+       mojom::SearchResultDefaultRank::kMedium,
+       mojom::SearchResultType::kSetting,
+       {.setting = mojom::Setting::kGoogleDriveConnection}},
+  });
+  return *tags;
+}
+
 }  // namespace
 
 FilesSection::FilesSection(Profile* profile,
@@ -95,6 +109,9 @@ FilesSection::FilesSection(Profile* profile,
   }
   if (ash::features::IsDriveFsBulkPinningEnabled()) {
     updater.AddSearchTags(GetFilesGoogleDriveSearchConcepts());
+  }
+  if (profile && profile->IsFydeProfile()) {
+    updater.RemoveSearchTags(GetNonFydeAccountSearchConcepts());
   }
 }
 
@@ -173,6 +190,10 @@ void FilesSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   smb_dialog::AddLocalizedStrings(html_source);
 
   html_source->AddString("smbSharesLearnMoreURL",
+                         // ---***FYDEOS BEGIN***---
+                         IsFydeProfile() ?
+                         base::ASCIIToUTF16(fydeos::constants::kSmbSharesLearnMoreURL) :
+                         // ---***FYDEOS END***---
                          GetHelpUrlWithBoard(chrome::kSmbSharesLearnMoreURL));
 
   html_source->AddBoolean(

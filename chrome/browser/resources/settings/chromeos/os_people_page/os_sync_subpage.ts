@@ -187,6 +187,13 @@ export class OsSettingsSyncSubpageElement extends
         value: loadTimeData.getBoolean('showSyncSettingsRevamp'),
         readOnly: true,
       },
+      isFydeProfile_: {
+        type: Boolean,
+        value: function() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+        readOnly: true,
+      },
     };
   }
 
@@ -219,6 +226,7 @@ export class OsSettingsSyncSubpageElement extends
   private setupCancelConfirmed_: boolean;
   private beforeunloadCallback_: ((e: Event) => void)|null;
   private unloadCallback_: (() => void)|null;
+  private isFydeProfile_: boolean;
 
   constructor() {
     super();
@@ -271,6 +279,21 @@ export class OsSettingsSyncSubpageElement extends
     if (router.currentRoute === getSyncRoutes().SYNC) {
       this.onNavigateToPage_();
     }
+
+    const hideOtherSyncItems = () => {
+      const nodes = this.shadowRoot!.querySelectorAll('#other-sync-items cr-link-row') as NodeListOf<HTMLElement>;
+      const unSupportedEncryptElement = this.shadowRoot!.querySelector('#encryptionDescription') as HTMLElement;
+      [...nodes, unSupportedEncryptElement].forEach(n => {
+        if (n.id !== 'sync-advanced-row') {
+          n.style.display = 'none';
+        }
+      });
+    };
+
+    setTimeout(() => {
+      if (!this.isFydeProfile_) return;
+      hideOtherSyncItems();
+    }, 30);
   }
 
   override disconnectedCallback() {

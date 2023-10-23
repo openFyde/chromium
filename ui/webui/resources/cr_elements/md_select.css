@@ -40,6 +40,11 @@
   width: var(--md-select-width, 200px);
 }
 
+:host-context(body.fydeos) .md-select {
+  --md-select-focus-shadow-color: rgba(var(--fydeos-pink-600-rgb), .4);
+}
+
+
 @media (prefers-color-scheme: dark) {
   .md-select {
     --md-select-bg-color: rgba(0, 0, 0, .3);
@@ -47,6 +52,10 @@
         rgba(var(--google-blue-300-rgb), .5);
     --md-select-option-bg-color: var(--google-grey-900-white-4-percent);
     background-image: url(chrome://resources/images/dark/arrow_down.svg);
+  }
+  :host-context(body.fydeos) .md-select {
+    --md-select-focus-shadow-color:
+        rgba(var(--fydeos-pink-300-rgb), .5);
   }
 }
 

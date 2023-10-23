@@ -41,6 +41,7 @@
 #include "ui/events/ash/keyboard_capability.h"
 #include "ui/events/ash/keyboard_layout_util.h"
 #include "ui/events/devices/device_data_manager.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -1016,6 +1017,8 @@ void AddDeviceStorageStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_EMPTY_LIST_HEADER},
       {"storageExternalStorageListHeader",
        IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER},
+      {"storageAndroidAppsExternalDrivesNote",
+       IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE},
       {"storageItemApps", IDS_SETTINGS_STORAGE_ITEM_APPS},
       {"storageItemOffline", IDS_SETTINGS_STORAGE_ITEM_OFFLINE},
       {"storageItemAvailable", IDS_SETTINGS_STORAGE_ITEM_AVAILABLE},
@@ -1046,11 +1049,11 @@ void AddDeviceStorageStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("androidEnabled", is_external_storage_page_available);
 
-  html_source->AddString(
-      "storageAndroidAppsExternalDrivesNote",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE,
-          base::ASCIIToUTF16(chrome::kArcExternalStorageLearnMoreURL)));
+  // html_source->AddString(
+  //     "storageAndroidAppsExternalDrivesNote",
+  //     l10n_util::GetStringFUTF16(
+  //         IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE,
+  //         base::ASCIIToUTF16(chrome::kArcExternalStorageLearnMoreURL)));
 }
 
 void AddDeviceAudioStrings(content::WebUIDataSource* html_source) {
@@ -1736,6 +1739,8 @@ void DeviceSection::AddDevicePointersStrings(
   html_source->AddLocalizedStrings(kPointersStrings);
 
   html_source->AddString("naturalScrollLearnMoreLink",
+                         IsFydeProfile() ?
+                         base::ASCIIToUTF16(fydeos::constants::kNaturalScrollHelpURL) :
                          GetHelpUrlWithBoard(chrome::kNaturalScrollHelpURL));
   html_source->AddString("hapticFeedbackLearnMoreLink",
                          GetHelpUrlWithBoard(chrome::kHapticFeedbackHelpURL));

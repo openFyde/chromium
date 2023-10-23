@@ -123,7 +123,7 @@ class BorealisLifetimeObserver
 
   void OnDelayComplete(GURL gurl, std::string app_id) {
     app_delayers_.erase(app_id);
-    CreateFeedbackNotification(gurl);
+    // CreateFeedbackNotification(gurl);
   }
 
   // Creates a notification, that when clicked, will close itself and redirect

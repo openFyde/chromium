@@ -94,7 +94,7 @@ BASE_FEATURE(kEnableUnifiedAudioFocusFeature,
 // Controls whether ARC handles unmanaged->managed account transition.
 BASE_FEATURE(kEnableUnmanagedToManagedTransitionFeature,
              "ArcEnableUnmanagedToManagedTransitionFeature",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Controls ARC Unspecialized Application Processes.
 // When enabled, Android creates a pool of processes

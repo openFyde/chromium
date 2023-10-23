@@ -20,6 +20,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "chrome/browser/ash/os_feedback/os_feedback_screenshot_manager.h"
+#include "chrome/browser/ash/profiles/profile_helper.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/feedback/feedback_dialog_utils.h"
 #include "chrome/browser/feedback/feedback_uploader_chrome.h"
@@ -38,6 +39,7 @@
 #include "components/feedback/feedback_report.h"
 #include "components/signin/public/base/consent_level.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
+#include "components/user_manager/user.h"
 #include "content/public/browser/browser_context.h"
 #include "extensions/browser/api/feedback_private/feedback_private_api.h"
 #include "extensions/browser/api/feedback_private/feedback_service.h"
@@ -48,6 +50,7 @@
 #include "ui/aura/window.h"
 #include "ui/snapshot/snapshot.h"
 #include "url/gurl.h"
+#include "base/uuid.h"
 
 namespace ash {
 
@@ -71,7 +74,7 @@ scoped_refptr<base::RefCountedMemory> GetScreenshotData() {
   return nullptr;
 }
 
-constexpr std::size_t MAX_ATTACHED_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+constexpr std::size_t MAX_ATTACHED_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
 bool ShouldAddAttachment(const AttachedFilePtr& attached_file) {
   if (!(attached_file && attached_file->file_data.data())) {
@@ -205,6 +208,23 @@ void ChromeOsFeedbackDelegate::SendReport(
 
   feedback_data->set_description(base::UTF16ToUTF8(report->description));
 
+  if (profile_) {
+    user_manager::User* user =
+      ::ash::ProfileHelper::Get()->GetUserByProfile(profile_);
+    if (user) {
+      const AccountId account_id = user->GetAccountId();
+      switch (account_id.GetAccountType()) {
+        case AccountType::GOOGLE:
+          feedback_data->set_gaia_id(account_id.GetGaiaId());
+          break;
+        case AccountType::FYDE_ACCOUNT:
+          feedback_data->set_gaia_id(account_id.GetFydeId());
+          break;
+        default:
+          break;
+      }
+    }
+  }
   const auto& feedback_context = report->feedback_context;
   if (feedback_context->email.has_value()) {
     feedback_data->set_user_email(feedback_context->email.value());
@@ -218,6 +238,8 @@ void ChromeOsFeedbackDelegate::SendReport(
                           feedback_context->extra_diagnostics.value());
   }
   feedback_data->set_trace_id(report->feedback_context->trace_id);
+  const std::string unique_report_id = base::GenerateGUID();
+  feedback_data->set_unique_id(unique_report_id);
   feedback_data->set_from_assistant(feedback_context->from_assistant);
   feedback_data->set_assistant_debug_info_allowed(
       feedback_context->assistant_debug_info_allowed);
@@ -310,15 +332,17 @@ void ChromeOsFeedbackDelegate::SendReport(
   feedback_service_->RedactThenSendFeedback(
       feedback_params, feedback_data,
       base::BindOnce(&ChromeOsFeedbackDelegate::OnSendFeedbackDone,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     unique_report_id));
 }
 
 void ChromeOsFeedbackDelegate::OnSendFeedbackDone(SendReportCallback callback,
+                                                  const std::string& unique_id,
                                                   bool status) {
   // When status is true, it means the report will be sent shortly.
   const SendReportStatus send_status =
       status ? SendReportStatus::kSuccess : SendReportStatus::kDelayed;
-  std::move(callback).Run(send_status);
+  std::move(callback).Run(unique_id, send_status);
 }
 
 void ChromeOsFeedbackDelegate::OpenDiagnosticsApp() {

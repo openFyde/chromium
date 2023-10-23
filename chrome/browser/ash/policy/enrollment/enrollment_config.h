@@ -89,6 +89,8 @@ struct EnrollmentConfig {
     // Attestation re-enrollment just failed, attempt manual enrollment as
     // fallback. Cannot be skipped.
     MODE_ATTESTATION_ROLLBACK_MANUAL_FALLBACK = 18,
+
+    MODE_FYDE_LOCAL_FORCED = 19,
   };
 
   // An enumeration of authentication mechanisms that can be used for
@@ -101,6 +103,12 @@ struct EnrollmentConfig {
     // Let the system determine the best mechanism (typically the one
     // that requires the least user interaction).
     AUTH_MECHANISM_BEST_AVAILABLE = 2,
+
+    // Auth with fyde token in a special way
+    AUTH_MECHANISM_FYDE,
+    // if user is allowed to enroll manually when auto enroll(AUTH_MECHANISM_FYDE) failed, use this mechanism,
+    // it will fallback to inertactive auth
+    AUTH_MECHANISM_FYDE_BEST_AVAILABLE,
   };
 
   // An enumeration of assigned upgrades that a device can after initial
@@ -145,7 +153,9 @@ struct EnrollmentConfig {
 
   // Whether attestation enrollment should be triggered.
   bool should_enroll_with_attestation() const {
-    return auth_mechanism != AUTH_MECHANISM_INTERACTIVE;
+    // do not trigger enroll if auth_mechanism is fyde when oobe is completed
+    // if we want to trigger fyde enrollment even if oobe is completed, we should add a function like should_enroll_with_fyde()
+    return auth_mechanism != AUTH_MECHANISM_INTERACTIVE && auth_mechanism != AUTH_MECHANISM_FYDE && auth_mechanism != AUTH_MECHANISM_FYDE_BEST_AVAILABLE;
   }
 
   // Whether interactive enrollment should be triggered.
@@ -165,6 +175,7 @@ struct EnrollmentConfig {
            mode == MODE_ATTESTATION_LOCAL_FORCED ||
            mode == MODE_ATTESTATION_SERVER_FORCED ||
            mode == MODE_INITIAL_SERVER_FORCED ||
+           mode == MODE_FYDE_LOCAL_FORCED ||
            mode == MODE_ATTESTATION_INITIAL_SERVER_FORCED ||
            mode == MODE_ATTESTATION_ROLLBACK_FORCED || mode == MODE_RECOVERY ||
            is_manual_fallback();
@@ -174,6 +185,11 @@ struct EnrollmentConfig {
   // manually.
   bool is_attestation_auth_forced() const {
     return auth_mechanism == AUTH_MECHANISM_ATTESTATION;
+  }
+
+  bool is_attestation_auth_fyde() const {
+    return auth_mechanism == AUTH_MECHANISM_FYDE ||
+           auth_mechanism == AUTH_MECHANISM_FYDE_BEST_AVAILABLE;
   }
 
   // Whether this configuration is in attestation mode per server request.
@@ -207,9 +223,13 @@ struct EnrollmentConfig {
     return is_mode_attestation_client() || is_mode_attestation_server();
   }
 
+  bool is_mode_fyde() const {
+    return mode == MODE_FYDE_LOCAL_FORCED;
+  }
+
   // Whether this configuration is in OAuth mode.
   bool is_mode_oauth() const {
-    return mode != MODE_NONE && !is_mode_attestation();
+    return mode != MODE_NONE && !is_mode_attestation() && !is_mode_fyde();
   }
 
   // Indicates the enrollment flow variant to trigger during OOBE.

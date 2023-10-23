@@ -74,6 +74,8 @@ class LoginDisplayHostCommon : public LoginDisplayHost,
   // Most of the accelerators are handled in a same way, but not all.
   bool HandleAccelerator(LoginAcceleratorAction action) override;
 
+  void HandlePlayStartupSound() override;
+
   // SigninUI:
   void SetAuthSessionForOnboarding(const UserContext& user_context) final;
   void ClearOnboardingAuthSession() final;
@@ -121,6 +123,8 @@ class LoginDisplayHostCommon : public LoginDisplayHost,
 
   // Triggers |on_wizard_controller_created_for_tests_| callback.
   void NotifyWizardCreated();
+
+  void ShowLocalDialogCommon();
 
   // Kiosk launch controller.
   std::unique_ptr<KioskLaunchController> kiosk_launch_controller_;

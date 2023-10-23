@@ -58,6 +58,7 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "fydeos/switches/urls//urls_constants.h"
 
 namespace extensions {
 
@@ -725,7 +726,7 @@ void ExtensionContextMenuModel::HandlePageAccessCommand(
   }
   if (command_id == PAGE_ACCESS_LEARN_MORE) {
     OpenUrl(*browser_,
-            GURL(chrome_extension_constants::kRuntimeHostPermissionsHelpURL));
+            GURL(fydeos::constants::kRuntimeHostPermissionsHelpURL));
     return;
   }
 

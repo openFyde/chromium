@@ -58,6 +58,8 @@
 #include "extensions/browser/api/webcam_private/webcam_private_api.h"
 #endif
 
+#include "fydeos/extensions/browser/api/shell_client/shell_client_api.h"
+
 namespace extensions {
 
 void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
@@ -115,6 +117,7 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
   WebRequestAPI::GetFactoryInstance();
   WebRequestProxyingURLLoaderFactory::EnsureAssociatedFactoryBuilt();
   WebRequestProxyingWebSocket::EnsureAssociatedFactoryBuilt();
+  ShellClientAPI::GetFactoryInstance();
 }
 
 }  // namespace extensions

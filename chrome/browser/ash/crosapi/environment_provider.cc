@@ -155,6 +155,19 @@ EnvironmentProvider::GetDeviceAccount() {
               account_id.GetObjGuid(),
               account_manager::AccountType::kActiveDirectory},
           user->GetDisplayEmail()});
+    //---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+      return absl::make_optional(account_manager::Account{
+          account_manager::AccountKey{
+              account_id.GetFlintId(),
+              account_manager::AccountType::kFlint},
+              user->GetDisplayEmail()});
+    case AccountType::FYDE_ACCOUNT:
+      return absl::make_optional(account_manager::Account{
+          account_manager::AccountKey{account_id.GetFydeId(),
+                                      account_manager::AccountType::kFyde},
+          user->GetDisplayEmail()});
+    //---***FYDEOS END***---
     case AccountType::GOOGLE:
       return absl::make_optional(account_manager::Account{
           account_manager::AccountKey{account_id.GetGaiaId(),

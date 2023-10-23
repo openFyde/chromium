@@ -28,6 +28,14 @@ constexpr const char* const kExemptKeysOfUUIDs[] = {
     "CHROMEOS_BOARD_APPID",
     "CHROMEOS_CANARY_APPID",
     "CHROMEOS_RELEASE_APPID",
+    "update_engine.log",
+    "chrome_user_log",
+    "chrome_user_log.PREVIOUS",
+    "chrome_system_log",
+    "chrome_system_log.PREVIOUS",
+    "powerd.LATEST",
+    "powerd.PREVIOUS",
+    "syslog",
 };
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
@@ -113,6 +121,7 @@ void SystemLogsFetcher::Fetch(SysLogsFetcherCallback callback) {
 
   for (size_t i = 0; i < data_sources_.size(); ++i) {
     VLOG(1) << "Fetching SystemLogSource: " << data_sources_[i]->source_name();
+    LOG(ERROR) << "==== FYDEOS TRACE ====[" << __func__ << "]" << data_sources_[i]->source_name();
     data_sources_[i]->Fetch(base::BindOnce(&SystemLogsFetcher::OnFetched,
                                            weak_ptr_factory_.GetWeakPtr(),
                                            data_sources_[i]->source_name()));

@@ -29,6 +29,7 @@ namespace ash {
 
 class AppListBubbleAppsPage;
 class AppListBubbleAssistantPage;
+class FydeAssistantPage;
 class AppListBubbleSearchPage;
 class AppListBubbleView;
 class AppListControllerImpl;
@@ -170,7 +171,7 @@ class AppListTestHelper {
   ScrollableAppsGridView* GetScrollableAppsGridView();
   AppListBubbleSearchPage* GetBubbleSearchPage();
   SearchResultPageAnchoredDialog* GetBubbleSearchPageDialog();
-  AppListBubbleAssistantPage* GetBubbleAssistantPage();
+  FydeAssistantPage* GetBubbleAssistantPage();
   SearchModel::SearchResults* GetSearchResults();
   views::View* GetBubbleLauncherAppsSeparatorView();
   std::vector<ash::AppListSearchResultCategory>* GetOrderedResultCategories();

@@ -149,6 +149,8 @@
 #include "chrome/browser/ui/webui/certificate_manager_localized_strings_provider.h"
 #endif
 
+#include "fydeos/switches/urls/urls_constants.h"
+
 #if BUILDFLAG(IS_LINUX)
 #include "ui/linux/linux_ui_factory.h"
 #include "ui/ozone/public/ozone_platform.h"
@@ -157,6 +159,8 @@
 #if BUILDFLAG(CHROME_ROOT_STORE_SUPPORTED)
 #include "net/base/features.h"
 #endif
+
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace settings {
 namespace {
@@ -293,9 +297,7 @@ void AddAboutStrings(content::WebUIDataSource* html_source, Profile* profile) {
   // Top level About Page strings.
   static constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"aboutProductLogoAlt", IDS_SHORT_PRODUCT_LOGO_ALT_TEXT},
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
     {"aboutReportAnIssue", IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE},
-#endif
     {"aboutRelaunch", IDS_SETTINGS_ABOUT_PAGE_RELAUNCH},
     {"aboutUpgradeCheckStarted", IDS_SETTINGS_ABOUT_UPGRADE_CHECK_STARTED},
     {"aboutUpgradeRelaunch", IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH},
@@ -414,6 +416,12 @@ void AddAppearanceStrings(content::WebUIDataSource* html_source,
                           dom_distiller::OfferReaderModeInSettings());
   html_source->AddBoolean("showSidePanelOptions", true);
 
+  html_source->AddString("fydeosStoreBaseUrl",
+                         fydeos::constants::kFydeOSStoreBaseUrl);
+
+  html_source->AddString("fydeosAccountBaseUrl",
+                         fydeos::constants::kFydeOSAccountBaseUrl);
+
 // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
 // of lacros-chrome is complete.
 #if BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS)
@@ -467,6 +475,7 @@ void AddClearBrowsingDataStrings(content::WebUIDataSource* html_source,
      IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE_TITLE},
     {"passwordsDeletionDialogOK", IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE_OK},
     {"notificationWarning", IDS_SETTINGS_NOTIFICATION_WARNING},
+    {"clearBrowsingHistorySummarySignedIn", IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN},
   };
 
   html_source->AddString(
@@ -1306,7 +1315,7 @@ void AddAutofillStrings(content::WebUIDataSource* html_source,
   };
 
   GURL google_password_manager_url = GetGooglePasswordManagerURL(
-      password_manager::ManagePasswordsReferrer::kChromeSettings);
+      password_manager::ManagePasswordsReferrer::kChromeSettings, profile);
 
   html_source->AddString(
       "optInAccountStorageBody",
@@ -1622,7 +1631,6 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
      IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
     {"peopleSignInPromptSecondaryWithNoAccount",
      IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
-    {"peoplePageTitle", IDS_SETTINGS_PEOPLE},
     {"syncSettingsSavedToast", IDS_SETTINGS_SYNC_SETTINGS_SAVED_TOAST_LABEL},
     {"peopleSignInPrompt", IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT},
     {"manageGoogleAccount", IDS_SETTINGS_MANAGE_GOOGLE_ACCOUNT},
@@ -1666,12 +1674,20 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
      IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITHOUT_COUNTS},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
+  // ---***FYDEOS BEGIN***---
+  html_source->AddLocalizedString(
+      "peoplePageTitle",
+      profile->IsFydeProfile() ? IDS_SETTINGS_PEOPLE_FYDEOS : IDS_SETTINGS_PEOPLE);
+  // ---***FYDEOS END***---
 
   // Add Google Account URL and include UTM parameter to signal the source of
   // the navigation.
   html_source->AddString(
       "googleAccountUrl",
-      net::AppendQueryParameter(GURL(chrome::kGoogleAccountURL), "utm_source",
+      // ---***FYDEOS BEGIN***---
+      net::AppendQueryParameter(GURL(profile->IsFydeProfile() ? fydeos::constants::kFydeOSAccountURL :
+      chrome::kGoogleAccountURL), "utm_source",
+      // ---***FYDEOS END***---
                                 "chrome-settings")
           .spec());
   html_source->AddBoolean("profileShortcutsEnabled",
@@ -1692,7 +1708,13 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
 #if BUILDFLAG(IS_CHROMEOS_ASH)
   // Toggles the Chrome OS Account Manager submenu in the People section.
   html_source->AddBoolean("isAccountManagerEnabled",
-                          ash::IsAccountManagerAvailable(profile));
+                          ash::IsAccountManagerAvailable(profile)
+                          && !profile->IsFydeProfile());
+  html_source->AddBoolean("isFydeProfile", profile->IsFydeProfile());
+  const user_manager::User* user =
+      ash::ProfileHelper::Get()->GetUserByProfile(profile);
+  html_source->AddBoolean("isFydeLocalAccount",
+      user->GetType() == user_manager::UserType::USER_TYPE_FLINT_ACCOUNT);
 #elif BUILDFLAG(IS_CHROMEOS_LACROS)
   html_source->AddBoolean(
       "isAccountManagerEnabled",
@@ -1757,6 +1779,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING_DESC},
     {"safeBrowsingEnhanced", IDS_SETTINGS_SAFEBROWSING_ENHANCED},
     {"safeBrowsingEnhancedDesc", IDS_SETTINGS_SAFEBROWSING_ENHANCED_DESC},
+    {"safeBrowsingEnhancedFydeDesc", IDS_SETTINGS_SAFEBROWSING_ENHANCED_FYDE_DESC},
     {"safeBrowsingEnhancedExpandA11yLabel",
      IDS_SETTINGS_SAFEBROWSING_ENHANCED_EXPAND_ACCESSIBILITY_LABEL},
     {"safeBrowsingEnhancedBulOne",
@@ -1781,6 +1804,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_SAFEBROWSING_STANDARD_HELP_IMPROVE},
     {"safeBrowsingNone", IDS_SETTINGS_SAFEBROWSING_NONE},
     {"safeBrowsingNoneDesc", IDS_SETTINGS_SAFEBROWSING_NONE_DESC},
+    {"safeBrowsingNoneFydeDesc", IDS_SETTINGS_SAFEBROWSING_NONE_FYDE_DESC},
     {"safeBrowsingDisableDialog",
      IDS_SETTINGS_SAFEBROWSING_DISABLE_DIALOG_TITLE},
     {"safeBrowsingDisableDialogDesc",
@@ -2421,7 +2445,9 @@ void AddSafetyCheckStrings(content::WebUIDataSource* html_source) {
   html_source->AddLocalizedStrings(kLocalizedStrings);
 }
 
-void AddSearchInSettingsStrings(content::WebUIDataSource* html_source) {
+// ---***FYDEOS BEGIN***---
+void AddSearchInSettingsStrings(content::WebUIDataSource* html_source, Profile* profile) {
+// ---***FYDEOS END***---
   static constexpr webui::LocalizedString kLocalizedStrings[] = {
       {"searchPrompt", IDS_SETTINGS_SEARCH_PROMPT},
       {"searchNoResults", IDS_SEARCH_NO_RESULTS},
@@ -2430,13 +2456,19 @@ void AddSearchInSettingsStrings(content::WebUIDataSource* html_source) {
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
-  std::u16string help_text = l10n_util::GetStringFUTF16(
+  // ---***FYDEOS BEGIN***---
+  std::u16string help_text = !profile->IsFydeProfile() ? l10n_util::GetStringFUTF16(
       IDS_SETTINGS_SEARCH_NO_RESULTS_HELP,
-      base::ASCIIToUTF16(chrome::kSettingsSearchHelpURL));
+      base::ASCIIToUTF16(chrome::kSettingsSearchHelpURL)): l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_SEARCH_NO_RESULTS_FYDEOS_HELP,
+      base::ASCIIToUTF16(fydeos::constants::kFydeOSHelpURL));
+  // ---***FYDEOS END***---
   html_source->AddString("searchNoResultsHelp", help_text);
 }
 
-void AddSearchStrings(content::WebUIDataSource* html_source) {
+// ---***FYDEOS BEGIN***---
+void AddSearchStrings(content::WebUIDataSource* html_source, Profile* profile) {
+// ---***FYDEOS END***---
   static constexpr webui::LocalizedString kLocalizedStrings[] = {
       {"searchEnginesManage", IDS_SETTINGS_SEARCH_MANAGE_SEARCH_ENGINES},
       {"searchEnginesManageSiteSearch",
@@ -2449,6 +2481,10 @@ void AddSearchStrings(content::WebUIDataSource* html_source) {
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
   html_source->AddString("searchExplanationLearnMoreURL",
+                         // ---***FYDEOS BEGIN***---
+                         profile->IsFydeProfile() ?
+                         base::ASCIIToUTF16(fydeos::constants::kFydeOSHelpURL) :
+                         // ---***FYDEOS END***---
                          base::ASCIIToUTF16(chrome::kOmniboxLearnMoreURL));
 }
 
@@ -3708,8 +3744,10 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
   AddSafetyCheckStrings(html_source);
   AddResetStrings(html_source, profile);
   AddSearchEnginesStrings(html_source);
-  AddSearchInSettingsStrings(html_source);
-  AddSearchStrings(html_source);
+  // ---***FYDEOS BEGIN***---
+  AddSearchInSettingsStrings(html_source, profile);
+  AddSearchStrings(html_source, profile);
+  // ---***FYDEOS END***---
   AddSiteSettingsStrings(html_source, profile);
   AddSiteDataPageStrings(html_source, profile);
 

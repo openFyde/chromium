@@ -102,12 +102,15 @@ constexpr auto kLacrosSelectionPolicyMap =
 bool IsUserTypeAllowed(const User* user) {
   switch (user->GetType()) {
     case user_manager::USER_TYPE_REGULAR:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
     case user_manager::USER_TYPE_PUBLIC_ACCOUNT:
     // Note: Lacros will not be enabled for Guest users unless LacrosSupport
     // flag is passed in --enable-features. See https://crbug.com/1294051#c25.
     case user_manager::USER_TYPE_GUEST:
       return true;
     case user_manager::USER_TYPE_CHILD:
+    case user_manager::USER_TYPE_FYDE_CHILD:
       return base::FeatureList::IsEnabled(kLacrosForSupervisedUsers);
     case user_manager::USER_TYPE_WEB_KIOSK_APP:
       return base::FeatureList::IsEnabled(features::kWebKioskEnableLacros);

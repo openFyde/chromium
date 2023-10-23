@@ -69,6 +69,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/chromeos/resources/grit/ui_chromeos_resources.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -562,6 +564,10 @@ void UserSelectionScreen::Init(const user_manager::UserList& users) {
     sync_token_checkers_.reset();
   }
 
+  if (fydeos::switches::IsTpmDictionaryAttackLockoutIgnored()) {
+    return;
+  }
+
   if (tpm_locked_checker_)
     return;
 
@@ -638,6 +644,9 @@ void UserSelectionScreen::HandleFocusPod(const AccountId& account_id) {
     pending_focused_account_id_ = account_id;
     return;
   }
+  // ---***FYDEOS BEGIN***---
+  fydeos::switches::ToggleFydeAccountFlagByAccountId(account_id);
+  // ---***FYDEOS END***---
   proximity_auth::ScreenlockBridge::Get()->SetFocusedUser(account_id);
   if (focused_pod_account_id_ == account_id)
     return;
@@ -693,7 +702,8 @@ void UserSelectionScreen::OnBeforeShow() {
 void UserSelectionScreen::OnUserStatusChecked(
     const AccountId& account_id,
     TokenHandleUtil::TokenHandleStatus status) {
-  if (status == TokenHandleUtil::INVALID) {
+  if (status == TokenHandleUtil::INVALID &&
+      account_id.GetAccountType() != AccountType::FLINT_ACCOUNT) {
     RecordReauthReason(account_id, ReauthReason::kInvalidTokenHandle);
     SetAuthType(account_id, proximity_auth::mojom::AuthType::ONLINE_SIGN_IN,
                 std::u16string());

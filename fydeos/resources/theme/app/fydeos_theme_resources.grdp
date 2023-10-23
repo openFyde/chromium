@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+<!--refered by chrome/app/theme/theme_resources.grd the relative path "../../../fydeos/resources/theme/app"   -->
+<!--for chrome_scaled_image, if the path contains "fydeos", grit will replace "CONTEXT" by scal context string -->
+    <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_16" file="../../../fydeos/resources/theme/app/CONTEXT/product_logo_16.png" />
+    <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32" file="../../../fydeos/resources/theme/app/CONTEXT/product_logo_32.png" />
+    <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_NAME_22" file="../../../fydeos/resources/theme/app/CONTEXT/product_logo_name_22.png" />
+    <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON" file="../../../fydeos/resources/theme/app/CONTEXT/webstore_icon.png" />
+    <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON_16" file="../../../fydeos/resources/theme/app/CONTEXT/webstore_icon_16.png" />
+    <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON_24" file="../../../fydeos/resources/theme/app/CONTEXT/webstore_icon_24.png" />
+    <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON_32" file="../../../fydeos/resources/theme/app/CONTEXT/webstore_icon_32.png" />
+</grit-part>

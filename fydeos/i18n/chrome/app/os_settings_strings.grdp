@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend chrome/app/os_settings_strings.grdp, included from generated_resources.grd -->
+<grit-part>
+<if expr="chromeos_ash">
+  <message name="IDS_SETTINGS_ABOUT_KEEP_FYDEOS_UPDATE_TO_DATE" desc="The text of keep fydeos update title in os-settings about section.">
+    Automatically keep my <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> up to date
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_ENABLED" desc="The text of keep fydeos update status in os-settings about section.">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> update enabled
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_DISABLED" desc="The text of disable fydeos update status in os-settings about section.">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> update disabled
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_VERSION" desc="The text label describing the version of the browser, example: Version 57.0.2937.0 (Developer Build) unknown (64-bit)">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="FYDEOS_MAJOR_VERSION">$2<ex>v9.0</ex></ph> (<ph name="PRODUCT_CHANNEL">$3<ex>Developer Build</ex></ph>) Platform <ph name="FYDEOS_PLATFORM_VERSION">$4<ex>12739.22.9.15</ex></ph> <ph name="PRODUCT_VERSION_BITS">$5</ph>
+  </message>
+  <message name="IDS_SETTINGS_FYDEOS_REMOTE_DESKTOP_APP_NAME" desc="Title of remote desktop app in os-settings menu">
+    Remote desktop
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_VERSION" desc="Version label for crostini">
+    Version
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
+    Restart
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_CHECK_FOR_UPDATES" desc="The button label to check for updates and apply (download and install) if found">
+    Check for updates
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_UPDATE" desc="Status label: just do update">
+    Update
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_UPGRADE_CHECK_STARTED" desc="Status label: About to start checking for updates">
+    Checking for updates
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_UPGRADE_UP_TO_DATE" desc="Status label: Crostini Already up to date">
+    Your Linux is up to date
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_UPDATE_AVAILABLE" desc="message of fydeos stateful update available in settings">
+    Thers's a critical update available for the Linux(beta) component. It's strongly recommended to perform this update as soon as possible or your Linux(beta) may no longer work.
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS" desc="fydeos settings page title">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> settings
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_WIFI_DRIVER_TITLE" desc="fydeo settings wifi section title">
+    Wifi settings
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_TOUCHPAD_MODE_TITLE" desc="fydeo settings touchpad section title">
+    Touchpad settings
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_ASSISTANCE_TITLE" desc="fydeos settings remote assist section title">
+    Remote services
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_TITLE" desc="fydeos settings remote helper service title">
+    Remote diagnosis service
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_DESC" desc="fydeos settings remote helper service desc">
+    Remote diagnosis service enables official FydeOS support representatives to identify system issues. Currently remote diagnosis service can only be initialised by FydeOS official support representatives.
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_ENABLED_MESSAGE" desc="fydeos settings remote helper service message when it is enabled">
+    Please share this number to official FydeOS support representatives
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_STARGING_MESSAGE" desc="fydeos settings remote helper service message when it is starting">
+    Starting remote diagnosis service...
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_REQUIRE_RESTART_MESSAGE" desc="fydeos settings remote helper service message when it requires restart">
+    Please stop remote diagnosis service and try again
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_MORE_INFO_TITLE" desc="fydeos settings more_info title">
+    More info
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_OTHER_TWEAKS_TITLE" desc="fydeos settings other tweaks title">
+    Miscellaneous
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_REBOOT_BUTTON_IN_TRAY_LABEL" desc="fydeos settings label show reboot button in tray">
+    "Restart" button
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_REBOOT_BUTTON_IN_TRAY" desc="fydeos settings show reboot button in tray">
+    Display a "Restart" button on the system menu
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_ROTATE_SCREEN_BUTTON_IN_TRAY_LABEL" desc="fydeos settings label show rotate screen button in tray">
+    "Rotate screen" button
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_NOT_TABLET_STATE_DISABLE_ROTATE_SCREEN" desc="fydeos settings, not in tablet state, disable rotate screen">
+    You are not on tablet-mode at the moment, "Rotate screen" button is now hidden
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_ROTATE_SCREEN_BUTTON" desc="fydeos settings show rotate screen button in tray">
+    Display a "Rotate screen" button on the system menu
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SWITCH_TABLET_LAPTOP_MODE_BUTTON_IN_TRAY_LABEL" desc="fydeos settings label show tablet/laptop mode switch button in tray">
+    Tablet/Laptop switch
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_SWITCH_TABLET_LAPTOP_MODE_BUTTON" desc="fydeos settings show tablet/laptop mode switch button in tray">
+    Display a tablet/laptop switch on the system menu
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_ENABLE_LIBWIDEVINE_LABEL" desc="fydeos settings libwidevine switch label">
+    Enable Widevine
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_TOGGLE_LIBWIDEVINE_HELP_MESSAGE" desc="fydeos settings libwidevine switch hint msg">
+    Enable Widevine for streaming protected premium content. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SELECT_WIDEVINE_FILE_DIALOG_TITLE" desc="fydeos settings title of selecting libwidevine dialog">
+    Select "libwidevine.so"
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_FAILED_ENABLE_WIDEVINE_TITLE" desc="fydeos settings title of failed enabling libwidevine">
+    Failed to enable Widevine...
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_FAILED_ENABLE_WIDEVINE_MESSAGE" desc="fydeos settings message of failed enabling libwidevine">
+    The selected "libwidevine.so" is not valid, please try again with a different file.
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_ACCOUNT_TITLE" desc="fydeos settings account section title">
+    FydeOS account settings
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_EXPERIMENTAL_FEATURES_TITLE" desc="title of fydeos settings experimental features title">
+    Experimental features
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_TITLE" desc="title of experimental feature bypass tpm checks">
+    Bypass Trusted Platform Module(TPM) checks
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_DESC" desc="short desc for experimental feature bypass tpm checks">
+    Some of the features could fail due to incompatible TPM chip in your device, you can bypass TPM checks as a workaround.
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_TITLE" desc="title of fydeos settings enable auto signin">
+    Auto sign-in
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_ENABLE_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_MESSAGE" desc="message of fydeos settings enable auto signin">
+    Allow the current account to sign-in to desktop automatically when the device reboots
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_ALREADY_ENABLED_BY_OTHER" desc="message of other user already enabled auto signin">
+    Unable to activate for this account; there is an active auto sign-in configured for other accounts in this device
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT" desc="message of unable to turn on auto signin">
+    Unable to activate for this account; there is an unknown error when initialising the file systems for this account. Please try rebooting or creating a new account
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_NON_LOCAL_ACCOUNT" desc="message of unable to turn on auto signin for non-local account">
+    Unable to activate for this account; auto sign-in option is only available for "Local account" type.
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_BY_LICENSE_VALIDATION" desc="message of ota disallowed by license validation">
+    A newer version of FydeOS is available to update now. However, your FydeOS for You subscription has expired, you need an active subscription to update your FydeOS.
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_REQUIRES_ONE_TIME_PAYMENT" desc="message of ota disallowed requires one time payment">
+    A new milestone version of FydeOS is available to update now. You need to pay a one-off fee to continue with this update.
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_SAVE_FILE_DIALOG_TITLE" desc="Title for backing up">
+    Please specify the path to store the backup file
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_LABEL" desc="Label on os-settings fydeos backup section">
+    Create a backup file for this account (beta). <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_BUTTON_LABEL" desc="Text on os-settings fydeos backup button">
+    Backup
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_INTRO_TITLE" desc="Title for backup intro">
+    Create a backup file for this account (beta)
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_INTRO_TEXT" desc="Text for backup intro">
+    This operation creates a full disk backup for this account, making it easy to restore to the state of your FydeOS when the backup was created, including settings, installed browser extensions and subsystem apps. Depending on your apps and the contents of your personal folder, the backup file may be large; it is recommended to store the backup file on an external storage device. If you have a portable USB drive, please connect it now. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TITLE" desc="Title for backup password prompt">
+    Please enter the login password for this account
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TEXT" desc="Text for backup password prompt">
+    Please remember this password, as it will be required when restoring this backup file
+  </message>
+</if>
+</grit-part>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend ash/ash_strings.grd -->
+<grit-part>
+  <!-- fydeos-stateful-update -->
+  <message name="IDS_ASH_FYDEOS_STATEFUL_UPDATE_AVAILABLE_NOTIFICATION_TITLE" desc="title of fydeos stateful update available notification">
+    Update available
+  </message>
+  <message name="IDS_ASH_FYDEOS_STATEFUL_UPDATE_AVAILABLE_NOTIFICATION_MESSAGE" desc="message of fydeos stateful update available notification">
+    Thers's a critical update available for the Linux(beta) component. It's strongly recommended to perform this update as soon as possible or your Linux(beta) may no longer work.
+  </message>
+  <message name="IDS_ASH_FYDEOS_STATEFUL_UPDATE_AVAILABLE_NOTIFICATION_ACTION_CONFIRM" desc="text on confirm button of fydeos stateful update available notification">
+    Update
+  </message>
+  <message name="IDS_ASH_FYDEOS_STATEFUL_UPDATING_PROGRESS_NOTIFICATION_TITLE" desc="title on fydeos stateful update available notification whilst the update is in progress">
+    Updating
+  </message>
+  <message name="IDS_ASH_FYDEOS_STATEFUL_UPDATING_PROGRESS_NOTIFICATION_MESSAGE" desc="text on fydeos stateful update available notification whilst the update is in progress">
+    Your Linux(beta) is updating, please wait...
+  </message>
+  <message name="IDS_ASH_FYDEOS_STATEFUL_UPDATE_DONE_NOTIFICATION_TITLE" desc="title of fydeos stateful done notification">
+    Almost done
+  </message>
+  <message name="IDS_ASH_FYDEOS_STATEFUL_UPDATE_DONE_NOTIFICATION_MESSAGE" desc="message of fydeos stateful done notification">
+    Your Linux(beta) is nearly up to date, please restart the system to finish the process.
+  </message>
+  <message name="IDS_ASH_FYDEOS_STATEFUL_UPDATE_DONE_NOTIFICATION_ACTION_REBOOT" desc="message of fydeos stateful done notification">
+    Restart to update
+  </message>
+  <!-- rotate screen button -->
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_ROTATE_SCREEN" desc="label of unified menu rotate screen">
+    Rotate Screen
+  </message>
+  <!-- switch tablet/laptop mode -->
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_TABLET_MODE" desc="label of unified menu switch to tablet mode">
+    Tablet mode
+  </message>
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_LAPTOP_MODE" desc="label of unified menu switch to laptop mode">
+    Laptop mode
+  </message>
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_DEFAULT_MODE" desc="label of unified menu switch to default mode">
+    Default mode
+  </message>
+</grit-part>

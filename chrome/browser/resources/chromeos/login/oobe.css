@@ -12,6 +12,7 @@
   --oobe-oobe-dialog-width-base: 461px;
   --oobe-bg-color: var(--cros-bg-color);
   --oobe-container-border-radius: 2px;
+  --fydeos-background-color: #F5F3FF;
 }
 :root.jelly-enabled {
   --oobe-bg-color: var(--cros-sys-app_base_shaded);
@@ -43,6 +44,10 @@ body {
   padding: 0;
   position: fixed;
   top: 0;
+}
+
+html[fydeos-background-color] body {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5F3FF 100%);
 }
 
 /* New dialog size */

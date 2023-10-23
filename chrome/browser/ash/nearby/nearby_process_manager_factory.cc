@@ -41,6 +41,9 @@ bool NearbyProcessManagerFactory::CanBeLaunchedForProfile(Profile* profile) {
     return false;
   }
 
+  if (profile->IsFydeProfile())
+    return false;
+
   // Likewise, kiosk users are ineligible.
   if (user_manager::UserManager::Get()->IsLoggedInAsAnyKioskApp()) {
     return false;

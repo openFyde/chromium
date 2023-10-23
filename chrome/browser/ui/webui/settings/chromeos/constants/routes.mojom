@@ -28,6 +28,7 @@ enum Section {
   kReset = 16,
   kAboutChromeOs = 17,
   kKerberos = 18,
+  kFydeOs = 19,
 };
 
 // Chrome OS Settings subpages (i.e., nested pages within a section). Each
@@ -173,6 +174,10 @@ enum Subpage {
 
   // Kerberos section.
   kKerberosAccountsV2 = 1800,
+
+  //---***FYDEOS BEGIN***---
+  kFydeOsMain = 1900,
+  //---***FYDEOS END***---
 };
 
 // Network section.
@@ -317,3 +322,8 @@ const string kDetailedBuildInfoSubpagePath = "help/details";
 // Kerberos section.
 const string kKerberosSectionPath = "kerberos";
 const string kKerberosAccountsV2SubpagePath = "kerberos/kerberosAccounts";
+
+// ---***FYDEOS BEGIN***---
+const string kFydeOsSectionPath = "fydeos";
+const string kFydeOsSubpagePath = "fydeos/main";
+// ---***FYDEOS END***---

@@ -1,0 +1,23 @@
+<style include="settings-shared">
+  .fydeos-setting-item-text {
+    margin-inline-end: var(--cr-controlled-by-spacing);
+  }
+</style>
+<os-settings-section page-title="$i18n{fydeosExperimentalFeatures}" section="experiment" hidden=[[!shouldShowExperimentFeature_]]>
+  <div class="settings-box two-line" hidden="[[!shouldShowTpmFallback_]]">
+    <div class="start padded settings-box-text fydeos-setting-item-text">
+      $i18n{fydeosBypassTpmChecksTitle}
+      <div class="secondary">
+        $i18n{fydeosBypassTpmChecksDesc}
+        <a target="_blank" href="[[fydeExperimentTpmfallbackUrl_]]">$i18n{learnMore}</a>
+      </div>
+    </div>
+    <cr-button id="tpmFallbackRestartButton" class="restartButton" on-click="onRestartTap_" hidden="[[!shouldShowTpmFallbackRestartButton_]]">
+      $i18n{restart}
+    </cr-button>
+    <div class="separator" hidden="[[!shouldShowTpmFallbackRestartButton_]]"></div>
+    <cr-toggle id="toggleForceTpmFallback" disabled="[[!isOwner_]]"
+                role="button" checked="[[forceTpmFallback_]]" on-change="onToggleForceTpmFallback_">
+    </cr-toggle>
+  </div>
+</os-settings-section>

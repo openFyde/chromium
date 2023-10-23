@@ -73,6 +73,7 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/accessibility/view_accessibility.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace {
 
@@ -116,9 +117,15 @@ void NavigateToGoogleAccountPage(Profile* profile, const std::string& email) {
   // |email| is not signed into the web. Include a UTM parameter to signal the
   // source of the navigation.
   GURL google_account = net::AppendQueryParameter(
-      GURL(chrome::kGoogleAccountURL), "utm_source", "chrome-profile-chooser");
+  //---***FYDEOS BEGIN***---
+      GURL(profile->IsFydeProfile() ? fydeos::constants::kFydeOSAccountURL :
+        chrome::kGoogleAccountURL), "utm_source", "chrome-profile-chooser");
+  //---***FYDEOS END***---
 
-  GURL url(chrome::kGoogleAccountChooserURL);
+  //---***FYDEOS BEGIN***---
+  GURL url(profile->IsFydeProfile() ? fydeos::constants::kFydeOSAccountChooserURL :
+     chrome::kGoogleAccountChooserURL);
+  //---***FYDEOS END***---
   url = net::AppendQueryParameter(url, "Email", email);
   url = net::AppendQueryParameter(url, "continue", google_account.spec());
 

@@ -234,12 +234,14 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://assistant-optin/*",
+      "chrome://fydeos-ai/*",
       "chrome://add-supervision/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://mobilesetup/*",
       "chrome://oobe/*",
       "chrome://os-settings/*",
+      "chrome://file-manager/*",
       "chrome://parent-access/*",
       "chrome://password-change/*",
       "chrome://lock-reauth/*"
@@ -929,6 +931,13 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://os-settings/*"
+    ]
+  }, {
+    "channel": "stable",
+    "contexts": ["blessed_extension"],
+    "platforms": ["chromeos"],
+    "allowlist": [
+      "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E"  //FydeOS System Control Extension
     ]
   }],
   "virtualKeyboardPrivate": {

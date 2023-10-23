@@ -1,0 +1,173 @@
+<!--
+Copyright 2023 Fyde Innovations. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<style include="cr-shared-style cr-input-style md-select oobe-dialog-host-styles">
+  #serviceLogsDialog {
+    --oobe-modal-dialog-content-slot-padding-bottom: 0;
+    --oobe-modal-dialog-content-slot-padding-end: 0;
+    --oobe-modal-dialog-content-slot-padding-start: 0;
+    --oobe-modal-dialog-title-slot-padding-bottom: 16px;
+    --oobe-modal-dialog-width: max(62%, 512px);
+    --oobe-modal-dialog-content-height: 360px;
+  }
+  #serviceLogsFrame {
+    padding-inline-end: 20px;
+    padding-inline-start: 20px;
+  }
+  .md-select {
+    width: 100%;
+  }
+  #backupFileSelectError {
+    color: var(--cr-input-error-color);
+    display: var(--cr-input-error-display, block);
+    font-size: var(--cr-form-field-label-font-size);
+    height: var(--cr-form-field-label-height);
+    line-height: var(--cr-form-field-label-line-height);
+    margin: 8px 0;
+    visibility: hidden;
+    white-space: var(--cr-input-error-white-space);
+  }
+  #backupFileSelectContainer[invalid] #backupFileSelectTitle {
+    color: var(--cr-input-error-color);
+  }
+  #backupFileSelectContainer[invalid] #backupFileSelect {
+    box-shadow: 0 0 0 2px var(--cr-input-error-color);
+  }
+  #backupFileSelectContainer[invalid] #backupFileSelectError {
+    visibility: visible;
+  }
+  #dataRestoreDialogSetup {
+    --oobe-adaptive-dialog-header-top-padding: 0;
+  }
+</style>
+
+<oobe-adaptive-dialog id="dataRestoreDialogSelectFile"
+                      role="dialog" for-step="select-file">
+  <h1 slot="title" class="title" id="dataRestoreSelectFileTitle">
+    [[i18nDynamic(locale, 'dataRestoreDialogSelectFileTitle')]]
+  </h1>
+  <div slot="subtitle">
+    <p>[[i18nDynamic(locale, 'dataRestoreDialogSelectFileMessage')]]</p>
+  </div>
+  <div slot="content" class="flex layout vertical center-justified">
+    <div id="backupFileSelectContainer" invalid$="[[backupFileInvalid]]">
+      <div id="backupFileSelectTitle" class="cr-form-field-label">
+        [[i18nDynamic(locale, 'dataRestoreDialogSetupBackupFileSelectionLabel')]]
+      </div>
+      <select id="backupFileSelect" class="md-select" value="[[selectedBackupFile]]">
+      </select>
+      <div id="backupFileSelectError">
+        [[i18nDynamic(locale, 'dataRestoreDialogSetupInvalidBackupFileMessage')]]
+      </div>
+    </div>
+  </div>
+  <div slot="back-navigation">
+    <oobe-back-button id="dataRestoreExitButton" on-click="onBack_">
+    </oobe-back-button>
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-next-button id="DataRestoreSelectFileNextButton"
+        inverse on-click="onSelectFileNextButtonPressed_">
+    </oobe-next-button>
+  </div>
+</oobe-adaptive-dialog>
+<oobe-adaptive-dialog id="dataRestoreDialogSetup"
+                      role="dialog" for-step="setup">
+  <h1 slot="title" class="title" id="dataRestoreTitle">
+    [[i18nDynamic(locale, 'dataRestoreDialogSetupTitle')]]
+  </h1>
+  <div slot="subtitle" inner-h-t-m-l="[[i18nAdvancedDynamic(locale, 'dataRestoreDialogSetupSubtitle')]]">
+  </div>
+  <div slot="content" class="flex layout vertical center-justified">
+    <cr-input slot="inputs" id="dataRestoreEmailInput" required
+              class="focus-on-show"
+              label="[[i18nDynamic(locale, 'dataRestoreDialogSetupAccountNameLabel')]]"
+              value="{{email}}"
+              on-keydown="onKeyDownEmailInput_"
+              invalid="[[emailInvalid]]"
+              spellcheck="false"
+              error-message="[[i18nDynamic(locale, 'dataRestoreDialogSetupInvalidAccountNameMessage')]]">
+    </cr-input>
+    <cr-input slot="inputs" id="dataRestorePasswordInput" type="password" required
+              label="[[i18nDynamic(locale, 'dataRestoreDialogSetupPasswordLabel')]]"
+              on-keydown="onKeyDownPasswordInput_"
+              invalid="[[passwordInvalid]]"
+              error-message="[[i18nDynamic(locale, 'dataRestoreDialogSetupInvalidPasswordMessage')]]">
+    </cr-input>
+  </div>
+  <div slot="back-navigation">
+    <oobe-back-button id="dataRestoreBackSelectFileButton" on-click="onBackToSelectFile_">
+    </oobe-back-button>
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-text-button id="DataRestoreSetupNextButton"
+        inverse on-click="onSetupNextButtonPressed_">
+      <div slot="text">
+        [[i18nDynamic(locale, 'dataRestoreDialogSetupNextButton')]]
+      </div>
+    </oobe-text-button>
+  </div>
+</oobe-adaptive-dialog>
+
+<oobe-loading-dialog id="dataRestoreDialogInProgress"
+  title-key="dataRestoreDialogInProgressTitle"
+  role="dialog" for-step="in-progress">
+  <div slot="subtitle" inner-h-t-m-l="[[i18nAdvancedDynamic(locale, 'dataRestoreDialogInProgressSubtitle')]]">
+  </div>
+</oobe-loading-dialog>
+
+<oobe-adaptive-dialog id="dataRestoreDialogError"
+                      role="dialog" for-step="failed">
+  <h1 slot="title">
+    [[i18nDynamic(locale, 'dataRestoreDialogErrorTitle')]]
+  </h1>
+  <div slot="subtitle" for-step="failed">
+    <span>
+      <p>[[i18nDynamic(locale, 'dataRestoreDialogErrorSubtitle')]]</p>
+    </span>
+    <a id="serviceLogsLink" is="action-link" class="oobe-local-link"
+        on-click="onServiceLogsLinkClicked_">
+      [[i18nDynamic(locale, 'dataRestoreDialogErrorViewLogs')]]
+    </a>
+  </div>
+  <div slot="content" class="flex layout vertical center-justified">
+    <img src="images/error.svg"
+         class="oobe-illustration" aria-hidden="true">
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-back-button
+        id="DataRestoreErrorBackToSetup"
+        on-click="onErrorBackToSetupButtonPressed_">
+    </oobe-back-button>
+  </div>
+</oobe-adaptive-dialog>
+
+<oobe-adaptive-dialog id="dataRestoreDialogSuccess"
+                      role="dialog" for-step="success">
+  <h1 slot="title">
+    [[i18nDynamic(locale, 'dataRestoreDialogSuccessTitle')]]
+  </h1>
+  <div slot="subtitle">
+    [[i18nDynamic(locale, 'dataRestoreDialogSuccessSubtitle')]]
+  </div>
+  <div slot="content" class="flex layout vertical center-justified">
+    <img src="images/illustration-success.svg"
+         class="oobe-illustration" aria-hidden="true">
+  </div>
+</oobe-adaptive-dialog>
+
+<oobe-modal-dialog id="serviceLogsDialog" ignore-popstate
+    on-close="focusLogsLink_" on-cancel="focusLogsLink_">
+  <div slot="title">
+    [[i18nDynamic(locale, 'dataRestoreDialogServiceLogsTitle')]]
+  </div>
+  <webview slot="content" id="serviceLogsFrame" role="document"
+      allowTransparency class="focus-on-show flex oobe-tos-webview">
+  </webview>
+  <oobe-text-button id="closeServiceLogsDialog" slot="buttons" inverse
+      on-click="hideServiceLogsDialog_" text-key="oobeModalDialogClose">
+  </oobe-text-button>
+</oobe-modal-dialog>

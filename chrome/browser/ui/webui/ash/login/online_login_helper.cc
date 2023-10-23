@@ -18,6 +18,9 @@
 #include "content/public/browser/storage_partition.h"
 #include "google_apis/gaia/gaia_urls.h"
 #include "ui/base/l10n/l10n_util.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+// ---***FYDEOS END***---
 
 namespace ash {
 namespace login {
@@ -100,6 +103,13 @@ user_manager::UserType GetUsertypeFromServicesString(
     }
   }
 
+  //---***FYDEOS BEGIN***---
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    return is_child ? user_manager::USER_TYPE_FYDE_CHILD
+                    : user_manager::USER_TYPE_FYDE_ACCOUNT;
+  }
+  //---***FYDEOS END***---
+
   return is_child ? user_manager::USER_TYPE_CHILD
                   : user_manager::USER_TYPE_REGULAR;
 }
@@ -147,6 +157,11 @@ bool BuildUserContextForGaiaSignIn(
   user_context->SetAuthFlow(using_saml
                                 ? UserContext::AUTH_FLOW_GAIA_WITH_SAML
                                 : UserContext::AUTH_FLOW_GAIA_WITHOUT_SAML);
+  //---***FYDEOS BEGIN***---
+  if (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT) {
+    user_context->SetAuthFlow(UserContext::AUTH_FLOW_FYDE_ONLINE);
+  }
+  //---***FYDEOS END***---
   if (using_saml) {
     user_context->SetIsUsingSamlPrincipalsApi(using_saml_api);
     if (ExtractSamlPasswordAttributesEnabled()) {

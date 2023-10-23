@@ -50,8 +50,12 @@ js_type_check("closure_compile_local") {
     ":managed_terms_of_service",
     ":marketing_opt_in",
     ":offline_ad_login",
+    ":fyde_local_signin",
     ":oobe_reset",
+    ":oobe_eula",
     ":os_install",
+    ":fydeos_installer",
+    ":data_restore",
     ":os_trial",
     ":parental_handoff",
     ":pin_setup",
@@ -64,6 +68,7 @@ js_type_check("closure_compile_local") {
     ":touchpad_scroll",
     ":tpm_error",
     ":user_creation",
+    ":account_type_selection",
     ":wrong_hwid",
   ]
 }
@@ -432,6 +437,25 @@ js_library("offline_ad_login") {
   extra_deps = [ ":web_components" ]
 }
 
+js_library("fyde_local_signin") {
+  sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/fyde_local_signin.js" ]
+  deps = [
+    "../../components:display_manager_types",
+    "../../components/behaviors:login_screen_behavior",
+    "../../components/behaviors:oobe_dialog_host_behavior",
+    "../../components/behaviors:multi_step_behavior",
+    "../../components/behaviors:oobe_i18n_behavior",
+    "../../components/buttons:oobe_back_button",
+    "../../components/buttons:oobe_next_button",
+    "../../components/buttons:oobe_text_button",
+    "../../components/dialogs:oobe_adaptive_dialog",
+  ]
+  externs_list = [
+    "//ui/webui/resources/cr_elements/cr_input_oobe/cr_input_oobe_externs.js",
+  ]
+  extra_deps = [ ":web_components" ]
+}
+
 js_library("oobe_reset") {
   sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/oobe_reset.js" ]
   deps = [
@@ -445,6 +469,26 @@ js_library("oobe_reset") {
     "//third_party/polymer/v3_0/components-chromium/polymer:polymer_bundled",
   ]
   extra_deps = [ ":web_components" ]
+}
+
+js_library("oobe_eula") {
+ sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/oobe_eula.js" ]
+ deps = [
+   "../../:display_manager",
+   "../../components:web_view_helper",
+   "../../components/behaviors:login_screen_behavior",
+   "../../components/behaviors:multi_step_behavior",
+   "../../components/behaviors:oobe_i18n_behavior",
+   "../../components/dialogs:oobe_adaptive_dialog",
+   "../../components/dialogs:oobe_modal_dialog",
+   "//third_party/polymer/v3_0/components-chromium/polymer:polymer_bundled",
+ ]
+
+ externs_list = [
+  "$externs_path/chrome_extensions.js",
+  "$externs_path/webview_tag.js",
+ ]
+ extra_deps = [ ":web_components" ]
 }
 
 js_library("os_install") {
@@ -464,6 +508,44 @@ js_library("os_install") {
   ]
 
   externs_list = [ "$externs_path/webview_tag.js" ]
+
+  extra_deps = [ ":web_components" ]
+}
+
+js_library("fydeos_installer") {
+  sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/fydeos_installer.js" ]
+  deps = [
+    "../../:display_manager",
+    "../../components/behaviors:login_screen_behavior",
+    "../../components/behaviors:multi_step_behavior",
+    "../../components/behaviors:oobe_dialog_host_behavior",
+    "../../components/behaviors:oobe_i18n_behavior",
+    "../../components/buttons:oobe_back_button",
+    "../../components/buttons:oobe_text_button",
+    "../../components/buttons:oobe_next_button",
+    "../../components/dialogs:oobe_adaptive_dialog",
+    "../../components:notification_card",
+    "//third_party/polymer/v3_0/components-chromium/polymer:polymer_bundled",
+  ]
+
+  extra_deps = [ ":web_components" ]
+}
+
+js_library("data_restore") {
+  sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/data_restore.js" ]
+  deps = [
+    "//third_party/polymer/v3_0/components-chromium/polymer:polymer_bundled",
+    "../../components/behaviors:login_screen_behavior",
+    "../../components/behaviors:multi_step_behavior",
+    "../../components/behaviors:oobe_i18n_behavior",
+    "../../components/behaviors:oobe_dialog_host_behavior",
+    "../../components/dialogs:oobe_adaptive_dialog",
+    "../../components/buttons:oobe_back_button",
+    "../../components/buttons:oobe_text_button",
+    "../../components/buttons:oobe_next_button",
+    "../../components/dialogs:oobe_loading_dialog",
+    "../../components/dialogs:oobe_modal_dialog",
+  ]
 
   extra_deps = [ ":web_components" ]
 }
@@ -652,6 +734,20 @@ js_library("user_creation") {
   extra_deps = [ ":web_components" ]
 }
 
+js_library("account_type_selection") {
+  sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/account_type_selection.js" ]
+  deps = [
+    "//third_party/polymer/v3_0/components-chromium/polymer:polymer_bundled",
+    "//ash/webui/common/resources:load_time_data.m",
+    "../../components/behaviors:oobe_i18n_behavior",
+    "../../components/dialogs:oobe_adaptive_dialog",
+    "../../components/buttons:oobe_back_button",
+    "../../components/buttons:oobe_next_button",
+    "../../components/behaviors:oobe_dialog_host_behavior",
+  ]
+  extra_deps = [ ":web_components" ]
+}
+
 js_library("wrong_hwid") {
   sources = [ "$root_gen_dir/chrome/browser/resources/chromeos/login/screens/common/wrong_hwid.js" ]
   deps = [
@@ -707,8 +803,12 @@ html_to_js("web_components") {
     "marketing_opt_in.js",
     "multidevice_setup.js",
     "offline_ad_login.js",
+    "fyde_local_signin.js",
     "oobe_reset.js",
+    "oobe_eula.js",
     "os_install.js",
+    "fydeos_installer.js",
+    "data_restore.js",
     "os_trial.js",
     "parental_handoff.js",
     "pin_setup.js",
@@ -721,6 +821,7 @@ html_to_js("web_components") {
     "touchpad_scroll.js",
     "tpm_error.js",
     "user_creation.js",
+    "account_type_selection.js",
     "wrong_hwid.js",
   ]
 }

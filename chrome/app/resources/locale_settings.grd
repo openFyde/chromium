@@ -197,6 +197,8 @@
         https://myactivity.google.com/myactivity/?utm_source=chrome_h
       </message>
 
+      <part file="../../../fydeos/i18n/chrome/app/resources/locale_settings.override.grdp" />
+
     </messages>
   </release>
 </grit>

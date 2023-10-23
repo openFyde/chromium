@@ -10,7 +10,8 @@ found in the LICENSE file.
     margin-top: 37px;
   }
 </style>
-<oobe-adaptive-dialog id="setup" role="dialog" for-step="start,confirm">
+<oobe-adaptive-dialog id="setup" fydeos-layout role="dialog" for-step="start,confirm"
+                      animation-url="animations/fydeos_choose_pin.json">
   <iron-icon slot="icon" icon="oobe-32:lock"></iron-icon>
   <h1 slot="title" for-step="start">
     <div hidden="[[isChildAccount_]]">
@@ -68,8 +69,10 @@ found in the LICENSE file.
   </div>
 </oobe-adaptive-dialog>
 <oobe-adaptive-dialog id="setup" role="dialog" for-step="done"
+    fydeos-layout
     footer-shrinkable>
   <iron-icon slot="icon" icon="oobe-32:lock"></iron-icon>
+  <img slot="illustration" src="images/fydeos_pin_illustration.svg" />
   <h1 slot="title" hidden="[[isChildAccount_]]">
     [[i18nDynamic(locale, 'discoverPinSetupTitle3')]]
   </h1>
@@ -97,7 +100,7 @@ found in the LICENSE file.
   </div>
   <div slot="content" class="flex layout vertical center
       center-justified">
-    <img id="done-illustration" class="oobe-illustration"
+    <img hidden id="done-illustration" class="oobe-illustration"
         src="images/pin_illustration.svg">
   </div>
   <div slot="bottom-buttons">

@@ -114,6 +114,10 @@ class ASH_PUBLIC_EXPORT LoginScreenClient {
   // Show OS-Install screen.
   virtual void ShowOsInstallScreen() = 0;
 
+  virtual void ShowDataRestoreScreen() = 0;
+
+  virtual void ShowLocalSignin() = 0;
+
   // Notification that the remove user warning was shown.
   virtual void OnRemoveUserWarningShown() = 0;
 

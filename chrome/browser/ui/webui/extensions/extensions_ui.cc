@@ -48,6 +48,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/webui/web_ui_util.h"
+#include "fydeos/switches/services/services_constants.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
 #include "chrome/browser/ash/ownership/owner_settings_service_ash_factory.h"
@@ -108,7 +110,9 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
     {"appsTitle", IDS_EXTENSIONS_APPS_TITLE},
     {"noExtensionsOrApps", IDS_EXTENSIONS_NO_INSTALLED_ITEMS},
     {"noDescription", IDS_EXTENSIONS_NO_DESCRIPTION},
-    {"viewInStore", IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE},
+    //---***FYDEOS BEGIN***---
+    {"viewInStore", IDS_EXTENSIONS_ITEM_VIEW_IN_STORE},
+    //---***FYDEOS END***---
     {"extensionWebsite", IDS_EXTENSIONS_ITEM_EXTENSION_WEBSITE},
     {"dropToInstall", IDS_EXTENSIONS_INSTALL_DROP_TARGET},
     {"editSitePermissionsAllowAllExtensions",
@@ -222,6 +226,9 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
     {"itemSourceSideloaded", IDS_EXTENSIONS_ITEM_SOURCE_SIDELOADED},
     {"itemSourceUnpacked", IDS_EXTENSIONS_ITEM_SOURCE_UNPACKED},
     {"itemSourceWebstore", IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE},
+    //---***FYDEOS BEGIN***---
+    {"itemSourceFydeOSStore", IDS_EXTENSIONS_ITEM_SOURCE_FYDEOS_STORE},
+    //---***FYDEOS END***---
     {"itemVersion", IDS_EXTENSIONS_ITEM_VERSION},
     {"itemReloaded", IDS_EXTENSIONS_ITEM_RELOADED},
     {"itemReloading", IDS_EXTENSIONS_ITEM_RELOADING},
@@ -353,6 +360,10 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
      IDS_EXTENSIONS_KIOSK_DISABLE_BAILOUT_SHORTCUT_WARNING_TITLE},
 #endif
   };
+
+  source->AddString("fydeosStoreBaseUrl",
+      fydeos::constants::kFydeOSStoreBaseUrl);
+
   source->AddLocalizedStrings(kLocalizedStrings);
 
   source->AddString("errorLinesNotShownSingular",
@@ -390,11 +401,14 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
               g_browser_process->GetApplicationLocale())
               .spec()));
   source->AddString("hostPermissionsLearnMoreLink",
-                    chrome_extension_constants::kRuntimeHostPermissionsHelpURL);
+                    fydeos::constants::kRuntimeHostPermissionsHelpURL);
   source->AddBoolean(kInDevModeKey, in_dev_mode);
   source->AddBoolean(kShowActivityLogKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          ::switches::kEnableExtensionActivityLogging));
+  // ---***FYDEOS BEGIN***---
+  source->AddBoolean("fydeosAccountEnabled", profile && profile->IsFydeProfile());
+  // ---***FYDEOS END***---
 
   source->AddString(kLoadTimeClassesKey, GetLoadTimeClasses(in_dev_mode));
 

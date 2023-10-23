@@ -324,6 +324,7 @@ extern const char kChildScreenTimeMilliseconds[];
 extern const char kLastChildScreenTimeSaved[];
 extern const char kLastChildScreenTimeReset[];
 extern const char kHelpAppNotificationLastShownMilestone[];
+extern const char kFydeOSReleaseNotesLastShownVersion[];
 extern const char kReleaseNotesSuggestionChipTimesLeftToShow[];
 extern const char kDiscoverTabSuggestionChipTimesLeftToShow[];
 extern const char kNTLMShareAuthenticationEnabled[];

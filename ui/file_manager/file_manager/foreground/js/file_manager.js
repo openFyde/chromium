@@ -9,7 +9,7 @@ import {startColorChangeUpdater} from 'chrome://resources/cr_components/color_ch
 
 import {getDialogCaller, getDlpBlockedComponents, getPreferences} from '../../common/js/api.js';
 import {ArrayDataModel} from '../../common/js/array_data_model.js';
-import {DialogType, isFolderDialogType} from '../../common/js/dialog_type.js';
+import {DialogType, isFolderDialogType, isModal} from '../../common/js/dialog_type.js';
 import {getKeyModifiers, queryDecoratedElement, queryRequiredElement} from '../../common/js/dom_utils.js';
 import {FakeEntryImpl} from '../../common/js/files_app_entry_types.js';
 import {FilesAppState} from '../../common/js/files_app_state.js';
@@ -57,6 +57,7 @@ import {FolderShortcutsDataModel} from './folder_shortcuts_data_model.js';
 import {GearMenuController} from './gear_menu_controller.js';
 import {GuestOsController} from './guest_os_controller.js';
 import {LastModifiedController} from './last_modified_controller.js';
+import {FydeDropViewController} from './fydedrop_view_controller.js';
 import {LaunchParam} from './launch_param.js';
 import {ListThumbnailLoader} from './list_thumbnail_loader.js';
 import {MainWindowComponent} from './main_window_component.js';
@@ -65,7 +66,7 @@ import {ThumbnailModel} from './metadata/thumbnail_model.js';
 import {MetadataBoxController} from './metadata_box_controller.js';
 import {MetadataUpdateController} from './metadata_update_controller.js';
 import {NamingController} from './naming_controller.js';
-import {NavigationListModel, NavigationModelFakeItem, NavigationModelItemType} from './navigation_list_model.js';
+import {NavigationListModel, NavigationModelFakeItem, NavigationModelFydeDropItem, NavigationModelItemType} from './navigation_list_model.js';
 import {NavigationUma} from './navigation_uma.js';
 import {ProvidersModel} from './providers_model.js';
 import {QuickViewController} from './quick_view_controller.js';
@@ -321,6 +322,13 @@ export class FileManager extends EventTarget {
 
     /** @private {?FileTypeFiltersController} */
     this.fileTypeFiltersController_ = null;
+    //---***FYDEOS BEGIN***---
+    /**
+     * FydeDrop view controller.
+     * @private {FydeDropViewController}
+     */
+    this.fydeDropViewController_ = null;
+    //---***FYDEOS END***---
 
     /**
      * Empty folder controller.
@@ -699,6 +707,12 @@ export class FileManager extends EventTarget {
     }
     this.lastModifiedController_ = new LastModifiedController(
         this.ui_.listContainer.table, this.directoryModel_);
+    //---***FYDEOS BEGIN***---
+    if (!isModal(this.launchParams_.type)) {
+      this.fydeDropViewController_ = new FydeDropViewController(
+          this.ui_.fydeDropView, this.directoryModel_);
+    }
+    //---***FYDEOS END***---
 
     this.quickViewModel_ = new QuickViewModel();
     const fileListSelectionModel = /** @type {!FileListSelectionModel} */ (
@@ -1237,6 +1251,18 @@ export class FileManager extends EventTarget {
             null,
         assert(this.directoryModel_), assert(this.androidAppListModel_),
         this.dialogType);
+
+    //---***FYDEOS BEGIN***---
+    directoryTree.dataModel.insertFydeDrop(
+      fakeEntriesVisible && !isModal(this.launchParams_.type) ?
+        new NavigationModelFydeDropItem(
+          str('FYDEDROP_ROOT_LABEL'), NavigationModelItemType.FYDEDROP,
+          new FakeEntryImpl(
+            str('FYDEDROP_ROOT_LABEL'),
+            VolumeManagerCommon.RootType.FYDEDROP,
+            this.getSourceRestriction_())) :
+          null);
+    //---***FYDEOS END***---
 
     this.ui_.initDirectoryTree(directoryTree);
 

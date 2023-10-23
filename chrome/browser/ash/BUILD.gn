@@ -1710,6 +1710,10 @@ source_set("ash") {
     "login/screen_manager.h",
     "login/screens/active_directory_login_screen.cc",
     "login/screens/active_directory_login_screen.h",
+    "login/screens/fyde_local_signin_screen.cc",
+    "login/screens/fyde_local_signin_screen.h",
+    "login/screens/data_restore_screen.cc",
+    "login/screens/data_restore_screen.h",
     "login/screens/active_directory_password_change_screen.cc",
     "login/screens/active_directory_password_change_screen.h",
     "login/screens/app_downloading_screen.cc",
@@ -1753,6 +1757,8 @@ source_set("ash") {
     "login/screens/encryption_migration_screen.h",
     "login/screens/error_screen.cc",
     "login/screens/error_screen.h",
+    "login/screens/eula_screen.cc",
+    "login/screens/eula_screen.h",
     "login/screens/family_link_notice_screen.cc",
     "login/screens/family_link_notice_screen.h",
     "login/screens/fingerprint_setup_screen.cc",
@@ -3474,6 +3480,7 @@ source_set("ash") {
     "//chromeos/ash/components/dbus/system_clock",
     "//chromeos/ash/components/dbus/system_proxy:system_proxy_proto",
     "//chromeos/ash/components/dbus/update_engine",
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
     "//chromeos/ash/components/dbus/userdataauth",
     "//chromeos/ash/components/dbus/userdataauth:userdataauth_proto",
     "//chromeos/ash/components/dbus/vm_plugin_dispatcher",
@@ -3774,6 +3781,7 @@ source_set("ash") {
     "//ash/webui/system_apps/public:system_web_app_type",
     "//build:branding_buildflags",
     "//build/config/chromebox_for_meetings:buildflags",
+    "//fydeos/build/config:buildflags",
     "//cc/base",
     "//cc/paint",
     "//chrome/app:chromium_strings",
@@ -4082,6 +4090,7 @@ source_set("ash") {
     "//ui/ozone",
     "//ui/strings:ui_strings",
     "//ui/wm",
+    "//fydeos/switches/account/toggle:account_toggle",
   ]
 
   data_deps = [
@@ -4140,6 +4149,18 @@ source_set("ash") {
       "//ash/webui/sample_system_web_app_ui",
     ]
   }
+
+  sources += [
+    "web_applications/fyde_assistant_app_info.cc",
+    "web_applications/fyde_assistant_app_info.h",
+    "web_applications/fyde_assistant_app_ui_delegate.cc",
+    "web_applications/fyde_assistant_app_ui_delegate.h",
+  ]
+  deps += [
+    "//ash/webui/resources:fyde_assistant_app_resources",
+    "//ash/webui/fyde_assistant_app_ui",
+  ]
+
 
   if (use_cups) {
     sources += [

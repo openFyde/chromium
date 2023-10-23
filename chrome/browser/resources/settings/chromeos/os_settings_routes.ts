@@ -149,6 +149,8 @@ export interface OsSettingsRoutes extends MinimumRoutes {
   EXTERNAL_STORAGE_PREFERENCES: Route;
   FINGERPRINT: Route;
   FILES: Route;
+  FYDEOS: Route,
+  FYDEOS_FYDEOS: Route,
   GOOGLE_ASSISTANT: Route;
   GOOGLE_DRIVE: Route;
   HOTSPOT_DETAIL: Route;
@@ -574,6 +576,10 @@ function createOsSettingsRoutes(): OsSettingsRoutes {
   r.DETAILED_BUILD_INFO = createSubpage(
       r.ABOUT_ABOUT, routesMojom.DETAILED_BUILD_INFO_SUBPAGE_PATH,
       Subpage.kDetailedBuildInfo);
+
+  r.FYDEOS = new Route('/' + routesMojom.FYDE_OS_SECTION_PATH);
+  r.FYDEOS_FYDEOS = r.FYDEOS.createSection(
+      '/' + routesMojom.FYDE_OS_SUBPAGE_PATH, 'fydeos');
 
   return r as OsSettingsRoutes;
 }

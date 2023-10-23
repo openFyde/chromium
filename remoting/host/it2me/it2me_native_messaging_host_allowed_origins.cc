@@ -12,6 +12,12 @@ namespace remoting {
 // remoting/host/it2me/com.google.chrome.remote_assistance.json.jinja2
 // to keep the two lists in sync.
 const char* const kIt2MeOrigins[] = {
+    // ---***FYDEOS BEGIN***---
+    // remote desktop extension id, old, new, and dev
+    "chrome-extension://ljkfnggfkjcmfpcpoomhmhkgeeakhgig/",
+    "chrome-extension://fogdcaodknbhigpklbhepedofamkfbln/",
+    "chrome-extension://ljacajndfccfgnfohlgkdphmbnpkjflk/",
+    // ---***FYDEOS END***---
     "chrome-extension://inomeogfingihgjfjlpeplalcfajhgai/",
     "chrome-extension://hpodccmdligbeohchckkeajbfohibipg/"};
 

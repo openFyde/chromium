@@ -13,6 +13,7 @@
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace extensions {
 
@@ -102,6 +103,13 @@ bool IsWebstoreUpdateUrl(const GURL& update_url) {
   return (update_url.host_piece() == store_url.host_piece() &&
           update_url.path_piece() == store_url.path_piece());
 }
+
+// ---***FYDEOS BEGIN***---
+bool IsFydeOSWebstoreUpdateUrl(const GURL& update_url) {
+  GURL store_url = GURL(fydeos::switches::GetFydeOSWebStoreUpdateUrl());
+  return update_url.host_piece() == store_url.host_piece();
+}
+// ---***FYDEOS END***---
 
 bool IsBlocklistUpdateUrl(const GURL& url) {
   extensions::ExtensionsClient* client = extensions::ExtensionsClient::Get();

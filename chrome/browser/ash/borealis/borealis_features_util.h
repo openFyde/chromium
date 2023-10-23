@@ -53,6 +53,9 @@ class TokenHardwareChecker {
   bool CpuRegexMatches(const std::string& cpu_regex) const;
   bool HasMemory(uint64_t mem_bytes) const;
 
+ protected:
+  std::string GetDebugString() const;
+
  private:
   const Data token_hardware_;
 };

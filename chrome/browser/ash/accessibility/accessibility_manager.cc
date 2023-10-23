@@ -109,6 +109,7 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
 #include "url/gurl.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash {
 
@@ -390,7 +391,10 @@ void AccessibilityManager::ShowAccessibilityHelp() {
   chrome::ScopedTabbedBrowserDisplayer displayer(
       ProfileManager::GetActiveUserProfile());
   ShowSingletonTab(displayer.browser(),
-                   GURL(chrome::kChromeAccessibilityHelpURL));
+                  //  GURL(chrome::kChromeAccessibilityHelpURL));
+  //---***FYDEOS BEGIN***---
+                   GURL(fydeos::constants::kFydeAccessibilityHelpURL));
+  //---***FYDEOS END***---
 }
 
 AccessibilityManager::AccessibilityManager() {

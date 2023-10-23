@@ -146,6 +146,12 @@ constexpr webui::LocalizedString kElementLocalizedStrings[] = {
     {"networkIconLabelSignalStrength", IDS_NETWORK_ICON_LABEL_SIGNAL_STRENGTH},
 };
 
+void AddFydeLocalized(content::WebUIDataSource* html_source) {
+  html_source->AddBoolean("shouldModifyStyle",
+                          ash::LoginState::IsInitialized()
+                          && !ash::LoginState::Get()->IsUserLoggedIn());
+}
+
 }  //  namespace
 
 void AddLocalizedStrings(content::WebUIDataSource* html_source) {
@@ -499,6 +505,8 @@ void AddDetailsLocalizedStrings(content::WebUIDataSource* html_source) {
 
   html_source->AddBoolean("isApnRevampEnabled",
                           ash::features::IsApnRevampEnabled());
+
+  AddFydeLocalized(html_source);
 }
 
 void AddConfigLocalizedStrings(content::WebUIDataSource* html_source) {
@@ -546,6 +554,8 @@ void AddConfigLocalizedStrings(content::WebUIDataSource* html_source) {
   html_source->AddBoolean(
       "eapDefaultCasWithoutSubjectVerificationAllowed",
       ash::features::IsEapDefaultCasWithoutSubjectVerificationAllowed());
+
+  AddFydeLocalized(html_source);
 }
 
 void AddErrorLocalizedStrings(content::WebUIDataSource* html_source) {

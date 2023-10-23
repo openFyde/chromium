@@ -53,6 +53,7 @@ class ASH_PUBLIC_EXPORT AppListViewDelegate {
 
   // Invoked to start a new Google Assistant session.
   virtual void StartAssistant() = 0;
+  virtual void CloseAssistant() = 0;
 
   // Invoked to start a new search. This collects a list of search results
   // matching the raw query, which is an unhandled string typed into the search

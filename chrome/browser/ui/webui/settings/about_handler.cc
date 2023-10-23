@@ -78,6 +78,13 @@
 #include "components/user_manager/user_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/chromeos/devicetype_utils.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/misc/fydeos_toggle_ota.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
+// ---***FYDEOS END***---
 #endif
 
 namespace {
@@ -134,6 +141,13 @@ bool CanChangeChannel(Profile* profile) {
     return user && user->IsAffiliated();
   }
 
+  // ---***FYDEOS BEGIN***---
+  PrefService* local_state = g_browser_process->local_state();
+  bool tpm_fallback = local_state->GetBoolean(fydeos::prefs::kCurrentForceTpmFallback);
+  if (tpm_fallback) {
+    return user_manager::UserManager::Get()->IsCurrentUserOwner();
+  }
+  // ---***FYDEOS END***---
   // On non-managed machines, only the local owner can change the channel.
   ash::OwnerSettingsServiceAsh* service =
       ash::OwnerSettingsServiceAshFactory::GetInstance()->GetForBrowserContext(
@@ -364,6 +378,16 @@ void AboutHandler::RegisterMessages() {
       "openProductLicenseOther",
       base::BindRepeating(&AboutHandler::HandleOpenProductLicenseOther,
                           base::Unretained(this)));
+  // ---***FYDEOS BEGIN***---
+  web_ui()->RegisterMessageCallback(
+      "enableFydeOTA",
+      base::BindRepeating(&AboutHandler::HandleEnableFydeOTA,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getEnabledFydeOTA",
+      base::BindRepeating(&AboutHandler::HandleGetEnabledFydeOTA,
+                          base::Unretained(this)));
+  // ---***FYDEOS END***---
 #endif
 #if BUILDFLAG(IS_MAC)
   web_ui()->RegisterMessageCallback(
@@ -490,6 +514,52 @@ void AboutHandler::HandleCheckInternetConnection(
   ResolveJavascriptCallback(base::Value(callback_id),
                             base::Value(network && network->IsOnline()));
 }
+
+// ---***FYDEOS BEGIN***---
+void AboutHandler::HandleEnableFydeOTA(const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  bool enabled = args[0].GetBool();
+  /*
+  if (!user_manager::UserManager::Get()->IsCurrentUserOwner()) {
+    LOG(WARNING) << "Non-owner tried to set fydeos ota permission";
+    fydeos::misc::GetEnabledFydeOTA(
+        base::BindOnce(&AboutHandler::OnEnableFydeOTA,
+                       weak_factory_.GetWeakPtr()));
+    return;
+  }
+  */
+  fydeos::misc::EnableFydeOTA(enabled,
+      base::BindOnce(&AboutHandler::OnEnableFydeOTA,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void AboutHandler::OnEnableFydeOTA() {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&fydeos::misc::GetEnabledFydeOTA),
+      base::BindOnce(&AboutHandler::RefreshEnableFydeOTA,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void AboutHandler::RefreshEnableFydeOTA(const bool enabled) {
+  FireWebUIListener("fyde-ota-enabled-changed", base::Value(enabled));
+}
+
+void AboutHandler::HandleGetEnabledFydeOTA(const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  std::string callback_id = args[0].GetString();
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&fydeos::misc::GetEnabledFydeOTA),
+      base::BindOnce(&AboutHandler::OnGetEnabledFydeOTA,
+                     weak_factory_.GetWeakPtr(), callback_id));
+}
+
+void AboutHandler::OnGetEnabledFydeOTA(const std::string callback_id, const bool enabled) {
+  ResolveJavascriptCallback(base::Value(callback_id), base::Value(enabled));
+}
+// ---***FYDEOS END***---
 
 void AboutHandler::HandleLaunchReleaseNotes(const base::Value::List& args) {
   DCHECK(args.empty());
@@ -675,8 +745,9 @@ void AboutHandler::OnGetEndOfLifeInfo(
             eol_string_id,
             base::TimeFormatMonthAndYearForTimeZone(eol_info.eol_date,
                                                     icu::TimeZone::getGMT()),
-            base::ASCIIToUTF16(has_eol_passed ? chrome::kEolNotificationURL
-                                              : chrome::kAutoUpdatePolicyURL)));
+            base::ASCIIToUTF16(has_eol_passed
+              ? fydeos::constants::kEolNotificationURL
+              : fydeos::misc::BuildFydeReleaseNoteUrlWithPath(profile_))));
     const ash::eol_incentive_util::EolIncentiveType eolIncentiveType =
         ash::eol_incentive_util::ShouldShowEolIncentive(
             profile_, eol_info.eol_date, clock_->Now());

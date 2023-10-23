@@ -18,7 +18,12 @@
       <part file="neterror_scaled_resources.grdp" />
       <part file="welcome_scaled_resources.grdp" />
       <part file="version_ui_scaled_resources.grdp" />
-
+      <if expr="openfyde">
+        <part file="../../openfyde/resources/components/version_ui/version_ui_scaled_resources.grdp" />
+      </if>
+      <if expr="not openfyde">
+        <part file="../../fydeos/resources/components/version_ui/version_ui_scaled_resources.grdp" />
+      </if>
       <!-- Generic resources -->
       <if expr="not is_android">
         <structure type="chrome_scaled_image" name="IDR_HISTORY_FAVICON" file="favicon_history.png" />

@@ -100,7 +100,8 @@ void ResetSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   html_source->AddString(
       "powerwashDescription",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_FACTORY_RESET_DESCRIPTION,
-                                 l10n_util::GetStringUTF16(IDS_PRODUCT_NAME)));
+                                 l10n_util::GetStringUTF16(
+                                   IDS_PRODUCT_OS_NAME)));
 }
 
 void ResetSection::AddHandlers(content::WebUI* web_ui) {

@@ -171,6 +171,9 @@ void MainSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       {"medium", IDS_SETTINGS_MEDIUM_FONT},
       {"large", IDS_SETTINGS_LARGE_FONT},
       {"veryLarge", IDS_SETTINGS_VERY_LARGE_FONT},
+      // ---***FYDEOS BEGIN***---
+      {"fydeOSRemoteDesktopAppName", IDS_SETTINGS_FYDEOS_REMOTE_DESKTOP_APP_NAME}
+      // ---***FYDEOS END***---
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
@@ -185,6 +188,7 @@ void MainSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       user_manager::UserManager::Get()->IsLoggedInAsAnyKioskApp());
   html_source->AddBoolean("isChildAccount", profile()->IsChild());
 
+  html_source->AddBoolean("isFydeProfile", IsFydeProfile());
   // Add the System Web App resources for Settings.
   html_source->AddResourcePath("icon-192.png", IDR_SETTINGS_LOGO_192);
 

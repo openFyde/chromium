@@ -235,6 +235,18 @@ void LoginScreenClientImpl::ShowOsInstallScreen() {
   }
 }
 
+void LoginScreenClientImpl::ShowDataRestoreScreen() {
+  if (ash::LoginDisplayHost::default_host()) {
+    ash::LoginDisplayHost::default_host()->ShowDataRestoreScreen();
+  }
+}
+
+void LoginScreenClientImpl::ShowLocalSignin() {
+  if (ash::LoginDisplayHost::default_host()) {
+    ash::LoginDisplayHost::default_host()->ShowLocalDialog();
+  }
+}
+
 void LoginScreenClientImpl::OnRemoveUserWarningShown() {
   ProfileMetrics::LogProfileDeleteUser(
       ProfileMetrics::DELETE_PROFILE_USER_MANAGER_SHOW_WARNING);

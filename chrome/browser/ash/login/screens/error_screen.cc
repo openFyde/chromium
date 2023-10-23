@@ -103,6 +103,11 @@ void ErrorScreen::AllowGuestSignin(bool allowed) {
   }
 }
 
+void ErrorScreen::AllowFydeLocalSignin(bool allowed) {
+  if (view_)
+    view_->SetFydeLocalSigninAllowed(allowed);
+}
+
 void ErrorScreen::ShowOfflineLoginOption(bool show) {
   if (view_) {
     view_->SetOfflineSigninAllowed(show);

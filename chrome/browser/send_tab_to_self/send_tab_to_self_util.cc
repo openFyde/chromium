@@ -27,6 +27,9 @@ absl::optional<EntryPointDisplayReason> GetEntryPointDisplayReason(
 
   auto* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (profile->IsFydeProfile()) {
+    return absl::nullopt;
+  }
   return GetEntryPointDisplayReason(
       web_contents->GetLastCommittedURL(),
       SyncServiceFactory::GetForProfile(profile),

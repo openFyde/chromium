@@ -69,6 +69,8 @@ class ASH_EXPORT LoginShelfView : public views::View,
     kEnterpriseEnrollment,  // Start enterprise enrollment flow.
     kSignIn,                // Start signin.
     kOsInstall,             // Start OS Install flow.
+    kUseLocalAccount,
+    kDataRestore,
   };
 
   // Stores and notifies UiUpdate test callbacks.
@@ -222,6 +224,10 @@ class ASH_EXPORT LoginShelfView : public views::View,
 
   bool ShouldShowAddUserButton() const;
 
+  bool ShouldShowUseLocalAccountButton() const;
+
+  bool ShouldShowDataRestoreButton() const;
+
   bool ShouldShowAppsButton() const;
 
   bool ShouldShowGuestAndAppsButtons() const;
@@ -236,6 +242,8 @@ class ASH_EXPORT LoginShelfView : public views::View,
   void OnKioskMenuShown(const base::RepeatingClosure& on_kiosk_menu_shown);
   void OnKioskMenuclosed();
 
+  void OnFydeOSRestoreScriptChecked(bool is_restore_supported);
+
   OobeDialogState dialog_state_ = OobeDialogState::HIDDEN;
   bool allow_guest_ = true;
   bool is_first_signin_step_ = false;
@@ -245,6 +253,8 @@ class ASH_EXPORT LoginShelfView : public views::View,
   // When the Gaia screen is active during Login, the guest-login button should
   // appear if there are no user views.
   bool login_screen_has_users_ = false;
+
+  bool is_restore_supported_ = false;
 
   raw_ptr<LockScreenActionBackgroundController, ExperimentalAsh>
       lock_screen_action_background_;

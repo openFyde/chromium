@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+
+  <if expr="openfyde">
+    <message name="IDS_GESTURE_NOTIFICATION_MESSAGE_LEARN_MORE" desc="The body of the notification to show off new gestures. This notification body links to the help page for the gestures.">
+      Use gestures to quickly switch between apps and interact with your openFyde device in tablet mode.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_GESTURE_NOTIFICATION_MESSAGE_LEARN_MORE" desc="The body of the notification to show off new gestures. This notification body links to the help page for the gestures.">
+      Use gestures to quickly switch between apps and interact with your FydeOS device in tablet mode.
+    </message>
+  </if>
+  <if expr="not _google_chrome">
+    <if expr="openfyde">
+      <message name="IDS_ASH_MESSAGE_CENTER_SYSTEM_APP_NAME" desc="The source of a system-generated notification, as displayed to the user.">
+        openFyde
+      </message>
+    </if>
+    <if expr="not openfyde">
+      <message name="IDS_ASH_MESSAGE_CENTER_SYSTEM_APP_NAME" desc="The source of a system-generated notification, as displayed to the user.">
+        FydeOS
+      </message>
+    </if>
+  </if>
+
+  <message name="IDS_APP_LIST_START_ASSISTANT" desc="Tooltip for the button that starts FydeOS AI from the search box in the app list.">
+    FydeOS AI
+  </message>
+
+</grit-part>

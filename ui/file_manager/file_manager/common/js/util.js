@@ -909,6 +909,10 @@ util.getRootTypeLabel = locationInfo => {
     case VolumeManagerCommon.RootType.SMB:
     case VolumeManagerCommon.RootType.GUEST_OS:
       return locationInfo.volumeInfo.label;
+    //---***FYDEOS BEGIN***---
+    case VolumeManagerCommon.RootType.FYDEDROP:
+      return str('FYDEDROP_ROOT_LABEL');
+    //---***FYDEOS END***---
     default:
       console.error('Unsupported root type: ' + locationInfo.rootType);
       return locationInfo.volumeInfo.label;

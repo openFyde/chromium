@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <if expr="openfyde">
+    <message name="IDS_FYDEOS_LOCAL_SIGNUP_TITLE" desc="Title of oobe fydeos local signup page">
+      Create your local openFyde account
+    </message>
+    <message name="IDS_FYDEOS_LOCAL_SIGNIN_TITLE" desc="Title of oobe fydeos local signin page">
+      Sign in your local openFyde account
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_FYDEOS_LOCAL_SIGNUP_TITLE" desc="Title of oobe fydeos local signup page">
+      Create your local FydeOS account
+    </message>
+    <message name="IDS_FYDEOS_LOCAL_SIGNIN_TITLE" desc="Title of oobe fydeos local signin page">
+      Sign in your local FydeOS account
+    </message>
+  </if>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_USERNAME" desc="Label of oobe fydeos local signin page, username input">
+    Username
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_INVALID_USERNAME" desc="Error message of oobe fydeos local signin page, username input">
+    Invalid username
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD" desc="Label of oobe fydeos local signin page, password input">
+    Password
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_INVALID_PASSWORD" desc="Error message of oobe fydeos local signin page, password input">
+    Please input a password
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD_CONFIRM" desc="Label of oobe fydeos local signin page, password_confirm input">
+    Confirm password
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD_CONFIRM_ERROR" desc="Error message of oobe fydeos local signin page, password_confirm input">
+    Your passwords do not match
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_NEW_LOCAL_ACCOUNT_BUTTON_TEXT" desc="Error message of oobe fydeos local signin page, password_confirm input">
+    Create a new local account
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_EXIST_LOCAL_ACCOUNT_BUTTON_TEXT" desc="Error message of oobe fydeos local signin page, password_confirm input">
+    Sign in to an existing account
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_EXIST_LOCAL_ACCOUNT_ERROR_MESSAGE" desc="Error message of oobe fydeos local signin page, password_confirm input">
+    The username or password you entered is incorrect
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_FYDE_LOCAL_SIGNIN_HTML" desc="Text shown on network error screen, suggest user to use fyde local account">
+      You can <ph name="LINK_START">$1<ex>&gt;a&lt;</ex></ph>sign in with a openFyde local account<ph name="LINK_END">$2<ex>&gt;/a&lt;</ex></ph>.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_FYDE_LOCAL_SIGNIN_HTML" desc="Text shown on network error screen, suggest user to use fyde local account">
+      You can <ph name="LINK_START">$1<ex>&gt;a&lt;</ex></ph>sign in with a FydeOS local account<ph name="LINK_END">$2<ex>&gt;/a&lt;</ex></ph>.
+    </message>
+  </if>
+  <message name="IDS_FYDEOS_ADD_USER_DUP_EMAIL_ERROR_MESSAGE" desc="error message when user want to add existed email with different account type (fydeos or google)">
+    Email <ph name="EMAIL_ADDRESS">$1</ph> already exists. Please retry with another email.
+  </message>
+  <message name="IDS_FYDEOS_USE_LOCAL_ACCOUNT_BUTTON_TEXT" desc="text on button of modal dialog in gaia_signin screen">
+    Use local account
+  </message>
+  <message name="IDS_FYDEOS_USE_ONLINE_ACCOUNT_BUTTON_TEXT" desc="text on button of modal dialog in gaia_signin screen">
+    Continue to use online account
+  </message>
+  <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_ACCOUNT_TITLE" desc="title of modal dialog in gaia_signin screen">
+    Switch to local account?
+  </message>
+  <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_1" desc="first hint message of modal dialog in gaia_signin screen">
+    If you opt to use a local account, useful features include synchronising your data and preferences across multiple devices and automatically signing in web apps using your FydeOS account will not work.
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2" desc="first hint message of modal dialog in gaia_signin screen">
+      We recommend using an online account to utilise openFyde to its fullest.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2" desc="first hint message of modal dialog in gaia_signin screen">
+      We recommend using an online account to utilise FydeOS to its fullest.
+    </message>
+  </if>
+  <message name="IDS_FYDEOS_INSTALLER_APP_NAME" desc="fydeos installer app name">
+    Installer
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_APP_DESC" desc="desc for fydeos installer">
+    This utility will help you install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> onto the internal storage of this device.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_APP_DISCLAIMER" desc="warning message">
+    Warning! This procedure is destructive and cannot be undone. Please note that we will not hold any responsibility for your potential data loss nor provide any urgent technical support, proceed at your own risk.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_FULL_DISK_INSTALLATION_TITLE" desc="title of full disk installation button">
+    Full disk installation
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_FULL_DISK_INSTALLATION_HELPER_TEXT" desc="helper text for full disk installation radio">
+    Install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> to occupy an entire hard disk, all data of the target hard disk will be wiped.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_INSTALLATION_TITLE" desc="title of dualboot installation button">
+    Multi-boot installation
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_INSTALLATION_HELPER_TEXT" desc="helper text for dualboot installation radio">
+    Install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> to an existing partition of a hard disk, where <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> can exist in parallel with other OS. All data on the target partition will be wiped.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_FULL_DISK_INSTALLATION_DISCLAIMER" desc="warning message in full disk installation page">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> will be installed on your selected hard drive; all data on the target disk will be wiped.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_TEXT_ON_INSTALL_BUTTON" desc="text on fydeos installer install button">
+    Install
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_CONFIG_DISK_SELECT_LABEL" desc="fydeos installer full disk installation, disk select label">
+    Disk
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_NORMAL_CONFIG_NO_AVAILABLE_DISK" desc="error message if no disk available">
+    No disk available
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALLING_TITLE" desc="title of fydeos installer installing page">
+    Installing...
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_TEXT_ON_SHUTDOWN_BUTTON" desc="text on shutdown button of fydeos installer">
+    Shutdown
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_SUCCESS_TITLE" desc="title for installing success, fydeos installer">
+    Installation completed
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_FAILED_TITLE" desc="title for installing failure, fydeos installer">
+    Installation failed
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_SUCCESS_MESSAGE" desc="message for installing success, fydeos installer">
+    The installation has finished successfully. Please power off your device first, then remove any installation media, and power it on again to boot <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph>.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_FAILED_MESSAGE" desc="message for installing failed, fydeos installer">
+    Oops, something has gone wrong and the installation did not complete. Please retry the process. If the same error persists, please reach out for FydeOS Support with the above log.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_INSTALLATION_DESC" desc="desc message in dualboot installation page">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> will be installed on the selected partition of your hard drive. Under the current multi-boot scheme, this could only proceed if your device supports UEFI and your hard disks are formatted with GPT.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_INSTALLATION_DISCLAIMER" desc="warning message in dualboot installation page">
+    The target partition will be wiped; you also need to specify your active EFI partition (usually done automatically) as the Installer needs to modify system boot configurations.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_CONFIG_SELECT_OS_PARTITION" desc="title of select os part">
+    Select <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> target partition
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_CONFIG_PARTITION_SELECT_LABEL" desc="os part select label">
+    Partition
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_CONFIG_SELECT_EFI_PARTITION" desc="title of select efi part">
+    Select EFI partition
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_SELECTED_DISK_HAS_NO_AVAIL_OS_PARTITION" desc="selected disk has no available os part">
+    There are no partitions available for the selected disk
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_SELECTED_DISK_HAS_NO_AVAIL_EFI_PARTITION" desc="selected disk has no available efi part">
+    There are no EFI partitions available for the selected disk
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_SELECTED_PARTITION_SIZE_SMALLER" desc="warning message if small part is selected">
+    The size of the selected partition is less than 20GB, installation may fail
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_SELECTED_PARTITION_ALREADY_INSTALLED" desc="error message if part mounted fydeos_dualboot">
+    The selected partition has been mounted to <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> multi-boot, install to it again may fail
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_MULTI_BOOT_OPTION_TITLE" desc="multi boot option title">
+    After installation, how would you like to boot <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph>?
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_REFIND_TITLE" desc="refind option title">
+    Install and configure rEFInd for me (recommended)
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_REFIND_HELPER_TEXT" desc="refind helper text">
+    rEFInd is a boot manager program that offers a nice graphical interface for OS boot options when your PC starts up, you will be able to choose your desired OS to boot with it. For more information regarding rEFInd, please refer to its homepage.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_UEFI_BOOT_TITLE" desc="uefi boot option title">
+    Add a UEFI boot menu option for me
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_UEFI_BOOT_HELPER_TEXT" desc="uefi boot helper text">
+    When your PC starts up you may be able to enter the UEFI boot options menu (most likely by pressing a hotkey), this option adds <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> as an entry to that menu. (Only supports some models of BIOS and UEFI firmware).
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_MULTI_BOOT_CONFIGURE_BY_YOURSELF_TITLE" desc="multi boot do nothing option title">
+    Do nothing here, I will configure it myself
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_MULTI_BOOT_CONFIGURE_BY_YOURSELF_HELPER_TEXT" desc="multi boot option do nothing helper text">
+    This installation script will only put necessary .efi files for booting <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> to your EFI partition, you will need to configure how to boot it by yourself.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_TEXT_ON_ABORT_BUTTON" desc="text on abort button, fydeos installer">
+    Force quit
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_ABORT_TITLE" desc="title for abort , fydeos installer">
+    Force quit
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_ABORT_MESSAGE" desc="message for abort, fydeos installer">
+    The installation process has been terminated
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_GET_DISK_INFO_FAILED" desc="Error message if get disk information failed">
+    Failed to get disk information
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_ABORTING_MESAGE" desc="aborting message for fydeos installer">
+    The installation is being terminated...
+  </message>
+  <message name="IDS_FYDEOS_OOBE_WELCOME_DISABLE_NEXT_DESC" desc="oobe welcome disable next desc">
+    We have detected that you are running this copy of FydeOS from a downloaded image file. To utilise the most comprehensive support features (including Over-The-Air updates) that FydeOS can offer, we strongly recommend you launch the “Installer” function to perform a full-disk installation of FydeOS to a separate storage device.
+  </message>
+  <message name="IDS_FYDEOS_OOBE_WELCOME_DISABLE_NEXT_CONTINUE_ANYWAY" desc="oobe welcome disable next, continue anyway">
+    You can <ph name="LINK_BEGIN">&lt;span id="continue-anyway"&gt;</ph>continue to use this copy of FydeOS anyway<ph name="LINK_END">&lt;/span&gt;</ph>, the installation process can be executed at a later stage in the system, however, all your data will be wiped after installation and you will begin again from this page.
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_LOGIN_GOOGLE_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+      You will not be able to add Google accounts because Google API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+    </message>
+    <message name="IDS_LOGIN_FYDE_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+      You will not be able to add FydeOS accounts because FydeOS API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+    </message>
+  </if>
+  <message name="IDS_FYDEOS_ADVANCED_SETTING_WIFI_DRIVER_TITLE" desc="Title of FyDEOS advanced setting wifi driver">
+    Wifi driver switch
+  </message>
+  <message name="IDS_FYDEOS_ADVANCED_SETTING_WIFI_DRIVER_HINT" desc="help message of FyDEOS advanced setting wifi driver">
+    If you have a Broadcom wifi chip, it could be possible that the default wifi driver does not work (reported on some models of Apple computers). You could try switching to an alternative (open-source) wifi driver that we have prepared specifically for these Broadcom chips.
+  </message>
+  <message name="IDS_FYDEOS_ADVANCED_SETTING_WIFI_DRIVER_HINT2" desc="help message of FyDEOS advanced setting wifi driver">
+    Note that a reboot is needed for this to work.
+  </message>
+  <message name="IDS_FYDEOS_ADVANCED_SETTING_REBOOT_REQUIRED" desc="reboot hint message after switching wifi driver">
+    A system reboot is required now for the change to be effective. Would you like to reboot now?
+  </message>
+  <message name="IDS_FYDEOS_ADVANCED_SETTING_TOUCHPAD_DRIVER_TITLE" desc="Title of FyDEOS advanced setting touchpad driver">
+    Touchpad mode
+  </message>
+  <message name="IDS_FYDEOS_ADVANCED_SETTING_TOUCHPAD_DRIVER_HINT" desc="help message of FyDEOS advanced setting touchpad driver">
+    If your touchpad does not function properly, you can change the working mode here.
+  </message>
+  <message name="IDS_FYDEOS_ADVANCED_SETTING_TOUCHPAD_DRIVER_HINT1" desc="help message of FyDEOS advanced setting touchpad driver">
+    You should be able to see the effect immediately.
+  </message>
+  <message name="IDS_OOBE_PRIVACY_SECTION_TITLE" desc="Title of fydeos privacy page">
+    Privacy statement
+  </message>
+  <message name="IDS_OOBE_PRIVACY_IFRAME_LABEL" desc="label of fydeos privacy iframe">
+    Privacy statement contents
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_MARKETING_OPT_IN_FYDEOS_IMPROVEMENT_PLAN" desc="label for fydeos improvement plan in marketing_opt_in page of oobe">
+      Join openFyde user experience improvement plan
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_MARKETING_OPT_IN_FYDEOS_IMPROVEMENT_PLAN" desc="label for fydeos improvement plan in marketing_opt_in page of oobe">
+      Join FydeOS user experience improvement plan
+    </message>
+  </if>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_RUNNING_TITLE" desc="Title of backup notification when backup is running.">
+    Creating backup file now. This may take a while; please wait…
+  </message>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FINISHED_TITLE" desc="Title of backup notification when backup is successful.">
+    Backup file was created successfully
+  </message>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FINISHED_MESSAGE" desc="Message of backup notification when backup is successful.">
+    View backup file
+  </message>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FAILED_TITLE" desc="Title of backup notification when backup is failed.">
+    Backup failed
+  </message>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FAILED_MESSAGE" desc="Message of backup notification when backup is failed.">
+    View error log
+  </message>
+</grit-part>

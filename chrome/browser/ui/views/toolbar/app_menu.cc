@@ -1263,12 +1263,10 @@ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
         bookmark_menu_ = item;
         break;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
       case IDC_FEEDBACK:
         DCHECK(!feedback_menu_item_);
         feedback_menu_item_ = item;
         break;
-#endif
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
       case IDC_TAKE_SCREENSHOT:

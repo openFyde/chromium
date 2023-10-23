@@ -151,10 +151,11 @@ void FeedbackCommon::PrepareReport(
 
   userfeedback::CommonData* common_data = feedback_data->mutable_common_data();
   // We're not using gaia ids, we're using the e-mail field instead.
-  common_data->set_gaia_id(0);
+  common_data->set_gaia_id(gaia_id());
   common_data->set_user_email(user_email());
   common_data->set_description(description());
   common_data->set_source_description_language(locale());
+  common_data->set_unique_report_identifier(unique_id());
 
   userfeedback::WebData* web_data = feedback_data->mutable_web_data();
   web_data->set_url(page_url());

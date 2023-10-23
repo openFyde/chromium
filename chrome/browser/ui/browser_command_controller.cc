@@ -773,11 +773,9 @@ bool BrowserCommandController::ExecuteCommandWithDisposition(
       TakeScreenshot();
       break;
 #endif
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
     case IDC_FEEDBACK:
       OpenFeedbackDialog(browser_, kFeedbackSourceBrowserCommand);
       break;
-#endif
     case IDC_SHOW_BOOKMARK_BAR:
       ToggleBookmarkBar(browser_);
       break;
@@ -1592,10 +1590,8 @@ void BrowserCommandController::UpdateCommandsForFullscreenMode() {
 
   // Show various bits of UI
   command_updater_.UpdateCommandEnabled(IDC_DEVELOPER_MENU, show_main_ui);
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   command_updater_.UpdateCommandEnabled(
       IDC_FEEDBACK, show_main_ui || browser_->is_type_devtools());
-#endif
   UpdateShowSyncState(show_main_ui);
 
   command_updater_.UpdateCommandEnabled(IDC_EDIT_SEARCH_ENGINES, show_main_ui);

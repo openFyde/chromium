@@ -112,6 +112,7 @@ def validateJavaScriptAllowed(source_dir, out_dir, is_ios):
       'ash/webui/file_manager/resources/labs/',
       'ash/webui/shortcut_customization_ui/',
       'ash/webui/sample_system_web_app_ui/',
+      'ash/webui/fyde_assistant_app_ui/',
       'ui/file_manager/',
   ]
   for directory in ash_directories:

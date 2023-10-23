@@ -41,6 +41,7 @@ export class ConfirmationPageElement extends ConfirmationPageElementBase {
   static get properties() {
     return {
       sendReportStatus: {type: SendReportStatus, readOnly: false, notify: true},
+      uniqueReportId: {type: String, readonly: true},
     };
   }
 
@@ -134,22 +135,32 @@ export class ConfirmationPageElement extends ConfirmationPageElementBase {
   handleLinkClicked_(e) {
     e.stopPropagation();
 
+    let url = '';
     switch (e.currentTarget.id) {
       case 'diagnostics':
         this.feedbackServiceProvider_.openDiagnosticsApp();
         this.handleEmitMetrics_(
             FeedbackAppPostSubmitAction.kOpenDiagnosticsApp);
         break;
-      case 'explore':
-        this.feedbackServiceProvider_.openExploreApp();
+      case 'help':
+        // <if expr="not use_fydeos_com">
+        url = 'https://fydeos.io/help';
+        // </if>
+        // <if expr="use_fydeos_com">
+        url = 'https://fydeos.com/help';
+        // </if>
+        window.open(`${url}?hl=${this.i18n('language') || 'en'}`, '_blank');
         this.handleEmitMetrics_(FeedbackAppPostSubmitAction.kOpenExploreApp);
         break;
-      case 'chromebookCommunity':
+      case 'fydeosCommunity':
+        // <if expr="not use_fydeos_com">
+        url = 'https://community.fydeos.io';
+        // </if>
+        // <if expr="use_fydeos_com">
+        url = 'https://community.fydeos.com';
+        // </if>
         // If app locale is not available, default to en.
-        window.open(
-            `https://support.google.com/chromebook/?hl=${
-                this.i18n('language') || 'en'}#topic=3399709`,
-            '_blank');
+        window.open(`${url}?hl=${this.i18n('language') || 'en'}`, '_blank');
         this.handleEmitMetrics_(
             FeedbackAppPostSubmitAction.kOpenChromebookCommunity);
         break;

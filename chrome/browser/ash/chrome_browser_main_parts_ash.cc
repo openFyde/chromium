@@ -278,6 +278,9 @@
 #include "ui/base/ui_base_features.h"
 #include "ui/events/ash/pref_names.h"
 #include "ui/events/event_utils.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/misc/fydeos_misc_scheduler.h"
+//---***FYDEOS END***---
 
 #if BUILDFLAG(PLATFORM_CFM)
 #include "chrome/browser/ash/chromebox_for_meetings/cfm_chrome_services.h"
@@ -542,6 +545,9 @@ class DBusServices {
     DeviceSettingsService::Get()->SetSessionManager(
         SessionManagerClient::Get(),
         OwnerSettingsServiceAshFactory::GetInstance()->GetOwnerKeyUtil());
+    //---***FYDEOS BEGIN***---
+    fydeos::misc::FydeMiscScheduler::Initialize();
+    //---***FYDEOS END***---
   }
 
   void CreateMachineLearningDecisionProvider() {
@@ -563,6 +569,9 @@ class DBusServices {
   ~DBusServices() {
     rollback_network_config::Shutdown();
     chromeos::sensors::SensorHalDispatcher::Shutdown();
+    //---***FYDEOS BEGIN***---
+    fydeos::misc::FydeMiscScheduler::Shutdown();
+    //---***FYDEOS END***---
     NetworkHandler::Shutdown();
     disks::DiskMountManager::Shutdown();
     LoginState::Shutdown();

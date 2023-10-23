@@ -13,6 +13,7 @@
 #include "ash/public/cpp/app_list/app_list_metrics.h"
 #include "ash/public/cpp/assistant/controller/assistant_controller.h"
 #include "ash/public/cpp/assistant/controller/assistant_suggestions_controller.h"
+#include "ash/public/cpp/resources/grit/ash_public_unscaled_resources.h"
 #include "ash/strings/grit/ash_strings.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/ash/app_list/search/chrome_search_result.h"
@@ -22,6 +23,9 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "chrome/grit/theme_resources.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace app_list {
 
@@ -36,6 +40,9 @@ constexpr char kIdPrefix[] = "googleassistant_text://";
 // Returns if the Assistant omnibox search provider is allowed to contribute
 // results.
 bool AreResultsAllowed() {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    return true;
+  }
   ash::AssistantState* assistant_state = ash::AssistantState::Get();
   return assistant_state->allowed_state() == AssistantAllowedState::ALLOWED &&
          assistant_state->settings_enabled() == true;
@@ -59,8 +66,7 @@ class AssistantTextSearchResult : public ChromeSearchResult {
     SetAccessibleName(l10n_util::GetStringFUTF16(
         IDS_ASH_ASSISTANT_QUERY_ACCESSIBILITY_ANNOUNCEMENT, text));
     SetIcon(IconInfo(
-        gfx::CreateVectorIcon(chromeos::kAssistantIcon, kSystemIconDimension,
-                              gfx::kPlaceholderColor),
+        ui::ResourceBundle::GetSharedInstance().GetImageNamed(IDR_FYDEOS_AI_ICON_40).AsImageSkia(),
         kSystemIconDimension));
 
     SetSkipUpdateAnimation(true);

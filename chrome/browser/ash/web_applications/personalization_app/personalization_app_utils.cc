@@ -69,6 +69,9 @@ bool CanSeeWallpaperOrPersonalizationApp(const Profile* profile) {
     case user_manager::USER_TYPE_WEB_KIOSK_APP:
       return false;
     case user_manager::USER_TYPE_REGULAR:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
     case user_manager::USER_TYPE_CHILD:
     case user_manager::USER_TYPE_GUEST:
     // Public account users must be able to see personalization app since retail

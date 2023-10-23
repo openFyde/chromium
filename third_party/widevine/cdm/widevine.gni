@@ -12,7 +12,8 @@ declare_args() {
   # on Android. For Fuchsia, see crbug.com/1354347.
   # Can be optionally enabled in Chromium on non-Android platforms. Please see
   # //src/third_party/widevine/LICENSE file for details.
-  enable_widevine = (is_chrome_branded && !is_fuchsia) || is_android
+  # enable_widevine = (is_chrome_branded && !is_fuchsia) || is_android
+  enable_widevine = true
 }
 
 # Disable Widevine when running linux-chromeos.
@@ -55,7 +56,8 @@ assert(!enable_media_foundation_widevine_cdm || enable_widevine)
 
 declare_args() {
   # Widevine CDM is bundled as part of Google Chrome builds.
-  bundle_widevine_cdm = enable_library_widevine_cdm && is_chrome_branded
+  # bundle_widevine_cdm = enable_library_widevine_cdm && is_chrome_branded
+  bundle_widevine_cdm = true
 
   # Relative root directory to //third_party/widevine/cdm for CDM files.
   # Can be overridden if the CDM files are located in other places.

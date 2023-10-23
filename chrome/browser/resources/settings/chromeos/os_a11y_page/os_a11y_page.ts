@@ -192,9 +192,10 @@ export class OsSettingsA11yPageElement extends OsSettingsA11yPageElementBase {
     }
   }
 
-  private shouldShowAdditionalFeaturesLink_(isKiosk: boolean, isGuest: boolean):
+  private shouldShowAdditionalFeaturesLink_(_unused_isKiosk: boolean, _unused_isGuest: boolean):
       boolean {
-    return !isKiosk && !isGuest;
+    // return !isKiosk && !isGuest;
+    return false;
   }
 
   private onScreenReaderStateChanged_(hasScreenReader: boolean): void {

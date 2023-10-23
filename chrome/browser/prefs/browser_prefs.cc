@@ -434,6 +434,7 @@
 #include "components/onc/onc_pref_names.h"
 #include "components/quirks/quirks_manager.h"
 #include "extensions/browser/api/lock_screen_data/lock_screen_item_storage.h"
+#include "fydeos/prefs/fydeos_prefs.h"
 
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 
@@ -1312,6 +1313,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
   quirks::QuirksManager::RegisterPrefs(registry);
   UpgradeDetectorChromeos::RegisterPrefs(registry);
   RegisterNearbySharingLocalPrefs(registry);
+  fydeos::prefs::RegisterLocalStatePrefs(registry);
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 
 #if BUILDFLAG(IS_CHROMEOS)
@@ -1670,6 +1672,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
   file_manager::prefs::RegisterProfilePrefs(registry);
   bruschetta::prefs::RegisterProfilePrefs(registry);
   wallpaper_handlers::prefs::RegisterProfilePrefs(registry);
+  fydeos::prefs::RegisterProfilePrefs(registry);
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 
 #if BUILDFLAG(IS_CHROMEOS_LACROS)

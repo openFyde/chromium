@@ -282,7 +282,7 @@ void ChromeBrowserCloudManagementControllerDesktop::StartInvalidations() {
               base::RetainedRef(
                   g_browser_process->shared_url_loader_factory())),
           device_instance_id_driver_.get(), g_browser_process->local_state(),
-          policy::kPolicyFCMInvalidationSenderID);
+          policy::GetPolicyFCMInvalidationSenderID());
   invalidation_service_->Init();
 
   policy_invalidator_ = std::make_unique<CloudPolicyInvalidator>(

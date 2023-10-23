@@ -12,8 +12,8 @@
 </style>
 <main id="main" aria-label="$i18n{myImagesLabel}" tabindex="-1">
   <iron-list
-      items="[[imagesToDisplay_]]" grid role="listbox"
-      aria-setsize$="[[imagesToDisplay_.length]]">
+      items="[[finalImagesToDisplay_]]" grid role="listbox"
+      aria-setsize$="[[finalImagesToDisplay_.length]]">
     <template>
       <wallpaper-grid-item
           aria-label$="[[getAriaLabel_(item, imageDataLoading_)]]"

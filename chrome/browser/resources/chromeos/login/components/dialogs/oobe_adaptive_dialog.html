@@ -103,6 +103,11 @@ found in the LICENSE file.
     margin: 0;
     text-align: var(--oobe-text-alignment);
   }
+  :host([fydeos-layout]) #oobe-title ::slotted(h1) {
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 40px;
+  }
 
   #oobe-subtitle ::slotted(*) {
     color: var(--oobe-subheader-text-color);
@@ -113,6 +118,11 @@ found in the LICENSE file.
     margin: 0;
     overflow-wrap: break-word;
     text-align: var(--oobe-text-alignment);
+  }
+  :host([fydeos-layout]) #oobe-subtitle ::slotted(*) {
+    font-size: 16px;
+    line-height: 24px;
+    color: #999999;
   }
 
   #main-container {
@@ -161,6 +171,10 @@ found in the LICENSE file.
   #oobe-title {
     padding-top: var(--oobe-adaptive-dialog-title-top-padding);
   }
+  :host([fydeos-layout]) #oobe-title {
+    padding-top: 0;
+    color: black;
+  }
 
   #oobe-progress ::slotted(paper-progress) {
     /* TODO(https://crbug.com/1320715) Revise the colors */
@@ -169,6 +183,11 @@ found in the LICENSE file.
     height: 4px;
     margin-top: 32px;
     width: 100%;
+  }
+
+  :host-context(body.fydeos) #oobe-progress ::slotted(paper-progress) {
+    --paper-progress-active-color: var(--cros-slider-fydeos-color-active);
+    --paper-progress-container-color: var(--cros-slider-track-fydeos-color-active);
   }
 
   #oobe-subtitle {
@@ -219,6 +238,28 @@ found in the LICENSE file.
     --iron-icon-width: var(--oobe-adaptive-dialog-icon-size);
     --iron-icon-fill-color: var(--cros-icon-color-blue);
   }
+
+  :host-context(body.fydeos) #oobe-icon-div ::slotted(hd-iron-icon),
+  :host-context(body.fydeos) #oobe-icon-div ::slotted(iron-icon) {
+    --iron-icon-fill-color: var(--cros-icon-fydeos-color-pink);
+  }
+
+  :host([fydeos-layout]) #oobe-illustration-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :host([fydeos-layout]) #oobe-illustration-container ::slotted(img) {
+    height: 100%;
+    width: 100%;
+  }
+
+  :host([fydeos-layout]) #pageAnimations {
+    height: 100%;
+  }
+
 </style>
 <cr-lazy-render id="lazy">
   <template>
@@ -227,6 +268,7 @@ found in the LICENSE file.
     </div>
     <div id="main-container" class="layout vertical flex">
       <div id="header-container">
+        <template is="dom-if" if="[[!fydeosLayout]]">
         <div id="oobe-icon-div" class="vertical-mode-centering">
           <slot name="icon"></slot>
         </div>
@@ -239,10 +281,30 @@ found in the LICENSE file.
         <div id="oobe-subtitle" class="vertical-mode-centering">
           <slot name="subtitle"></slot>
         </div>
+        </template>
+        <div id="oobe-illustration-container" hidden="[[!fydeosLayout]]" class="vertical-mode-centering">
+          <oobe-cr-lottie id="pageAnimations"
+            hidden="[[!animationUrl]]"
+            animation-url="[[animationUrl]]"
+            autoplay single-loop="[[!loopAnimation]]">
+          </oobe-cr-lottie>
+          <slot name="illustration" hidden="[[animationUrl]]"></slot>
+        </div>
       </div>
       <div id="scrollContainer" class="layout vertical flex scrollable"
           on-scroll="applyScrollClassTags_">
         <div id="contentContainer" class="layout vertical flex">
+          <template is="dom-if" if="[[fydeosLayout]]">
+          <div id="oobe-title" class="vertical-mode-centering">
+              <slot name="title"></slot>
+          </div>
+          <div id="oobe-subtitle" class="vertical-mode-centering">
+            <slot name="subtitle"></slot>
+          </div>
+          <div id="oobe-progress" class="vertical-mode-centering">
+            <slot name="progress"></slot>
+          </div>
+          </template>
           <slot name="content"></slot>
         </div>
         <div id="readMoreButtonContainer">

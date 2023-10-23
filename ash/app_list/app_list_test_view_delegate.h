@@ -61,6 +61,7 @@ class AppListTestViewDelegate : public AppListViewDelegate,
   // AppListViewDelegate overrides:
   bool KeyboardTraversalEngaged() override;
   void StartAssistant() override {}
+  void CloseAssistant() override {}
   void StartSearch(const std::u16string& raw_query) override {}
   void StartZeroStateSearch(base::OnceClosure callback,
                             base::TimeDelta timeout) override;

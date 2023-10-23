@@ -26,6 +26,8 @@
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/signin/public/identity_manager/account_managed_status_finder.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/account_constants.h"
 
 namespace policy {
 
@@ -69,6 +71,20 @@ void BrowserPolicyConnector::Shutdown() {
   device_management_service_.reset();
 }
 
+// ---***FYDEOS BEGIN***---
+void BrowserPolicyConnector::ResetDeviceManagementServiceConfiguration(std::unique_ptr<DeviceManagementService::Configuration> configuration) {
+  if (!device_management_service_) return;
+
+  const DeviceManagementService::Configuration* current_config = device_management_service_->configuration();
+  if (configuration->GetDMServerUrl() == current_config->GetDMServerUrl()) {
+    return;
+  }
+
+  VLOG(2) << "replace device management service configuration";
+  device_management_service_->ResetConfiguration(std::move(configuration));
+}
+// ---***FYDEOS END***---
+
 void BrowserPolicyConnector::ScheduleServiceInitialization(
     int64_t delay_milliseconds) {
   // Skip device initialization if the BrowserPolicyConnector was never
@@ -91,16 +107,28 @@ bool BrowserPolicyConnector::ProviderHasPolicies(
 }
 
 std::string BrowserPolicyConnector::GetDeviceManagementUrl() const {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return GetUrlOverride(fydeos::switches::kFydeOSDeviceManagementUrl,
+                          fydeos::constants::kDefaultFydeOSDeviceManagementServerUrl);
+  }
   return GetUrlOverride(switches::kDeviceManagementUrl,
                         kDefaultDeviceManagementServerUrl);
 }
 
 std::string BrowserPolicyConnector::GetRealtimeReportingUrl() const {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return GetUrlOverride(fydeos::switches::kFydeOSRealtimeReportingUrl,
+                          fydeos::constants::kDefaultFydeOSRealtimeReportingServerUrl);
+  }
   return GetUrlOverride(switches::kRealtimeReportingUrl,
                         kDefaultRealtimeReportingServerUrl);
 }
 
 std::string BrowserPolicyConnector::GetEncryptedReportingUrl() const {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return GetUrlOverride(fydeos::switches::kFydeOSEncryptedReportingUrl,
+                          fydeos::constants::kDefaultFydeOSEncryptedReportingServerUrl);
+  }
   return GetUrlOverride(switches::kEncryptedReportingUrl,
                         kDefaultEncryptedReportingServerUrl);
 }

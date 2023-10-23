@@ -42,6 +42,7 @@ import {routes} from '../os_settings_routes.js';
 import {Route, Router} from '../router.js';
 
 import {AboutPageBrowserProxy, AboutPageBrowserProxyImpl, AboutPageUpdateInfo, BrowserChannel, browserChannelToI18nId, RegulatoryInfo, TpmFirmwareUpdateStatusChangedEvent, UpdateStatus, UpdateStatusChangedEvent} from './about_page_browser_proxy.js';
+import {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './popup_license_window.js';
 import {getTemplate} from './os_about_page.html.js';
 
 declare global {
@@ -88,6 +89,7 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
           powerwash: false,
           status: UpdateStatus.UPDATED,
         },
+        observer: 'handleUpdateStatusHttpFailed_',
       },
 
       /**
@@ -185,7 +187,18 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
       showCheckUpdates_: {
         type: Boolean,
         computed: 'computeShowCheckUpdates_(' +
-            'currentUpdateStatusEvent_, hasCheckedForUpdates_, hasEndOfLife_)',
+            'currentUpdateStatusEvent_, hasCheckedForUpdates_, hasEndOfLife_, renewalStatus_)',
+      },
+
+      showFirmwareUpdatesApp_: {
+        type: Boolean,
+        value: false,
+      },
+
+      showRenewLearnMore_: {
+        type: Boolean,
+        value: false,
+        computed: 'computeShowRenewLearnMore_(renewalStatus_)',
       },
 
       focusConfig_: {
@@ -239,6 +252,21 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
           Setting.kFirmwareUpdates,
         ]),
       },
+      // ---***FYDEOS BEGIN***---
+      isOwner_: {
+        type: Boolean,
+        value: true,
+      },
+      fydeOTAToggleState_: {
+        type: Boolean,
+        value: true,
+      },
+
+      renewalStatus_: {
+        type: String,
+        value: RenewalStatus.OK,
+      },
+      // ---***FYDEOS END***---
     };
   }
 
@@ -246,7 +274,7 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
     return [
       'updateShowUpdateStatus_(hasEndOfLife_, currentUpdateStatusEvent_,' +
           'hasCheckedForUpdates_)',
-      'updateShowButtonContainer_(showRelaunch_, showCheckUpdates_)',
+      'updateShowButtonContainer_(showRelaunch_, showCheckUpdates_, showRenewLearnMore_)',
       'handleCrostiniEnabledChanged_(prefs.crostini.enabled.value)',
     ];
   }
@@ -282,10 +310,18 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
 
   private aboutBrowserProxy_: AboutPageBrowserProxy;
 
+  private isOwner_: boolean;
+  private fydeOTAToggleState_: boolean;
+  private renewalStatus_: string;
+  private popupLicenseWindow_: PopupLicenseWindowProxy;
+  private showRenewLearnMore_: boolean;
+
   constructor() {
     super();
 
     this.aboutBrowserProxy_ = AboutPageBrowserProxyImpl.getInstance();
+
+    this.popupLicenseWindow_ = PopupLicenseWindowProxyImpl.getInstance();
   }
 
   override connectedCallback() {
@@ -328,6 +364,10 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
         'true') {
       this.onCheckUpdatesClick_();
     }
+
+    this.popupLicenseWindow_.init();
+
+    this.fydeOTAToggleInit_();
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
@@ -411,6 +451,15 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
     recordSettingChange();
     LifetimeBrowserProxyImpl.getInstance().relaunch();
   }
+  private onRenewLearnMoreClick_() {
+    if (this.checkRenewalStatus_(RenewalStatus.LICENSE_EXPIRED)) {
+      this.popupLicenseWindow_.popupRenew();
+    } else if (this.checkRenewalStatus_(RenewalStatus.SINGLE_UPGRADE)) {
+      this.popupLicenseWindow_.popupUpgrade();
+    }
+    this.renewalStatus_ = RenewalStatus.OK;
+    this.hasCheckedForUpdates_ = false;
+  }
 
   private updateShowUpdateStatus_() {
     // Do not show the "updated" status or error states from a previous update
@@ -442,7 +491,7 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
    * container displays an unwanted border (see separator class).
    */
   private updateShowButtonContainer_() {
-    this.showButtonContainer_ = this.showRelaunch_ || this.showCheckUpdates_;
+    this.showButtonContainer_ = this.showRelaunch_ || this.showCheckUpdates_ || this.showRenewLearnMore_;
 
     // Check if we have yet to focus the check for update button.
     if (!this.isPendingOsUpdateDeepLink_) {
@@ -466,6 +515,19 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
 
   private shouldShowFirmwareUpdatesBadge_(): boolean {
     return this.firmwareUpdateCount_ > 0;
+  }
+
+  private getAbnormalRenewalStatusMessage_(): TrustedHTML {
+    switch (this.renewalStatus_) {
+      case RenewalStatus.CHECKING:
+        return this.i18nAdvanced('aboutUpgradeCheckStarted');
+      case RenewalStatus.SINGLE_UPGRADE:
+        return this.i18nAdvanced('aboutFydeOSOtaDisallowedRequiresOneTimePayment');
+      case RenewalStatus.LICENSE_EXPIRED:
+        return this.i18nAdvanced('aboutFydeOSOtaDisallowedByLicenseValidation');
+      default:
+        return this.i18nAdvanced('aboutUpgradeTryAgain');
+    }
   }
 
   private getUpdateStatusMessage_(): TrustedHTML {
@@ -516,6 +578,9 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
         }
         return this.i18nAdvanced('aboutUpgradeUpdating');
       case UpdateStatus.FAILED_HTTP:
+        if (!this.isNormalRenewalStatus_()) {
+          return this.getAbnormalRenewalStatusMessage_();
+        }
         return this.i18nAdvanced('aboutUpgradeTryAgain');
       case UpdateStatus.FAILED_DOWNLOAD:
         return this.i18nAdvanced('aboutUpgradeDownloadError');
@@ -542,6 +607,10 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
     // ignore UpdateStatus.
     if (this.hasEndOfLife_) {
       return 'os-settings:end-of-life';
+    }
+
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) {
+      return null;
     }
 
     switch (this.currentUpdateStatusEvent_.status) {
@@ -578,6 +647,11 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
     if (this.hasEndOfLife_) {
       return null;
     }
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) {
+      return this.isDarkModeActive_ ?
+          'chrome://resources/images/throbber_small_dark.svg' :
+          'chrome://resources/images/throbber_small.svg';
+    }
 
     switch (this.currentUpdateStatusEvent_.status) {
       case UpdateStatus.CHECKING:
@@ -592,6 +666,15 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
 
   private checkStatus_(status: UpdateStatus): boolean {
     return this.currentUpdateStatusEvent_.status === status;
+  }
+
+  private checkRenewalStatus_(status: string): boolean {
+    return this.renewalStatus_ === status;
+  }
+
+  private isNormalRenewalStatus_() {
+    // if 'failed', we'd better not bother showing the message.
+    return this.checkRenewalStatus_(RenewalStatus.OK) || this.checkRenewalStatus_(RenewalStatus.FAILED);
   }
 
   private onManagementPageClick_() {
@@ -635,6 +718,9 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
     if (this.hasEndOfLife_) {
       return false;
     }
+    if (!this.isNormalRenewalStatus_()) {
+      return false;
+    }
 
     // Enable the update button if we are in a stale 'updated' status or
     // update has failed. Disable it otherwise.
@@ -644,6 +730,10 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
         this.checkStatus_(UpdateStatus.FAILED_HTTP) ||
         this.checkStatus_(UpdateStatus.FAILED_DOWNLOAD) ||
         this.checkStatus_(UpdateStatus.DISABLED_BY_ADMIN);
+  }
+
+  computeShowRenewLearnMore_() {
+    return this.checkRenewalStatus_(RenewalStatus.LICENSE_EXPIRED) || this.checkRenewalStatus_(RenewalStatus.SINGLE_UPGRADE);
   }
 
   /**
@@ -656,11 +746,55 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
         this.i18nAdvanced('aboutProductOsLicense');
   }
 
+  private handleUpdateStatusHttpFailed_(event: UpdateStatusChangedEvent, oldEvent: UpdateStatusChangedEvent) {
+    if (!event || !oldEvent) return;
+    if (oldEvent.status === event.status) {
+      return;
+    }
+    const { status } = event;
+    if (status !== UpdateStatus.FAILED_HTTP) {
+      return;
+    }
+    if (!this.hasCheckedForUpdates_) return;
+    this.fetchRenewalStatus_();
+  }
+
+  private fetchRenewalStatus_() {
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) return;
+    this.renewalStatus_ = RenewalStatus.CHECKING;
+    const controller_appid = 'mofiofjpikncjaigmdlblhojbnkabako';
+    const command = 'get_license_renew_state';
+    try {
+      chrome.runtime.sendMessage(controller_appid, { command }, (response: any) => {
+        if (!this.checkStatus_(UpdateStatus.FAILED_HTTP)) {
+          // ota status is changed, not failed_http any more, do inothing here
+          this.renewalStatus_ = RenewalStatus.OK;
+          return;
+        }
+        if (!response || response.state !== 'OK' || !response.data) {
+          this.renewalStatus_ = RenewalStatus.FAILED;
+          return;
+        }
+        const state = response.data ? response.data.state : '';
+        if (state === 'licenseSingleUpgrade') {
+          this.renewalStatus_ = RenewalStatus.SINGLE_UPGRADE;
+        } else if (state === 'licenseExpired') {
+          this.renewalStatus_ = RenewalStatus.LICENSE_EXPIRED;
+        } else {
+          this.renewalStatus_ = RenewalStatus.OK;
+        }
+      });
+    } catch (e) {
+      this.renewalStatus_ = RenewalStatus.FAILED;
+    }
+  }
+
   /**
    * @param enabled True if Crostini is enabled.
    */
   private handleCrostiniEnabledChanged_(enabled: boolean) {
-    this.showCrostiniLicense_ = enabled && this.showCrostini;
+    const force_disable = true;
+    this.showCrostiniLicense_ = !force_disable && enabled && this.showCrostini;
   }
 
   private shouldShowSafetyInfo_(): boolean {
@@ -706,7 +840,6 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
         });
   }
 
-  // <if expr="_google_chrome">
   private onReportIssueClick_() {
     this.aboutBrowserProxy_.openFeedbackDialog();
   }
@@ -716,13 +849,64 @@ class OsSettingsAboutPageElement extends OsSettingsAboutPageBaseElement {
         this.i18n('aboutSendFeedback') :
         this.i18n('aboutReportAnIssue');
   }
-  // </if>
 
   private shouldShowIcons_(): boolean {
     if (this.hasEndOfLife_) {
       return true;
     }
     return this.showUpdateStatus_;
+  }
+
+  getFydeOSVersion_() {
+    return this.i18nAdvanced('aboutFydeOSVersion');
+  }
+
+  fydeOTAToggleInit_() {
+    this.aboutBrowserProxy_.getEnabledFydeOTA().then(enabled => {
+      console.log('getEnabledFydeOTA', enabled);
+      this.fydeOTAToggleState_ = enabled;
+    });
+    this.addWebUiListener(
+        'fyde-ota-enabled-changed',
+        this.onFydeOSOTASwitchChanged_.bind(this));
+  }
+
+  onFydeOSOTASwitchChanged_(enabled: boolean) {
+    console.log('onFydeOSOTASwitchChanged_', enabled);
+    this.fydeOTAToggleState_ = enabled;
+  }
+
+  /*
+  created() {
+    chrome.usersPrivate.getCurrentUser(user => {
+      console.log('user', user);
+      this.isOwner_ = user.isOwner;
+    });
+  }
+  */
+
+  onEnableFydeOTAChange_() {
+    this.fydeOTAToggleState_ = !this.fydeOTAToggleState_;
+    console.log('onEnableFydeOTAChange_', this.fydeOTAToggleState_);
+    this.aboutBrowserProxy_.enableFydeOTA(this.fydeOTAToggleState_);
+  }
+
+  fydeosOTAStateMessage_() {
+    if (this.fydeOTAToggleState_) {
+      return this.i18nAdvanced('aboutFydeOsUpdateEnabled');
+    } else {
+      // return isOwner ? 'OTA disabled' : "Device owner disabled OTA";
+      return this.i18nAdvanced('aboutFydeOsUpdateDisabled');
+    }
+  }
+
+  canToggleFydeOTA_() {
+    return this.isOwner_ && !(
+      this.currentUpdateStatusEvent_.status === UpdateStatus.CHECKING ||
+      this.currentUpdateStatusEvent_.status === UpdateStatus.UPDATING ||
+      this.currentUpdateStatusEvent_.status === UpdateStatus.DISABLED ||
+      this.currentUpdateStatusEvent_.status === UpdateStatus.DISABLED_BY_ADMIN
+    ) && this.currentUpdateStatusEvent_.progress === 0;
   }
 }
 

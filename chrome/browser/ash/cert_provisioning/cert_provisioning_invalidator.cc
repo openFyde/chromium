@@ -204,7 +204,7 @@ void CertProvisioningUserInvalidator::Register(
   DCHECK(invalidation_provider);
   invalidation::InvalidationService* invalidation_service =
       invalidation_provider->GetInvalidationServiceForCustomSender(
-          policy::kPolicyFCMInvalidationSenderID);
+          policy::GetPolicyFCMInvalidationSenderID());
   DCHECK(invalidation_service);
 
   invalidation_handler_ =

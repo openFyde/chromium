@@ -58,7 +58,9 @@ enum class QsFeatureCatalogName {
   kDarkMode = 14,
   kShelfParty = 15,
   kAutozoom = 16,
-  kMaxValue = kAutozoom
+  kRotateScreen = 17,
+  kSwitchLaptopTablet = 18,
+  kMaxValue = kSwitchLaptopTablet
 };
 
 // A catalog that registers all the sliders on the Quick Settings page (also

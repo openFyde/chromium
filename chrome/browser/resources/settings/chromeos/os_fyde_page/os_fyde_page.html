@@ -1,0 +1,30 @@
+<style include="cr-shared-style settings-shared os-settings-page-styles">
+  :host(.showing-subpage) .fydeos-settings-section-wrapper {
+    display: none
+  }
+</style>
+<os-settings-section page-title="$i18n{fydeosSettingsAccountTitle}" section="fydeosAccount" hidden="[[!isFydeAccount_]]">
+  <os-settings-fydeos-account>
+  </os-settings-fydeos-account>
+</os-settings-section>
+<!-- <os-settings-fydeos-drivers class="fydeos-settings-section-wrapper"></os-settings-fydeos-drivers> -->
+<os-settings-section page-title="$i18n{fydeosSettingsRemoteAssistanceTitle}" section="remoteAssistance">
+  <os-settings-fydeos-remoting>
+  </os-settings-fydeos-remoting>
+</os-settings-section>
+<os-settings-section page-title="$i18n{fydeosSettingsOtherTweaksTitle}" section="tweakUI"
+                     hidden="[[!showFydeOsTweakUi_(showToggleRebootButtonInTray, showToggleRotateScreenButton, showToggleSwitchTabletLaptopButton)]]">
+  <os-settings-fydeos-tweak-ui
+    show-toggle-rotate-screen-button="[[showToggleRotateScreenButton]]"
+    show-toggle-reboot-button-in-tray="[[showToggleRebootButtonInTray]]"
+    show-toggle-switch-tablet-laptop-button="[[showToggleSwitchTabletLaptopButton]]">
+  </os-settings-fydeos-tweak-ui>
+</os-settings-section>
+<os-settings-fydeos-experiment class="fydeos-settings-section-wrapper"></os-settings-fydeos-experiment>
+<os-settings-section page-title="$i18n{fydeosSettingsMoreInfoTitle}" section="moreInfo">
+  <os-settings-fydeos-more-info>
+  </os-settings-fydeos-more-info>
+</os-settings-section>
+<if expr="_google_chrome">
+<div>this is a test for build tools</div>
+</if>

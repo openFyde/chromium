@@ -54,6 +54,10 @@ class OsInstallScreenHandler : public BaseScreenHandler,
   void DeclareLocalizedValues(
       ::login::LocalizedValuesBuilder* builder) override;
 
+  void GetAdditionalParameters(base::Value::Dict* parameters) override;
+  void DeclareFydeInstallerLocalizedValues(
+      ::login::LocalizedValuesBuilder* builder);
+
   // OsInstallScreenView:
   void Show() override;
   void ShowStep(const char* step) override;

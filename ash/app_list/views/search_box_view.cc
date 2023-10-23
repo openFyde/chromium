@@ -26,6 +26,7 @@
 #include "ash/public/cpp/app_list/app_list_types.h"
 #include "ash/public/cpp/app_list/vector_icons/vector_icons.h"
 #include "ash/public/cpp/wallpaper/wallpaper_types.h"
+#include "ash/public/cpp/resources/grit/ash_public_unscaled_resources.h"
 #include "ash/resources/vector_icons/vector_icons.h"
 #include "ash/search_box/search_box_constants.h"
 #include "ash/strings/grit/ash_strings.h"
@@ -57,6 +58,8 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -505,8 +508,10 @@ void SearchBoxView::OnThemeChanged() {
                             button_icon_color));
   assistant_button()->SetImage(
       views::ImageButton::STATE_NORMAL,
-      gfx::CreateVectorIcon(chromeos::kAssistantIcon, GetSearchBoxIconSize(),
-                            button_icon_color));
+      gfx::ImageSkiaOperations::CreateResizedImage(
+        ui::ResourceBundle::GetSharedInstance()
+          .GetImageNamed(IDR_FYDEOS_AI_ICON_40).AsImageSkia(),
+        skia::ImageOperations::RESIZE_BEST, gfx::Size(GetSearchBoxIconSize(), GetSearchBoxIconSize())));
   auto* focus_ring = views::FocusRing::Get(assistant_button());
   focus_ring->SetColorId(GetFocusColorId(is_jelly_enabled_));
 

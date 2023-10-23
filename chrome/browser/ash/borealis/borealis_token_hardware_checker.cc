@@ -33,6 +33,11 @@ BorealisTokenHardwareChecker::BorealisTokenHardwareChecker(Data data)
 BorealisTokenHardwareChecker::~BorealisTokenHardwareChecker() = default;
 
 AllowStatus BorealisTokenHardwareChecker::Check() const {
+  if (!IsBoard("")) {
+    LOG(INFO) << "bypassing hardware checks.";
+    VLOG(2) << GetDebugString();
+    return AllowStatus::kAllowed;
+  }
   // Get the status from the board's perspective, based on some combination of
   // tokens and hardware/model checks.
   AllowStatus per_board_status = BoardSpecificChecks();

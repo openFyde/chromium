@@ -28,7 +28,7 @@ import {WithPersonalizationStore} from '../personalization_store.js';
 import {getCountText, isImageDataUrl, isNonEmptyArray, isSelectionEvent} from '../utils.js';
 
 import {DefaultImageSymbol, kDefaultImageSymbol, kMaximumLocalImagePreviews} from './constants.js';
-import {getLoadingPlaceholderAnimationDelay, getLoadingPlaceholders, getPathOrSymbol} from './utils.js';
+import {getLoadingPlaceholderAnimationDelay, getLoadingPlaceholders, getPathOrSymbol, toggleLightDarkImagePath} from './utils.js';
 import {getTemplate} from './wallpaper_collections_element.html.js';
 import {initializeBackdropData} from './wallpaper_controller.js';
 import {WallpaperGridItemSelectedEvent} from './wallpaper_grid_item_element.js';
@@ -164,13 +164,36 @@ function getLocalTile(
 
   const imagesToDisplay = getImages(localImages, localImageData);
 
+  let pairCount = 0;
+  const handledImages: Array<string|DefaultImageSymbol> = [];
+  for (let i = 0; i < localImages.length; i++) {
+    const image = localImages[i];
+    const key = getPathOrSymbol(image);
+    if (handledImages.includes(key)) {
+      continue;
+    }
+    const pairPath = toggleLightDarkImagePath(image);
+    if (!pairPath) {
+      handledImages.push(key);
+      continue;
+    }
+    const find = localImages.find((item) => getPathOrSymbol(item) === pairPath);
+    if (find) {
+      pairCount += 1;
+      handledImages.push(key);
+      handledImages.push(pairPath);
+    } else {
+      handledImages.push(key);
+    }
+  }
+
   // Count all images that failed to load and subtract them from "My Images"
   // count.
   const failureCount = Object.values(localImageData).reduce((result, next) => {
     return !isImageDataUrl(next) ? result + 1 : result;
   }, 0);
 
-  const successCount = localImages.length - failureCount;
+  const successCount = localImages.length - failureCount - pairCount;
 
   return {
     count: getCountText(successCount),

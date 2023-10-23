@@ -40,6 +40,7 @@ import {FilesAlertDialog} from './files_alert_dialog.js';
 import {FilesConfirmDialog} from './files_confirm_dialog.js';
 import {FilesMenuItem} from './files_menu.js';
 import {GearMenu} from './gear_menu.js';
+import {FydeDropView} from './fydedrop_view.js';
 import {ImportCrostiniImageDialog} from './import_crostini_image_dialog.js';
 import {InstallLinuxPackageDialog} from './install_linux_package_dialog.js';
 import {ListContainer} from './list_container.js';
@@ -277,6 +278,16 @@ export class FileManagerUI {
      * @type {DirectoryTree}
      */
     this.directoryTree = null;
+
+    //---***FYDEOS BEGIN***---
+    /**
+     * FydeDrop view.
+     * @type {!FydeDropView}
+     * @const
+     */
+    this.fydeDropView =
+        new FydeDropView(queryRequiredElement('#fydedrop-view', this.element));
+    //---***FYDEOS END***---
 
     /**
      * Progress center panel.

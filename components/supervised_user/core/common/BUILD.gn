@@ -30,6 +30,7 @@ static_library("common") {
     "//components/prefs",
     "//components/url_matcher:url_matcher",
     "//url",
+    "//fydeos/switches",
   ]
 }
 

@@ -91,6 +91,7 @@
 #if !defined(OFFICIAL_BUILD)
 #include "chrome/browser/ash/web_applications/sample_system_web_app_info.h"
 #endif  // !defined(OFFICIAL_BUILD)
+#include "chrome/browser/ash/web_applications/fyde_assistant_app_info.h"
 
 namespace ash {
 
@@ -142,6 +143,7 @@ SystemWebAppDelegateMap CreateSystemWebApps(Profile* profile) {
 #if !defined(OFFICIAL_BUILD)
   info_vec.push_back(std::make_unique<SampleSystemAppDelegate>(profile));
 #endif  // !defined(OFFICIAL_BUILD)
+  info_vec.push_back(std::make_unique<FydeAssistantAppDelegate>(profile));
 
   SystemWebAppDelegateMap delegate_map;
   for (auto& info : info_vec) {

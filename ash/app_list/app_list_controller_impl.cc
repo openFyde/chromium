@@ -71,6 +71,7 @@
 #include "chromeos/ui/wm/features.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "fydeos/switches/misc/misc_switches.h"
 #include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/layer_animation_sequence.h"
@@ -1118,6 +1119,19 @@ void AppListControllerImpl::StartAssistant() {
       AssistantEntryPoint::kLauncherSearchBoxIcon);
 }
 
+void AppListControllerImpl::CloseAssistant() {
+  if (!IsTabletMode()) {
+    if (bubble_presenter_) {
+      bubble_presenter_->BackOrExit();
+    }
+    return;
+  }
+  if (fullscreen_presenter_) {
+    UpdateFullscreenLauncherContainer();
+    AssistantUiController::Get()->CloseUi(AssistantExitPoint::kBackInLauncher);
+  }
+}
+
 void AppListControllerImpl::StartSearch(const std::u16string& raw_query) {
   if (client_) {
     std::u16string query;
@@ -1633,7 +1647,7 @@ SearchModel* AppListControllerImpl::GetSearchModel() {
 
 void AppListControllerImpl::UpdateSearchBoxUiVisibilities() {
   GetSearchModel()->search_box()->SetShowAssistantButton(
-      IsAssistantAllowedAndEnabled());
+      IsAssistantAllowedAndEnabled() || fydeos::switches::IsFydeCustomEnabled());
 
   if (!client_) {
     return;

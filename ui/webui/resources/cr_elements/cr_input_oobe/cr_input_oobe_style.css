@@ -1,0 +1,95 @@
+/* Copyright 2022 The Chromium Authors
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file. */
+
+/* #css_wrapper_metadata_start
+ * #type=style
+ * #import=../cr_shared_vars.css.js
+ * #css_wrapper_metadata_end */
+
+      :host {
+        --cr-input-background-color: var(--google-grey-100);
+        --cr-input-color: var(--cr-primary-text-color);
+        --cr-input-error-color: var(--google-red-600);
+        --cr-input-focus-color: var(--google-blue-600);
+        display: block;
+        /* Avoid showing outline when focus() programmatically called multiple
+           times in a row. */
+        outline: none;
+      }
+
+      :host-context(body.fydeos) {
+        --cr-input-focus-color: var(--fydeos-pink-600);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :host {
+          --cr-input-background-color: rgba(0, 0, 0, .3);
+          --cr-input-error-color: var(--google-red-300);
+          --cr-input-focus-color: var(--google-blue-300);
+        }
+        :host-context(body.fydeos) {
+          --cr-input-focus-color: var(--fydeos-pink-300);
+        }
+      }
+
+      #label{
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 23px;
+        background: white;
+        padding: 0 3px;
+        color: #999999;
+      }
+
+      :host([focused_]:not([readonly]):not([invalid])) #label {
+        color: var(--cr-input-focus-color);
+      }
+
+      /* Input styling below. */
+      #input-container {
+        border-radius: var(--cr-input-border-radius, 4px);
+        overflow: hidden;
+        position: relative;
+        width: var(--cr-input-width, 100%);
+        height: 40px;
+      }
+
+      #inner-input-container {
+        box-sizing: border-box;
+        padding: 0;
+        border: 1px solid #EFEFEF;
+        border-radius: 100px;
+        background: white;
+        height: 100%;
+      }
+
+      :host([focused_]:not([readonly])) #inner-input-container{
+        border: 1px solid var(--cr-input-focus-color);
+      }
+
+      #input {
+        -webkit-appearance: none;
+        /* Transparent, #inner-input-container will apply background. */
+        background-color: transparent;
+        border: none;
+        box-sizing: border-box;
+        caret-color: var(--cr-input-focus-color);
+        color: var(--cr-input-color);
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        min-height: var(--cr-input-min-height, auto);
+        outline: none;
+        padding-bottom: var(--cr-input-padding-bottom, 6px);
+        padding-inline-end: var(--cr-input-padding-end, 16px);
+        padding-inline-start: var(--cr-input-padding-start, 16px);
+        padding-top: var(--cr-input-padding-top, 6px);
+
+        text-align: inherit;
+        text-overflow: ellipsis;
+        width: 100%;
+        height: 100%;
+      }

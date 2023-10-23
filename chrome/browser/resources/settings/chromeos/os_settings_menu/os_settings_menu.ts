@@ -75,6 +75,12 @@ class OsSettingsMenuElement extends OsSettingsMenuElementBase {
         readOnly: true,
       },
 
+      isFydeProfile_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean('isFydeProfile'),
+        readOnly: true,
+      },
+
       basicMenuItems_: {
         type: Array,
         computed: 'computeBasicMenuItems_(isGuestMode_, showKerberosSection)',
@@ -102,6 +108,7 @@ class OsSettingsMenuElement extends OsSettingsMenuElementBase {
   showKerberosSection: boolean;
   showReset: boolean;
   private isGuestMode_: boolean;
+  private isFydeProfile_: boolean;
   private basicMenuItems_: MenuItemData[];
   private advancedMenuItems_: MenuItemData[];
   private selectedUrl_: string;
@@ -164,7 +171,7 @@ class OsSettingsMenuElement extends OsSettingsMenuElementBase {
         path: routesMojom.MULTI_DEVICE_SECTION_PATH,
         icon: 'os-settings:multidevice-better-together-suite',
         label: this.i18n('multidevicePageTitle'),
-        hidden: this.isGuestMode_,
+        hidden: this.isGuestMode_ || this.isFydeProfile_,
       },
       {
         path: routesMojom.PEOPLE_SECTION_PATH,

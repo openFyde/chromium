@@ -309,7 +309,13 @@
       </if>
 
       <if expr="not is_android and not is_ios and not _google_chrome">
-        <include name="IDS_TERMS_HTML" file="resources/terms/terms_chromium.html" type="BINDATA" />
+        <if expr="use_fydeos_com">
+          <include name="IDS_TERMS_HTML" file="../fydeos/components/resources/terms/terms_zh-CN.html" type="BINDATA" />
+        </if>
+        <if expr="not use_fydeos_com">
+            <include name="IDS_TERMS_HTML" file="../fydeos/components/resources/terms/terms_en.html" type="BINDATA" />
+        </if>
+        <!-- <include name="IDS_TERMS_HTML" file="resources/terms/terms_chromium.html" type="BINDATA" /> -->
       </if>
     </includes>
     <messages fallback_to_english="true">

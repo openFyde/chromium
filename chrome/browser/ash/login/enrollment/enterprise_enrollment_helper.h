@@ -96,6 +96,8 @@ class EnterpriseEnrollmentHelper {
   // only if none of the EnrollUsing* was called before.
   virtual void EnrollUsingToken(const std::string& token) = 0;
 
+  virtual void EnrollUsingFydeToken(const std::string& token) = 0;
+
   // Starts enterprise enrollment using PCA attestation.
   // EnrollUsingAttestation can be called only once during the object's
   // lifetime, and only if none of the EnrollUsing* was called before.

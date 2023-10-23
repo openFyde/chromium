@@ -55,6 +55,8 @@ source_set("system_web_apps") {
   if (!is_official_build) {
     deps += [ "//ash/webui/sample_system_web_app_ui" ]
   }
+
+  deps += [ "//ash/webui/fyde_assistant_app_ui" ]
 }
 
 source_set("unit_tests") {

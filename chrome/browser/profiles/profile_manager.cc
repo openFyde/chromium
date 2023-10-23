@@ -350,7 +350,9 @@ absl::optional<bool> IsUserChild(Profile* profile) {
   const user_manager::User* user =
       ash::ProfileHelper::Get()->GetUserByProfile(profile);
   return user ? absl::make_optional(user->GetType() ==
-                                    user_manager::USER_TYPE_CHILD)
+                                    user_manager::USER_TYPE_CHILD
+                                    || user->GetType() ==
+                                       user_manager::USER_TYPE_FYDE_CHILD)
               : absl::nullopt;
 #elif BUILDFLAG(IS_CHROMEOS_LACROS)
   return chromeos::BrowserParamsProxy::Get()->SessionType() ==

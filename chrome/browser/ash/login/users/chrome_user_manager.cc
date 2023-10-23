@@ -114,10 +114,15 @@ LoginState::LoggedInUserType ChromeUserManager::GetLoggedInUserType(
     case user_manager::USER_TYPE_KIOSK_APP:
       return LoginState::LOGGED_IN_USER_KIOSK;
     case user_manager::USER_TYPE_CHILD:
+    case user_manager::USER_TYPE_FYDE_CHILD:
       return LoginState::LOGGED_IN_USER_CHILD;
     case user_manager::USER_TYPE_ARC_KIOSK_APP:
       return LoginState::LOGGED_IN_USER_KIOSK;
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
+    //---***FYDEOS BEGIN***---
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    //---***FYDEOS END***---
       // NOTE(olsen) There's no LOGGED_IN_USER_ACTIVE_DIRECTORY - is it needed?
       return LoginState::LOGGED_IN_USER_REGULAR;
     case user_manager::USER_TYPE_WEB_KIOSK_APP:

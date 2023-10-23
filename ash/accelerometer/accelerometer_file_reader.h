@@ -50,6 +50,10 @@ class AccelerometerFileReader : public AccelerometerProviderInterface {
 
     // The full path to the accelerometer device to read.
     base::FilePath path;
+    // ---***FYDEOS BEGIN***---
+    int data_size;
+    bool is_32bit;
+    // ---***FYDEOS END***---
 
     // The accelerometer sources which can be read from |path|.
     std::vector<AccelerometerSource> sources;
@@ -74,6 +78,12 @@ class AccelerometerFileReader : public AccelerometerProviderInterface {
 
     // Index of each accelerometer axis in data stream.
     int index[ACCELEROMETER_SOURCE_COUNT][3];
+
+    // ---***FYDEOS BEGIN***---
+    int right_move[ACCELEROMETER_SOURCE_COUNT];
+    int revert[ACCELEROMETER_SOURCE_COUNT][3];
+    bool swap_bytes;
+    // ---***FYDEOS END***---
 
     // The information for each accelerometer device to be read. In kernel 3.18
     // there is one per ACCELEROMETER_SOURCE_COUNT. On 3.14 there is only one.
@@ -122,6 +132,11 @@ class AccelerometerFileReader : public AccelerometerProviderInterface {
   // The current initialization state of reader.
   State initialization_state_ = State::INITIALIZING;
 
+  // ---***FYDEOS BEGIN***---
+  bool InitializeFydeOSAccelerometer(const base::FilePath& iio_path,
+                                     const base::FilePath& name);
+  // ---***FYDEOS END***---
+
   // Attempts to read the accelerometer data in |blocking_task_runner_|. Upon a
   // success, converts the raw reading to an AccelerometerUpdate and notifies
   // observers.
@@ -129,6 +144,10 @@ class AccelerometerFileReader : public AccelerometerProviderInterface {
 
   // The time at which initialization re-tries should stop.
   base::TimeTicks initialization_timeout_;
+
+  // ---***FYDEOS BEGIN***---
+  base::TimeDelta delay_between_reads_;
+  // ---***FYDEOS END***---
 
   // The accelerometer configuration.
   // Only used in |blocking_task_runner_|.

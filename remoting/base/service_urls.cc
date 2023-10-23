@@ -7,6 +7,7 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/logging.h"
+#include "fydeos/switches/account/account_switches.h"
 
 // Configurable service data.
 // Debug builds should default to the autopush environment (can be configured
@@ -58,6 +59,16 @@ ServiceUrls::~ServiceUrls() = default;
 
 ServiceUrls* remoting::ServiceUrls::GetInstance() {
   return base::Singleton<ServiceUrls>::get();
+}
+
+void ServiceUrls::ResetServerEndpoints() {
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    ftl_server_endpoint_ = fydeos::switches::GetFydeFtlServerEndpoint();
+    remoting_server_endpoint_ = fydeos::switches::GetFydeRemotingServerEndpoint();
+  } else {
+    ftl_server_endpoint_ = kFtlServerEndpoint;
+    remoting_server_endpoint_ = kRemotingServerEndpoint;
+  }
 }
 
 }  // namespace remoting

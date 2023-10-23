@@ -357,6 +357,34 @@ void CloudPolicyClient::RegisterWithToken(
                               base::Unretained(this), std::move(config)));
 }
 
+void CloudPolicyClient::RegisterWithFydeToken(
+    const RegistrationParameters& parameters,
+    const std::string& client_id,
+    const std::string& token) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(service_);
+  DCHECK(!token.empty());
+  DCHECK(!is_registered());
+
+  SetClientId(client_id);
+
+  std::unique_ptr<RegistrationJobConfiguration> config =
+      std::make_unique<RegistrationJobConfiguration>(
+          DeviceManagementService::JobConfiguration::TYPE_REGISTRATION, this,
+          DMAuth::FromFydeToken(token), absl::nullopt,
+          base::BindOnce(&CloudPolicyClient::OnRegisterCompleted,
+                         weak_ptr_factory_.GetWeakPtr()));
+
+  em::DeviceRegisterRequest* request =
+      config->request()->mutable_register_request();
+  CreateDeviceRegisterRequest(parameters, client_id, request);
+
+  if (requires_reregistration())
+    request->set_reregistration_dm_token(reregistration_dm_token_);
+
+  unique_request_job_ = service_->CreateJob(std::move(config));
+}
+
 void CloudPolicyClient::OnRegisterWithCertificateRequestSigned(
     std::unique_ptr<SigningService> signing_service,
     bool success,

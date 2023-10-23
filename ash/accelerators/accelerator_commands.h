@@ -251,6 +251,8 @@ ASH_EXPORT void RotateActiveWindow();
 // Rotates pane focus on next/previous pane.
 ASH_EXPORT void RotatePaneFocus(FocusCycler::Direction direction);
 
+ASH_EXPORT void RotateScreenWithoutConfirmation();
+
 // Rotates screen 90 degrees.
 ASH_EXPORT void RotateScreen();
 

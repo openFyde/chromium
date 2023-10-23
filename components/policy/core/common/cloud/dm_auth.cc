@@ -30,6 +30,11 @@ DMAuth DMAuth::FromEnrollmentToken(const std::string& enrollment_token) {
 }
 
 // static
+DMAuth DMAuth::FromFydeToken(const std::string& token) {
+  return DMAuth(token, DMAuthTokenType::kFyde);
+}
+
+// static
 DMAuth DMAuth::NoAuth() {
   return {};
 }

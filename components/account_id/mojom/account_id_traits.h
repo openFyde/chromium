@@ -22,6 +22,12 @@ struct EnumTraits<signin::mojom::AccountType, AccountType> {
         return signin::mojom::AccountType::GOOGLE;
       case AccountType::ACTIVE_DIRECTORY:
         return signin::mojom::AccountType::ACTIVE_DIRECTORY;
+//---***FYDEOS BEGIN***---
+      case AccountType::FLINT_ACCOUNT:
+        return signin::mojom::AccountType::FLINT_ACCOUNT;
+      case AccountType::FYDE_ACCOUNT:
+        return signin::mojom::AccountType::FYDE_ACCOUNT;
+//---***FYDEOS END***---
     }
     NOTREACHED();
     return signin::mojom::AccountType::UNKNOWN;
@@ -38,6 +44,14 @@ struct EnumTraits<signin::mojom::AccountType, AccountType> {
       case signin::mojom::AccountType::ACTIVE_DIRECTORY:
         *out = AccountType::ACTIVE_DIRECTORY;
         return true;
+//---***FYDEOS BEGIN***---
+      case signin::mojom::AccountType::FLINT_ACCOUNT:
+        *out = AccountType::FLINT_ACCOUNT;
+        return true;
+      case signin::mojom::AccountType::FYDE_ACCOUNT:
+        *out = AccountType::FYDE_ACCOUNT;
+        return true;
+//---***FYDEOS END***---
     }
     NOTREACHED();
     return false;
@@ -55,6 +69,12 @@ struct StructTraits<signin::mojom::AccountIdDataView, AccountId> {
         return r.GetGaiaId();
       case AccountType::ACTIVE_DIRECTORY:
         return r.GetObjGuid();
+      //---***FYDEOS BEGIN***---
+      case AccountType::FLINT_ACCOUNT:
+        return r.GetFlintId();
+      case AccountType::FYDE_ACCOUNT:
+        return r.GetFydeId();
+      //---***FYDEOS END***---
       case AccountType::UNKNOWN:
         // UNKNOWN type is used for users that have only email (e.g. in tests
         // or legacy users that have not run through migration code).
@@ -82,6 +102,14 @@ struct StructTraits<signin::mojom::AccountIdDataView, AccountId> {
       case AccountType::ACTIVE_DIRECTORY:
         *out = AccountId::AdFromUserEmailObjGuid(user_email, id);
         break;
+     //---***FYDEOS BEGIN***---
+      case AccountType::FLINT_ACCOUNT:
+        *out = AccountId::FtFromUserEmailFlintId(user_email, id);
+        break;
+      case AccountType::FYDE_ACCOUNT:
+        *out = AccountId::FyFromUserEmailFydeId(user_email, id);
+        break;
+     //---***FYDEOS END***---
       case AccountType::UNKNOWN:
         // UNKNOWN type is used for users that have only email (e.g. in tests
         // or legacy users that have not run through migration code).

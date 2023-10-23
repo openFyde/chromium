@@ -24,6 +24,10 @@
 #include "base/task/thread_pool.h"
 #include "components/session_manager/session_manager_types.h"
 
+#include "fydeos/switches/misc/misc_constants.h"
+#include "third_party/zlib/google/zip.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
+
 namespace ash {
 namespace diagnostics {
 
@@ -174,10 +178,94 @@ std::string DiagnosticsLogController::GenerateSessionStringOnBlockingPool()
   return base::JoinString(log_pieces, "\n");
 }
 
+void DiagnosticsLogController::GetFydeOsHwtunerInfo() {
+  fydeos::ash::FydeOSShellClient* shellClient = fydeos::ash::FydeOSShellClient::Get();
+  if (!shellClient) {
+    return;
+  }
+  fydeos_hwtuner_info_ = "";
+  shellClient->SyncExec(
+      fydeos::constants::kFydeOSHwtunerCommand,
+      base::BindOnce(&DiagnosticsLogController::OnFydeOSHwtunerInfoReceived,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void DiagnosticsLogController::OnFydeOSHwtunerInfoReceived(absl::optional<fydeos::ash::ShellState> state) {
+  if (state && state->code == 0) {
+    fydeos_hwtuner_info_ = state->result;
+  } else {
+    fydeos_hwtuner_info_ = "";
+  }
+}
+
+bool DiagnosticsLogController::FydeosCreateSystemInfoTempDirectory() {
+  if (!base::CreateNewTempDirectory(
+        FILE_PATH_LITERAL(fydeos::constants::kFydeOSSystemTempPrefix),
+        &fydeos_system_info_temp_path_)) {
+    return false;
+  }
+
+  fydeos_system_info_temp_path_ = fydeos_system_info_temp_path_.Append(
+      base::FilePath(fydeos::constants::kFydeOSSystemInfoFileName));
+
+  return true;
+}
+
+bool DiagnosticsLogController::CompressSessionLog(
+    const base::FilePath& file_path, const base::FilePath& dest) {
+  const base::FilePath base_dir = file_path.DirName();
+
+  base::File file(dest,
+      base::File::FLAG_CREATE_ALWAYS | base::File::FLAG_WRITE);
+  if (!file.IsValid())
+    return false;
+
+  std::vector<base::FilePath> files_to_zip;
+  files_to_zip.push_back(file_path.BaseName());
+  return zip::ZipFiles(base_dir, files_to_zip, file.GetPlatformFile());
+}
+
 bool DiagnosticsLogController::GenerateSessionLogOnBlockingPool(
-    const base::FilePath& save_file_path) {
+    const base::FilePath& save_file_path,
+    const std::string& fydeos_system_info) {
   DCHECK(!save_file_path.empty());
-  return base::WriteFile(save_file_path, GenerateSessionStringOnBlockingPool());
+
+  if (!FydeosCreateSystemInfoTempDirectory()) {
+    LOG(ERROR) << "Failed to create system info temp directory";
+    return false;
+  }
+
+  std::vector<std::string> log_pieces;
+
+  if (!fydeos_hwtuner_info_.empty()) {
+    log_pieces.push_back(fydeos::constants::kFydeOSHwtunerInfoSectionName);
+    log_pieces.push_back(fydeos_hwtuner_info_);
+  }
+
+  if (!fydeos_system_info.empty()) {
+    log_pieces.push_back(fydeos::constants::kFydeOSSystemInfoHeader);
+    log_pieces.push_back(fydeos_system_info);
+  }
+  if (log_pieces.size() > 0) {
+    if (!base::WriteFile(fydeos_system_info_temp_path_,
+          base::JoinString(log_pieces, "\n"))) {
+      LOG(ERROR) << "Failed to write fydeos system info to temp file";
+      return false;
+    }
+    if (!base::AppendToFile(fydeos_system_info_temp_path_,
+          GenerateSessionStringOnBlockingPool())) {
+      LOG(ERROR) << "Failed to write system info to temp file";
+      return false;
+    }
+  } else {
+    if (!base::WriteFile(fydeos_system_info_temp_path_,
+          GenerateSessionStringOnBlockingPool())) {
+      LOG(ERROR) << "Failed to write system info to temp file";
+      return false;
+    }
+  }
+
+  return CompressSessionLog(fydeos_system_info_temp_path_, save_file_path);
 }
 
 void DiagnosticsLogController::ResetAndInitializeLogWriters() {
@@ -228,6 +316,7 @@ void DiagnosticsLogController::ResetLogBasePath() {
       g_instance->log_base_path_ = user_dir.Append(kDiaganosticsDirName);
       return;
     }
+    GetFydeOsHwtunerInfo();
   }
 
   // Use diagnostics temporary path for Guest, KioskApp, and no user states.

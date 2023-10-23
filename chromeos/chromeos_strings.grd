@@ -177,6 +177,7 @@
     <file path="strings/chromeos_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="strings/chromeos_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="strings/chromeos_strings_zu.xtb" lang="zu" />
+    <file path="../fydeos/i18n/chromeos/strings/chromeos_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -4209,6 +4210,10 @@
         </message>
         <!-- End of Arc Input Overlay -->
       </if>
+
+      <part file="../fydeos/i18n/chromeos/chromeos_strings.override.grdp" />
+      <part file="../fydeos/i18n/chromeos/chromeos_strings.grdp" />
+
     </messages>
   </release>
 </grit>

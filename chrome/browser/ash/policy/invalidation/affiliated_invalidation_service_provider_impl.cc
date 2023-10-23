@@ -174,7 +174,7 @@ void AffiliatedInvalidationServiceProviderImpl::OnUserProfileLoaded(
   invalidation::InvalidationService* invalidation_service;
   invalidation_service =
       invalidation_provider->GetInvalidationServiceForCustomSender(
-          kPolicyFCMInvalidationSenderID);
+          GetPolicyFCMInvalidationSenderID());
   profile_invalidation_service_observers_.push_back(
       std::make_unique<InvalidationServiceObserver>(this,
                                                     invalidation_service));
@@ -369,7 +369,7 @@ AffiliatedInvalidationServiceProviderImpl::
               device_identity_provider_.get(), g_browser_process->local_state(),
               base::RetainedRef(url_loader_factory)),
           device_instance_id_driver_.get(), g_browser_process->local_state(),
-          kPolicyFCMInvalidationSenderID);
+          GetPolicyFCMInvalidationSenderID());
   device_invalidation_service->Init();
   return device_invalidation_service;
 }

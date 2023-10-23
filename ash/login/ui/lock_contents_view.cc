@@ -99,11 +99,19 @@
 #include "ui/views/style/typography.h"
 #include "ui/views/vector_icons.h"
 #include "ui/views/view.h"
+#include "fydeos/switches/misc/misc_switches.h"
+#include "base/system/sys_info.h"
+#include "base/timer/timer.h"
+#include "fydeos/prefs//fydeos_pref_names.h"
+// #include "chromeos/cryptohome/system_salt_getter.h"
+// #include "chrome/browser/ash/settings/token_encryptor.h"
 
 namespace ash {
 
 namespace {
 
+constexpr int kAutoSigninMaxTries = 2;
+constexpr int kAutoSigninRetryDelayInSeconds = 2;
 // Sets the preferred width for |view| with an arbitrary height.
 void SetPreferredWidthForView(views::View* view, int width) {
   view->SetPreferredSize(gfx::Size(width, kNonEmptyHeightDp));
@@ -316,7 +324,8 @@ LockContentsView::LockContentsView(
     : NonAccessibleView(),
       screen_type_(screen_type),
       data_dispatcher_(data_dispatcher),
-      detachable_base_model_(std::move(detachable_base_model)) {
+      detachable_base_model_(std::move(detachable_base_model)),
+      auto_signin_timer_(std::make_unique<base::OneShotTimer>()) {
   data_dispatcher_->AddObserver(this);
   Shell::Get()->system_tray_notifier()->AddSystemTrayObserver(this);
   keyboard::KeyboardUIController::Get()->AddObserver(this);
@@ -409,6 +418,9 @@ LockContentsView::LockContentsView(
     user_adding_screen_indicator_ =
         AddChildView(std::make_unique<UserAddingScreenIndicator>());
   }
+
+  is_last_chrome_signout_ = IsOfflineSigninLastChromeSignout();
+
   OnLockScreenNoteStateChanged(initial_note_action_state);
   chromeos::PowerManagerClient::Get()->AddObserver(this);
   RegisterAccelerators();
@@ -540,6 +552,9 @@ void LockContentsView::ShowEnterpriseDomainManager(
 }
 
 void LockContentsView::ShowAdbEnabled() {
+  // ---***FYDEOS BEGIN***---
+  if (fydeos::switches::IsFydeCustomEnabled()) return;
+  // ---***FYDEOS END***---
   bottom_status_indicator_->SetText(
       l10n_util::GetStringUTF16(IDS_ASH_LOGIN_SCREEN_UNVERIFIED_CODE_WARNING));
   bottom_status_indicator_->set_role_for_accessibility(
@@ -646,7 +661,115 @@ bool LockContentsView::AcceleratorPressed(const ui::Accelerator& accelerator) {
   return true;
 }
 
+bool LockContentsView::IsOfflineSigninLastChromeSignout() const {
+  PrefService* local_state = Shell::Get()->local_state();
+  bool is_signout = false;
+  if (local_state->HasPrefPath(fydeos::prefs::kOfflineAutoSigninIsChromeLastSignout)) {
+    is_signout = local_state->GetBoolean(fydeos::prefs::kOfflineAutoSigninIsChromeLastSignout);
+    local_state->ClearPref(fydeos::prefs::kOfflineAutoSigninIsChromeLastSignout);
+  }
+  return is_signout;
+}
+
+bool LockContentsView::IsOfflineAutoSigninEnabled() const {
+  /*
+  const base::Time last_session_start_time = base::Time::FromInternalValue(
+      Shell::Get()->local_state()->GetInt64("session.start_time"));
+  const base::Time uptime = base::Time::NowFromSystemTime() - base::SysInfo::Uptime();
+  const bool should_enable_based_on_time = last_session_start_time <= uptime;
+  const bool should_enable_based_on_signout_mark = !is_last_chrome_signout_;
+  return should_enable_based_on_time || should_enable_based_on_signout_mark;
+  */
+  const bool should_enable_based_on_signout_mark = !is_last_chrome_signout_;
+  return should_enable_based_on_signout_mark;
+}
+
 void LockContentsView::OnUsersChanged(const std::vector<LoginUserInfo>& users) {
+  if (!IsOfflineAutoSigninEnabled()) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  if (Shell::Get()->local_state()->GetBoolean(fydeos::prefs::kFactoryResetRequested)) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  const std::string account_id_key = Shell::Get()->local_state()->GetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
+  const std::string encrypted_password = Shell::Get()->local_state()->GetString(fydeos::prefs::kOfflineAutoSigninPassword);
+  if (account_id_key.empty() || encrypted_password.empty()) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  // TODO use real system_salt, and encryptor
+  // SystemSaltGetter::Get()->GetSystemSalt(
+  //     base::BindOnce(&LockContentsView::OnGetSystemSalt,
+  //                    weak_ptr_factory_.GetWeakPtr(), users, account_id_key, encrypted_password));
+  OnGetSystemSalt(users, account_id_key, encrypted_password, "FYDEOS");
+}
+
+void LockContentsView::OnGetSystemSalt(const std::vector<LoginUserInfo>& users,
+                                       const std::string& account_id_key,
+                                       const std::string& encrypted_password,
+                                       const std::string& system_salt) {
+  if (system_salt.empty()) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  // CryptohomeTokenEncryptor encryptor(system_salt);
+  // std::string password = encryptor.DecryptWithSystemSalt(encrypted_password);
+  // if (password.empty()) {
+  //   OnUsersChangedInternal(users);
+  //   return;
+  // }
+  std::string password = encrypted_password;
+
+  for (const LoginUserInfo& user : users) {
+    if (user.basic_user_info.account_id.HasAccountIdKey()
+     && user.basic_user_info.account_id.GetAccountIdKey() == account_id_key) {
+      TryToAutoSigninForLocalAccount(user.basic_user_info.account_id, password, users);
+      return;
+    }
+  }
+
+  OnUsersChangedInternal(users);
+}
+
+void LockContentsView::TryToAutoSigninForLocalAccount(const AccountId& account_id,
+                                                      const std::string& password,
+                                                      const std::vector<LoginUserInfo>& users) {
+  auto_signin_tries += 1;
+  VLOG(3) << "try to auto signin local account: " << account_id;
+    Shell::Get()->login_screen_controller()->AuthenticateUserWithPasswordOrPin(
+        account_id, password, false,
+        base::BindOnce(&LockContentsView::OnOfflineAutoSigninComplete,
+                       weak_ptr_factory_.GetWeakPtr(), account_id, password, users));
+}
+
+void LockContentsView::OnOfflineAutoSigninComplete(const AccountId& account_id,
+                                                   const std::string& password,
+                                                   const std::vector<LoginUserInfo>& users,
+                                                   absl::optional<bool> auth_success) {
+  if (auth_success.has_value() && auth_success.value()) {
+    VLOG(3) << "auto signin successfully";
+    return;
+  }
+  if (auto_signin_tries < kAutoSigninMaxTries) {
+    VLOG(3) << "try to auto signin again after " << kAutoSigninRetryDelayInSeconds << " seconds";
+    auto_signin_timer_->Start(
+      FROM_HERE,
+      base::Seconds(kAutoSigninRetryDelayInSeconds),
+      base::BindOnce(&LockContentsView::TryToAutoSigninForLocalAccount,
+                     weak_ptr_factory_.GetWeakPtr(), account_id, password, users));
+  } else {
+    VLOG(3) << "auto signin failed, fallback to normal login screen";
+    OnUsersChangedInternal(users);
+  }
+}
+
+void LockContentsView::OnUsersChangedInternal(const std::vector<LoginUserInfo>& users) {
   // The debug view will potentially call this method many times. Make sure to
   // invalidate any child references.
   primary_big_view_ = nullptr;
@@ -2078,6 +2201,8 @@ void LockContentsView::ShowAuthErrorMessage() {
   // Show gaia signin if this is login and the user has failed too many times.
   // Do not show on secondary login screen – even though it has type kLogin – as
   // there is no OOBE there.
+  const bool is_fyde_local_user =
+    account_id.GetAccountType() == AccountType::FLINT_ACCOUNT;
   if (!ash::features::IsCryptohomeRecoveryEnabled()) {
     // Pin login attempt does not trigger Gaia dialog. Pin auth method will be
     // disabled after 5 failed attempts.
@@ -2085,6 +2210,7 @@ void LockContentsView::ShowAuthErrorMessage() {
     if (screen_type_ == LockScreen::ScreenType::kLogin &&
         (unlock_attempt - pin_unlock_attempt) >=
             kLoginAttemptsBeforeGaiaDialog &&
+        !is_fyde_local_user &&
         Shell::Get()->session_controller()->GetSessionState() !=
             session_manager::SessionState::LOGIN_SECONDARY) {
       Shell::Get()->login_screen_controller()->ShowGaiaSignin(
@@ -2148,10 +2274,10 @@ void LockContentsView::ShowAuthErrorMessage() {
   MakeSectionBold(label.get(), error_text, bold_start, bold_length);
   label->SetAutoColorReadabilityEnabled(false);
 
-  auto learn_more_button = std::make_unique<PillButton>(
-      base::BindRepeating(&LockContentsView::LearnMoreButtonPressed,
-                          base::Unretained(this)),
-      l10n_util::GetStringUTF16(IDS_ASH_LEARN_MORE));
+  // auto learn_more_button = std::make_unique<PillButton>(
+  //     base::BindRepeating(&LockContentsView::LearnMoreButtonPressed,
+  //                         base::Unretained(this)),
+  //     l10n_util::GetStringUTF16(IDS_ASH_LEARN_MORE));
 
   auto container = std::make_unique<NonAccessibleView>(kAuthErrorContainerName);
   auto* container_layout =
@@ -2161,7 +2287,7 @@ void LockContentsView::ShowAuthErrorMessage() {
   container_layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kStart);
   container->AddChildView(std::move(label));
-  container->AddChildView(std::move(learn_more_button));
+  // container->AddChildView(std::move(learn_more_button));
 
   if (ash::features::IsCryptohomeRecoveryEnabled()) {
     // The recover user flow is only accessible from the login screen but

@@ -31,8 +31,16 @@ found in the LICENSE file.
     min-width: 0;
   }
 
+  :host-context(body.fydeos):host([link]) cr-button {
+    color: var(--cros-link-fydeos-color);
+  }
+
   :host([link]) cr-button:focus {
     background-color: var(--cros-button-active-shadow-color-ambient-primary);
+  }
+
+  :host-context(body.fydeos):host([link]) cr-button:focus {
+    background-color: var(--cros-button-active-shadow-fydeos-color-ambient-primary);
   }
 
   :host-context(.focus-outline-visible):host([link]) cr-button:focus {

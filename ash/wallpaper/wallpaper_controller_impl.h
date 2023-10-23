@@ -406,6 +406,17 @@ class ASH_EXPORT WallpaperControllerImpl
     base::FilePath file_path;
   };
 
+  void SetCustomWallpaperInternal(const AccountId& account_id,
+                                  const base::FilePath& file_path,
+                                  WallpaperLayout layout,
+                                  bool preview_mode,
+                                  SetWallpaperCallback callback);
+
+  void OnGetNewWallpaperImagePath(const AccountId& account_id,
+                                  WallpaperLayout layout,
+                                  bool preview_mode,
+                                  SetWallpaperCallback callback,
+                                  const std::string& file_path);
   // Callback after `WallpaperResizer` is done scaling the current wallpaper to
   // the current display size.
   void OnWallpaperResized();
@@ -768,6 +779,10 @@ class ASH_EXPORT WallpaperControllerImpl
   // Updates the online and daily wallpaper with the correct variant based on
   // the color mode.
   void HandleSettingOnlineWallpaperFromWallpaperInfo(
+      const AccountId& account_id,
+      const WallpaperInfo& info);
+
+  void SetCustomizedWallpaperBasedOnScheduleCheckpoint(
       const AccountId& account_id,
       const WallpaperInfo& info);
 

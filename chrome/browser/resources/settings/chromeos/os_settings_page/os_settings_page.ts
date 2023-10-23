@@ -199,6 +199,22 @@ export class OsSettingsPageElement extends OsSettingsPageElementBase {
       this.showEolIncentive_ = !!result.shouldShowEndOfLifeIncentive;
       this.shouldShowOfferText_ = !!result.shouldShowOfferText;
     });
+
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      const sectionsToHide = [
+        'multidevice',
+      ];
+      setTimeout(() => {
+        // hide this section, even for google account
+        // if (!isFydeProfile) return;
+        sectionsToHide.forEach(section => {
+          const node = this.shadowRoot!.querySelector<HTMLElement>(`os-settings-section[section="${section}"]`);
+          if (node) {
+            node.setAttribute('hidden', 'true');
+          }
+        })
+      }, 0);
+    }
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {

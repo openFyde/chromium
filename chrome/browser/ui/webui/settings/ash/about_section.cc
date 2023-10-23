@@ -42,6 +42,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/switches/license/license_switches.h"
 
 namespace ash::settings {
 
@@ -248,10 +250,8 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   // Top level About page strings.
   static constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"aboutProductLogoAlt", IDS_SHORT_PRODUCT_LOGO_ALT_TEXT},
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
     {"aboutReportAnIssue", IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE},
     {"aboutSendFeedback", IDS_SETTINGS_ABOUT_PAGE_SEND_FEEDBACK},
-#endif
     {"aboutDiagnostics", IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS},
     {"aboutFirmwareUpdates", IDS_SETTINGS_ABOUT_PAGE_FIRMWARE_UPDATES},
     {"aboutRelaunch", IDS_SETTINGS_ABOUT_PAGE_RELAUNCH},
@@ -361,6 +361,11 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
     {"aboutUpgradeDownloadError", IDS_SETTINGS_UPGRADE_DOWNLOAD_ERROR},
     {"aboutUpgradeAdministrator", IDS_SETTINGS_UPGRADE_ADMINISTRATOR_ERROR},
 
+    {"aboutFydeOSOtaDisallowedRequiresOneTimePayment",
+      IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_REQUIRES_ONE_TIME_PAYMENT},
+    {"aboutFydeOSOtaDisallowedByLicenseValidation",
+      IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_BY_LICENSE_VALIDATION},
+
     // About page auto update toggle.
     {"aboutConsumerAutoUpdateToggleTitle",
      IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_TITLE},
@@ -376,6 +381,16 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
      IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_KEEP_UPDATES_BUTTON},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
+
+  html_source->AddString("aboutKeepFydeOsUpdateToDate",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_KEEP_FYDEOS_UPDATE_TO_DATE,
+        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
+  html_source->AddString("aboutFydeOsUpdateEnabled",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_ENABLED,
+        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
+  html_source->AddString("aboutFydeOsUpdateDisabled",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_DISABLED,
+        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
 
   html_source->AddString("aboutTPMFirmwareUpdateLearnMoreURL",
                          chrome::kTPMFirmwareUpdateLearnMoreURL);
@@ -405,6 +420,9 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
 
   html_source->AddString("aboutBrowserVersion",
                          VersionUI::GetAnnotatedVersionStringForUi());
+  html_source->AddString("aboutFydeOSVersion",
+                         VersionUI::GetFydeOSVersionStringForUi());
+  html_source->AddString("aboutFydeOSBoardName", base::SysInfo::GetLsbReleaseBoard());
   html_source->AddString(
       "aboutProductCopyright",
       base::i18n::MessageFormatter::FormatWithNumberedArgs(
@@ -443,7 +461,8 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
                          l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_ABOUT_PAGE_LAST_UPDATE_MESSAGE,
                              ui::GetChromeOSDeviceName(),
-                             base::ASCIIToUTF16(chrome::kEolNotificationURL)));
+                             base::ASCIIToUTF16(fydeos::constants::kEolNotificationURL)));
+  html_source->AddString("fydeosLicenseUrl", fydeos::switches::GetFydeOSLicenseUrl());
 
   html_source->AddString("eolIncentiveOfferTitle",
                          l10n_util::GetStringUTF16(

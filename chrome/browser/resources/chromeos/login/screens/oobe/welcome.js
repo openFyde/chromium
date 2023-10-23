@@ -168,6 +168,11 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
        */
       chromeVoxHintGiven_: Boolean,
 
+      isInWelcomeScreen_: {
+        type: Boolean,
+        value: false,
+      },
+
       /**
        * If it is a meet device.
        * @private
@@ -196,6 +201,12 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     };
   }
 
+  static get observers() {
+    return [
+      'onWelcomeScreenUiStepChanged_(uiStep, isInWelcomeScreen_)',
+    ];
+  }
+
   constructor() {
     super();
     this.UI_STEPS = WelcomeScreenState;
@@ -213,6 +224,8 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     // -- Member Variables --
     // Flag that ensures that OOBE configuration is applied only once.
     this.configuration_applied_ = false;
+
+    this.startupSoundPlayed_ = false;
   }
 
   /** Overridden from LoginScreenBehavior. */
@@ -229,7 +242,7 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   }
 
   defaultUIStep() {
-    return WelcomeScreenState.GREETING;
+    return WelcomeScreenState.LANGUAGE;
   }
 
   /** @override */
@@ -246,8 +259,10 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    * @param {Object} data Screen init payload.
    */
   onBeforeShow(data) {
-    this.debuggingLinkVisible_ =
-        data && 'isDeveloperMode' in data && data['isDeveloperMode'];
+    this.isInWelcomeScreen_ = true;
+    // this.debuggingLinkVisible_ =
+    //     data && 'isDeveloperMode' in data && data['isDeveloperMode'];
+    this.debuggingLinkVisible_ = false;
 
     window.setTimeout(() => void this.applyOobeConfiguration_(), 0);
   }
@@ -262,6 +277,7 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    */
   onBeforeHide() {
     this.cleanupChromeVoxHint_();
+    this.isInWelcomeScreen_ = false;
   }
 
   cancel() {
@@ -277,12 +293,37 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   }
 
   /**
+   * FydeOS.
+   * move en-US and zh-CN to the top of languageList
+   */
+  rearrangeLanguages() {
+    const defaultLangs = [ 'en-US', 'zh-CN' ];
+    const languages = /** @type {!Array<OobeTypes.LanguageDsc>} */ (
+      loadTimeData.getValue('languageList'));
+    const priorities = [];
+    const left = [];
+    for (let i = 0; i < languages.length; i++) {
+      const lang = languages[i];
+      if (defaultLangs.indexOf(lang.code) !== -1) {
+        priorities.push(lang);
+      } else {
+        left.push(lang);
+      }
+    }
+    priorities.sort((a, b) => {
+      if (a.code > b.code) return 1;
+      if (a.code < b.code) return -1;
+      return 0;
+    });
+    return priorities.concat(left);
+  }
+
+  /**
    * This is called when UI strings are changed.
    * Overridden from LoginScreenBehavior.
    */
   updateLocalizedContent() {
-    this.languages = /** @type {!Array<OobeTypes.LanguageDsc>} */ (
-        loadTimeData.getValue('languageList'));
+    this.languages = this.rearrangeLanguages();
     this.keyboards = /** @type {!Array<OobeTypes.IMEDsc>} */ (
         loadTimeData.getValue('inputMethodsList'));
     this.timezones = /** @type {!Array<OobeTypes.TimezoneDsc>} */ (
@@ -489,6 +530,36 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
         /** @type {!SelectListType} */ (this.languages));
   }
 
+  setWindowFydeBackgroundColor_() {
+    document.documentElement.setAttribute('fydeos-background-color', true);
+  }
+
+  unsetWindowFydeBackgroundColor_() {
+    document.documentElement.removeAttribute('fydeos-background-color');
+  }
+
+  onWelcomeScreenUiStepChanged_(uiStep, isInWelcomeScreen) {
+    // this.toggleFydeBackground_(uiStep, isInWelcomeScreen);
+    this.mayPlayWelcomeSound_(uiStep, isInWelcomeScreen);
+  }
+
+  toggleFydeBackground_(uiStep, isInWelcomeScreen) {
+    if (uiStep === WelcomeScreenState.GREETING && isInWelcomeScreen) {
+      this.setWindowFydeBackgroundColor_();
+    } else {
+      this.unsetWindowFydeBackgroundColor_();
+    }
+  }
+
+  mayPlayWelcomeSound_(uiStep, isInWelcomeScreen) {
+    if (uiStep === WelcomeScreenState.GREETING && isInWelcomeScreen) {
+      if (!this.startupSoundPlayed_) {
+        this.requestPlayStartupSound_();
+        this.startupSoundPlayed_ = true;
+      }
+    }
+  }
+
   onInputMethodIdSetFromBackend(keyboard_id) {
     var found = false;
     for (var i = 0; i < this.keyboards.length; ++i) {
@@ -605,6 +676,10 @@ class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    */
   closeLanguageSection_() {
     this.setUIStep(WelcomeScreenState.GREETING);
+  }
+
+  requestPlayStartupSound_() {
+    chrome.send('playStartupSound');
   }
 
   /**

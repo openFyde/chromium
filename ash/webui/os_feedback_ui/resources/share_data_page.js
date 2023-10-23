@@ -452,7 +452,7 @@ export class ShareDataPageElement extends ShareDataPageElementBase {
   setPrivacyNote_() {
     this.privacyNote_ = this.i18nAdvanced('privacyNote', {attrs: ['id']});
 
-    this.openLinkInNewWindow_('#legalHelpPageUrl', FEEDBACK_LEGAL_HELP_URL);
+    // this.openLinkInNewWindow_('#legalHelpPageUrl', FEEDBACK_LEGAL_HELP_URL);
     this.openLinkInNewWindow_('#privacyPolicyUrl', FEEDBACK_PRIVACY_POLICY_URL);
     this.openLinkInNewWindow_(
         '#termsOfServiceUrl', FEEDBACK_TERMS_OF_SERVICE_URL);

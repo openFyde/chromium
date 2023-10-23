@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/extensions_strings.grdp, included from generated_resources.grd -->
+<grit-part>
+
+  <message name="IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE" desc="The text for the link to get more extensions in the extensions page.">
+    Open App Store
+  </message>
+  <if expr="use_fydeos_com">
+    <message name="IDS_EXTENSIONS_NO_INSTALLED_ITEMS" desc="The message shown to the user on the Extensions settings page when there are no extensions or apps installed.">
+      Find extensions and themes in the <ph name="BEGIN_LINK">&lt;a href="https://store.fydeos.com/?init=extensions"&gt;</ph>FydeOS App Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    </message>
+  </if>
+  <if expr="not use_fydeos_com">
+    <message name="IDS_EXTENSIONS_NO_INSTALLED_ITEMS" desc="The message shown to the user on the Extensions settings page when there are no extensions or apps installed.">
+      Find extensions and themes in the <ph name="BEGIN_LINK">&lt;a href="https://store.fydeos.io/?init=extensions"&gt;</ph>FydeOS App Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    </message>
+  </if>
+
+</grit-part>

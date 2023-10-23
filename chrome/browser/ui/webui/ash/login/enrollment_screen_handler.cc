@@ -77,6 +77,7 @@ std::string EnrollmentModeToUIMode(policy::EnrollmentConfig::Mode mode) {
     case policy::EnrollmentConfig::MODE_ATTESTATION:
       return kEnrollmentModeUIManual;
     case policy::EnrollmentConfig::MODE_LOCAL_FORCED:
+    case policy::EnrollmentConfig::MODE_FYDE_LOCAL_FORCED:
     case policy::EnrollmentConfig::MODE_SERVER_FORCED:
     case policy::EnrollmentConfig::MODE_ATTESTATION_LOCAL_FORCED:
     case policy::EnrollmentConfig::MODE_ATTESTATION_SERVER_FORCED:
@@ -1056,6 +1057,10 @@ base::Value::Dict EnrollmentScreenHandler::ScreenDataCommon() {
   screen_data.Set("enrollment_mode", EnrollmentModeToUIMode(config_.mode));
   screen_data.Set("is_enrollment_enforced", config_.is_forced());
   screen_data.Set("attestationBased", config_.is_mode_attestation());
+  screen_data.Set("fydeBased", config_.is_mode_fyde());
+  screen_data.Set("fallbackEnabled",
+      config_.auth_mechanism == policy::EnrollmentConfig::AUTH_MECHANISM_BEST_AVAILABLE ||
+      config_.auth_mechanism == policy::EnrollmentConfig::AUTH_MECHANISM_FYDE_BEST_AVAILABLE);
   screen_data.Set("flow", GetFlowString(flow_type_));
 
   if (ShouldSpecifyLicenseType(config_)) {

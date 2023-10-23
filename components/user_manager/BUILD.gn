@@ -54,6 +54,7 @@ component("user_manager") {
       "//components/prefs",
       "//skia",
       "//url",
+      "//fydeos/prefs",
     ]
   }
 }

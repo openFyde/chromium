@@ -143,7 +143,7 @@ class ASH_PUBLIC_EXPORT SharedAppListConfig {
   const int search_tile_height_ = 92;
 
   // The maximum number of filtered results within categorical search
-  const size_t max_results_with_categorical_search_ = 3;
+  const size_t max_results_with_categorical_search_ = 4;
 
   // The maximum number of filtered results of type answer card within
   // categorical search

@@ -290,7 +290,10 @@ export class SettingsManageA11ySubpageElement extends
 
       dictationLearnMoreUrl_: {
         type: String,
-        value: 'https://support.google.com/chromebook?p=text_dictation_m100',
+        value: () => {
+          const url = loadTimeData.getString("a11yLearnMoreUrl")
+          return `${url}/turn-on-fydeos-device-accessibility-features/`;
+        }
       },
 
       /**
@@ -685,9 +688,10 @@ export class SettingsManageA11ySubpageElement extends
   /**
    * Whether additional features link should be shown.
    */
-  private shouldShowAdditionalFeaturesLink_(isKiosk: boolean, isGuest: boolean):
+  private shouldShowAdditionalFeaturesLink_(_unused_isKiosk: boolean, _unused_isGuest: boolean):
       boolean {
-    return !isKiosk && !isGuest;
+    // return !isKiosk && !isGuest;
+    return false;
   }
 
   private onDictationLocaleMenuSubtitleChanged_(subtitle: string): void {

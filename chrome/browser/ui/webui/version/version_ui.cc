@@ -67,6 +67,8 @@
 #include "chromeos/startup/browser_params_proxy.h"
 #endif  // BUILDFLAG(IS_CHROMEOS_LACROS)
 
+#include "base/system/sys_info.h"
+
 using content::WebUIDataSource;
 
 namespace {
@@ -316,10 +318,28 @@ std::u16string VersionUI::GetAnnotatedVersionStringForUi() {
   return l10n_util::GetStringFUTF16(
       IDS_SETTINGS_ABOUT_PAGE_BROWSER_VERSION,
       base::UTF8ToUTF16(version_info::GetVersionNumber()),
+      base::UTF8ToUTF16(GetProductModifier()),
+      l10n_util::GetStringUTF16(VersionUI::VersionProcessorVariation()));
+}
+
+// static
+std::u16string VersionUI::GetFydeOSVersionStringForUi() {
+  const std::string fydeosMajorVersion =
+    base::SysInfo::GetLsbFydeReleaseVersion();
+  auto version = chromeos::version_loader::GetVersion(
+      chromeos::version_loader::VERSION_SHORT);
+  return l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_ABOUT_PAGE_FYDEOS_VERSION,
+      l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME),
+      base::UTF8ToUTF16(
+        (fydeosMajorVersion.empty() || fydeosMajorVersion == "unknown")
+        ? "" : "v" + fydeosMajorVersion),
       l10n_util::GetStringUTF16(version_info::IsOfficialBuild()
                                     ? IDS_VERSION_UI_OFFICIAL
                                     : IDS_VERSION_UI_UNOFFICIAL),
-      base::UTF8ToUTF16(GetProductModifier()),
-      l10n_util::GetStringUTF16(VersionUI::VersionProcessorVariation()));
+      base::UTF8ToUTF16(version.value_or("")),
+      l10n_util::GetStringUTF16(sizeof(void*) == 8
+                                    ? IDS_VERSION_UI_64BIT
+                                    : IDS_VERSION_UI_32BIT));
 }
 #endif  // !BUILDFLAG(IS_ANDROID)

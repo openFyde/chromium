@@ -265,6 +265,24 @@ constexpr TabletModeController::TabletModeBehavior kOnForDev{
     TabletModeController::ForcePhysicalTabletState::kForceTabletMode,
 };
 
+constexpr TabletModeController::TabletModeBehavior kOnForFydeSwitch{
+    /*use_sensor=*/false,
+    /*observe_display_events=*/false,
+    /*observe_pointer_device_events=*/false,
+    /*block_internal_input_device=*/false,
+    /*always_show_overview_button=*/true,
+    TabletModeController::ForcePhysicalTabletState::kForceTabletMode,
+};
+
+constexpr TabletModeController::TabletModeBehavior kOffForFydeSwitch{
+    /*use_sensor=*/false,
+    /*observe_display_events=*/false,
+    /*observe_pointer_device_events=*/false,
+    /*block_internal_input_device=*/false,
+    /*always_show_overview_button=*/false,
+    TabletModeController::ForcePhysicalTabletState::kForceClamshellMode,
+};
+
 using LidState = chromeos::PowerManagerClient::LidState;
 using TabletMode = chromeos::PowerManagerClient::TabletMode;
 
@@ -842,6 +860,44 @@ void TabletModeController::SetEnabledForDev(bool enabled) {
   force_notify_events_blocking_changed_ = true;
 
   SetIsInTabletPhysicalState(enabled);
+}
+
+void TabletModeController::SetEnabledByFyde(bool enabled) {
+  tablet_mode_behavior_ = enabled ? kOnForFydeSwitch : kOffForFydeSwitch;
+  force_notify_events_blocking_changed_ = true;
+
+  SetIsInTabletPhysicalState(enabled);
+}
+
+bool TabletModeController::IsInFydeForceOnMode() {
+  return tablet_mode_behavior_ == kOnForFydeSwitch;
+}
+
+bool TabletModeController::IsInFydeForceOffMode() {
+  return tablet_mode_behavior_ == kOffForFydeSwitch;
+}
+
+void TabletModeController::SetDefaultBehaviorByFyde() {
+  tablet_mode_behavior_ = kDefault;
+  ResetBehaviorByFyde();
+}
+
+void TabletModeController::ResetBehaviorByFyde() {
+  chromeos::PowerManagerClient* power_manager_client =
+      chromeos::PowerManagerClient::Get();
+  power_manager_client->GetSwitchStates(base::BindOnce(
+      &TabletModeController::OnResetBehaviorGetSwitchStates, weak_factory_.GetWeakPtr()));
+}
+
+void TabletModeController::OnResetBehaviorGetSwitchStates(
+    absl::optional<chromeos::PowerManagerClient::SwitchStates> result) {
+  OnGetSwitchStates(result);
+
+  const bool new_tablet_physical_state = CalculateIsInTabletPhysicalState();
+  tablet_mode_behavior_ = new_tablet_physical_state ? kOnBySensor : kDefault;
+  force_notify_events_blocking_changed_ = true;
+
+  SetIsInTabletPhysicalState(new_tablet_physical_state);
 }
 
 bool TabletModeController::ShouldShowOverviewButton() const {

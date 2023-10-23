@@ -115,6 +115,11 @@ class OsSettingsAppsPageElement extends OsSettingsAppsPageElementBase {
        */
       showPluginVm: Boolean,
 
+      fydeosArcSettingsExists_: {
+        type: Boolean,
+        value: false,
+      },
+
       /**
        * Show On startup settings and sub-page.
        */
@@ -192,6 +197,7 @@ class OsSettingsAppsPageElement extends OsSettingsAppsPageElementBase {
   private mojoInterfaceProvider_: AppNotificationsHandlerInterface;
   private onStartupOptions_: DropdownMenuOptionList;
   private showAppNotificationsRow_: boolean;
+  private fydeosArcSettingsExists_: boolean;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -202,6 +208,8 @@ class OsSettingsAppsPageElement extends OsSettingsAppsPageElementBase {
       // accept `null`, use `undefined` instead.
       return getSelectedApp(state) || undefined;
     });
+
+    this.checkFydeOSArcSettingsExists_();
 
     this.mojoInterfaceProvider_ = getAppNotificationProvider();
 
@@ -264,10 +272,23 @@ class OsSettingsAppsPageElement extends OsSettingsAppsPageElementBase {
   }
 
   private onManageAndroidAppsClick_(event: MouseEvent): void {
+    if (this.fydeosArcSettingsExists_) {
+      const ANDROID_APPID = 'iakadpgajjigiaojnbdmodlngmbkfhag';
+      chrome.nativeWindows.create(ANDROID_APPID);
+      return;
+    }
     // |event.detail| is the click count. Keyboard events will have 0 clicks.
     const isKeyboardAction = event.detail === 0;
     AndroidAppsBrowserProxyImpl.getInstance().showAndroidAppsSettings(
         isKeyboardAction);
+  }
+
+  private checkFydeOSArcSettingsExists_() {
+    const ANDROID_APPID = 'iakadpgajjigiaojnbdmodlngmbkfhag';
+    chrome.appManagement.getAppList(apps => {
+      const androidApp = apps.find(item => item.appId === ANDROID_APPID);
+      this.fydeosArcSettingsExists_ = !!androidApp;
+    });
   }
 
   /** Override ash.settings.appNotification.onNotificationAppChanged */

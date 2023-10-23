@@ -46,6 +46,9 @@ extern const char kEnterpriseManagementEmbargoEndDateKey[];
 COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_SYSTEM)
 extern const char kCustomizationIdKey[];
 
+COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_SYSTEM)
+extern const char kFydeOsLicenseIdKey[];
+
 // Developer switch value.
 COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_SYSTEM)
 extern const char kDevSwitchBootKey[];

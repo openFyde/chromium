@@ -29,6 +29,7 @@
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/strings/grit/ui_strings.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -119,6 +120,11 @@ UpdateScreen::UpdateScreen(base::WeakPtr<UpdateView> view,
 UpdateScreen::~UpdateScreen() = default;
 
 bool UpdateScreen::MaybeSkip(WizardContext& context) {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    exit_callback_.Run(VersionUpdater::Result::UPDATE_SKIPPED);
+    return true;
+  }
+
   if (context.enrollment_triggered_early) {
     LOG(WARNING) << "Skip OOBE Update because of enrollment request.";
     exit_callback_.Run(VersionUpdater::Result::UPDATE_SKIPPED);

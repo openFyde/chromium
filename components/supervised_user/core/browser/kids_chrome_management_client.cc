@@ -291,6 +291,11 @@ void KidsChromeManagementClient::OnAccessTokenFetchComplete(
   }
 
   KidsChromeManagementRequest* req = it->get();
+  // ---***FYDEOS BEGIN***---
+  // FYDEOS NOTE
+  // Call StartFetching from OnSimpleLoaderComplete, response_code == net::HTTP_UNAUTHORIZED && !req->access_token_expired
+  // req->resource_request is nullptr, make chrome crash
+  // ---***FYDEOS END***---
 
   req->resource_request->headers.SetHeader(
       net::HttpRequestHeaders::kAuthorization,

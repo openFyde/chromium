@@ -151,7 +151,7 @@ void ThemeSource::StartDataRequest(
       case version_info::Channel::DEV:
       case version_info::Channel::BETA:
       case version_info::Channel::STABLE:
-        NOTREACHED();
+        // NOTREACHED();
         [[fallthrough]];
 #endif
       case version_info::Channel::UNKNOWN:

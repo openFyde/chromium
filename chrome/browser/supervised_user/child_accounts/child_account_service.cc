@@ -370,7 +370,8 @@ void ChildAccountService::AssertChildStatusOfTheUser(bool is_child) {
 #if BUILDFLAG(IS_CHROMEOS_ASH)
   user_manager::User* user =
       ash::ProfileHelper::Get()->GetUserByProfile(profile_);
-  if (user && is_child != (user->GetType() == user_manager::USER_TYPE_CHILD)) {
+  if (user && is_child != (user->GetType() == user_manager::USER_TYPE_CHILD
+        || user->GetType() == user_manager::USER_TYPE_FYDE_CHILD)) {
     LOG(FATAL) << "User child flag has changed: " << is_child;
   }
   if (!user && ash::ProfileHelper::IsUserProfile(profile_)) {

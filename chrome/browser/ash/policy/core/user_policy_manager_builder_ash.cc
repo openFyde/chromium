@@ -118,6 +118,7 @@ void CreateConfigurationPolicyProvider(
   // All other user types do not have user policy.
   const AccountId& account_id = user->GetAccountId();
   if (user->GetType() != user_manager::USER_TYPE_CHILD &&
+      user->GetType() != user_manager::USER_TYPE_FYDE_CHILD &&
       signin::AccountManagedStatusFinder::IsEnterpriseUserBasedOnEmail(
           account_id.GetUserEmail()) ==
           signin::AccountManagedStatusFinder::EmailEnterpriseStatus::
@@ -149,6 +150,13 @@ void CreateConfigurationPolicyProvider(
       CHECK(connector->GetInstallAttributes()->IsActiveDirectoryManaged());
       is_active_directory = true;
       break;
+    //---***FYDEOS BEGIN***---
+    case AccountType::FLINT_ACCOUNT:
+      return;
+    case AccountType::FYDE_ACCOUNT:
+      is_active_directory = false;
+      break;
+    //---***FYDEOS END***---
   }
 
   const ProfileRequiresPolicy requires_policy_user_property =
@@ -223,7 +231,8 @@ void CreateConfigurationPolicyProvider(
   // block signin. Policy refresh will fail without the token that is available
   // only after profile initialization.
   const bool policy_refresh_requires_oauth_token =
-      user->GetType() == user_manager::USER_TYPE_CHILD &&
+      (user->GetType() == user_manager::USER_TYPE_CHILD ||
+       user->GetType() == user_manager::USER_TYPE_FYDE_CHILD) &&
       base::FeatureList::IsEnabled(features::kDMServerOAuthForChildUser);
 
   base::TimeDelta policy_refresh_timeout;

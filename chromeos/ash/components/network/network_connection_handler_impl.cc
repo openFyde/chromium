@@ -41,6 +41,15 @@
 #include "dbus/object_path.h"
 #include "net/cert/x509_certificate.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/switches/features/network_switches.h"
+#include "fydeos/switches/features/network_constants.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/shell_state.h"
+
+using fydeos::ash::FydeOSShellClient;
+using fydeos::ash::ShellState;
+//---***FYDEOS END***---
 
 namespace ash {
 
@@ -202,6 +211,26 @@ std::ostream& operator<<(std::ostream& stream, client_cert::ConfigType type) {
 
 }  // namespace
 
+//---***FYDEOS BEGIN***---
+void NetworkConnectionHandlerImpl::ShellStateCallback(base::OnceClosure callback,
+                                                   absl::optional<ShellState> state) {
+    VLOG(1) << "Shell State Callback: state code:" << state->code;
+    on_reload_wifidrv_ = false;
+    need_reload_wifidrv_ = false;
+    std::move(callback).Run();
+    need_reload_wifidrv_ = true;
+}
+
+void NetworkConnectionHandlerImpl::InvokeExecuteReloadWifiDrv(base::OnceClosure callback) {
+    on_reload_wifidrv_ = true;
+    VLOG(1) << "Invoke ExecuteReloadWifiDrv:" << on_reload_wifidrv_;
+    FydeOSShellClient::Get()
+      ->SyncExec(fydeos::constants::kFydeOSReloadWifiCmd,
+        base::BindOnce(&NetworkConnectionHandlerImpl::ShellStateCallback, AsWeakPtr(), std::move(callback)));
+}
+
+//---***FYDEOS END***---
+
 NetworkConnectionHandlerImpl::ConnectRequest::ConnectRequest(
     ConnectCallbackMode mode,
     const std::string& service_path,
@@ -255,6 +284,10 @@ void NetworkConnectionHandlerImpl::Init(
 
   // After this point, the NetworkConnectionHandlerImpl is fully initialized
   // (all handler references set, observers registered, ...).
+
+  //---***FYDEOS BEGIN***---
+  need_reload_wifidrv_ = fydeos::switches::NeedResetWifiDriver();
+  //---***FYDEOS END***---
 }
 
 void NetworkConnectionHandlerImpl::OnCertificatesLoaded() {
@@ -902,6 +935,17 @@ void NetworkConnectionHandlerImpl::CallShillConnect(
     const std::string& service_path) {
   NET_LOG(EVENT) << "Sending Connect Request to Shill: "
                  << NetworkPathId(service_path);
+  //---***FYDEOS BEGIN***---
+  VLOG(1) << "check if need reload " << need_reload_wifidrv_;
+  if (need_reload_wifidrv_) {
+    VLOG(1) << "check if on reload " << on_reload_wifidrv_;
+    if (on_reload_wifidrv_)
+        return;
+    InvokeExecuteReloadWifiDrv(base::BindOnce(&NetworkConnectionHandlerImpl::CallShillConnect,
+                     AsWeakPtr(), service_path));
+    return;
+  }
+  //---***FYDEOS END***---
   network_state_handler_->ClearLastErrorForNetwork(service_path);
   ShillServiceClient::Get()->Connect(
       dbus::ObjectPath(service_path),

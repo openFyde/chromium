@@ -433,6 +433,8 @@ void ExistingUserController::UpdateLoginDisplay(
     // has already logged in.
     if (user->GetType() == user_manager::USER_TYPE_REGULAR ||
         user->GetType() == user_manager::USER_TYPE_CHILD ||
+        user->GetType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+        user->GetType() == user_manager::USER_TYPE_FYDE_CHILD ||
         user->GetType() == user_manager::USER_TYPE_ACTIVE_DIRECTORY) {
       ErrorScreen::AllowOfflineLogin(true /* allowed */);
       regular_users_counter++;
@@ -544,7 +546,10 @@ void ExistingUserController::Login(const UserContext& user_context,
 
   is_login_in_progress_ = true;
 
-  if (user_context.GetUserType() != user_manager::USER_TYPE_REGULAR &&
+// ---***FYDEOS BEGIN***---
+  if ((user_context.GetUserType() != user_manager::USER_TYPE_REGULAR  ||
+      user_context.GetUserType() != user_manager::USER_TYPE_FYDE_ACCOUNT) &&
+// ---***FYDEOS END***---
       user_manager::UserManager::Get()->IsUserLoggedIn()) {
     // Multi-login is only allowed for regular users. If we are attempting to
     // do multi-login as another type of user somehow, bail out. Do not
@@ -755,6 +760,7 @@ void ExistingUserController::OnAuthFailure(const AuthFailure& failure) {
 
   const bool is_known_user = user_manager::UserManager::Get()->IsKnownUser(
       last_login_attempt_account_id_);
+  const bool is_fyde_local_user = last_login_attempt_account_id_.GetAccountType() == AccountType::FLINT_ACCOUNT;
   if (failure.reason() == AuthFailure::OWNER_REQUIRED) {
     ShowError(SigninError::kOwnerRequired, error);
     // Using Untretained here is safe because SessionTerminationManager is
@@ -772,12 +778,12 @@ void ExistingUserController::OnAuthFailure(const AuthFailure& failure) {
     ShowError(SigninError::kTpmUpdateRequired, error);
   } else if (last_login_attempt_account_id_ == user_manager::GuestAccountId()) {
     StartAutoLoginTimer();
-  } else if (is_known_user &&
+  } else if (is_known_user && !is_fyde_local_user &&
              failure.reason() == AuthFailure::MISSING_CRYPTOHOME) {
     ForceOnlineLoginForAccountId(last_login_attempt_account_id_);
     RecordReauthReason(last_login_attempt_account_id_,
                        ReauthReason::kMissingCryptohome);
-  } else if (is_known_user &&
+  } else if (is_known_user && !is_fyde_local_user &&
              failure.reason() == AuthFailure::UNRECOVERABLE_CRYPTOHOME) {
     // TODO(chromium:1140868, dlunev): for now we route unrecoverable the same
     // way as missing because it is removed under the hood in cryptohomed when

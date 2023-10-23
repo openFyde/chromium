@@ -64,6 +64,9 @@ namespace {
 
 const char kZeroTouchEnrollmentForced[] = "forced";
 const char kZeroTouchEnrollmentHandsOff[] = "hands-off";
+const char kZeroTouchEnrollmentFyde[] = "fyde";
+const char kZeroTouchEnrollmentFydeForced[] = "fyde-forced";
+const char kZeroTouchEnrollmentFydeHandsOff[] = "fyde-hands-off";
 
 // Default frequency for uploading enterprise status reports. Can be overriden
 // by Device Policy.
@@ -174,6 +177,15 @@ DeviceCloudPolicyManagerAsh::GetZeroTouchEnrollmentMode() {
   }
   if (value == kZeroTouchEnrollmentHandsOff) {
     return ZeroTouchEnrollmentMode::HANDS_OFF;
+  }
+  if (value == kZeroTouchEnrollmentFydeForced) {
+    return ZeroTouchEnrollmentMode::FYDE_FORCED;
+  }
+  if (value == kZeroTouchEnrollmentFydeHandsOff) {
+    return ZeroTouchEnrollmentMode::FYDE_HANDS_OFF;
+  }
+  if (value == kZeroTouchEnrollmentFyde) {
+    return ZeroTouchEnrollmentMode::FYDE_ENABLED;
   }
   if (value.empty()) {
     return ZeroTouchEnrollmentMode::ENABLED;

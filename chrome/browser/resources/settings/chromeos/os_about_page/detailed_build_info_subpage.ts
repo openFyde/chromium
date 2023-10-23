@@ -107,6 +107,11 @@ class SettingsDetailedBuildInfoSubpageElement extends
         readOnly: true,
       },
 
+      showChangeChannel_: {
+        type: Boolean,
+        value: false,
+      },
+
       /**
        * Whether the browser/ChromeOS is managed by their organization
        * through enterprise policies.
@@ -163,6 +168,7 @@ class SettingsDetailedBuildInfoSubpageElement extends
   private showChannelSwitcherDialog_: boolean;
   private showEditHostnameDialog_: boolean;
   private canChangeChannel_: boolean;
+  private showChangeChannel_: boolean;
   private isManagedAutoUpdateEnabled_: boolean;
   private showConsumerAutoUpdateToggleDialog_: boolean;
   private eolMessageWithMonthAndYear: string;

@@ -43,6 +43,12 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
 
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/shell_state.h"
+
+#include "fydeos/switches/misc/misc_switches.h"
+#include "chromeos/dbus/power/power_manager_client.h"
+
 namespace ash {
 
 namespace {
@@ -363,9 +369,32 @@ class SessionManagerClientImpl : public SessionManagerClient {
                                        base::DoNothing());
   }
 
+  void ShellStateCallback(absl::optional<fydeos::ash::ShellState> state) {
+    if (state) {
+      VLOG(1) << "Device wipe call FydeOSShellClient, callback, state code:"
+              << state->code;
+      chromeos::PowerManagerClient::Get()->RequestRestart(
+          power_manager::REQUEST_RESTART_FOR_USER,
+          "login reset screen restart");
+    } else {
+      if (!fydeos::switches::IsFydeCustomEnabled()) {
+        // if fydeos_shell_client state null(error calling fydeos shell daemon),
+        // and fyde-disable-custom flags in chrome_dev.conf,
+        // then try to fallback to original behavior
+        // SimpleMethodCallToSessionManager in function StartDeviceWipe
+        SimpleMethodCallToSessionManager(
+            login_manager::kSessionManagerStartDeviceWipe);
+      }
+    }
+  }
+
   void StartDeviceWipe() override {
-    SimpleMethodCallToSessionManager(
-        login_manager::kSessionManagerStartDeviceWipe);
+    // try to echo 'clobber' to /mnt/stateful_partition/.update_available,
+    // then reboot in ShellStateCallback
+    fydeos::ash::FydeOSShellClient::Get()->SyncExec(
+      "/usr/sbin/clobber",
+      base::BindOnce(&SessionManagerClientImpl::ShellStateCallback,
+        weak_ptr_factory_.GetWeakPtr()));
     for (auto& observer : observers_) {
       observer.PowerwashRequested(/*admin_requested*/ false);
     }

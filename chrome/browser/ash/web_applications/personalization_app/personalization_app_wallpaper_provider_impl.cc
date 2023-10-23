@@ -76,6 +76,7 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/image/image_util.h"
 #include "url/gurl.h"
+#include "fydeos/switches/misc/misc_constants.h"
 
 namespace ash::personalization_app {
 
@@ -171,7 +172,7 @@ void PersonalizationAppWallpaperProviderImpl::GetWallpaperAsJpegBytes(
 }
 
 bool PersonalizationAppWallpaperProviderImpl::IsEligibleForGooglePhotos() {
-  return GetUser(profile_)->HasGaiaAccount();
+  return GetUser(profile_)->HasGaiaAccount() && !profile_->IsFydeProfile();
 }
 
 void PersonalizationAppWallpaperProviderImpl::MakeTransparent() {
@@ -348,6 +349,17 @@ void PersonalizationAppWallpaperProviderImpl::GetLocalImageThumbnail(
     wallpaper_receiver_.ReportBadMessage("Invalid local image path received");
     return;
   }
+
+  const base::FilePath fyde_path(fydeos::constants::kFydeOSWallpapersBasePath);
+  if (fyde_path.IsParent(path)) {
+    image_util::DecodeImageFile(
+        base::BindOnce(
+            &PersonalizationAppWallpaperProviderImpl::OnGetFydeImage,
+            weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+        path);
+    return;
+  }
+
   if (!thumbnail_loader_)
     thumbnail_loader_ = std::make_unique<ash::ThumbnailLoader>(profile_);
 
@@ -919,6 +931,14 @@ void PersonalizationAppWallpaperProviderImpl::OnGetDefaultImage(
       webui::GetBitmapDataUrl(*WallpaperResizer::GetResizedImage(
                                    image, kCurrentWallpaperThumbnailSizeDip)
                                    .bitmap())));
+}
+
+void PersonalizationAppWallpaperProviderImpl::OnGetFydeImage(
+    GetDefaultImageThumbnailCallback callback,
+    const gfx::ImageSkia& image) {
+  // same process with OnGetDefaultImage. be careful these fyde images are not
+  // default image
+  OnGetDefaultImage(std::move(callback), image);
 }
 
 void PersonalizationAppWallpaperProviderImpl::OnGetLocalImages(

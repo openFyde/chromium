@@ -44,6 +44,7 @@ export const OOBE_UI_STATE = {
   ENROLLMENT_SUCCESS: 17,
   THEME_SELECTION: 18,
   MARKETING_OPT_IN: 19,
+  FYDE_LOCAL_SIGNIN: 21, // be careful, should be sync with login_types.h
 };
 
 // TODO(crbug.com/1229130) - Refactor/remove these constants.

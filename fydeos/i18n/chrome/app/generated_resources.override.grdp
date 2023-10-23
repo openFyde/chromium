@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/generated_resources.grd -->
+<grit-part>
+
+  <if expr="openfyde">
+    <if expr="enable_extensions">
+      <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Chrome OS system images.">
+        openFyde System Image Writer
+      </message>
+    </if>
+    <message name="IDS_EXTERNAL_PROTOCOL_TITLE" desc="External Protocol Dialog Title">
+      openFyde can't open this page.
+    </message>
+    <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in Chrome OS kiosk mode.">
+      App with 'kiosk_only' manifest attribute must be installed in openFyde kiosk mode
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <if expr="enable_extensions">
+      <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Chrome OS system images.">
+        FydeOS System Image Writer
+      </message>
+    </if>
+    <message name="IDS_EXTERNAL_PROTOCOL_TITLE" desc="External Protocol Dialog Title">
+      FydeOS can't open this page.
+    </message>
+    <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in Chrome OS kiosk mode.">
+      App with 'kiosk_only' manifest attribute must be installed in FydeOS kiosk mode
+    </message>
+  </if>
+  <message name="IDS_EXTENSION_WEB_STORE_TITLE" desc="Text for the Chrome Web Store">
+    App Store
+  </message>
+  <message name="IDS_EXTENSION_WEB_STORE_TITLE_SHORT" desc="Shortened version of text for the Chrome Web Store">
+    App Store
+  </message>
+  <message name="IDS_HISTORY_HISTORY_MENU_ITEM" desc="Label displayed in history sidebar button to display history.">
+    Chromium history
+  </message>
+  <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_STAY_IN_CHROME" desc="Message contained in a button to continue the navigation within Chrome.">
+    Stay in Chromium
+  </message>
+
+</grit-part>

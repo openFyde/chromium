@@ -193,6 +193,8 @@
 #include "ash/webui/eche_app_ui/eche_app_manager.h"
 #include "ash/webui/eche_app_ui/eche_app_ui.h"
 #include "ash/webui/eche_app_ui/url_constants.h"
+#include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_ui.h"
+#include "ash/webui/fyde_assistant_app_ui/url_constants.h"
 #include "ash/webui/face_ml_app_ui/face_ml_app_ui.h"
 #include "ash/webui/face_ml_app_ui/url_constants.h"
 #include "ash/webui/file_manager/file_manager_ui.h"
@@ -248,6 +250,7 @@
 #include "chrome/browser/ash/web_applications/files_internals_ui_delegate.h"
 #include "chrome/browser/ash/web_applications/help_app/help_app_ui_delegate.h"
 #include "chrome/browser/ash/web_applications/media_app/chrome_media_app_ui_delegate.h"
+#include "chrome/browser/ash/web_applications/fyde_assistant_app_ui_delegate.h"
 #include "chrome/browser/ash/web_applications/personalization_app/personalization_app_utils.h"
 #include "chrome/browser/feedback/feedback_dialog_utils.h"
 #include "chrome/browser/nearby_sharing/nearby_sharing_service_factory.h"
@@ -944,8 +947,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
     return &NewComponentUI<ash::file_manager::FileManagerUI,
                            ChromeFileManagerUIDelegate>;
   }
-  if (url.host_piece() == ash::kChromeUIHelpAppHost)
-    return &NewComponentUI<ash::HelpAppUI, ash::ChromeHelpAppUIDelegate>;
+  // if (url.host_piece() == ash::kChromeUIHelpAppHost)
+  //   return &NewComponentUI<ash::HelpAppUI, ash::ChromeHelpAppUIDelegate>;
   if (url.host_piece() == chrome::kChromeUIMobileSetupHost)
     return &NewWebUI<ash::cellular_setup::MobileSetupUI>;
   if (url.host_piece() == ash::kChromeUIDiagnosticsAppHost) {
@@ -976,6 +979,10 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   if (url.host_piece() ==
       ash::personalization_app::kChromeUIPersonalizationAppHost) {
     return &NewWebUI<ash::personalization_app::PersonalizationAppUI>;
+  }
+  if (url.host_piece() ==
+      ash::kChromeUIFydeAssistantAppHost) {
+    return &NewComponentUI<ash::FydeAssistantAppUI, ChromeFydeAssistantAppUIDelegate>;
   }
   if (base::FeatureList::IsEnabled(net::features::kKerberosInBrowserRedirect) &&
       url.host_piece() == chrome::kChromeUIKerberosInBrowserHost) {

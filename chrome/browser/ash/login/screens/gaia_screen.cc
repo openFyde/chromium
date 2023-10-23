@@ -26,8 +26,10 @@ namespace {
 constexpr char kUserActionBack[] = "back";
 constexpr char kUserActionCancel[] = "cancel";
 constexpr char kUserActionStartEnrollment[] = "startEnrollment";
+constexpr char kUserActionUseLocalAccount[] = "useLocalAccount";
 constexpr char kUserActionReloadDefault[] = "reloadDefault";
 constexpr char kUserActionRetry[] = "retry";
+constexpr char kUserActionAccountTypeSelectionBack[] = "accountTypeSelectionBack";
 
 bool ShouldPrepareForRecovery(const AccountId& account_id) {
   if (!features::IsCryptohomeRecoveryEnabled() || !account_id.is_valid()) {
@@ -63,8 +65,12 @@ std::string GaiaScreen::GetResultString(Result result) {
       return "Cancel";
     case Result::ENTERPRISE_ENROLL:
       return "EnterpriseEnroll";
+    case Result::USE_LOCAL_ACCOUNT:
+      return "UseLocalAccount";
     case Result::START_CONSUMER_KIOSK:
       return "StartConsumerKiosk";
+    case Result::ACCOUNT_TYPE_SELECTION_BACK:
+      return "AccountTypeSelectionBack";
   }
 }
 
@@ -176,6 +182,10 @@ void GaiaScreen::OnUserAction(const base::Value::List& args) {
     exit_callback_.Run(Result::CANCEL);
   } else if (action_id == kUserActionStartEnrollment) {
     exit_callback_.Run(Result::ENTERPRISE_ENROLL);
+  } else if (action_id == kUserActionUseLocalAccount) {
+    exit_callback_.Run(Result::USE_LOCAL_ACCOUNT);
+  } else if (action_id == kUserActionAccountTypeSelectionBack) {
+    exit_callback_.Run(Result::ACCOUNT_TYPE_SELECTION_BACK);
   } else if (action_id == kUserActionReloadDefault) {
     Reset();
     LoadOnline(EmptyAccountId());
@@ -241,6 +251,11 @@ void GaiaScreen::OnGaiaReauthTokenFetched(const AccountId& account,
   gaia_reauth_token_fetcher_.reset();
   view_->SetReauthRequestToken(token);
   view_->LoadGaiaAsync(account);
+}
+
+void GaiaScreen::RequestUseLocalAccount() {
+  if (!view_) return;
+  view_->RequestUseLocalAccount();
 }
 
 }  // namespace ash

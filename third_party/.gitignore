@@ -293,7 +293,7 @@
 /webpagereplay
 /webrtc
 /weston/src
-/widevine/cdm/chromeos
+#/widevine/cdm/chromeos
 /widevine/cdm/linux
 /widevine/cdm/mac
 /widevine/cdm/win

@@ -5,6 +5,7 @@ found in the LICENSE file.
 -->
 
 <style include="cr-shared-style oobe-dialog-host-styles">
+/*
   :host {
     box-sizing: border-box;
     height: var(--oobe-adaptive-dialog-height);
@@ -79,6 +80,10 @@ found in the LICENSE file.
     grid-row: 1 / span 2;
   }
 
+  .fydeos-oobe-illustration {
+    width: 100%;
+  }
+
   #accessibilitySettingsButton,
   #timezoneSettingsButton,
   #enableDebuggingButton {
@@ -127,15 +132,35 @@ found in the LICENSE file.
   :host-context([orientation='horizontal']) .welcome-header-text {
     text-align: start;
   }
+*/
+  #accessibilitySettingsButton,
+  #timezoneSettingsButton,
+  #enableDebuggingButton {
+    margin-top: 8px;
+  }
+  #content > #buttons {
+    margin-left: -16px; /* remove 16px padding from the left of the buttons */
+  }
+  #video {
+    height: 90%;
+  }
+  #subtitle {
+    color: var(--oobe-subheader-text-color);
+  }
 </style>
-<div id="dialog" class="layout vertical">
-  <h1 id="title" class="welcome-header-text">
-    [[i18nDynamic(locale, 'welcomeScreenGreeting')]]
+<oobe-adaptive-dialog
+  id="dialog"
+  fydeos-layout
+>
+  <img slot="illustration" class="oobe-illustration"
+       src="chrome://oobe/images/fydeos_oobe_welcome_v17.png" />
+  <h1 slot="title" id="title" class="welcome-header-text">
+    [[i18nDynamic(locale, 'welcomeScreenGreeting')]] v17
   </h1>
-  <div id="subtitle" class="welcome-header-text">
-    [[i18nDynamic(locale, 'welcomeScreenGreetingSubtitle')]]
+  <div slot="subtitle" id="subtitle" class="welcome-header-text">
+    Nostalgic Reflections
   </div>
-  <div id="content">
+  <div slot="content" id="content" class="landscape-header-aligned">
     <div id="buttons" class="layout vertical">
       <oobe-icon-button
         id="languageSelectionButton"
@@ -174,24 +199,9 @@ found in the LICENSE file.
       >
       </oobe-icon-button>
     </div>
-    <div id="bottomButtons">
-      <oobe-text-button
-        id="quickStart"
-        on-click="onQuickStartClicked_"
-        hidden="[[!isQuickStartEnabled]]"
-        text-key="welcomeScreenQuickStart"
-      >
-      </oobe-text-button>
-      <oobe-text-button
-        id="getStarted"
-        inverse
-        on-click="onNextClicked_"
-        text-key="welcomeScreenGetStarted"
-      >
-      </oobe-text-button>
-    </div>
-    <div id="welcomeAnimationSlot">
+    <div hidden id="welcomeAnimationSlot">
       <template is="dom-if" if="[[!isMeet_]]">
+        <!-- begin, commented by fydeos
         <oobe-cr-lottie
           id="welcomeAnimation"
           animation-url="animations/welcome_screen_animation.json"
@@ -205,10 +215,25 @@ found in the LICENSE file.
           id="remoraWelcomeImage"
           aria-hidden="true"
         >
+        end, commented by fydeos -->
+        <img srcset="images/welcome_illustration.svg"
+             class="oobe-illustration fydeos-oobe-illustration">
       </template>
     </div>
   </div>
-</div>
+  <div slot="bottom-buttons" id="bottomButtons">
+    <template is="dom-if" if="[[isQuickStartEnabled_]]">
+      <oobe-text-button id="quickStart"
+          on-click="onQuickStartClicked_"
+          text-key="welcomeScreenQuickStart">
+      </oobe-text-button>
+    </template>
+    <oobe-text-button id="getStarted"
+        inverse on-click="onNextClicked_"
+        text-key="welcomeScreenGetStarted">
+    </oobe-text-button>
+  </div>
+</oobe-adaptive-dialog>
 <oobe-modal-dialog id="chromeVoxHint">
   <div slot="title">
     <p>[[i18nDynamic(locale, 'chromeVoxHintText')]]</p>

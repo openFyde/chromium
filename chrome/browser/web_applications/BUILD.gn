@@ -456,6 +456,13 @@ source_set("web_applications") {
     deps += [ "//chrome/browser/resources:preinstalled_web_apps_resources" ]
   }
 
+  sources += [
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/remote_desktop.cc",
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/remote_desktop.h",
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/community.cc",
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/community.h",
+  ]
+
   if (is_win) {
     deps += [
       "//chrome/browser/web_applications/chrome_pwa_launcher:util",

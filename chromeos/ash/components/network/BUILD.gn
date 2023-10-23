@@ -37,6 +37,7 @@ component("network") {
     "//components/user_manager",
     "//crypto",
     "//dbus",
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
     "//net",
     "//services/preferences/public/cpp",
     "//url",

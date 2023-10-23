@@ -16,12 +16,14 @@ import '../../privacy_page/collapse_radio_button.js';
 import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 import {MetricsBrowserProxy, MetricsBrowserProxyImpl, PrivacyGuideSettingsStates, PrivacyGuideStepsEligibleAndReached} from '../../metrics_browser_proxy.js';
 import {SafeBrowsingSetting} from '../../privacy_page/security_page.js';
 
 import {getTemplate} from './privacy_guide_safe_browsing_fragment.html.js';
 
-const PrivacyGuideSafeBrowsingFragmentBase = PrefsMixin(PolymerElement);
+const PrivacyGuideSafeBrowsingFragmentBase = I18nMixin(PrefsMixin(PolymerElement));
 
 export class PrivacyGuideSafeBrowsingFragmentElement extends
     PrivacyGuideSafeBrowsingFragmentBase {
@@ -49,6 +51,11 @@ export class PrivacyGuideSafeBrowsingFragmentElement extends
       safeBrowsingSettingEnum_: {
         type: Object,
         value: SafeBrowsingSetting,
+      },
+
+      isFydeProfile_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isFydeProfile'),
       },
     };
   }
@@ -113,6 +120,15 @@ export class PrivacyGuideSafeBrowsingFragmentElement extends
         break;
     }
   }
+
+  private safeBrowsingEnhancedDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingEnhancedFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingEnhancedDesc');
+    }
+  }
+
 }
 
 declare global {

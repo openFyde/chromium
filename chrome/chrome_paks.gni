@@ -412,6 +412,12 @@ template("chrome_extra_paks") {
           "//ash/webui/resources:sample_system_web_app_untrusted_resources",
         ]
       }
+      sources += [
+        "$root_gen_dir/ash/webui/ash_fyde_assistant_app_resources.pak",
+      ]
+      deps += [
+        "//ash/webui/resources:fyde_assistant_app_resources",
+      ]
 
       if (include_ash_ambient_animation_resources) {
         sources += [ "$root_gen_dir/ash/ambient/resources/ash_ambient_lottie_resources.pak" ]
@@ -482,11 +488,13 @@ template("chrome_extra_paks") {
         "$root_gen_dir/chrome/sync_file_system_internals_resources.pak",
         "$root_gen_dir/extensions/extensions_renderer_resources.pak",
         "$root_gen_dir/extensions/extensions_resources.pak",
+        "$root_gen_dir/fydeos/extensions/common/fydeos_extensions_resources.pak",
       ]
       deps += [
         "//chrome/browser/resources/extensions:resources",
         "//chrome/browser/resources/sync_file_system_internals:resources",
         "//extensions:extensions_resources",
+        "//fydeos/extensions/common:resources",
       ]
     }
     if (enable_pdf) {

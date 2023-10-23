@@ -8,6 +8,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "third_party/icu/source/i18n/unicode/regex.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace signin {
 
@@ -80,10 +81,12 @@ AccountManagedStatusFinder::IsEnterpriseUserBasedOnEmail(
   }
   const std::u16string domain =
       base::UTF8ToUTF16(gaia::ExtractDomainName(email));
-  for (size_t i = 0; i < std::size(kNonManagedDomainPatterns); i++) {
-    std::u16string pattern = base::WideToUTF16(kNonManagedDomainPatterns[i]);
-    if (MatchDomain(domain, pattern, i))
-      return EmailEnterpriseStatus::kKnownNonEnterprise;
+  if (!fydeos::switches::IsPolicyManagedByFyde()) {
+    for (size_t i = 0; i < std::size(kNonManagedDomainPatterns); i++) {
+      std::u16string pattern = base::WideToUTF16(kNonManagedDomainPatterns[i]);
+      if (MatchDomain(domain, pattern, i))
+        return EmailEnterpriseStatus::kKnownNonEnterprise;
+    }
   }
   if (g_non_managed_domain_for_testing &&
       domain == base::UTF8ToUTF16(g_non_managed_domain_for_testing)) {

@@ -88,6 +88,7 @@ class ASH_EXPORT TopShortcutsView : public views::View,
   raw_ptr<IconButton, ExperimentalAsh> lock_button_ = nullptr;
   raw_ptr<IconButton, ExperimentalAsh> settings_button_ = nullptr;
   raw_ptr<IconButton, ExperimentalAsh> power_button_ = nullptr;
+  raw_ptr<IconButton, ExperimentalAsh> reboot_button_ = nullptr;
   raw_ptr<CollapseButton, ExperimentalAsh> collapse_button_ = nullptr;
 
   PrefChangeRegistrar local_state_pref_change_registrar_;

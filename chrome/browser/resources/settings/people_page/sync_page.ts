@@ -28,6 +28,7 @@ import {CrDialogElement} from '//resources/cr_elements/cr_dialog/cr_dialog.js';
 import {CrInputElement} from '//resources/cr_elements/cr_input/cr_input.js';
 import {WebUiListenerMixin} from '//resources/cr_elements/web_ui_listener_mixin.js';
 import {assert, assertNotReached} from '//resources/js/assert_ts.js';
+import {BaseMixin, BaseMixinInterface} from '../base_mixin.js';
 import {focusWithoutInk} from '//resources/js/focus_without_ink.js';
 import {IronCollapseElement} from '//resources/polymer/v3_0/iron-collapse/iron-collapse.js';
 import {flush, PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
@@ -60,7 +61,7 @@ export interface SettingsSyncPageElement {
  */
 
 const SettingsSyncPageElementBase =
-    RouteObserverMixin(WebUiListenerMixin(I18nMixin(PolymerElement)));
+    RouteObserverMixin(WebUiListenerMixin(I18nMixin(BaseMixin(PolymerElement))));
 
 export class SettingsSyncPageElement extends SettingsSyncPageElementBase {
   static get is() {
@@ -190,6 +191,13 @@ export class SettingsSyncPageElement extends SettingsSyncPageElementBase {
         computed: 'computeExistingPassphraseLabel_(syncPrefs.encryptAllData,' +
             'syncPrefs.explicitPassphraseTime)',
       },
+      isFydeProfile_: {
+        type: Boolean,
+        value: function() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+        readOnly: true,
+      },
     };
   }
 
@@ -218,6 +226,7 @@ export class SettingsSyncPageElement extends SettingsSyncPageElementBase {
 
   private enterPassphraseLabel_: TrustedHTML;
   private existingPassphraseLabel_: TrustedHTML;
+  private isFydeProfile_: boolean;
 
   private browserProxy_: SyncBrowserProxy = SyncBrowserProxyImpl.getInstance();
   private collapsibleSectionsInitialized_: boolean;
@@ -277,6 +286,25 @@ export class SettingsSyncPageElement extends SettingsSyncPageElementBase {
     if (router.getCurrentRoute() === router.getRoutes().SYNC) {
       this.onNavigateToPage_();
     }
+    const hideOtherSyncItems = () => {
+      const nodes = this.shadowRoot!.querySelectorAll('#other-sync-items cr-link-row') as NodeListOf<HTMLElement>;
+      const unSupportedEncryptElement = this.shadowRoot!.querySelector('#encryptionDescription') as HTMLElement;
+      [...nodes, unSupportedEncryptElement].forEach(n => {
+        if (n.id !== 'sync-advanced-row') {
+          n.style.display = 'none';
+        }
+      });
+    };
+
+    const hideAll = () => {
+      if (!this.isFydeProfile_) return;
+      hideOtherSyncItems();
+    };
+
+    setTimeout(() => {
+      hideAll();
+      setTimeout(hideAll, 30);
+    }, 0);
   }
 
   override disconnectedCallback() {
@@ -386,7 +414,9 @@ export class SettingsSyncPageElement extends SettingsSyncPageElementBase {
     // <if expr="not chromeos_ash">
     const userActionCancelsSetup = this.syncStatus &&
         this.syncStatus.firstSetupInProgress && this.didAbort_;
-    if (userActionCancelsSetup && !this.setupCancelConfirmed_) {
+//---***FYDEOS BEGIN***---
+     if (!this.isFydeProfile_ && userActionCancelsSetup && !this.setupCancelConfirmed_) {
+//---***FYDEOS END***---
       chrome.metricsPrivate.recordUserAction(
           'Signin_Signin_BackOnAdvancedSyncSettings');
       // Show the 'Cancel sync?' dialog.

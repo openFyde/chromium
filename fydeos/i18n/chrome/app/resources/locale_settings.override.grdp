@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <!-- override chrome/app/resources/locale_settings.grd -->
+  <if expr="use_fydeos_com">
+    <message name="IDS_FACTORY_RESET_HELP_URL" translateable="false">
+      https://fydeos.com/docs/manual/fix-problems/reset-your-fydeos-device-to-factory-settings/
+    </message>
+  </if>
+  <if expr="not use_fydeos_com">
+    <message name="IDS_FACTORY_RESET_HELP_URL" translateable="false">
+      https://fydeos.io/docs/manual/fix-problems/reset-your-fydeos-device-to-factory-settings/
+    </message>
+  </if>
+</grit-part>

@@ -264,6 +264,8 @@ export class FeedbackFlowElement extends PolymerElement {
      * @private
      */
     this.noHelpContentDisplayed_;
+
+    this.uniqueReportId_;
   }
 
   connectedCallback() {
@@ -455,6 +457,7 @@ export class FeedbackFlowElement extends PolymerElement {
         this.feedbackServiceProvider_.sendReport(report).then((response) => {
           this.currentState_ = FeedbackFlowState.CONFIRMATION;
           this.sendReportStatus_ = response.status;
+          this.uniqueReportId_ = response.uniqueReportId;
           const confirmationPage =
               this.shadowRoot.querySelector('confirmation-page');
           confirmationPage.focusPageTitle();

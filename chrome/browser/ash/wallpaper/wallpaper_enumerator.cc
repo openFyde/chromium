@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/ash/thumbnail_loader.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/webui/web_ui_util.h"
+#include "fydeos/switches/misc/misc_constants.h"
 
 namespace {
 
@@ -60,6 +61,12 @@ std::vector<base::FilePath> EnumerateAllImages(
   EnumerateFiles(search_path, trash_paths, kPngFilePattern, &image_paths);
   EnumerateFiles(search_path, trash_paths, kJpgFilePattern, &image_paths);
   EnumerateFiles(search_path, trash_paths, kJpegFilePattern, &image_paths);
+
+  const base::FilePath fyde_search_path =
+    base::FilePath(fydeos::constants::kFydeOSWallpapersBasePath);
+  EnumerateFiles(fyde_search_path, trash_paths, kPngFilePattern, &image_paths);
+  EnumerateFiles(fyde_search_path, trash_paths, kJpgFilePattern, &image_paths);
+  EnumerateFiles(fyde_search_path, trash_paths, kJpegFilePattern, &image_paths);
 
   return image_paths;
 }

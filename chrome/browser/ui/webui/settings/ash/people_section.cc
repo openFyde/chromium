@@ -61,6 +61,7 @@
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/chromeos/devicetype_utils.h"
 #include "ui/chromeos/resources/grit/ui_chromeos_resources.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -98,6 +99,22 @@ const std::vector<SearchConcept>& GetPeopleSearchConcepts() {
        mojom::SearchResultType::kSetting,
        {.setting = mojom::Setting::kAddAccount}},
   });
+
+  return *tags;
+}
+
+const std::vector<SearchConcept>& GetNonFydeAccountPeopleSearchConcepts() {
+  static const base::NoDestructor<std::vector<SearchConcept>> tags([] {
+    std::vector<SearchConcept> all_tags({});
+    all_tags.insert(all_tags.end(),
+                  {{IDS_OS_SETTINGS_TAG_PEOPLE_ACCOUNTS_ADD_V2,
+                    mojom::kMyAccountsSubpagePath,
+                    mojom::SearchResultIcon::kAvatar,
+                    mojom::SearchResultDefaultRank::kMedium,
+                    mojom::SearchResultType::kSetting,
+                    {.setting = mojom::Setting::kAddAccount}}});
+    return all_tags;
+  }());
 
   return *tags;
 }
@@ -206,6 +223,8 @@ void AddAccountManagerPageStrings(content::WebUIDataSource* html_source,
 
   user_manager::User* user = ProfileHelper::Get()->GetUserByProfile(profile);
   DCHECK(user);
+  html_source->AddString("fydeosAccountBaseUrl",
+                         fydeos::constants::kFydeOSAccountBaseUrl);
   html_source->AddString(
       "accountListChildDescription",
       l10n_util::GetStringFUTF16(
@@ -307,7 +326,7 @@ void AddLockScreenPageStrings(content::WebUIDataSource* html_source,
                              IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_NOTICE,
                              ui::GetChromeOSDeviceName()));
   html_source->AddString("fingerprintLearnMoreLink",
-                         chrome::kFingerprintLearnMoreURL);
+                         fydeos::constants::kFingerprintLearnMoreURL);
   html_source->AddBoolean("cryptohomeRecoveryEnabled",
                           features::IsCryptohomeRecoveryEnabled());
   html_source->AddString("recoveryLearnMoreUrl", chrome::kRecoveryLearnMoreURL);
@@ -482,6 +501,12 @@ bool IsSameAccount(const ::account_manager::AccountKey& account_key,
     case account_manager::AccountType::kActiveDirectory:
       return account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY &&
              account_id.GetObjGuid() == account_key.id();
+    case account_manager::AccountType::kFlint:
+      return account_id.GetAccountType() == AccountType::FLINT_ACCOUNT &&
+             account_id.GetFlintId() == account_key.id();
+    case account_manager::AccountType::kFyde:
+      return account_id.GetAccountType() == AccountType::FYDE_ACCOUNT &&
+             account_id.GetFydeId() == account_key.id();
   }
 }
 
@@ -504,10 +529,13 @@ PeopleSection::PeopleSection(Profile* profile,
 
   SearchTagRegistry::ScopedTagUpdater updater = registry()->StartUpdate();
   updater.AddSearchTags(GetPeopleSearchConcepts());
+  if (profile && profile->IsFydeProfile()) {
+    updater.RemoveSearchTags(GetNonFydeAccountPeopleSearchConcepts());
+  }
 
   // TODO(jamescook): Sort out how account management is split between Chrome
   // OS and browser settings.
-  if (IsAccountManagerAvailable(profile)) {
+  if (IsAccountManagerAvailable(profile) && !profile->IsFydeProfile()) {
     // Some Account Manager search tags are added/removed dynamically.
     auto* factory =
         g_browser_process->platform_part()->GetAccountManagerFactory();
@@ -560,11 +588,14 @@ void PeopleSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
 
   // Toggles the Chrome OS Account Manager submenu in the People section.
   html_source->AddBoolean("isAccountManagerEnabled",
-                          account_manager_facade_ != nullptr);
+                          account_manager_facade_ != nullptr && !profile()->IsFydeProfile());
   html_source->AddBoolean(
       "isDeviceAccountManaged",
       user->IsActiveDirectoryUser() ||
           profile()->GetProfilePolicyConnector()->IsManaged());
+
+  html_source->AddBoolean("isFydeLocalAccount",
+                          user->GetType() == user_manager::UserType::USER_TYPE_FLINT_ACCOUNT);
 
   static constexpr webui::LocalizedString kSignOutStrings[] = {
       {"syncDisconnect", IDS_SETTINGS_PEOPLE_SIGN_OUT},

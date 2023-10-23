@@ -248,6 +248,7 @@ enum {
   kAccessibilityColorFiltering = 100200,
   kAccessibilityColorVisionCorrectionAmount = 100201,
   kAccessibilityColorVisionDeficiencyType = 100202,
+  kLanguageImeMenuActivated = 100203,
 };
 }  // namespace syncable_prefs_ids
 
@@ -608,6 +609,9 @@ const auto& SyncablePreferences() {
           syncer::OS_PREFERENCES}},
         {prefs::kLanguagePreloadEnginesSyncable,
          {syncable_prefs_ids::kLanguagePreloadEnginesSyncable,
+          syncer::OS_PREFERENCES}},
+        {prefs::kLanguageImeMenuActivated,
+         {syncable_prefs_ids::kLanguageImeMenuActivated,
           syncer::OS_PREFERENCES}},
         {prefs::kLanguageRemapAltKeyTo,
          {syncable_prefs_ids::kLanguageRemapAltKeyTo,

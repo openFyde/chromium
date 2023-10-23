@@ -45,6 +45,7 @@
 #include "ui/base/ui_base_features.h"
 #include "ui/display/manager/managed_display_info.h"
 #include "ui/events/ash/keyboard_layout_util.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash {
 namespace {
@@ -138,6 +139,9 @@ void RecordNewTab(const ui::Accelerator& accelerator) {
 
 // Check if accelerator should trigger ToggleAssistant action.
 bool ShouldToggleAssistant(const ui::Accelerator& accelerator) {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    return true;
+  }
   // Search+A shortcut is disabled on device with an assistant key.
   // Currently only Google branded device has the key. Some external keyboard
   // may report it has the key but actually not.  This would cause keyboard
@@ -671,7 +675,7 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case START_AMBIENT_MODE:
       return accelerators::CanStartAmbientMode();
     case START_ASSISTANT:
-      return true;
+      return fydeos::switches::IsFydeCustomEnabled();
     case SWAP_PRIMARY_DISPLAY:
       return accelerators::CanSwapPrimaryDisplay();
     case SWITCH_IME:
@@ -1455,6 +1459,10 @@ bool AcceleratorControllerImpl::ShouldPreventProcessingAccelerators() const {
 
 void AcceleratorControllerImpl::RecordVolumeSource() {
   accelerators::RecordVolumeSource();
+}
+
+void RotateScreenFydeOS() {
+  accelerators::RotateScreenWithoutConfirmation();
 }
 
 }  // namespace ash

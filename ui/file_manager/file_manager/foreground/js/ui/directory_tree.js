@@ -1969,6 +1969,95 @@ export class FakeItem extends FilesTreeItem {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// FydeDropItem
+
+/**
+ * FydeDropItem is used by FydeDrop view.
+ * (The implementation is borrowed from FakeItem)
+ */
+export class FydeDropItem extends FilesTreeItem {
+  /**
+   * @param {!NavigationModelFydeDropItem} modelItem
+   * @param {!DirectoryTree} tree Current tree, which contains this item.
+   */
+  constructor(rootType, modelItem, tree) {
+    super(modelItem.label, tree);
+    this.__proto__ = FydeDropItem.prototype;
+
+    if (window.IN_TEST) {
+      this.setAttribute('dir-type', 'FydeDropItem');
+    }
+
+    this.dirEntry_ = modelItem.entry;
+    this.modelItem_ = modelItem;
+    this.rootType_ = rootType;
+
+    const icon = this.querySelector('.icon');
+    icon.classList.add('item-icon');
+    icon.setAttribute('root-type-icon', rootType);
+
+    if (rootType === VolumeManagerCommon.RootType.FYDEDROP) {
+      this.labelElement.scrollIntoViewIfNeeded = () => {
+        this.scrollIntoView(true);
+      };
+    }
+
+    if (tree.disabledContextMenu) {
+      contextMenuHandler.setContextMenu(this, tree.disabledContextMenu);
+    }
+  }
+
+  /**
+   * @param {!DirectoryEntry|!FilesAppDirEntry} entry
+   * @return {boolean} True if the parent item is found.
+   */
+  searchAndSelectByEntry(entry) {
+    return false;
+  }
+
+  /**
+   * @override
+   */
+  handleClick(e) {
+    this.activate();
+  }
+
+  /**
+   * Executes the command.
+   */
+  activate() {
+    this.selected = true;
+    this.parentTree_.directoryModel.activateDirectoryEntry(this.entry);
+  }
+
+  /**
+   * Keep same with FakeItem.
+   */
+  updateSubDirectories(recursive, opt_successCallback, opt_errorCallback) {
+    return opt_successCallback && opt_successCallback();
+  }
+
+  /**
+   * Keep same with FakeItem.
+   */
+  updateDriveSpecificIcons() {}
+
+  /**
+   * The DirectoryEntry corresponding to this DirectoryItem.
+   */
+  get entry() {
+    return this.dirEntry_;
+  }
+
+  /**
+   * @type {!NavigationModelFydeDropItem}
+   */
+  get modelItem() {
+    return this.modelItem_;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // DirectoryTree
 
 /**
@@ -2675,6 +2764,13 @@ DirectoryTree.createDirectoryItem = (modelItem, tree) => {
           VolumeManagerCommon.RootType.TRASH,
           /** @type {!NavigationModelFakeItem} */ (modelItem), tree);
       break;
+    //---***FYDEOS BEGIN***---
+    case NavigationModelItemType.FYDEDROP:
+      return new FydeDropItem(
+          VolumeManagerCommon.RootType.FYDEDROP,
+          /** @type {!NavigationModelFydeDropItem} */ (modelItem), tree);
+      break;
+    //---***FYDEOS END***---
   }
   assertNotReached(`No DirectoryItem model: "${modelItem.type}"`);
 };

@@ -19,7 +19,7 @@
         pref="[[prefs.generated.safe_browsing]]"
         name="[[safeBrowsingSettingEnum_.ENHANCED]]"
         label="$i18n{safeBrowsingEnhanced}"
-        sub-label="$i18n{safeBrowsingEnhancedDesc}"
+        sub-label="[[safeBrowsingEnhancedDesc_()]]"
         expand-aria-label="$i18n{safeBrowsingEnhancedExpandA11yLabel}"
         on-click="onSafeBrowsingEnhancedClick_">
         <div slot="collapse" class="description-wrapper-radio two-column">
@@ -34,6 +34,7 @@
                   label="$i18n{safeBrowsingEnhancedBulOne}">
               </privacy-guide-description-item>
               <privacy-guide-description-item
+                  hidden="[[isFydeProfile_]]"
                   role="listitem"
                   icon="settings20:googleg"
                   label="$i18n{safeBrowsingEnhancedBulTwo}">
@@ -66,6 +67,7 @@
                   label="$i18n{privacyGuideSafeBrowsingCardEnhancedProtectionPrivacyDescription2}">
               </privacy-guide-description-item>
               <privacy-guide-description-item
+                  hidden="[[isFydeProfile_]]"
                   role="listitem"
                   icon="settings20:account-circle"
                   label="$i18n{privacyGuideSafeBrowsingCardEnhancedProtectionPrivacyDescription3}">

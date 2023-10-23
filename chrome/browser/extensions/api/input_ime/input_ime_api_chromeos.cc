@@ -10,6 +10,8 @@
 
 #include "ash/constants/ash_features.h"
 #include "ash/public/cpp/keyboard/keyboard_config.h"
+#include "ash/public/cpp/system/toast_data.h"
+#include "ash/public/cpp/system/toast_manager.h"
 #include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "chrome/browser/ash/input_method/assistive_window_properties.h"
@@ -46,6 +48,7 @@ namespace HideInputView = extensions::api::input_ime::HideInputView;
 namespace SetMenuItems = extensions::api::input_ime::SetMenuItems;
 namespace SetCursorPosition = extensions::api::input_ime::SetCursorPosition;
 namespace SetCandidates = extensions::api::input_ime::SetCandidates;
+namespace ShowFydeLanguageState = extensions::api::input_ime::ShowFydeLanguageState;
 namespace SetCandidateWindowProperties =
     extensions::api::input_ime::SetCandidateWindowProperties;
 namespace SetAssistiveWindowProperties =
@@ -60,6 +63,8 @@ namespace FinishComposingText =
 
 using ::ash::TextInputMethod;
 using ::ash::input_method::InputMethodEngine;
+
+const char kShowFydeLanguageStateToastId[] = "show_fyde_language_state";
 
 const char kErrorEngineNotAvailable[] = "The engine is not available.";
 const char kErrorSetMenuItemsFail[] = "Could not create menu items.";
@@ -917,7 +922,7 @@ bool InputImeEventRouter::RegisterImeExtension(
           ash::extension_ime_util::GetInputMethodID(extension_id, component.id);
       descriptors.push_back(ash::input_method::InputMethodDescriptor(
           input_method_id, component.name,
-          std::string(),  // TODO(uekawa): Set short name.
+          component.indicator,
           layout, languages,
           false,  // 3rd party IMEs are always not for login.
           component.options_page_url, component.input_view_url));
@@ -1166,6 +1171,27 @@ InputImeSetCandidateWindowPropertiesFunction::Run() {
   }
 
   return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction
+InputImeShowFydeLanguageStateFunction::Run() {
+  std::string error;
+  InputMethodEngine* engine = GetEngineIfActive(
+      Profile::FromBrowserContext(browser_context()), extension_id(), &error);
+  if (!engine) {
+    return RespondNow(Error(InformativeError(error, static_function_name())));
+  }
+  absl::optional<ShowFydeLanguageState::Params> parent_params(
+      ShowFydeLanguageState::Params::Create(args()));
+  const std::string& lang = parent_params->lang;
+
+  ash::ToastManager::Get()->Show(ash::ToastData(
+    kShowFydeLanguageStateToastId,
+    ash::ToastCatalogName::kImeShowFydeLanguageState,
+    base::UTF8ToUTF16(lang),
+    base::Seconds(1)));
+
+  return RespondNow(NoArguments());
 }
 
 ExtensionFunction::ResponseAction InputImeSetCandidatesFunction::Run() {

@@ -49,12 +49,12 @@
         <div id="profile-icon"
             style="background-image: [[getIconImageSet_(profileIconUrl_)]]"
             on-click="onAccountManagerClick_"
-            actionable$="[[isAccountManagerEnabled_]]">
+            actionable$="[[isProfileActionable_]]">
         </div>
         <div class="middle two-line no-min-width"
             id="profile-row"
             on-click="onAccountManagerClick_"
-            actionable$="[[isAccountManagerEnabled_]]">
+            actionable$="[[isProfileActionable_]]">
           <div class="flex text-elide settings-box-text">
             <span id="profile-name" aria-hidden="true">
               [[getProfileName_(profileName_)]]
@@ -64,12 +64,11 @@
               [[profileLabel_]]
             </div>
           </div>
-          <cr-icon-button class="subpage-arrow"
-              hidden="[[!isAccountManagerEnabled_]]"
+          <cr-icon-button class$=[[profileActionButtonIcon_]]
+              hidden="[[!isProfileActionable_]]"
               id="account-manager-subpage-trigger"
               aria-label="$i18n{accountManagerSubMenuLabel}"
-              aria-describedby="profile-name profile-label"
-              aria-roledescription="$i18n{subpageArrowRoleDescription}">
+              aria-describedby="profile-name profile-label">
           </cr-icon-button>
         </div>
       </template>
@@ -78,6 +77,7 @@
         start-icon="cr:sync"
         label="$i18n{syncAndNonPersonalizedServices}"
         sub-label="[[getSyncAndGoogleServicesSubtext_(syncStatus)]]"
+        hidden="[[isFydeLocalAccount_]]"
         on-click="onSyncClick_"
         role-description="$i18n{subpageArrowRoleDescription}">
     </cr-link-row>
@@ -88,8 +88,7 @@
   </div>
   <template is="dom-if" route-path="/osSyncSetup">
     <os-settings-subpage
-        page-title="$i18n{syncPageTitle}"
-        learn-more-url="$i18n{syncAndGoogleServicesLearnMoreURL}">
+        page-title="$i18n{syncPageTitle}">
       <os-settings-sync-subpage
           sync-status="[[syncStatus]]" prefs="{{prefs}}"
           page-visibility="[[pageVisibility.privacy]]"

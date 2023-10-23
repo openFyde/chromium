@@ -228,6 +228,10 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
    * @suppress {missingProperties}
    */
   setVideoPlay_(play) {
+    if (this.$.video) {
+      this.$.video.play();
+      return;
+    }
     if (this.$$('#welcomeAnimation')) {
       this.$$('#welcomeAnimation').playing = play;
     }

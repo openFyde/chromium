@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend chromeos/chromeos_strings.grd -->
+<grit-part>
+  <message name="IDS_ASH_USE_LOCAL_ACCOUNT_BUTTON" desc="Text shown on local account button on oobe screen.">
+    Use local account
+  </message>
+  <message name="IDS_ASH_DATA_RESTORE_BUTTON" desc="Text shown on data restore button on oobe screen.">
+    Restore backup
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_RESOURCES_HELP_PAGE_LABEL" desc="Label of the ask community that opens an external link to the Chromebook community.">
+    FydeOS Help Center
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_RESOURCES_HELP_PAGE_DESCRIPTION" desc="Description of the ask community link">
+    Find help articles and answers to common FydeOS questions
+  </message>
+</grit-part>

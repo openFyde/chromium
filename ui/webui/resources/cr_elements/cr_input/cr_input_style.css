@@ -18,11 +18,18 @@
         outline: none;
       }
 
+      :host-context(body.fydeos) {
+        --cr-input-focus-color: var(--fydeos-pink-600);
+      }
+
       @media (prefers-color-scheme: dark) {
         :host {
           --cr-input-background-color: rgba(0, 0, 0, .3);
           --cr-input-error-color: var(--google-red-300);
           --cr-input-focus-color: var(--google-blue-300);
+        }
+        :host-context(body.fydeos) {
+          --cr-input-focus-color: var(--fydeos-pink-300);
         }
       }
 

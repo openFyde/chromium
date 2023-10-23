@@ -15,6 +15,10 @@ found in the LICENSE file.
     justify-content: center;
   }
 
+  :host-context([orientation=horizontal]) #contentArea {
+    margin-top: var(--oobe-adaptive-dialog-title-top-padding);
+  }
+
   :host {
     --marketing-opt-in-dialog-list-item-border:
       1px solid var(--cros-separator-color);
@@ -32,6 +36,11 @@ found in the LICENSE file.
     width: 100%;
   }
 
+  .marketing-fydeos-image {
+    display: flex;
+    margin-top: 40px;
+  }
+
   .legal-info {
     color: var(--cros-text-color-secondary);
   }
@@ -41,35 +50,63 @@ found in the LICENSE file.
   }
 
   #toggleRow {
-    border-bottom: var(--marketing-opt-in-dialog-list-item-border);
-    border-top: var(--marketing-opt-in-dialog-list-item-border);
     color: var(--cros-bg-color);
+    margin-top: 20px;
+  }
+
+  #fydeOSImprovementPlanToggleRow {
+    color: var(--cros-bg-color);
+  }
+
+  .top-toggle-row {
     margin-top: 20px;
   }
 
   /* Keep the text in the toggle row aligned to the left/right in
       LTR/RTL languages. */
+  #fydeOSImprovementPlanOptionLabel,
   #chromebookUpdatesOptionLabel {
     text-align: initial;
   }
 
   #toggleRowIcon,
+  #fydeOSImprovementPlanToggleRowIcon,
+  #fydeOSImprovementPlanOptionLabel,
+  #fydeOSImprovementPlanOption,
   #chromebookUpdatesOptionLabel,
   #chromebookUpdatesOption {
-    align-self: flex-start;
     margin-bottom: 10px;
     margin-top: 10px;
   }
 
+  /* fydeos, reduce the margin between checkbox and the text */
+  #fydeOSImprovementPlanOption,
+  #chromebookUpdatesOption {
+    margin-right: -8px;
+  }
+
+  #fydeOSImprovementPlanToggleRowIcon,
   #toggleRowIcon {
     --iron-icon-height: 20px;
     --iron-icon-width: 20px;
     --iron-icon-fill-color: var(--cros-icon-color-blue);
     padding-inline-end: 16px;
   }
+  :host-context(body.fydeos) #toggleRowIcon,
+  :host-context(body.fydeos) #fydeOSImprovementPlanToggleRowIcon {
+    --iron-icon-fill-color: var(--cros-icon-fydeos-color-pink);
+  }
 
   #googleUrl {
     color: var(--cros-color-prominent);
+  }
+
+  :host-context(body.fydeos) #googleUrl {
+    color: var(--cros-fydeos-color-prominent);
+  }
+
+  cr-checkbox {
+    --cr-checkbox-border-radius: 5px;
   }
 
   #finalAccessibilityPage oobe-a11y-option {
@@ -88,12 +125,15 @@ found in the LICENSE file.
   #marketingOptInGameDeviceSubtitle,
   #marketingOptInSubtitleWithDeviceName,
   #marketingOptInSubtitle,
+  #fydeOSImprovementPlanOptionLabel,
   #chromebookUpdatesOptionLabel {
     color: var(--cros-text-color-secondary);
   }
 
 </style>
 <oobe-adaptive-dialog id="marketingOptInOverviewDialog" role="dialog"
+    fydeos-layout
+    animation-url="animations/fydeos_done.json"
     for-step="overview"
     aria-label$="[[i18nDynamic(locale, 'marketingOptInScreenTitle')]]"
     aria-describedby="marketing-opt-in-subtitle">
@@ -127,11 +167,18 @@ found in the LICENSE file.
       [[i18nDynamic(locale,
               'marketingOptInScreenGameDeviceSubtitle')]]
     </div>
+  </div>
+
+  <div id="contentArea" slot="content" class="layout flex vertical">
     <!-- Toggle row -->
     <div class="layout horizontal center"
         hidden="[[!marketingOptInVisible_]]"
         id="toggleRow" style="[[getMarginTop_(isCloudGamingDevice_)]]">
-      <iron-icon id="toggleRowIcon" icon="oobe-32:chromebook"></iron-icon>
+      <iron-icon hidden id="toggleRowIcon" icon="oobe-32:chromebook"></iron-icon>
+      <cr-checkbox id="chromebookUpdatesOption" checked
+          fydeos-style
+          aria-labelledby="chromebookUpdatesOptionLabel">
+      </cr-checkbox>
       <div id="chromebookUpdatesOptionLabel" class="flex layout vertical"
           aria-hidden="true">
         <div class="toggle-title" hidden="[[isCloudGamingDevice_]]">
@@ -140,16 +187,28 @@ found in the LICENSE file.
         <div class="toggle-title" hidden="[[!isCloudGamingDevice_]]">
           [[i18nDynamic(locale, 'marketingOptInGameDeviceUpdates')]]
         </div>
-        <div class="legal-info" hidden="[[!isCloudGamingDevice_]]">
+        <div class="legal-info" hidden="[[!isCloudGamingDevice_]]" hidden>
           [[i18nDynamic(locale, 'marketingOptInScreenSubtitle')]]
         </div>
-        <div class="legal-info">
+        <div class="legal-info" hidden>
           [[i18nDynamic(locale, 'marketingOptInScreenUnsubscribeLong')]]
         </div>
       </div>
-      <cr-toggle id="chromebookUpdatesOption" checked
-          aria-labelledby="chromebookUpdatesOptionLabel">
-      </cr-toggle>
+    </div>
+
+    <div class="layout horizontal center"
+        id="fydeOSImprovementPlanToggleRow">
+      <iron-icon hidden id="fydeOSImprovementPlanToggleRowIcon" icon="oobe-32:checkmark"></iron-icon>
+      <cr-checkbox id="fydeOSImprovementPlanOption" checked
+          fydeos-style
+          aria-labelledby="fydeOSImprovementPlanOptionLabel">
+      </cr-checkbox>
+      <div id="fydeOSImprovementPlanOptionLabel" class="flex layout vertical"
+          aria-hidden="true">
+        <div class="toggle-title">
+          [[i18nDynamic(locale, 'fydeOSImprovementPlanOptionLabel')]]
+        </div>
+      </div>
     </div>
 
     <!-- Legal footer  -->
@@ -159,25 +218,27 @@ found in the LICENSE file.
       </div>
       <div id="googleUrl">www.google.com</div>
     </div>
-  </div>
 
-  <div hidden="[[isCloudGamingDevice_]]" id="contentArea"
-        slot="content" class="layout flex vertical">
+  <!-- <div hidden="[[isCloudGamingDevice_]]" id="contentArea" -->
+  <!--       slot="content" class="layout flex vertical"> -->
     <!-- Animation -->
-    <div  class="marketing-animation-content">
+    <div hidden class="marketing-animation-content marketing-fydeos-image">
       <iron-media-query query="(prefers-color-scheme: dark)"
           query-matches="{{isDarkModeActive_}}">
       </iron-media-query>
-      <oobe-cr-lottie id="animation"
-          animation-url="[[getAnimationUrl_(isDarkModeActive_)]]"
-          singleLoop="true">
-      </oobe-cr-lottie>
+      <!-- <oobe-cr-lottie id="animation" -->
+      <!--     animation-url="[[getAnimationUrl_(isDarkModeActive_)]]" -->
+      <!--     singleLoop="true"> -->
+      <!-- </oobe-cr-lottie> -->
+      <img class="oobe-illustration"
+           src="../../images/illustration-success.svg"/>
     </div>
-  </div>
-  <div hidden="[[!isCloudGamingDevice_]]" slot="content"
-        class="flex layout vertical center-justified center">
-    <img class="oobe-illustration"
+  <!-- </div> -->
+  <!-- <div hidden="[[!isCloudGamingDevice_]]" slot="content" -->
+  <!--       class="flex layout vertical center-justified center"> -->
+    <img hidden class="oobe-illustration"
         srcset="[[getImageSource_(isDarkModeActive_)]]" aria-hidden="true">
+  <!-- </div> -->
   </div>
   <oobe-icon-button slot="bottom-buttons"
       hidden="[[!isA11ySettingsButtonVisible_]]"

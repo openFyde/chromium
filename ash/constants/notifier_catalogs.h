@@ -184,7 +184,9 @@ enum class NotificationCatalogName {
   kHotspot = 169,
   kGeolocationSwitch = 170,
   kMultiCaptureOnLogin = 171,
-  kMaxValue = kMultiCaptureOnLogin
+  kFydeOSMiscStatefulUpdate = 172,
+  kFydeOSDataBackup = 173,
+  kMaxValue = kFydeOSDataBackup
 };
 
 // A living catalog that registers system nudges.
@@ -256,7 +258,8 @@ enum class ToastCatalogName {
   kVideoConferenceTraySpeakOnMuteDetected = 41,
   kCopyGifToClipboardAction = 42,
   kVideoConferenceTrayUseWhileDisabled = 43,
-  kMaxValue = kVideoConferenceTrayUseWhileDisabled,
+  kImeShowFydeLanguageState = 44,
+  kMaxValue = kImeShowFydeLanguageState,
 };
 
 }  // namespace ash

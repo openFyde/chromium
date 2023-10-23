@@ -14,6 +14,7 @@
 #include "chromeos/ash/components/network/geolocation_handler.h"
 #include "chromeos/ash/components/network/network_handler.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace ash {
 
@@ -80,6 +81,9 @@ void SimpleGeolocationProvider::RequestGeolocation(
 
 // static
 GURL SimpleGeolocationProvider::DefaultGeolocationProviderURL() {
+  if (!fydeos::switches::DisableFydeOSGeolocationAPI()) {
+    return GURL(fydeos::switches::GetFydeOSGeolocationAPIUrl());
+  }
   return GURL(kDefaultGeolocationProviderUrl);
 }
 

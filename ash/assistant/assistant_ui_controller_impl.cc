@@ -27,6 +27,7 @@
 #include "chromeos/ash/services/assistant/public/cpp/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "fydeos/switches/misc/misc_switches.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -101,6 +102,14 @@ void AssistantUiControllerImpl::SetKeyboardTraversalMode(
 }
 
 void AssistantUiControllerImpl::ShowUi(AssistantEntryPoint entry_point) {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    if (entry_point == AssistantEntryPoint::kDeepLink || entry_point == AssistantEntryPoint::kHotkey || entry_point == AssistantEntryPoint::kLauncherSearchBoxIcon) {
+      model_.SetVisible(entry_point);
+      return;
+    } else {
+      return;
+    }
+  }
   // Skip if the opt-in window is active.
   auto* assistant_setup = AssistantSetup::GetInstance();
   if (assistant_setup && assistant_setup->BounceOptInWindowIfActive())

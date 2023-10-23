@@ -38,6 +38,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/chromeos/strings/grit/ui_chromeos_strings.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace {
 
@@ -75,7 +77,7 @@ const char kHelpURLFormat[] = "https://support.google.com/chromebook/answer/%d";
 const int kDownloadsLowSpaceWarningHelpNumber = 1061547;
 
 // Location of Files App specific help.
-const int kFilesAppHelpNumber = 1056323;
+// const int kFilesAppHelpNumber = 1056323;
 
 // Location of the help page about connecting to Google Drive.
 const int kGoogleDriveErrorHelpNumber = 2649458;
@@ -328,6 +330,27 @@ void AddStringsForPhotos(base::Value::Dict* dict) {
   SET_STRING("PHOTOS_WELCOME_DISMISS", IDS_FILE_BROWSER_PHOTOS_WELCOME_DISMISS);
   SET_STRING("PHOTOS_WELCOME_TEXT", IDS_FILE_BROWSER_PHOTOS_WELCOME_TEXT);
   SET_STRING("PHOTOS_WELCOME_TITLE", IDS_FILE_BROWSER_PHOTOS_WELCOME_TITLE);
+}
+
+void AddStringsForFyde(base::Value::Dict* dict) {
+  SET_STRING("NUTSTORE_HINT_BANNER_TITLE",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_BANNER_TITLE);
+  SET_STRING("NUTSTORE_HINT_BANNER_DESCRIPTION",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_BANNER_DESCRIPTION);
+  SET_STRING("NUTSTORE_HINT_CONFIRM_BUTTON_TEXT",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_CONFIRM_BUTTON_TEXT);
+  SET_STRING("NUTSTORE_HINT_STEPS_SIGUNUP",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_SIGUNUP);
+  SET_STRING("NUTSTORE_HINT_STEPS_ADD_APPLICATION",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_ADD_APPLICATION);
+  SET_STRING("NUTSTORE_HINT_STEPS_CREATE_PASSWORD",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_CREATE_PASSWORD);
+  SET_STRING("NUTSTORE_HINT_STEPS_OPEN_NUTSTORE",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_OPEN_NUTSTORE);
+  SET_STRING("NUTSTORE_HINT_STEPS_CONNECT_ACCOUNT",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_CONNECT_ACCOUNT);
+  SET_STRING("FYDEDROP_ROOT_LABEL",
+             IDS_FILE_BROWSER_FYDEDROP_ROOT_LABEL);
 }
 
 void AddStringsGeneric(base::Value::Dict* dict) {
@@ -684,6 +707,7 @@ void AddStringsGeneric(base::Value::Dict* dict) {
              IDS_FILE_BROWSER_NEW_WINDOW_BUTTON_LABEL);
   SET_STRING("NO_TASK_FOR_CRX", IDS_FILE_BROWSER_NO_TASK_FOR_CRX);
   SET_STRING("NO_TASK_FOR_CRX_TITLE", IDS_FILE_BROWSER_NO_TASK_FOR_CRX_TITLE);
+  SET_STRING("NO_TASK_FOR_APK", IDS_FILE_BROWSER_NO_TASK_FOR_APK);
   SET_STRING("NO_TASK_FOR_DMG", IDS_FILE_BROWSER_NO_TASK_FOR_DMG);
   SET_STRING("NO_TASK_FOR_EXECUTABLE", IDS_FILE_BROWSER_NO_TASK_FOR_EXECUTABLE);
   SET_STRING("NO_TASK_FOR_FILE", IDS_FILE_BROWSER_NO_TASK_FOR_FILE);
@@ -1130,13 +1154,33 @@ base::Value::Dict GetFileManagerStrings() {
   AddStringsForSharesheet(&dict);
   AddStringsForHoldingSpace(&dict);
   AddStringsForPhotos(&dict);
+  AddStringsForFyde(&dict);
   AddStringsGeneric(&dict);
 
+  if (fydeos::switches::IsFydeExtendAccountEnabled()) {
+    dict.Set(
+      "DOWNLOADS_LOW_SPACE_WARNING_HELP_URL",
+      base::StringPrintf(fydeos::constants::kHelpURLFormat, kDownloadsLowSpaceWarningHelpNumber));
+    dict.Set("FILES_APP_HELP_URL", fydeos::constants::kFileManagerHelpURL);
+
+    dict.Set("GOOGLE_DRIVE_BUY_STORAGE_URL", fydeos::constants::kGoogleDriveBuyStorageUrl);
+    dict.Set("GOOGLE_DRIVE_MANAGE_STORAGE_URL", fydeos::constants::kGoogleDriveHelpUrl);
+    dict.Set(
+      "GOOGLE_DRIVE_ERROR_HELP_URL",
+      base::StringPrintf(fydeos::constants::kHelpURLFormat, kGoogleDriveErrorHelpNumber));
+    dict.Set("GOOGLE_DRIVE_HELP_URL", fydeos::constants::kGoogleDriveHelpUrl);
+    dict.Set("GOOGLE_DRIVE_OFFLINE_HELP_URL",
+                      fydeos::constants::kGoogleDriveOfflineHelpUrl);
+    dict.Set("GOOGLE_DRIVE_OVERVIEW_URL", fydeos::constants::kGoogleDriveOverviewUrl);
+    dict.Set("GOOGLE_DRIVE_ROOT_URL", fydeos::constants::kGoogleDriveRootUrl);
+    dict.Set(
+      "NO_TASK_FOR_FILE_URL",
+      base::StringPrintf(fydeos::constants::kHelpURLNoTaskForFile, kNoActionForFileHelpNumber));
+  } else {
   dict.Set(
       "DOWNLOADS_LOW_SPACE_WARNING_HELP_URL",
       base::StringPrintf(kHelpURLFormat, kDownloadsLowSpaceWarningHelpNumber));
-  dict.Set("FILES_APP_HELP_URL",
-           base::StringPrintf(kHelpURLFormat, kFilesAppHelpNumber));
+  dict.Set("FILES_APP_HELP_URL", fydeos::constants::kFileManagerHelpURL);
 
   dict.Set("GOOGLE_DRIVE_BUY_STORAGE_URL", kGoogleDriveBuyStorageUrl);
   dict.Set("GOOGLE_DRIVE_MANAGE_STORAGE_URL", kGoogleDriveManageStorageUrl);
@@ -1149,7 +1193,10 @@ base::Value::Dict GetFileManagerStrings() {
   dict.Set("GOOGLE_DRIVE_OVERVIEW_URL", kGoogleDriveOverviewUrl);
   dict.Set("GOOGLE_DRIVE_ROOT_URL", kGoogleDriveRootUrl);
   dict.Set("NO_TASK_FOR_FILE_URL",
-           base::StringPrintf(kHelpURLFormat, kNoActionForFileHelpNumber));
+           base::StringPrintf(fydeos::constants::kHelpURLNoTaskForFile, kNoActionForFileHelpNumber));
+  }
+
+  dict.Set("FYDE_DROP_URL", fydeos::constants::kFydeDropUrl);
 
   webui::SetLoadTimeDataDefaults(g_browser_process->GetApplicationLocale(),
                                  &dict);
@@ -1250,6 +1297,8 @@ void AddFileManagerFeatureStrings(const std::string& locale,
   // Lastly, set UI_LOCALE and locale-dependent settings.
   dict->Set("UI_LOCALE", locale);
   dict->Set("WEEK_START_FROM", GetLocaleBasedWeekStart());
+
+  // dict->Set("FYDE_ACCOUNT_ENABLED", profile && profile->IsFydeProfile());
 
   // ELIGIBLE_AND_ENABLED_GOOGLE_ONE_OFFER_FILES_BANNER does additional checks
   // in addition to a feature flag check.

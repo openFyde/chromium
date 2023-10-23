@@ -43,6 +43,7 @@ group("js_modules") {
     ":files_confirm_dialog",
     ":files_menu",
     ":gear_menu",
+    ":fydedrop_view",
     ":grid",
     ":import_crostini_image_dialog",
     ":install_linux_package_dialog",
@@ -98,6 +99,7 @@ js_type_check("closure_compile_jsmodules") {
     ":files_confirm_dialog",
     ":files_menu",
     ":gear_menu",
+    ":fydedrop_view",
     ":import_crostini_image_dialog",
     ":install_linux_package_dialog",
     ":list_container",
@@ -379,6 +381,7 @@ js_library("file_manager_ui") {
     ":files_confirm_dialog",
     ":files_menu",
     ":gear_menu",
+    ":fydedrop_view",
     ":import_crostini_image_dialog",
     ":install_linux_package_dialog",
     ":list_container",
@@ -550,6 +553,12 @@ js_unittest("grid_unittest") {
     ":grid",
     "//chrome/test/data/webui/chromeos:chai_assert",
     "//ui/file_manager/file_manager/common/js:array_data_model",
+  ]
+}
+
+js_library("fydedrop_view") {
+  deps = [
+    "//ash/webui/common/resources:load_time_data.m",
   ]
 }
 

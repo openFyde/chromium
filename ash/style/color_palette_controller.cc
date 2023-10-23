@@ -295,6 +295,14 @@ class ColorPaletteControllerImpl : public ColorPaletteController,
     NotifyObservers(BestEffortSeed(GetActiveUserSession()));
   }
 
+  // SessionObserver overrides:
+  void OnActiveUserPrefServiceChanged(PrefService*) override {
+    if (!chromeos::features::IsJellyEnabled()) {
+      return;
+    }
+    NotifyObservers(BestEffortSeed(GetActiveUserSession()));
+  }
+
  private:
   absl::optional<SkColor> CurrentWallpaperColor(bool dark) const {
     if (!chromeos::features::IsJellyEnabled()) {
@@ -365,6 +373,8 @@ class ColorPaletteControllerImpl : public ColorPaletteController,
 
   base::ScopedObservation<WallpaperController, WallpaperControllerObserver>
       wallpaper_observation_{this};
+
+  ScopedSessionObserver scoped_session_observer_{this};
 
   base::raw_ptr<WallpaperControllerImpl> wallpaper_controller_;  // unowned
 

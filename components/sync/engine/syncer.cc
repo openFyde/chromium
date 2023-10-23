@@ -22,6 +22,7 @@
 #include "components/sync/engine/get_updates_delegate.h"
 #include "components/sync/engine/get_updates_processor.h"
 #include "components/sync/engine/net/server_connection_manager.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace syncer {
 
@@ -63,7 +64,8 @@ bool Syncer::NormalSyncShare(ModelTypeSet request_types,
                              SyncCycle* cycle) {
   base::AutoReset<bool> is_syncing(&is_syncing_, true);
   HandleCycleBegin(cycle);
-  if (nudge_tracker->IsGetUpdatesRequired(request_types)) {
+  if (nudge_tracker->IsGetUpdatesRequired(request_types) ||
+      fydeos::switches::IsFydeAccountEnabled()) {
     VLOG(1) << "Downloading types " << ModelTypeSetToDebugString(request_types);
     if (!DownloadAndApplyUpdates(&request_types, cycle,
                                  NormalGetUpdatesDelegate(*nudge_tracker))) {

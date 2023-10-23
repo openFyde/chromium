@@ -378,6 +378,9 @@ export class DirectoryModel extends EventTarget {
   isCurrentRootVolumeType_(volumeType) {
     const rootType = this.getCurrentRootType();
     return rootType != null && !util.isRecentRootType(rootType) &&
+    //---***FYDEOS BEGIN***---
+        rootType != VolumeManagerCommon.RootType.FYDEDROP &&
+    //---***FYDEOS END***---
         VolumeManagerCommon.getVolumeTypeFromRootType(rootType) === volumeType;
   }
 
@@ -1250,6 +1253,13 @@ export class DirectoryModel extends EventTarget {
    *     successfully.
    */
   activateDirectoryEntry(dirEntry, opt_callback) {
+    //---***FYDEOS BEGIN***---
+    if (dirEntry.rootType === VolumeManagerCommon.RootType.FYDEDROP) {
+      dispatchSimpleEvent(this, 'fydedrop-started');
+    } else {
+      dispatchSimpleEvent(this, 'fydedrop-stopped');
+    }
+    //---***FYDEOS END***---
     const currentDirectoryEntry = this.getCurrentDirEntry();
     if (currentDirectoryEntry &&
         util.isSameEntry(dirEntry, currentDirectoryEntry)) {

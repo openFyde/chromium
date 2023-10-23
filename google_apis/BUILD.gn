@@ -9,6 +9,7 @@ import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/protobuf/proto_library.gni")
+import("//fydeos/build/config/buildflags.gni")
 
 declare_args() {
   # Set the variable 'use_official_google_api_keys' to true
@@ -42,11 +43,19 @@ declare_args() {
   # keys will be used instead.
   google_api_key = ""
 
+  fydeos_api_key = ""
+
   # See google_api_key.
   google_default_client_id = ""
 
   # See google_api_key.
   google_default_client_secret = ""
+
+  if (is_openfyde) {
+    fydeos_default_client_id = ""
+    fydeos_default_client_secret = ""
+  }
+
 }
 
 if (use_official_google_api_keys == "") {
@@ -102,12 +111,24 @@ config("key_defines") {
   if (google_api_key != "") {
     defines += [ "GOOGLE_API_KEY=\"$google_api_key\"" ]
   }
+  if (fydeos_api_key != "") {
+    defines += [ "FYDEOS_API_KEY=\"$fydeos_api_key\"" ]
+  }
   if (google_default_client_id != "") {
     defines += [ "GOOGLE_DEFAULT_CLIENT_ID=\"$google_default_client_id\"" ]
   }
   if (google_default_client_secret != "") {
     defines +=
         [ "GOOGLE_DEFAULT_CLIENT_SECRET=\"$google_default_client_secret\"" ]
+  }
+  if (is_openfyde) {
+    if (fydeos_default_client_id != "") {
+      defines += [ "FYDEOS_DEFAULT_CLIENT_ID=\"$fydeos_default_client_id\"" ]
+    }
+    if (fydeos_default_client_secret != "") {
+      defines +=
+          [ "FYDEOS_DEFAULT_CLIENT_SECRET=\"$fydeos_default_client_secret\"" ]
+    }
   }
 }
 
@@ -179,6 +200,7 @@ component("google_apis") {
     "//mojo/public/cpp/bindings:struct_traits",
     "//net",
     "//services/network/public/mojom",
+    "//fydeos/switches",
   ]
 
   if (_use_official_google_keys_and_generate_metrics_key_header) {

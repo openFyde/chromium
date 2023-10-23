@@ -44,6 +44,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/events/ash/keyboard_layout_util.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -1042,7 +1043,7 @@ void AccessibilitySection::AddLoadTimeData(
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
   html_source->AddString("a11yLearnMoreUrl",
-                         chrome::kChromeAccessibilityHelpURL);
+                         fydeos::constants::kFydeAccessibilityHelpURL);
 
   html_source->AddString("selectToSpeakLearnMoreUrl",
                          chrome::kSelectToSpeakLearnMoreURL);
@@ -1055,7 +1056,7 @@ void AccessibilitySection::AddLoadTimeData(
                           AreTabletNavigationButtonsAllowed());
 
   html_source->AddString("tabletModeShelfNavigationButtonsLearnMoreUrl",
-                         chrome::kTabletModeGesturesLearnMoreURL);
+                         fydeos::constants::kTabletModeGesturesLearnMoreURL);
 
   html_source->AddBoolean("isAccessibilityChromeVoxPageMigrationEnabled",
                           IsAccessibilityChromeVoxPageMigrationEnabled());

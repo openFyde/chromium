@@ -53,6 +53,12 @@ const char kBrailleImeExtensionPath[] = "chromeos/accessibility/braille_ime";
 const char kBrailleImeEngineId[] =
     "_comp_ime_jddehjeebkoimngcbdkaahpobgicbffpbraille";
 
+const char kFydeOSRimeExtensionId[] = "nfglebjgiflmmcdddkbcbgmdkomlfcpa";
+
+const char* const kFydeOSImeExtensionIds[] = {
+  kFydeOSRimeExtensionId,
+};
+
 const char kArcImeLanguage[] = "_arc_ime_language_";
 
 std::string GetInputMethodID(const std::string& extension_id,
@@ -138,6 +144,20 @@ std::string GetInputMethodIDByEngineID(const std::string& engine_id) {
     return GetComponentInputMethodID(kT13nExtensionId, engine_id);
 
   return engine_id;
+}
+
+bool IsFydeOSProvidedIMEByExtensionId(const std::string& extension_id) {
+  for (const auto& id : kFydeOSImeExtensionIds) {
+    if (extension_id == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool IsFydeOSProvidedIME(const std::string& input_method_id) {
+  const std::string extension_id = GetExtensionIDFromInputMethodID(input_method_id);
+  return IsFydeOSProvidedIMEByExtensionId(extension_id);
 }
 
 bool IsExtensionIME(const std::string& input_method_id) {

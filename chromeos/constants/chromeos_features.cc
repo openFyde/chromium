@@ -59,7 +59,7 @@ BASE_FEATURE(kExperimentalWebAppStoragePartitionIsolation,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables Jelly features.
-BASE_FEATURE(kJelly, "Jelly", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kJelly, "Jelly", base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables Jellyroll features. Jellyroll is a feature flag for CrOSNext, which
 // controls all system UI updates and new system components.

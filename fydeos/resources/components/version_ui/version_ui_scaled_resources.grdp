@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+    <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO" file="../../fydeos/resources/components/version_ui/CONTEXT/product_logo.png" />
+    <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_WHITE" file="../../fydeos/resources/components/version_ui/CONTEXT/product_logo_white.png" />
+</grit-part>

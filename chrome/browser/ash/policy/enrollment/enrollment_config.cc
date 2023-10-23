@@ -101,6 +101,13 @@ EnrollmentConfig EnrollmentConfig::GetPrescribedEnrollmentConfig(
       // Only use attestation to authenticate since zero-touch is forced.
       config.auth_mechanism = EnrollmentConfig::AUTH_MECHANISM_ATTESTATION;
       break;
+    case ZeroTouchEnrollmentMode::FYDE_ENABLED:
+      config.auth_mechanism = EnrollmentConfig::AUTH_MECHANISM_FYDE_BEST_AVAILABLE;
+      break;
+    case ZeroTouchEnrollmentMode::FYDE_FORCED:
+    case ZeroTouchEnrollmentMode::FYDE_HANDS_OFF:
+      config.auth_mechanism = EnrollmentConfig::AUTH_MECHANISM_FYDE;
+      break;
   }
 
   // If OOBE is done and we are not enrolled, make sure we only try interactive
@@ -127,6 +134,16 @@ EnrollmentConfig EnrollmentConfig::GetPrescribedEnrollmentConfig(
         config.mode = EnrollmentConfig::MODE_RECOVERY;
     }
 
+    return config;
+  }
+
+  if (config.is_attestation_auth_fyde()) {
+    config.mode = EnrollmentConfig::MODE_FYDE_LOCAL_FORCED;
+    config.license_type = LicenseType::kEnterprise;
+    // fallback logic is removed, since fyde_enabled, fyde_forced, fyde_hands_off is enough
+    // if we need to fallback to `use as personal device`, the config.mode should be MODE_MANUAL;
+    // and config.auth_mechanism should be AUTH_MECHANISM_FYDE_BEST_AVAILABLE,
+    // it means the auth_mechanism setup before is ignored
     return config;
   }
 
@@ -240,6 +257,7 @@ EnrollmentConfig::Mode EnrollmentConfig::GetManualFallbackMode(
     case EnrollmentConfig::MODE_LOCAL_ADVERTISED:
     case EnrollmentConfig::MODE_SERVER_FORCED:
     case EnrollmentConfig::MODE_SERVER_ADVERTISED:
+    case EnrollmentConfig::MODE_FYDE_LOCAL_FORCED:
     case EnrollmentConfig::MODE_RECOVERY:
     case EnrollmentConfig::MODE_ATTESTATION:
     case EnrollmentConfig::MODE_ATTESTATION_LOCAL_FORCED:

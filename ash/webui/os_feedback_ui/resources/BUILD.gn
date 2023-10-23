@@ -12,6 +12,7 @@ import("//ui/webui/resources/tools/generate_grd.gni")
 assert(is_chromeos_ash, "Non-ChromeOS builds cannot depend on //ash")
 
 preprocessed_dir = "preprocessed"
+preprocessed_src_manifest = "preprocessed_src_manifest.json"
 preprocessed_gen_manifest = "preprocessed_gen_manifest.json"
 preprocessed_mojo_manifest = "preprocessed_mojo_manifest.json"
 preprocess_external_mojo_manifest = "preprocess_external_mojo_manifest.json"
@@ -37,6 +38,13 @@ preprocess_if_expr("preprocess_external_mojo") {
     "mojo/public/mojom/base/safe_base_name.mojom-lite.js",
   ]
 }
+preprocess_if_expr("preprocess_src") {
+  out_folder = "$target_gen_dir/$preprocessed_dir"
+  out_manifest = "$target_gen_dir/$preprocessed_src_manifest"
+  in_files = [
+    "feedback_constants.js",
+  ]
+}
 
 generate_grd("build_grd") {
   input_files = [
@@ -46,7 +54,6 @@ generate_grd("build_grd") {
     "fake_data.js",
     "fake_help_content_provider.js",
     "fake_feedback_service_provider.js",
-    "feedback_constants.js",
     "feedback_types.js",
     "feedback_utils.js",
     "index.html",
@@ -58,8 +65,10 @@ generate_grd("build_grd") {
     ":preprocess_external_mojo",
     ":preprocess_generated",
     ":preprocess_mojo",
+    ":preprocess_src",
   ]
   manifest_files = [
+    "$target_gen_dir/$preprocessed_src_manifest",
     "$target_gen_dir/$preprocessed_gen_manifest",
     "$target_gen_dir/$preprocessed_mojo_manifest",
     "$target_gen_dir/$preprocess_external_mojo_manifest",

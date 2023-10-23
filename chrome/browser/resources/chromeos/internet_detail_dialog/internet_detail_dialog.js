@@ -178,6 +178,11 @@ Polymer({
 
   /** @override */
   attached() {
+    if (loadTimeData.valueExists('shouldModifyStyle')
+        && loadTimeData.getBoolean('shouldModifyStyle')
+        && document.body) {
+      document.body.classList.add('fydeos');
+    }
     this.browserProxy_ = InternetDetailDialogBrowserProxyImpl.getInstance();
     const dialogArgs = this.browserProxy_.getDialogArguments();
     if (this.isJellyEnabled_) {

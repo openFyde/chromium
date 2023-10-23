@@ -14,6 +14,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/command_line.h"
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/observer_list.h"
@@ -27,6 +28,10 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/account_constants.h"
+// ---***FYDEOS END***---
 #include "google_apis/gaia/gaia_constants.h"
 
 namespace invalidation {
@@ -41,6 +46,26 @@ const char kActiveRegistrationTokens[] =
 
 const char kInvalidationRegistrationScope[] =
     "https://firebaseperusertopics-pa.googleapis.com";
+
+// ---***FYDEOS BEGIN***---
+std::string GetInvalidationRegistrationScope() {
+  std::string scope;
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+    if (command_line->HasSwitch(fydeos::switches::kFydeOSDeviceManagementUrl)) {
+      scope = command_line->GetSwitchValueASCII(fydeos::switches::kFydeOSDeviceManagementUrl);
+    } else {
+      scope = fydeos::constants::kDefaultFydeOSDeviceManagementServerUrl;
+    }
+    if (scope[scope.size() - 1] != '/') {
+      return scope + "/api/messenger";
+    }
+    return scope + "api/messenger";
+  }
+  
+  return kInvalidationRegistrationScope;
+}
+// ---***FYDEOS END***---
 
 // Note: Taking |topic| and |private_topic_name| by value (rather than const
 // ref) because the caller (in practice, SubscriptionEntry) may be destroyed by
@@ -335,7 +360,7 @@ void PerUserTopicSubscriptionManager::StartPendingSubscriptionRequest(
   PerUserTopicSubscriptionRequest::Builder builder;
   it->second->last_request_access_token = access_token_;
   it->second->request = builder.SetInstanceIdToken(instance_id_token_)
-                            .SetScope(kInvalidationRegistrationScope)
+                            .SetScope(GetInvalidationRegistrationScope())
                             .SetPublicTopicName(topic)
                             .SetAuthenticationHeader(base::StringPrintf(
                                 "Bearer %s", access_token_.c_str()))

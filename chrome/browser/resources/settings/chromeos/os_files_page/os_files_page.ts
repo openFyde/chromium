@@ -48,6 +48,13 @@ export class OsSettingsFilesPageElement extends OsSettingsFilesPageElementBase {
         value: () => new Set<Setting>([Setting.kGoogleDriveConnection]),
       },
 
+      hideDisconnectGoogleDriveAccount_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeProfile');
+        }
+      },
+
       focusConfig_: {
         type: Object,
         value() {

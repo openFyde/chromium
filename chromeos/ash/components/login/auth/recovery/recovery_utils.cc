@@ -11,6 +11,7 @@
 #include "base/metrics/field_trial.h"
 #include "base/system/sys_info.h"
 #include "components/prefs/pref_service.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash {
 
@@ -35,7 +36,7 @@ void CreateFallbackFieldTrialForRecovery(bool is_stable_channel,
   // Recovery is controlled by a flag which is off by default. The local field
   // trial ensures that recovery is enabled on some channels but can later be
   // disabled by Finch when appropriate.
-  if (is_stable_channel) {
+  if (is_stable_channel || fydeos::switches::IsFydeCustomEnabled()) {
       // On the stable channel we don't enable the field trial and therefore
       // keep using the default (off) value of the flag.
       return;

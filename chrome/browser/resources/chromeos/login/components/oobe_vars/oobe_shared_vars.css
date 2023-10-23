@@ -43,5 +43,7 @@
       --oobe-text-color: var(--cros-text-color-secondary);
 
       --oobe-radio-card-label-line-height: 24px;
+
+      --oobe-fydeos-default-icon-color: var(--cros-icon-color-blue);
       /* Fonts vars end */
     }

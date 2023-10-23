@@ -525,7 +525,7 @@ void SettingsUI::InitBrowserSettingsWebUIHandlers() {
 
   // TODO(jamescook): Sort out how account management is split between Chrome OS
   // and browser settings.
-  if (ash::IsAccountManagerAvailable(profile)) {
+  if (ash::IsAccountManagerAvailable(profile) && !profile->IsFydeProfile()) {
     auto* factory =
         g_browser_process->platform_part()->GetAccountManagerFactory();
     auto* account_manager =

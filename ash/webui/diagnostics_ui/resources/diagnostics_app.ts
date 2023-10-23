@@ -104,6 +104,10 @@ export class DiagnosticsAppElement extends DiagnosticsAppElementBase {
         type: String,
         value: '',
       },
+      fydeDiagnosticAppUrl_: {
+        type: String,
+        value: loadTimeData.getString('fydeDiagnosticAppUrl'),
+      },
     };
   }
 

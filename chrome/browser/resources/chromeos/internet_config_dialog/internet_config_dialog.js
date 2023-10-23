@@ -89,6 +89,11 @@ Polymer({
 
   /** @override */
   attached() {
+    if (loadTimeData.valueExists('shouldModifyStyle')
+        && loadTimeData.getBoolean('shouldModifyStyle')
+        && document.body) {
+      document.body.classList.add('fydeos');
+    }
     const dialogArgs = chrome.getVariableValue('dialogArguments');
     if (dialogArgs) {
       const args = JSON.parse(dialogArgs);

@@ -29,6 +29,8 @@ class VersionUI : public content::WebUIController {
 #if !BUILDFLAG(IS_ANDROID)
   // Returns a localized version string suitable for displaying in UI.
   static std::u16string GetAnnotatedVersionStringForUi();
+
+  static std::u16string GetFydeOSVersionStringForUi();
 #endif  // !BUILDFLAG(IS_ANDROID)
 };
 

@@ -34,6 +34,7 @@
 #include "components/user_manager/user_type.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace user_manager {
 namespace {
@@ -108,6 +109,12 @@ std::string UserTypeToString(UserType user_type) {
       return "regular";
     case USER_TYPE_CHILD:
       return "child";
+    case USER_TYPE_FLINT_ACCOUNT:
+      return "flint";
+    case USER_TYPE_FYDE_ACCOUNT:
+      return "fyde";
+    case USER_TYPE_FYDE_CHILD:
+      return "fyde-child";
     case USER_TYPE_GUEST:
       return "guest";
     case USER_TYPE_PUBLIC_ACCOUNT:
@@ -233,6 +240,11 @@ void UserManagerBase::UserLoggedIn(const AccountId& account_id,
   switch (user_type) {
     case USER_TYPE_REGULAR:  // fallthrough
     case USER_TYPE_CHILD:    // fallthrough
+    // ---***FYDEOS BEGIN***---
+    case USER_TYPE_FLINT_ACCOUNT:
+    case USER_TYPE_FYDE_ACCOUNT:
+    case USER_TYPE_FYDE_CHILD:
+    // ---***FYDEOS END***---
     case USER_TYPE_ACTIVE_DIRECTORY:
       if (account_id != GetOwnerAccountId() && !user &&
           (IsEphemeralAccountId(account_id) || browser_restart)) {
@@ -402,6 +414,7 @@ void UserManagerBase::RemoveUserFromListImpl(
 
   RemoveNonCryptohomeData(account_id);
   KnownUser(local_state_.get()).RemovePrefs(account_id);
+  RemoveLocalAutoSigninCredential(account_id);
   if (user_loading_stage_ == STAGE_LOADED) {
     // After the User object is deleted from memory in DeleteUser() here,
     // the account_id reference will be invalid if the reference points
@@ -715,7 +728,10 @@ bool UserManagerBase::IsLoggedInAsUserWithGaiaAccount() const {
 
 bool UserManagerBase::IsLoggedInAsChildUser() const {
   DCHECK(!task_runner_ || task_runner_->RunsTasksInCurrentSequence());
-  return IsUserLoggedIn() && active_user_->GetType() == USER_TYPE_CHILD;
+  return IsUserLoggedIn() && (active_user_->GetType() == USER_TYPE_CHILD ||
+                              // ---***FYDEOS BEGIN***---
+                              active_user_->GetType() == USER_TYPE_FYDE_CHILD);
+                              // ---***FYDEOS END***---
 }
 
 bool UserManagerBase::IsLoggedInAsPublicAccount() const {
@@ -896,7 +912,7 @@ void UserManagerBase::NotifyUserRemoved(const AccountId& account_id,
 
 bool UserManagerBase::CanUserBeRemoved(const User* user) const {
   // Only regular users are allowed to be manually removed.
-  if (!user || !(user->HasGaiaAccount() || user->IsActiveDirectoryUser()))
+  if (!user || !(user->HasGaiaAccount() || user->IsActiveDirectoryUser() || user->IsFydeExtendAccountUser()))
     return false;
 
   // Sanity check: we must not remove single user unless it's an enterprise
@@ -1195,7 +1211,9 @@ User* UserManagerBase::RemoveRegularOrSupervisedUserFromList(
       user = *it;
       it = users_.erase(it);
     } else {
-      if ((*it)->HasGaiaAccount() || (*it)->IsActiveDirectoryUser()) {
+      // ---***FYDEOS BEGIN***---
+      if ((*it)->HasGaiaAccount() || (*it)->IsActiveDirectoryUser() || (*it)->IsFydeExtendAccountUser()) {
+      // ---***FYDEOS END***---
         const std::string user_email = (*it)->GetAccountId().GetUserEmail();
         prefs_users_update->Append(user_email);
       }
@@ -1315,6 +1333,22 @@ void UserManagerBase::RemoveLegacySupervisedUser(const AccountId& account_id) {
     base::UmaHistogramEnumeration(kLegacySupervisedUsersHistogramName,
                                   LegacySupervisedUserStatus::kLSUHidden);
   }
+}
+
+void UserManagerBase::RemoveLocalAutoSigninCredential(const AccountId& account_id) {
+  if (account_id.GetAccountType() != AccountType::FLINT_ACCOUNT) {
+    return;
+  }
+  // See FydeOsHandler::HandleSaveOfflineLoginPassword
+  PrefService* prefs = GetLocalState();
+  const std::string& account_id_key = prefs->GetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
+  if (account_id_key != account_id.GetAccountIdKey()) {
+    return;
+  }
+
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninPassword);
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninPasswordFormat);
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
 }
 
 }  // namespace user_manager

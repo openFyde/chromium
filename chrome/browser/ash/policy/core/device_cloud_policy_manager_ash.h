@@ -58,7 +58,7 @@ class StatusUploader;
 class SystemLogUploader;
 class LookupKeyUploader;
 
-enum class ZeroTouchEnrollmentMode { DISABLED, ENABLED, FORCED, HANDS_OFF };
+enum class ZeroTouchEnrollmentMode { DISABLED, ENABLED, FORCED, HANDS_OFF, FYDE_ENABLED, FYDE_FORCED, FYDE_HANDS_OFF };
 
 // CloudPolicyManager specialization for device policy in Ash.
 class DeviceCloudPolicyManagerAsh : public CloudPolicyManager,

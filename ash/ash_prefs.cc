@@ -72,6 +72,8 @@
 #include "components/language/core/browser/pref_names.h"
 #include "components/live_caption/pref_names.h"
 #include "components/soda/constants.h"
+#include "fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h"
+#include "fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.h"
 
 namespace ash {
 
@@ -168,6 +170,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry, bool for_test) {
   else
     TopShortcutsView::RegisterLocalStatePrefs(registry);
   KeyboardBacklightColorController::RegisterPrefs(registry);
+  RotateScreenFeaturePodController::RegisterLocalStatePrefs(registry);
+  SwitchTabletLabtopFeaturePodController::RegisterLocalStatePrefs(registry);
 }
 
 void RegisterSigninProfilePrefs(PrefRegistrySimple* registry, bool for_test) {

@@ -169,6 +169,7 @@ class EnrollmentScreen
   enum Auth {
     AUTH_ATTESTATION,
     AUTH_OAUTH,
+    AUTH_FYDE,
   };
 
   // Updates view GAIA flow type which is used to modify visual appearance
@@ -205,6 +206,8 @@ class EnrollmentScreen
 
   // Do attestation based enrollment.
   void AuthenticateUsingAttestation();
+
+  void AuthenticateUsingFyde();
 
   // Shows the interactive screen. Resets auth then shows the signin screen.
   void ShowInteractiveScreen();

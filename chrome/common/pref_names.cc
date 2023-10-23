@@ -957,6 +957,9 @@ const char kLastChildScreenTimeReset[] = "last_child_screen_time_reset";
 const char kHelpAppNotificationLastShownMilestone[] =
     "help_app_notification_last_shown_milestone";
 
+const char kFydeOSReleaseNotesLastShownVersion[] =
+    "fydeos_last_release_notes_shown_version";
+
 // Amount of times the release notes suggestion chip should be
 // shown before it disappears.
 const char kReleaseNotesSuggestionChipTimesLeftToShow[] =

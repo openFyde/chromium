@@ -5,11 +5,16 @@
 #include "components/supervised_user/core/common/supervised_user_constants.h"
 
 #include "components/supervised_user/core/common/pref_names.h"
+#include "fydeos/switches/account/account_switches.h"
+
 
 namespace supervised_user {
 namespace {
 
 GURL KidsManagementBaseURL() {
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    return GURL(fydeos::switches::GetFydeOSKidsManagementAPIBaseUrl());
+  }
   return GURL("https://kidsmanagement-pa.googleapis.com/kidsmanagement/v1/");
 }
 

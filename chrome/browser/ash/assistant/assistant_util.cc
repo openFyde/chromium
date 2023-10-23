@@ -62,6 +62,11 @@ AssistantAllowedState GetErrorForUserType(const Profile* profile) {
       return AssistantAllowedState::DISALLOWED_BY_KIOSK_MODE;
 
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
+    //---***FYDEOS BEGIN***---
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
+    //---***FYDEOS END***---
       return AssistantAllowedState::DISALLOWED_BY_ACCOUNT_TYPE;
 
     case user_manager::USER_TYPE_GUEST:
@@ -133,6 +138,10 @@ bool HasDedicatedAssistantKey() {
 namespace assistant {
 
 AssistantAllowedState IsAssistantAllowedForProfile(const Profile* profile) {
+  // ---***FYDEOS BEGIN***---
+  if (profile->IsFydeProfile())
+    return AssistantAllowedState::DISALLOWED_BY_ACCOUNT_TYPE;
+  // ---***FYDEOS END***---
   // Disabled because the libassistant.so is not available.
   if (!ash::assistant::features::IsLibAssistantDLCEnabled()) {
     return AssistantAllowedState::DISALLOWED_BY_NO_BINARY;

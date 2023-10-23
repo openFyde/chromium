@@ -78,6 +78,7 @@
 #include "chromeos/ash/components/dbus/userdataauth/userdataauth_client.h"
 #include "chromeos/ash/components/dbus/virtual_file_provider/virtual_file_provider_client.h"
 #include "chromeos/ash/components/dbus/vm_plugin_dispatcher/vm_plugin_dispatcher_client.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
 #include "chromeos/ash/components/install_attributes/install_attributes.h"
 #include "chromeos/dbus/constants/dbus_paths.h"
 #include "chromeos/dbus/dlp/dlp_client.h"
@@ -198,6 +199,7 @@ void InitializeDBus() {
   InitializeDBusClient<UpstartClient>(bus);
   InitializeDBusClient<VirtualFileProviderClient>(bus);
   InitializeDBusClient<VmPluginDispatcherClient>(bus);
+  InitializeDBusClient<fydeos::ash::FydeOSShellClient>(bus);
 
   attestation::AttestationFeatures::Initialize();
   // Initialize the device settings service so that we'll take actions per
@@ -267,6 +269,7 @@ void ShutdownDBus() {
     bluez::BluezDBusManager::Shutdown();
   }
   // Other D-Bus clients are shut down, also in reverse order of initialization.
+  fydeos::ash::FydeOSShellClient::Shutdown();
   VmPluginDispatcherClient::Shutdown();
   VirtualFileProviderClient::Shutdown();
   UpstartClient::Shutdown();

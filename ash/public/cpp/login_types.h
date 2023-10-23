@@ -85,6 +85,8 @@ enum class OobeDialogState {
   // Closing the login screen extension UI created by a Chrome extension using
   // chrome.loginScreenUi API.
   EXTENSION_LOGIN_CLOSED = 20,
+
+  FYDE_LOCAL_SIGNIN = 21,
 };
 
 // Modes of the managed device, which is used to update the visibility of

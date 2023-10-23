@@ -49,6 +49,10 @@ std::string GetUserName(const std::string& email) {
 // static
 bool User::TypeHasGaiaAccount(UserType user_type) {
   return user_type == USER_TYPE_REGULAR ||
+  //---***FYDEOS BEGIN***---
+         user_type == USER_TYPE_FYDE_ACCOUNT ||
+         user_type == USER_TYPE_FYDE_CHILD ||
+  //---***FYDEOS END***---
          user_type == USER_TYPE_CHILD;
 }
 
@@ -85,6 +89,29 @@ class ActiveDirectoryUser : public RegularUser {
   UserType GetType() const override;
   bool CanSyncImage() const override;
 };
+
+//---***FYDEOS BEGIN***---
+class FlintAccountUser: public RegularUser {
+public:
+  explicit FlintAccountUser(const AccountId& account_id);
+  ~FlintAccountUser() override;
+  // Overridden from User:
+  UserType GetType() const override;
+  bool CanSyncImage() const override;
+};
+
+class FydeAccountUser: public RegularUser {
+public:
+  explicit FydeAccountUser(const AccountId& account_id, const UserType user_type);
+  ~FydeAccountUser() override;
+  // Overridden from User:
+  UserType GetType() const override;
+  void UpdateType(UserType user_type) override;
+  bool CanSyncImage() const override;
+private:
+  bool is_fyde_child_;
+};
+//---***FYDEOS END***---
 
 class GuestUser : public User {
  public:
@@ -209,8 +236,24 @@ bool User::IsActiveDirectoryUser() const {
   return GetType() == user_manager::USER_TYPE_ACTIVE_DIRECTORY;
 }
 
+//---***FYDEOS BEGIN***---
+bool User::IsFlintAccountUser() const {
+  return GetType() == user_manager::USER_TYPE_FLINT_ACCOUNT;
+}
+
+bool User::IsFydeAccountUser() const {
+  return GetType() == user_manager::USER_TYPE_FYDE_ACCOUNT || GetType() == user_manager::USER_TYPE_FYDE_CHILD;
+}
+
+bool User::IsFydeExtendAccountUser() const {
+  return GetType() == user_manager::USER_TYPE_FLINT_ACCOUNT ||
+         GetType() == user_manager::USER_TYPE_FYDE_ACCOUNT ||
+         GetType() == user_manager::USER_TYPE_FYDE_CHILD;
+}
+//---***FYDEOS END***---
+
 bool User::IsChild() const {
-  return GetType() == USER_TYPE_CHILD;
+  return GetType() == USER_TYPE_CHILD || GetType() == USER_TYPE_FYDE_CHILD;
 }
 
 std::string User::GetAccountName(bool use_display_email) const {
@@ -249,11 +292,15 @@ bool User::is_active() const {
 }
 
 bool User::has_gaia_account() const {
-  static_assert(user_manager::NUM_USER_TYPES == 10,
-                "NUM_USER_TYPES should equal 10");
+  static_assert(user_manager::NUM_USER_TYPES == 13,
+                "NUM_USER_TYPES should equal 13");
   switch (GetType()) {
     case user_manager::USER_TYPE_REGULAR:
     case user_manager::USER_TYPE_CHILD:
+//---***FYDEOS BEGIN***---
+		case user_manager::USER_TYPE_FYDE_ACCOUNT:
+		case user_manager::USER_TYPE_FYDE_CHILD:
+//---***FYDEOS END***---
       return true;
     case user_manager::USER_TYPE_GUEST:
     case user_manager::USER_TYPE_PUBLIC_ACCOUNT:
@@ -261,6 +308,9 @@ bool User::has_gaia_account() const {
     case user_manager::USER_TYPE_ARC_KIOSK_APP:
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
     case user_manager::USER_TYPE_WEB_KIOSK_APP:
+//---***FYDEOS BEGIN***---
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+//---***FYDEOS END***---
       return false;
     default:
       NOTREACHED();
@@ -313,6 +363,12 @@ User* User::CreateRegularUser(const AccountId& account_id,
                               const UserType user_type) {
   if (account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY)
     return new ActiveDirectoryUser(account_id);
+//---***FYDEOS BEGIN***---
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT)
+    return new FlintAccountUser(account_id);
+  if (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT)
+    return new FydeAccountUser(account_id, user_type);
+//---***FYDEOS END***---
   return new RegularUser(account_id, user_type);
 }
 
@@ -372,9 +428,55 @@ bool ActiveDirectoryUser::CanSyncImage() const {
   return false;
 }
 
+//---***FYDEOS BEGIN***---
+UserType FlintAccountUser::GetType() const {
+  return user_manager::USER_TYPE_FLINT_ACCOUNT;
+}
+
+bool FlintAccountUser::CanSyncImage() const {
+  return false;
+}
+
+UserType FydeAccountUser::GetType() const {
+  return is_fyde_child_ ? user_manager::USER_TYPE_FYDE_CHILD : user_manager::USER_TYPE_FYDE_ACCOUNT;
+}
+
+void FydeAccountUser::UpdateType(UserType user_type) {
+  const UserType current_type = GetType();
+  if ((user_type == user_manager::USER_TYPE_FYDE_CHILD ||
+       user_type == user_manager::USER_TYPE_FYDE_ACCOUNT) &&
+      (current_type == user_manager::USER_TYPE_FYDE_CHILD ||
+       current_type == user_manager::USER_TYPE_FYDE_ACCOUNT)) {
+    // We want all the other type changes to crash, that is why this check is
+    // not at the top level.
+    if (user_type == current_type)
+      return;
+    const bool old_is_child = is_fyde_child_;
+    is_fyde_child_ = user_type == user_manager::USER_TYPE_FYDE_CHILD;
+
+    LOG(WARNING) << "User type has changed: " << current_type
+                 << " (is_child=" << old_is_child << ") => " << user_type
+                 << " (is_child=" << is_fyde_child_ << ")";
+    UMAUserTypeChanged(is_fyde_child_ ? UserTypeChangeHistogram::REGULAR_TO_CHILD
+                                 : UserTypeChangeHistogram::CHILD_TO_REGULAR);
+    return;
+  }
+  // Fail with LOG(FATAL).
+  User::UpdateType(user_type);
+}
+
+bool FydeAccountUser::CanSyncImage() const {
+  return true;
+}
+//---***FYDEOS END***---
+
 RegularUser::RegularUser(const AccountId& account_id, const UserType user_type)
-    : User(account_id), is_child_(user_type == USER_TYPE_CHILD) {
+    : User(account_id), is_child_(user_type == USER_TYPE_CHILD || user_type == USER_TYPE_FYDE_CHILD) {
   if (user_type != USER_TYPE_CHILD && user_type != USER_TYPE_REGULAR &&
+//---***FYDEOS BEGIN***---
+      user_type != USER_TYPE_FLINT_ACCOUNT && user_type != USER_TYPE_FYDE_ACCOUNT &&
+      user_type != USER_TYPE_FYDE_CHILD &&
+//---***FYDEOS END***---
       user_type != USER_TYPE_ACTIVE_DIRECTORY) {
     LOG(FATAL) << "Invalid user type " << user_type;
   }
@@ -390,6 +492,19 @@ RegularUser::~RegularUser() {
 }
 
 ActiveDirectoryUser::~ActiveDirectoryUser() {}
+
+//---***FYDEOS BEGIN***---
+FlintAccountUser::FlintAccountUser(const AccountId& account_id)
+    : RegularUser(account_id, user_manager::USER_TYPE_FLINT_ACCOUNT) {}
+
+FlintAccountUser::~FlintAccountUser() {}
+
+FydeAccountUser::FydeAccountUser(const AccountId& account_id, const UserType user_type)
+    : RegularUser(account_id, user_type),
+      is_fyde_child_(user_type == user_manager::USER_TYPE_FYDE_CHILD) {}
+
+FydeAccountUser::~FydeAccountUser() {}
+//---***FYDEOS END***---
 
 UserType RegularUser::GetType() const {
   return is_child_ ? user_manager::USER_TYPE_CHILD :

@@ -62,6 +62,9 @@ class ChromeBrowserPolicyConnector : public BrowserPolicyConnector {
   void Init(PrefService* local_state,
             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
       override;
+  // ---***FYDEOS BEGIN***---
+  void ResetDeviceManagementServiceConfiguration();
+  // ---***FYDEOS END***---
 
   bool IsDeviceEnterpriseManaged() const override;
 

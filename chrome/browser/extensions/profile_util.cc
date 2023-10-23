@@ -32,6 +32,9 @@ bool ProfileCanUseNonComponentExtensions(const Profile* profile) {
   // extensions) so instead only look for those user types that can use them.
   switch (user->GetType()) {
     case user_manager::USER_TYPE_REGULAR:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
     case user_manager::USER_TYPE_CHILD:
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
       return true;

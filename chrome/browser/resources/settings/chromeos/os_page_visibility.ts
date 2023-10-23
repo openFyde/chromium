@@ -140,6 +140,13 @@ if (isGuestMode) {
     },
     reset: true,
   };
+  // ---***FYDEOS BEGIN***---
+  const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+
+  if (isFydeProfile) {
+    osPageVisibility.downloads.googleDrive = false;
+  }
+  // ---***FYDEOS END***---
 }
 
 export {osPageVisibility};

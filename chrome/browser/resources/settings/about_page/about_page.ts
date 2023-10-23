@@ -344,11 +344,11 @@ export class SettingsAboutPageElement extends SettingsAboutPageElementBase {
         });
   }
 
-  // <if expr="_google_chrome">
   private onReportIssueClick_() {
     this.aboutBrowserProxy_.openFeedbackDialog();
   }
 
+  // <if expr="_google_chrome">
   private onGetTheMostOutOfChromeClick_() {
     Router.getInstance().navigateTo(routes.GET_MOST_CHROME);
   }

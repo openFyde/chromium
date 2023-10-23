@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <message name="IDS_DATA_RESTORE_SCREEN_SELECT_FILE_TITLE" desc="Title of data restore screen select-file page">
+    Restore backup (beta)
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SELECT_FILE_MESSAGE" desc="Message of data restore screen select-file page">
+    To restore FydeOS from a backup file, please insert the removable drive that contains the backup file into your FydeOS device now and specify which backup file you would like to restore. Please note that your backup file needs to be in the root directory of your removable drive to be detected by this wizard.
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_BACKUP_FILE_SELECTION_LABEL" desc="Backup file selection label of data restore screen setup page">
+    Select the backup file to restore:
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_INVALID_BACKUP_FILE_MESSAGE" desc="Invalid backup file message of data restore screen setup page">
+    Sorry, the selected backup file cannot be recognized; please select a new one.
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_TITLE" desc="Title of data restore screen setup page">
+    Restore backup (beta)
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_SUBTITLE" desc="Subtitle of data restore screen setup page">
+    <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>To restore FydeOS from the selected backup file, it is essential to have accurate information about the backup when it was created. Otherwise, the restore process will fail.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
+    <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>The "account name" is the primary login credential of the account that your backup file was created under. It's usually the email address you used to sign up for your FydeOS/Google account. If it were a local account, it would be the username appended with "@fydeos.local".<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
+    <ph name="BEGIN_PARAGRAPH3">&lt;p&gt;</ph>The password is the passphrase you were asked to input when the backup was created. It's usually the same password you used to sign in to the FydeOS desktop for this account.<ph name="END_PARAGRAPH3">&lt;/p&gt;</ph>
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_ACCOUNT_NAME_LABEL" desc="Account name label of data restore screen setup page">
+    Account name
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_INVALID_ACCOUNT_NAME_MESSAGE" desc="Invalid account name message of data restore screen setup page">
+    Sorry, please enter the correct account name
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_PASSWORD_LABEL" desc="Password label of data restore screen setup page">
+    Password
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_INVALID_PASSWORD_MESSAGE" desc="Invalid password message of data restore screen setup page">
+    Sorry, the password cannot be empty
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_NEXT_BUTTON" desc="Next button of data restore screen setup page">
+    Restore
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_IN_PROGRESS_TITLE" desc="Title of data restore screen in progress page">
+    Restoring backup
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_IN_PROGRESS_SUBTITLE" desc="Subtitle of data restore screen in progress page">
+    <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>We are now working on restoring your backup file; this may take a while, so please be patient.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
+    <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>Please note that the UI will restart automatically when the restore process completes successfully.<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_ERROR_TITLE" desc="Title of data restore screen error page">
+    Restore backup has failed
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_ERROR_SUBTITLE" desc="Subtitle of data restore screen error page">
+    For more details, please click the link below to view the logs. If this error persists, please get in touch with the FydeOS technical support channels and provide the error logs.
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_ERROR_VIEW_LOGS" desc="View logs button of data restore screen error page">
+    View logs
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SUCCESS_TITLE" desc="Title of data restore screen success page">
+    Done
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SUCCESS_SUBTITLE" desc="Subtitle of data restore screen success page">
+    Restore data success
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SERVICE_LOGS_TITLE" desc="Title of data restore screen service logs page">
+    Restore backup logs
+  </message>
+</grit-part>

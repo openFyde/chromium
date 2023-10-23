@@ -1,0 +1,313 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<!-- generated_resources.grdp -->
+<translation id="8567094922907714697">与 openFyde 核心系统服务交互并传递信息</translation>
+<translation id="5783951074373703118">与 FydeOS 核心系统服务交互并传递信息</translation>
+<translation id="2928778605225600914">读写系统文件；执行已被检查过的安全的系统命令</translation>
+<!-- chromeos_strings.grdp -->
+<translation id="4967320386096768929">创建您的 openFyde 本地账号</translation>
+<translation id="5666923774785845494">创建您的 FydeOS 本地账号</translation>
+<translation id="3057311352310891410">登录您的 openFyde 本地账号</translation>
+<translation id="4316532326266260626">登录您的 FydeOS 本地账号</translation>
+<translation id="3325117507482096812">请输入密码</translation>
+<translation id="1838206877831947154">你两次输入的密码不匹配，请重新输入</translation>
+<translation id="8592849747346274067">登录已存在的本地帐号</translation>
+<translation id="2158276988029582286">创建新的本地帐号</translation>
+<translation id="482190417986201746">你输入的用户名或密码不正确</translation>
+<translation id="2467036752163245287">你可以<ph name="LINK_START" />使用 openFyde 本地帐号登录<ph name="LINK_END" />。</translation>
+<translation id="6934660397349137001">你可以<ph name="LINK_START" />使用 FydeOS 本地帐号登录<ph name="LINK_END" />。</translation>
+<translation id="5291842596976929391">邮箱 <ph name="EMAIL_ADDRESS" /> 已存在，请使用其他邮箱重试。</translation>
+<translation id="6867476688065565618">切换到本地帐号</translation>
+<translation id="4302255631942984850">如果使用本地帐户，你将无法在多个设备间同步个人资料和设置项，也无法在 Chromium 中自动登录诸多在线服务。</translation>
+<translation id="4143598808744793925">我们建议你使用在线帐户以获得最佳 openFyde 体验。</translation>
+<translation id="8777053473529329751">我们建议你使用在线帐户以获得最佳 FydeOS 体验。</translation>
+<translation id="7215016743510876720">使用本地帐号</translation>
+<translation id="6657635042185516718">继续使用在线帐号</translation>
+<!-- fydeos installer in oobe -->
+<translation id="5890206344045530832">安装程序</translation>
+<translation id="6412464734559235948">此安装程序可以帮助你将 <ph name="DEVICE_OS" /> 安装至此设备中。</translation>
+<translation id="5323182426977498659">注意！安装过程具有破坏性并且无法撤销，我们无法对潜在的数据丢失以及安装中可能出现的各种问题负责或者提供及时的技术支持。请三思而后行！</translation>
+<translation id="8517836015601969896">全盘安装</translation>
+<translation id="7670388070648888736">安装 <ph name="DEVICE_OS" /> 到整个磁盘，所选磁盘的数据将被抹去</translation>
+<translation id="8762511733918256595">多重引导安装</translation>
+<translation id="8331814752512566482">安装 <ph name="DEVICE_OS" /> 到一个磁盘分区，所选分区的数据将被抹去</translation>
+<translation id="3853374591075338656">将 <ph name="DEVICE_OS" /> 安装至此设备的磁盘上；所选目标磁盘的所有分区和数据将全部抹去。</translation>
+<translation id="4039091757234555415">磁盘</translation>
+<translation id="7783580523889684697">没有可用的磁盘</translation>
+<translation id="4148957013307229264">正在安装...</translation>
+<translation id="8217653566575018388">安装完成</translation>
+<translation id="8846746259444262774">安装失败</translation>
+<translation id="8826683299983762794">请先关机，然后移除任何安装介质，最后再次启动设备以引导 <ph name="DEVICE_OS" /> 系统。</translation>
+<translation id="2075096143682377607">抱歉，安装过程中出现错误，请重试。如果该错误持续出现，请收集以上日志内容并与 FydeOS 技术支持取得联系。</translation>
+<translation id="2880313280615794544">将 <ph name="DEVICE_OS" /> 安装到此设备磁盘的一个分区里；<ph name="DEVICE_OS" /> 的多重引导方案目前仅能支持携带 UEFI 启动模式配合 GPT 分区模式的设备。</translation>
+<translation id="7831363758161884243">所选目标分区的全部数据将被抹去；另外还需指定 EFI 分区，以便安装程序修改系统的启动参数。</translation>
+<translation id="1361580295752188723">选择 <ph name="DEVICE_OS" /> 目标分区</translation>
+<translation id="3695537760133394753">分区</translation>
+<translation id="5610519566593708119">选择 EFI 分区</translation>
+<translation id="3367650349940010965">所选磁盘没有可用的分区</translation>
+<translation id="7453223384507098390">所选磁盘没有可用的 EFI 分区</translation>
+<translation id="1854532683465500847">所选分区磁盘容量小于 20G，可能会安装失败</translation>
+<translation id="2353243380067885044">所选分区已经安装多重引导 <ph name="DEVICE_OS" />，再次安装可能出现错误</translation>
+<translation id="3129080457956834652">安装完成之后，你希望以怎样的方式选择引导启动 <ph name="DEVICE_OS" />？</translation>
+<translation id="4273235330352963866">帮我安装及配置 rEFInd 启动器（推荐）</translation>
+<translation id="1858708492548921044">rEFInd 是一个带图形界面的操作系统启动选择器。当你开机的时候会给你提供一个友好的多操作系统选择界面，方便选择你想要启动的操作系统。更多关于 rEFInd 的信息可以查看它的项目官网。</translation>
+<translation id="3861924051442564602">帮我添加 UEFI 启动菜单启动项</translation>
+<translation id="1442843287671278225">当你开机的时候可以唤起主板 BIOS 内置的操作系统选择菜单，此选项会在该菜单内加入 <ph name="DEVICE_OS" /> 的选项供你选择启动。（仅支持部分主板和 UEFI 固件）</translation>
+<translation id="1569398690544416170">什么都不做，我自己配置</translation>
+<translation id="5865432404169291055">此安装脚本不会主动为你配置启动引导入口，但仍会把引导启动 <ph name="DEVICE_OS" /> 所需的 .efi 文件置入你的 EFI 分区中，你需要自行配置。</translation>
+<translation id="7492832751164189534">停止安装</translation>
+<translation id="5159534860632584026">安装过程已终止</translation>
+<translation id="8686749782014838344">获取磁盘信息失败</translation>
+<translation id="5688543378771259173">正在终止安装...</translation>
+<translation id="3053987041164721826">检测到该版本的 FydeOS 正在从刚刚烧写的镜像中运行。为了让 FydeOS 的所有附属功能（包括 OTA 升级）均能得到支持，强烈建议现在执行「安装程序」将该 FydeOS 安装到系统的另一个存储设备上。</translation>
+<translation id="7121400053887368347">你可以选择<ph name="LINK_BEGIN">&lt;span id="continue-anyway"&gt;</ph>按现在的方式继续使用 FydeOS<ph name="LINK_END">&lt;/span&gt;</ph>，安装过程可以在登录系统之后执行，但届时所有的数据将会被清除。</translation>
+<translation id="5566104065733539571">你将无法添加用户，因为缺少 Google API 和 FydeOS API 密钥。详情请见 <ph name="DETAILS_URL" />。</translation>
+<translation id="2529264822895109699">你将无法添加 Google 帐号，因为缺少 Google API 密钥。详情请见 <ph name="DETAILS_URL" />。</translation>
+<translation id="5035857262187007658">你将无法添加 FydeOS 帐号，因为缺少 Google API 和 FydeOS API 密钥。详情请见 <ph name="DETAILS_URL" />。</translation>
+<translation id="6453115658311485370">切换 Wifi 驱动</translation>
+<translation id="3252172631570740256">如果你的机器是 Broadcom Wi-Fi 芯片，有可能默认的网卡驱动不能工作。你可以尝试选择另外一个 Wi-Fi 驱动。</translation>
+<translation id="4535111665313076231">请注意这个操作需要重启生效。</translation>
+<translation id="2118376715418335658">重启系统后修改才能生效，是否现在重启？</translation>
+<translation id="771550440388796596">切换触控板模式</translation>
+<translation id="6437095832772310099">如果你的触摸板不能正常工作，你可以在这里切换它的工作模式。</translation>
+<translation id="1502428450672399555">这个操作立即生效。</translation>
+<!-- eula extra -->
+<translation id="5042404702659901995">隐私声明</translation>
+<translation id="4907736162587268100">隐私声明内容</translation>
+<!-- marketing_opt_in -->
+<translation id="2229569409832100424">加入 openFyde 用户体验改善计划</translation>
+<translation id="1804257334637107082">加入 FydeOS 用户体验改善计划</translation>
+<translation id="2054784944085654098">正在备份中，此过程需要一段时间，请耐心等待……</translation>
+<translation id="3554401467586751874">备份文件创建成功</translation>
+<translation id="2349211327705667074">查看备份文件</translation>
+<translation id="6337433855796857931">备份文件创建失败</translation>
+<translation id="3049367131589710124">查看错误日志</translation>
+<!-- os_settings_strings.override.grdp -->
+<translation id="7631371713920849682">在 Chromium 浏览器中使用增强的「拼写检查」功能（您输入的文字会被发送给服务器以方便其提供拼写建议）</translation>
+<translation id="4467178118407184669">Android 支持</translation>
+<translation id="7577269083417202628">删除 Android 支持</translation>
+<translation id="6763605592759679747">管理 Android 应用</translation>
+<translation id="8201879985702141998">您从下载的应用将从这台 openFyde 设备中删除。
+      <ph name="LINE_BREAKS1" />
+      您购买的内容（例如电影、电视节目、音乐、图书或其他应用内购买内容）也可能会被删除。
+      <ph name="LINE_BREAKS2" />
+      这不会影响其他设备上的应用或内容。</translation>
+<translation id="1642922089350226084">您从下载的应用将从这台 FydeOS 设备中删除。
+      <ph name="LINE_BREAKS1" />
+      您购买的内容（例如电影、电视节目、音乐、图书或其他应用内购买内容）也可能会被删除。
+      <ph name="LINE_BREAKS2" />
+      这不会影响其他设备上的应用或内容。</translation>
+<translation id="1182767881475429285">删除所有用户帐号并重置您的 <ph name="IDS_SHORT_PRODUCT_OS_NAME" /> 设备，使其焕然一新。</translation>
+<translation id="1399034565330869383">无法更新您的 openFyde 设备。请稍后再试。</translation>
+<translation id="8996840558782076079">无法更新您的 FydeOS 设备。请稍后再试。</translation>
+<translation id="7890024409713470793">FydeOS 帐号</translation>
+<translation id="1870123303114216415">您需要重启 openFyde 才能更改设备语言。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="1243738736603109562">您需要重启 FydeOS 才能更改设备语言。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="1491869033935559234">openFyde 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
+<translation id="4356727807337882306">FydeOS 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
+<translation id="7456142309650173560">开发者</translation>
+<translation id="1764226536771329714">测试</translation>
+<translation id="913411432238655354">启动时恢复应用</translation>
+<translation id="4761916003358543528">您的应用和设置会在您使用自己的 FydeOS 帐号登录的所有设备上保持同步。如需了解浏览器同步选项，请前往 <ph name="LINK_BEGIN" />Chromium 设置<ph name="LINK_END" />。</translation>
+<!-- settings_strings.override.grdp -->
+<translation id="788994565092063281">打开应用商店</translation>
+<translation id="646286410082977985">版本 <ph name="PRODUCT_VERSION" /> <ph name="PRODUCT_MODIFIER" /> <ph name="PRODUCT_VERSION_BITS" /></translation>
+<translation id="6448652064462513778">在 openFyde 设置中管理语言</translation>
+<translation id="8978432605827551547">在 FydeOS 设置中管理语言</translation>
+<translation id="4798975186883594180">FydeOS 个人资料照片</translation>
+<translation id="4835160910703799618">下载 PDF 文件，而不是在 Chromium 中自动打开它们</translation>
+<translation id="344806589241926887">预加载 Chromium 认为您可能会访问的网页。为此，Chromium 可能会使用 Cookie（如果您允许使用 Cookie 的话），并加密和发送网页以在网站中隐藏您的身份。</translation>
+<translation id="810783818611464909">会清除历史记录以及搜索框中的自动补全项。</translation>
+<!-- shared_settings_strings.override.grdp -->
+<translation id="3142455651440468550">其他服务</translation>
+<translation id="8559764570013185596">同步功能和其他服务</translation>
+<translation id="2339715201705349346">您的设备将会对所有人可见，时长为 <ph name="MINUTES" /> 分钟。</translation>
+<translation id="2478287783239434203">您的数据将在已为该帐号开启同步功能的所有 Chromium 浏览器之间同步。如需了解 openFyde 同步选项，请前往 <ph name="LINK_BEGIN" />openFyde 设置<ph name="LINK_END" />。</translation>
+<translation id="5695932594681655884">您的数据将在已为该帐号开启同步功能的所有 Chromium 浏览器之间同步。如需了解 FydeOS 同步选项，请前往 <ph name="LINK_BEGIN" />FydeOS 设置<ph name="LINK_END" />。</translation>
+<!-- settings_strings.grdp -->
+<translation id="6133721309166765453">你与 FydeOS</translation>
+<translation id="6496949983038880601">如果您找不到要查找的内容，请参阅 <ph name="BEGIN_LINK_CHROMIUM" />FydeOS 帮助<ph name="END_LINK_CHROMIUM" /></translation>
+<translation id="1733544241248581977">为您提供更快速主动的保护措施，免受危险网站、下载内容或扩展程序的威胁。系统会在密码遭泄露时向您发出警告。</translation>
+<translation id="1144810021918451336">不会保护您免受危险网站、下载内容和扩展程序的侵害。</translation>
+<!-- os_settings_strings.grdp -->
+<translation id="4722832498335744482">自动保持我的 <ph name="DEVICE_OS" /> 运行最新版本</translation>
+<translation id="2347352406101856238"><ph name="DEVICE_OS" /> 自动更新已开启</translation>
+<translation id="185834232609012804"><ph name="DEVICE_OS" /> 自动更新已禁用</translation>
+<translation id="6095651579470426894"><ph name="DEVICE_OS" /> <ph name="FYDEOS_MAJOR_VERSION" />（<ph name="PRODUCT_CHANNEL"></ph>）平台 <ph name="FYDEOS_PLATFORM_VERSION" /><ph name="PRODUCT_VERSION_BITS" /></translation>
+<translation id="1079017345574916945">远程桌面</translation>
+<translation id="6898090158927982244">您的 Linux 已是最新版本</translation>
+<translation id="125640132000960723">检测到 Linux 子系统有可用重要更新。强烈建议尽早执行更新，否则 Linux 子系统有可能停止工作。</translation>
+<translation id="6694016202036959050"><ph name="DEVICE_OS" /> 设置</translation>
+<translation id="8509770612780794865">Wifi 设置</translation>
+<translation id="4938972461544498524">触控板设置</translation>
+<translation id="1210024513248363065">远程服务</translation>
+<translation id="7170710479480545448">远程协助服务</translation>
+<translation id="7421654468125961872">通过远程协助服务 FydeOS 官方技术支持人员可以更好地检查系统可能存在的问题及帮助你解决问题。远程协助服务仅支持由 FydeOS 官方技术支持人员发起。</translation>
+<translation id="4153448966914043142">请把显示的数字分享给与您联系的 FydeOS 官方技术支持人员</translation>
+<translation id="8447783727233371010">正在启动远程协助服务...</translation>
+<translation id="4770469035145322795">请尝试重新开启远程协助服务</translation>
+<translation id="4070039109671307724">其他选项</translation>
+<translation id="7326893024940073254">显示「重启」按钮</translation>
+<translation id="4690206696796355711">在系统任务栏菜单显示「重启」按钮</translation>
+<translation id="6243454903512423518">显示「旋转屏幕」按钮</translation>
+<translation id="7303548327449168702">当前不是平板电脑模式，已在系统任务栏菜单隐藏「旋转屏幕」按钮</translation>
+<translation id="3840770932695838898">在系统任务栏菜单显示「旋转屏幕」按钮</translation>
+<translation id="4745886129774726269">在系统任务栏菜单显示切换平板模式和桌面模式的按钮</translation>
+<translation id="2985624172970894798">平板/桌面模式切换按钮</translation>
+<translation id="1851103550468466960">开启 Widevine 支持</translation>
+<translation id="8990695698551687522">指定 "libwidevine.so"</translation>
+<translation id="4838463656205005584">启用 Widevine 失败...</translation>
+<translation id="7386874137903403308">所选的 "libwidevine.so" 无效；请重新选择正确的文件再尝试。</translation>
+<translation id="768441431736013726">在播放受保护的流媒体内容时启用 Widevine 支持。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="3851274061009484883">FydeOS 帐号设置</translation>
+<translation id="6468776556018764845">实验性功能</translation>
+<translation id="6463286951433091842">绕过部分可信平台模块 (TPM) 的检查</translation>
+<translation id="8473208832886345753">如果系统部分依赖 TPM 的相关功能出现问题，可设置绕过在这些功能上对 TPM 的检查。</translation>
+<translation id="621731412870836460">允许该账户在设备启动时免密自动登录桌面</translation>
+<translation id="2988226676715633921">检测到该设备上已有其它账户设置了自动登录，如需为目前账户设置自动登录，需要将目前设置的自动登录设置关闭</translation>
+<translation id="1674714510072289091">该账户文件系统初始化出现未知错误，暂时无法开启；请尝试重启或重新创建账户</translation>
+<translation id="8180845003886240840">自动登录选项仅限于「本地账户」类型，目前账户类型无法开启</translation>
+<translation id="595136526907376719">FydeOS 大版本更新已上线。如需进行 FydeOS 的大版本升级，请支付一次性更新费用后，再次检查更新。</translation>
+<translation id="376676483415835736">有新版本的 FydeOS 可供升级，但你的 FydeOS for You 订阅已过期。如需升级 FydeOS，请考虑续费。</translation>
+<!-- <translation id="3819257035322786455">备份</translation> -->
+<translation id="6523879681771260760">请选择存储备份的位置</translation>
+<translation id="2036152819788683293">为当前登录的账户创建备份 (beta)。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="5879112835975398426">为当前登录的账户创建备份 (beta)</translation>
+<translation id="6529331856800157597">此操作可以为当前登录的账户创建全盘备份，方便日后恢复至备份文件创建时 FydeOS 系统的状态，包括设置项、安装的浏览器插件以及子系统的程序等。视目前已安装的程序和你的个人文件夹的内容，备份文件可能会很大；建议将备份文件存储在外部存储设备上。如果你有便携式移动磁盘，此时请接入该设备。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="996700315270946845">请输入当前账户的登录密码</translation>
+<translation id="8663988871299316062">请务必牢记此密码，恢复备份时会用到</translation>
+<!-- chromeos_strings.override.grdp -->
+<translation id="8642537394560952908">拍摄新照片，或者选择现有照片或图标。
+    <ph name="LINE_BREAK" />
+    此图片将会显示在 openFyde 设备的登录屏幕和锁定屏幕上。</translation>
+<translation id="956450581235601499">拍摄新照片，或者选择现有照片或图标。
+    <ph name="LINE_BREAK" />
+    此图片将会显示在 FydeOS 设备的登录屏幕和锁定屏幕上。</translation>
+<translation id="2179228761184690113">从燧炻创新接收关于 <ph name="DEVICE_TYPE" />的使用技巧及更新资讯</translation>
+<translation id="2460473797378952836">订阅 FydeOS 的新闻邮件</translation>
+<translation id="8508039420303702946">您的计算机包含可信平台模块 (TPM) 安全装置，该装置可用于在 openFyde 中实施许多关键的安全功能。要了解详情，请访问 FydeOS 帮助中心：https://fydeos.com/help/</translation>
+<translation id="558094046146069098">您的计算机包含可信平台模块 (TPM) 安全装置，该装置可用于在 FydeOS 中实施许多关键的安全功能。要了解详情，请访问 FydeOS 帮助中心：https://fydeos.com/help/</translation>
+<translation id="8190624604221884015">您的计算机包含可信平台模块 (TPM) 安全装置，该装置可用于在 openFyde 中实施许多关键的安全功能。要了解详情，请访问 FydeOS 帮助中心：https://fydeos.io/help/</translation>
+<translation id="1745418814051489128">您的计算机包含可信平台模块 (TPM) 安全装置，该装置可用于在 FydeOS 中实施许多关键的安全功能。要了解详情，请访问 FydeOS 帮助中心：https://fydeos.io/help/</translation>
+<translation id="4344340280454718499">您的计算机包含一个安全模块，该模块可用于在 openFyde 中实施许多关键的安全功能。要了解详情，请访问 FydeOS 帮助中心：https://fydeos.com/help/</translation>
+<translation id="272803115543248485">您的计算机包含一个安全模块，该模块可用于在 FydeOS 中实施许多关键的安全功能。要了解详情，请访问 FydeOS 帮助中心：https://fydeos.com/help/</translation>
+<translation id="4855288386802910958">您的计算机包含一个安全模块，该模块可用于在 openFyde 中实施许多关键的安全功能。要了解详情，请访问 FydeOS 帮助中心：https://fydeos.io/help/</translation>
+<translation id="8143983533789831668">您的计算机包含一个安全模块，该模块可用于在 FydeOS 中实施许多关键的安全功能。要了解详情，请访问 FydeOS 帮助中心：https://fydeos.io/help/</translation>
+<translation id="3091969040104656090"><ph name="BEGIN_H3" />调试功能<ph name="END_H3" />
+   <ph name="BR" />
+   您可在 openFyde 设备上启用调试功能，以便在相应设备上安装并测试自定义代码。启用这些功能后，您可以：<ph name="BR" />
+   <ph name="BEGIN_LIST" />
+     <ph name="LIST_ITEM" />取消根文件系统验证，以便修改操作系统文件
+     <ph name="LIST_ITEM" />允许使用标准测试密钥以 SSH 方式访问设备，以便使用 <ph name="BEGIN_CODE" />cros flash<ph name="END_CODE" /> 等工具访问设备
+     <ph name="LIST_ITEM" />允许从 U 盘启动设备，以便通过 U 盘安装操作系统映像
+     <ph name="LIST_ITEM" />将 Dev 和系统根登录密码均设为自定义值，以便手动以 SSH 方式访问设备
+   <ph name="END_LIST" />
+   <ph name="BR" />
+   如果您启用了此项设置，那么即使在企业管理的设备上执行了 Powerwash 或数据擦除操作，大部分调试功能仍将保持启用状态。要完全停用所有调试功能，请执行 openFyde 恢复过程 (https://fydeos.io/help/)。
+   <ph name="BR" />
+   <ph name="BR" />
+   如需详细了解调试功能，请访问：<ph name="BR" />
+   https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-features
+   <ph name="BR" />
+   <ph name="BR" />
+   <ph name="BEGIN_BOLD" />注意<ph name="END_BOLD" />：在恢复过程中，系统将会重新启动。</translation>
+<translation id="3612657467783565254"><ph name="BEGIN_H3" />调试功能<ph name="END_H3" />
+   <ph name="BR" />
+   您可在 FydeOS 设备上启用调试功能，以便在相应设备上安装并测试自定义代码。启用这些功能后，您可以：<ph name="BR" />
+   <ph name="BEGIN_LIST" />
+     <ph name="LIST_ITEM" />取消根文件系统验证，以便修改操作系统文件
+     <ph name="LIST_ITEM" />允许使用标准测试密钥以 SSH 方式访问设备，以便使用 <ph name="BEGIN_CODE" />cros flash<ph name="END_CODE" /> 等工具访问设备
+     <ph name="LIST_ITEM" />允许从 U 盘启动设备，以便通过 U 盘安装操作系统映像
+     <ph name="LIST_ITEM" />将 Dev 和系统根登录密码均设为自定义值，以便手动以 SSH 方式访问设备
+   <ph name="END_LIST" />
+   <ph name="BR" />
+   如果您启用了此项设置，那么即使在企业管理的设备上执行了 Powerwash 或数据擦除操作，大部分调试功能仍将保持启用状态。要完全停用所有调试功能，请执行 FydeOS 恢复过程 (https://fydeos.io/help/)。
+   <ph name="BR" />
+   <ph name="BR" />
+   如需详细了解调试功能，请访问：<ph name="BR" />
+   https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-features
+   <ph name="BR" />
+   <ph name="BR" />
+   <ph name="BEGIN_BOLD" />注意<ph name="END_BOLD" />：在恢复过程中，系统将会重新启动。</translation>
+<translation id="5841358218031357440">openFyde 设备名称</translation>
+<translation id="1798298905848126844">FydeOS 设备名称</translation>
+<translation id="8562821550545003442">设备 OU（例如 OU=FydeOS_device,DC=example,DC=com）</translation>
+<translation id="6255258097462943498">只有 x86_64 平台才支持 openFyde <ph name="MS_AD_NAME" /> 集成功能。采用 ARM 或 x86 （32位）平台的 openFyde 不支持此功能。</translation>
+<translation id="476009856691690168">只有 x86_64 平台才支持 FydeOS <ph name="MS_AD_NAME" /> 集成功能。采用 ARM 或 x86 （32位）平台的 FydeOS 不支持此功能。</translation>
+<translation id="6024872363185667450">抱歉，无法验证您的账户信息。请重试或者重启您的 openFyde 设备。</translation>
+<translation id="8669003589684594740">抱歉，无法验证您的账户信息。请重试或者重启您的 FydeOS 设备。</translation>
+<translation id="4734524655987339730">无法与此服务器建立连接。请检查您的网络连接，然后重试。如果问题仍然存在，请重新启动您的 openFyde 设备。</translation>
+<translation id="4832938946428066412">无法与此服务器建立连接。请检查您的网络连接，然后重试。如果问题仍然存在，请重新启动您的 FydeOS 设备。</translation>
+<translation id="3566581664209734710">正在在您的 <ph name="DEVICE_TYPE" />上安装 Android 支持。这可能需要几分钟的时间。</translation>
+<translation id="4987483414631075184">安装 Android 程序</translation>
+<translation id="8107873321807481347">哎呀，网络连接出了些问题，请重试。</translation>
+<translation id="3962576874773352095">帮助我们改进 openFyde 的功能和性能</translation>
+<translation id="711345011059964924">帮助我们改进 FydeOS 的功能和性能</translation>
+<translation id="6167486191244968985">您可在任何第三方 Android 商店中找到更多适用于您设备的应用。</translation>
+<translation id="5776478421373294357">openFyde Android 支持</translation>
+<translation id="3431056334905108929">FydeOS Android 支持</translation>
+<translation id="1380396053131797323">设置 openFyde Android 支持……</translation>
+<translation id="8834276138078863058">设置 FydeOS Android 支持……</translation>
+<translation id="5683382198559005058">打开 openFyde Android</translation>
+<translation id="7265071580063533187">打开 FydeOS Android</translation>
+<translation id="1509549738774901081">openFyde Android 账户</translation>
+<translation id="4677978490503355139">FydeOS Android 账户</translation>
+<translation id="6417872946767943490">为了使您的账户能够访问 openFyde Android 相关服务，请与您的身份信息提供商验证身份。</translation>
+<translation id="8782251018921392710">为了使您的账户能够访问 FydeOS Android 相关服务，请与您的身份信息提供商验证身份。</translation>
+<translation id="5770229711869195495">贵单位还没有为您的帐号启用 Android 支持。如需更多信息，请与管理员联系。</translation>
+<translation id="8794673342577883547">要使用 Android 应用，您必须先恢复自己的应用。某些数据可能已丢失。</translation>
+<translation id="7074037455006065957"><ph name="SERVICE_NAME"><ex>Google Drive</ex>$1</ph> 期望检查您是否正在使用有资格的 openFyde 设备。</translation>
+<translation id="7313143234522457176"><ph name="SERVICE_NAME"><ex>Google Drive</ex>$1</ph> 期望检查您是否正在使用有资格的 FydeOS 设备。</translation>
+<translation id="2772886892440364822">openFyde 服务协议</translation>
+<translation id="1708700529497375918">FydeOS 服务协议</translation>
+<translation id="3513413205855555749">openFyde 服务协议内容</translation>
+<translation id="1277826278312317463">FydeOS 服务协议内容</translation>
+<translation id="1367565480977550833">您正在启用 openFyde 的调试功能，此功能将设置 sshd 守护程序并允许从 U 盘启动设备。</translation>
+<translation id="4572645960670737648">您正在启用 FydeOS 的调试功能，此功能将设置 sshd 守护程序并允许从 U 盘启动设备。</translation>
+<translation id="4402807507575704559">很遗憾，您的计算机配置了格式错误的硬件 ID。这导致 openFyde 无法使用最新的安全修正程序进行更新，以致您的计算机<ph name="BEGIN_BOLD" />很容易遭到恶意攻击<ph name="END_BOLD" />。</translation>
+<translation id="2254630710642766991">很遗憾，您的计算机配置了格式错误的硬件 ID。这导致 FydeOS 无法使用最新的安全修正程序进行更新，以致您的计算机<ph name="BEGIN_BOLD" />很容易遭到恶意攻击<ph name="END_BOLD" />。</translation>
+<translation id="3853717759226146308">通过「文件」应用，您可以快速存取自己在外部存储设备和 openFyde 设备上的文件。</translation>
+<translation id="3479561374223953616">通过「文件」应用，您可以快速存取自己在外部存储设备和 FydeOS 设备上的文件。</translation>
+<translation id="7957976220578534539"><ph name="BEGIN_PARAGRAPH1" />为获得最佳体验，请将 <ph name="DEVICE_OS" /> 安装到您的内部磁盘。您也可等到需要时再从登录屏幕安装它。<ph name="END_PARAGRAPH1" />
+  <ph name="BEGIN_PARAGRAPH2" />如果还暂时不想安装，你可从 USB 启动来试用一下 <ph name="DEVICE_OS" />。请注意：从 USB 启动的 <ph name="DEVICE_OS" /> 将会带有磁盘容量限制及受到不同程度的性能损耗；而且，包括 OTA 升级在内的一些系统功能将会不可用。<ph name="END_PARAGRAPH2" /></translation>
+<!-- <translation id="8289509909262565712">欢迎使用 <ph name="DEVICE_OS" /></translation> -->
+<translation id="5102182424405773330">欢迎使用 openFyde 版 Steam</translation>
+<translation id="2046221603131886862">欢迎使用 FydeOS 版 Steam</translation>
+<translation id="5734969505755598365">正在设置 openFyde 版 Steam</translation>
+<translation id="2180789554128870974">正在设置 FydeOS 版 Steam</translation>
+<translation id="7878254891479733609">在 openFyde 上畅玩游戏</translation>
+<translation id="4001114302826699703">在 FydeOS 上畅玩游戏</translation>
+<translation id="1983926257764057871">设置 openFyde 版 Steam 时出现问题</translation>
+<translation id="3287145971780381322">设置 FydeOS 版 Steam 时出现问题</translation>
+<translation id="1340981101260072214">若要使用 openFyde 版 Steam，请重启您的设备</translation>
+<translation id="7775922590354166890">若要使用 FydeOS 版 Steam，请重启您的设备</translation>
+<translation id="4635399078872099069">无法启动 openFyde 版 Steam。请重试</translation>
+<translation id="1076651593001419552">无法启动 FydeOS 版 Steam。请重试</translation>
+<translation id="6678369062218866475">需要更新 FydeOS</translation>
+<translation id="8808631745882917854">若要完成 Linux 安装，请更新 FydeOS 并重试。</translation>
+<!-- generated_resources.override.grdp -->
+<translation id="358808394160762813">openFyde 系统映像写入工具</translation>
+<translation id="827071875133563393">FydeOS 系统映像写入工具</translation>
+<translation id="5088611196541725543">openFyde 无法打开此网页。</translation>
+<translation id="2228484718459357495">FydeOS 无法打开此网页。</translation>
+<translation id="8652132398843548089">具有「kiosk_only」这项清单属性的应用必须在 openFyde 自助服务终端模式下进行安装</translation>
+<translation id="8235834895878543229">具有「kiosk_only」这项清单属性的应用必须在 FydeOS 自助服务终端模式下进行安装</translation>
+<translation id="1104097200250520674">应用商店</translation>
+<translation id="2261245167193480027">继续使用 Chromium</translation>
+<translation id="3095811995836568724">Chromium 历史记录</translation>
+<!-- extensions_strings.override.grdp -->
+<translation id="3635723840107310657">在 <ph name="BEGIN_LINK" />FydeOS 应用商店<ph name="END_LINK" />中查找扩展程序和主题背景</translation>
+<!-- extensions_strings.grdp -->
+<translation id="4220157073401904732">FydeOS 应用商店</translation>
+<!-- nearby_share_strings.override.grdp -->
+<translation id="5893589697005440881">与附近的人分享文件</translation>
+<translation id="2498801433783134459">与附近的 openFyde 和 Android 设备分享文件</translation>
+<translation id="5769693474117280747">与附近的 FydeOS 和 Android 设备分享文件</translation>
+<translation id="7353100817790033277">请确保这两部设备均已解锁、相距很近且均已开启蓝牙。如果您的分享对象是一部不在您通讯录中的 openFyde 设备，请确保已为它开启「附近分享」的高可见度模式（先打开状态区，然后开启「附近分享」的高可见度模式）。</translation>
+<translation id="2824934793481445465">请确保这两部设备均已解锁、相距很近且均已开启蓝牙。如果您的分享对象是一部不在您通讯录中的 FydeOS 设备，请确保已为它开启「附近分享」的高可见度模式（先打开状态区，然后开启「附近分享」的高可见度模式）。</translation>
+<translation id="7171038922339110877">您可指定设备的公开范围，从而控制哪些人员能在您的屏幕处于解锁状态时与您分享内容。</translation>
+<translation id="8911625876778733358">若要使用「附近分享」功能，请确保两部设备均已解锁、相距很近且均已开启蓝牙。如果您的分享对象是一部不在您通讯录中的 openFyde 设备，请确保已为它开启「附近分享」的高可见度模式（先选择时间，打开状态区，然后开启「附近分享」的高可见度模式）。</translation>
+<translation id="6925864293458303066">若要使用「附近分享」功能，请确保两部设备均已解锁、相距很近且均已开启蓝牙。如果您的分享对象是一部不在您通讯录中的 FydeOS 设备，请确保已为它开启「附近分享」的高可见度模式（先选择时间，打开状态区，然后开启「附近分享」的高可见度模式）。</translation>
+
+</translationbundle>

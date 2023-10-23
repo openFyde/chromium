@@ -23,6 +23,8 @@ import '../common_styles/oobe_dialog_host_styles.css.js';
 import '../oobe_vars/oobe_custom_vars.css.js';
 import '../oobe_vars/oobe_shared_vars.css.js';
 
+import '../oobe_cr_lottie.js';
+
 /** @polymer */
 export class OobeAdaptiveDialog extends PolymerElement {
   static get template() {
@@ -85,6 +87,20 @@ export class OobeAdaptiveDialog extends PolymerElement {
        * @private
        */
       showReadMoreButton_: {
+        type: Boolean,
+        value: false,
+      },
+      fydeosLayout: {
+        type: Boolean,
+        value: false,
+      },
+
+      animationUrl: {
+        type: String,
+        value: '',
+      },
+
+      loopAnimation: {
         type: Boolean,
         value: false,
       },
@@ -197,6 +213,57 @@ export class OobeAdaptiveDialog extends PolymerElement {
   onBeforeShow() {
     this.shadowRoot.querySelector('#lazy').get();
     this.addResizeObserver_();
+
+    const pageAnimations = this.shadowRoot.querySelector('#pageAnimations');
+    if(pageAnimations){
+      pageAnimations.playing = true;
+    }
+
+    this.iconFydeTweak_();
+  }
+
+  iconFydeTweak_() {
+    // replace hardcode google-blue-600 #1A73E8 with fydeos-pink-600
+    // these icons are defined in ../oobe_icons.html and used as `oobe-32:xxx`
+    const body = document.querySelector('body');
+    if (!body || !body.classList.contains('fydeos')) return;
+    [
+      'slot[name="icon"]',
+      'slot[name="subtitle"]',
+      'slot[name="content"]',
+    ].forEach((selector) => {
+      this.fydeModifyIconColorOfSlot(selector);
+    })
+  }
+ 
+  fydeModifyIconColorOfSlot(slotSelector) {
+    const targetTags = ['iron-icon', 'hd-iron-icon'];
+    const slot = this.shadowRoot.querySelector(slotSelector);
+    if (slot && (typeof slot.assignedNodes === 'function')) {
+      slot.assignedNodes().forEach((node) => {
+        if (node.tagName && targetTags.includes(node.tagName.toLowerCase())) {
+          this.fydeModifyIconColor(node);
+          return;
+        }
+        const icons = node.querySelectorAll(targetTags.join(','));
+        icons.forEach((icon) => {
+          this.fydeModifyIconColor(icon);
+        });
+      });
+    }
+  }
+ 
+  fydeModifyIconColor(icon) {
+    if (!icon.shadowRoot) {
+      return;
+    }
+    const selectors = [
+      `svg *[fill="#1A73E8"]`,
+      `svg *[fill="#1a73e8"]`,
+    ].join(',');
+    icon.shadowRoot.querySelectorAll(selectors).forEach((ele) => {
+      ele.setAttribute('fill', 'var(--fydeos-pink-600)');
+    });
   }
 
   /**

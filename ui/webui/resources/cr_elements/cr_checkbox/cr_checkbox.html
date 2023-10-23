@@ -11,6 +11,7 @@
         --cr-checkbox-border-size: 2px;
         --cr-checkbox-size: 16px;
         --cr-checkbox-ripple-size: 40px;
+        --cr-checkbox-border-radius: 2px;
 
         /* Derived sizes (offsets). */
         --cr-checkbox-ripple-offset: calc(var(--cr-checkbox-size)/2 -
@@ -71,7 +72,7 @@
         background: none;
         border: var(--cr-checkbox-border-size) solid
             var(--cr-checkbox-unchecked-box-color);
-        border-radius: 2px;
+        border-radius: var(--cr-checkbox-border-radius);
         box-sizing: border-box;
         cursor: pointer;
         display: block;
@@ -105,6 +106,10 @@
         top: 50%;
         transform: translate(-50%, -50%);
         width: 32px;
+      }
+      :host([fydeos-style]) #checkmark {
+        border-width: 0 3px 3px 0;
+        transform-origin: 100% 65%;
       }
 
       @media (forced-colors: active) {

@@ -40,6 +40,10 @@ cr-card-radio-button {
     --cr-radio-group-item-padding: 0;
 }
 
+:host-context(body.fydeos) cr-card-radio-button {
+    --cr-checked-color: var(--fydeos-pink-500);
+}
+
 cr-card-radio-button:not(:last-child) {
     margin-bottom: 16px;
 }

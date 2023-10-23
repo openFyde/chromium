@@ -93,6 +93,9 @@ bool IsBlocklistUpdateUrl(const GURL& url);
 // TODO(devlin): Update other methods to also take an url::Origin?
 bool IsSafeBrowsingUrl(const url::Origin& origin, base::StringPiece path);
 
+// ---***FYDEOS BEGIN***---
+bool IsFydeOSWebstoreUpdateUrl(const GURL& update_url);
+// ---***FYDEOS END***---
 }  // namespace extension_urls
 
 #endif  // EXTENSIONS_COMMON_EXTENSION_URLS_H_

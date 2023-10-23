@@ -904,7 +904,7 @@
 <translation id="176272781006230109">购物建议</translation>
 <translation id="1763046204212875858">创建应用快捷方式</translation>
 <translation id="1763808908432309942">在新标签页中打开</translation>
-<translation id="1764226536771329714">Beta 版</translation>
+<!-- <translation id="1764226536771329714">Beta 版</translation> -->
 <translation id="176587472219019965">打开新的窗口(&amp;N)</translation>
 <translation id="1766575458646819543">已退出全屏模式</translation>
 <translation id="1766957085594317166">将密码安全地保存到您的 Google 帐号中，彻底为您免除再次输入的麻烦</translation>
@@ -7357,7 +7357,7 @@
 <translation id="7454548535253569100">门户网站：<ph name="SUBFRAME_SITE" /></translation>
 <translation id="7455730275746867420">管理额外容器</translation>
 <translation id="7455988709578031708">根据您的浏览记录推测得出。此设置已开启。</translation>
-<translation id="7456142309650173560">开发者版本</translation>
+<!-- <translation id="7456142309650173560">开发者版本</translation> -->
 <translation id="7456774706094330779">扩展型预加载</translation>
 <translation id="7456847797759667638">打开位置...</translation>
 <translation id="7457831169406914076">{COUNT,plural, =1{1 个链接}other{# 个链接}}</translation>
@@ -9318,7 +9318,7 @@
 <translation id="913383674572270194">{NUM_BOOKMARKS,plural, =1{1 个书签}other{# 个书签}}</translation>
 <translation id="9133985615769429248">如果您与他人共用此设备，那么您每次使用已保存的密码时，都可以使用屏幕锁定功能来验证您的身份</translation>
 <translation id="9134066738478820307">网站可以使用标识符来播放受保护内容</translation>
-<translation id="913411432238655354">在 Chrome 启动时恢复应用</translation>
+<!-- <translation id="913411432238655354">在 Chrome 启动时恢复应用</translation> -->
 <translation id="9137013805542155359">显示原始网页</translation>
 <translation id="9137157311132182254">首选搜索引擎</translation>
 <translation id="9137916601698928395">以 <ph name="USER" /> 身份打开链接</translation>

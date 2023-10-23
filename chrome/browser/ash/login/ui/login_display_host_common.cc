@@ -55,6 +55,7 @@
 #include "chrome/browser/ui/webui/ash/login/signin_fatal_error_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/terms_of_service_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/user_creation_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/fyde_local_signin_screen_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "chromeos/ash/components/dbus/userdataauth/userdataauth_client.h"
@@ -66,6 +67,8 @@
 #include "ui/base/ime/ash/input_method_manager.h"
 #include "ui/base/ime/ash/input_method_util.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace ash {
 
@@ -470,6 +473,10 @@ bool LoginDisplayHostCommon::HandleAccelerator(LoginAcceleratorAction action) {
   return false;
 }
 
+void LoginDisplayHostCommon::HandlePlayStartupSound() {
+  // Do nothing by default
+}
+
 void LoginDisplayHostCommon::SetScreenAfterManagedTos(OobeScreenId screen_id) {
   // If user stopped onboarding flow on TermsOfServiceScreen make sure that
   // next screen will be FamilyLinkNoticeView::kScreenId.
@@ -667,6 +674,11 @@ void LoginDisplayHostCommon::OnStartSignInScreenCommon() {
 
 void LoginDisplayHostCommon::ShowGaiaDialogCommon(
     const AccountId& prefilled_account) {
+  // ---***FYDEOS BEGIN***---
+  if (prefilled_account.is_valid()) {
+    fydeos::switches::ToggleFydeAccountFlagByAccountId(prefilled_account);
+  }
+  // ---***FYDEOS END***---
   if (prefilled_account.is_valid()) {
     LoadWallpaper(prefilled_account);
     if (GetExistingUserController()->IsSigninInProgress()) {
@@ -678,7 +690,7 @@ void LoginDisplayHostCommon::ShowGaiaDialogCommon(
 
   SetGaiaInputMethods(prefilled_account);
 
-  if (!prefilled_account.is_valid()) {
+  if (!prefilled_account.is_valid() && !fydeos::switches::IsFydeAccountEnabled()) {
     StartWizard(UserCreationView::kScreenId);
   } else {
     GaiaScreen* gaia_screen = GetWizardController()->GetScreen<GaiaScreen>();
@@ -715,6 +727,24 @@ LoginDisplayHostCommon::GetQuickStartBootstrapController() {
 void LoginDisplayHostCommon::NotifyWizardCreated() {
   if (on_wizard_controller_created_for_tests_)
     on_wizard_controller_created_for_tests_.Run();
+}
+
+void LoginDisplayHostCommon::ShowLocalDialogCommon() {
+  BaseScreen* current_screen = GetWizardController()->current_screen();
+  if (!current_screen) {
+    return;
+  }
+  // In user_creation screen, if `child` type is chosen, user_creation.js called updateOobeDialogState
+  // and set the state to gaia_screen, there's no proper way to hide `use local account` in this situation
+  // so here's the solution:
+  // if it's not gaia screen currently, then just go to local signin screen
+  // otherwise, let gaia_screen handle the request
+  if (current_screen->screen_id() != GaiaView::kScreenId) {
+    StartWizard(FydeLocalSigninView::kScreenId);
+    return;
+  }
+  GaiaScreen* gaia_screen = GetWizardController()->GetScreen<GaiaScreen>();
+  gaia_screen->RequestUseLocalAccount();
 }
 
 void LoginDisplayHostCommon::Cleanup() {

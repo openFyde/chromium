@@ -109,6 +109,9 @@ DlpPolicyEvent_UserType GetCurrentUserType() {
       return DlpPolicyEvent_UserType_KIOSK;
     case user_manager::USER_TYPE_GUEST:
     case user_manager::USER_TYPE_CHILD:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
     case user_manager::USER_TYPE_ACTIVE_DIRECTORY:
       return DlpPolicyEvent_UserType_UNDEFINED_USER_TYPE;
     case user_manager::NUM_USER_TYPES:

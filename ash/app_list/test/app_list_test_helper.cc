@@ -337,7 +337,7 @@ SearchResultPageAnchoredDialog* AppListTestHelper::GetBubbleSearchPageDialog() {
       ->bubble_view_for_test()
       ->search_page_dialog_controller_->dialog();
 }
-AppListBubbleAssistantPage* AppListTestHelper::GetBubbleAssistantPage() {
+FydeAssistantPage* AppListTestHelper::GetBubbleAssistantPage() {
   return app_list_controller_->bubble_presenter_for_test()
       ->bubble_view_for_test()
       ->assistant_page_;

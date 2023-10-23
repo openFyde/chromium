@@ -35,6 +35,9 @@
 #include "crypto/nss_util.h"
 #include "crypto/nss_util_internal.h"
 #include "net/cert/nss_cert_database_chromeos.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "chrome/browser/browser_process.h"
 
 using content::BrowserThread;
 
@@ -125,7 +128,8 @@ void StartTPMSlotInitializationOnIOThread(const AccountId& account_id,
       base::BindOnce(&GetTPMInfoForUserOnUIThread, account_id, username_hash));
 }
 
-void StartNSSInitOnIOThread(const AccountId& account_id,
+void StartNSSInitOnIOThread(bool tpm_fallback,
+                            const AccountId& account_id,
                             const std::string& username_hash,
                             const base::FilePath& path) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
@@ -142,6 +146,10 @@ void StartNSSInitOnIOThread(const AccountId& account_id,
     return;
 
   crypto::WillInitializeTPMForChromeOSUser(username_hash);
+  if (tpm_fallback) {
+    crypto::InitializePrivateSoftwareSlotForChromeOSUser(username_hash);
+    return;
+  }
   crypto::IsTPMTokenEnabled(base::BindOnce(
       &StartTPMSlotInitializationOnIOThread, account_id, username_hash));
 }
@@ -287,8 +295,10 @@ NssService::NssService(content::BrowserContext* context) {
   if (user && !user->username_hash().empty()) {
     username_hash = user->username_hash();
     DCHECK(!username_hash.empty());
+    PrefService* prefs = g_browser_process->local_state();
+    bool tpm_fallback = prefs->GetBoolean(fydeos::prefs::kCurrentForceTpmFallback);
     content::GetIOThreadTaskRunner({})->PostTask(
-        FROM_HERE, base::BindOnce(&StartNSSInitOnIOThread, user->GetAccountId(),
+        FROM_HERE, base::BindOnce(&StartNSSInitOnIOThread, tpm_fallback, user->GetAccountId(),
                                   username_hash, profile->GetPath()));
 
     enable_system_slot = user->IsAffiliated();

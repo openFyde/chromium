@@ -376,6 +376,8 @@ function getEntryType(entry: Entry|FilesAppEntry): EntryType {
         case VolumeManagerCommon.RootType.DRIVE_SHARED_WITH_ME:
           // TODO(lucmult): This isn't really Recent but it's the closest.
           return EntryType.RECENT;
+        case VolumeManagerCommon.RootType.FYDEDROP:
+          return EntryType.FYDEDROP;
       }
       console.warn(`Invalid fakeEntry.rootType='${entry.rootType} rootType`);
       return EntryType.PLACEHOLDER;

@@ -33,6 +33,9 @@ COMPONENT_EXPORT(UI_BASE) std::string GetBitmapDataUrl(const SkBitmap& bitmap);
 COMPONENT_EXPORT(UI_BASE)
 std::string GetPngDataUrl(const unsigned char* data, size_t size);
 
+COMPONENT_EXPORT(UI_BASE)
+std::string GetWebPDataUrl(const unsigned char* data, size_t size);
+
 // Extracts a disposition from click event arguments. |args| should contain
 // an integer button and booleans alt key, ctrl key, meta key, and shift key
 // (in that order), starting at |start_index|.

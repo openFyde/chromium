@@ -11,6 +11,9 @@ found in the LICENSE file.
     border-radius: var(--oobe-button-radius);
     margin: 0 4px;
   }
+  :host-context([fydeos-background-color]) cr-button {
+    --border-color: var(--fydeos-background-color);
+  }
   ::slotted(*) {
     text-transform: none;
   }

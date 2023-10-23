@@ -13,6 +13,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::bluetooth {
 
@@ -71,7 +72,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       "bluetoothPairingLearnMoreLabel",
       l10n_util::GetStringFUTF16(
           IDS_BLUETOOTH_PAIRING_LEARN_MORE,
-          base::ASCIIToUTF16(chrome::kBluetoothPairingLearnMoreUrl)));
+          base::ASCIIToUTF16(fydeos::constants::kBluetoothPairingLearnMoreUrl)));
 }
 
 void AddLoadTimeData(content::WebUIDataSource* html_source) {

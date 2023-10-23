@@ -64,11 +64,13 @@ class FeedbackCommon : public base::RefCountedThreadSafe<FeedbackCommon> {
   const std::string& category_tag() const { return category_tag_; }
   const std::string& page_url() const { return page_url_; }
   const std::string& description() const { return description_; }
+  const std::string& gaia_id() const { return gaia_id_; }
   const std::string& user_email() const { return user_email_; }
   const std::string& image() const { return image_; }
   const SystemLogsMap* sys_info() const { return &logs_; }
   int32_t product_id() const { return product_id_; }
   std::string user_agent() const { return user_agent_; }
+  std::string unique_id() const { return unique_id_; }
   std::string locale() const { return locale_; }
   std::string& autofill_metadata() { return autofill_metadata_; }
 
@@ -83,6 +85,9 @@ class FeedbackCommon : public base::RefCountedThreadSafe<FeedbackCommon> {
   void set_description(const std::string& description) {
     description_ = description;
   }
+  void set_gaia_id(const std::string& gaia_id) {
+    gaia_id_ = gaia_id;
+  }
   void set_user_email(const std::string& user_email) {
     user_email_ = user_email;
   }
@@ -91,6 +96,7 @@ class FeedbackCommon : public base::RefCountedThreadSafe<FeedbackCommon> {
   void set_user_agent(const std::string& user_agent) {
     user_agent_ = user_agent;
   }
+  void set_unique_id(const std::string& unique_id) { unique_id_ = unique_id; }
   void set_locale(const std::string& locale) { locale_ = locale; }
   void set_autofill_metadata(const std::string& autofill_metadata) {
     autofill_metadata_ = autofill_metadata;
@@ -121,9 +127,11 @@ class FeedbackCommon : public base::RefCountedThreadSafe<FeedbackCommon> {
   std::string category_tag_;
   std::string page_url_;
   std::string description_;
+  std::string gaia_id_;
   std::string user_email_;
   int32_t product_id_;
   std::string user_agent_;
+  std::string unique_id_;
   std::string locale_;
   std::string autofill_metadata_;
 

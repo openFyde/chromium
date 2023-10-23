@@ -14,6 +14,7 @@ import 'chrome://resources/js/search_highlight_utils.js';
 import 'chrome://resources/polymer/v3_0/iron-icon/iron-icon.js';
 import '../os_about_page/os_about_page.js';
 import '../os_settings_page/os_settings_page.js';
+import '../os_fyde_page/os_fyde_page.js';
 import '../../settings_shared.css.js';
 import '../../settings_vars.css.js';
 
@@ -31,6 +32,7 @@ import {getTemplate} from './os_settings_main.html.js';
 interface MainPageVisibility {
   about: boolean;
   settings: boolean;
+  fydeos: boolean;
 }
 
 export interface OsSettingsMainElement {
@@ -77,7 +79,7 @@ export class OsSettingsMainElement extends OsSettingsMainElementBase {
       showPages_: {
         type: Object,
         value() {
-          return {about: false, settings: false};
+          return {about: false, settings: false, fydeos: false};
         },
       },
 
@@ -176,12 +178,13 @@ export class OsSettingsMainElement extends OsSettingsMainElementBase {
    */
   override currentRouteChanged(newRoute: Route) {
     const inAbout = routes.ABOUT.contains(Router.getInstance().currentRoute);
-    this.showPages_ = {about: inAbout, settings: !inAbout};
+    const inFydeOs = routes.FYDEOS.contains(Router.getInstance().currentRoute);
+    this.showPages_ = {about: inAbout, settings: !inAbout && !inFydeOs, fydeos: inFydeOs};
 
     if (!newRoute.isSubpage()) {
       document.title = inAbout ? loadTimeData.getStringF(
                                      'settingsAltPageTitle',
-                                     loadTimeData.getString('aboutPageTitle')) :
+                                     loadTimeData.getString('aboutOsPageTitle')) :
                                  loadTimeData.getString('settings');
     }
   }

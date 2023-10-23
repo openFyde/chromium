@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/os_settings_strings.grdp, included from generated_resources.grd -->
+<grit-part>
+<if expr="chromeos_ash">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for enhanced spell check toggle, the type of spell check that sends the text the user types to Google spelling service. It is important that it is communicated that the text the user types will be sent to Google.">
+    Enhanced spell check in Chromium browser (text is sent to server for spelling suggestions)
+  </message>
+  <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
+    Android support
+  </message>
+  <message name="IDS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
+    Android support
+  </message>
+  <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Google Play Store.">
+    Remove Android support
+  </message>
+  <message name="IDS_SETTINGS_ANDROID_APPS_MANAGE_APP_LINKS" desc="Label for accessing app preferrences on ARC side.">
+    Manage Android app links
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SUBMENU_LABEL" desc="Label of Account Manager submenu in Settings page.">
+    FydeOS Accounts
+  </message>
+  <message name="IDS_SETTINGS_FACTORY_RESET_DESCRIPTION" desc="Description of the factory reset option on the Chrome settings page">
+    Remove all user accounts and reset your <ph name="IDS_SHORT_PRODUCT_OS_NAME">$1<ex>FydeOS</ex></ph> device to be just like new.
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
+      Apps you've downloaded and installed will be deleted from this openFyde device.
+      <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
+      Content you've purchased inside those apps may also be deleted.
+      <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
+      This doesn't affect apps or content on other devices.
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_TRY_AGAIN" desc="Status label: Update check error (ChromiumOS/ChromeOS)">
+      Couldn't update your openFyde device. Please try again later.
+    </message>
+    <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_DIALOG_DESCRIPTION" desc="Description for the dialog to change device language.">
+      You need to restart your openFyde device to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
+      Apps from openFyde Android subsystem may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
+      Apps you've downloaded and installed will be deleted from this FydeOS device.
+      <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
+      Content you've purchased inside those apps may also be deleted.
+      <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
+      This doesn't affect apps or content on other devices.
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_TRY_AGAIN" desc="Status label: Update check error (ChromiumOS/ChromeOS)">
+      Couldn't update your FydeOS device. Please try again later.
+    </message>
+    <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_DIALOG_DESCRIPTION" desc="Description for the dialog to change device language.">
+      You need to restart your FydeOS device to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
+      Apps from FydeOS Android subsystem may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive.
+    </message>
+  </if>
+
+  <if expr="not reven">
+    <message name="IDS_OS_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the OS sync feature.">
+      Your apps and settings will sync across all devices where you are signed in with your FydeOS account. For browser sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Chromium settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+
+</if>
+</grit-part>
+

@@ -13,6 +13,7 @@
 #include "build/build_config.h"
 #include "build/chromeos_buildflags.h"
 #include "google_apis/buildflags.h"
+#include "fydeos/build/config/buildflags.h"
 
 // These functions enable you to retrieve keys to use for Google APIs
 // such as Translate and Safe Browsing.
@@ -67,12 +68,16 @@ COMPONENT_EXPORT(GOOGLE_APIS) extern const char kAPIKeysDevelopersHowToURL[];
 // Returns true if no dummy API key is set.
 COMPONENT_EXPORT(GOOGLE_APIS) bool HasAPIKeyConfigured();
 
+COMPONENT_EXPORT(GOOGLE_APIS) bool HasFydeOSAPIKeyConfigured();
+
 // Retrieves the API key, a.k.a. developer key, or a dummy string
 // if not set.
 //
 // Note that the key should be escaped for the context you use it in,
 // e.g. URL-escaped if you use it in a URL.
 COMPONENT_EXPORT(GOOGLE_APIS) std::string GetAPIKey();
+
+COMPONENT_EXPORT(GOOGLE_APIS) std::string GetFydeOSAPIKey();
 
 // Non-stable channels may have a different Google API key.
 COMPONENT_EXPORT(GOOGLE_APIS) std::string GetNonStableAPIKey();
@@ -110,12 +115,19 @@ enum OAuth2Client {
   CLIENT_REMOTING,
   CLIENT_REMOTING_HOST,
 
+#if BUILDFLAG(IS_OPENFYDE)
+  CLIENT_FYDEOS_MAIN,
+#endif
+
   CLIENT_NUM_ITEMS  // Must be last item.
 };
 
 // Returns true if no dummy OAuth2 client ID and secret are set.
 COMPONENT_EXPORT(GOOGLE_APIS) bool HasOAuthClientConfigured();
 
+#if BUILDFLAG(IS_OPENFYDE)
+COMPONENT_EXPORT(GOOGLE_APIS) bool HasFydeOAuthClientConfigured();
+#endif
 // Retrieves the OAuth2 client ID for the specified client, or the
 // empty string if not set.
 //

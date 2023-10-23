@@ -55,6 +55,13 @@
         }
       }
 
+      :host-context(body.fydeos) {
+        --cr-toggle-checked-bar-color: var(--fydeos-pink-600);
+        --cr-toggle-checked-button-color: var(--fydeos-pink-600);
+        --cr-toggle-checked-ripple-color:
+            rgba(var(--fydeos-pink-600-rgb), .2);
+      }
+
       @media (prefers-color-scheme: dark) {
         :host {
           --cr-toggle-checked-bar-color: var(--google-blue-300);
@@ -65,6 +72,12 @@
           --cr-toggle-unchecked-button-color: var(--google-grey-300);
           --cr-toggle-unchecked-ripple-color:
               rgba(var(--google-grey-300-rgb), .4);
+        }
+        :host-context(body.fydeos) {
+          --cr-toggle-checked-bar-color: var(--fydeos-pink-300);
+          --cr-toggle-checked-button-color: var(--fydeos-pink-300);
+          --cr-toggle-checked-ripple-color:
+              rgba(var(--fydeos-pink-300-rgb), .4);
         }
       }
       /* Keep the prefers-color-scheme and [dark] rules the same. */
@@ -77,6 +90,13 @@
         --cr-toggle-unchecked-button-color: var(--google-grey-300);
         --cr-toggle-unchecked-ripple-color:
             rgba(var(--google-grey-300-rgb), .4);
+      }
+
+      :host-context(body.fydeos):host([dark]) {
+        --cr-toggle-checked-bar-color: var(--fydeos-pink-300);
+        --cr-toggle-checked-button-color: var(--fydeos-pink-300);
+        --cr-toggle-checked-ripple-color:
+            rgba(var(--fydeos-pink-300-rgb), .4);
       }
 
       :host([disabled]) {

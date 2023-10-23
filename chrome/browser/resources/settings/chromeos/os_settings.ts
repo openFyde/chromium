@@ -84,6 +84,15 @@ import './os_bluetooth_page/os_paired_bluetooth_list_item.js';
 import './os_bluetooth_page/os_saved_devices_list.js';
 import './os_bluetooth_page/os_saved_devices_list_item.js';
 import './os_bluetooth_page/settings_fast_pair_constants.js';
+import './os_fyde_page/components/backup_password_prompt_dialog.js';
+import './os_fyde_page/components/backup_intro_dialog.js';
+import './os_fyde_page/fydeos_account.js';
+import './os_fyde_page/fydeos_drivers.js';
+import './os_fyde_page/fydeos_remoting.js';
+import './os_fyde_page/fydeos_tweak_ui.js';
+import './os_fyde_page/fydeos_more_info.js';
+import './os_fyde_page/fydeos_experiment.js';
+import './os_fyde_page/os_fyde_page.js';
 
 import {startColorChangeUpdater} from 'chrome://resources/cr_components/color_change_listener/colors_css_updater.js';
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
@@ -193,6 +202,8 @@ export {PersonalizationHubBrowserProxy, PersonalizationHubBrowserProxyImpl} from
 export {Route, Router} from './router.js';
 export {getPersonalizationSearchHandler, setPersonalizationSearchHandlerForTesting} from './search/personalization_search_handler.js';
 export {getSettingsSearchHandler, setSettingsSearchHandlerForTesting} from './search/settings_search_handler.js';
+export {ShellClient} from './os_fyde_page/shell_client.js';
+export {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './os_about_page/popup_license_window.js';
 
 // TODO(b/257329722) After the Jelly experiment is launched, add the CSS link
 // element directly to the HTML.

@@ -239,6 +239,10 @@ export class BaseDialog {
     this.show_(title, opt_onOk, opt_onCancel, opt_onShow);
   }
 
+  findLinkElementInText() {
+    return this.text.querySelector('a');
+  }
+
   /** @private */
   findFocusableElements_(doc) {
     let elements =

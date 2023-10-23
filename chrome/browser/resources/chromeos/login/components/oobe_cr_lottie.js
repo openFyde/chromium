@@ -52,6 +52,14 @@ export class OobeCrLottie extends OobeCrLottieBase {
         type: String,
         value: '',
       },
+      singleLoop: {
+        type: Boolean,
+        value: false,
+      },
+      autoplay: {
+        type: Boolean,
+        value: true,
+      },
     };
   }
 

@@ -197,8 +197,15 @@ html_to_wrapper("html_wrapper_files") {
   out_folder = preprocessed_folder
 }
 
+preprocess_if_expr("preprocess_ts") {
+  in_folder = "."
+  out_folder = "$preprocessed_folder"
+  in_files = [ "emoji_group.ts" ]
+}
+
 copy("copy_checked_in_ts_js_files") {
   sources = web_component_files + non_component_ts_files
+  sources -= [ "emoji_group.ts" ]
   outputs = [ "$preprocessed_folder/{{source_target_relative}}" ]
 }
 
@@ -217,6 +224,7 @@ ts_library("build_ts") {
     "//ui/webui/resources/mojo:build_ts",
   ]
   extra_deps = [
+    ":preprocess_ts",
     ":copy_checked_in_ts_js_files",
     ":copy_fuse",
     ":copy_fuse_dts",

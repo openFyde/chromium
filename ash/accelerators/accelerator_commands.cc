@@ -82,6 +82,7 @@
 #include "chromeos/ui/wm/desks/chromeos_desks_histogram_enums.h"
 #include "chromeos/ui/wm/window_util.h"
 #include "components/prefs/pref_service.h"
+#include "fydeos/switches/misc/misc_switches.h"
 #include "ui/aura/client/aura_constants.h"
 #include "ui/base/emoji/emoji_panel_helper.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -981,6 +982,10 @@ void RotatePaneFocus(FocusCycler::Direction direction) {
   Shell::Get()->focus_cycler()->RotateFocus(direction);
 }
 
+void RotateScreenWithoutConfirmation() {
+  RotateScreenImpl();
+}
+
 void RotateScreen() {
   if (Shell::Get()->display_manager()->IsInUnifiedMode())
     return;
@@ -1119,6 +1124,12 @@ void ToggleAssignToAllDesk() {
 }
 
 void ToggleAssistant() {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    AssistantUiController::Get()->ToggleUi(
+        /*entry_point=*/assistant::AssistantEntryPoint::kHotkey,
+        /*exit_point=*/assistant::AssistantExitPoint::kHotkey);
+    return;
+  }
   using assistant::AssistantAllowedState;
   switch (AssistantState::Get()->allowed_state().value_or(
       AssistantAllowedState::ALLOWED)) {

@@ -6,7 +6,7 @@
 <os-settings-animated-pages id="pages" section="multidevice"
     focus-config="[[focusConfig_]]">
   <div route-path="default">
-    <div id="multidevice-item"
+    <div id="multidevice-item" hidden
         class="settings-box first two-line no-padding">
       <div class="link-wrapper" id="suiteLinkWrapper"
           actionable$="[[doesClickOpenSubpage_(pageContentData)]]"
@@ -102,10 +102,7 @@
                       prefs.nearby_sharing.onboarding_complete.value,
                       pageContentData)]]" restamp>
               <div class="secondary" id="nearbyShareSecondary">
-                <localized-link
-                    localized-string="$i18n{nearbyShareDescription}"
-                    link-url="$i18n{nearbyShareLearnMoreLink}">
-                </localized-link>
+                $i18n{nearbyShareDescription}
               </div>
             </template>
           </div>

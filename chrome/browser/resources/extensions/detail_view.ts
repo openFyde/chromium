@@ -38,6 +38,7 @@ import {ItemMixin} from './item_mixin.js';
 import {computeInspectableViewLabel, EnableControl, getEnableControl, getItemSource, getItemSourceString, isEnabled, sortViews, userCanChangeEnablement} from './item_util.js';
 import {navigation, Page} from './navigation_helper.js';
 import {ExtensionsToggleRowElement} from './toggle_row.js';
+import {isFydeOSItem} from './item_util.js';
 
 export interface ExtensionsDetailViewElement {
   $: {
@@ -299,6 +300,9 @@ export class ExtensionsDetailViewElement extends
   }
 
   private computeSourceString_(): string {
+    if (isFydeOSItem(this.data)) {
+      this.data.locationText = '';
+    }
     return this.data.locationText ||
         getItemSourceString(getItemSource(this.data));
   }

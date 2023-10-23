@@ -100,6 +100,8 @@ class GaiaView : public base::SupportsWeakPtr<GaiaView> {
                                        const std::string& services) = 0;
   // Reset authenticator.
   virtual void Reset() = 0;
+
+  virtual void RequestUseLocalAccount() = 0;
 };
 
 // A class that handles WebUI hooks in Gaia screen.
@@ -150,6 +152,8 @@ class GaiaScreenHandler
                                const std::string& password,
                                const std::string& services) override;
   void Reset() override;
+
+  void RequestUseLocalAccount() override;
 
   // SecurityTokenPinDialogHost:
   void ShowSecurityTokenPinDialog(
@@ -211,6 +215,7 @@ class GaiaScreenHandler
   void DeclareJSCallbacks() override;
   void InitAfterJavascriptAllowed() override;
 
+  void HandleFydeLocalSignin();
   // WebUI message handlers.
   void HandleWebviewLoadAborted(int error_code);
   void HandleCompleteAuthentication(
@@ -228,6 +233,11 @@ class GaiaScreenHandler
                            const std::string& password,
                            bool using_saml);
   void HandleLaunchSAMLPublicSession(const std::string& email);
+
+  // ---***FYDEOS BEGIN***---
+  void HandleUserSelectGoogleAccount();
+  void HandleResetAccountFlag();
+  // ---***FYDEOS END***---
 
   // Handles SAML/GAIA login flow metrics
   // is_third_party_idp == false means GAIA-based authentication

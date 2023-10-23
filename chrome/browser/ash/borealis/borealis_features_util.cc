@@ -8,6 +8,7 @@
 #include "base/cpu.h"
 #include "base/logging.h"
 #include "base/strings/string_split.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "base/task/task_traits.h"
@@ -180,6 +181,12 @@ bool TokenHardwareChecker::CpuRegexMatches(const std::string& cpu_regex) const {
 
 bool TokenHardwareChecker::HasMemory(uint64_t mem_bytes) const {
   return token_hardware_.memory >= mem_bytes;
+}
+
+std::string TokenHardwareChecker::GetDebugString() const {
+  return base::StringPrintf("TokenHardwareChecker, board: %s, token_hash: %s",
+                            token_hardware_.board.c_str(),
+                            token_hardware_.token_hash.c_str());
 }
 
 }  // namespace borealis

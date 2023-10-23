@@ -149,12 +149,10 @@ export interface AboutPageBrowserProxy {
   /** Opens the release notes app. */
   launchReleaseNotes(): void;
 
-  // <if expr="_google_chrome">
   /**
    * Opens the feedback dialog.
    */
   openFeedbackDialog(): void;
-  // </if>
 
   /** Opens the diagnostics page. */
   openDiagnostics(): void;
@@ -195,6 +193,9 @@ export interface AboutPageBrowserProxy {
    * the version updater is busy, for example with downloading updates.
    */
   getChannelInfo(): Promise<ChannelInfo>;
+
+  getEnabledFydeOTA(): Promise<boolean>;
+  enableFydeOTA(enabled: boolean): void;
 
   canChangeChannel(): Promise<boolean>;
 
@@ -258,11 +259,9 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
     chrome.send('launchReleaseNotes');
   }
 
-  // <if expr="_google_chrome">
   openFeedbackDialog() {
     chrome.send('openFeedbackDialog');
   }
-  // </if>
 
   openDiagnostics() {
     chrome.send('openDiagnostics');
@@ -298,6 +297,14 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
 
   getChannelInfo(): Promise<ChannelInfo> {
     return sendWithPromise('getChannelInfo');
+  }
+
+  enableFydeOTA(enabled: boolean) {
+    chrome.send('enableFydeOTA', [enabled]);
+  }
+
+  getEnabledFydeOTA() {
+    return sendWithPromise('getEnabledFydeOTA');
   }
 
   canChangeChannel(): Promise<boolean> {

@@ -2060,6 +2060,10 @@ component("ash") {
     "system/unified/user_chooser_detailed_view_controller.h",
     "system/unified/user_chooser_view.cc",
     "system/unified/user_chooser_view.h",
+    "../fydeos/ash/system/unified/rotate_screen_feature_pod_controller.cc",
+    "../fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h",
+    "../fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.cc",
+    "../fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.h",
     "system/update/eol_notice_quick_settings_view.cc",
     "system/update/eol_notice_quick_settings_view.h",
     "system/update/update_notification_controller.cc",
@@ -2734,6 +2738,8 @@ component("ash") {
     "//third_party/perfetto:libperfetto",
     "//third_party/qcms",
     "//third_party/re2",
+    "//third_party/zlib/google:zip", # added by fydeos, used by diagnostics_log_controller.cc
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
     "//ui/accessibility",
     "//ui/accessibility:ax_enums_mojo",
     "//ui/accessibility/mojom",
@@ -2771,6 +2777,7 @@ component("ash") {
     "//ui/views/window/vector_icons",
     "//ui/wm/public",
     "//url",
+    "//fydeos/prefs",
   ]
 
   data_deps = [ ":dbus_service_files" ]

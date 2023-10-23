@@ -350,6 +350,8 @@ source_set("chromeos") {
       "//components/session_manager/core",
       "//components/user_manager",
       "//ui/aura",
+      "//fydeos/switches/account/toggle:account_toggle",
+      "//fydeos/misc",
     ]
   }
 

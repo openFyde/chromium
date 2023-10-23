@@ -36,6 +36,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
 
 namespace whats_new {
 const int64_t kMaxDownloadBytes = 1024 * 1024;
@@ -102,19 +103,11 @@ bool ShouldShowForState(PrefService* local_state,
 }
 
 GURL GetServerURL(bool may_redirect) {
-  const GURL url =
-      may_redirect
-          ? net::AppendQueryParameter(
-                GURL(kChromeWhatsNewURL), "version",
-                base::NumberToString(CHROME_VERSION_MAJOR))
-          : GURL(kChromeWhatsNewURL)
-                .Resolve(base::StringPrintf("m%d", CHROME_VERSION_MAJOR));
-  return net::AppendQueryParameter(url, "internal", "true");
+  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(nullptr));
 }
 
 GURL GetWebUIStartupURL() {
-  return net::AppendQueryParameter(GURL(chrome::kChromeUIWhatsNewURL), "auto",
-                                   "true");
+  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(nullptr));
 }
 
 namespace {

@@ -9,6 +9,10 @@ enum AccountType {
   UNKNOWN,
   GOOGLE,
   ACTIVE_DIRECTORY,
+//---***FYDEOS BEGIN***---
+  FLINT_ACCOUNT = 99,
+  FYDE_ACCOUNT = 100,
+//---***FYDEOS END***---
 };
 
 // Mirror of AccountId in Mojo.

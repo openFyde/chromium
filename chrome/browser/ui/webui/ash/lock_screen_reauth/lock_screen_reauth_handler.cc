@@ -37,6 +37,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace ash {
 namespace {
@@ -128,9 +129,16 @@ void LockScreenReauthHandler::LoadAuthenticatorParam() {
 
   user_manager::KnownUser known_user(g_browser_process->local_state());
   if (!context.email.empty()) {
-    if (const std::string* gaia_id =
-            known_user.FindGaiaID(AccountId::FromUserEmail(context.email))) {
-      context.gaia_id = *gaia_id;
+    if (fydeos::switches::IsFydeAccountEnabled()) {
+      if (const std::string* fyde_id =
+              known_user.FindFydeID(AccountId::FromUserEmail(context.email))) {
+        context.gaia_id = *fyde_id;
+      }
+    } else {
+      if (const std::string* gaia_id =
+              known_user.FindGaiaID(AccountId::FromUserEmail(context.email))) {
+        context.gaia_id = *gaia_id;
+      }
     }
 
     context.gaps_cookie = known_user.GetGAPSCookie(

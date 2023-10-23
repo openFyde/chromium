@@ -40,6 +40,10 @@
 #include "components/sync_preferences/pref_service_syncable.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#include "fydeos/switches/misc/misc_switches.h"
+#include "fydeos/misc/fydeos_email_subscription.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
+
 namespace ash {
 
 namespace {
@@ -56,6 +60,7 @@ void RecordShowShelfNavigationButtonsValueChange(bool enabled) {
 
 // Records the opt-in and opt-out rates for Chromebook emails. Differentiates
 // between users who have a default opt-in vs. a default opt-out option.
+/*
 void RecordOptInAndOptOutRates(const bool user_opted_in,
                                const bool opt_in_by_default,
                                const std::string& country) {
@@ -74,6 +79,7 @@ void RecordOptInAndOptOutRates(const bool user_opted_in,
   // Generic event aggregating data from all countries.
   base::UmaHistogramEnumeration("OOBE.MarketingOptInScreen.Event", event);
 }
+*/
 
 void RecordGeolocationResolve(MarketingOptInScreen::GeolocationEvent event) {
   base::UmaHistogramEnumeration("OOBE.MarketingOptInScreen.GeolocationResolve",
@@ -116,7 +122,7 @@ bool MarketingOptInScreen::MaybeSkip(WizardContext& context) {
   Initialize();
 
   if (chrome_user_manager_util::IsPublicSessionOrEphemeralLogin() ||
-      IsCurrentUserManaged() || !context.is_branded_build) {
+      IsCurrentUserManaged() || (!context.is_branded_build && !fydeos::switches::IsFydeCustomEnabled())) {
     exit_callback_.Run(Result::NOT_APPLICABLE);
     return true;
   }
@@ -128,15 +134,17 @@ void MarketingOptInScreen::ShowImpl() {
   DCHECK(initialized_);
 
   // Show a verbose legal footer for Canada. (https://crbug.com/1124956)
-  const bool legal_footer_visible =
-      email_opt_in_visible_ && countries_with_legal_footer.count(country_);
+  // const bool legal_footer_visible =
+  //     email_opt_in_visible_ && countries_with_legal_footer.count(country_);
+  const bool legal_footer_visible = false;
+  const bool opt_in_by_default_state = email_opt_in_visible_;
 
   const bool cloud_gaming_enabled =
       chromeos::features::IsCloudGamingDeviceEnabled();
 
   if (view_) {
     view_->Show(/*opt_in_visible=*/email_opt_in_visible_,
-                /*opt_in_default_state=*/IsDefaultOptInCountry(),
+                /*opt_in_default_state=*/opt_in_by_default_state,
                 /*legal_footer_visible=*/legal_footer_visible,
                 /*cloud_gaming_enabled=*/cloud_gaming_enabled);
   }
@@ -177,9 +185,10 @@ void MarketingOptInScreen::OnUserAction(const base::Value::List& args) {
   const std::string& action_id = args[0].GetString();
 
   if (action_id == kUserActionGetStarted) {
-    CHECK_EQ(args.size(), 2u);
+    CHECK_EQ(args.size(), 3u);
     const bool chromebook_email_opt_in = args[1].GetBool();
-    OnGetStarted(chromebook_email_opt_in);
+    const bool fydeos_improvement_plan_opt_in = args[2].GetBool();
+    OnGetStarted(chromebook_email_opt_in, fydeos_improvement_plan_opt_in);
     return;
   }
   if (action_id == kUserActionSetA11yNavigationButtonsEnabled) {
@@ -191,27 +200,36 @@ void MarketingOptInScreen::OnUserAction(const base::Value::List& args) {
   BaseScreen::OnUserAction(args);
 }
 
-void MarketingOptInScreen::OnGetStarted(bool chromebook_email_opt_in) {
+void MarketingOptInScreen::OnGetStarted(bool chromebook_email_opt_in, bool fydeos_improvement_plan_opt_in) {
   if (is_hidden())
     return;
   DCHECK(initialized_);
 
   // UMA Metrics & API call only when the toggle is visible
   if (email_opt_in_visible_) {
-    RecordOptInAndOptOutRates(/*user_opted_in=*/chromebook_email_opt_in,
-                              /*opt_in_by_default=*/IsDefaultOptInCountry(),
-                              /*country=*/country_);
+    // RecordOptInAndOptOutRates(/*user_opted_in=*/chromebook_email_opt_in,
+    //                           /*opt_in_by_default=*/IsDefaultOptInCountry(),
+    //                           /*country=*/country_);
 
     // Store the user's preference regarding marketing emails
     Profile* profile = ProfileManager::GetActiveUserProfile();
     DCHECK(profile);
     profile->GetPrefs()->SetBoolean(prefs::kOobeMarketingOptInChoice,
                                     chromebook_email_opt_in);
+    profile->GetPrefs()->SetBoolean(fydeos::prefs::kFydeOSImprovementPlanEnabled,
+                                    fydeos_improvement_plan_opt_in);
     if (chromebook_email_opt_in) {
       // Call Chromebook Email Service API
-      MarketingBackendConnector::UpdateEmailPreferences(profile, country_);
+      // ---***FYDEOS BEGIN***---
+      // MarketingBackendConnector::UpdateEmailPreferences(profile, country_);
+      // ---***FYDEOS END***---
     }
+  } else {
+    chromebook_email_opt_in = false;
   }
+  fydeos::misc::Subscribe(ProfileManager::GetActiveUserProfile(),
+                          chromebook_email_opt_in,
+                          fydeos_improvement_plan_opt_in);
 
   exit_callback_.Run(Result::NEXT);
 }
@@ -246,7 +264,8 @@ void MarketingOptInScreen::Initialize() {
 
   // Only show the opt in option if this is a supported region, and if the user
   // never made a choice regarding emails.
-  email_opt_in_visible_ = !country_.empty() && ShouldShowOptionToSubscribe();
+  // email_opt_in_visible_ = !country_.empty() && ShouldShowOptionToSubscribe();
+  email_opt_in_visible_ = ShouldShowOptionToSubscribe();
 
   initialized_ = true;
 }
@@ -290,6 +309,9 @@ void MarketingOptInScreen::SetA11yNavigationButtonsEnabled(bool enabled) {
 bool MarketingOptInScreen::ShouldShowOptionToSubscribe() {
   // Directly access PrefServiceSyncable instead of PrefService because
   // we need to know whether the prefs have been loaded.
+  const std::string email = ProfileManager::GetActiveUserProfile()->GetProfileUserName();
+  return !base::EndsWith(email, "@fydeos.local", base::CompareCase::INSENSITIVE_ASCII);
+  /*
   sync_preferences::PrefServiceSyncable* prefs =
       PrefServiceSyncableFromProfile(ProfileManager::GetActiveUserProfile());
   const bool sync_complete =
@@ -310,6 +332,7 @@ bool MarketingOptInScreen::ShouldShowOptionToSubscribe() {
 
   // The screen was shown before and the user has made its choice.
   return false;
+  */
 }
 
 }  // namespace ash

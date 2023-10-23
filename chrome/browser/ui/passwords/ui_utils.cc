@@ -50,6 +50,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #endif
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace {
 
@@ -186,8 +187,14 @@ bool IsSyncingAutosignSetting(Profile* profile) {
           sync_service->GetActiveDataTypes().Has(syncer::PRIORITY_PREFERENCES));
 }
 
-GURL GetGooglePasswordManagerURL(ManagePasswordsReferrer referrer) {
+// ---***FYDEOS BEGIN***---
+GURL GetGooglePasswordManagerURL(ManagePasswordsReferrer referrer, Profile* profile) {
+// ---***FYDEOS END***---
   GURL url(chrome::kGooglePasswordManagerURL);
+  //---***FYDEOS BEGIN***---
+  if (profile->IsFydeProfile())
+    url = GURL(fydeos::constants::kFydeOSPasswordManagerURL);
+  //---***FYDEOS END***---
   url = net::AppendQueryParameter(url, "utm_source", "chrome");
 #if BUILDFLAG(IS_ANDROID)
   url = net::AppendQueryParameter(url, "utm_medium", "android");
@@ -236,7 +243,9 @@ GURL GetGooglePasswordManagerURL(ManagePasswordsReferrer referrer) {
 #if !BUILDFLAG(IS_ANDROID)
 void NavigateToGooglePasswordManager(Profile* profile,
                                      ManagePasswordsReferrer referrer) {
-  NavigateParams params(profile, GetGooglePasswordManagerURL(referrer),
+  //---***FYDEOS BEGIN***---
+  NavigateParams params(profile, GetGooglePasswordManagerURL(referrer, profile),
+  //---***FYDEOS END***---
                         ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   Navigate(&params);

@@ -133,10 +133,27 @@ export class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
             // Opens profile manager.
             return true;
           }
+          if (loadTimeData.getBoolean('isFydeProfile')) {
+            return !loadTimeData.getBoolean('isFydeLocalAccount');
+          }
           // Post-SplitSettings links out to account manager if it is available.
           return loadTimeData.getBoolean('isAccountManagerEnabled');
         },
         readOnly: true,
+      },
+
+      showAdvancedSyncSetup_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
       },
 
       /**
@@ -191,6 +208,8 @@ export class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
   private profileIconUrl_: string;
   private isProfileActionable_: boolean;
   private profileName_: string;
+  private isFydeLocalAccount_: boolean;
+  private showAdvancedSyncSetup_: boolean;
 
   // <if expr="not chromeos_ash">
   storedAccounts: StoredAccount[]|null;
@@ -340,6 +359,15 @@ export class SettingsPeoplePageElement extends SettingsPeoplePageElementBase {
 
   private onProfileClick_() {
     // <if expr="chromeos_ash">
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      if (loadTimeData.getBoolean('isFydeLocalAccount')) {
+        return;
+      }
+      const baseUrl = loadTimeData.getString('fydeosAccountBaseUrl');
+      const url = `${baseUrl}/personalInfo/`;
+      window.open(url);
+      return;
+    }
     if (loadTimeData.getBoolean('isAccountManagerEnabled')) {
       // Post-SplitSettings. The browser C++ code loads OS settings in a window.
       // Don't use window.open() because that creates an extra empty tab.

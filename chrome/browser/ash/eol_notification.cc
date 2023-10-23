@@ -39,6 +39,8 @@
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
 
 namespace ash {
 namespace {
@@ -250,7 +252,7 @@ void EolNotification::Click(const absl::optional<int>& button_index,
       case kButtonAboutUpdates:
         // Open link to learn more about updates.
         NewWindowDelegate::GetPrimary()->OpenUrl(
-            GURL(chrome::kEolNotificationURL),
+            GURL(fydeos::constants::kEolNotificationURL),
             NewWindowDelegate::OpenUrlFrom::kUserInteraction,
             NewWindowDelegate::Disposition::kNewForegroundTab);
 
@@ -268,8 +270,9 @@ void EolNotification::Click(const absl::optional<int>& button_index,
     switch (*button_index) {
       case BUTTON_MORE_INFO: {
         const GURL url = dismiss_pref_ == prefs::kEolNotificationDismissed
-                             ? GURL(chrome::kEolNotificationURL)
-                             : GURL(chrome::kAutoUpdatePolicyURL);
+                            ? GURL(fydeos::constants::kEolNotificationURL)
+                            : GURL(
+                      fydeos::misc::BuildFydeReleaseNoteUrlWithPath(profile_));
         // Show eol link.
         NewWindowDelegate::GetPrimary()->OpenUrl(
             url, NewWindowDelegate::OpenUrlFrom::kUserInteraction,

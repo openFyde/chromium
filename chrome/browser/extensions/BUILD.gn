@@ -981,6 +981,7 @@ static_library("extensions") {
     "//ui/shell_dialogs",
     "//ui/strings",
     "//url",
+    "//fydeos/switches",
   ]
 
   if (is_linux || is_mac || is_win) {
@@ -1393,6 +1394,12 @@ static_library("extensions") {
   } else {
     sources += [ "api/braille_display_private/braille_controller_stub.cc" ]
   }
+
+#---***FYDEOS BEGIN***---
+  if (is_chromeos) {
+    deps += [ "//fydeos/extensions/browser" ]
+  }
+#---***FYDEOS END***---
 }
 
 proto_library("cws_item_service_proto") {

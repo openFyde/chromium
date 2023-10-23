@@ -25,6 +25,7 @@ extern const char kParamOAuthToken[];
 extern const char kParamPlatform[];
 extern const char kParamRequest[];
 extern const char kParamRetry[];
+extern const char kParamFydeOsLicenseId[];
 
 // Policy constants used in authorization header.
 extern const char kAuthHeader[];
@@ -32,6 +33,8 @@ extern const char kServiceTokenAuthHeaderPrefix[];
 extern const char kDMTokenAuthHeaderPrefix[];
 extern const char kEnrollmentTokenAuthHeaderPrefix[];
 extern const char kOAuthTokenHeaderPrefix[];
+
+extern const char kFydeEnrollmentTokenAuthHeaderPrefix[];
 
 // String extern constants for the device and app type we report to the server.
 extern const char kValueAppType[];
@@ -200,6 +203,8 @@ extern const char kPolicyFCMInvalidationSenderID[];
 // exists on the server side.
 inline static const char kKioskSkuName[] = "GOOGLE.CHROME_KIOSK_ANNUAL";
 
+POLICY_EXPORT std::string GetPolicyFCMInvalidationSenderID();
+  
 }  // namespace policy
 
 #endif  // COMPONENTS_POLICY_CORE_COMMON_CLOUD_CLOUD_POLICY_CONSTANTS_H_

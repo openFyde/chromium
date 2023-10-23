@@ -92,7 +92,15 @@ constexpr char kSetInTouchModeIntent[] =
 constexpr char kAndroidClockAppId[] = "ddmmnabaeomoacfpfjgghfpocfolhjlg";
 constexpr char kAndroidFilesAppId[] = "gmiohhmfhgfclpeacmdfancbipocempm";
 
+// ---***FYDEOS BEGIN***---
+const char kFydeOSWMPFAppId[] = "nglolffhmcmoldfapiinhaiagibhpkoe";
+const char kFydeOSWMPFHelperAppId[] = "nnchigminpdegkbaepjbncddkacfhlpm";
+// ---***FYDEOS END***---
+
 constexpr char const* kAppIdsHiddenInLauncher[] = {
+    // ---***FYDEOS BEGIN***---
+    kFydeOSWMPFAppId, kFydeOSWMPFHelperAppId,
+    // ---***FYDEOS END***---
     kAndroidClockAppId,    kSettingsAppId,  kAndroidFilesAppId,
     kAndroidContactsAppId, kPlayGamesAppId, kPackageInstallerAppId};
 

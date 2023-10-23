@@ -78,6 +78,8 @@
 #include "components/policy/core/common/policy_loader_lacros.h"
 #endif
 
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+
 namespace policy {
 namespace {
 bool command_line_enabled_for_testing = false;
@@ -111,6 +113,7 @@ void ChromeBrowserPolicyConnector::Init(
   if (PolicyLogger::GetInstance()->IsPolicyLoggingEnabled()) {
     PolicyLogger::GetInstance()->EnableLogDeletion();
   }
+  fydeos::switches::ToggleFydeAccountFlagByActiveUser();
   std::unique_ptr<DeviceManagementService::Configuration> configuration(
       new DeviceManagementServiceConfiguration(GetDeviceManagementUrl(),
                                                GetRealtimeReportingUrl(),
@@ -173,6 +176,18 @@ void ChromeBrowserPolicyConnector::Shutdown() {
 
   BrowserPolicyConnector::Shutdown();
 }
+
+// ---***FYDEOS BEGIN***---
+void ChromeBrowserPolicyConnector::ResetDeviceManagementServiceConfiguration() {
+  std::unique_ptr<DeviceManagementService::Configuration> configuration(
+      new DeviceManagementServiceConfiguration(
+        GetDeviceManagementUrl(),
+        GetRealtimeReportingUrl(),
+        GetEncryptedReportingUrl()));
+
+  BrowserPolicyConnector::ResetDeviceManagementServiceConfiguration(std::move(configuration));
+}
+// ---***FYDEOS END***---
 
 ConfigurationPolicyProvider*
 ChromeBrowserPolicyConnector::GetPlatformProvider() {

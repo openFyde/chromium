@@ -30,6 +30,9 @@ export const NavigationModelItemType = {
   DRIVE: 'drive',
   ANDROID_APP: 'android-app',
   TRASH: 'trash',
+  //---***FYDEOS BEGIN***---
+  FYDEDROP: 'fydedrop',
+  //---***FYDEOS END***---
 };
 
 /**
@@ -195,6 +198,22 @@ export class NavigationModelFakeItem extends NavigationModelItem {
   }
 }
 
+export class NavigationModelFydeDropItem extends NavigationModelItem {
+  /**
+   * @param {string} label Label on the menu button.
+   * @param {NavigationModelItemType} type
+   */
+  constructor(label, type, entry) {
+    console.log('NavigationModelFydeDropItem constructor');
+    super(label, type);
+    this.entry_ = entry;
+  }
+
+  get entry() {
+    return this.entry_;
+  }
+}
+
 /**
  * A navigation list model. This model combines multiple models.
  */
@@ -224,6 +243,14 @@ export class NavigationListModel extends EventTarget {
      * @const
      */
     this.shortcutListModel_ = shortcutListModel;
+
+    //---***FYDEOS BEGIN***---
+    /**
+     * @private {NavigationModelFydeDropItem}
+     * @const
+     */
+    this.fydeDropModelItem_ = null;
+    //---***FYDEOS END***---
 
     /**
      * @private {NavigationModelFakeItem}
@@ -490,6 +517,12 @@ export class NavigationListModel extends EventTarget {
     this.reorderNavigationItems_();
   }
 
+  //---***FYDEOS BEGIN***---
+  insertFydeDrop(fydeDropModelItem) {
+    this.fydeDropModelItem_ = fydeDropModelItem;
+  }
+  //---***FYDEOS END***---
+
   /**
    * Reorder navigation items when command line flag new-files-app-navigation is
    * enabled it nests Downloads, Linux and Android files under "My Files"; when
@@ -601,6 +634,10 @@ export class NavigationListModel extends EventTarget {
 
     // Items as per required order.
     this.navigationItems_ = [];
+
+    if (this.fydeDropModelItem_) {
+      this.navigationItems_.push(this.fydeDropModelItem_);
+    }
 
     if (this.recentModelItem_) {
       this.navigationItems_.push(this.recentModelItem_);
