@@ -18,7 +18,7 @@
 namespace ash {
 
 namespace {
-const char kFydeOSAssistantDefaultWebUrl[] = "https://fydeos.com";
+const char kFydeOSAssistantDefaultWebUrl[] = "https://aia.fydeos.io/";
 const char kFydeOSAssistantWebUrl[] = "fydeos-ai-url";
 
 std::string GetFydeOSAssistantWebUrl() {
