@@ -3567,6 +3567,9 @@ extern const char kPhoneHubCameraRollDescription[];
 extern const char kPhoneHubFeatureSetupErrorHandlingName[];
 extern const char kPhoneHubFeatureSetupErrorHandlingDescription[];
 
+extern const char kFydeOsAIName[];
+extern const char kFydeOsAIDescription[];
+
 extern const char kPhoneHubNudgeName[];
 extern const char kPhoneHubNudgeDescription[];
 

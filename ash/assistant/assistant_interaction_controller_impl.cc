@@ -36,7 +36,6 @@
 #include "chromeos/ash/services/assistant/public/cpp/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "fydeos/switches/misc/misc_switches.h"
 #include "net/base/url_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -195,7 +194,7 @@ void AssistantInteractionControllerImpl::OnDeepLinkReceived(
   if (type != DeepLinkType::kQuery)
     return;
 
-  if (fydeos::switches::IsFydeCustomEnabled()) {
+  if (ash::features::IsFydeAssistantEnabled()) {
     return;
   }
 
@@ -754,7 +753,7 @@ void AssistantInteractionControllerImpl::OnUiVisible(
   // is hotword since in such cases a voice interaction will already be in
   // progress.
   if (assistant::util::IsVoiceEntryPoint(entry_point, IsPreferVoice()) &&
-      !fydeos::switches::IsFydeCustomEnabled() &&
+      !ash::features::IsFydeAssistantEnabled() &&
       entry_point != AssistantEntryPoint::kHotword) {
     StartVoiceInteraction();
     return;

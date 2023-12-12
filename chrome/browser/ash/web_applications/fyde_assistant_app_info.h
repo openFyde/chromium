@@ -13,6 +13,7 @@ class FydeAssistantAppDelegate : public ash::SystemWebAppDelegate {
   // ash::SystemWebAppDelegate overrides:
   std::unique_ptr<WebAppInstallInfo> GetWebAppInfo() const override;
   bool ShouldCaptureNavigations() const override;
+  bool IsAppEnabled() const override;
   // NOTE: there are more virtual methods in the base class.
 };
 

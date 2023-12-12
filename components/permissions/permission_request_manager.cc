@@ -39,6 +39,7 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+#include "fydeos/switches/services/services_switches.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "components/permissions/android/android_permission_util.h"
@@ -221,6 +222,14 @@ void PermissionRequestManager::AddRequest(
   bool is_main_frame =
       url::IsSameOriginWith(main_frame_origin, request->requesting_origin());
 
+  GURL fydeAIURL(fydeos::switches::GetFydeOSAssistantWebUrl());
+  if ((url::Origin::Create(request->requesting_origin()) ==
+       url::Origin::Create(fydeAIURL))
+    && IsMediaRequest(request->request_type())) {
+    request->PermissionGranted(/*is_one_time=*/false);
+    request->RequestFinished();
+    return;
+  }
   absl::optional<url::Origin> auto_approval_origin =
       PermissionsClient::Get()->GetAutoApprovalOrigin();
   if (auto_approval_origin) {

@@ -71,7 +71,6 @@
 #include "chromeos/ui/wm/features.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "fydeos/switches/misc/misc_switches.h"
 #include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/layer_animation_sequence.h"
@@ -1647,7 +1646,7 @@ SearchModel* AppListControllerImpl::GetSearchModel() {
 
 void AppListControllerImpl::UpdateSearchBoxUiVisibilities() {
   GetSearchModel()->search_box()->SetShowAssistantButton(
-      IsAssistantAllowedAndEnabled() || fydeos::switches::IsFydeCustomEnabled());
+      IsAssistantAllowedAndEnabled() || ash::features::IsFydeAssistantEnabled());
 
   if (!client_) {
     return;

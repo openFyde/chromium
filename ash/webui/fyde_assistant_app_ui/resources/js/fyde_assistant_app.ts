@@ -26,6 +26,7 @@ interface MessageData {
   method: string;
   message?: string;
   data?: any;
+  source?: string;
 }
 
 interface SystemColorInfo {
@@ -70,6 +71,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   private origin_: string;
   private debounceTimeout_: number;
   private isFromLauncher_: boolean;
+  private isFromBubble_: boolean;
   private isEventBinded_: boolean;
   private systemColors_: SystemColorInfo;
 
@@ -80,6 +82,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.origin_ = '';
     this.debounceTimeout_ = 200;
     this.isFromLauncher_ = false;
+    this.isFromBubble_ = false;
     this.isEventBinded_ = false;
     this.systemColors_ = { base: '', shaded: '', header: '', primary: '' };
   }
@@ -90,6 +93,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     const params = new URLSearchParams(document.location.search);
     const source = params.get('source');
     this.isFromLauncher_ = (source === 'launcher');
+    this.isFromBubble_ = (source === 'bubble');
     this.tweakContainerStyle_();
   }
 
@@ -116,9 +120,15 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   }
 
   tweakContainerStyle_() {
-    if (!this.isFromLauncher_) return;
-    if (!loadTimeData.valueExists('borderRadiusInLauncher')) return;
-    const borderRadius = loadTimeData.getInteger('borderRadiusInLauncher');
+    if (!this.isFromLauncher_ && !this.isFromBubble_) return;
+    let borderRadius = 0;
+    if (this.isFromLauncher_) {
+      if (!loadTimeData.valueExists('borderRadiusInLauncher')) return;
+      borderRadius = loadTimeData.getInteger('borderRadiusInLauncher');
+    } else if (this.isFromBubble_) {
+      if (!loadTimeData.valueExists('borderRadiusInBubble')) return;
+      borderRadius = loadTimeData.getInteger('borderRadiusInBubble');
+    }
     const e = this.shadowRoot!.querySelector('#container') as HTMLElement;
     if (e) e.style.borderRadius = `${borderRadius}px`;
   }
@@ -139,6 +149,9 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
 
   getUrl_() {
     let url = loadTimeData.getString('fydeosAssistantUrl');
+    url = url.endsWith('/') ? url.slice(0, -1) : url;
+    const path = document.location.pathname;
+    url = `${url}${path}`;
     url = `${url}${document.location.search || '?'}`;
     url = this.appendValueToUrl_(url, 'user');
     const keys = ['base', 'shaded', 'header', 'primary'];
@@ -189,19 +202,31 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
       return;
     }
 
-    const { method, message } = e.data;
+    const { method, message, data } = e.data;
 
-    if (method === 'close') {
-      if (this.isFromLauncher_) {
-        chrome.send('onCloseAssistant');
-      }
-    } else if (method === 'reload') {
-      this.reloadWebview_(e.data.data);
-    } else if (method === 'openUrl') {
-      const { url } = message;
-      if (url) {
-        chrome.send('onOpenAssistantUrl', [url]);
-      }
+    switch (method) {
+      case 'close':
+        if (this.isFromLauncher_) {
+          chrome.send('onCloseAssistant', ['launcher']);
+        } else if (this.isFromBubble_) {
+          chrome.send('onCloseAssistant', ['bubble']);
+        }
+        break;
+      case 'reload':
+        this.reloadWebview_(data);
+        break;
+      case 'openUrl':
+        const { url } = message;
+        if (url) {
+          chrome.send('onOpenAssistantUrl', [url]);
+        }
+        break;
+      case 'setRect':
+        if (data) {
+          const { x=0, y=0, width=0, height=0 } = data;
+          chrome.send('setAssistantBubbleRect', [x, y, width, height]);
+        }
+        break;
     }
   }
 
@@ -211,6 +236,9 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     if (this.isFromLauncher_) {
       addWebUIListener('query-from-launcher', this.onQueryFromLauncher_.bind(this));
       addWebUIListener('ui-visibility-changed', this.onUiVisibilityChanged_.bind(this));
+    } else if (this.isFromBubble_) {
+      addWebUIListener('query-from-bubble', this.onQueryFromBubble_.bind(this));
+      addWebUIListener('bubble-visibility-changed', this.onBubbleVisibilityChanged_.bind(this));
     }
     addWebUIListener('system-color-changed', this.onSystemColorChanged_.bind(this));
   }
@@ -225,9 +253,19 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.webview_.focus();
   }
 
+  appendSource(data: MessageData) {
+    let source = 'unknown';
+    if (this.isFromLauncher_) {
+      source = 'launcher';
+    } else if (this.isFromBubble_) {
+      source = 'bubble';
+    }
+    return { ...data, source };
+  }
+
   sendMessage(data: MessageData) {
     if (this.webview_.contentWindow) {
-      this.webview_.contentWindow.postMessage(data, this.webview_.src);
+      this.webview_.contentWindow.postMessage(this.appendSource(data), this.webview_.src);
     } else {
       console.log('this.webview content window is null');
     }
@@ -242,6 +280,16 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
 
   onUiVisibilityChanged_(visible: boolean): void {
     this.sendMessage({ method: 'visibility-change', data: visible });
+  }
+
+  onQueryFromBubble_(data: { query: string, format: number }): void {
+    if (this.isFromBubble_) {
+      this.sendMessage({ method: 'bubble-query', data });
+    }
+  }
+
+  onBubbleVisibilityChanged_(visible: boolean): void {
+    this.sendMessage({ method: 'bubble-visibility-change', data: visible });
   }
 
   onSystemColorChanged_(colors: SystemColorInfo): void {

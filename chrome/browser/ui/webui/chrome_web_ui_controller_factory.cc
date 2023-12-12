@@ -982,6 +982,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   }
   if (url.host_piece() ==
       ash::kChromeUIFydeAssistantAppHost) {
+    if (!ash::features::IsFydeAssistantEnabled()) {
+      return nullptr;
+    }
     return &NewComponentUI<ash::FydeAssistantAppUI, ChromeFydeAssistantAppUIDelegate>;
   }
   if (base::FeatureList::IsEnabled(net::features::kKerberosInBrowserRedirect) &&

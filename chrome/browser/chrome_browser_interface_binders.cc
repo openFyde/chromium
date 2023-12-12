@@ -1514,7 +1514,9 @@ void PopulateChromeWebUIFrameInterfaceBrokers(
       .Add<color_change_listener::mojom::PageHandler>();
   registry.ForWebUI<ash::smb_dialog::SmbCredentialsDialogUI>()
       .Add<color_change_listener::mojom::PageHandler>();
-  registry.ForWebUI<ash::FydeAssistantAppUI>();
+  if (ash::features::IsFydeAssistantEnabled()) {
+    registry.ForWebUI<ash::FydeAssistantAppUI>();
+  }
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 
   // --- Section 2: chrome-untrusted:// WebUIs:

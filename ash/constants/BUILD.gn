@@ -42,4 +42,9 @@ component("constants") {
     "//url",
   ]
   deps = [ "//build:branding_buildflags" ]
+
+  deps += [
+    "//fydeos/switches",
+    "//fydeos/build/config:buildflags",
+  ]
 }

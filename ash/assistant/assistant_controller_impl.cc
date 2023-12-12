@@ -28,7 +28,6 @@
 #include "chromeos/ash/services/libassistant/public/cpp/assistant_feedback.h"
 #include "components/account_id/account_id.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "fydeos/switches/misc/misc_switches.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"
 
@@ -169,13 +168,13 @@ void AssistantControllerImpl::OpenUrl(const GURL& url,
                                       bool from_server) {
   // app_list search result will be opened by `OpenUrl()`. However, the
   // `assistant_` may not be ready. Show a toast to indicate it.
-  if (!IsAssistantReady() && !fydeos::switches::IsFydeCustomEnabled()) {
+  if (!IsAssistantReady() && !ash::features::IsFydeAssistantEnabled()) {
     assistant_ui_controller_.ShowUnboundErrorToast();
     return;
   }
 
   if (assistant::util::IsDeepLinkUrl(url)) {
-    if (fydeos::switches::IsFydeCustomEnabled() && assistant::util::GetDeepLinkType(url) == assistant::util::DeepLinkType::kQuery) {
+    if (ash::features::IsFydeAssistantEnabled() && assistant::util::GetDeepLinkType(url) == assistant::util::DeepLinkType::kQuery) {
       // only AssistantInteractionControllerImpl will handle the query deep link, which will call ShowUi
       NotifyDeepLinkReceived(url);
       return;

@@ -8,6 +8,7 @@
 #include "ash/assistant/model/assistant_ui_model_observer.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 
 namespace ash {
 
@@ -15,6 +16,7 @@ class FydeAssistantWebUIHandler
     : public content::WebUIMessageHandler,
       public ui::NativeThemeObserver,
       public AssistantUiModelObserver,
+      public FydeAssistantViewObserver,
       public AssistantControllerObserver {
 
  public:
@@ -44,11 +46,14 @@ class FydeAssistantWebUIHandler
   // ui::NativeThemeObserver:
   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
 
+  void OnBubbleQueryChanged(const FydeAssistantViewObserver::ClipboardItemForAssistant& item) override;
+  void OnBubbleVisibilityChanged(bool visible) override;
  private:
   void OnFydeAssistantSwaInit(const base::Value::List& args);
   void OnRequestCloseAssistant(const base::Value::List& args);
 
   void OnFydeAssistantOpenUrl(const base::Value::List& args);
+  void HandleSetAssistantBubbleRect(const base::Value::List& args);
 
   raw_ptr<FydeAssistantAppUI, ExperimentalAsh> fyde_assistant_app_ui_;
 

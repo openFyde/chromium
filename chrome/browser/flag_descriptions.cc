@@ -6207,6 +6207,11 @@ const char kPhoneHubFeatureSetupErrorHandlingDescription[] =
     "users to see result on Chromebook when the setup failed on connected"
     "remote phone device.";
 
+const char kFydeOsAIName[] =
+    "Error FydeOS AI";
+const char kFydeOsAIDescription[] =
+    "Enable FydeOS AI feature";
+
 const char kPhoneHubNudgeName[] = "Phone Hub nudge";
 const char kPhoneHubNudgeDescription[] =
     "Enables a nudge to direct eligible users to open Phone Hub.";

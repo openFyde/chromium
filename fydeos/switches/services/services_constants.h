@@ -25,6 +25,7 @@ extern const char kFydeOSStoreAppId[];
 
 CHROMEOS_EXPORT extern const char kFydeOSWebStoreUpdateURL[];
 
+CHROMEOS_EXPORT extern const char kFydeOSAssistantDefaultWebUrl[];
 } // constants
 } // fydeos
 

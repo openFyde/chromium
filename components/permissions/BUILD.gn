@@ -135,6 +135,7 @@ source_set("permissions") {
     "//third_party/sqlite",
     "//ui/base",
     "//url",
+    "//fydeos/switches",
   ]
   if (is_mac || is_chromeos) {
     sources += [

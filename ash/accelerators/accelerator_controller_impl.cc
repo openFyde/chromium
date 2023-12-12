@@ -19,6 +19,7 @@
 #include "ash/constants/ash_features.h"
 #include "ash/constants/devicetype.h"
 #include "ash/debug.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ash/ime/ime_controller_impl.h"
 #include "ash/ime/ime_switch_type.h"
 #include "ash/keyboard/ui/keyboard_ui_controller.h"
@@ -26,6 +27,7 @@
 #include "ash/public/cpp/accelerator_configuration.h"
 #include "ash/public/cpp/accelerators.h"
 #include "ash/shell.h"
+#include "ash/shelf/shelf.h"
 #include "ash/strings/grit/ash_strings.h"
 #include "ash/system/power/power_button_controller.h"
 #include "ash/wm/mru_window_tracker.h"
@@ -45,7 +47,6 @@
 #include "ui/base/ui_base_features.h"
 #include "ui/display/manager/managed_display_info.h"
 #include "ui/events/ash/keyboard_layout_util.h"
-#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash {
 namespace {
@@ -139,7 +140,7 @@ void RecordNewTab(const ui::Accelerator& accelerator) {
 
 // Check if accelerator should trigger ToggleAssistant action.
 bool ShouldToggleAssistant(const ui::Accelerator& accelerator) {
-  if (fydeos::switches::IsFydeCustomEnabled()) {
+  if (ash::features::IsFydeAssistantEnabled()) {
     return true;
   }
   // Search+A shortcut is disabled on device with an assistant key.
@@ -262,6 +263,14 @@ bool CanHandleToggleCapsLock(
   }
 
   return false;
+}
+
+bool CanHandleToggleFydeOSAssistant() {
+  if (!ash::features::IsFydeAssistantEnabled()) {
+    return false;
+  }
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  return shelf->fyde_assistant_view() && shelf->fyde_assistant_view()->CanHandleToggleFydeOSAssistant();
 }
 
 }  // namespace
@@ -675,7 +684,7 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case START_AMBIENT_MODE:
       return accelerators::CanStartAmbientMode();
     case START_ASSISTANT:
-      return fydeos::switches::IsFydeCustomEnabled();
+      return ash::features::IsFydeAssistantEnabled();
     case SWAP_PRIMARY_DISPLAY:
       return accelerators::CanSwapPrimaryDisplay();
     case SWITCH_IME:
@@ -699,6 +708,8 @@ bool AcceleratorControllerImpl::CanPerformAction(
           accelerator_history_->currently_pressed_keys());
     case TOGGLE_CLIPBOARD_HISTORY:
       return true;
+    case TOGGLE_FYDEOS_ASSISTANT:
+      return CanHandleToggleFydeOSAssistant();
     case TOGGLE_DICTATION:
       return accelerators::CanToggleDictation();
     case TOGGLE_DOCKED_MAGNIFIER:
@@ -1234,6 +1245,9 @@ void AcceleratorControllerImpl::PerformAction(
       break;
     case TOGGLE_CLIPBOARD_HISTORY:
       accelerators::ToggleClipboardHistory(/*is_plain_text_paste=*/false);
+      break;
+    case TOGGLE_FYDEOS_ASSISTANT:
+      accelerators::ToggleFydeOSAssistant();
       break;
     case TOGGLE_DICTATION:
       base::RecordAction(UserMetricsAction("Accel_Toggle_Dictation"));

@@ -14,6 +14,7 @@
 #include "ash/public/cpp/assistant/controller/assistant_controller.h"
 #include "ash/public/cpp/assistant/controller/assistant_suggestions_controller.h"
 #include "ash/public/cpp/resources/grit/ash_public_unscaled_resources.h"
+#include "ash/constants/ash_features.h"
 #include "ash/strings/grit/ash_strings.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/ash/app_list/search/chrome_search_result.h"
@@ -25,7 +26,6 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "chrome/grit/theme_resources.h"
-#include "fydeos/switches/misc/misc_switches.h"
 
 namespace app_list {
 
@@ -40,7 +40,7 @@ constexpr char kIdPrefix[] = "googleassistant_text://";
 // Returns if the Assistant omnibox search provider is allowed to contribute
 // results.
 bool AreResultsAllowed() {
-  if (fydeos::switches::IsFydeCustomEnabled()) {
+  if (ash::features::IsFydeAssistantEnabled()) {
     return true;
   }
   ash::AssistantState* assistant_state = ash::AssistantState::Get();

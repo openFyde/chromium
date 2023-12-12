@@ -13,26 +13,9 @@
 
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_webui_handler.h"
-#include "base/command_line.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace ash {
-
-namespace {
-const char kFydeOSAssistantDefaultWebUrl[] = "https://aia.fydeos.io/";
-const char kFydeOSAssistantWebUrl[] = "fydeos-ai-url";
-
-std::string GetFydeOSAssistantWebUrl() {
-  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-  if (command_line->HasSwitch(kFydeOSAssistantWebUrl)) {
-    std::string value(command_line->GetSwitchValueASCII(kFydeOSAssistantWebUrl));
-    if (!value.empty()) {
-      return value;
-    }
-  }
-  return kFydeOSAssistantDefaultWebUrl;
-}
-
-}
 
 FydeAssistantAppUI::FydeAssistantAppUI(content::WebUI* web_ui,
                                       std::unique_ptr<FydeAssistantAppUIDelegate> delegate)
@@ -56,7 +39,8 @@ FydeAssistantAppUI::FydeAssistantAppUI(content::WebUI* web_ui,
   html_source->SetDefaultResource(IDR_ASH_FYDE_ASSISTANT_APP_INDEX_HTML);
 
   html_source->AddInteger("borderRadiusInLauncher", kBubbleCornerRadius);
-  html_source->AddString("fydeosAssistantUrl", GetFydeOSAssistantWebUrl());
+  html_source->AddInteger("borderRadiusInBubble", kSmallBubbleCornerRadius);
+  html_source->AddString("fydeosAssistantUrl", fydeos::switches::GetFydeOSAssistantWebUrl());
   html_source->UseStringsJs();
 
   delegate_->PopulateLoadTimeData(html_source);

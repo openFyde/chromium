@@ -121,7 +121,6 @@ void SystemLogsFetcher::Fetch(SysLogsFetcherCallback callback) {
 
   for (size_t i = 0; i < data_sources_.size(); ++i) {
     VLOG(1) << "Fetching SystemLogSource: " << data_sources_[i]->source_name();
-    LOG(ERROR) << "==== FYDEOS TRACE ====[" << __func__ << "]" << data_sources_[i]->source_name();
     data_sources_[i]->Fetch(base::BindOnce(&SystemLogsFetcher::OnFetched,
                                            weak_ptr_factory_.GetWeakPtr(),
                                            data_sources_[i]->source_name()));

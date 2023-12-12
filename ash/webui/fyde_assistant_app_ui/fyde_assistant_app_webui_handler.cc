@@ -14,11 +14,19 @@ FydeAssistantWebUIHandler::FydeAssistantWebUIHandler(FydeAssistantAppUI* app_ui)
   assistant_controller_observation_.Observe(AssistantController::Get());
   theme_observation_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
   AssistantUiController::Get()->GetModel()->AddObserver(this);
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  if  (shelf && shelf->fyde_assistant_view()) {
+    shelf->fyde_assistant_view()->AddObserver(this);
+  }
 }
 
 FydeAssistantWebUIHandler::~FydeAssistantWebUIHandler() {
   if (AssistantUiController::Get())
     AssistantUiController::Get()->GetModel()->RemoveObserver(this);
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  if  (shelf && shelf->fyde_assistant_view()) {
+    shelf->fyde_assistant_view()->RemoveObserver(this);
+  }
 }
 
 void FydeAssistantWebUIHandler::RegisterMessages() {
@@ -34,6 +42,10 @@ void FydeAssistantWebUIHandler::RegisterMessages() {
       "onOpenAssistantUrl",
       base::BindRepeating(&FydeAssistantWebUIHandler::OnFydeAssistantOpenUrl,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setAssistantBubbleRect",
+      base::BindRepeating(&FydeAssistantWebUIHandler::HandleSetAssistantBubbleRect,
+                          base::Unretained(this)));
 }
 
 void FydeAssistantWebUIHandler::OnFydeAssistantSwaInit(const base::Value::List& args) {
@@ -41,8 +53,22 @@ void FydeAssistantWebUIHandler::OnFydeAssistantSwaInit(const base::Value::List& 
 }
 
 void FydeAssistantWebUIHandler::OnRequestCloseAssistant(const base::Value::List& args) {
-  auto* const app_list_controller = Shell::Get()->app_list_controller();
-  app_list_controller->CloseAssistant();
+  CHECK_EQ(1u, args.size());
+  const std::string source = args[0].GetString();
+  if (source == "launcher") {
+    auto* const app_list_controller = Shell::Get()->app_list_controller();
+    if (app_list_controller) {
+      app_list_controller->CloseAssistant();
+    }
+    return;
+  }
+
+  if (source == "bubble") {
+    Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+    if  (shelf && shelf->fyde_assistant_view()) {
+      shelf->fyde_assistant_view()->HideBubble();
+    }
+  }
 }
 
 void FydeAssistantWebUIHandler::OnFydeAssistantOpenUrl(const base::Value::List& args) {
@@ -51,6 +77,18 @@ void FydeAssistantWebUIHandler::OnFydeAssistantOpenUrl(const base::Value::List& 
   ash::NewWindowDelegate::GetPrimary()->OpenUrl(
     GURL(url), ash::NewWindowDelegate::OpenUrlFrom::kUserInteraction,
     ash::NewWindowDelegate::Disposition::kNewWindow);
+}
+
+void FydeAssistantWebUIHandler::HandleSetAssistantBubbleRect(const base::Value::List& args) {
+  CHECK_EQ(4u, args.size());
+  const int x = args[0].GetInt();
+  const int y = args[1].GetInt();
+  const int width = args[2].GetInt();
+  const int height = args[3].GetInt();
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  if  (shelf && shelf->fyde_assistant_view()) {
+    shelf->fyde_assistant_view()->SetBubbleRect(x, y, width, height);
+  }
 }
 
 void FydeAssistantWebUIHandler::OnDeepLinkReceived(
@@ -95,6 +133,25 @@ void FydeAssistantWebUIHandler::OnNativeThemeUpdated(ui::NativeTheme* observed_t
   value.Set("header", ui::ConvertSkColorToCSSColor(colors.header));
   value.Set("primary", ui::ConvertSkColorToCSSColor(colors.primary));
   FireWebUIListener("system-color-changed", value);
+}
+
+void FydeAssistantWebUIHandler::OnBubbleQueryChanged(const FydeAssistantViewObserver::ClipboardItemForAssistant& item) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  if (item.display_text.size() > 0) {
+    base::Value::Dict value;
+    value.Set("query", item.display_text);
+    value.Set("format", item.display_format);
+    FireWebUIListener("query-from-bubble", value);
+  }
+}
+
+void FydeAssistantWebUIHandler::OnBubbleVisibilityChanged(bool visible)  {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("bubble-visibility-changed", base::Value(visible));
 }
 
 } // namespace ash

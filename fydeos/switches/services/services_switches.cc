@@ -27,6 +27,8 @@ const char kFydeOSAppsGalleryURL[] = "fydeos-apps-gallery-url";
 
 const char kFydeOSAppsGalleryUpdateURL[] = "fydeos-apps-gallery-update-url";
 
+const char kFydeOSAssistantWebUrl[] = "fydeos-ai-url";
+
 const char kFydeOSStoreComPrefix[] = "https://store.fydeos.com";
 const char kFydeOSStoreIoPrefix[] = "https://store.fydeos.io";
 }
@@ -84,6 +86,17 @@ std::string GetFydeOSWebStoreUpdateUrl() {
   } else {
     return std::string(fydeos::constants::kFydeOSWebStoreUpdateURL);
   }
+}
+
+std::string GetFydeOSAssistantWebUrl() {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(kFydeOSAssistantWebUrl)) {
+    std::string value(command_line->GetSwitchValueASCII(kFydeOSAssistantWebUrl));
+    if (!value.empty()) {
+      return value;
+    }
+  }
+  return std::string(fydeos::constants::kFydeOSAssistantDefaultWebUrl);
 }
 
 CHROMEOS_EXPORT std::string MayConvertWebStoreUpdateUrl(

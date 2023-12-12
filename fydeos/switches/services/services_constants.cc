@@ -35,4 +35,5 @@ const size_t kFydeOSCryptoKeyLength =
 
 const char kFydeOSStoreAppId[] = "hidnajblbifdkmheebalalchohohmaef";
 
+const char kFydeOSAssistantDefaultWebUrl[] = "https://aia.fydeos.io/";
 }  // namespace fydeos::constants

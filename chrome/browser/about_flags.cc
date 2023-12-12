@@ -8794,6 +8794,10 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kPhoneHubFeatureSetupErrorHandlingName,
      flag_descriptions::kPhoneHubFeatureSetupErrorHandlingDescription, kOsCrOS,
      FEATURE_VALUE_TYPE(ash::features::kPhoneHubFeatureSetupErrorHandling)},
+    {"enable-fydeos-ai",
+     flag_descriptions::kFydeOsAIName,
+     flag_descriptions::kFydeOsAIDescription, kOsCrOS,
+     FEATURE_VALUE_TYPE(ash::features::kFydeAssistant)},
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 
     {"partitioned-cookies", flag_descriptions::kPartitionedCookiesName,

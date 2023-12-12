@@ -42,6 +42,7 @@
 #include "base/notreached.h"
 #include "ui/display/types/display_constants.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 
 namespace ash {
 
@@ -363,6 +364,7 @@ Shelf::ScopedDisableAutoHide::~ScopedDisableAutoHide() {
 Shelf::Shelf()
     : shelf_locking_manager_(this),
       shelf_focus_cycler_(std::make_unique<ShelfFocusCycler>(this)),
+      fyde_assistant_view_(std::make_unique<FydeAssistantView>()),
       tooltip_(std::make_unique<ShelfTooltipManager>(this)) {}
 
 Shelf::~Shelf() = default;
@@ -471,6 +473,10 @@ void Shelf::CreateShelfWidget(aura::Window* root) {
 
   // The Hotseat should be above everything in the shelf.
   hotseat_widget()->StackAtTop();
+
+  if (ash::features::IsFydeAssistantEnabled()) {
+    fyde_assistant_view_->CreateAssistantWidget(shelf_container);
+  }
 }
 
 void Shelf::ShutdownShelfWidget() {
