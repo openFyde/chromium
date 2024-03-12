@@ -26,12 +26,14 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/native_widget_types.h"
 #include "ui/shell_dialogs/select_file_policy.h"
+#include "chrome/browser/feedback/system_logs/about_system_logs_fetcher.h"
+#include "components/feedback/system_logs/system_logs_fetcher.h"
 
 namespace ash {
 namespace diagnostics {
 namespace {
 
-const char kDefaultSessionLogFileName[] = "session_log.txt";
+const char kDefaultSessionLogFileName[] = "about_system.zip";
 
 }  // namespace
 
@@ -85,6 +87,31 @@ void SessionLogHandler::RegisterMessages() {
                           weak_ptr_));
 }
 
+void SessionLogHandler::GetFydeOsSystemInfo() {
+  system_logs::SystemLogsFetcher* fetcher =
+    system_logs::BuildAboutSystemLogsFetcher();
+  fetcher->Fetch(base::BindOnce(
+        &SessionLogHandler::OnFydeOSSystemInfoReceived, weak_ptr_));
+}
+
+void SessionLogHandler::OnFydeOSSystemInfoReceived(
+    std::unique_ptr<system_logs::SystemLogsResponse> sys_info) {
+  fydeos_system_info_ = "";
+
+  if (!sys_info) {
+    LOG(WARNING) << "Failed to get FydeOS system info";
+    return;
+  }
+
+  for (system_logs::SystemLogsResponse::const_iterator it = sys_info->begin();
+      it != sys_info->end(); ++it) {
+    fydeos_system_info_ += it->first;
+    fydeos_system_info_ += ":\n";
+    fydeos_system_info_ += it->second;
+    fydeos_system_info_ += "\n";
+  }
+}
+
 void SessionLogHandler::FileSelected(const base::FilePath& path,
                                      int index,
                                      void* params) {
@@ -96,7 +123,8 @@ void SessionLogHandler::FileSelected(const base::FilePath& path,
           // base::Unretained safe here because ~DiagnosticsLogController is
           // called during shutdown of ash::Shell and will out-live
           // SessionLogHandler.
-          base::Unretained(DiagnosticsLogController::Get()), path),
+          base::Unretained(DiagnosticsLogController::Get()),path,
+                           fydeos_system_info_),
       base::BindOnce(&SessionLogHandler::OnSessionLogCreated, weak_ptr_, path));
   select_file_dialog_.reset();
 }
@@ -181,6 +209,8 @@ void SessionLogHandler::HandleInitialize(const base::Value::List& args) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(session_log_handler_sequence_checker_);
   DCHECK(args.empty());
   AllowJavascript();
+
+  GetFydeOsSystemInfo();
 }
 
 }  // namespace diagnostics

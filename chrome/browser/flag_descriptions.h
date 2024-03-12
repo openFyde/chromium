@@ -4153,6 +4153,9 @@ extern const char kOobeSimonDescription[];
 
 extern const char kLacrosSharedComponentsDirName[];
 extern const char kLacrosSharedComponentsDirDescription[];
+
+extern const char kFydeOsAIName[];
+extern const char kFydeOsAIDescription[];
 #endif  // #if BUILDFLAG(IS_CHROMEOS_ASH)
 
 #if BUILDFLAG(IS_CHROMEOS_LACROS)

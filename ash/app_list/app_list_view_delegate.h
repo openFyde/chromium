@@ -51,6 +51,7 @@ class ASH_PUBLIC_EXPORT AppListViewDelegate {
 
   // Invoked to start a new Google Assistant session.
   virtual void StartAssistant() = 0;
+  virtual void CloseAssistant() = 0;
 
   // Returns the search categories that are available for users to choose if
   // they want to have the results in the categories displayed in launcher

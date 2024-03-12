@@ -41,7 +41,48 @@ chrome.arcAppsPrivate.getLaunchableApps = function(callback) {};
 chrome.arcAppsPrivate.launchApp = function(packageName, callback) {};
 
 /**
+ * Removes the ARC app with its package name.
+ * callback is called as soon as the removal is scheduled.
+ * @param {string} packageName
+ * @param {function(): void=} callback
+ */
+chrome.arcAppsPrivate.removePackage = function(packageName, callback) {};
+
+/**
+ * Installs the ARC app with its package name, the ralative path (to ~/Downloads) where downloads the apk, and
+ * the access token.
+ * @param {string} relativePath
+ * @param {string} verifyUrl
+ * @param {function(): void=} callback
+ */
+chrome.arcAppsPrivate.installPackageFromPath function(relativePath, verifyUrl, callback) {};
+
+/**
  * Fires when a new app can be launched via $(ref:launchApp).
  * @type {!ChromeEvent}
  */
 chrome.arcAppsPrivate.onInstalled;
+
+/**
+ * Fires when an app be removed.
+ * @type {!ChromeEvent}
+ */
+chrome.arcAppsPrivate.onRemoved;
+
+/**
+ * Fires when an app start be installing.
+ * @type {!ChromeEvent}
+ */
+chrome.arcAppsPrivate.onInstallationStarted;
+
+/**
+ * Fires when an app installation progress be changed.
+ * @type {!ChromeEvent}
+ */
+chrome.arcAppsPrivate.onInstallationProgressChanged;
+
+/**
+ * Fires when an app installation finished.
+ * @type {!ChromeEvent}
+ */
+chrome.arcAppsPrivate.onInstallationFinished;

@@ -11,6 +11,8 @@
 #include "base/memory/ref_counted.h"
 #include "content/public/browser/url_data_source.h"
 
+#include "components/user_manager/user_image/user_image.h"
+
 class AccountId;
 
 namespace base {
@@ -42,6 +44,9 @@ class UserImageSource : public content::URLDataSource {
   // no user with such an id, returns the first default image. Always returns
   // the 100%-scale asset.
   static scoped_refptr<base::RefCountedMemory> GetUserImage(
+      const AccountId& account_id);
+
+  static user_manager::UserImage::ImageFormat GetUserImageFormat(
       const AccountId& account_id);
 };
 

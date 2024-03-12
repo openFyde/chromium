@@ -69,6 +69,11 @@ export class PrivacyGuideSafeBrowsingFragmentElement extends
           return loadTimeData.getBoolean('enableHashPrefixRealTimeLookups');
         },
       },
+
+      isFydeProfile_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isFydeProfile'),
+      },
     };
   }
 
@@ -129,10 +134,9 @@ export class PrivacyGuideSafeBrowsingFragmentElement extends
   }
 
   private getSafeBrowsingEnhancedSubLabel_(): string {
-    return this.i18n(
-        this.enableFriendlierSafeBrowsingSettings_ ?
-            'safeBrowsingEnhancedDescUpdated' :
-            'safeBrowsingEnhancedDesc');
+    return this.enableFriendlierSafeBrowsingSettings_ ?
+        this.i18n('safeBrowsingEnhancedDescUpdated') :
+        this.safeBrowsingEnhancedDesc_();
   }
 
   private getSafeBrowsingStandardSubLabel_(): string {
@@ -157,6 +161,15 @@ export class PrivacyGuideSafeBrowsingFragmentElement extends
             'privacyGuideSafeBrowsingCardStandardProtectionPrivacyDescription1Proxy' :
             'privacyGuideSafeBrowsingCardStandardProtectionPrivacyDescription1');
   }
+
+  private safeBrowsingEnhancedDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingEnhancedFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingEnhancedDesc');
+    }
+  }
+
 }
 
 declare global {

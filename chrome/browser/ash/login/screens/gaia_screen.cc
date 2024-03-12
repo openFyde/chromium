@@ -34,9 +34,11 @@ namespace {
 constexpr char kUserActionBack[] = "back";
 constexpr char kUserActionCancel[] = "cancel";
 constexpr char kUserActionStartEnrollment[] = "startEnrollment";
+constexpr char kUserActionUseLocalAccount[] = "useLocalAccount";
 constexpr char kUserActionReloadDefault[] = "reloadDefault";
 constexpr char kUserActionEnterIdentifier[] = "identifierEntered";
 constexpr char kUserActionQuickStartButtonClicked[] = "activateQuickStart";
+constexpr char kUserActionAccountTypeSelectionBack[] = "accountTypeSelectionBack";
 
 bool ShouldPrepareForRecovery(const AccountId& account_id) {
   if (!features::IsCryptohomeRecoveryEnabled() || !account_id.is_valid()) {
@@ -69,6 +71,9 @@ bool ShouldUseReauthEndpoint(const AccountId& account_id,
   }
   auto* user = user_manager::UserManager::Get()->FindUser(account_id);
   DCHECK(user);
+  if (user && user->IsFydeAccountUser()) {
+    return false;
+  }
   // Use reauth endpoint for child users.
   if (user && user->IsChild()) {
     return true;
@@ -103,10 +108,14 @@ std::string GaiaScreen::GetResultString(Result result) {
       return "Cancel";
     case Result::ENTERPRISE_ENROLL:
       return "EnterpriseEnroll";
+    case Result::USE_LOCAL_ACCOUNT:
+      return "UseLocalAccount";
     case Result::START_CONSUMER_KIOSK:
       return "StartConsumerKiosk";
     case Result::QUICK_START:
       return "QuickStart";
+    case Result::ACCOUNT_TYPE_SELECTION_BACK:
+      return "AccountTypeSelectionBack";
   }
 }
 
@@ -252,6 +261,10 @@ void GaiaScreen::OnUserAction(const base::Value::List& args) {
     exit_callback_.Run(Result::CANCEL);
   } else if (action_id == kUserActionStartEnrollment) {
     exit_callback_.Run(Result::ENTERPRISE_ENROLL);
+  } else if (action_id == kUserActionUseLocalAccount) {
+    exit_callback_.Run(Result::USE_LOCAL_ACCOUNT);
+  } else if (action_id == kUserActionAccountTypeSelectionBack) {
+    exit_callback_.Run(Result::ACCOUNT_TYPE_SELECTION_BACK);
   } else if (action_id == kUserActionReloadDefault) {
     Reset();
     LoadDefaultOnlineGaia(EmptyAccountId());
@@ -416,6 +429,11 @@ void GaiaScreen::SetQuickStartButtonVisibility(bool visible) {
   if (visible && view_) {
     view_->SetQuickStartEnabled();
   }
+}
+
+void GaiaScreen::RequestUseLocalAccount() {
+  if (!view_) return;
+  view_->RequestUseLocalAccount();
 }
 
 }  // namespace ash

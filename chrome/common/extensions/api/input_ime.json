@@ -329,6 +329,19 @@
         "parameters": []
       },
       {
+        "name": "showFydeLanguageState",
+        "type": "function",
+        "description": "Show the ZH/EN language state as a toast message",
+        "platforms": ["chromeos"],
+        "parameters": [
+          {
+            "name": "lang",
+            "type": "string",
+            "description": "The language to show"
+          }
+        ]
+      },
+      {
         "name": "setCandidateWindowProperties",
         "type": "function",
         "description": "Sets the properties of the candidate window. This fails if the extension doesn't own the active IME",

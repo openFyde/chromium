@@ -61,6 +61,7 @@ class AppListTestViewDelegate : public AppListViewDelegate,
   // AppListViewDelegate overrides:
   bool KeyboardTraversalEngaged() override;
   void StartAssistant() override {}
+  void CloseAssistant() override {}
   std::vector<AppListSearchControlCategory> GetToggleableCategories()
       const override;
   void StartSearch(const std::u16string& raw_query) override {}

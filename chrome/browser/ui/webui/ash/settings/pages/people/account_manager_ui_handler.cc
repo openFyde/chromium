@@ -37,6 +37,7 @@
 #include "ui/chromeos/resources/grit/ui_chromeos_resources.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace ash::settings {
 
@@ -59,7 +60,9 @@ constexpr char kAccountRemovedToastId[] =
   DCHECK((account_type_int >=
           static_cast<int>(account_manager::AccountType::kGaia)) &&
          (account_type_int <=
-          static_cast<int>(account_manager::AccountType::kActiveDirectory)));
+          // ---***FYDEOS BEGIN***---
+          static_cast<int>(account_manager::AccountType::kFyde)));
+          // ---***FYDEOS END***---
   const account_manager::AccountType account_type =
       static_cast<account_manager::AccountType>(account_type_int);
 
@@ -78,11 +81,23 @@ bool IsSameAccount(const ::account_manager::AccountKey& account_key,
                    const AccountId& account_id) {
   switch (account_key.account_type()) {
     case account_manager::AccountType::kGaia:
+      // ---***FYDEOS BEGIN***---
+      if (fydeos::switches::IsFydeAccountEnabled()) {
+        return (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT) &&
+               (account_id.GetFydeId() == account_key.id());
+      }
+      // ---***FYDEOS END***---
       return (account_id.GetAccountType() == AccountType::GOOGLE) &&
              (account_id.GetGaiaId() == account_key.id());
     case account_manager::AccountType::kActiveDirectory:
       return (account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY) &&
              (account_id.GetObjGuid() == account_key.id());
+    case account_manager::AccountType::kFlint:
+      return (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) &&
+             (account_id.GetFlintId() == account_key.id());
+    case account_manager::AccountType::kFyde:
+      return (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT) &&
+             (account_id.GetFydeId() == account_key.id());
   }
 }
 

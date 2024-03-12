@@ -48,6 +48,10 @@ struct ManifestURL : public Extension::ManifestData {
   // Returns true if this extension's update URL is the extension gallery.
   static bool UpdatesFromGallery(const Extension* extension);
 
+  // ---***FYDEOS BEGIN***---
+  static bool UpdatesFromFydeOSGallery(const Extension* extension);
+  // ---***FYDEOS END***---
+
   // Returns the About Page for this extension.
   static const GURL& GetAboutPage(const Extension* extension);
 

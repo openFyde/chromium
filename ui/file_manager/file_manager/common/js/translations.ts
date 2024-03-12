@@ -182,6 +182,8 @@ export function getRootTypeLabel(locationInfo: EntryLocation) {
     case VolumeManagerCommon.RootType.SMB:
     case VolumeManagerCommon.RootType.GUEST_OS:
       return volumeInfoLabel;
+    case VolumeManagerCommon.RootType.FYDEDROP:
+      return str('FYDEDROP_ROOT_LABEL');
     default:
       console.error('Unsupported root type: ' + locationInfo.rootType);
       return volumeInfoLabel;

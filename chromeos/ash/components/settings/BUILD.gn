@@ -14,6 +14,7 @@ component("settings") {
     "//base:i18n",
     "//chromeos/ash/components/login/login_state",
     "//third_party/icu",
+    "//fydeos/switches",
   ]
   sources = [
     "cros_settings_names.cc",

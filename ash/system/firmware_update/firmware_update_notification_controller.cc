@@ -77,6 +77,9 @@ bool ShouldShowNotification() {
       return false;
     case user_manager::USER_TYPE_REGULAR:
     case user_manager::USER_TYPE_CHILD:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
       return true;
   }
 }

@@ -28,6 +28,8 @@ export const EntryType = {
 
   // Root for the Recent.
   RECENT: 'RECENT',
+
+  FYDEDROP: 'FYDEDROP',
 };
 
 /**

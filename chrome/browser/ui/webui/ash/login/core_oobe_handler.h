@@ -126,6 +126,9 @@ class CoreOobeHandler : public BaseWebUIHandler,
   // Handles demo mode setup for tests. Accepts 'online' and 'offline' as
   // `demo_config`.
   void HandleUpdateOobeUIState(int state);
+
+  void HandlePlayStartupSound();
+
   // When keyboard_utils.js arrow key down event is reached, raise it
   // to tab/shift-tab event.
   void HandleRaiseTabKeyEvent(bool reverse);

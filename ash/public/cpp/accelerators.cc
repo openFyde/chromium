@@ -139,6 +139,7 @@ const AcceleratorData kAcceleratorData[] = {
      AcceleratorAction::kToggleCapsLock},
     {true, ui::VKEY_V, ui::EF_COMMAND_DOWN,
      AcceleratorAction::kToggleClipboardHistory},
+    {true, ui::VKEY_C, ui::EF_CONTROL_DOWN, AcceleratorAction::kToggleFydeosAssistant},
     {true, ui::VKEY_V, ui::EF_SHIFT_DOWN | ui::EF_COMMAND_DOWN,
      AcceleratorAction::kPasteClipboardHistoryPlainText},
     {true, ui::VKEY_VOLUME_MUTE, ui::EF_NONE, AcceleratorAction::kVolumeMute},

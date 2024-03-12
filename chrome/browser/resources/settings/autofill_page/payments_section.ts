@@ -32,6 +32,7 @@ import {focusWithoutInk} from 'chrome://resources/js/focus_without_ink.js';
 import {OpenWindowProxyImpl} from 'chrome://resources/js/open_window_proxy.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
+import {BaseMixin} from '../base_mixin.js';
 import {loadTimeData} from '../i18n_setup.js';
 import {MetricsBrowserProxyImpl, PrivacyElementInteractions} from '../metrics_browser_proxy.js';
 import {SettingsSimpleConfirmationDialogElement} from '../simple_confirmation_dialog.js';
@@ -76,7 +77,7 @@ export interface SettingsPaymentsSectionElement {
   };
 }
 
-const SettingsPaymentsSectionElementBase = I18nMixin(PolymerElement);
+const SettingsPaymentsSectionElementBase = I18nMixin(BaseMixin(PolymerElement));
 
 export class SettingsPaymentsSectionElement extends
     SettingsPaymentsSectionElementBase {
@@ -280,6 +281,16 @@ export class SettingsPaymentsSectionElement extends
 
     // Record that the user opened the payments settings.
     chrome.metricsPrivate.recordUserAction('AutofillCreditCardsViewed');
+
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      const id = 'manageLink';
+      const node = this.$$(`#${id}`) as HTMLElement;
+      if (node) {
+        node.style.display = 'none';
+      }
+    }, 0);
   }
 
   override disconnectedCallback() {

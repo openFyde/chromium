@@ -184,6 +184,12 @@
 #include "ui/base/ime/ash/input_method_manager.h"
 #include "ui/base/ime/ash/input_method_util.h"
 #include "url/gurl.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/prefs/fydeos_prefs.h"
+#include "components/omnibox/browser/omnibox_prefs.h"
+#include "components/embedder_support/pref_names.h"
+//---***FYDEOS END***---
 
 #undef ENABLED_VLOG_LEVEL
 #define ENABLED_VLOG_LEVEL 1
@@ -399,6 +405,9 @@ bool IsRunningTest() {
 
 bool IsOnlineSignin(const UserContext& user_context) {
   return user_context.GetAuthFlow() == UserContext::AUTH_FLOW_GAIA_WITH_SAML ||
+  //---***FYDEOS BEGIN***---
+         user_context.GetAuthFlow() == UserContext::AUTH_FLOW_FYDE_ONLINE ||
+  //---***FYDEOS END***---
          user_context.GetAuthFlow() == UserContext::AUTH_FLOW_GAIA_WITHOUT_SAML;
 }
 
@@ -426,8 +435,11 @@ policy::MinimumVersionPolicyHandler* GetMinimumVersionPolicyHandler() {
       ->GetMinimumVersionPolicyHandler();
 }
 
-void OnPrepareTpmDeviceFinished() {
+void OnPrepareTpmDeviceFinished(bool tpm_fallback_not_necessary) {
   BootTimesRecorder::Get()->AddLoginTimeMarker("TPMOwn-End", false);
+  if (tpm_fallback_not_necessary) {
+    fydeos::prefs::SetNotNecessaryForceTpmFallback(g_browser_process->local_state());
+  }
 }
 
 void SaveSyncTrustedVaultKeysToProfile(
@@ -778,6 +790,7 @@ void UserSessionManager::StartSession(
   start_session_type_ = start_session_type;
 
   VLOG(1) << "Starting user session.";
+  fydeos::switches::ToggleFydeAccountFlagByAccountId(user_context.GetAccountId());
   PreStartSession(start_session_type);
   CreateUserSession(user_context, has_auth_cookies);
 
@@ -884,6 +897,12 @@ void UserSessionManager::InitNonKioskExtensionFeaturesSessionType(
     return;
   }
 
+//---***FYDEOS BEGIN***---
+  if (user->IsFydeExtendAccountUser())
+    extensions::SetCurrentFeatureSessionType(extensions::mojom::FeatureSessionType::kRegular);
+  else
+//---***FYDEOS END***---
+
   extensions::SetCurrentFeatureSessionType(
       user->HasGaiaAccount() ? extensions::mojom::FeatureSessionType::kRegular
                              : extensions::mojom::FeatureSessionType::kUnknown);
@@ -896,6 +915,11 @@ void UserSessionManager::SetFirstLoginPrefs(
   VLOG(1) << "Setting first login prefs";
   InitLocaleAndInputMethodsForNewUser(this, profile, public_session_locale,
                                       public_session_input_method);
+
+  if (profile->IsFydeProfile()) {
+    profile->GetPrefs()->SetBoolean(omnibox::kDocumentSuggestEnabled, false);
+    profile->GetPrefs()->SetBoolean(embedder_support::kAlternateErrorPagesEnabled, false);
+  }
 
   // Turn on the feature of the low battery sound for all users on the device
   // when a new user login.
@@ -1074,6 +1098,7 @@ bool UserSessionManager::RestartToApplyPerSessionFlagsIfNeed(
   LOG(WARNING) << "Restarting to apply per-session flags...";
 
   update.UpdateSessionManager();
+  AppendAccountSwitchesIfNeed(user_manager::UserManager::Get()->GetActiveUser()->GetAccountId());
   attempt_restart_closure_.Run();
   return true;
 }
@@ -1219,6 +1244,9 @@ void UserSessionManager::OnUsersSignInConstraintsChanged() {
   for (auto* user : logged_in_users) {
     if (user->GetType() != user_manager::USER_TYPE_REGULAR &&
         user->GetType() != user_manager::USER_TYPE_GUEST &&
+        user->GetType() != user_manager::USER_TYPE_FLINT_ACCOUNT &&
+        user->GetType() != user_manager::USER_TYPE_FYDE_ACCOUNT &&
+        user->GetType() != user_manager::USER_TYPE_FYDE_CHILD &&
         user->GetType() != user_manager::USER_TYPE_CHILD) {
       continue;
     }
@@ -1250,7 +1278,7 @@ void UserSessionManager::CreateUserSession(const UserContext& user_context,
   StoreUserContextDataBeforeProfileIsCreated();
   session_manager::SessionManager::Get()->CreateSession(
       user_context_.GetAccountId(), user_context_.GetUserIDHash(),
-      user_context.GetUserType() == user_manager::USER_TYPE_CHILD);
+      user_context.GetUserType() == user_manager::USER_TYPE_CHILD || user_context.GetUserType() == user_manager::USER_TYPE_FYDE_CHILD);
 }
 
 void UserSessionManager::PreStartSession(StartSessionType start_session_type) {
@@ -1598,9 +1626,9 @@ void UserSessionManager::InitProfilePreferences(
     }
 
     user = user_manager->FindUser(user_context.GetAccountId());
-    bool is_child = user->GetType() == user_manager::USER_TYPE_CHILD;
+    bool is_child = user->GetType() == user_manager::USER_TYPE_CHILD || user->GetType() == user_manager::USER_TYPE_FYDE_CHILD;
     DCHECK(is_child ==
-           (user_context.GetUserType() == user_manager::USER_TYPE_CHILD));
+           (user_context.GetUserType() == user_manager::USER_TYPE_CHILD || user->GetType() == user_manager::USER_TYPE_FYDE_CHILD));
 
     signin::Tribool is_under_advanced_protection = signin::Tribool::kUnknown;
     if (IsOnlineSignin(user_context)) {
@@ -1666,6 +1694,10 @@ void UserSessionManager::UserProfileInitialized(Profile* profile,
 
     } else if (!in_session_password_change_feature_enabled ||
                user_context_.GetAuthFlow() ==
+//---***FYDEOS BEGIN***---
+                   UserContext::AUTH_FLOW_FYDE_ONLINE ||
+							 user_context_.GetAuthFlow() ==
+//---***FYDEOS END***---
                    UserContext::AUTH_FLOW_GAIA_WITHOUT_SAML) {
       // These attributes are no longer relevant and should be deleted if
       // either a) the in-session password change feature is no longer enabled
@@ -1815,7 +1847,9 @@ void UserSessionManager::FinalizePrepareProfile(Profile* profile) {
 
     VLOG(1) << "Clearing all secrets";
     user_context_.ClearSecrets();
-    if (user->GetType() == user_manager::USER_TYPE_CHILD) {
+    // ---***FYDEOS BEGIN***---
+    if (user->GetType() == user_manager::USER_TYPE_CHILD || user->GetType() == user_manager::USER_TYPE_FYDE_CHILD) {
+    // ---***FYDEOS END***---
       if (base::FeatureList::IsEnabled(
               ::features::kDMServerOAuthForChildUser)) {
         VLOG(1) << "Waiting for child policy refresh before showing session UI";
@@ -2232,7 +2266,13 @@ void UserSessionManager::RestorePendingUserSessions() {
         user_manager::UserManager::Get()->FindUser(account_id);
     UserContext user_context =
         user ? UserContext(*user)
-             : UserContext(user_manager::UserType::USER_TYPE_REGULAR,
+//---***FYDEOS BEGIN***---
+             : UserContext(account_id.GetAccountType() == AccountType::FYDE_ACCOUNT ?
+               user_manager::UserType::USER_TYPE_FYDE_ACCOUNT :
+               account_id.GetAccountType() == AccountType::FLINT_ACCOUNT ?
+               user_manager::UserType::USER_TYPE_FLINT_ACCOUNT :
+               user_manager::UserType::USER_TYPE_REGULAR,
+//---***FYDEOS END***---
                            account_id);
     user_context.SetUserIDHash(user_id_hash);
     user_context.SetIsUsingOAuth(false);
@@ -2339,6 +2379,9 @@ void UserSessionManager::DoBrowserLaunchInternal(Profile* profile,
   // Call this before `RestartToApplyPerSessionFlagsIfNeed()` in the login
   // process.
   BrowserDataMigratorImpl::ClearMigrationStep(g_browser_process->local_state());
+
+  fydeos::prefs::ClearRebootMarkPrefs(g_browser_process->local_state());
+  fydeos::prefs::ClearOneShotProfilePrefs(profile->GetPrefs());
 
   if (RestartToApplyPerSessionFlagsIfNeed(profile, false))
     return;
@@ -2559,6 +2602,16 @@ void UserSessionManager::SetSwitchesForUser(
   SessionManagerClient::Get()->SetFlagsForUser(
       cryptohome::CreateAccountIdentifierFromAccountId(account_id),
       all_switches);
+}
+
+void UserSessionManager::AppendAccountSwitchesIfNeed(const AccountId& account_id) {
+  std::vector<std::string> switches;
+  fydeos::switches::AppendAccountSwitchesIfNeed(user_manager::UserManager::Get()->GetActiveUser()->GetAccountId(), &switches);
+  if (switches.size() > 0) {
+    SetSwitchesForUser(user_manager::UserManager::Get()->GetActiveUser()->GetAccountId(),
+                       CommandLineSwitchesType::kSessionControl,
+                       switches);
+  }
 }
 
 void UserSessionManager::MaybeShowU2FNotification() {

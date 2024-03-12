@@ -42,6 +42,7 @@ group("js_modules") {
     ":holding_space_util",
     ":launch_param",
     ":list_thumbnail_loader",
+    ":fydedrop_view_controller",
     ":main_window_component",
     ":metadata_update_controller",
     ":mock_actions_model",
@@ -389,6 +390,7 @@ js_library("file_manager") {
     ":gear_menu_controller",
     ":launch_param",
     ":list_thumbnail_loader",
+    ":fydedrop_view_controller",
     ":main_window_component",
     ":metadata_update_controller",
     ":naming_controller",
@@ -568,6 +570,13 @@ js_library("holding_space_util") {
   deps = [
     "//ash/webui/common/resources:load_time_data.m",
     "//ui/file_manager/file_manager/common/js:volume_manager_types",
+  ]
+}
+
+js_library("fydedrop_view_controller") {
+  deps = [
+    ":directory_model",
+    "ui:fydedrop_view",
   ]
 }
 

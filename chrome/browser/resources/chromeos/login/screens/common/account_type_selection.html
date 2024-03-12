@@ -1,0 +1,73 @@
+<!-- Copyright 2022 Fyde Innovations. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file. -->
+
+<style include="oobe-dialog-host-styles cr-card-radio-group-styles">
+  @media screen and (max-width: 920px) {
+  :host {
+      --radio-button-height: 155px;
+    }
+  }
+  .logo.openfyde {
+    width: 132px;
+    height: 32px;
+  }
+  .logo.fydeos {
+    width: 42px;
+    height: 42px;
+  }
+</style>
+<oobe-adaptive-dialog id="accountTypeSelectionDialog" role="dialog">
+  <if expr="openfyde">
+    <img class="logo openfyde" slot="icon" srcset="images/openfyde_logo.png" />
+  </if>
+  <if expr="not openfyde">
+    <img class="logo fydeos" slot="icon"
+        srcset="../../images/fyde_logo_1x.png 1x,
+                ../../images/fyde_logo_2x.png 2x" />
+  </if>
+  <h1 slot="title">
+    [[i18nDynamic(locale, 'accountTypeSelectionTitle')]]
+  </h1>
+  <div slot="subtitle">
+    [[i18nDynamic(locale, 'accountTypeSelectionSubtitle')]]
+  </div>
+  <div slot="content" class="layout vertical landscape-vertical-centered">
+    <cr-radio-group id="accountType" selected="{{selectedAccountType_}}">
+      <cr-card-radio-button id="fydeButton" class="flex" name="fyde">
+        <div class="card-container">
+          <div class="card-content">
+            <div class="card-label">
+              [[i18nDynamic(locale, 'accountTypeSelectionFydeOSTitle')]]
+            </div>
+            <div class="card-text">
+              [[i18nDynamic(locale, 'accountTypeSelectionFydeOSSubtitle')]]
+            </div>
+          </div>
+        </div>
+      </cr-card-radio-button>
+      <cr-card-radio-button id="googleButton" class="flex" name="google">
+        <div class="card-container">
+          <div class="card-content">
+            <div class="card-label">
+              [[i18nDynamic(locale, 'accountTypeSelectionGoogleTitle')]]
+            </div>
+            <div class="card-text">
+              [[i18nDynamic(locale, 'accountTypeSelectionGoogleSubtitle')]]
+            </div>
+          </div>
+        </div>
+      </cr-card-radio-button>
+    </cr-radio-group>
+  </div>
+  <div slot="back-navigation" hidden="[[hideBackButton_]]">
+    <oobe-back-button id="account-type-selection-back-button"
+        on-click="onBackButtonClicked_">
+    </oobe-back-button>
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-next-button id="nextButton" class="focus-on-show"
+        on-click="onNextClicked_">
+    </oobe-next-button>
+  </div>
+</oobe-adaptive-dialog>

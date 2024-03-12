@@ -26,6 +26,7 @@ import {focusWithoutInk} from 'chrome://resources/js/focus_without_ink.js';
 import {OpenWindowProxyImpl} from 'chrome://resources/js/open_window_proxy.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
+import {BaseMixin} from '../base_mixin.js';
 import {FocusConfig} from '../focus_config.js';
 import {HatsBrowserProxyImpl, SecurityPageInteraction} from '../hats_browser_proxy.js';
 import {loadTimeData} from '../i18n_setup.js';
@@ -59,7 +60,7 @@ export interface SettingsSecurityPageElement {
 }
 
 const SettingsSecurityPageElementBase =
-    HelpBubbleMixin(RouteObserverMixin(I18nMixin(PrefsMixin(PolymerElement))));
+    HelpBubbleMixin(RouteObserverMixin(I18nMixin(PrefsMixin(BaseMixin(PolymerElement)))));
 
 export class SettingsSecurityPageElement extends
     SettingsSecurityPageElementBase {
@@ -169,6 +170,14 @@ export class SettingsSecurityPageElement extends
       },
 
       showDisableSafebrowsingDialog_: Boolean,
+
+      shouldHideGoogle_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
     };
   }
   private showChromeRootStoreCertificates_: boolean;
@@ -183,6 +192,8 @@ export class SettingsSecurityPageElement extends
   private showDisableSafebrowsingDialog_: boolean;
   private enableFriendlierSafeBrowsingSettings_: boolean;
   private enableHashPrefixRealTimeLookups_: boolean;
+
+  private shouldHideGoogle_: boolean;
 
   private browserProxy_: PrivacyPageBrowserProxy =
       PrivacyPageBrowserProxyImpl.getInstance();
@@ -290,17 +301,15 @@ export class SettingsSecurityPageElement extends
   }
 
   private getSafeBrowsingDisabledSubLabel_(): string {
-    return this.i18n(
-        this.enableFriendlierSafeBrowsingSettings_ ?
-            'safeBrowsingNoneDescUpdated' :
-            'safeBrowsingNoneDesc');
+    return this.enableFriendlierSafeBrowsingSettings_ ?
+        this.i18n('safeBrowsingNoneDescUpdated') :
+        this.safeBrowsingNoneDesc_();
   }
 
   private getSafeBrowsingEnhancedSubLabel_(): string {
-    return this.i18n(
-        this.enableFriendlierSafeBrowsingSettings_ ?
-            'safeBrowsingEnhancedDescUpdated' :
-            'safeBrowsingEnhancedDesc');
+    return this.enableFriendlierSafeBrowsingSettings_ ?
+        this.i18n('safeBrowsingEnhancedDescUpdated') :
+        this.safeBrowsingEnhancedDesc_();
   }
 
   private getSafeBrowsingStandardSubLabel_(): string {
@@ -338,7 +347,7 @@ export class SettingsSecurityPageElement extends
     if (this.prefs !== undefined) {
       const generatedPref = this.getPref('generated.password_leak_detection');
       if (this.getPref('profile.password_manager_leak_detection').value &&
-          !generatedPref.value && generatedPref.userControlDisabled) {
+          !generatedPref.value && generatedPref.userControlDisabled && !this.shouldHideGoogle_) {
         subLabel +=
             ' ' +  // Whitespace is a valid sentence separator w.r.t. i18n.
             this.i18n('passwordsLeakDetectionSignedOutEnabledDescription');
@@ -504,6 +513,29 @@ export class SettingsSecurityPageElement extends
     this.metricsBrowserProxy_.recordAction(
         confirmed ? 'SafeBrowsing.Settings.DisableSafeBrowsingDialogConfirmed' :
                     'SafeBrowsing.Settings.DisableSafeBrowsingDialogDenied');
+  }
+
+  maybeLastCollapseItemClass_() {
+    if (this.shouldHideGoogle_) {
+      return 'bullet-line last-collapse-item';
+    }
+    return 'bullet-line';
+  }
+
+  private safeBrowsingEnhancedDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingEnhancedFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingEnhancedDesc');
+    }
+  }
+
+  private safeBrowsingNoneDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingNoneFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingNoneDesc');
+    }
   }
 }
 

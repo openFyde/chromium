@@ -8,6 +8,7 @@ import("//extensions/buildflags/buildflags.gni")
 import("//ppapi/buildflags/buildflags.gni")
 import("//printing/buildflags/buildflags.gni")
 import("//third_party/protobuf/proto_library.gni")
+import("//fydeos/build/config/buildflags.gni")
 
 assert(enable_extensions)
 assert(is_chromeos)
@@ -390,7 +391,14 @@ source_set("chromeos") {
       "//components/session_manager/core",
       "//components/user_manager",
       "//ui/aura",
+      "//fydeos/switches/account/toggle:account_toggle",
+      "//fydeos/misc",
     ]
+    if (use_fydeos_license) {
+      deps += [
+        "//fydeos/license",
+      ]
+    }
   }
 
   if (is_chromeos_lacros) {

@@ -12,7 +12,7 @@ import {PersonalizationState} from '../personalization_state.js';
 import {isImageDataUrl, isNonEmptyArray} from '../utils.js';
 
 import {DefaultImageSymbol, kDefaultImageSymbol} from './constants.js';
-import {findAlbumById, isDefaultImage, isFilePath, isImageEqualToSelected} from './utils.js';
+import {findAlbumById, isDefaultImage, isFilePath, isImageEqualToSelected, isFydeImage} from './utils.js';
 import {WallpaperActionName} from './wallpaper_actions.js';
 import {DailyRefreshType, WallpaperState} from './wallpaper_state.js';
 

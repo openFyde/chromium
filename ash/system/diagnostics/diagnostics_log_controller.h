@@ -16,6 +16,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/shell_state.h"
+
 namespace ash {
 namespace diagnostics {
 
@@ -51,7 +54,8 @@ class ASH_EXPORT DiagnosticsLogController : SessionObserver {
   // GenerateSessionLogOnBlockingPool needs to be run on blocking
   // thread. Stores combined log at |save_file_path| and returns
   // whether file creation is successful.
-  bool GenerateSessionLogOnBlockingPool(const base::FilePath& save_file_path);
+  bool GenerateSessionLogOnBlockingPool(const base::FilePath& save_file_path,
+                                        const std::string& fydeos_system_info);
 
   // Ensures DiagnosticsLogController is configured to match the current
   // environment. To be called from DiagnosticsDialog::ShowDialog prior to the
@@ -84,6 +88,11 @@ class ASH_EXPORT DiagnosticsLogController : SessionObserver {
   // Removes directory at |path|.
   void RemoveDirectory(const base::FilePath& path);
 
+  void GetFydeOsHwtunerInfo();
+  void OnFydeOSHwtunerInfoReceived(absl::optional<fydeos::ash::ShellState> state);
+  bool FydeosCreateSystemInfoTempDirectory();
+  bool CompressSessionLog(const base::FilePath& file_path, const base::FilePath& dest);
+
   LoginStatus previous_status_;
   std::unique_ptr<DiagnosticsBrowserDelegate> delegate_;
   base::FilePath log_base_path_;
@@ -91,6 +100,11 @@ class ASH_EXPORT DiagnosticsLogController : SessionObserver {
   std::unique_ptr<NetworkingLog> networking_log_;
   std::unique_ptr<RoutineLog> routine_log_;
   std::unique_ptr<TelemetryLog> telemetry_log_;
+
+  std::string fydeos_hwtuner_info_;
+  std::string fydeos_system_info_;
+  base::FilePath fydeos_system_info_temp_path_;
+
   SEQUENCE_CHECKER(sequence_checker_);
 
   // Must be last.

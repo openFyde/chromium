@@ -42,6 +42,8 @@ class ErrorScreen : public BaseScreen,
   // Toggles the guest sign-in prompt.
   void AllowGuestSignin(bool allowed);
 
+  void AllowFydeLocalSignin(bool allowed);
+
   // Toggles the offline sign-in.
   static void AllowOfflineLogin(bool allowed);
 

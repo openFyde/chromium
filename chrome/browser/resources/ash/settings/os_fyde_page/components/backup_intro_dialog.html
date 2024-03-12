@@ -1,0 +1,77 @@
+<style include="settings-shared shared-style">
+  cr-dialog::part(dialog) {
+    width: 768px;
+  }
+  #dialog {
+    --cr-dialog-title-font-size: 28px;
+  }
+  #dialog [slot="title"],
+  #dialog [slot="body"],
+  #dialog [slot="button-container"] {
+    padding-inline-end: 64px;
+    padding-inline-start: 64px;
+  }
+  #container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .description {
+    color: var(--cr-secondary-text-color);
+    font-size: 13px;
+    line-height: 18px;
+  }
+  #illustration {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 180px;
+    margin: 36px 0 48px;
+    width: 448px;
+    align-self: center;
+    background-image: 
+        url(chrome://os-settings/images/backup_intro.png);
+  }
+  @media(prefers-color-scheme: dark) {
+    #illustration {
+      background-image: 
+          url(chrome://os-settings/images/backup_intro_dark.png);
+    }
+  }
+  #icon {
+    height: 32px;
+    width: 32px;
+    margin-top: calc(28px - var(--dialog-horizontal-padding));
+  }
+  #title {
+    margin-top: 41px;
+    line-height: 1;
+    margin-bottom: calc(14px - var(--cr-dialog-title-slot-padding-bottom, 16px));
+  }
+</style>
+<cr-dialog id="dialog">
+  <div slot="title">
+    <img id="icon" src="chrome://os-settings/images/icon_backup.png">
+    <div id="title">
+        $i18n{fydeosSettingsBackupIntroTitle}
+    </div>
+  </div>
+  <div slot="body">
+    <div id="container">
+      <div class="description">
+        <localized-link
+          localized-string="[[i18nAdvanced('fydeosSettingsBackupIntroText')]]">
+        </localized-link>
+      </div>
+      <div id="illustration"></div>
+    </div>
+  </div>
+  <div slot="button-container">
+    <cr-button id="cancel" class="cancel-button" on-click="onDialogCancel_">
+      $i18n{cancel}
+    </cr-button>
+    <cr-button id="confirm" class="action-button" on-click="onDialogConfirm_">
+      $i18n{next}
+    </cr-button>
+  </div>
+</cr-dialog>

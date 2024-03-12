@@ -505,6 +505,7 @@ component("base") {
     "//base/third_party/dynamic_annotations",
     "//build:branding_buildflags",
     "//build:chromeos_buildflags",
+    "//fydeos/build/config:buildflags",
     "//net",
     "//third_party/brotli:dec",
     "//third_party/icu",

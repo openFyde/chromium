@@ -167,6 +167,16 @@ scoped_refptr<base::RefCountedMemory> UserImageSource::GetUserImage(
   return GetUserImageInternal(account_id, -1);
 }
 
+user_manager::UserImage::ImageFormat UserImageSource::GetUserImageFormat(
+      const AccountId& account_id) {
+  const user_manager::User* user =
+      user_manager::UserManager::Get()->FindUser(account_id);
+  if (!user) {
+    return user_manager::UserImage::FORMAT_UNKNOWN;
+  }
+  return user->image_format();
+}
+
 UserImageSource::UserImageSource() {}
 
 UserImageSource::~UserImageSource() {}

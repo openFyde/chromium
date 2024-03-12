@@ -185,10 +185,13 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
+#include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_ui.h"
+#include "ash/webui/fyde_assistant_app_ui/url_constants.h"
 #include "ash/webui/camera_app_ui/url_constants.h"
 #include "ash/webui/file_manager/url_constants.h"
 #include "ash/webui/files_internals/url_constants.h"
 #include "ash/webui/help_app_ui/url_constants.h"
+#include "ash/webui/fyde_assistant_app_ui/url_constants.h"
 #include "ash/webui/multidevice_debug/url_constants.h"
 #include "build/config/chromebox_for_meetings/buildflags.h"
 #include "chrome/browser/ash/extensions/url_constants.h"
@@ -1142,6 +1145,7 @@ ChromeWebUIControllerFactory::GetListOfAcceptableURLs() {
     GURL(ash::kChromeUICameraAppURL),
     GURL(ash::kChromeUIFilesInternalsURL),
     GURL(ash::kChromeUIHelpAppURL),
+    GURL(ash::kChromeUIFydeAssistantAppURL),
     GURL(ash::multidevice::kChromeUIProximityAuthURL),
     GURL(chrome::kChromeUIAccountManagerErrorURL),
     GURL(chrome::kChromeUIAccountMigrationWelcomeURL),

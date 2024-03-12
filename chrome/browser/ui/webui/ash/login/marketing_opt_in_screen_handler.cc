@@ -67,6 +67,10 @@ void MarketingOptInScreenHandler::DeclareLocalizedValues(
       IDS_MARKETING_OPT_IN_ACCESSIBILITY_NAV_BUTTON_SETTING_DESCRIPTION);
   builder->Add("finalA11yPageDoneButtonTitle",
                IDS_MARKETING_OPT_IN_ACCESSIBILITY_DONE_BUTTON);
+  // ---***FYDEOS BEGIN***---
+  builder->Add("fydeOSImprovementPlanOptionLabel",
+               IDS_MARKETING_OPT_IN_FYDEOS_IMPROVEMENT_PLAN);
+  // ---***FYDEOS END***---
 }
 
 void MarketingOptInScreenHandler::Show(bool opt_in_visible,

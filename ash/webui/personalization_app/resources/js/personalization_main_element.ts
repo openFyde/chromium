@@ -29,7 +29,7 @@ export class PersonalizationMainElement extends WithPersonalizationStore {
       shouldShowAmbientPreview_: {
         type: Boolean,
         value() {
-          return isAmbientModeAllowed() || isPersonalizationJellyEnabled();
+          return isAmbientModeAllowed();
         },
       },
       isRgbKeyboardSupported_: {

@@ -91,6 +91,14 @@ void AccountManagerPolicyController::RemoveSecondaryAccounts(
       continue;
     }
 
+    // ---***FYDEOS BEGIN***---
+    if (device_account_id_.GetAccountType() == AccountType::FYDE_ACCOUNT &&
+        account.key.id() == device_account_id_.GetFydeId()) {
+      // Do not remove the Device Account.
+      continue;
+    }
+    // ---***FYDEOS END***---
+
     // This account is a Secondary Gaia account. Remove it.
     account_manager_->RemoveAccount(account.key);
   }

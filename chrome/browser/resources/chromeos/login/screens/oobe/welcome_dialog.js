@@ -269,6 +269,10 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
    * @suppress {missingProperties}
    */
   setVideoPlay_(play) {
+    if (this.$.video) {
+      this.$.video.play();
+      return;
+    }
     // Postpone the call until OOBE is loaded, if necessary.
     if (!this.isOobeLoaded_) {
       document.addEventListener(
@@ -337,7 +341,8 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
    * Determines if AnimationSlot is needed for specific flow
    */
   showAnimationSlot() {
-    return !this.isSimon_;
+    // return !this.isSimon_;
+    return false;
   }
 }
 

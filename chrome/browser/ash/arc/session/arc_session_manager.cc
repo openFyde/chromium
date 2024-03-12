@@ -73,6 +73,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/content_features.h"
 #include "ui/display/types/display_constants.h"
+#include "fydeos/switches/arc/arc_switches.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -134,6 +135,10 @@ void MaybeUpdateOptInCancelUMA(const ArcSupportHost* support_host) {
 // switch kArcForceShowPlayStoreApp.
 bool ShouldLaunchPlayStoreApp(Profile* profile,
                               bool oobe_or_assistant_wizard_start) {
+  if (profile->IsFydeProfile()) {
+    return false;
+  }
+
   if (!IsPlayStoreAvailable()) {
     return false;
   }
@@ -596,7 +601,13 @@ void ArcSessionManager::OnProvisioningFinished(
   // and |State::Active| is not guaranteed to be set here.
   // prefs::kArcDataRemoveRequested also can be active for now.
 
-  const bool provisioning_successful = result.is_success();
+  // ---***FYDEOS BEGIN***---
+  const bool is_fyde_profile = profile_ && profile_->IsFydeProfile();
+  const bool provisioning_successful = result.is_success() || is_fyde_profile;
+  if (is_fyde_profile) {
+    provisioning_reported_ = false;
+  }
+  // ---***FYDEOS END***---
   if (provisioning_reported_) {
     // We don't expect success ArcProvisioningResult to be reported twice
     // or reported after an error.
@@ -612,8 +623,10 @@ void ArcSessionManager::OnProvisioningFinished(
     scoped_opt_in_tracker_->TrackError();
   }
 
+  // ---***FYDEOS BEGIN***---
   if (result.general_error() ==
-      mojom::GeneralSignInError::CHROME_SERVER_COMMUNICATION_ERROR) {
+      mojom::GeneralSignInError::CHROME_SERVER_COMMUNICATION_ERROR && !is_fyde_profile) {
+  // ---***FYDEOS END***---
     // TODO(poromov): Consider ARC PublicSession offline mode.
     // Currently ARC session will be exited below, while the main user session
     // will be kept alive without Android apps.
@@ -638,6 +651,8 @@ void ArcSessionManager::OnProvisioningFinished(
                              provisioning_successful, profile_);
     UpdateProvisioningStatusUMA(GetProvisioningStatus(result), profile_);
 
+    // ---***FYDEOS BEGIN***---
+  if (!is_fyde_profile) {
     if (result.gms_sign_in_error()) {
       UpdateGMSSignInErrorUMA(result.gms_sign_in_error().value(), profile_);
     } else if (result.gms_check_in_error()) {
@@ -646,6 +661,8 @@ void ArcSessionManager::OnProvisioningFinished(
       UpdateCloudProvisionFlowErrorUMA(
           result.cloud_provision_flow_error().value(), profile_);
     }
+  }
+    // ---***FYDEOS END***---
 
     if (!provisioning_successful) {
       UpdateOptInCancelUMA(OptInCancelReason::PROVISIONING_FAILED);
@@ -989,7 +1006,7 @@ void ArcSessionManager::AllowActivation() {
 
   activation_is_allowed_ = true;
   if (state_ == State::READY) {
-    StartArcForRegularBoot();
+    StartArcForRegularBootAfterSeconds(fydeos::switches::GetFydeOSArcDelay());
   }
 }
 
@@ -1134,7 +1151,7 @@ bool ArcSessionManager::RequestEnableImpl() {
   if (skip_terms_of_service_negotiation) {
     state_ = State::READY;
     if (activation_is_allowed_) {
-      StartArcForRegularBoot();
+      StartArcForRegularBootAfterSeconds(fydeos::switches::GetFydeOSArcDelay());
     } else {
       DCHECK(!activation_necessity_checker_);
       activation_necessity_checker_ =
@@ -1463,6 +1480,21 @@ void ArcSessionManager::StartArc() {
       profile_->GetProfilePolicyConnector()->IsManaged();
 
   arc_session_runner_->RequestUpgrade(std::move(params));
+}
+
+void ArcSessionManager::StartArcForRegularBootAfterSeconds(int64_t sec) {
+  if (sec == 0) {
+    StartArcForRegularBoot();
+    return;
+  }
+  if (sec > 999) {
+    return;
+  }
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+          FROM_HERE,
+          base::BindOnce(&ArcSessionManager::StartArcForRegularBoot,
+            weak_ptr_factory_.GetWeakPtr()),
+          base::Seconds(sec));
 }
 
 void ArcSessionManager::StartArcForRegularBoot() {

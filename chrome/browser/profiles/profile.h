@@ -435,6 +435,10 @@ class Profile : public content::BrowserContext {
   // Returns whether it is a system profile.
   bool IsSystemProfile() const;
 
+  //---***FYDEOS BEGIN***---
+  virtual bool IsFydeProfile() const;
+  //---***FYDEOS END***---
+
 #if BUILDFLAG(IS_CHROMEOS_LACROS)
   // Returns `true` if this is the first/initial Profile path in Lacros, and -
   // for regular sessions, if this Profile has the Device Account logged in.
@@ -522,6 +526,12 @@ class Profile : public content::BrowserContext {
   }
 
  protected:
+  //---***FYDEOS BEGIN***---
+  void set_is_fyde_profile(bool is_fyde_profile) {
+    is_fyde_profile_ = is_fyde_profile;
+  }
+  //---***FYDEOS END***---
+
   // Creates an OffTheRecordProfile which points to this Profile.
   static std::unique_ptr<Profile> CreateOffTheRecordProfile(
       Profile* parent,
@@ -562,6 +572,10 @@ class Profile : public content::BrowserContext {
   absl::optional<raw_ptr<ThemeService>> theme_service_;
   absl::optional<raw_ptr<TemplateURLService>> template_url_service_;
   absl::optional<raw_ptr<InstantService>> instant_service_;
+
+  //---***FYDEOS BEGIN***---
+  bool is_fyde_profile_;
+  //---***FYDEOS END***---
 
   base::ObserverList<ProfileObserver,
                      /*check_empty=*/true,

@@ -155,8 +155,14 @@ std::string GetPrimaryAccountTypeString() {
       return "public_account";
     case user_manager::USER_TYPE_KIOSK_APP:
       return "kiosk_app";
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+      return "fyde_account";
+    case user_manager::USER_TYPE_FYDE_CHILD:
+      return "fyde_child";
     case user_manager::USER_TYPE_CHILD:
       return "child";
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+      return "flint_account";
     case user_manager::USER_TYPE_ARC_KIOSK_APP:
       return "arc_kiosk_app";
     case user_manager::USER_TYPE_WEB_KIOSK_APP:

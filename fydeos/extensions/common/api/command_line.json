@@ -1,0 +1,80 @@
+// Copyright 2018 The FlintOS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Author: Simon Tsao(yang@flintos.io)
+
+[
+  {
+    "namespace": "commandLine",
+    "description": "chrome.commandLine functions",
+    "compiler_options": {
+      "implemented_in": "fydeos/extensions/browser/api/command_line/command_line_api.h"
+    },
+    "types":[
+      {
+        "id": "SwitchInfo",
+        "type": "object",
+        "description": "The switch and it's value",
+        "properties": {
+          "name": { "type": "string", "description": "The switch's name"},
+          "value": { "type":"string", "optional":true , "description":"The switch's value"}
+        }
+      }
+    ],
+    "functions": [
+      {
+        "name": "hasSwitch",
+        "type": "function",
+        "description": "Returns whether a switch is specified on the command line when launching Chrome.",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "string",
+            "description": "The name of a command line switch, without leading \"--\", such as \"enable-experimental-extension-apis\"."
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "boolean",
+                "description": "Whether the switch is specified on the command line."
+              },
+              {
+                "name": "value",
+                "type": "string",
+                "description": "If the switch is exist and has value, the value will be here"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "removeSwitch",
+        "type": "function",
+        "description": "Remove the switch from current process command line",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "string",
+            "description": "The switch want to be removed."
+          },
+          {"type": "function", "name": "callback", "optional": true, "parameters": []}
+        ]
+      },
+      {
+        "name": "addSwitch",
+        "type": "function",
+        "description": "Add one switch and assignment one value to it, if the switch is exist, will reassignment new value to it",
+        "parameters": [
+          {
+            "name": "switchInfo",
+            "$ref": "SwitchInfo"
+          },
+          {"type": "function", "name": "callback", "optional": true, "parameters": []}
+        ]
+      }
+    ]
+  }
+]

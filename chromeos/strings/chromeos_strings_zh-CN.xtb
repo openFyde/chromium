@@ -279,7 +279,7 @@
 <translation id="315116470104423982">移动数据</translation>
 <translation id="3156846309055100599">正在扫描第 <ph name="PAGE_NUMBER" /> 页…</translation>
 <translation id="315738237743207937">检测到强制门户</translation>
-<translation id="3160172848211257835">发送<ph name="BEGIN_LINK1" />系统和应用信息<ph name="END_LINK1" />以及<ph name="BEGIN_LINK2" />指标<ph name="END_LINK2" /></translation>
+<!-- <translation id="3160172848211257835">发送<ph name="BEGIN_LINK1" />系统和应用信息<ph name="END_LINK1" />以及<ph name="BEGIN_LINK2" />指标<ph name="END_LINK2" /></translation> -->
 <translation id="3170673040743561620">将您的文件放置在扫描仪上</translation>
 <translation id="3174321110679064523">“黎明到黄昏”壁纸</translation>
 <translation id="3188257591659621405">我的文件</translation>

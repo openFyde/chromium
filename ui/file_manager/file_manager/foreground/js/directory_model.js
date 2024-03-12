@@ -444,6 +444,7 @@ export class DirectoryModel extends EventTarget {
   isCurrentRootVolumeType_(volumeType) {
     const rootType = this.getCurrentRootType();
     return rootType != null && !isRecentRootType(rootType) &&
+        rootType != VolumeManagerCommon.RootType.FYDEDROP &&
         VolumeManagerCommon.getVolumeTypeFromRootType(rootType) === volumeType;
   }
 
@@ -1393,6 +1394,20 @@ export class DirectoryModel extends EventTarget {
    *     successfully.
    */
   activateDirectoryEntry(dirEntry, opt_callback) {
+    //---***FYDEOS BEGIN***---
+    let isFydeDrop = false;
+    if (isFakeEntry(dirEntry)) {
+      const fakeEntry = /** @type {!FakeEntry} */ (dirEntry);
+      if (fakeEntry.rootType === VolumeManagerCommon.RootType.FYDEDROP) {
+        isFydeDrop = true;
+      }
+    }
+    if (isFydeDrop) {
+      dispatchSimpleEvent(this, 'fydedrop-started');
+    } else {
+      dispatchSimpleEvent(this, 'fydedrop-stopped');
+    }
+    //---***FYDEOS END***---
     const currentDirectoryEntry = this.getCurrentDirEntry();
     if (currentDirectoryEntry && isSameEntry(dirEntry, currentDirectoryEntry)) {
       // On activating the current directory, clear the selection on the

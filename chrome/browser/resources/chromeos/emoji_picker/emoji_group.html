@@ -307,6 +307,7 @@
   </template>
   <template is="dom-if" if="[[!isVisual(category)]]">
       <template is="dom-repeat" items="[[data]]">
+       <template is="dom-if" if="[[shouldShowEmoji(category, item)]]">
         <div class="emoji-button-container">
         <button id="emoji-[[index]]" data-index$="[[index]]"
           class$="emoji-button [[getEmojiButtonClassName(item)]]"
@@ -323,6 +324,7 @@
           </emoji-variants>
         </template>
         </div>
+       </template>
       </template>
   </template>
   <paper-tooltip id='tooltip' fit-to-visible-bounds offset="8">

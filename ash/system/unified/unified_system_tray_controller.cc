@@ -70,6 +70,10 @@
 #include "ash/system/unified/unified_system_tray_model.h"
 #include "ash/system/unified/unified_system_tray_view.h"
 #include "ash/system/unified/user_chooser_detailed_view_controller.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h"
+#include "fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.h"
+// ---***FYDEOS END***---
 #include "ash/wm/lock_state_controller.h"
 #include "ash/wm/tablet_mode/tablet_mode_controller.h"
 #include "base/functional/bind.h"
@@ -290,6 +294,15 @@ void UnifiedSystemTrayController::HandlePowerAction() {
     CloseBubble();
   }
 }
+
+//---***FYDEOS BEGIN***---
+void UnifiedSystemTrayController::HandleRebootAction() {
+  base::RecordAction(base::UserMetricsAction("Tray_Reboot"));
+  Shell::Get()->lock_state_controller()->RequestShutdown(
+      ShutdownReason::TRAY_REBOOT_BUTTON);
+  CloseBubble();
+}
+//---***FYDEOS END***---
 
 void UnifiedSystemTrayController::HandlePageSwitchAction(int page) {
   // TODO(amehfooz) Record Pagination Metrics here.
@@ -760,6 +773,13 @@ void UnifiedSystemTrayController::InitFeatureTiles() {
     create_tile(std::make_unique<AutozoomFeaturePodController>(),
                 feature_pod_controllers_, tiles);
   }
+
+  create_tile(std::make_unique<RotateScreenFeaturePodController>(),
+              feature_pod_controllers_, tiles);
+
+  create_tile(std::make_unique<SwitchTabletLabtopFeaturePodController>(this),
+              feature_pod_controllers_, tiles);
+
   create_tile(std::make_unique<VPNFeaturePodController>(this),
               feature_pod_controllers_, tiles);
   create_tile(std::make_unique<PrivacyScreenFeaturePodController>(),

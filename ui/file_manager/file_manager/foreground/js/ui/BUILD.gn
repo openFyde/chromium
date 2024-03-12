@@ -32,6 +32,7 @@ group("js_modules") {
     ":files_confirm_dialog",
     ":files_menu",
     ":gear_menu",
+    ":fydedrop_view",
     ":import_crostini_image_dialog",
     ":install_linux_package_dialog",
     ":list_container",
@@ -247,6 +248,7 @@ js_library("file_manager_ui") {
     ":files_confirm_dialog",
     ":files_menu",
     ":gear_menu",
+    ":fydedrop_view",
     ":import_crostini_image_dialog",
     ":install_linux_package_dialog",
     ":list_container",
@@ -381,6 +383,12 @@ js_library("files_menu") {
 js_library("gear_menu") {
   deps = [
     "//ash/webui/common/resources:assert",
+    "//ash/webui/common/resources:load_time_data.m",
+  ]
+}
+
+js_library("fydedrop_view") {
+  deps = [
     "//ash/webui/common/resources:load_time_data.m",
   ]
 }

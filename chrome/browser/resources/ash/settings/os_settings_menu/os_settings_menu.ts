@@ -124,6 +124,11 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
         value: `/${routesMojom.ABOUT_CHROME_OS_SECTION_PATH}`,
       },
 
+      fydeosMenuItemPath_: {
+        type: String,
+        value: `/${routesMojom.FYDE_OS_SECTION_PATH}`,
+      },
+
       isRevampWayfindingEnabled_: {
         type: Boolean,
         value: () => {

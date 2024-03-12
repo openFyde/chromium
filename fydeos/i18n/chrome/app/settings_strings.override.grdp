@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/settings_strings.grdp, included from generated_resources.grd -->
+
+<grit-part>
+
+  <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Chrome Web Store.">
+    Open App Store
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_BROWSER_VERSION" desc="The text label describing the version of the browser, example: Version 57.0.2937.0 (Developer Build) unknown (64-bit)">
+    Version <ph name="PRODUCT_VERSION">$1<ex>15.0.865.0</ex></ph> <ph name="PRODUCT_MODIFIER">$2</ph> <ph name="PRODUCT_VERSION_BITS">$3</ph>
+  </message>
+  <if expr="chromeos_ash">
+    <if expr="openfyde">
+      <message name="IDS_SETTINGS_LANGUAGES_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open languages settings in Chrome OS.">
+        Manage languages in openFyde settings
+      </message>
+    </if>
+    <if expr="not openfyde">
+      <message name="IDS_SETTINGS_LANGUAGES_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open languages settings in Chrome OS.">
+        Manage languages in FydeOS settings
+      </message>
+    </if>
+  </if>
+  <message name="IDS_SETTINGS_CHANGE_PICTURE_PROFILE_PHOTO" desc="The text on the FydeOS profile photo of the user.">
+    FydeOS Profile photo
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PDF_DOWNLOAD_PDFS" desc="Label for downloading PDF documents instead of automatically opening them in Chromium.">
+    Download PDF files instead of automatically opening them in Chromium
+  </message>
+  <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESC_COOKIES_PAGE" desc="On the cookies page, the secondary text next to the checkbox that enables prediction of network actions.">
+    Preloads pages that Chromium thinks you might visit. To do this, Chromium may use cookies, if you allow cookies, and may encrypt and send pages to hide your identity from sites.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A description explaining other forms of activity for signed in users.">
+    Clears history and autocompletions in the search box.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_WITH_EXCEPTION" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites.">
+    Signs you out of most sites.
+  </message>
+
+</grit-part>

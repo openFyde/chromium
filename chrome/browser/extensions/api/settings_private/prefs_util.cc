@@ -750,6 +750,9 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[::ash::prefs::kIsolatedWebAppsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
+  (*s_allowlist)[arc::prefs::kArcSignedIn] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+
   // Ambient Mode.
   (*s_allowlist)[ash::ambient::prefs::kAmbientModeEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -1075,10 +1078,8 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[proxy_config::prefs::kProxy] =
       settings_api::PrefType::PREF_TYPE_DICTIONARY;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   (*s_allowlist)[::prefs::kUserFeedbackAllowed] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
   // Media Remoting settings.
   (*s_allowlist)[media_router::prefs::kMediaRouterMediaRemotingEnabled] =

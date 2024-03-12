@@ -62,7 +62,7 @@ class MarketingOptInScreen : public BaseScreen {
   ~MarketingOptInScreen() override;
 
   // On "Get Started" button pressed.
-  void OnGetStarted(bool chromebook_email_opt_in);
+  void OnGetStarted(bool chromebook_email_opt_in, bool fydeos_improvement_plan_opt_in);
 
   void SetA11yButtonVisibilityForTest(bool shown);
 

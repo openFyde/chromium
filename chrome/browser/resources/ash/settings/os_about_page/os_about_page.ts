@@ -43,6 +43,9 @@ import {RouteOriginMixin} from '../route_origin_mixin.js';
 import {Route, Router, routes} from '../router.js';
 
 import {AboutPageBrowserProxy, AboutPageBrowserProxyImpl, AboutPageUpdateInfo, BrowserChannel, browserChannelToI18nId, RegulatoryInfo, TpmFirmwareUpdateStatusChangedEvent, UpdateStatus, UpdateStatusChangedEvent} from './about_page_browser_proxy.js';
+import {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './popup_license_window.js';
+import {FydeOSBoardNameTitleMap, FydeOSBoardNameReleaseNameMap} from './fydeos_board_name.js';
+
 import {getTemplate} from './os_about_page.html.js';
 
 declare global {
@@ -57,6 +60,18 @@ interface OsAboutPageElement {
     'product-logo': HTMLImageElement,
   };
 }
+
+// fydeos/constants/fydeos_constants.h
+const LICENSE_STATE_TYPE = {
+  kUnspecified: 0,
+  kUnlicensed: 1,
+  kLicenseForYouTrial: 2 ,
+  kLicenseForYouValid: 3,
+  kLicenseForYouExpired: 4,
+  kLicenseForEnterpriseTrial: 5,
+  kLicenseForEnterpriseValid: 6,
+  kLicenseForEnterpriseExpired: 7,
+};
 
 const OsAboutPageBase = DeepLinkingMixin(
     RouteOriginMixin(I18nMixin(WebUiListenerMixin(PolymerElement))));
@@ -95,6 +110,7 @@ class OsAboutPageElement extends OsAboutPageBase {
           powerwash: false,
           status: UpdateStatus.UPDATED,
         },
+        observer: 'handleUpdateStatusHttpFailed_',
       },
 
       /**
@@ -190,7 +206,18 @@ class OsAboutPageElement extends OsAboutPageBase {
       showCheckUpdates_: {
         type: Boolean,
         computed: 'computeShowCheckUpdates_(' +
-            'currentUpdateStatusEvent_, hasCheckedForUpdates_, hasEndOfLife_)',
+            'currentUpdateStatusEvent_, hasCheckedForUpdates_, hasEndOfLife_, renewalStatus_)',
+      },
+
+      showFirmwareUpdatesApp_: {
+        type: Boolean,
+        value: false,
+      },
+
+      showRenewLearnMore_: {
+        type: Boolean,
+        value: false,
+        computed: 'computeShowRenewLearnMore_(renewalStatus_)',
       },
 
       showUpdateWarningDialog_: {
@@ -239,6 +266,31 @@ class OsAboutPageElement extends OsAboutPageBase {
         },
         readOnly: true,
       },
+      // ---***FYDEOS BEGIN***---
+      isOwner_: {
+        type: Boolean,
+        value: true,
+      },
+      fydeOTAToggleState_: {
+        type: Boolean,
+        value: true,
+      },
+
+      renewalStatus_: {
+        type: String,
+        value: RenewalStatus.OK,
+      },
+
+      licenseStateType_: {
+        type: Number,
+        value() {
+          if (!loadTimeData.valueExists('aboutFydeOSLicenseState')) {
+            return -1;
+          }
+          return loadTimeData.getInteger('aboutFydeOSLicenseState');
+        }
+      },
+      // ---***FYDEOS END***---
     };
   }
 
@@ -246,7 +298,7 @@ class OsAboutPageElement extends OsAboutPageBase {
     return [
       'updateShowUpdateStatus_(hasEndOfLife_, currentUpdateStatusEvent_,' +
           'hasCheckedForUpdates_)',
-      'updateShowButtonContainer_(showRelaunch_, showCheckUpdates_)',
+      'updateShowButtonContainer_(showRelaunch_, showCheckUpdates_, showRenewLearnMore_)',
       'handleCrostiniEnabledChanged_(prefs.crostini.enabled.value)',
     ];
   }
@@ -282,6 +334,13 @@ class OsAboutPageElement extends OsAboutPageBase {
 
   private aboutBrowserProxy_: AboutPageBrowserProxy;
 
+  private isOwner_: boolean;
+  private fydeOTAToggleState_: boolean;
+
+  private renewalStatus_: string;
+  private popupLicenseWindow_: PopupLicenseWindowProxy;
+  private showRenewLearnMore_: boolean;
+
   constructor() {
     super();
 
@@ -289,6 +348,8 @@ class OsAboutPageElement extends OsAboutPageBase {
     this.route = routes.ABOUT;
 
     this.aboutBrowserProxy_ = AboutPageBrowserProxyImpl.getInstance();
+
+    this.popupLicenseWindow_ = PopupLicenseWindowProxyImpl.getInstance();
   }
 
   override connectedCallback(): void {
@@ -331,6 +392,10 @@ class OsAboutPageElement extends OsAboutPageBase {
         'true') {
       this.onCheckUpdatesClick_();
     }
+
+    this.popupLicenseWindow_.init();
+
+    this.fydeOTAToggleInit_();
   }
 
   override ready(): void {
@@ -416,6 +481,15 @@ class OsAboutPageElement extends OsAboutPageBase {
     recordSettingChange();
     LifetimeBrowserProxyImpl.getInstance().relaunch();
   }
+  private onRenewLearnMoreClick_() {
+    if (this.checkRenewalStatus_(RenewalStatus.LICENSE_EXPIRED)) {
+      this.popupLicenseWindow_.popupRenew();
+    } else if (this.checkRenewalStatus_(RenewalStatus.SINGLE_UPGRADE)) {
+      this.popupLicenseWindow_.popupUpgrade();
+    }
+    this.renewalStatus_ = RenewalStatus.OK;
+    this.hasCheckedForUpdates_ = false;
+  }
 
   private updateShowUpdateStatus_(): void {
     // Do not show the "updated" status or error states from a previous update
@@ -447,7 +521,7 @@ class OsAboutPageElement extends OsAboutPageBase {
    * container displays an unwanted border (see separator class).
    */
   private updateShowButtonContainer_(): void {
-    this.showButtonContainer_ = this.showRelaunch_ || this.showCheckUpdates_;
+    this.showButtonContainer_ = this.showRelaunch_ || this.showCheckUpdates_ || this.showRenewLearnMore_;
 
     // Check if we have yet to focus the check for update button.
     if (!this.isPendingOsUpdateDeepLink_) {
@@ -471,6 +545,19 @@ class OsAboutPageElement extends OsAboutPageBase {
 
   private shouldShowFirmwareUpdatesBadge_(): boolean {
     return this.firmwareUpdateCount_ > 0;
+  }
+
+  private getAbnormalRenewalStatusMessage_(): TrustedHTML {
+    switch (this.renewalStatus_) {
+      case RenewalStatus.CHECKING:
+        return this.i18nAdvanced('aboutUpgradeCheckStarted');
+      case RenewalStatus.SINGLE_UPGRADE:
+        return this.i18nAdvanced('aboutFydeOSOtaDisallowedRequiresOneTimePayment');
+      case RenewalStatus.LICENSE_EXPIRED:
+        return this.i18nAdvanced('aboutFydeOSOtaDisallowedByLicenseValidation');
+      default:
+        return this.i18nAdvanced('aboutUpgradeTryAgain');
+    }
   }
 
   private getUpdateStatusMessage_(): TrustedHTML {
@@ -521,6 +608,9 @@ class OsAboutPageElement extends OsAboutPageBase {
         }
         return this.i18nAdvanced('aboutUpgradeUpdating');
       case UpdateStatus.FAILED_HTTP:
+        if (!this.isNormalRenewalStatus_()) {
+          return this.getAbnormalRenewalStatusMessage_();
+        }
         return this.i18nAdvanced('aboutUpgradeTryAgain');
       case UpdateStatus.FAILED_DOWNLOAD:
         return this.i18nAdvanced('aboutUpgradeDownloadError');
@@ -549,6 +639,10 @@ class OsAboutPageElement extends OsAboutPageBase {
     // ignore UpdateStatus.
     if (this.hasEndOfLife_) {
       return 'os-settings:end-of-life';
+    }
+
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) {
+      return null;
     }
 
     switch (this.currentUpdateStatusEvent_.status) {
@@ -586,6 +680,11 @@ class OsAboutPageElement extends OsAboutPageBase {
     if (this.hasEndOfLife_) {
       return null;
     }
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) {
+      return this.isDarkModeActive_ ?
+          'chrome://resources/images/throbber_small_dark.svg' :
+          'chrome://resources/images/throbber_small.svg';
+    }
 
     switch (this.currentUpdateStatusEvent_.status) {
       case UpdateStatus.CHECKING:
@@ -600,6 +699,15 @@ class OsAboutPageElement extends OsAboutPageBase {
 
   private checkStatus_(status: UpdateStatus): boolean {
     return this.currentUpdateStatusEvent_.status === status;
+  }
+
+  private checkRenewalStatus_(status: string): boolean {
+    return this.renewalStatus_ === status;
+  }
+
+  private isNormalRenewalStatus_() {
+    // if 'failed', we'd better not bother showing the message.
+    return this.checkRenewalStatus_(RenewalStatus.OK) || this.checkRenewalStatus_(RenewalStatus.FAILED);
   }
 
   private onManagementPageClick_(): void {
@@ -643,6 +751,9 @@ class OsAboutPageElement extends OsAboutPageBase {
     if (this.hasEndOfLife_) {
       return false;
     }
+    if (!this.isNormalRenewalStatus_()) {
+      return false;
+    }
 
     // Enable the update button if we are in a stale 'updated' status or
     // update has failed. Disable it otherwise.
@@ -655,6 +766,10 @@ class OsAboutPageElement extends OsAboutPageBase {
         this.checkStatus_(UpdateStatus.UPDATE_TO_ROLLBACK_VERSION_DISALLOWED);
   }
 
+  computeShowRenewLearnMore_() {
+    return this.checkRenewalStatus_(RenewalStatus.LICENSE_EXPIRED) || this.checkRenewalStatus_(RenewalStatus.SINGLE_UPGRADE);
+  }
+
   /**
    * @param showCrostiniLicense True if Crostini is enabled and
    * Crostini UI is allowed.
@@ -665,11 +780,55 @@ class OsAboutPageElement extends OsAboutPageBase {
         this.i18nAdvanced('aboutProductOsLicense');
   }
 
+  private handleUpdateStatusHttpFailed_(event: UpdateStatusChangedEvent, oldEvent: UpdateStatusChangedEvent) {
+    if (!event || !oldEvent) return;
+    if (oldEvent.status === event.status) {
+      return;
+    }
+    const { status } = event;
+    if (status !== UpdateStatus.FAILED_HTTP) {
+      return;
+    }
+    if (!this.hasCheckedForUpdates_) return;
+    this.fetchRenewalStatus_();
+  }
+
+  private fetchRenewalStatus_() {
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) return;
+    this.renewalStatus_ = RenewalStatus.CHECKING;
+    const controller_appid = 'mofiofjpikncjaigmdlblhojbnkabako';
+    const command = 'get_license_renew_state';
+    try {
+      chrome.runtime.sendMessage(controller_appid, { command }, (response: any) => {
+        if (!this.checkStatus_(UpdateStatus.FAILED_HTTP)) {
+          // ota status is changed, not failed_http any more, do inothing here
+          this.renewalStatus_ = RenewalStatus.OK;
+          return;
+        }
+        if (!response || response.state !== 'OK' || !response.data) {
+          this.renewalStatus_ = RenewalStatus.FAILED;
+          return;
+        }
+        const state = response.data ? response.data.state : '';
+        if (state === 'licenseSingleUpgrade') {
+          this.renewalStatus_ = RenewalStatus.SINGLE_UPGRADE;
+        } else if (state === 'licenseExpired') {
+          this.renewalStatus_ = RenewalStatus.LICENSE_EXPIRED;
+        } else {
+          this.renewalStatus_ = RenewalStatus.OK;
+        }
+      });
+    } catch (e) {
+      this.renewalStatus_ = RenewalStatus.FAILED;
+    }
+  }
+
   /**
    * @param enabled True if Crostini is enabled.
    */
   private handleCrostiniEnabledChanged_(enabled: boolean): void {
-    this.showCrostiniLicense_ = enabled && isCrostiniSupported();
+    const force_disable = true;
+    this.showCrostiniLicense_ = !force_disable && enabled && isCrostiniSupported();
   }
 
   private shouldShowSafetyInfo_(): boolean {
@@ -715,7 +874,6 @@ class OsAboutPageElement extends OsAboutPageBase {
         });
   }
 
-  // <if expr="_google_chrome">
   private onReportIssueClick_(): void {
     this.aboutBrowserProxy_.openFeedbackDialog();
   }
@@ -723,7 +881,6 @@ class OsAboutPageElement extends OsAboutPageBase {
   private getReportIssueLabel_(): string {
     return this.i18n('aboutSendFeedback');
   }
-  // </if>
 
   private shouldShowIcons_(): boolean {
     if (this.hasEndOfLife_) {
@@ -763,6 +920,137 @@ class OsAboutPageElement extends OsAboutPageBase {
           this.i18n('aboutFirmwareUpToDateDescription');
     }
     return null;
+  }
+
+  getFydeOSVersion_(licenseStateType: number, hasEndOfLife: boolean): TrustedHTML {
+    const licenseStateDesc = this.getLicenseDescription_(licenseStateType);
+    if (licenseStateDesc && !hasEndOfLife) {
+      return this.i18nAdvanced('aboutFydeOSVersion', {
+        substitutions: [
+          this.i18n('aboutOsProductTitle'),
+          this.getTitleForFydeOSDeviceName_(),
+          this.i18n('aboutFydeOSVersionNumber'),
+          licenseStateDesc,
+          this.i18n('aboutFydeOSPlatformVersion'),
+          this.i18n('aboutFydeOSChromiumVersion'),
+        ]
+      });
+    }
+    return this.i18nAdvanced('aboutFydeOSVersionWithoutLicenseState', {
+      substitutions: [
+        this.i18n('aboutOsProductTitle'),
+        this.getTitleForFydeOSDeviceName_(),
+        this.i18n('aboutFydeOSVersionNumber'),
+        this.i18n('aboutFydeOSPlatformVersion'),
+        this.i18n('aboutFydeOSChromiumVersion'),
+      ]
+    });
+  }
+
+  tryRemoveSuffix_(boardName: string) {
+    const suffixes = ['-com', '-io'];
+    for (const suffix of suffixes) {
+      if (boardName.endsWith(suffix)) {
+        return boardName.substring(0, boardName.length - suffix.length);
+      }
+    }
+    return boardName;
+  }
+
+  getTitleForFydeOSDeviceName_() {
+    const fydeosBoardName = loadTimeData.getString('aboutFydeOSBoardName') || '';
+    let name = this.tryRemoveSuffix_(fydeosBoardName);
+    let prefix = FydeOSBoardNameReleaseNameMap[name] || '';
+    let title = FydeOSBoardNameTitleMap[name] || '';
+    if (!prefix && !title) {
+      return name;
+    }
+    if (title && !prefix) {
+      prefix = 'for You';
+    }
+
+    if (prefix && !title) {
+      return prefix; // vmware
+    }
+    return `${prefix} (${title})`;
+  }
+
+  // <if expr="not use_fydeos_license">
+  getLicenseDescription_(_licenseStateType: number) {
+    return '';
+  }
+  // </if>
+  // <if expr="use_fydeos_license">
+  getLicenseDescription_(licenseStateType: number) {
+    switch (licenseStateType) {
+      case LICENSE_STATE_TYPE.kUnspecified:
+        return '';
+      case LICENSE_STATE_TYPE.kUnlicensed:
+        return this.i18n('aboutFydeOSLicenseStateUnlicensed');
+      case LICENSE_STATE_TYPE.kLicenseForYouTrial:
+        return this.i18n('aboutFydeOSLicenseStateForYouTrial');
+      case LICENSE_STATE_TYPE.kLicenseForYouValid:
+        return this.i18n('aboutFydeOSLicenseStateForYouValid');
+      case LICENSE_STATE_TYPE.kLicenseForYouExpired:
+        return this.i18n('aboutFydeOSLicenseStateForYouExpired');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseTrial:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseTrial');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseValid:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseValid');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseExpired:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseExpired');
+      default:
+        return ''
+    }
+  }
+  // </if>
+
+  fydeOTAToggleInit_() {
+    this.aboutBrowserProxy_.getEnabledFydeOTA().then(enabled => {
+      console.log('getEnabledFydeOTA', enabled);
+      this.fydeOTAToggleState_ = enabled;
+    });
+    this.addWebUiListener(
+        'fyde-ota-enabled-changed',
+        this.onFydeOSOTASwitchChanged_.bind(this));
+  }
+
+  onFydeOSOTASwitchChanged_(enabled: boolean) {
+    console.log('onFydeOSOTASwitchChanged_', enabled);
+    this.fydeOTAToggleState_ = enabled;
+  }
+
+  /*
+  created() {
+    chrome.usersPrivate.getCurrentUser(user => {
+      console.log('user', user);
+      this.isOwner_ = user.isOwner;
+    });
+  }
+  */
+
+  onEnableFydeOTAChange_() {
+    this.fydeOTAToggleState_ = !this.fydeOTAToggleState_;
+    console.log('onEnableFydeOTAChange_', this.fydeOTAToggleState_);
+    this.aboutBrowserProxy_.enableFydeOTA(this.fydeOTAToggleState_);
+  }
+
+  fydeosOTAStateMessage_() {
+    if (this.fydeOTAToggleState_) {
+      return this.i18nAdvanced('aboutFydeOsUpdateEnabled');
+    } else {
+      // return isOwner ? 'OTA disabled' : "Device owner disabled OTA";
+      return this.i18nAdvanced('aboutFydeOsUpdateDisabled');
+    }
+  }
+
+  canToggleFydeOTA_() {
+    return this.isOwner_ && !(
+      this.currentUpdateStatusEvent_.status === UpdateStatus.CHECKING ||
+      this.currentUpdateStatusEvent_.status === UpdateStatus.UPDATING ||
+      this.currentUpdateStatusEvent_.status === UpdateStatus.DISABLED ||
+      this.currentUpdateStatusEvent_.status === UpdateStatus.DISABLED_BY_ADMIN
+    ) && this.currentUpdateStatusEvent_.progress === 0;
   }
 }
 

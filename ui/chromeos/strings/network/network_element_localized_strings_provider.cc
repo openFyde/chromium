@@ -149,6 +149,12 @@ constexpr webui::LocalizedString kElementLocalizedStrings[] = {
      IDS_NETWORK_LIST_UPDATED_CELLULAR_SIM_CARD_CARRIER_LOCKED},
 };
 
+void AddFydeLocalized(content::WebUIDataSource* html_source) {
+  html_source->AddBoolean("shouldModifyStyle",
+                          ash::LoginState::IsInitialized()
+                          && !ash::LoginState::Get()->IsUserLoggedIn());
+}
+
 }  //  namespace
 
 void AddLocalizedStrings(content::WebUIDataSource* html_source) {
@@ -520,6 +526,8 @@ void AddDetailsLocalizedStrings(content::WebUIDataSource* html_source) {
                           ash::features::IsApnRevampEnabled());
   html_source->AddBoolean("isCellularCarrierLockEnabled",
                           ash::features::IsCellularCarrierLockEnabled());
+
+  AddFydeLocalized(html_source);
 }
 
 void AddConfigLocalizedStrings(content::WebUIDataSource* html_source) {
@@ -567,6 +575,8 @@ void AddConfigLocalizedStrings(content::WebUIDataSource* html_source) {
   html_source->AddBoolean(
       "ephemeralNetworkPoliciesEnabled",
       ash::policy_util::AreEphemeralNetworkPoliciesEnabled());
+
+  AddFydeLocalized(html_source);
 }
 
 void AddErrorLocalizedStrings(content::WebUIDataSource* html_source) {

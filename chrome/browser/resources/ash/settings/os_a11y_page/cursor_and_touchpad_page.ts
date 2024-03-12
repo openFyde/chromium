@@ -185,10 +185,15 @@ export class SettingsCursorAndTouchpadPageElement extends
        * Whether a setting for enabling shelf navigation buttons in tablet mode
        * should be displayed in the accessibility settings.
        */
+      tabletModeEnabled_: {
+        type: Boolean,
+        value: false,
+      },
+
       showShelfNavigationButtonsSettings_: {
         type: Boolean,
         computed:
-            'computeShowShelfNavigationButtonsSettings_(isKioskModeActive_)',
+            'computeShowShelfNavigationButtonsSettings_(isKioskModeActive_, tabletModeEnabled_)',
       },
 
       /**
@@ -261,6 +266,7 @@ export class SettingsCursorAndTouchpadPageElement extends
   private shelfNavigationButtonsImplicitlyEnabled_: boolean;
   private shelfNavigationButtonsPref_:
       chrome.settingsPrivate.PrefObject<boolean>;
+  private tabletModeEnabled_: boolean;
   private showShelfNavigationButtonsSettings_: boolean;
   private isAccessibilityFaceTrackingEnabled_: boolean;
 
@@ -288,6 +294,11 @@ export class SettingsCursorAndTouchpadPageElement extends
     this.addWebUiListener(
         'has-touchpad-changed',
         (exists: boolean) => this.set('hasTouchpad_', exists));
+    this.addWebUiListener(
+      'tablet-mode-changed',
+      (enabled: boolean) => { this.tabletModeEnabled_ = enabled; });
+
+    this.cursorAndTouchpadBrowserProxy_.getTabletModeEnabled();
     this.deviceBrowserProxy_.initializePointers();
   }
 
@@ -320,7 +331,8 @@ export class SettingsCursorAndTouchpadPageElement extends
 
   private computeShowShelfNavigationButtonsSettings_(): boolean {
     return !this.isKioskModeActive_ &&
-        loadTimeData.getBoolean('showTabletModeShelfNavigationButtonsSettings');
+        (this.tabletModeEnabled_ ||
+        loadTimeData.getBoolean('showTabletModeShelfNavigationButtonsSettings'));
   }
 
   /**

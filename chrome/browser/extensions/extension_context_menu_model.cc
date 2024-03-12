@@ -51,6 +51,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/models/menu_separator_types.h"
+#include "fydeos/switches/urls//urls_constants.h"
 
 namespace extensions {
 
@@ -460,7 +461,7 @@ void ExtensionContextMenuModel::ExecuteCommand(int command_id,
     case PAGE_ACCESS_LEARN_MORE:
       LogPageAccessAction(command_id);
       OpenUrl(*browser_,
-              GURL(chrome_extension_constants::kRuntimeHostPermissionsHelpURL));
+              GURL(fydeos::constants::kRuntimeHostPermissionsHelpURL));
 
       break;
     default:

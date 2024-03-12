@@ -38,6 +38,7 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/ui_base_features.h"
 #include "url/gurl.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
 
 namespace whats_new {
 const int64_t kMaxDownloadBytes = 1024 * 1024;
@@ -57,7 +58,7 @@ bool g_is_remote_content_disabled = false;
 // CQ bots.
 BASE_FEATURE(kForceEnabled,
              "WhatsNewForceEnabled",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEnabled() {
 #if BUILDFLAG(GOOGLE_CHROME_BRANDING) && !defined(ANDROID) && \
@@ -162,19 +163,11 @@ GURL GetServerURLForRefresh() {
 }
 
 GURL GetServerURL(bool may_redirect) {
-  const GURL url =
-      may_redirect
-          ? net::AppendQueryParameter(
-                GURL(kChromeWhatsNewURL), "version",
-                base::NumberToString(CHROME_VERSION_MAJOR))
-          : GURL(kChromeWhatsNewURL)
-                .Resolve(base::StringPrintf("m%d", CHROME_VERSION_MAJOR));
-  return net::AppendQueryParameter(url, "internal", "true");
+  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(nullptr));
 }
 
 GURL GetWebUIStartupURL() {
-  return net::AppendQueryParameter(GURL(chrome::kChromeUIWhatsNewURL), "auto",
-                                   "true");
+  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(nullptr));
 }
 
 namespace {

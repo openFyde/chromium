@@ -7225,6 +7225,9 @@ const char kLacrosSharedComponentsDirDescription[] =
     "When enabled, it causes Lacros to use a location shared across users for "
     "browser components.";
 
+const char kFydeOsAIName[] = "Enable FydeOS AI";
+const char kFydeOsAIDescription[] = "Enable FydeOS AI feature";
+
 // Prefer keeping this section sorted to adding new definitions down here.
 
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)

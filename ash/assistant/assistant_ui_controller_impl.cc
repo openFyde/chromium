@@ -101,6 +101,14 @@ void AssistantUiControllerImpl::SetKeyboardTraversalMode(
 }
 
 void AssistantUiControllerImpl::ShowUi(AssistantEntryPoint entry_point) {
+  if (ash::features::IsFydeAssistantEnabled()) {
+    if (entry_point == AssistantEntryPoint::kDeepLink || entry_point == AssistantEntryPoint::kHotkey || entry_point == AssistantEntryPoint::kLauncherSearchBoxIcon) {
+      model_.SetVisible(entry_point);
+      return;
+    } else {
+      return;
+    }
+  }
   // Skip if the opt-in window is active.
   auto* assistant_setup = AssistantSetup::GetInstance();
   if (assistant_setup && assistant_setup->BounceOptInWindowIfActive())

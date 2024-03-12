@@ -303,7 +303,9 @@ bool ThemeSyncableService::GetThemeSpecificsFromCurrentTheme(
                 .GetByID(theme_service_->GetThemeID())
           : nullptr;
   if (current_extension &&
-      !extensions::sync_helper::IsSyncable(current_extension)) {
+      // ---***FYDEOS BEGIN***---
+      !extensions::sync_helper::IsSyncable(current_extension, profile_)) {
+      // ---***FYDEOS END***---
     DVLOG(1) << "Ignoring non-syncable extension: " << current_extension->id();
     return false;
   }

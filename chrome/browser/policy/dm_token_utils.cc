@@ -36,6 +36,20 @@ DMToken* GetTestingDMTokenStorage() {
 
 }  // namespace
 
+DMToken GetDeviceDMToken() {
+  DMToken dm_token = *GetTestingDMTokenStorage();
+  CloudPolicyManager* policy_manager;
+  policy::BrowserPolicyConnectorAsh* connector =
+    g_browser_process->platform_part()->browser_policy_connector_ash();
+  DCHECK(connector);
+  policy_manager = connector->GetDeviceCloudPolicyManager();
+  if (policy_manager && policy_manager->IsClientRegistered()) {
+    dm_token = DMToken::CreateValidToken(
+        policy_manager->core()->client()->dm_token());
+  }
+  return dm_token;
+}
+
 DMToken GetDMToken(Profile* const profile) {
   DMToken dm_token = *GetTestingDMTokenStorage();
 

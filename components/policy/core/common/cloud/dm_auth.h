@@ -20,6 +20,7 @@ enum class DMAuthTokenType {
   kDm = 2,
   kEnrollment = 3,
   kOauth = 4,
+  kFyde = 5,
 };
 
 // Class that encapsulates different authentication methods to interact with
@@ -38,6 +39,7 @@ class POLICY_EXPORT DMAuth {
   static DMAuth FromDMToken(const std::string& dm_token);
   static DMAuth FromOAuthToken(const std::string& oauth_token);
   static DMAuth FromEnrollmentToken(const std::string& token);
+  static DMAuth FromFydeToken(const std::string& token);
   static DMAuth NoAuth();
 
   DMAuth();
@@ -76,6 +78,13 @@ class POLICY_EXPORT DMAuth {
   }
   bool has_oauth_token() const {
     return token_type_ == DMAuthTokenType::kOauth;
+  }
+  std::string fyde_token() const {
+    DCHECK_EQ(DMAuthTokenType::kFyde, token_type_);
+    return token_;
+  }
+  bool has_fyde_token() const {
+    return token_type_ == DMAuthTokenType::kFyde;
   }
   DMAuthTokenType token_type() const { return token_type_; }
 

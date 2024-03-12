@@ -413,6 +413,12 @@ export class VolumeManagerImpl extends EventTarget implements VolumeManager {
     if (isFakeEntry(entry)) {
       const rootType = getRootType(entry);
       assert(rootType);
+      if (rootType === VolumeManagerCommon.RootType.FYDEDROP) {
+        return new EntryLocationImpl(
+            volumeInfo, rootType,
+            true,
+            false /* hide read only for FydeDrop. */);
+      }
 
       // Aggregated views like RECENTS and TRASH exist as fake entries but may
       // actually defer their logic to some underlying implementation or

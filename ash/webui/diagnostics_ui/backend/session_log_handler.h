@@ -19,6 +19,8 @@
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_policy.h"
 
+#include "components/feedback/system_logs/system_logs_source.h"
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -89,6 +91,9 @@ class SessionLogHandler : public content::WebUIMessageHandler,
   // Initializes Javascript.
   void HandleInitialize(const base::Value::List& args);
 
+  void GetFydeOsSystemInfo();
+  void OnFydeOSSystemInfoReceived(std::unique_ptr<system_logs::SystemLogsResponse> sys_info);
+
   SelectFilePolicyCreator select_file_policy_creator_;
   std::unique_ptr<TelemetryLog> telemetry_log_;
   std::unique_ptr<RoutineLog> routine_log_;
@@ -97,6 +102,8 @@ class SessionLogHandler : public content::WebUIMessageHandler,
   std::string save_session_log_callback_id_;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
   base::OnceClosure log_created_closure_;
+
+  std::string fydeos_system_info_;
   // Task runner for tasks posted by save session log handler. Used to ensure
   // posted tasks are handled while SessionLogHandler is in scope to stop
   // heap-use-after-free error.

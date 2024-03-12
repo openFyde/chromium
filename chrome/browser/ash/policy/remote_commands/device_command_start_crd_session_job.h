@@ -49,6 +49,7 @@ class DeviceCommandStartCrdSessionJob : public RemoteCommandJob {
     kAffiliatedUser = 1,
     kManagedGuestSession = 2,
     kManuallyLaunchedKiosk = 3,
+    kFydeOsUser = 4,
     kMaxValue = kManuallyLaunchedKiosk
   };
 

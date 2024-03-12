@@ -57,6 +57,7 @@
 #include "chrome/browser/ui/webui/ash/login/reset_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/signin_fatal_error_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/user_creation_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/data_restore_screen_handler.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "chromeos/ash/components/login/auth/public/auth_types.h"
@@ -73,6 +74,7 @@
 #include "ui/aura/window.h"
 #include "ui/compositor/layer.h"
 #include "ui/views/view.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace ash {
 namespace {
@@ -543,6 +545,7 @@ void LoginDisplayHostMojo::ShowGaiaDialog(const AccountId& prefilled_account) {
     gaia_reauth_account_id_ = prefilled_account;
   } else {
     gaia_reauth_account_id_.reset();
+    fydeos::switches::EnableFydeAccountFlag();
   }
   ShowGaiaDialogCommon(prefilled_account);
 
@@ -557,8 +560,21 @@ void LoginDisplayHostMojo::ShowOsInstallScreen() {
   ShowDialog();
 }
 
+void LoginDisplayHostMojo::ShowDataRestoreScreen() {
+  StartWizard(DataRestoreScreenView::kScreenId);
+  ShowDialog();
+}
+
 void LoginDisplayHostMojo::ShowGuestTosScreen() {
   StartWizard(GuestTosScreenView::kScreenId);
+  ShowDialog();
+}
+
+void LoginDisplayHostMojo::ShowLocalDialog() {
+  DCHECK(GetOobeUI());
+
+  ShowLocalDialogCommon();
+
   ShowDialog();
 }
 
@@ -724,6 +740,16 @@ void LoginDisplayHostMojo::HandleAuthenticateUserWithPasswordOrPin(
                << user_context.GetUserType();
     user_context.SetIsUsingOAuth(false);
   }
+  //---***FYDEOS BEGIN***---
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) {
+    if (user_context.GetUserType() !=
+        user_manager::UserType::USER_TYPE_FLINT_ACCOUNT) {
+      LOG(FATAL) << "Incorrect Flint Account user type "
+                 << user_context.GetUserType();
+    }
+    user_context.SetIsUsingOAuth(false);
+  }
+  //---***FYDEOS END***---
 
   if (owner_verified_callback_) {
     CheckOwnerCredentials(user_context);

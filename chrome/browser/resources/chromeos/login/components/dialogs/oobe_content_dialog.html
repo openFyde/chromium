@@ -157,6 +157,12 @@ found in the LICENSE file.
     --iron-icon-width: var(--oobe-adaptive-dialog-icon-size);
     --iron-icon-fill-color: var(--oobe-adaptive-dialog-icon-fill-color);
   }
+
+  :host-context(body.fydeos) #oobe-icon-div ::slotted(hd-iron-icon),
+  :host-context(body.fydeos) #oobe-icon-div ::slotted(iron-icon) {
+    --iron-icon-fill-color: var(--cros-icon-fydeos-color-pink);
+  }
+
 </style>
 <cr-lazy-render id="lazy">
   <template>

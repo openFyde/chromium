@@ -153,6 +153,7 @@ class ASH_EXPORT AppListControllerImpl
   std::unique_ptr<ash::ScopedIphSession> CreateLauncherSearchIphSession()
       override;
   void StartAssistant() override;
+  void CloseAssistant() override;
   std::vector<AppListSearchControlCategory> GetToggleableCategories()
       const override;
   void StartSearch(const std::u16string& raw_query) override;

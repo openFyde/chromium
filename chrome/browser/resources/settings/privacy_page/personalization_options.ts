@@ -33,6 +33,7 @@ import {MetricsReporting, PrivacyPageBrowserProxy, PrivacyPageBrowserProxyImpl} 
 import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 
+import {BaseMixin} from '../base_mixin.js';
 import {FocusConfig} from '../focus_config.js';
 import {loadTimeData} from '../i18n_setup.js';
 import {PrivacyPageVisibility} from '../page_visibility.js';
@@ -52,7 +53,7 @@ export interface SettingsPersonalizationOptionsElement {
 }
 
 const SettingsPersonalizationOptionsElementBase =
-    RelaunchMixin(WebUiListenerMixin(I18nMixin(PrefsMixin(PolymerElement))));
+    RelaunchMixin(WebUiListenerMixin(I18nMixin(PrefsMixin(BaseMixin(PolymerElement)))));
 
 export class SettingsPersonalizationOptionsElement extends
     SettingsPersonalizationOptionsElementBase {
@@ -343,6 +344,23 @@ export class SettingsPersonalizationOptionsElement extends
     return this.getPref('page_content_collection.enabled').value ?
         this.i18n('pageContentLinkRowSublabelOn') :
         this.i18n('pageContentLinkRowSublabelOff');
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      [
+        'settings-toggle-button#driveSuggestControl',
+        `settings-toggle-button[label="${this.i18n('urlKeyedAnonymizedDataCollection')}"]`,
+      ].forEach((selector) => {
+        const node = this.$$(selector) as HTMLElement;
+        if (node) {
+          node.style.display = 'none';
+        }
+      });
+    }, 0);
   }
 }
 

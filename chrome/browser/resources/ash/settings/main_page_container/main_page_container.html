@@ -321,6 +321,16 @@
       </template>
     </div>
 
+    <div id="fydeosPageContainer"
+      hidden$="[[!shouldShowFydeOsSettingsPageContainer_]]">
+      <template is="dom-if"
+          if="[[shouldStampPage_(pageAvailability, Section.kFydeOs)]]"
+          restamp>
+        <page-displayer section="[[Section.kFydeOs]]">
+          <os-fyde-page></os-fyde-page>
+        </page-displayer>
+      </template>
+    </div>
     <div id="aboutPageContainer"
         hidden$="[[!shouldShowAboutPageContainer_]]">
       <template is="dom-if"

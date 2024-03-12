@@ -21,6 +21,7 @@
 #include "ash/display/screen_orientation_controller.h"
 #include "ash/focus_cycler.h"
 #include "ash/frame/non_client_frame_view_ash.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ash/game_dashboard/game_dashboard_controller.h"
 #include "ash/glanceables/glanceables_controller.h"
 #include "ash/ime/ime_controller_impl.h"
@@ -1066,6 +1067,10 @@ void RotatePaneFocus(FocusCycler::Direction direction) {
   Shell::Get()->focus_cycler()->RotateFocus(direction);
 }
 
+void RotateScreenWithoutConfirmation() {
+  RotateScreenImpl();
+}
+
 void RotateScreen() {
   if (Shell::Get()->display_manager()->IsInUnifiedMode())
     return;
@@ -1203,6 +1208,12 @@ void ToggleAssignToAllDesk() {
 }
 
 void ToggleAssistant() {
+  if (ash::features::IsFydeAssistantEnabled()) {
+    AssistantUiController::Get()->ToggleUi(
+        /*entry_point=*/assistant::AssistantEntryPoint::kHotkey,
+        /*exit_point=*/assistant::AssistantExitPoint::kHotkey);
+    return;
+  }
   using assistant::AssistantAllowedState;
   switch (AssistantState::Get()->allowed_state().value_or(
       AssistantAllowedState::ALLOWED)) {
@@ -1315,6 +1326,14 @@ void ToggleClipboardHistory(bool is_plain_text_paste) {
   DCHECK(Shell::Get()->clipboard_history_controller());
   Shell::Get()->clipboard_history_controller()->ToggleMenuShownByAccelerator(
       is_plain_text_paste);
+}
+
+void ToggleFydeOSAssistant() {
+  if (!ash::features::IsFydeAssistantEnabled()) {
+    return;
+  }
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  shelf->fyde_assistant_view()->ShowBubble();
 }
 
 void EnableOrToggleDictation() {

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend chromeos/chromeos_strings.grd -->
+<grit-part>
+  <message name="IDS_ASH_USE_LOCAL_ACCOUNT_BUTTON" desc="Text shown on local account button on oobe screen.">
+    Use local account
+  </message>
+  <message name="IDS_ASH_DATA_RESTORE_BUTTON" desc="Text shown on data restore button on oobe screen.">
+    Restore backup
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_RESOURCES_HELP_PAGE_LABEL" desc="Label of the ask community that opens an external link to the Chromebook community.">
+    FydeOS Help Center
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_RESOURCES_HELP_PAGE_DESCRIPTION" desc="Description of the ask community link">
+    Find help articles and answers to common FydeOS questions
+  </message>
+  <if expr="use_fydeos_com">
+    <message name="IDS_FEEDBACK_TOOL_FYDEOS_FEEDBACK_FEATURE_HELP_MESSAGE" desc="Description of the feedback feature">
+      Notes:
+      <ph name="BEGIN_LIST">&lt;ul&gt;</ph>
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>You are about to submit a feedback or issue report to the FydeOS development team to help improve the experience of using FydeOS.
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Feedback submitted through this channel will not receive a response from the FydeOS team, so if you are experiencing a technical issue or require help, please read the Help page on our website or join the FydeOS Community to ask a question.
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Thank you once again for taking the time to help.
+      <ph name="END_LIST">&lt;/ul&gt;</ph>
+    </message>
+  </if>
+  <if expr="not use_fydeos_com">
+    <message name="IDS_FEEDBACK_TOOL_FYDEOS_FEEDBACK_FEATURE_HELP_MESSAGE" desc="Description of the feedback feature">
+      Notes:
+      <ph name="BEGIN_LIST">&lt;ul&gt;</ph>
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>You are about to submit a feedback or issue report to the FydeOS development team to help improve the experience of using FydeOS.
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Unfortunately, you will not receive a response from us by sending this feedback, so it’s probably not a good idea to ask questions here. Your feedback will still be very important for us to iterate FydeOS though.
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>If you encounter technical issues or require support, we have a <ph name="BEGIN_LINK_HELP_PAGE">&lt;a target="_blank" href="$1"&gt;</ph>Help page<ph name="END_LINK_HELP_PAGE">&lt;/a&gt;</ph> for you to troubleshoot. You are also welcome to join the conversations in our <ph name="BEGIN_LINK_COMMUNITY">&lt;a target="_blank" href="$2"&gt;</ph>Community<ph name="END_LINK_COMMUNITY">&lt;/a&gt;</ph>, <ph name="BEGIN_LINK_DISCORD_SERVER">&lt;a target="_blank" href="$3"&gt;</ph>Discord Server<ph name="END_LINK_DISCORD_SERVER">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_TELEGRAM_GROUP">&lt;a target="_blank" href="$4"&gt;</ph>Telegram Group<ph name="END_LINK_TELEGRAM_GROUP">&lt;/a&gt;</ph>.
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Thank you once again for taking the time to help.
+      <ph name="END_LIST">&lt;/ul&gt;</ph>
+    </message>
+  </if>
+</grit-part>

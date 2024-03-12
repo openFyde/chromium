@@ -36259,6 +36259,15 @@ Called by update_extension_histograms.py.-->
   <int value="548"
       label="INPUT_METHOD_PRIVATE_ON_LANGUAGE_PACK_STATUS_CHANGED"/>
   <int value="549" label="OS_DIAGNOSTICS_ON_VOLUME_BUTTON_ROUTINE_FINISHED"/>
+  <int value="550" label="FYDEOS_SHELL_CLIENT_SYSTEM_NOTIFICATION"/>
+  <int value="551" label="FYDEOS_SHELL_CLIENT_COMMAND_NOTIFICATION"/>
+  <int value="552" label="FYDEOS_SHELL_CLIENT_CUSTOM_NOTIFICATION"/>
+  <int value="553" label="ARC_APPS_PRIVATE_ON_REMOVED"/>
+  <int value="554" label="ARC_APPS_PRIVATE_ON_INSTALLATION_STARTED"/>
+  <int value="555" label="ARC_APPS_PRIVATE_ON_INSTALLATION_PROGRESS_CHANGED"/>
+  <int value="556" label="ARC_APPS_PRIVATE_ON_INSTALLATION_FINISHED"/>
+  <int value="557" label="FYDEOS_LICENSE_INVALID_NOTIFICATION"/>
+  <int value="558" label="FYDEOS_LICENSE_VALID_NOTIFICATION"/>
 </enum>
 
 <enum name="ExtensionFileWriteResult">
@@ -38195,6 +38204,30 @@ Called by update_extension_histograms.py.-->
   <int value="1837"
       label="OS_DIAGNOSTICS_ISVOLUMEBUTTONROUTINEARGUMENTSUPPORTED"/>
   <int value="1838" label="USERSCRIPTS_CONFIGUREWORLD"/>
+  <int value="1839" label="NATIVE_WINDOWS_GET"/>
+  <int value="1840" label="NATIVE_WINDOWS_UPDATE"/>
+  <int value="1841" label="NATIVE_WINDOWS_GETALL"/>
+  <int value="1842" label="NATIVE_WINDOWS_REMOVE"/>
+  <int value="1843" label="NATIVE_WINDOWS_CREATE"/>
+  <int value="1844" label="APP_MANAGEMENT_GETAPPLIST"/>
+  <int value="1845" label="APP_MANAGEMENT_INSTALLWEBAPP"/>
+  <int value="1846" label="APP_MANAGEMENT_INSTALLARCAPP"/>
+  <int value="1847" label="COMMAND_LINE_HASSWITCH"/>
+  <int value="1848" label="COMMAND_LINE_REMOVESWITCH"/>
+  <int value="1849" label="COMMAND_LINE_ADDSWITCH"/>
+  <int value="1850" label="APP_MANAGEMENT_GETARCPOLICY"/>
+  <int value="1851" label="SHELL_SYNC_EXEC"/>
+  <int value="1852" label="SHELL_ASYNC_EXEC"/>
+  <int value="1853" label="SHELL_GET_TASK_STATE"/>
+  <int value="1854" label="SHELL_GET_TASK_OUTPUT"/>
+  <int value="1855" label="SHELL_GET_DAEMON_STATE"/>
+  <int value="1856" label="SHELL_FORCE_CLOSE_TASK"/>
+  <int value="1857" label="FYDEOS_ARC_STATUS_GET"/>
+  <int value="1858" label="INPUT_IME_SHOW_FYDE_LANGUAGE_STATE"/>
+  <int value="1859" label="ARCAPPSPRIVATE_REMOVEPACKAGE"/>
+  <int value="1860" label="ARCAPPSPRIVATE_INSTALLPACKAGE_FROM_PATH"/>
+  <int value="1861" label="FYDEOS_PRIVATE_GET_FYDEOS_INFO"/>
+  <int value="1862" label="LICENSE_MANAGEMENT_REFRESH"/>
 </enum>
 
 <enum name="ExtensionIconState">
@@ -38829,6 +38862,8 @@ Called by update_extension_permission.py.-->
   <int value="252" label="kAccessibilityServicePrivate"/>
   <int value="253" label="kUserScripts"/>
   <int value="254" label="kChromeOSBluetoothPeripheralsInfo"/>
+  <int value="255" label="kFydeOSPrivate"/>
+  <int value="256" label="kFydeOSShellClient"/>
 </enum>
 
 <enum name="ExtensionPointEnableState">
@@ -92830,6 +92865,7 @@ https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_2.7.1.pdf
   <int value="14" label="DarkMode"/>
   <int value="15" label="ShelfParty (deprecated)"/>
   <int value="16" label="AutoZoom"/>
+  <int value="17" label="RotateScreen"/>
 </enum>
 
 <enum name="QsSliderCatalogName">

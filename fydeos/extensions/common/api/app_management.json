@@ -1,0 +1,108 @@
+// Copyright 2018 The FlintOS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Author: Simon Tsao(yang@flintos.io)
+
+[
+{
+  "namespace": "appManagement",
+    "description": "Use the <code>chrome.appManagement</code> API to interact with FlintOS app(platform_app and arc_app). You can use this API to create, modify, and rearrange windows in the browser.",
+    "compiler_options": {
+      "implemented_in": "fydeos/extensions/browser/api/app_management/app_management_api.h"
+    },
+    "types":[
+      {
+        "id": "AppType",
+        "type": "string",
+        "description":"The type of app this is, extension and platform_app are belong to platform_app, and android app is belong to arc_app",
+        "enum":[{
+          "name": "web_app",
+          "description": "include chrome extensions and web_apps"
+        },{
+          "name": "arc_app",
+          "description": "include android apps"
+        }]
+      },
+      {
+        "id": "AppId",
+        "type": "string",
+        "description": "an unique string with 32 chars"
+      },
+      {
+        "id": "App",
+        "type": "object",
+        "description": "the app installed under current profile",
+        "properties": {
+          "appId":{"$ref": "AppId"},
+          "appType": {"$ref": "AppType"},
+          "package": {"type":"string", "optional":true, "description":"android package name"}
+        }
+      }
+    ],
+    "functions": [
+      {
+        "name": "getAppList",
+        "type": "function",
+        "description": "Gets all apps installed.",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "applist", "type": "array", "items": {"$ref": "App"}
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "installWebApp",
+        "type": "function",
+        "description": "install web apps without user's approval",
+        "parameters": [
+          {
+            "name": "appInfo",
+            "type": "object",
+            "description": "The information about the web app",
+            "properties":{
+              "storeUrl": {"type":"string", "description":"the store url template"},
+              "appId": {"$ref":"AppId"},
+              "manifest": {"type":"string", "description":"the app's manifest file"}
+            }
+          },
+          {"type": "function", "name": "callback", "optional": true, "parameters": []}
+        ]
+      },
+      {
+        "name": "installArcApp",
+        "type": "function",
+        "description": "install android app",
+        "parameters":[
+          {
+            "name": "path",
+            "type": "string",
+            "description": "The abs-path of the app"
+          },
+          {"type": "function", "name": "callback", "optional": true, "parameters": []}
+        ]
+      },
+      {
+        "name": "getArcPolicy",
+        "type": "function",
+        "description": "get arc policy",
+        "parameters":[
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "policy_value", "type": "string"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+}
+]

@@ -27,6 +27,7 @@
 #include "components/sync/base/pref_names.h"
 #include "components/sync/base/user_selectable_type.h"
 #include "components/sync/service/sync_feature_status_for_migrations_recorder.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace syncer {
 
@@ -89,7 +90,7 @@ SyncPrefs::~SyncPrefs() {
 void SyncPrefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   // Actual user-controlled preferences.
   registry->RegisterBooleanPref(prefs::internal::kSyncKeepEverythingSynced,
-                                true);
+                                !fydeos::switches::IsFydeAccountEnabled());
 #if BUILDFLAG(IS_IOS)
   registry->RegisterBooleanPref(
       prefs::internal::kBookmarksAndReadingListAccountStorageOptIn, false);
@@ -644,7 +645,14 @@ void SyncPrefs::RegisterTypeSelectedPref(PrefRegistrySimple* registry,
                                          UserSelectableType type) {
   const char* pref_name = GetPrefNameForType(type);
   DCHECK(pref_name);
-  registry->RegisterBooleanPref(pref_name, false);
+  //---***FYDEOS BEGIN***---
+  registry->RegisterBooleanPref(pref_name, fydeos::switches::IsFydeAccountEnabled()
+    && (type == UserSelectableType::kPreferences
+    || type == UserSelectableType::kBookmarks
+    || type == UserSelectableType::kThemes
+    || type == UserSelectableType::kExtensions
+    || type == UserSelectableType::kApps));
+  //---***FYDEOS END***---
 }
 
 bool SyncPrefs::IsLocalSyncEnabled() const {

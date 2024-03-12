@@ -19,6 +19,15 @@
     },
   },
   colors: {
+    fydeos_pink_50: "#fde3e8",
+    fydeos_pink_100: "#fab7c5",
+    fydeos_pink_200: "#f6899f",
+    fydeos_pink_300: "#f0597a",
+    fydeos_pink_400: "#ea355e",
+    fydeos_pink_500: "#e40044",
+    fydeos_pink_600: "#d40043",
+    fydeos_pink_700: "#c00041",
+
     google_blue_50: "#e8f0fe",
     google_blue_100: "#d2e3fc",
     google_blue_200: "#aecbfa",

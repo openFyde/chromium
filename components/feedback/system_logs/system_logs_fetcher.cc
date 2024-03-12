@@ -36,6 +36,15 @@ constexpr const char* const kKeysExemptOfRedaction[] = {
     "perfetto-data",
     // Contains URL-like app-ids which should not be redacted.
     "app_service",
+    "fydeos.log",
+    "update_engine.log",
+    "chrome_user_log",
+    "chrome_user_log.PREVIOUS",
+    "chrome_system_log",
+    "chrome_system_log.PREVIOUS",
+    "powerd.LATEST",
+    "powerd.PREVIOUS",
+    "syslog",
 };
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)

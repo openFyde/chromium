@@ -55,6 +55,7 @@
 #include "chrome/browser/ash/login/screens/marketing_opt_in_screen.h"
 #include "chrome/browser/ash/login/screens/multidevice_setup_screen.h"
 #include "chrome/browser/ash/login/screens/network_screen.h"
+#include "chrome/browser/ash/login/screens/eula_screen.h"
 #include "chrome/browser/ash/login/screens/offline_login_screen.h"
 #include "chrome/browser/ash/login/screens/online_authentication_screen.h"
 #include "chrome/browser/ash/login/screens/os_install_screen.h"
@@ -147,6 +148,8 @@ class WizardController : public OobeUI::Observer {
   // Returns true if OOBE is operating under the Zero-Touch Hands-Off
   // Enrollment flow.
   static bool IsZeroTouchHandsOffOobeFlow();
+
+  static bool IsFydeZeroTouchEnrollFlow();
 
   // Returns true if the onboarding flow can be resumed from `screen_id`.
   static bool IsResumablePostLoginScreen(OobeScreenId screen_id);
@@ -296,6 +299,7 @@ class WizardController : public OobeUI::Observer {
   void ShowWelcomeScreen();
   void ShowQuickStartScreen();
   void ShowNetworkScreen();
+  void ShowEulaScreen();
   void ShowEnrollmentScreen();
   void ShowDemoModeSetupScreen();
   void ShowDemoModePreferencesScreen();
@@ -371,6 +375,8 @@ class WizardController : public OobeUI::Observer {
   void OnWelcomeScreenExit(WelcomeScreen::Result result);
   void OnQuickStartScreenExit(QuickStartScreen::Result result);
   void OnNetworkScreenExit(NetworkScreen::Result result);
+  void OnEulaScreenExit(EulaScreen::Result result);
+  void OnEulaAccepted(bool usage_statistics_reporting_enabled);
   void OnUpdateScreenExit(UpdateScreen::Result result);
   void OnUpdateCompleted();
   void OnAutoEnrollmentCheckScreenExit(
@@ -383,6 +389,7 @@ class WizardController : public OobeUI::Observer {
   void OnKioskAutolaunchScreenExit(KioskAutolaunchScreen::Result result);
   void OnDemoPreferencesScreenExit(DemoPreferencesScreen::Result result);
   void OnDemoSetupScreenExit(DemoSetupScreen::Result result);
+  void OnFydeLocalSigninScreenExit();
   void OnUserCreationScreenExit(UserCreationScreen::Result result);
   // Start of online authentication sub-group
   void OnGaiaScreenExit(GaiaScreen::Result result);
@@ -429,6 +436,9 @@ class WizardController : public OobeUI::Observer {
   void OnOfflineLoginScreenExit(OfflineLoginScreen::Result result);
   void OnOsInstallScreenExit();
   void OnOsTrialScreenExit(OsTrialScreen::Result result);
+
+  void OnDataRestoreScreenExit();
+
   void OnConsolidatedConsentScreenExit(
       ConsolidatedConsentScreen::Result result);
   void OnGuestTosScreenExit(GuestTosScreen::Result result);

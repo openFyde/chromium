@@ -6,6 +6,7 @@
 
 #include "build/build_config.h"
 #include "build/chromeos_buildflags.h"
+#include "fydeos/build/config/buildflags.h"
 #include "extensions/browser/api/alarms/alarm_manager.h"
 #include "extensions/browser/api/api_resource_manager.h"
 #include "extensions/browser/api/audio/audio_api.h"
@@ -59,6 +60,11 @@
 #include "extensions/browser/api/media_perception_private/media_perception_api_manager.h"
 #include "extensions/browser/api/virtual_keyboard_private/virtual_keyboard_private_api.h"
 #include "extensions/browser/api/webcam_private/webcam_private_api.h"
+#endif
+
+#include "fydeos/extensions/browser/api/shell_client/shell_client_api.h"
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+#include "fydeos/extensions/browser/api/license_management/license_management_api.h"
 #endif
 
 namespace extensions {
@@ -126,6 +132,10 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
   WebRequestAPI::GetFactoryInstance();
   WebRequestProxyingURLLoaderFactory::EnsureAssociatedFactoryBuilt();
   WebRequestProxyingWebSocket::EnsureAssociatedFactoryBuilt();
+  ShellClientAPI::GetFactoryInstance();
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  LicenseManagementAPI::GetFactoryInstance();
+#endif
 }
 
 }  // namespace extensions

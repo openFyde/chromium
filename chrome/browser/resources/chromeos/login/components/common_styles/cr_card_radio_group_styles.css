@@ -54,6 +54,10 @@ cr-card-radio-button {
   --cr-card-background-color: var(--cros-sys-app_base_shaded);
 }
 
+:host-context(body.fydeos) cr-card-radio-button {
+    --cr-checked-color: var(--fydeos-pink-500);
+}
+
 cr-card-radio-button:not(:last-child) {
     margin-bottom: 16px;
 }

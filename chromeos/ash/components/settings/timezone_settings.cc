@@ -25,6 +25,9 @@
 #include "base/task/thread_pool.h"
 #include "chromeos/ash/components/settings/timezone_settings_helper.h"
 
+#include "fydeos/switches/misc/misc_switches.h"
+#include "fydeos/switches/misc/misc_constants.h"
+
 namespace ash {
 namespace system {
 const char kUTCTimezoneName[] = "Etc/GMT";
@@ -412,6 +415,11 @@ TimezoneSettingsImpl* TimezoneSettingsImpl::GetInstance() {
 TimezoneSettingsImpl::TimezoneSettingsImpl() {
   std::string id = GetTimezoneIDAsString();
   if (id.empty()) {
+    //---***FYDEOS BEGIN***---
+    if (fydeos::switches::IsFydeCustomEnabled())
+       id = fydeos::constants::kFydeOSDefaultTimeZoneId;
+    else
+    //---***FYDEOS END***---
     id = kFallbackTimeZoneId;
     LOG(ERROR) << "Got an empty string for timezone, default to '" << id;
   }

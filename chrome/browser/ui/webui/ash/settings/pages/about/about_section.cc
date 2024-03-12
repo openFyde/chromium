@@ -38,11 +38,17 @@
 #include "components/signin/public/identity_manager/tribool.h"
 #include "components/strings/grit/components_branded_strings.h"
 #include "components/strings/grit/components_strings.h"
+#include "components/version_info/version_info.h"
 #include "components/version_ui/version_ui_constants.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "fydeos/constants/fydeos_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/switches/license/license_switches.h"
+#include "chromeos/version/version_loader.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace ash::settings {
 
@@ -251,12 +257,10 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   // Top level About page strings.
   webui::LocalizedString kLocalizedStrings[] = {
     {"aboutProductLogoAlt", IDS_SHORT_PRODUCT_LOGO_ALT_TEXT},
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
     {"aboutReportAnIssue", IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE},
     {"aboutSendFeedback", IDS_SETTINGS_ABOUT_PAGE_SEND_FEEDBACK},
     {"aboutSendFeedbackDescription",
      IDS_OS_SETTINGS_REVAMP_SEND_FEEDBACK_DESCRIPTION},
-#endif
     {"aboutDiagnostics", IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS},
     {"aboutDiagnosticseDescription",
      IDS_OS_SETTINGS_REVAMP_DIAGNOSTICS_DESCRIPTION},
@@ -382,6 +386,11 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
     {"aboutUpdateToRollbackVersionDisallowed",
      IDS_SETTINGS_UPDATE_TO_ROLLBACK_VERSION_DISALLOWED},
 
+    {"aboutFydeOSOtaDisallowedRequiresOneTimePayment",
+      IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_REQUIRES_ONE_TIME_PAYMENT},
+    {"aboutFydeOSOtaDisallowedByLicenseValidation",
+      IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_BY_LICENSE_VALIDATION},
+
     // About page auto update toggle.
     {"aboutConsumerAutoUpdateToggleTitle",
      IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_TITLE},
@@ -395,8 +404,38 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
      IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_TURN_OFF_BUTTON},
     {"aboutConsumerAutoUpdateToggleKeepUpdatesButton",
      IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_KEEP_UPDATES_BUTTON},
+    {"aboutFydeOSVersionWithoutLicenseState",
+     IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION_WITHOUT_LICENSE_STATE},
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+    {"aboutFydeOSVersion",
+     IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION},
+    {"aboutFydeOSLicenseStateUnlicensed",
+     IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_UNLICENSED},
+    {"aboutFydeOSLicenseStateForYouTrial",
+     IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_TRIAL},
+    {"aboutFydeOSLicenseStateForYouValid",
+     IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_VALID},
+    {"aboutFydeOSLicenseStateForYouExpired",
+     IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_EXPIRED},
+    {"aboutFydeOSLicenseStateEnterpriseTrial",
+     IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_TRIAL},
+    {"aboutFydeOSLicenseStateEnterpriseValid",
+     IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_VALID},
+    {"aboutFydeOSLicenseStateEnterpriseExpired",
+     IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_EXPIRED},
+#endif
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
+
+  html_source->AddString("aboutKeepFydeOsUpdateToDate",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_KEEP_FYDEOS_UPDATE_TO_DATE,
+        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
+  html_source->AddString("aboutFydeOsUpdateEnabled",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_ENABLED,
+        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
+  html_source->AddString("aboutFydeOsUpdateDisabled",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_DISABLED,
+        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
 
   html_source->AddString("aboutTPMFirmwareUpdateLearnMoreURL",
                          chrome::kTPMFirmwareUpdateLearnMoreURL);
@@ -427,6 +466,21 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
 
   html_source->AddString("aboutBrowserVersion",
                          VersionUI::GetAnnotatedVersionStringForUi());
+  std::string fydeosMajorVersion = base::SysInfo::GetLsbFydeReleaseVersion();
+  if (fydeosMajorVersion == "" || fydeosMajorVersion == "unknown") {
+    fydeosMajorVersion = "";
+  } else {
+    fydeosMajorVersion = "v" + fydeosMajorVersion;
+  }
+  auto version = chromeos::version_loader::GetVersion(chromeos::version_loader::VERSION_SHORT);
+  html_source->AddString("aboutFydeOSPlatformVersion", version.value_or(""));
+  html_source->AddString("aboutFydeOSChromiumVersion", std::string(version_info::GetVersionNumber()));
+  html_source->AddString("aboutFydeOSVersionNumber", fydeosMajorVersion);
+  html_source->AddString("aboutFydeOSBoardName", base::SysInfo::GetLsbReleaseBoard());
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  html_source->AddInteger("aboutFydeOSLicenseState",
+                          g_browser_process->local_state()->GetInteger(fydeos::prefs::kFydeLicenseStateType));
+#endif
   html_source->AddString(
       "aboutProductCopyright",
       base::i18n::MessageFormatter::FormatWithNumberedArgs(
@@ -466,7 +520,9 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       "endOfLifeMessage",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_PAGE_LAST_UPDATE_MESSAGE,
                                  ui::GetChromeOSDeviceName(),
-                                 chrome::kEolNotificationURL));
+                                 base::ASCIIToUTF16(fydeos::constants::kEolNotificationURL)));
+
+  html_source->AddString("fydeosLicenseWebUrl", fydeos::switches::GetFydeOSLicenseWebUrl());
 
   html_source->AddString("eolIncentiveOfferTitle",
                          l10n_util::GetStringUTF16(
@@ -499,6 +555,46 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   html_source->AddString("aboutProductSafetyURL",
                          base::UTF8ToUTF16(safetyInfoLink));
 #endif
+
+  html_source->AddString(
+      "aboutFydeOsProductTitleWithLink",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_PRODUCT_TITLE_WITH_LINK,
+#if BUILDFLAG(IS_OPENFYDE)
+                                base::UTF8ToUTF16(fydeos::constants::kOpenFydeHomePageUrl)));
+#else
+                                base::UTF8ToUTF16(fydeos::constants::kFydeOSHomePageUrl)));
+#endif
+  html_source->AddString("aboutFydeOsProductCopyright",
+                         base::i18n::MessageFormatter::FormatWithNumberedArgs(
+                            l10n_util::GetStringUTF16(IDS_SETTINGS_FYDEOS_PRODUCT_COPYRIGHT),
+                            base::Time::Now()));
+#if !BUILDFLAG(IS_OPENFYDE)
+  html_source->AddString(
+      "aboutFydeOsProductTos",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_PRODUCT_TOS,
+                                 base::UTF8ToUTF16(fydeos::constants::kPrivacyURLPath),
+                                 base::UTF8ToUTF16(fydeos::constants::kEulaURLPath))),
+#endif
+
+#if BUILDFLAG(IS_OPENFYDE)
+  html_source->AddString(
+      "aboutFydeOsOpenFydeLicenseDesc",
+      l10n_util::GetStringUTF16(IDS_VERSION_UI_FYDEOS_OPENFYDE_LICENSE_DESC));
+#else
+  html_source->AddString(
+      "aboutFydeOsOpenFydeLicenseDesc",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_OPENFYDE_LICENSE_DESC,
+                                base::UTF8ToUTF16(fydeos::constants::kOpenFydeHomePageUrl)));
+#endif
+  html_source->AddString(
+      "aboutFydeOsOpenFydeProductLicense",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_OPENFYDE_PRODUCT_LICENSE,
+                                 chrome::kChromiumProjectURL));
+  html_source->AddString(
+      "aboutFydeOsProductAndChromiumLicense",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_PRODUCT_CHROMIUM_LICENSE,
+                                base::ASCIIToUTF16(chrome::kChromeUICreditsURL),
+                                base::ASCIIToUTF16(chrome::kChromeUIOSCreditsURL)));
 
   // Crostini subsection exists only when OsSettingsRevampWayfinding is enabled.
   if (crostini_subsection_) {

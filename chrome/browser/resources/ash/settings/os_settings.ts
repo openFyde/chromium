@@ -67,6 +67,19 @@ import './os_bluetooth_page/os_bluetooth_summary.js';
 import './os_bluetooth_page/os_saved_devices_list.js';
 import './os_bluetooth_page/os_saved_devices_list_item.js';
 import './os_bluetooth_page/settings_fast_pair_constants.js';
+import './os_fyde_page/components/backup_password_prompt_dialog.js';
+import './os_fyde_page/components/backup_intro_dialog.js';
+import './os_fyde_page/fydeos_account.js';
+import './os_fyde_page/fydeos_drivers.js';
+import './os_fyde_page/fydeos_remoting.js';
+import './os_fyde_page/fydeos_tweak_ui.js';
+import './os_fyde_page/fydeos_more_info.js';
+import './os_fyde_page/fydeos_dev_mode.js';
+import './os_fyde_page/fydeos_experiment.js';
+// <if expr="use_fydeos_license">
+import './os_fyde_page/fydeos_license_info.js';
+// </if>
+import './os_fyde_page/os_fyde_page.js';
 
 import {ColorChangeUpdater} from 'chrome://resources/cr_components/color_change_listener/colors_css_updater.js';
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
@@ -247,6 +260,9 @@ export {SettingsSchedulerSliderElement} from './settings_scheduler_slider/settin
 export {StartupSettingsCardElement} from './system_preferences_page/startup_settings_card.js';
 export {StorageAndPowerSettingsCardElement} from './system_preferences_page/storage_and_power_settings_card.js';
 export {SettingsSystemPreferencesPageElement} from './system_preferences_page/system_preferences_page.js';
+export {ShellClient} from './os_fyde_page/shell_client.js';
+export {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './os_about_page/popup_license_window.js';
+export {FydeOSBoardNameTitleMap} from './os_about_page/fydeos_board_name.js';
 
 // TODO(b/257329722) After the Jelly experiment is launched, add the CSS link
 // element directly to the HTML.

@@ -250,6 +250,7 @@
 #include "ash/constants/ash_features.h"
 #include "ash/webui/camera_app_ui/camera_app_helper.mojom.h"
 #include "ash/webui/camera_app_ui/camera_app_ui.h"
+#include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_ui.h"
 #include "ash/webui/color_internals/color_internals_ui.h"
 #include "ash/webui/color_internals/mojom/color_internals.mojom.h"
 #include "ash/webui/common/mojom/accessibility_features.mojom.h"
@@ -1773,6 +1774,9 @@ void PopulateChromeWebUIFrameInterfaceBrokers(
       .Add<color_change_listener::mojom::PageHandler>();
   registry.ForWebUI<FeedbackUI>()
       .Add<color_change_listener::mojom::PageHandler>();
+  if (ash::features::IsFydeAssistantEnabled()) {
+    registry.ForWebUI<ash::FydeAssistantAppUI>();
+  }
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 
   // --- Section 2: chrome-untrusted:// WebUIs:

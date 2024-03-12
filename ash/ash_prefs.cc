@@ -50,6 +50,8 @@
 #include "ash/system/input_device_settings/input_device_tracker.h"
 #include "ash/system/input_device_settings/keyboard_modifier_metrics_recorder.h"
 #include "ash/system/keyboard_brightness/keyboard_backlight_color_controller.h"
+#include "fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h"
+#include "fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.h"
 #include "ash/system/media/media_tray.h"
 #include "ash/system/message_center/message_center_controller.h"
 #include "ash/system/network/cellular_setup_notifier.h"
@@ -206,6 +208,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry, bool for_test) {
   KeyboardBacklightColorController::RegisterPrefs(registry);
   BatterySaverController::RegisterLocalStatePrefs(registry);
   PowerSoundsController::RegisterLocalStatePrefs(registry);
+  RotateScreenFeaturePodController::RegisterLocalStatePrefs(registry);
+  SwitchTabletLabtopFeaturePodController::RegisterLocalStatePrefs(registry);
 
   if (for_test) {
     registry->RegisterBooleanPref(prefs::kOwnerPrimaryMouseButtonRight, false);

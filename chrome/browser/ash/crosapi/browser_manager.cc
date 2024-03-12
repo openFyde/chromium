@@ -1816,6 +1816,9 @@ void BrowserManager::PrepareLacrosPolicies() {
   policy::ComponentCloudPolicyService* component_policy_service = nullptr;
   switch (user->GetType()) {
     case user_manager::USER_TYPE_REGULAR:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
     case user_manager::USER_TYPE_CHILD: {
       Profile* profile = Profile::FromBrowserContext(
           ash::BrowserContextHelper::Get()->GetBrowserContextByUser(user));

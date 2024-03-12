@@ -15,6 +15,7 @@ component("geolocation") {
     "//google_apis",
     "//net",
     "//services/network/public/cpp",
+    "//fydeos/switches",
   ]
   sources = [
     "geoposition.cc",

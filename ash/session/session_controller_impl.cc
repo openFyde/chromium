@@ -211,7 +211,10 @@ bool SessionControllerImpl::IsUserChild() const {
     return false;
 
   user_manager::UserType active_user_type = GetUserSession(0)->user_info.type;
-  return active_user_type == user_manager::USER_TYPE_CHILD;
+  return active_user_type == user_manager::USER_TYPE_CHILD ||
+         // ---***FYDEOS BEGIN***---
+         active_user_type == user_manager::USER_TYPE_FYDE_CHILD;
+         // ---***FYDEOS END***---
 }
 
 bool SessionControllerImpl::IsUserGuest() const {
@@ -642,9 +645,13 @@ LoginStatus SessionControllerImpl::CalculateLoginStatusForActiveSession()
       return LoginStatus::GUEST;
     case user_manager::USER_TYPE_PUBLIC_ACCOUNT:
       return LoginStatus::PUBLIC;
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+      return LoginStatus::USER;
     case user_manager::USER_TYPE_KIOSK_APP:
       return LoginStatus::KIOSK_APP;
     case user_manager::USER_TYPE_CHILD:
+    case user_manager::USER_TYPE_FYDE_CHILD:
       return LoginStatus::CHILD;
     case user_manager::USER_TYPE_ARC_KIOSK_APP:
       return LoginStatus::KIOSK_APP;

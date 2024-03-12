@@ -111,6 +111,12 @@ export class HistorySideBarElement extends PolymerElement {
             'historyClustersEnabled, historyClustersVisibleManagedByPolicy_, ' +
             'renameJourneys_)',
       },
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
     };
   }
 

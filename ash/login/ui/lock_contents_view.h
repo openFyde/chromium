@@ -54,6 +54,10 @@ namespace views {
 class BoxLayout;
 }  // namespace views
 
+namespace base {
+  class OneShotTimer;
+}
+
 namespace ash {
 
 class KioskAppDefaultMessage;
@@ -421,6 +425,18 @@ class ASH_EXPORT LockContentsView
   // Updates the layout with the new users list.
   void ApplyUserChanges(const std::vector<LoginUserInfo>& users);
 
+  bool IsOfflineSigninLastChromeSignout() const;
+  bool IsOfflineAutoSigninEnabled() const;
+  void TryToAutoSigninForLocalAccount(const AccountId& account_id,
+                                      const std::string& password,
+                                      const std::vector<LoginUserInfo>& users);
+  void OnOfflineAutoSigninComplete(const AccountId& account_id,
+                                   const std::string& password,
+                                   const std::vector<LoginUserInfo>& users,
+                                   absl::optional<bool> auth_success);
+  void OnUsersChangedInternal(const std::vector<LoginUserInfo>& users);
+  void OnGetSystemSalt(const std::vector<LoginUserInfo>& users, const std::string& account_id_key, const std::string& encrypted_password, const std::string& system_salt);
+
   const LockScreen::ScreenType screen_type_;
 
   std::vector<UserState> users_;
@@ -550,6 +566,10 @@ class ASH_EXPORT LockContentsView
   // The widget this view is attached to. This field is here so that we can
   // remove `this` as FocusChangeListener in `RemovedFromWidget`.
   base::WeakPtr<views::Widget> widget_;
+
+  bool is_last_chrome_signout_ = false;
+  std::unique_ptr<base::OneShotTimer> auto_signin_timer_;
+  int auto_signin_tries = 0;
 
   base::WeakPtrFactory<LockContentsView> weak_ptr_factory_{this};
 };

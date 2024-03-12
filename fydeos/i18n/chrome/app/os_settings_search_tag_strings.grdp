@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/os_settings_search_tag_strings.grdp, included from generated_resources.grd -->
+
+<grit-part>
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_AND_GOOGLE_SERVICES" desc="Text for search result item which, when clicked, navigates the user to settings for Sync (syncs data between multiple Chromebooks) and Google Services.">
+    Sync and other services
+  </message>
+</grit-part>

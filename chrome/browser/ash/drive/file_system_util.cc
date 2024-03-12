@@ -86,6 +86,11 @@ base::FilePath GetCacheRootPath(const Profile* const profile) {
 
 bool IsDriveAvailableForProfile(const Profile* const profile) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  // ---***FYDEOS BEGIN***---
+  if (profile->IsFydeProfile()) {
+    return false;
+  }
+  // ---***FYDEOS END***---
 
   // Disable Drive for non-Gaia accounts.
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(

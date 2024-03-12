@@ -40,6 +40,8 @@
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
+#include "base/system/sys_info.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace ash {
 
@@ -206,6 +208,19 @@ TopShortcutsView::TopShortcutsView(UnifiedSystemTrayController* controller) {
       reboot ? IDS_ASH_STATUS_TRAY_REBOOT : IDS_ASH_STATUS_TRAY_SHUTDOWN));
   power_button_->SetID(VIEW_ID_QS_POWER_BUTTON);
 
+  PrefService* local_state = Shell::Get()->local_state();
+  bool showReboot = local_state->GetBoolean(
+      fydeos::prefs::kShowRebootButtonInTray);
+  if (!reboot && showReboot) {
+    reboot_button_ = button_container->AddChildView(
+        std::make_unique<IconButton>(
+          base::BindRepeating(&UnifiedSystemTrayController::HandleRebootAction,
+                              base::Unretained(controller)),
+        IconButton::Type::kMedium, &kUnifiedMenuRebootIcon,
+        IDS_ASH_STATUS_TRAY_REBOOT));
+    reboot_button_->SetID(VIEW_ID_QS_REBOOT_BUTTON);
+  }
+
   if (can_show_settings && can_lock_screen) {
     lock_button_ = button_container->AddChildView(std::make_unique<IconButton>(
         base::BindRepeating(
@@ -282,6 +297,10 @@ TopShortcutsView::~TopShortcutsView() {
 // static
 void TopShortcutsView::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kOsSettingsEnabled, true);
+  // ---***FYDEOS BEGIN***---
+  const std::string board = base::SysInfo::GetLsbReleaseBoard();
+  registry->RegisterBooleanPref(fydeos::prefs::kShowRebootButtonInTray, board != "baicells-i5300");
+  // ---***FYDEOS END***---
 }
 
 void TopShortcutsView::SetExpandedAmount(double expanded_amount) {

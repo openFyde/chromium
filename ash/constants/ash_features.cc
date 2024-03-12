@@ -11,6 +11,8 @@
 #include "build/build_config.h"
 #include "build/chromeos_buildflags.h"
 #include "chromeos/constants/chromeos_features.h"
+#include "fydeos/build/config/buildflags.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 #if defined(ARCH_CPU_ARM_FAMILY)
 #include "base/command_line.h"
@@ -320,7 +322,7 @@ BASE_FEATURE(kBorealisDGPU, "BorealisDGPU", base::FEATURE_ENABLED_BY_DEFAULT);
 // might fail subsequent checks.
 BASE_FEATURE(kBorealisPermitted,
              "BorealisPermitted",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Force the steam client to be on its beta version. If not set, the client will
 // be on its stable version.
@@ -494,7 +496,7 @@ BASE_FEATURE(kCrostiniMultiContainer,
 // Enables or disables Crostini Qt application IME support.
 BASE_FEATURE(kCrostiniQtImeSupport,
              "CrostiniQtImeSupport",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables or disables Crostini upgrade to LXD v5.
 BASE_FEATURE(kCrostiniUseLxd5,
@@ -731,7 +733,7 @@ BASE_FEATURE(kEcheMetricsRevamp,
 // may have choppier app list animations while in this mode. crbug.com/765292.
 BASE_FEATURE(kEnableBackgroundBlur,
              "EnableBackgroundBlur",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables exporting of the selected Preferences so that they can be accessed
 // early in the sign-in flow, before loading Profile.
@@ -1901,7 +1903,7 @@ BASE_FEATURE(kOobeHidDetectionRevamp,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables OOBE Jelly features.
-BASE_FEATURE(kOobeJelly, "OobeJelly", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kOobeJelly, "OobeJelly", base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables OOBE Jelly modal features.
 BASE_FEATURE(kOobeJellyModal,
@@ -2050,6 +2052,14 @@ BASE_FEATURE(kPhoneHubCameraRoll,
 const base::FeatureParam<base::TimeDelta> kPhoneHubCameraRollThrottleInterval{
     &kPhoneHubCameraRoll, "PhoneHubCameraRollThrottleInterval",
     base::Seconds(2)};
+
+BASE_FEATURE(kFydeAssistant,
+             "FydeAssistant",
+#if BUILDFLAG(IS_OPENFYDE)
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 
 // Enable PhoneHub features setup error handling, which handles different
 // setup response from remote phone device.
@@ -2308,7 +2318,7 @@ BASE_FEATURE(kReleaseNotesNotificationAllChannels,
 // Enables or disables Release Notes suggestion chip on ChromeOS.
 BASE_FEATURE(kReleaseNotesSuggestionChip,
              "ReleaseNotesSuggestionChip",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables rendering ARC notifications using ChromeOS notification framework
 BASE_FEATURE(kRenderArcNotificationsByChrome,
@@ -3918,6 +3928,11 @@ bool IsPersonalizationJellyEnabled() {
 
 bool IsPhoneHubCameraRollEnabled() {
   return base::FeatureList::IsEnabled(kPhoneHubCameraRoll);
+}
+
+bool IsFydeAssistantEnabled() {
+  return base::FeatureList::IsEnabled(kFydeAssistant) &&
+         fydeos::switches::IsFydeCustomEnabled();
 }
 
 bool IsPhoneHubMonochromeNotificationIconsEnabled() {

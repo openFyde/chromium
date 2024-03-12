@@ -75,6 +75,10 @@ export class OobeCrLottie extends OobeCrLottieBase {
         type: Boolean,
         value: true,
       },
+      singleLoop: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -110,6 +114,7 @@ export class OobeCrLottie extends OobeCrLottieBase {
     this.animationPlayer.setAttribute('asset-url', this.animationUrl);
     this.animationPlayer.setAttribute('dynamic', this.dynamic);
     this.animationPlayer.autoplay = autoplay;
+    this.animationPlayer.loop = !this.singleLoop;
     this.$.container.insertBefore(
         this.animationPlayer, this.$.playPauseIconContainer);
     ColorChangeUpdater.forDocument().eventTarget.addEventListener(

@@ -117,6 +117,13 @@ export class OsSettingsLanguagesPageV2Element extends
       },
 
       languageSettingsV2Update2Enabled_: Boolean,
+
+      isFydeProfile_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
     };
   }
 
@@ -425,6 +432,10 @@ export class OsSettingsLanguagesPageV2Element extends
   private onLanguagePreferenceDescriptionLinkClick_(): void {
     this.languagesMetricsProxy_.recordInteraction(
         LanguagesPageInteraction.OPEN_WEB_LANGUAGES_LEARN_MORE);
+  }
+
+  showManageGoogleAccountLanguage_(update2Enabled: boolean, isFydeProfile: boolean) {
+    return update2Enabled && !isFydeProfile;
   }
 }
 

@@ -54,6 +54,8 @@
 #include "ui/base/l10n/l10n_util_win.h"
 #endif  // BUILDFLAG(IS_WIN)
 
+#include "fydeos/build/config/buildflags.h"
+
 namespace {
 
 static const char* const kAcceptLanguageList[] = {
@@ -577,8 +579,13 @@ std::string GetApplicationLocaleInternalNonMac(const std::string& pref_locale) {
     }
   }
 
+#if !BUILDFLAG(USE_FYDEOS_COM)
   // Fallback on en-US.
   const std::string fallback_locale("en-US");
+#else
+  // Fallback on zh-CN.
+  const std::string fallback_locale("zh-CN");
+#endif
   if (HasStringsForLocale(fallback_locale))
     return fallback_locale;
 

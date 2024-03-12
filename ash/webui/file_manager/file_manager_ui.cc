@@ -40,6 +40,9 @@ bool IsKioskSession() {
 
   switch (user_type) {
     case user_manager::USER_TYPE_REGULAR:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
     case user_manager::USER_TYPE_CHILD:
     case user_manager::USER_TYPE_GUEST:
     case user_manager::USER_TYPE_PUBLIC_ACCOUNT:

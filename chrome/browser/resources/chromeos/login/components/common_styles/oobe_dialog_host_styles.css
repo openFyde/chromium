@@ -80,3 +80,12 @@
         :host-context([orientation=vertical]) .portrait-horizontal-centered {
           margin: 0 auto;
         }
+
+        :host-context(body.fydeos) {
+          --oobe-fydeos-default-icon-color: var(--cros-icon-fydeos-color-pink);
+          --oobe-adaptive-dialog-icon-fill-color: var(--cros-icon-fydeos-color-pink);
+        }
+
+        :host-context([fydeos-background-color]):host-context(body.fydeos) {
+          --oobe-fydeos-default-icon-color: var(--fydeos-oobe-welcome-purple-200);
+        }

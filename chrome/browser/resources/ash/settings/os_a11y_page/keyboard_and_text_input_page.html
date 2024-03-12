@@ -47,6 +47,7 @@
     sub-label="$i18n{onScreenKeyboardDescription}"
     deep-link-focus-id$="[[Setting.kOnScreenKeyboard]]">
 </settings-toggle-button>
+<if expr="not use_fydeos_com">
 <settings-toggle-button
     id="enableDictation"
     class="hr"
@@ -57,6 +58,7 @@
     deep-link-focus-id$="[[Setting.kDictation]]"
     learn-more-url="[[dictationLearnMoreUrl_]]">
 </settings-toggle-button>
+</if>
 <template is="dom-if" if="[[prefs.settings.a11y.dictation.value]]">
   <div class="settings-box indented">
     <div class="flex start settings-box-text" id="labelWrapper">

@@ -115,7 +115,9 @@ export class OsSettingsPeoplePageElement extends
         type: Boolean,
         value() {
           return loadTimeData.valueExists('showParentalControls') &&
-              loadTimeData.getBoolean('showParentalControls');
+              loadTimeData.getBoolean('showParentalControls') &&
+             (!loadTimeData.valueExists('isFydeProfile') ||
+              !loadTimeData.getBoolean('isFydeProfile'));
         },
       },
 
@@ -149,6 +151,33 @@ export class OsSettingsPeoplePageElement extends
         type: Boolean,
         value: loadTimeData.getBoolean('showSyncSettingsRevamp'),
         readOnly: true,
+      },
+
+      isProfileActionable_: {
+        type: Boolean,
+        value: function() {
+          if (loadTimeData.getBoolean('isFydeProfile')) {
+            return !loadTimeData.getBoolean('isFydeLocalAccount');
+          }
+          return loadTimeData.getBoolean('isAccountManagerEnabled');
+        },
+      },
+  
+      profileActionButtonIcon_: {
+        type: String,
+          value: function() {
+            if (loadTimeData.getBoolean('isFydeProfile')) {
+              return 'icon-external';
+            }
+            return 'subpage-arrow';
+          },
+      },
+
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
       },
 
     };
@@ -396,6 +425,16 @@ export class OsSettingsPeoplePageElement extends
   }
 
   private onAccountManagerClick_(): void {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      if (loadTimeData.getBoolean('isFydeLocalAccount')) {
+        return;
+      }
+      const baseUrl = loadTimeData.getString('fydeosAccountBaseUrl');
+      const url = `${baseUrl}/personalInfo/`;
+      window.open(url);
+      return;
+    }
+
     if (this.isAccountManagerEnabled_) {
       Router.getInstance().navigateTo(routes.ACCOUNT_MANAGER);
     }

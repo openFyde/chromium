@@ -18,6 +18,7 @@
 #include "components/ownership/owner_key_util.h"
 #include "components/policy/proto/device_management_backend.pb.h"
 #include "components/user_manager/user_manager.h"
+#include "components/user_manager/user_type.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/cert/nss_cert_database.h"
@@ -169,6 +170,9 @@ bool UserCanBecomeOwner(const user_manager::User* user) {
   }
   switch (user->GetType()) {
     case user_manager::USER_TYPE_REGULAR:
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+    case user_manager::USER_TYPE_FYDE_CHILD:
     case user_manager::USER_TYPE_CHILD:
       return true;
     case user_manager::USER_TYPE_GUEST:

@@ -12,6 +12,7 @@
 #include "components/device_event_log/device_event_log.h"
 #include "components/user_manager/user.h"
 #include "components/user_manager/user_manager.h"
+#include "components/user_manager/user_type.h"
 
 namespace ash {
 
@@ -42,8 +43,12 @@ LoginState::LoggedInUserType GetLoggedInUserTypeFromUser(
       return LoginState::LOGGED_IN_USER_PUBLIC_ACCOUNT;
     case user_manager::USER_TYPE_KIOSK_APP:
       return LoginState::LOGGED_IN_USER_KIOSK;
+    case user_manager::USER_TYPE_FYDE_CHILD:
     case user_manager::USER_TYPE_CHILD:
       return LoginState::LOGGED_IN_USER_CHILD;
+    case user_manager::USER_TYPE_FYDE_ACCOUNT:
+    case user_manager::USER_TYPE_FLINT_ACCOUNT:
+      return LoginState::LOGGED_IN_USER_REGULAR;
     case user_manager::USER_TYPE_ARC_KIOSK_APP:
       return LoginState::LOGGED_IN_USER_KIOSK;
     case user_manager::USER_TYPE_WEB_KIOSK_APP:

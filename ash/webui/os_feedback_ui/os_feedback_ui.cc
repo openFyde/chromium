@@ -16,12 +16,15 @@
 #include "ash/webui/os_feedback_ui/backend/os_feedback_delegate.h"
 #include "ash/webui/os_feedback_ui/mojom/os_feedback_ui.mojom.h"
 #include "ash/webui/os_feedback_ui/url_constants.h"
+#include "base/strings/utf_string_conversions.h"
 #include "chromeos/strings/grit/chromeos_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "fydeos/switches/urls/urls_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/resources/grit/webui_resources.h"
 #include "ui/web_dialogs/web_dialog_ui.h"
 #include "ui/webui/color_change_listener/color_change_handler.h"
@@ -105,6 +108,9 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
       {"askCommunityLabel", IDS_FEEDBACK_TOOL_RESOURCES_ASK_COMMUNITY_LABEL},
       {"askCommunityDescription",
        IDS_FEEDBACK_TOOL_RESOURCES_ASK_COMMUNITY_DESCRIPTION},
+      {"helpPageLabel", IDS_FEEDBACK_TOOL_RESOURCES_HELP_PAGE_LABEL},
+      {"helpPageDescription",
+       IDS_FEEDBACK_TOOL_RESOURCES_HELP_PAGE_DESCRIPTION},
       {"userConsentLabel", IDS_FEEDBACK_TOOL_USER_CONSENT_LABEL},
       {"includeSystemInfoAndMetricsCheckboxLabel",
        IDS_FEEDBACK_TOOL_INCLUDE_SYSTEM_INFO_AND_METRICS_CHECKBOX_LABEL},
@@ -131,6 +137,20 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
   };
 
   source->AddLocalizedStrings(kLocalizedStrings);
+#if BUILDFLAG(USE_FYDEOS_COM)
+  source->AddString("fydeosFeedbackFeatureHelpMessage",
+                    l10n_util::GetStringUTF16(
+                      IDS_FEEDBACK_TOOL_FYDEOS_FEEDBACK_FEATURE_HELP_MESSAGE));
+#else
+  source->AddString("fydeosFeedbackFeatureHelpMessage",
+                    l10n_util::GetStringFUTF16(
+                      IDS_FEEDBACK_TOOL_FYDEOS_FEEDBACK_FEATURE_HELP_MESSAGE,
+                      base::ASCIIToUTF16(fydeos::constants::kFydeOSHelpURL),
+                      base::ASCIIToUTF16(fydeos::constants::kFydeOSForumURL),
+                      base::ASCIIToUTF16(fydeos::constants::kFydeOSDiscordServerURL),
+                      base::ASCIIToUTF16(fydeos::constants::kFydeOSTelegramGroupURL)
+  ));
+#endif
   source->UseStringsJs();
 
   source->AddBoolean("enableLinkCrossDeviceDogfoodFeedbackFlag",

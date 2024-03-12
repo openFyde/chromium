@@ -5,6 +5,7 @@
     <settings-toggle-button id="disconnectGoogleDriveAccountToggle"
         pref="{{prefs.gdata.disabled}}"
         label="$i18n{disconnectGoogleDriveAccount}"
+        hidden=[[hideGoogleDrive_]]
         deep-link-focus-id$="[[Setting.kGoogleDriveConnection]]">
     </settings-toggle-button>
   </template>
@@ -12,6 +13,7 @@
     <cr-link-row id="googleDriveRow"
         start-icon="settings20:google-drive"
         class="hr"
+        hidden=[[hideGoogleDrive_]]
         on-click="onClickGoogleDrive_"
         label="$i18n{googleDriveLabel}"
         sub-label="[[computeGoogleDriveSublabel_(driveDisabled_, bulkPinningPrefEnabled_)]]"

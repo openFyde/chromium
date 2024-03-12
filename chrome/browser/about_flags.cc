@@ -9807,6 +9807,10 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kLacrosSharedComponentsDirName,
      flag_descriptions::kLacrosSharedComponentsDirDescription, kOsCrOS,
      FEATURE_VALUE_TYPE(features::kLacrosSharedComponentsDir)},
+    {"enable-fydeos-ai",
+     flag_descriptions::kFydeOsAIName,
+     flag_descriptions::kFydeOsAIDescription, kOsCrOS,
+     FEATURE_VALUE_TYPE(ash::features::kFydeAssistant)},
 #endif
 
 #if BUILDFLAG(IS_CHROMEOS_LACROS)

@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "ash/app_list/views/app_list_page.h"
+#include "ash/app_list/views/assistant/fyde_assistant_page.h"
 #include "ash/ash_export.h"
 #include "ash/assistant/model/assistant_ui_model_observer.h"
 #include "ash/public/cpp/app_list/app_list_types.h"
@@ -24,6 +25,7 @@ namespace ash {
 
 class AssistantMainView;
 class AssistantViewDelegate;
+class FydeAssistantPage;
 class ViewShadow;
 
 // The Assistant page for the app list.
@@ -85,7 +87,7 @@ class ASH_EXPORT AssistantPageView : public AppListPage,
       assistant_view_delegate_;
 
   // Owned by the view hierarchy.
-  raw_ptr<AssistantMainView, ExperimentalAsh> assistant_main_view_ = nullptr;
+  raw_ptr<FydeAssistantPage, ExperimentalAsh> assistant_main_view_ = nullptr;
 
   int min_height_dip_;
 

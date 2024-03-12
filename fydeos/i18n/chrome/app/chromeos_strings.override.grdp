@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/chromeos_strings.grdp, included from generated_resources.grd -->
+<grit-part>
+  <if expr="openfyde">
+    <message name="IDS_LOGIN_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+      You will not be able to add users because Google API and FydeOS API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+    </message>
+  </if>
+  <message name="IDS_LOGIN_MARKETING_OPT_IN_SCREEN_SUBTITLE" desc="The sub-title of the dialog that allows user to opt-in into several Google marketing options.">
+    Get <ph name="DEVICE_TYPE">$1<ex>FydeOS device</ex></ph> tips and updates from Fyde Innovations
+  </message>
+  <message name="IDS_LOGIN_MARKETING_OPT_IN_SCREEN_GET_CHROMEBOOK_UPDATES_SIGN_ME_UP" desc="A lablel next to the checkbox that controls user subscription to marketing updates and useful information about the user's Chrome device.">
+    Sign up for the (very infrequent, promised) newsletter for FydeOS
+  </message>
+  <message name="IDS_AD_ORG_UNIT_HINT" desc="Admin-facing. Hint for the Active Directory Organizational units input on the 'More options' dialog.">
+    Device OU (e.g. OU=FydeOS devices,DC=example,DC=com)
+  </message>
+  <message name="IDS_ARC_MANAGED_PROVISION_NOTIFICATION_TITLE" desc="Title of the notification shown to user during ARC provision when the ARC opt-in flow happens silently due to enterprise policies">
+    Android support
+  </message>
+  <message name="IDS_ARC_OOBE_TERMS_HEADING" desc="Heading of the Arc Terms OOBE dialog.">
+    Android support
+  </message>
+  <message name="IDS_ARC_OOBE_TERMS_DESCRIPTION" desc="Description of the Arc Terms OOBE dialog.">
+    Install Android apps
+  </message>
+  <message name="IDS_ARC_OOBE_TERMS_LOAD_ERROR" desc="Load error message of the Arc Terms OOBE dialog.">
+    Oops, connection issues. Please retry.
+  </message>
+  <message name="IDS_LOGIN_APP_DOWNLOADING_SCREEN_DESCRIPTION" desc="The description of the 'App Downloading' section">
+    You can find more apps for your device in any 3rd party Android app store of your choice.
+  </message>
+  <message name="IDS_ARC_ANDROID_MANAGEMENT_REQUIRED_ERROR" desc="Error message shown when Android management is required for an unmanaged Chrome OS user.">
+    Your organisation has not enabled Android support for your account. Contact your administrator for more information.
+  </message>
+  <message name="IDS_ARC_DATA_REMOVAL_CONFIRMATION_HEADING" desc="Heading text in the content area of the confirmation for data removal in case ARC comes to wrong state.">
+    To use Android apps, you must first restore your apps. Some data may have been lost.
+  </message>
+  <message name="IDS_ARC_MANAGED_PROVISION_NOTIFICATION_MESSAGE" desc="Notification shown to user during ARC provision when the ARC opt-in flow happens silently due to enterprise policies.">
+    Installing Android support on your <ph name="DEVICE_TYPE">$1<ex>FydeOS device</ex></ph>. This could take a few minutes.
+  </message>
+
+  <if expr="openfyde">
+    <message name="IDS_USER_IMAGE_SCREEN_DESCRIPTION" desc="Description text for the oobe/login user image selection dialog.">
+      Take a new photo or choose an existing photo or icon.
+      <ph name="LINE_BREAK">&lt;br&gt;&lt;br&gt;</ph>
+      This picture will show up on your openFyde device sign in screen and lock screen.
+    </message>
+    <if expr="not use_fydeos_com">
+      <message name="IDS_EULA_TPM_DESCRIPTION" desc="Dialog box text">
+        Your computer contains a Trusted Platform Module (TPM) security device, which is used to implement many critical security features in openFyde. Visit the openFyde device Help Center to learn more: https://fydeos.io/help/
+      </message>
+      <message name="IDS_EULA_SECURE_MODULE_DESCRIPTION" desc="Description of what a secure module does in the eula page.">
+        Your computer contains a secure module, which is used to implement many critical security features in openFyde. Visit the openFyde device Help Center to learn more: https://fydeos.io/help/
+      </message>
+    </if>
+    <if expr="use_fydeos_com">
+      <message name="IDS_EULA_TPM_DESCRIPTION" desc="Dialog box text">
+        Your computer contains a Trusted Platform Module (TPM) security device, which is used to implement many critical security features in openFyde. Visit the openFyde device Help Center to learn more: https://fydeos.com/help/
+      </message>
+      <message name="IDS_EULA_SECURE_MODULE_DESCRIPTION" desc="Description of what a secure module does in the eula page.">
+        Your computer contains a secure module, which is used to implement many critical security features in openFyde. Visit the openFyde device Help Center to learn more: https://fydeos.com/help/
+      </message>
+    </if>
+    <message name="IDS_ENABLE_DEBUGGING_HELP" desc="Help content of the enable debugging features dialog.">
+      <ph name="BEGIN_H3">&lt;h3&gt;</ph>Debugging Features<ph name="END_H3">&lt;/h3&gt;</ph>
+      <ph name="BR">&lt;br&gt;</ph>
+      You can enable the debugging features on your openFyde Device in order to install and test custom code on your device.  This will allow you to:<ph name="BR">&lt;br&gt;</ph>
+      <ph name="BEGIN_LIST">&lt;ul&gt;</ph>
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Remove rootfs verification so you can modify OS files
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Enable SSH access to the device using the standard test keys so you can use tools such as <ph name="BEGIN_CODE">&lt;span style=&quot;color:grey;font-family:monospace&quot;&gt;</ph>&apos;cros flash&apos;<ph name="END_CODE">&lt;/span&gt;</ph> to access the device
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Enable booting from USB so you can install an OS image from a USB drive
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Set both the dev and the system root login password to a custom value so you can manually SSH into the device
+      <ph name="END_LIST">&lt;/ul&gt;</ph>
+      <ph name="BR">&lt;br&gt;</ph>
+      Once enabled, most of the debugging features will remain enabled even after performing a powerwash or wiping the data on an enterprise managed device. To fully disable all debugging features, complete the openFyde recovery process (https://fydeos.io/help/).
+      <ph name="BR">&lt;br&gt;</ph>
+      <ph name="BR">&lt;br&gt;</ph>
+      For more information about the debugging features see:<ph name="BR">&lt;br&gt;</ph>
+      https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-features
+      <ph name="BR">&lt;br&gt;</ph>
+      <ph name="BR">&lt;br&gt;</ph>
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Note:<ph name="END_BOLD">&lt;/b&gt;</ph>  The system will reboot during the process.
+    </message>
+    <message name="IDS_AD_DEVICE_NAME_INPUT_LABEL" desc="Admin-facing. Label for device name input field on the Active Directory domain join screen. User should tell us the name of their device.">
+      openFyde device name
+    </message>
+    <message name="IDS_AD_BOARD_NOT_SUPPORTED" desc="Admin-facing. Alert message that the Chromebook model is not supported for Active Directory">
+      openFyde <ph name="MS_AD_NAME">Microsoft® Active Directory®</ph> integration is only supported on x86_64 platforms. openFyde devices built on top of an ARM or x86 platform do not support this functionality.
+    </message>
+    <message name="IDS_ARC_SIGN_IN_BAD_AUTHENTICATION_ERROR" desc="Android sign-in error because of bad authentification">
+      Couldn't verify your account. Please try again or restart your openFyde device.
+    </message>
+    <message name="IDS_ARC_SERVER_COMMUNICATION_ERROR" desc="Android sign-in error because of server communication error">
+      Couldn't connect with the server. Please check your network connection and try again. If the problem persists, restart your openFyde device.
+    </message>
+    <message name="IDS_HATS_NOTIFICATION_TITLE" desc="The title of the notification for Happiness Tracking Survey.">
+      Help us improve openFyde
+    </message>
+    <message name="IDS_ARC_NOTIFICATION_DISPLAY_SOURCE" desc="Context title of the first-run notification that enables Android apps.">
+      Android for openFyde
+    </message>
+    <message name="IDS_ARC_PLAYSTORE_SETTING_UP_TITLE" desc="The text tile which is shown when Play Store is initializing.">
+      Setting up Android for openFyde...
+    </message>
+    <message name="IDS_ARC_OPEN_PLAY_STORE_NOTIFICATION_BUTTON" desc="Label for the button in the first-run notification that enables Android apps.">
+      Open Android for openFyde
+    </message>
+    <message name="IDS_ARC_OPT_IN_ACTIVE_DIRECTORY_AUTH_TITLE" desc="Title displayed in opt-in dialog to inform an Active Directory user that they may have to enter their credentials">
+      openFyde Android Account
+    </message>
+    <message name="IDS_ARC_OPT_IN_ACTIVE_DIRECTORY_AUTH_DESC" desc="Description displayed in opt-in dialog to inform an Active Directory user that they may have to enter their credentials">
+      To enable your account to access the openFyde Android Store, please authenticate with your Identity Provider.
+    </message>
+    <message name="IDS_ECHO_CONSENT_DIALOG_TEXT" desc="Dialog text shown when user is asked to give consent to proceed with redeeming an ECHO offer.">
+      <ph name="SERVICE_NAME">$1<ex>Google Drive</ex></ph> wants to check if you are using an eligible openFyde device.
+    </message>
+    <message name="IDS_OOBE_EULA_SECTION_TITLE" desc="Title of Terms of Service screen">
+      openFyde Terms of Service
+    </message>
+    <message name="IDS_OOBE_EULA_IFRAME_LABEL" desc="Accessibility label on an iframe with full Chrome OS Terms text">
+      openFyde Terms of Service contents
+    </message>
+    <message name="IDS_ENABLE_DEBUGGING_SETUP_MESSAGE" desc="Setup message in dialog for enabling debugging features.">
+    You are enabling openFyde debugging features which will set up sshd daemon and enable booting from USB drives.
+    </message>
+    <message name="IDS_WRONG_HWID_SCREEN_MESSAGE_FIRST_PART" desc="Warning message shown on screen notifying about malformed hardware ID. First paragraph.">
+      Unfortunately, your computer is configured with a malformed hardware ID. This prevents openFyde from updating with the latest security fixes and your computer <ph name="BEGIN_BOLD">$1</ph>may be vulnerable to malicious attacks<ph name="END_BOLD">$2</ph>.
+    </message>
+    <message name="IDS_FILEMANAGER_APP_DESCRIPTION" desc="Description for the File Manager app.">
+      The Files app provides quick access to files that you've saved on Google Drive, external storage, or your openFyde device.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_USER_IMAGE_SCREEN_DESCRIPTION" desc="Description text for the oobe/login user image selection dialog.">
+      Take a new photo or choose an existing photo or icon.
+      <ph name="LINE_BREAK">&lt;br&gt;&lt;br&gt;</ph>
+      This picture will show up on your FydeOS device sign in screen and lock screen.
+    </message>
+    <if expr="not use_fydeos_com">
+      <message name="IDS_EULA_TPM_DESCRIPTION" desc="Dialog box text">
+        Your computer contains a Trusted Platform Module (TPM) security device, which is used to implement many critical security features in FydeOS. Visit the FydeOS device Help Center to learn more: https://fydeos.io/help/
+      </message>
+      <message name="IDS_EULA_SECURE_MODULE_DESCRIPTION" desc="Description of what a secure module does in the eula page.">
+        Your computer contains a secure module, which is used to implement many critical security features in FydeOS. Visit the FydeOS device Help Center to learn more: https://fydeos.io/help/
+      </message>
+    </if>
+    <if expr="use_fydeos_com">
+      <message name="IDS_EULA_TPM_DESCRIPTION" desc="Dialog box text">
+        Your computer contains a Trusted Platform Module (TPM) security device, which is used to implement many critical security features in FydeOS. Visit the FydeOS device Help Center to learn more: https://fydeos.com/help/
+      </message>
+      <message name="IDS_EULA_SECURE_MODULE_DESCRIPTION" desc="Description of what a secure module does in the eula page.">
+        Your computer contains a secure module, which is used to implement many critical security features in FydeOS. Visit the FydeOS device Help Center to learn more: https://fydeos.com/help/
+      </message>
+    </if>
+    <message name="IDS_ENABLE_DEBUGGING_HELP" desc="Help content of the enable debugging features dialog.">
+      <ph name="BEGIN_H3">&lt;h3&gt;</ph>Debugging Features<ph name="END_H3">&lt;/h3&gt;</ph>
+      <ph name="BR">&lt;br&gt;</ph>
+      You can enable the debugging features on your FydeOS Device in order to install and test custom code on your device.  This will allow you to:<ph name="BR">&lt;br&gt;</ph>
+      <ph name="BEGIN_LIST">&lt;ul&gt;</ph>
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Remove rootfs verification so you can modify OS files
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Enable SSH access to the device using the standard test keys so you can use tools such as <ph name="BEGIN_CODE">&lt;span style=&quot;color:grey;font-family:monospace&quot;&gt;</ph>&apos;cros flash&apos;<ph name="END_CODE">&lt;/span&gt;</ph> to access the device
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Enable booting from USB so you can install an OS image from a USB drive
+        <ph name="LIST_ITEM">&lt;li&gt;</ph>Set both the dev and the system root login password to a custom value so you can manually SSH into the device
+      <ph name="END_LIST">&lt;/ul&gt;</ph>
+      <ph name="BR">&lt;br&gt;</ph>
+      Once enabled, most of the debugging features will remain enabled even after performing a powerwash or wiping the data on an enterprise managed device. To fully disable all debugging features, complete the FydeOS recovery process (https://fydeos.io/help/).
+      <ph name="BR">&lt;br&gt;</ph>
+      <ph name="BR">&lt;br&gt;</ph>
+      For more information about the debugging features see:<ph name="BR">&lt;br&gt;</ph>
+      https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-features
+      <ph name="BR">&lt;br&gt;</ph>
+      <ph name="BR">&lt;br&gt;</ph>
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Note:<ph name="END_BOLD">&lt;/b&gt;</ph>  The system will reboot during the process.
+    </message>
+    <message name="IDS_AD_DEVICE_NAME_INPUT_LABEL" desc="Admin-facing. Label for device name input field on the Active Directory domain join screen. User should tell us the name of their device.">
+      FydeOS device name
+    </message>
+    <message name="IDS_AD_BOARD_NOT_SUPPORTED" desc="Admin-facing. Alert message that the Chromebook model is not supported for Active Directory">
+      FydeOS <ph name="MS_AD_NAME">Microsoft® Active Directory®</ph> integration is only supported on x86_64 platforms. FydeOS devices built on top of an ARM or x86 platform do not support this functionality.
+    </message>
+    <message name="IDS_ARC_SIGN_IN_BAD_AUTHENTICATION_ERROR" desc="Android sign-in error because of bad authentification">
+      Couldn't verify your account. Please try again or restart your FydeOS device.
+    </message>
+    <message name="IDS_ARC_SERVER_COMMUNICATION_ERROR" desc="Android sign-in error because of server communication error">
+      Couldn't connect with the server. Please check your network connection and try again. If the problem persists, restart your FydeOS device.
+    </message>
+    <message name="IDS_HATS_NOTIFICATION_TITLE" desc="The title of the notification for Happiness Tracking Survey.">
+      Help us improve FydeOS
+    </message>
+    <message name="IDS_ARC_NOTIFICATION_DISPLAY_SOURCE" desc="Context title of the first-run notification that enables Android apps.">
+      Android for FydeOS
+    </message>
+    <message name="IDS_ARC_PLAYSTORE_SETTING_UP_TITLE" desc="The text tile which is shown when Play Store is initializing.">
+      Setting up Android for FydeOS...
+    </message>
+    <message name="IDS_ARC_OPEN_PLAY_STORE_NOTIFICATION_BUTTON" desc="Label for the button in the first-run notification that enables Android apps.">
+      Open Android for FydeOS
+    </message>
+    <message name="IDS_ARC_OPT_IN_ACTIVE_DIRECTORY_AUTH_TITLE" desc="Title displayed in opt-in dialog to inform an Active Directory user that they may have to enter their credentials">
+      FydeOS Android Account
+    </message>
+    <message name="IDS_ARC_OPT_IN_ACTIVE_DIRECTORY_AUTH_DESC" desc="Description displayed in opt-in dialog to inform an Active Directory user that they may have to enter their credentials">
+      To enable your account to access the FydeOS Android Store, please authenticate with your Identity Provider.
+    </message>
+    <message name="IDS_ECHO_CONSENT_DIALOG_TEXT" desc="Dialog text shown when user is asked to give consent to proceed with redeeming an ECHO offer.">
+      <ph name="SERVICE_NAME">$1<ex>Google Drive</ex></ph> wants to check if you are using an eligible FydeOS device.
+    </message>
+    <message name="IDS_OOBE_EULA_SECTION_TITLE" desc="Title of Terms of Service screen">
+      FydeOS Terms of Service
+    </message>
+    <message name="IDS_OOBE_EULA_IFRAME_LABEL" desc="Accessibility label on an iframe with full Chrome OS Terms text">
+      FydeOS Terms of Service contents
+    </message>
+    <message name="IDS_ENABLE_DEBUGGING_SETUP_MESSAGE" desc="Setup message in dialog for enabling debugging features.">
+    You are enabling FydeOS debugging features which will set up sshd daemon and enable booting from USB drives.
+    </message>
+    <message name="IDS_WRONG_HWID_SCREEN_MESSAGE_FIRST_PART" desc="Warning message shown on screen notifying about malformed hardware ID. First paragraph.">
+      Unfortunately, your computer is configured with a malformed hardware ID. This prevents FydeOS from updating with the latest security fixes and your computer <ph name="BEGIN_BOLD">$1</ph>may be vulnerable to malicious attacks<ph name="END_BOLD">$2</ph>.
+    </message>
+    <message name="IDS_FILEMANAGER_APP_DESCRIPTION" desc="Description for the File Manager app.">
+      The Files app provides quick access to files that you've saved on Google Drive, external storage, or your FydeOS device.
+    </message>
+  </if>
+  <message name="IDS_OS_TRIAL_SUBTITLE" desc="Subtitle of the install or try screen, the first screen of the ChromeOS Flex Installation flow">
+    <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>For the best experience, install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> to your internal disk. You can also install it later from the login screen.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
+    <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>If you're not ready to install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph>, you can run from USB to try it out. Please note that running <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> from USB will introduce storage limits and performance penalties; some features, including OTA system updates, will not work.<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
+  </message>
+  <message name="IDS_NEW_WELCOME_SCREEN_GREETING" desc="Greeting message on the OOBE welcome screen">
+    Welcome to <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph>
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_BOREALIS_INSTALLER_CONFIRMATION_TITLE" desc="Title for installer for Steam (noun, name of app).">
+      Welcome to Steam on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ONGOING_TITLE" desc="Title for installer while Steam (noun, name of app) is installing.">
+      Setting up Steam on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_FINISHED_MESSAGE" desc="Title for Steam (noun, name of app) installer when installation suceeded.">
+      Enjoy gaming on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_TITLE" desc="Title for installer when Steam (noun, name of app) fails to install.">
+      There was a problem setting up Steam on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_REBOOT" desc="Body for Steam (noun, name of app) installer when a restart is needed.">
+      Please restart your device to use Steam on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_STARTUP" desc="Body for Steam (noun, name of app) installer when installation fails trying to start up after installing">
+      Couldn't launch Steam on openFyde device. Please try again
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_BOREALIS_INSTALLER_CONFIRMATION_TITLE" desc="Title for installer for Steam (noun, name of app).">
+      Welcome to Steam on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ONGOING_TITLE" desc="Title for installer while Steam (noun, name of app) is installing.">
+      Setting up Steam on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_FINISHED_MESSAGE" desc="Title for Steam (noun, name of app) installer when installation suceeded.">
+      Enjoy gaming on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_TITLE" desc="Title for installer when Steam (noun, name of app) fails to install.">
+      There was a problem setting up Steam on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_REBOOT" desc="Body for Steam (noun, name of app) installer when a restart is needed.">
+      Please restart your device to use Steam on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_STARTUP" desc="Body for Steam (noun, name of app) installer when installation fails trying to start up after installing">
+      Couldn't launch Steam on FydeOS device. Please try again
+    </message>
+  </if>
+  <message name="IDS_CROSTINI_INSTALLER_NEED_UPDATE_TITLE" desc="Title shown in the Crostini installer dialog when the VM fails to install because the device must be updated">
+    FydeOS update required
+  </message>
+  <message name="IDS_CROSTINI_INSTALLER_NEED_UPDATE_ERROR" desc="Text shown in the Crostini installer dialog when the VM fails to install because the device must be updated first">
+    To finish setting up Linux, update FydeOS and try again.
+  </message>
+</grit-part>

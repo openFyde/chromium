@@ -173,6 +173,10 @@ export class OsSettingsA11yPageElement extends OsSettingsA11yPageElementBase {
     }
   }
 
+  private shouldShowAdditionalFeaturesLink_(_unused_isGuest: boolean): boolean {
+    return false;
+  }
+
   private onScreenReaderStateChanged_(hasScreenReader: boolean): void {
     this.hasScreenReader_ = hasScreenReader;
     this.showAccessibilityLabelsSetting_ = this.hasScreenReader_;

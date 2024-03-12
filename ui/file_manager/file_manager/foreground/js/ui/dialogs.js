@@ -240,6 +240,11 @@ export class BaseDialog {
     }
   }
 
+  findLinkElementInText() {
+    // @ts-ignore: error TS2531: Object is possibly 'null'.
+    return this.text.querySelector('a');
+  }
+
   /** @private */
   // @ts-ignore: error TS7006: Parameter 'event' implicitly has an 'any' type.
   onOkClick_(event) {

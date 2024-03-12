@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend chrome/app/generated_resources.grd -->
+<grit-part>
+
+  <if expr="not openfyde">
+    <message name="IDS_EXTENSION_PROMPT_WARNING_FYDEOS_PRIVATE_API" desc="Permission string for implementing FydeOS Private Api">
+      Interface and communicate with FydeOS core services and processes.
+    </message>
+  </if>
+  <if expr="openfyde">
+    <message name="IDS_EXTENSION_PROMPT_WARNING_FYDEOS_PRIVATE_API" desc="Permission string for implementing FydeOS Private Api">
+      Interface and communicate with openFyde core services and processes.
+    </message>
+  </if>
+  <message name="IDS_EXTENSION_PROMPT_WARNING_FYDEOS_SHELL_CLIENT_API" desc="Permission for excuting shell command">
+    Read and write files to your hard drive; executing safe and whitelisted commands in the shell.
+  </message>
+
+</grit-part>

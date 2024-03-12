@@ -42,6 +42,8 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
+#include "base/system/sys_info.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace ash {
 namespace {
@@ -342,6 +344,9 @@ QuickSettingsFooter::~QuickSettingsFooter() = default;
 void QuickSettingsFooter::RegisterLocalStatePrefs(
     PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kOsSettingsEnabled, true);
+
+  const std::string board = base::SysInfo::GetLsbReleaseBoard();
+  registry->RegisterBooleanPref(fydeos::prefs::kShowRebootButtonInTray, board != "baicells-i5300");
 }
 
 void QuickSettingsFooter::UpdateSettingsButtonState() {

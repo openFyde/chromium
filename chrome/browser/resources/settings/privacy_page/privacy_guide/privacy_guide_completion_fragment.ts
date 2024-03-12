@@ -107,7 +107,8 @@ export class PrivacyGuideCompletionFragmentElement extends
 
   /** Updates the completion card waa link depending on the signin state. */
   private updateWaaLink_(isSignedIn: boolean) {
-    this.shouldShowWaa_ = isSignedIn;
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    this.shouldShowWaa_ = isSignedIn && !isFydeProfile;
   }
 
   private onBackButtonClick_(e: Event) {

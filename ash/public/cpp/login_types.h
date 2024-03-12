@@ -98,6 +98,8 @@ enum class OobeDialogState {
 
   // ENROLL TIAGE step for user creation screen.
   ENROLL_TRIAGE = 24,
+
+  FYDE_LOCAL_SIGNIN = 25,
 };
 
 // Modes of the managed device, which is used to update the visibility of

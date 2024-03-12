@@ -19,6 +19,7 @@ import '../../components/common_styles/oobe_dialog_host_styles.css.js';
 import '../../components/dialogs/oobe_adaptive_dialog.js';
 import '../../components/dialogs/oobe_loading_dialog.js';
 import '../../components/throbber_notice.js';
+import './account_type_selection.js';
 
 import {assert} from '//resources/ash/common/assert.js';
 import {afterNextRender, html, mixinBehaviors, PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
@@ -61,15 +62,17 @@ const ScreenAuthMode = {
  * @enum {string}
  */
 const DialogMode = {
+  ACCOUNT_TYPE_SELECTION: 'account-type-selection',
   GAIA: 'online-gaia',
   LOADING: 'loading',
   PIN_DIALOG: 'pin',
+  GAIA_DUP_EMAIL_ERROR: 'dup-email-error',
 };
 
 /**
  * Steps that could be the first one in the flow.
  */
-const POSSIBLE_FIRST_SIGNIN_STEPS = [DialogMode.GAIA, DialogMode.LOADING];
+const POSSIBLE_FIRST_SIGNIN_STEPS = [DialogMode.ACCOUNT_TYPE_SELECTION, DialogMode.GAIA, DialogMode.LOADING];
 
 
 /**
@@ -289,6 +292,24 @@ class GaiaSigninElement extends GaiaSigninElementBase {
       emailDomain_: {
         type: String,
       },
+
+      isDupEmailErrorShown_: {
+        type: Boolean,
+        value: false,
+      },
+      isAccountTypeSelectionRequired_: {
+        type: Boolean,
+        // <if expr="openfyde or not use_fydeos_com">
+        value: true,
+        // </if>
+        // <if expr="not openfyde and use_fydeos_com">
+        value: false,
+        // </if>
+      },
+      isAccountTypeSelected_: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -301,6 +322,10 @@ class GaiaSigninElement extends GaiaSigninElementBase {
      */
     this.authenticatorParams_ = null;
 
+    this.dupEmail_ = '';
+    this.knownAccountList_ = [];
+
+    this.userCreationContext_ = false;
     /**
      * Email of the user, which is logging in using offline mode.
      * @type {string}
@@ -352,6 +377,13 @@ class GaiaSigninElement extends GaiaSigninElementBase {
      * @private
      */
     this.pinDialogResultReported_ = false;
+
+    // <if expr="openfyde or not use_fydeos_com">
+    this.initAccountTypeSelectionRequired_ = true;
+    // </if>
+    // <if expr="not openfyde and use_fydeos_com">
+    this.initAccountTypeSelectionRequired_ = false;
+    // </if>
   }
 
   get EXTERNAL_API() {
@@ -366,18 +398,24 @@ class GaiaSigninElement extends GaiaSigninElementBase {
       'reset',
       'toggleLoadingUI',
       'setQuickStartEnabled',
+      'requestUseLocalAccount',
     ];
   }
 
   static get observers() {
     return [
-      'refreshDialogStep_(isShown_, pinDialogParameters_,' +
-          'isLoadingUiShown_)',
+      'refreshDialogStep_(isAccountTypeSelectionRequired_, isAccountTypeSelected_, isShown_, pinDialogParameters_,' +
+          'isLoadingUiShown_, isDupEmailErrorShown_)',
     ];
   }
 
   defaultUIStep() {
+    // <if expr="openfyde or not use_fydeos_com">
+    return DialogMode.ACCOUNT_TYPE_SELECTION;
+    // </if>
+    // <if expr="not openfyde and use_fydeos_com">
     return DialogMode.GAIA;
+    // </if>
   }
 
   get UI_STEPS() {
@@ -395,6 +433,7 @@ class GaiaSigninElement extends GaiaSigninElementBase {
         this.onInsecureContentBlocked_.bind(this);
     this.authenticator_.missingGaiaInfoCallback =
         this.missingGaiaInfo_.bind(this);
+    this.authenticator_.accountTypeGoogleSelectedCallback = this.accountTypeGoogleSelectedCallback_.bind(this);
     this.authenticator_.samlApiUsedCallback = this.samlApiUsed_.bind(this);
     this.authenticator_.recordSAMLProviderCallback =
         this.recordSAMLProvider_.bind(this);
@@ -425,6 +464,10 @@ class GaiaSigninElement extends GaiaSigninElementBase {
    */
   onBackButtonCancel_() {
     if (!this.authCompleted_) {
+      if (!this.userCreationContext_ && this.isAccountTypeSelectionRequired_) {
+        // from fydoe signin page back to account type selection page
+        this.isAccountTypeSelected_ = false;
+      }
       this.cancel(true /* isBackClicked */);
     }
   }
@@ -596,6 +639,9 @@ class GaiaSigninElement extends GaiaSigninElementBase {
   loadAuthExtension(data) {
     this.authenticator_.setWebviewPartition(data.webviewPartitionName);
 
+    this.knownAccountList_ = data.knownAccountList;
+    this.dupEmail_ = '';
+
     this.authCompleted_ = false;
     this.navigationButtonsHidden_ = false;
 
@@ -621,7 +667,14 @@ class GaiaSigninElement extends GaiaSigninElementBase {
     params.isFirstUser = !(data.enterpriseManagedDevice || data.hasDeviceOwner);
     params.obfuscatedOwnerId = data.obfuscatedOwnerId;
 
+    params.enableFydeAccount = data.enableFydeAccount;
+    params.disableResetFydeAccountFlag = data.enterpriseManagedDevice;
+
     this.authenticatorParams_ = params;
+
+    if (data.email && data.readOnlyEmail) {
+      this.isAccountTypeSelectionRequired_ = false;
+    }
 
     this.loadAuthenticator_(params.doSamlRedirect);
     chrome.send('authExtensionLoaded');
@@ -797,6 +850,11 @@ class GaiaSigninElement extends GaiaSigninElementBase {
    * @private
    */
   onAuthCompletedMessage_(e) {
+    if (this.checkIsDupEmail_(e.detail)) {
+      this.onDupEmailError_();
+      this.dupEmail_ = e.detail.email;
+      return;
+    }
     const credentials = e.detail;
     if (credentials.publicSAML) {
       this.email_ = credentials.email;
@@ -821,6 +879,47 @@ class GaiaSigninElement extends GaiaSigninElementBase {
 
     this.clearVideoTimer_();
     this.authCompleted_ = true;
+  }
+
+  checkIsDupEmail_(credentials) {
+    const { email } = credentials;
+    let targetAccountType;
+    if (this.authenticatorParams_.enableFydeAccount) {
+      // kFyde in account_id.cc
+      targetAccountType = 'fy';
+    } else {
+      // kGoogle in account_id.cc
+      targetAccountType = 'google';
+    }
+    const dup = this.knownAccountList_.find(a => a.email === email && a.type !== targetAccountType);
+    return !!dup;
+  }
+
+  onDupEmailError_() {
+    this.isDupEmailErrorShown_ = true;
+  }
+
+  onDupEmailErrorButtonClicked_() {
+    this.isDupEmailErrorShown_ = false;
+    this.userActed('retry');
+  }
+
+  dupEmailErrorMessage_(dupEmail) {
+    return this.i18nAdvanced('fydeosAddUserDupEmailErrorMessage', {
+      substitutions: [dupEmail],
+    });
+    this.onUserCreationCanceledWithThis_ = this.onUserCreationCanceled_.bind(this);
+    this.onUserCreationNextWithThis_ = this.onUserCreationNext_.bind(this);
+  }
+
+  attached() {
+    window.addEventListener('user-creation-canceled', this.onUserCreationCanceledWithThis_);
+    window.addEventListener('user-creation-next', this.onUserCreationNextWithThis_);
+  }
+
+  detached() {
+    window.removeEventListener('user-creation-canceled', this.onUserCreationCanceledWithThis_);
+    window.removeEventListener('user-creation-next', this.onUserCreationNextWithThis_);
   }
 
   /**
@@ -897,8 +996,19 @@ class GaiaSigninElement extends GaiaSigninElementBase {
       this.userActed('reloadDefault');
       return;
     }
+    if (this.initAccountTypeSelectionRequired_ && !this.isAccountTypeSelectionRequired_) {
+      // force quit
+      this.userActed('accountTypeSelectionBack');
+      return;
+    }
     this.userActed(isBackClicked ? 'back' : 'cancel');
   }
+
+  // ---***FYDEOS BEGIN***---
+  accountTypeGoogleSelectedCallback_() {
+    chrome.send('userSelectGoogleAccount');
+  }
+  // ---***FYDEOS END***---
 
   /**
    * Show enrollment nudge pop-up.
@@ -1015,6 +1125,30 @@ class GaiaSigninElement extends GaiaSigninElementBase {
     }
   }
 
+  requestUseLocalAccount() {
+    if (this.authCompleted_) return;
+    this.showConfirmGotoLocalAccountDlg_();
+  }
+
+  showConfirmGotoLocalAccountDlg_() {
+    if (this.$.confirmGotoLocalAccountDlg.open) return;
+    chrome.send('enableShelfButtons', [false]);
+    this.$.confirmGotoLocalAccountDlg.showModal();
+  }
+
+  onConfirmGotoLocalAccountClosed_() {
+    chrome.send('enableShelfButtons', [true]);
+  }
+
+  onUseOnlineAccountTap_() {
+    this.$.confirmGotoLocalAccountDlg.close();
+  }
+
+  onUseLocalAccountTap_() {
+    this.$.confirmGotoLocalAccountDlg.close();
+    this.userActed('useLocalAccount');
+  }
+
   /**
    * Invoked when the user cancels the PIN dialog.
    * @param {!CustomEvent} e
@@ -1040,8 +1174,12 @@ class GaiaSigninElement extends GaiaSigninElementBase {
    * @param {boolean} isLoading
    * @private
    */
-  refreshDialogStep_(isScreenShown, pinParams, isLoading) {
+  refreshDialogStep_(isAccountTypeSelectionRequired, isAccountTypeSelected, isScreenShown, pinParams, isLoading, isDupEmailError) {
     if (!isScreenShown) {
+      return;
+    }
+    if (isAccountTypeSelectionRequired && !isAccountTypeSelected) {
+      this.setUIStep(DialogMode.ACCOUNT_TYPE_SELECTION);
       return;
     }
     if (pinParams !== null) {
@@ -1050,6 +1188,10 @@ class GaiaSigninElement extends GaiaSigninElementBase {
     }
     if (isLoading) {
       this.setUIStep(DialogMode.LOADING);
+      return;
+    }
+    if (isDupEmailError) {
+      this.setUIStep(DialogMode.GAIA_DUP_EMAIL_ERROR);
       return;
     }
     this.setUIStep(DialogMode.GAIA);
@@ -1136,6 +1278,34 @@ class GaiaSigninElement extends GaiaSigninElementBase {
       user_action,
       EnrollmentNudgeUserAction.MAX,
     ]);
+  }
+
+  onAccountTypeSelectionBack_() {
+    this.userActed('accountTypeSelectionBack');
+  }
+
+  onAccountTypeSelected_(e) {
+    this.isAccountTypeSelected_ = true;
+    if (e.detail === 'google') {
+      chrome.send('userSelectGoogleAccount');
+    } else if (e.detail === 'fyde') {
+      chrome.send('resetAccountFlag');
+    }
+  }
+
+  onUserCreationCanceled_(e) {
+    // back from user creation page
+    if (this.isAccountTypeSelectionRequired_) {
+      this.isAccountTypeSelected_ = false;
+    }
+    this.userCreationContext_ = false;
+  }
+
+  onUserCreationNext_(e) {
+    // user may enter signin page from user_creation,
+    // and back to user_creation, (set userCreationContext_ true, cannot set isAccountTypeSelected_ false)
+    // then goto signin page again, (otherwise, this page will show account type selection again)
+    this.userCreationContext_ = true;
   }
 }
 

@@ -75,6 +75,11 @@
   eol-offer-section {
     margin: 6px 3px 16px 3px;
   }
+
+  :host-context(body:not(.revamp-wayfinding-enabled)) #copyrightCard,
+  :host-context(body:not(.revamp-wayfinding-enabled)) #fydeOsCopyrightCard {
+    margin-top: var(--cr-section-vertical-margin);
+  }
 </style>
 <iron-media-query query="(prefers-color-scheme: dark)"
     query-matches="{{isDarkModeActive_}}">
@@ -85,12 +90,22 @@
       <settings-card header-text="$i18n{aboutOsPageTitle}">
         <div class="settings-box two-line first">
           <img id="product-logo" on-click="onProductLogoClick_"
-              srcset="chrome://theme/current-channel-logo@1x 1x,
-                      chrome://theme/current-channel-logo@2x 2x"
+              srcset="chrome://theme/current-channel-os-logo@1x 1x,
+                      chrome://theme/current-channel-os-logo@2x 2x"
               alt="$i18n{aboutProductLogoAlt}"
               role="presentation">
           <h1 class="product-title">$i18n{aboutOsProductTitle}</h1>
         </div>
+        <if expr="not openfyde">
+        <div class="settings-box two-line" >
+          <div class="start padded">
+            $i18n{aboutKeepFydeOsUpdateToDate}
+            <div class="secondary">[[fydeosOTAStateMessage_(fydeOTAToggleState_, isOwner_)]]</div>
+          </div>
+          <cr-toggle id="enableFydeOTA" disabled="[[!canToggleFydeOTA_(currentUpdateStatusEvent_, isOwner_)]]" role="button" checked="[[fydeOTAToggleState_]]" on-change="onEnableFydeOTAChange_">
+          </cr-toggle>
+        </div>
+        </if>
         <div class="settings-box two-line">
           <!-- Set the icon from the iconset (when it's obsolete/EOL and
             when update is done) or set the src (when it's updating). -->
@@ -100,18 +115,19 @@
               them. -->
             <iron-icon
                 icon$="[[getUpdateStatusIcon_(
-                    hasEndOfLife_, currentUpdateStatusEvent_)]]"
+                    hasEndOfLife_, currentUpdateStatusEvent_, renewalStatus_)]]"
                 src="[[getThrobberSrcIfUpdating_(
                     isDarkModeActive_,
                     hasEndOfLife_,
-                    currentUpdateStatusEvent_)]]">
+                    currentUpdateStatusEvent_,
+                    renewalStatus_)]]">
             </iron-icon>
           </div>
           <div class="start padded">
             <div id="updateStatusMessage" hidden="[[!showUpdateStatus_]]">
               <div id="updateStatusMessageInner" tabindex="-1"
                   inner-h-t-m-l="[[getUpdateStatusMessage_(
-                  currentUpdateStatusEvent_, targetChannel_)]]"></div>
+                  currentUpdateStatusEvent_, targetChannel_, renewalStatus_)]]"></div>
               <a hidden$="[[!shouldShowLearnMoreLink_(
                   currentUpdateStatusEvent_)]]" target="_blank"
                   href="https://support.google.com/chrome?p=update_error">
@@ -130,7 +146,7 @@
             <div class="secondary" hidden="[[!hasDeferredUpdate_]]">
               $i18n{aboutDeferredUpdate}
             </div>
-            <div class="secondary">$i18n{aboutBrowserVersion}</div>
+            <div class="secondary" inner-h-t-m-l="[[getFydeOSVersion_(licenseStateType_, hasEndOfLife_)]]"></div>
           </div>
           <div class="separator" hidden="[[!showButtonContainer_]]"></div>
           <span id="buttonContainer" hidden="[[!showButtonContainer_]]">
@@ -140,9 +156,14 @@
                                 currentUpdateStatusEvent_)]]
             </cr-button>
             <cr-button id="checkForUpdates" hidden="[[!showCheckUpdates_]]"
+                disabled="[[!fydeOTAToggleState_]]"
                 on-click="onCheckUpdatesClick_"
                 deep-link-focus-id$="[[Setting.kCheckForOsUpdate]]">
               $i18n{aboutCheckForUpdates}
+            </cr-button>
+            <cr-button id="renewLearnMore" hidden="[[!showRenewLearnMore_]]"
+              on-click="onRenewLearnMoreClick_">
+              $i18n{learnMore}
             </cr-button>
           </span>
         </div>
@@ -172,6 +193,7 @@
             </a>
           </div>
         </cr-link-row>
+        <!--
         <template is="dom-if" if="[[hasInternetConnection_]]">
           <cr-link-row class="hr" id="releaseNotesOnline"
               on-click="onReleaseNotesClick_"
@@ -196,7 +218,7 @@
             external
             deep-link-focus-id$="[[Setting.kGetHelpWithChromeOs]]">
         </cr-link-row>
-  <if expr="_google_chrome">
+        -->
         <cr-link-row class="hr" id="reportIssue"
             on-click="onReportIssueClick_"
             hidden="[[!prefs.feedback_allowed.value]]"
@@ -205,7 +227,6 @@
             external
             deep-link-focus-id$="[[Setting.kReportAnIssue]]">
         </cr-link-row>
-  </if>
         <cr-link-row class="hr" id="diagnostics"
             on-click="onDiagnosticsClick_"
             label="$i18n{aboutDiagnostics}"
@@ -214,6 +235,7 @@
             deep-link-focus-id$="[[Setting.kDiagnostics]]">
         </cr-link-row>
         <cr-link-row class="hr" id="firmwareUpdates"
+            hidden$="[[!showFirmwareUpdatesApp_]]"
             on-click="onFirmwareUpdatesClick_"
             label="$i18n{aboutFirmwareUpdates}"
             sub-label="[[getFirmwareSublabel_(firmwareUpdateCount_)]]"
@@ -247,7 +269,49 @@
         <crostini-settings-card prefs="{{prefs}}"></crostini-settings-card>
       </template>
 
-      <settings-card>
+      <settings-card id="fydeOsCopyrightCard">
+        <div class="settings-box padded block first">
+
+          <!-- part one, two lines -->
+          <div class="info-section">
+            <div class="secondary">
+              <localized-link
+                localized-string="$i18n{aboutFydeOsProductTitleWithLink}">
+              </localized-link>
+            </div>
+            <div class="secondary">$i18n{aboutFydeOsProductCopyright}</div>
+          </div>
+
+          <!-- part two, one line -->
+<if expr="not openfyde">
+          <div class="info-section">
+            <div class="secondary">
+              <div id="aboutFydeOsProductTos">
+                $i18nRaw{aboutFydeOsProductTos}
+              </div>
+            </div>
+          </div>
+</if>
+
+          <!-- part three, three lines -->
+          <div class="info-section">
+            <div class="secondary">
+              <localized-link
+                localized-string="$i18n{aboutFydeOsOpenFydeLicenseDesc}">
+              </localized-link>
+            </div>
+            <div class="secondary">
+              <localized-link
+                localized-string="$i18n{aboutFydeOsOpenFydeProductLicense}">
+              </localized-link>
+            </div>
+            <div class="secondary">$i18nRaw{aboutFydeOsProductAndChromiumLicense}</div>
+          </div>
+
+        </div>
+      </settings-card>
+
+      <settings-card hidden id="copyrightCard">
         <div class="settings-box padded block first">
           <div class="info-section">
             <div class="secondary">$i18n{aboutOsProductTitle}</div>

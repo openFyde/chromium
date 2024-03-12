@@ -1,0 +1,51 @@
+<style include="settings-shared iron-flex">
+  #profile-icon {
+    background: center / cover no-repeat;
+    border-radius: 20px;
+    flex-shrink: 0;
+    height: 40px;
+    width: 40px;
+  }
+</style>
+<div class="settings-box first two-line">
+  <div id="profile-icon"
+      style="background-image: [[getIconImageSet_(profileIconUrl_)]]"
+      on-click="onAccountTap_" actionable$="[[isProfileActionable_]]">
+  </div>
+  <div class="middle two-line no-min-width"
+      id="profile-row"
+      actionable$="[[isProfileActionable_]]"
+      on-click="onAccountTap_" actionable>
+    <div class="flex text-elide settings-box-text">
+      <span id="profile-name" aria-hidden="true">
+        [[profileName_]]
+      </span>
+      <div id="profile-label" class="secondary"
+          aria-hidden="true">
+        [[profileLabel_]]
+      </div>
+    </div>
+    <cr-icon-button class="icon-external"
+                    hidden="[[!isProfileActionable_]]">
+    </cr-icon-button>
+  </div>
+</div>
+<div class="settings-box two-line">
+  <div class="start padded">
+    $i18n{autoSigninForFydeLocalAccountTitle}
+    <div
+      class="secondary">[[getOfflineAutoSigninMessage_(isFydeLocalAccount_, isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_, systemSaltObtained_)]]</div>
+  </div>
+  <cr-toggle id="toggleOfflineAutoSignin"
+              disabled="[[!getCanToggleAutoSignin_(isFydeLocalAccount_, isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_, systemSaltObtained_)]]"
+              role="button"
+              checked="[[getOfflineAutoSigninCheckedState_(isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_)]]"
+              on-change="onToggleOfflineAutoSignin_">
+  </cr-toggle>
+</div>
+<template is="dom-if" if="[[showPasswordPromptDialog_]]" restamp>
+  <settings-password-prompt-dialog expose-password
+                                    on-password-prompt-exposed="onPasswordExposed_"
+                                    on-close="onPasswordPromptClosed_">
+  </settings-password-prompt-dialog>
+</template>

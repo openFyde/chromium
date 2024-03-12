@@ -46,6 +46,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/webui/about_ui.h"
 #include "chrome/browser/ui/webui/ash/login/add_child_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/fyde_local_signin_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/app_downloading_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/app_launch_splash_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/arc_vm_data_migration_screen_handler.h"
@@ -96,6 +97,7 @@
 #include "chrome/browser/ui/webui/ash/login/oobe_display_chooser.h"
 #include "chrome/browser/ui/webui/ash/login/os_install_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/os_trial_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/data_restore_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/packaged_license_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/parental_handoff_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/password_selection_screen_handler.h"
@@ -105,6 +107,7 @@
 #include "chrome/browser/ui/webui/ash/login/recovery_eligibility_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/remote_activity_notification_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/reset_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/eula_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/saml_confirm_password_handler.h"
 #include "chrome/browser/ui/webui/ash/login/signin_fatal_error_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/smart_privacy_protection_screen_handler.h"
@@ -434,6 +437,8 @@ void OobeUI::ConfigureOobeDisplay() {
 
   AddScreenHandler(std::make_unique<ResetScreenHandler>());
 
+  AddScreenHandler(std::make_unique<EulaScreenHandler>());
+
   AddScreenHandler(std::make_unique<KioskAutolaunchScreenHandler>());
 
   AddScreenHandler(std::make_unique<KioskEnableScreenHandler>());
@@ -536,6 +541,8 @@ void OobeUI::ConfigureOobeDisplay() {
     AddScreenHandler(std::make_unique<OsTrialScreenHandler>());
   }
 
+  AddScreenHandler(std::make_unique<DataRestoreScreenHandler>());
+
   AddScreenHandler(std::make_unique<HWDataCollectionScreenHandler>());
 
   AddScreenHandler(std::make_unique<ConsolidatedConsentScreenHandler>());
@@ -565,6 +572,8 @@ void OobeUI::ConfigureOobeDisplay() {
   }
 
   AddScreenHandler(std::make_unique<AddChildScreenHandler>());
+
+  AddScreenHandler(std::make_unique<FydeLocalSigninScreenHandler>());
 
   if (drive::util::IsOobeDrivePinningScreenEnabled()) {
     AddScreenHandler(std::make_unique<DrivePinningScreenHandler>());

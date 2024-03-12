@@ -1158,6 +1158,19 @@ AppListControllerImpl::GetToggleableCategories() const {
   return std::vector<AppListSearchControlCategory>();
 }
 
+void AppListControllerImpl::CloseAssistant() {
+  if (!IsTabletMode()) {
+    if (bubble_presenter_) {
+      bubble_presenter_->BackOrExit();
+    }
+    return;
+  }
+  if (fullscreen_presenter_) {
+    UpdateFullscreenLauncherContainer();
+    AssistantUiController::Get()->CloseUi(AssistantExitPoint::kBackInLauncher);
+  }
+}
+
 void AppListControllerImpl::StartSearch(const std::u16string& raw_query) {
   if (client_) {
     std::u16string query;
@@ -1686,7 +1699,7 @@ SearchModel* AppListControllerImpl::GetSearchModel() {
 
 void AppListControllerImpl::UpdateSearchBoxUiVisibilities() {
   GetSearchModel()->search_box()->SetShowAssistantButton(
-      IsAssistantAllowedAndEnabled());
+      IsAssistantAllowedAndEnabled() || ash::features::IsFydeAssistantEnabled());
 
   if (!client_) {
     return;

@@ -40,6 +40,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_features.h"
+#include "fydeos/switches/services/services_switches.h"
 #include "services/network/public/cpp/is_potentially_trustworthy.h"
 #include "third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
 #include "url/gurl.h"
@@ -332,6 +333,14 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
     }
   }
 #endif
+
+  GURL fydeAIURL(fydeos::switches::GetFydeOSAssistantWebUrl());
+  if ((url::Origin::Create(requesting_origin) == url::Origin::Create(fydeAIURL))
+    && (content_settings_type_ == ContentSettingsType::MEDIASTREAM_MIC
+      || content_settings_type_ == ContentSettingsType::NOTIFICATIONS)) {
+    return content::PermissionResult(PermissionStatus::GRANTED,
+                            content::PermissionStatusSource::UNSPECIFIED);
+  }
 
   ContentSetting content_setting = GetPermissionStatusInternal(
       render_frame_host, requesting_origin, embedding_origin);

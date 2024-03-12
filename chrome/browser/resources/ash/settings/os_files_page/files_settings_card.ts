@@ -55,6 +55,13 @@ export class FilesSettingsCardElement extends FilesSettingsCardElementBase {
         value: () => new Set<Setting>([Setting.kGoogleDriveConnection]),
       },
 
+      hideGoogleDrive_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
       bulkPinningPrefEnabled_: Boolean,
 
       driveDisabled_: Boolean,
@@ -137,6 +144,7 @@ export class FilesSettingsCardElement extends FilesSettingsCardElementBase {
   private shouldShowAddSmbDialog_: boolean;
   private shouldShowGoogleDriveSettings_: boolean;
   private shouldShowOfficeSettings_: boolean;
+  private hideGoogleDrive_: boolean;
 
 
   constructor() {

@@ -414,6 +414,11 @@ bool Profile::IsGuestSession() const {
          profile_metrics::BrowserProfileType::kGuest;
 #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 }
+//---***FYDEOS BEGIN***---
+bool Profile::IsFydeProfile() const {
+  return is_fyde_profile_;
+}
+//---***FYDEOS END***---
 
 PrefService* Profile::GetReadOnlyOffTheRecordPrefs() {
   return nullptr;

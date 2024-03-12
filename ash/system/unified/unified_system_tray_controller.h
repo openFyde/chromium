@@ -92,6 +92,10 @@ class ASH_EXPORT UnifiedSystemTrayController
   void HandleSettingsAction();
   // Shutdown the computer. Called from the view.
   void HandlePowerAction();
+  //---***FYDEOS BEGIN***---
+  // Reboot the computer. Called from the view.
+  void HandleRebootAction();
+  //---***FYDEOS END***---
   // Switch to page represented by it's button. Called from the view.
   void HandlePageSwitchAction(int page);
   // Show date and time settings. Called from the view.

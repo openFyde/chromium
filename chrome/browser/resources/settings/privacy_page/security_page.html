@@ -104,7 +104,7 @@
                   $i18n{safeBrowsingEnhancedBulOne}
                 </div>
               </div>
-              <div class="bullet-line">
+              <div class="bullet-line" hidden="[[shouldHideGoogle_]]">
                 <iron-icon icon="settings20:googleg"></iron-icon>
                 <div class="cr-secondary-text">
                   $i18n{safeBrowsingEnhancedBulTwo}
@@ -116,13 +116,13 @@
                   $i18n{safeBrowsingEnhancedBulThree}
                 </div>
               </div>
-              <div class="bullet-line">
+              <div class$="[[maybeLastCollapseItemClass_(shouldHideGoogle_)]]">
                 <iron-icon icon="settings20:vpn-key"></iron-icon>
                 <div class="cr-secondary-text">
                   $i18n{safeBrowsingEnhancedBulFour}
                 </div>
               </div>
-              <div class="bullet-line last-collapse-item">
+              <div class="bullet-line last-collapse-item" hidden="[[shouldHideGoogle_]]">
                 <iron-icon icon="settings20:data"></iron-icon>
                 <div class="cr-secondary-text cr-padded-text">
                   $i18n{safeBrowsingEnhancedBulFive}
@@ -225,6 +225,7 @@
           </template>
           <div slot="noSelectionCollapse">
             <settings-toggle-button id="safeBrowsingReportingToggle"
+                hidden="[[shouldHideGoogle_]]"
                 pref="{{prefs.safebrowsing.scout_reporting_enabled}}"
                 label="$i18n{safeBrowsingStandardReportingLabel}"
                 sub-label="$i18n{safeBrowsingEnableExtendedReportingDesc}"
@@ -315,6 +316,7 @@
 
     <cr-link-row id="advanced-protection-program-link"
         class="hr"
+        hidden="[[shouldHideGoogle_]]"
         label="$i18n{advancedProtectionProgramTitle}"
         sub-label="$i18n{advancedProtectionProgramDesc}"
         on-click="onAdvancedProtectionProgramLinkClick_"

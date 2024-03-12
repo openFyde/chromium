@@ -33,9 +33,13 @@ import './screens/common/managed_terms_of_service.js';
 import './screens/common/marketing_opt_in.js';
 import './screens/common/multidevice_setup.js';
 import './screens/common/offline_ad_login.js';
+import './screens/common/fyde_local_signin.js';
 import './screens/common/online_authentication_screen.js';
 import './screens/common/oobe_reset.js';
+import './screens/common/oobe_eula.js';
 import './screens/common/os_install.js';
+import './screens/common/fydeos_installer.js';
+import './screens/common/data_restore.js';
 import './screens/common/os_trial.js';
 import './screens/common/parental_handoff.js';
 import './screens/common/password_selection.js';
@@ -50,6 +54,7 @@ import './screens/common/theme_selection.js';
 import './screens/common/touchpad_scroll.js';
 import './screens/common/tpm_error.js';
 import './screens/common/user_allowlist_check_screen.js';
+import './screens/common/account_type_selection.js';
 import './screens/common/wrong_hwid.js';
 // SCREENS USED DURING THE LOGIN FLOW
 import './screens/login/arc_vm_data_migration.js';
@@ -130,17 +135,20 @@ export const commonScreensList = [
   {tag: 'marketing-opt-in-element', id: 'marketing-opt-in'},
   {tag: 'multidevice-setup-element', id: 'multidevice-setup-screen'},
   {tag: 'offline-ad-login-element', id: 'offline-ad-login'},
+  {tag: 'fyde-local-signin-element', id: 'fyde-local-signin'},
+  {tag: 'oobe-eula-element', id: 'oobe-eula-md'},
   {
     tag: 'online-authentication-screen-element',
     id: 'online-authentication-screen',
   },
   {tag: 'oobe-reset-element', id: 'reset'},
   {
-    tag: 'os-install-element',
+    tag: 'oobe-fydeos-installer',
     id: 'os-install',
     condition: 'isOsInstallAllowed',
   },
   {tag: 'os-trial-element', id: 'os-trial', condition: 'isOsInstallAllowed'},
+  {tag: 'data-restore-element', id: 'data-restore'},
   {tag: 'parental-handoff-element', id: 'parental-handoff'},
   {
     tag: 'password-selection-element',

@@ -19,7 +19,10 @@
       <include name="IDR_CAPTURE_VIDEO_CURSOR" file="unscaled_resources/capture_video_cursor.png" type="BINDATA" />
       <!-- CrOS internal apps images -->
       <include name="IDR_SHORTCUT_VIEWER_LOGO_192" file="unscaled_resources/shortcut_viewer_logo_192.png" type="BINDATA" />
-      <include name="IDR_SETTINGS_LOGO_192" file="unscaled_resources/settings_logo_192.png" type="BINDATA" />
+      <!-- <include name="IDR_SETTINGS_LOGO_192" file="unscaled_resources/settings_logo_192.png" type="BINDATA" /> -->
+      <include name="IDR_SETTINGS_LOGO_192" file="unscaled_resources/fydeos/settings_logo_192.png" type="BINDATA" />
+      <include name="IDR_FYDEOS_AI_ICON_20" file="unscaled_resources/fydeos/fydeos_ai_icon_20.png" type="BINDATA" />
+      <include name="IDR_FYDEOS_AI_ICON_40" file="unscaled_resources/fydeos/fydeos_ai_icon_40.png" type="BINDATA" />
       <include name="IDR_OS_FLAGS_APP_ICONS_48_PNG" file="unscaled_resources/os_flags_app_icon_48.png" type="BINDATA" />
       <include name="IDR_OS_FLAGS_APP_ICONS_128_PNG" file="unscaled_resources/os_flags_app_icon_128.png" type="BINDATA" />
       <include name="IDR_OS_FLAGS_APP_ICONS_192_PNG" file="unscaled_resources/os_flags_app_icon_192.png" type="BINDATA" />

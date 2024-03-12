@@ -294,6 +294,7 @@ enum {
   kKeyboardDefaultChromeOSSettings = 100237,
   kKeyboardDefaultNonChromeOSSettings = 100238,
   kTouchpadDefaultSettings = 100239,
+  kLanguageImeMenuActivated = 100240,
   // See components/sync_preferences/README.md about adding new entries here.
   // vvvvv IMPORTANT! vvvvv
   // Note to the reviewer: IT IS YOUR RESPONSIBILITY to ensure that new syncable
@@ -920,6 +921,10 @@ const auto& SyncablePreferences() {
           sync_preferences::MergeBehavior::kNone}},
         {prefs::kLanguagePreloadEnginesSyncable,
          {syncable_prefs_ids::kLanguagePreloadEnginesSyncable,
+          syncer::OS_PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+          sync_preferences::MergeBehavior::kNone}},
+        {prefs::kLanguageImeMenuActivated,
+         {syncable_prefs_ids::kLanguageImeMenuActivated,
           syncer::OS_PREFERENCES, sync_preferences::PrefSensitivity::kNone,
           sync_preferences::MergeBehavior::kNone}},
         {prefs::kLanguageRemapAltKeyTo,

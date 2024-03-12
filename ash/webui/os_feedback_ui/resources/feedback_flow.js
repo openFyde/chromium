@@ -284,6 +284,7 @@ export class FeedbackFlowElement extends PolymerElement {
      */
     this.noHelpContentDisplayed_;
 
+    this.uniqueReportId_;
     /**
      * When the feedback tool is opened as a dialog, feedback context is passed
      * to front end via dialog args.
@@ -572,6 +573,7 @@ export class FeedbackFlowElement extends PolymerElement {
         this.feedbackServiceProvider_.sendReport(report).then((response) => {
           this.currentState_ = FeedbackFlowState.CONFIRMATION;
           this.sendReportStatus_ = response.status;
+          this.uniqueReportId_ = response.uniqueReportId;
           const confirmationPage =
               this.shadowRoot.querySelector('confirmation-page');
           confirmationPage.focusPageTitle();

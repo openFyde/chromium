@@ -114,7 +114,7 @@ std::string GetActivePortListAsJSON(Profile* profile);
 
 // These values are persisted to logs. Entries should not be renumbered and
 // numeric values should never be reused.
-enum class CrostiniUISurface { kSettings = 0, kAppList = 1, kCount };
+enum class CrostiniUISurface { kSettings = 0, kAppList = 1, kNotification = 2, kCount };
 
 // Add a newly created LXD container to the kCrostiniContainers pref
 void AddNewLxdContainerToPrefs(Profile* profile,

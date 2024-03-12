@@ -26,6 +26,8 @@
 #include "google_apis/google_api_keys.h"
 #include "ui/aura/window_tree_host.h"
 #include "ui/events/event_sink.h"
+#include "fydeos/switches/account/account_constants.h"
+#include "fydeos/build/config/buildflags.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -49,10 +51,25 @@ void CoreOobeHandler::DeclareLocalizedValues(
 
   const bool has_api_keys_configured = google_apis::HasAPIKeyConfigured() &&
                                        google_apis::HasOAuthClientConfigured();
+#if BUILDFLAG(IS_OPENFYDE)
+  const bool has_fyde_oauth_client_configured =
+      google_apis::HasFydeOAuthClientConfigured();
+  if (!has_api_keys_configured && !has_fyde_oauth_client_configured) {
+    builder->AddF("missingAPIKeysNotice", IDS_LOGIN_API_KEYS_NOTICE,
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
+  } else if (has_api_keys_configured && !has_fyde_oauth_client_configured) {
+    builder->AddF("missingAPIKeysNotice", IDS_LOGIN_FYDE_API_KEYS_NOTICE,
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
+  } else if (!has_api_keys_configured && has_fyde_oauth_client_configured) {
+    builder->AddF("missingAPIKeysNotice", IDS_LOGIN_GOOGLE_API_KEYS_NOTICE,
+                  base::ASCIIToUTF16(fydeos::constants::kFydeAPIKeysDevelopersHowToURL));
+  }
+#else
   if (!has_api_keys_configured) {
     builder->AddF("missingAPIKeysNotice", IDS_LOGIN_API_KEYS_NOTICE,
                   base::ASCIIToUTF16(google_apis::kAPIKeysDevelopersHowToURL));
   }
+#endif
 
   builder->Add("playAnimationAriaLabel", IDS_OOBE_PLAY_ANIMATION_MESSAGE);
   builder->Add("pauseAnimationAriaLabel", IDS_OOBE_PAUSE_ANIMATION_MESSAGE);
@@ -77,6 +94,8 @@ void CoreOobeHandler::DeclareJSCallbacks() {
 
   AddCallback("updateOobeUIState", &CoreOobeHandler::HandleUpdateOobeUIState);
   AddCallback("enableShelfButtons", &CoreOobeHandler::HandleEnableShelfButtons);
+
+  AddCallback("playStartupSound", &CoreOobeHandler::HandlePlayStartupSound);
 }
 
 void CoreOobeHandler::GetAdditionalParameters(base::Value::Dict* dict) {
@@ -230,5 +249,12 @@ void CoreOobeHandler::HandleRaiseTabKeyEvent(bool reverse) {
   }
   SendEventToSink(&event);
 }
+
+void CoreOobeHandler::HandlePlayStartupSound() {
+  if (LoginDisplayHost::default_host()) {
+    LoginDisplayHost::default_host()->HandlePlayStartupSound();
+  }
+}
+
 
 }  // namespace ash

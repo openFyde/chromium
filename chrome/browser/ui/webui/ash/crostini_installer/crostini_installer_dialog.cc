@@ -7,6 +7,7 @@
 #include "ash/public/cpp/shelf_types.h"
 #include "ash/public/cpp/window_properties.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/ash/crostini/crostini_features.h"
 #include "chrome/browser/ash/crostini/crostini_manager.h"
@@ -35,6 +36,7 @@ GURL GetUrl() {
 namespace ash {
 
 void CrostiniInstallerDialog::Show(Profile* profile,
+                                   crostini::CrostiniUISurface ui_surface,
                                    OnLoadedCallback on_loaded_callback) {
   if (!crostini::CrostiniFeatures::Get()->IsAllowedNow(profile)) {
     return;
@@ -54,6 +56,8 @@ void CrostiniInstallerDialog::Show(Profile* profile,
 
   instance =
       new CrostiniInstallerDialog(profile, std::move(on_loaded_callback));
+  instance->set_dialog_args(*base::WriteJson(base::Value::Dict()
+                                             .Set("uiSurface", static_cast<int>(ui_surface))));
   instance->ShowSystemDialog();
 }
 
@@ -122,6 +126,10 @@ void CrostiniInstallerDialog::OnWebContentsFinishedLoad() {
     DCHECK(installer_ui_);
     std::move(on_loaded_callback_).Run(installer_ui_);
   }
+}
+
+std::string CrostiniInstallerDialog::GetDialogArgs() const {
+  return WebDialogDelegate::GetDialogArgs();
 }
 
 }  // namespace ash
