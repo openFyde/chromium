@@ -711,10 +711,6 @@
 	path = content/test/data/plugin
 	url = https://chrome-internal.googlesource.com/chrome/data/chrome_plugin_tests.git
 	gclient-condition = checkout_src_internal
-[submodule "google_apis/internal"]
-	path = google_apis/internal
-	url = https://chrome-internal.googlesource.com/chrome/google_apis/internal.git
-	gclient-condition = checkout_src_internal
 [submodule "ios_internal"]
 	path = ios_internal
 	url = https://chrome-internal.googlesource.com/chrome/ios_internal.git
@@ -771,10 +767,6 @@
 	path = third_party/ml
 	url = https://chrome-internal.googlesource.com/chrome/third_party/ml.git
 	gclient-condition = checkout_third_party_ml
-[submodule "third_party/widevine/cdm/chromeos"]
-	path = third_party/widevine/cdm/chromeos
-	url = https://chrome-internal.googlesource.com/chrome/deps/widevine/cdm/chromeos.git
-	gclient-condition = (checkout_chromeos or checkout_linux) and checkout_src_internal
 [submodule "third_party/widevine/cdm/linux"]
 	path = third_party/widevine/cdm/linux
 	url = https://chrome-internal.googlesource.com/chrome/deps/widevine/cdm/linux.git
