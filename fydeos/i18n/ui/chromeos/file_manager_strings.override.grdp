@@ -12,16 +12,16 @@
       This file type is not supported. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$1'&gt;</ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;</ph> about opening files on openFyde.
     </message>
     <message name="IDS_FILE_BROWSER_NO_TASK_FOR_EXECUTABLE" desc="Message shown when user tries to open a windows executable file, which we can't handle.">
-      This file is designed for a PC using Windows software. This is not compatible with your device which runs openFyde. Please search the <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;<ex>&lt;a target='_blank' href='$1'&gt;</ex></ph>Chrome Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> for a suitable replacement app.<ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+      This file is designed for a PC using Windows software. This is not compatible with your device which runs openFyde. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$1'&gt;</ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;</ph> about opening files on openFyde.
     </message>
     <message name="IDS_FILE_BROWSER_NO_TASK_FOR_DMG" desc="Message shown when user tries to open a windows executable file, which we can't handle.">
-      This file is designed for a computer using Macintosh software. This is not compatible with your device which runs openFyde. Please search the <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;<ex>&lt;a target='_blank' href='$1'&gt;</ex></ph>Chrome Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> for a suitable replacement app.<ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+      This file is designed for a computer using Macintosh software. This is not compatible with your device which runs openFyde. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$1'&gt;</ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;</ph> about opening files on openFyde.
     </message>
     <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_DMG" desc="Error message when user attempts to open a dmg file in the Files app via Downloads panel.">
-      This file is designed for a computer using Macintosh software. This is not compatible with your device which runs openFyde.
+      This file is designed for a computer using Macintosh software. This is not compatible with your device which runs openFyde. Please search the FydeOS Web Store for a suitable replacement app.
     </message>
     <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_EXECUTABLE" desc="Error message when user attempts to open a exe file in the Files app via Downloads panel.">
-      This file is designed for a PC using Windows software. This is not compatible with your device which runs openFyde. Please search the Chrome Web Store for a suitable replacement app.
+      This file is designed for a PC using Windows software. This is not compatible with your device which runs openFyde. Please search the FydeOS Web Store for a suitable replacement app.
     </message>
   </if>
   <if expr="not openfyde">
@@ -29,18 +29,21 @@
       This file type is not supported. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$1'&gt;</ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;</ph> about opening files on FydeOS.
     </message>
     <message name="IDS_FILE_BROWSER_NO_TASK_FOR_EXECUTABLE" desc="Message shown when user tries to open a windows executable file, which we can't handle.">
-      This file is designed for a PC using Windows software. This is not compatible with your device which runs FydeOS. Please search the <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;<ex>&lt;a target='_blank' href='$1'&gt;</ex></ph>Chrome Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> for a suitable replacement app.<ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+      This file is designed for a PC using Windows software. This is not compatible with your device which runs FydeOS. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$1'&gt;</ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;</ph> about opening files on FydeOS.
     </message>
     <message name="IDS_FILE_BROWSER_NO_TASK_FOR_DMG" desc="Message shown when user tries to open a windows executable file, which we can't handle.">
-      This file is designed for a computer using Macintosh software. This is not compatible with your device which runs FydeOS. Please search the <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;<ex>&lt;a target='_blank' href='$1'&gt;</ex></ph>Chrome Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> for a suitable replacement app.<ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+      This file is designed for a computer using Macintosh software. This is not compatible with your device which runs FydeOS. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$1'&gt;</ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;</ph> about opening files on FydeOS.
     </message>
     <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_DMG" desc="Error message when user attempts to open a dmg file in the Files app via Downloads panel.">
-      This file is designed for a computer using Macintosh software. This is not compatible with your device which runs FydeOS.
+      This file is designed for a computer using Macintosh software. This is not compatible with your device which runs FydeOS. Please search the FydeOS Web Store for a suitable replacement app.
     </message>
     <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_EXECUTABLE" desc="Error message when user attempts to open a exe file in the Files app via Downloads panel.">
-      This file is designed for a PC using Windows software. This is not compatible with your device which runs FydeOS. Please search the Chrome Web Store for a suitable replacement app.
+      This file is designed for a PC using Windows software. This is not compatible with your device which runs FydeOS. Please search the FydeOS Web Store for a suitable replacement app.
     </message>
   </if>
+  <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE" desc="Error message when user attempts to open a non-supported file in the Files app via Downloads panel.">
+    This file type is not supported. Please visit the FydeOS Web Store to find an app that can open this type of file.
+  </message>
   <if expr="use_fydeos_com">
     <message name="IDS_FILE_BROWSER_NO_TASK_FOR_CRX" desc="Message shown when a user tries to open a *.crx file, which we don't handle in the Files app.">
         We're constantly looking for ways to make your browsing safer. Previously, any website could prompt you to add an extension into your browser. In the latest versions of Chromium, you must explicitly tell Chromium that you want to install these extensions by adding them through the Extensions page. <ph name="BEGIN_LINK">&lt;a target='_blank' href='https://fydeos.com/help/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/'&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>

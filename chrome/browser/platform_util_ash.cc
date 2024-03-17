@@ -48,6 +48,8 @@ void ShowWarningOnOpenOperationResult(Profile* profile,
       else if (path.MatchesExtension(FILE_PATH_LITERAL(".exe")) ||
                path.MatchesExtension(FILE_PATH_LITERAL(".msi")))
         message_id = IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_EXECUTABLE;
+      else if (path.MatchesExtension(FILE_PATH_LITERAL(".apk")))
+        message_id = IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_APK;
       else
         message_id = IDS_FILE_BROWSER_ERROR_VIEWING_FILE;
       break;

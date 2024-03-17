@@ -78,6 +78,7 @@
 #include "ui/message_center/public/cpp/notifier_id.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/wm/core/cursor_manager.h"
+#include "fydeos/build/config/buildflags.h"
 
 using session_manager::SessionState;
 
@@ -820,6 +821,14 @@ void AccessibilityControllerImpl::Feature::SetEnabled(bool enabled) {
   PrefService* prefs = owner_->active_user_prefs_;
   if (!prefs)
     return;
+#if BUILDFLAG(USE_FYDEOS_COM)
+  if (type_ == FeatureType::kDictation) {
+    enabled = false;
+  }
+#endif
+  if (type_ == FeatureType::kLiveCaption) {
+    enabled = false;
+  }
   prefs->SetBoolean(pref_name_, enabled);
   prefs->CommitPendingWrite();
 }
@@ -1468,7 +1477,11 @@ bool AccessibilityControllerImpl::IsEnterpriseIconVisibleForCursorHighlight() {
 }
 
 bool AccessibilityControllerImpl::IsDictationSettingVisibleInTray() {
+#if BUILDFLAG(USE_FYDEOS_COM)
+  return false;
+#else
   return dictation().IsVisibleInTray();
+#endif
 }
 
 bool AccessibilityControllerImpl::IsEnterpriseIconVisibleForDictation() {

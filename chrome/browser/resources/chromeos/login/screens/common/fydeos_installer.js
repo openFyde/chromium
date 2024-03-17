@@ -60,82 +60,10 @@ class FydeOSInstaller {
     });
   }
 
-  findIDBUSFromUdevadm(content) {
-    const arr = content.split('\n').filter(n => !!n);
-    for (let i = 0; i < arr.length; i++) {
-      const line = arr[i];
-      if (line.indexOf('ID_BUS') !== -1) {
-        return line;
-      } else if (line.startsWith('P: ')) {
-        return line;
-      }
-    }
-
-    return '';
-  }
-
-  async Getudevadm() {
-    let rootDisk = '';
-    let content = '';
-    try {
-      rootDisk = await this.execForResult('rootdev -d');
-      if (rootDisk) {
-        content = await this.execForResult(`udevadm info ${rootDisk.trim()}`);
-      }
-    } catch (err) {
-      return '';
-    }
-    return content;
-  }
-
-  async checkRootDevRemovable() {
-    if (this.IS_DEBUG) return true;
-    let rootDisk;
-    try {
-      rootDisk = await this.execForResult('rootdev -d');
-    } catch (err) {
-      return false;
-    }
-    if (!(rootDisk && rootDisk.startsWith('/dev/'))) {
-      return false;
-    }
-    rootDisk = rootDisk.trim();
-    const name = rootDisk.substr('/dev/'.length);
-    const path = `/sys/block/${name}/removable`;
-    let content = '';
-    try {
-      content = await this.execForResult(`cat ${path}`);
-      if (content) content = content.trim();
-    } catch (err) {
-      return false;
-    }
-    return content === '1';
-  }
-
-  async isBootingFromUSB() {
-    if (this.IS_DEBUG) return true;
-    let content = '';
-    let line = '';
-    for (let i = 0; i < 3; i++) {
-      content = await this.Getudevadm();
-      line = this.findIDBUSFromUdevadm(content);
-      if (line) {
-        break;
-      } else {
-        await this.sleep(2);
-        console.log('cannot find ID_BUS from udevadm output, retry');
-      }
-    }
-    return (line.indexOf('usb') !== -1);
-  }
-
   async IsBootingFromRemovable() {
-    const isFromUSB = await this.isBootingFromUSB();
-    console.log(`IsBootingFromRemovable, usb: ${isFromUSB}`);
-    if (isFromUSB) return true;
-    const isRemovable = await this.checkRootDevRemovable();
-    console.log(`IsBootingFromRemovable, removable: ${isRemovable}`);
-    return isRemovable;
+    let ret = await this.execForResult('/usr/sbin/is_running_from_installer');
+    ret = ret.trim();
+    return ret === 'yes';
   }
 
   static get SkipRemovableBoards() {
@@ -222,7 +150,7 @@ class FydeOSInstaller {
   }
 
   async GetRootDevPath() {
-    const ret = await this.execForResult('rootdev');
+    const ret = await this.execForResult('rootdev -s');
     return ret ? ret.trim() : '';
   }
 
@@ -873,26 +801,10 @@ class FydeOSInstallerScreen extends FydeOSInstallerScreenElementBase {
     this.setupSelect_(this.$.multiBootOptionList, this.multiBootOptions_, this.onMultiBootOptionSelected_.bind(this));
   }
 
-  async isRootBSetup(rootPart, list) {
-    if (!rootPart.endsWith('3')) {
-      return true;
-    }
-    const rootbName = rootPart.substring(0, rootPart.length - 1) + '5';
-    const rootb = list.find(p => FydeOSInstaller.GetDevPath(p.name) === rootbName && p.type === 'part');
-    const roota = list.find(p => FydeOSInstaller.GetDevPath(p.name) === rootPart && p.type === 'part');
-    if (!rootb || !roota) {
-      return true;
-    }
-    const sizea = FydeOSInstaller.SizeInBytes(roota.size);
-    const sizeb = FydeOSInstaller.SizeInBytes(rootb.size);
-    return sizea <= sizeb;
-  }
-
   async waitForShellClient_() {
     this.isLoading_ = true;
     const ret = await this.installer_.WaitForShellClient();
     let isBootingFromRemovable = false;
-    let isRootBSetup = true;
     if (ret) {
       this.isShellClientAvailable_ = true;
       this.isDualbootInstallEnabled_ = await this.installer_.IsDualbootInstallEnabled();
@@ -904,7 +816,6 @@ class FydeOSInstallerScreen extends FydeOSInstallerScreenElementBase {
         this.onPrepared_();
       }
       isBootingFromRemovable = await this.installer_.IsBootingFromRemovable();
-      isRootBSetup = await this.isRootBSetup(this.rootDev_, this.fullDiskList_);
     } else {
       console.log('shellClient does not work');
       this.isShellClientError_ = true;
@@ -912,18 +823,10 @@ class FydeOSInstallerScreen extends FydeOSInstallerScreenElementBase {
     const board = loadTimeData.getString('lsbReleaseBoard');
     console.log('isBootingFromRemovable', isBootingFromRemovable);
     console.log('board', board);
-    console.log('isRootBSetup', isRootBSetup);
-    const concernRootB = (FydeOSInstaller.SpecialCaseBoards.indexOf(board) !== -1);
     const forceShow = this.IS_DEBUG || (FydeOSInstaller.ForceEnableForBoards.indexOf(board) !== -1);
     let visible = this.IS_DEBUG || !this.isShellClientError_;
-    if (concernRootB) {
-      visible = visible && (!isRootBSetup || forceShow);
-    } else {
-      visible = visible && (isBootingFromRemovable || forceShow);
-    }
+    visible = visible && (isBootingFromRemovable || forceShow);
 
-    this.fire('show-fydeos-installer-button', { visible });
-    this.fire('set-is-root-b-setup', { isRootBSetup, concernRootB });
     this.isLoading_ = false;
   }
 

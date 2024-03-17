@@ -19,8 +19,8 @@ const char kFydeOSHwtunerInfoSectionName[] = "--- DMI Info ---";
 
 const char kFydeOSWallpapersBasePath[] = "/usr/share/chromeos-assets/fydeos_wallpapers/";
 
-const char kFydeOSBackupScriptPath[] = "/usr/bin/fydeos-backup";
-const char kFydeOSRestoreScriptPath[] = "/usr/bin/fydeos-backup";
+const char kFydeOSBackupScriptDirPath[] = "/usr/share/fydeos-backup";
+const char kFydeOSRestoreScriptDirPath[] = "/usr/share/fydeos-backup";
 
 } // constants
 } // fydeos

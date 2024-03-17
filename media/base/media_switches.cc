@@ -913,7 +913,7 @@ const base::FeatureParam<std::string> kMediaFoundationClearKeyCdmPathForTesting{
 #endif  // BUILDFLAG(IS_WIN)
 
 // Enables the Live Caption feature on supported devices.
-BASE_FEATURE(kLiveCaption, "LiveCaption", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kLiveCaption, "LiveCaption", base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Controls whether a "Share this tab instead" button should be shown for
 // getDisplayMedia captures. Note: This flag does not control if the "Share this

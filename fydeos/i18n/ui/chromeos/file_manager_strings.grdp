@@ -30,12 +30,15 @@
   </message>
   <if expr="openfyde">
     <message name="IDS_FILE_BROWSER_NO_TASK_FOR_APK" desc="Message shown when a user tries to open a *.apk file, which we don't handle in the Files app.">
-      To continue with this action you will need to first activate the Android subsystem on your openFyde device, click <ph name="BEGIN_LINK_HELP">&lt;a href="javascript://"&gt;</ph>here<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to perform the activation.
+      To continue with this action you will need to first activate the Android subsystem on your openFyde device, click <ph name="BEGIN_LINK_HELP">&lt;a href="#"&gt;</ph>here<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to perform the activation.
     </message>
   </if>
   <if expr="not openfyde">
     <message name="IDS_FILE_BROWSER_NO_TASK_FOR_APK" desc="Message shown when a user tries to open a *.apk file, which we don't handle in the Files app.">
-      To continue with this action you will need to first activate the Android subsystem on your FydeOS device, click <ph name="BEGIN_LINK_HELP">&lt;a href="javascript://"&gt;</ph>here<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to perform the activation.
+      To continue with this action you will need to first activate the Android subsystem on your FydeOS device, click <ph name="BEGIN_LINK_HELP">&lt;a href="#"&gt;</ph>here<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to perform the activation.
     </message>
   </if>
+  <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_APK" desc="Error message when user attempts to open a apk file in the Files app via Downloads panel.">
+    Unable to sideload .apk files. Please ensure that the Android subsystem has been activated and you are in FydeOS Developer mode.
+  </message>
 </grit-part>

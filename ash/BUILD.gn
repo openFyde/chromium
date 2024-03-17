@@ -3032,6 +3032,7 @@ component("ash") {
     "//ui/wm/public",
     "//url",
     "//fydeos/prefs",
+    "//fydeos/build/config:buildflags",
   ]
 
   data_deps = [ ":dbus_service_files" ]

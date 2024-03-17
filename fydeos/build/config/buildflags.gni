@@ -8,7 +8,7 @@ declare_args() {
 }
 
 declare_args() {
-  use_fydeos_license = true
+  use_fydeos_license = !is_openfyde
 }
 
 if (is_openfyde) {

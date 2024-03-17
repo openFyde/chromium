@@ -11,14 +11,16 @@
 <translation id="15784306981872050">显示所有 Android 文件夹</translation>
 <translation id="8411736069741605651">此文件类型不受支持。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
 <translation id="3066512636093156324">此文件类型不受支持。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
-<translation id="1558183715092192838">此文件适用于采用 Windows 软件的 PC，不适用于运行 openFyde 的设备。请在<ph name="BEGIN_LINK" />网上应用店<ph name="END_LINK" />中搜索合适的替代应用。<ph name="BEGIN_LINK_HELP" />了解详情<ph name="END_LINK_HELP" /></translation>
-<translation id="6957510215762010542">此文件适用于采用 Windows 软件的 PC，不适用于运行 FydeOS 的设备。请在<ph name="BEGIN_LINK" />网上应用店<ph name="END_LINK" />中搜索合适的替代应用。<ph name="BEGIN_LINK_HELP" />了解详情<ph name="END_LINK_HELP" /></translation>
-<translation id="4970551353151192862">此文件适用于采用 Macintosh 软件的计算机，不适用于运行 openFyde 的设备。请在<ph name="BEGIN_LINK" />网上应用店<ph name="END_LINK" />中搜索合适的替代应用。<ph name="BEGIN_LINK_HELP" />了解详情<ph name="END_LINK_HELP" /></translation>
-<translation id="1907978398264359822">此文件适用于采用 Macintosh 软件的计算机，不适用于运行 FydeOS 的设备。请在<ph name="BEGIN_LINK" />网上应用店<ph name="END_LINK" />中搜索合适的替代应用。<ph name="BEGIN_LINK_HELP" />了解详情<ph name="END_LINK_HELP" /></translation>
-<translation id="7384107387862731799">此文件适用于采用 Macintosh 软件的计算机，不适用于运行 openFyde 的设备。</translation>
-<translation id="2644656331324757621">此文件适用于采用 Macintosh 软件的计算机，不适用于运行 FydeOS 的设备。</translation>
-<translation id="1753481718433152817">此文件适用于采用 Windows 软件的 PC，不适用于运行 openFyde 的设备。</translation>
-<translation id="6397691750565202734">此文件适用于采用 Windows 软件的 PC，不适用于运行 FydeOS 的设备。</translation>
+<translation id="2191358521510072305">此文件适用于运行 Windows 软件的 PC，不适用于运行 openFyde 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
+<translation id="3719093789181227709">此文件适用于运行 Windows 软件的 PC，不适用于运行 FydeOS 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
+<translation id="4510277529649429143">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 openFyde 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
+<translation id="7582064793720640739">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 FydeOS 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
+<translation id="9113848927422449689">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 openFyde 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
+<translation id="7944500333171967397">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 FydeOS 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
+<translation id="2796340402401368720">此文件适用于运行 Windows 软件的 PC，不适用于运行 openFyde 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
+<translation id="5758099459203549695">此文件适用于运行 Windows 软件的 PC，不适用于运行 FydeOS 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
+<translation id="6092746107434295994">不支持此文件类型。请访问 FydeOS 应用商店，找到能打开此文件类型的应用。</translation>
+<translation id="3544837910192955131">无法直接打开 .apk 类型的文件；请检查安卓子系统已激活，且确保目前 FydeOS 处在开发者模式下。</translation>
 <translation id="1214892496854604663">我们在不断寻找各种方式来提高上网安全。之前，任何网站都可以提示您在浏览器中添加扩展程序；而在最新版本的 Chromium 中，您必须明确告诉 Chromium 您想要安装这些扩展程序（即：在“扩展程序”页添加它们）后才可以。<ph name="BEGIN_LINK" />了解详情<ph name="END_LINK" /></translation>
 <!-- file_manager_strings.grdp -->
 <translation id="3164186517475962793">FydeOS × 坚果云</translation>

@@ -23,8 +23,8 @@ CHROMEOS_EXPORT extern const char kFydeOSHwtunerInfoSectionName[];
 
 CHROMEOS_EXPORT extern const char kFydeOSWallpapersBasePath[];
 
-CHROMEOS_EXPORT extern const char kFydeOSBackupScriptPath[];
-CHROMEOS_EXPORT extern const char kFydeOSRestoreScriptPath[];
+CHROMEOS_EXPORT extern const char kFydeOSBackupScriptDirPath[];
+CHROMEOS_EXPORT extern const char kFydeOSRestoreScriptDirPath[];
 } // constants
 } // fydeos
 

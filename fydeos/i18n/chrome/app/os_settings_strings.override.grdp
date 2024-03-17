@@ -70,6 +70,9 @@
       On-screen keyboard, Switch Access, and more
     </message>
   </if>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_AUDIO_AND_CAPTIONS_LINK_DESCRIPTION" desc="In the settings tab, the description of a link that opens a screen allowing the user to change audio and captions accessibility features.">
+    Mono audio, startup, and more
+  </message>
 
 </if>
 </grit-part>

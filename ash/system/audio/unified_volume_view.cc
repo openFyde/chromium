@@ -42,6 +42,8 @@ const gfx::VectorIcon* const kVolumeLevelIcons[] = {
 // The maximum index of `kVolumeLevelIcons`.
 constexpr int kVolumeLevels = std::size(kVolumeLevelIcons) - 1;
 
+const bool kDisableLiveCaption = true;
+
 }  // namespace
 
 UnifiedVolumeView::UnifiedVolumeView(
@@ -75,7 +77,7 @@ UnifiedVolumeView::UnifiedVolumeView(
     more_button_->SetEnabled(false);
   }
 
-  if (features::IsQsRevampEnabled()) {
+  if (features::IsQsRevampEnabled() && !kDisableLiveCaption) {
     more_button_->SetIconColorId(cros_tokens::kCrosSysSecondary);
     // TODO(b/257151067): Update the a11y name id.
     // Adds the live caption button before `more_button_`.
@@ -301,7 +303,7 @@ void UnifiedVolumeView::OnActiveInputNodeChanged() {
 }
 
 void UnifiedVolumeView::OnAccessibilityStatusChanged() {
-  if (!features::IsQsRevampEnabled()) {
+  if (!features::IsQsRevampEnabled() || kDisableLiveCaption) {
     return;
   }
 

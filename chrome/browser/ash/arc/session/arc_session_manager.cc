@@ -61,6 +61,7 @@
 #include "chrome/browser/ui/ash/multi_user/multi_user_util.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/webui/ash/diagnostics_dialog.h"
+#include "chrome/browser/enterprise/browser_management/management_service_factory.h"
 #include "chromeos/ash/components/cryptohome/cryptohome_parameters.h"
 #include "chromeos/ash/components/dbus/session_manager/session_manager_client.h"
 #include "chromeos/ash/components/system/statistics_provider.h"
@@ -1478,6 +1479,8 @@ void ArcSessionManager::StartArc() {
 
   params.is_account_managed =
       profile_->GetProfilePolicyConnector()->IsManaged();
+
+  params.is_device_managed = policy::ManagementServiceFactory::GetForPlatform()->IsManaged();
 
   arc_session_runner_->RequestUpgrade(std::move(params));
 }

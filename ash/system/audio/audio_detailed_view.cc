@@ -84,6 +84,8 @@ constexpr auto kDevicesTriViewInsets = gfx::Insets::TLBR(0, 24, 0, 32);
 constexpr auto kDevicesTriViewBorder = gfx::Insets::VH(0, 4);
 constexpr auto kSubsectionMargins = gfx::Insets::TLBR(0, 0, 4, 0);
 
+const bool kDisableLiveCaption = true; // hard code here
+
 // This callback is only used for tests.
 AudioDetailedView::NoiseCancellationCallback*
     g_noise_cancellation_toggle_callback = nullptr;
@@ -399,6 +401,9 @@ void AudioDetailedView::CreateItems() {
 }
 
 void AudioDetailedView::CreateLiveCaptionView() {
+  if (kDisableLiveCaption) {
+    return;
+  }
   auto* live_caption_container =
       scroll_content()->AddChildViewAt(std::make_unique<RoundedContainer>(), 0);
   live_caption_container->SetProperty(views::kMarginsKey,
@@ -583,6 +588,9 @@ std::unique_ptr<HoverHighlightView> AudioDetailedView::CreateAgcInfoRow(
 
 void AudioDetailedView::MaybeShowSodaMessage(speech::LanguageCode language_code,
                                              std::u16string message) {
+  if (kDisableLiveCaption) {
+    return;
+  }
   AccessibilityControllerImpl* controller =
       Shell::Get()->accessibility_controller();
   const bool is_live_caption_enabled = controller->live_caption().enabled();
@@ -623,6 +631,7 @@ void AudioDetailedView::ToggleLiveCaptionState() {
 }
 
 void AudioDetailedView::UpdateLiveCaptionView(bool is_enabled) {
+  if (kDisableLiveCaption) return;
   live_caption_icon_->SetImage(ui::ImageModel::FromVectorIcon(
       is_enabled ? kUnifiedMenuLiveCaptionIcon : kUnifiedMenuLiveCaptionOffIcon,
       cros_tokens::kCrosSysOnSurface, kQsSliderIconSize));
@@ -874,7 +883,7 @@ bool AudioDetailedView::ShowAgcInfoRow() {
 }
 
 void AudioDetailedView::HandleViewClicked(views::View* view) {
-  if (live_caption_view_ && view == live_caption_view_) {
+  if (!kDisableLiveCaption && live_caption_view_ && view == live_caption_view_) {
     ToggleLiveCaptionState();
     return;
   }

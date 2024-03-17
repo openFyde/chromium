@@ -561,7 +561,7 @@ void FydeOsHandler::HandleFydeOSBackupSupported(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
       base::BindOnce(
         &base::PathExists,
-        base::FilePath(fydeos::constants::kFydeOSBackupScriptPath)),
+        base::FilePath(fydeos::constants::kFydeOSBackupScriptDirPath)),
       base::BindOnce(&FydeOsHandler::OnFydeOSBackupScriptChecked,
                      weak_ptr_factory_.GetWeakPtr(), callback_id));
 }

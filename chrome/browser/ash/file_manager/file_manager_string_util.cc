@@ -86,7 +86,7 @@ const int kDownloadsLowSpaceWarningHelpNumber = 1061547;
 const int kGoogleDriveErrorHelpNumber = 2649458;
 
 // Location of the help page about no-action-available files.
-const int kNoActionForFileHelpNumber = 1700055;
+// const int kNoActionForFileHelpNumber = 1700055;
 
 #define SET_STRING(id, idr) dict->Set(id, l10n_util::GetStringUTF16(idr))
 
@@ -1307,8 +1307,7 @@ base::Value::Dict GetFileManagerStrings() {
   dict.Set("GOOGLE_DRIVE_OFFLINE_HELP_URL", kGoogleDriveOfflineHelpUrl);
   dict.Set("GOOGLE_DRIVE_OVERVIEW_URL", kGoogleDriveOverviewUrl);
   dict.Set("GOOGLE_DRIVE_ROOT_URL", kGoogleDriveRootUrl);
-  dict.Set("NO_TASK_FOR_FILE_URL",
-           base::StringPrintf(fydeos::constants::kHelpURLFormat, kNoActionForFileHelpNumber));
+  dict.Set("NO_TASK_FOR_FILE_URL", fydeos::constants::kFileManagerHelpURL);
   dict.Set("DLP_HELP_URL", policy::dlp::kDlpLearnMoreUrl);
 
   dict.Set("FYDE_DROP_URL", fydeos::constants::kFydeDropUrl);

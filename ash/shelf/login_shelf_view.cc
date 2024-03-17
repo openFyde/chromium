@@ -372,7 +372,7 @@ LoginShelfView::LoginShelfView(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
       base::BindOnce(
         base::PathExists,
-        base::FilePath(fydeos::constants::kFydeOSRestoreScriptPath)),
+        base::FilePath(fydeos::constants::kFydeOSRestoreScriptDirPath)),
       base::BindOnce(&LoginShelfView::OnFydeOSRestoreScriptChecked,
                      weak_ptr_factory_.GetWeakPtr()));
 }
