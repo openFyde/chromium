@@ -40,6 +40,9 @@
     <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
       Apps from openFyde Android subsystem may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive.
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_HELP_SECTION_DESCRIPTION" desc="In CUPS printing settings subpage, this description helps users when trying to connect to a local printer.">
+      Make sure your printer is connected to the same Wi-Fi network as your openFyde device or use a USB cable. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more about compatibility<ph name="LINK_END">&lt;/a&gt;</ph>
+    </message>
   </if>
   <if expr="not openfyde">
     <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
@@ -57,6 +60,9 @@
     </message>
     <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
       Apps from FydeOS Android subsystem may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_HELP_SECTION_DESCRIPTION" desc="In CUPS printing settings subpage, this description helps users when trying to connect to a local printer.">
+      Make sure your printer is connected to the same Wi-Fi network as your FydeOS device or use a USB cable. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more about compatibility<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
   </if>
 

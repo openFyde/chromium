@@ -325,11 +325,7 @@ void PrintingSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
   html_source->AddString("printingCUPSPrintLearnMoreUrl",
-                         // ---***FYDEOS BEGIN***---
-                         IsFydeProfile() ?
-                         base::ASCIIToUTF16(fydeos::constants::kCupsPrintLearnMoreURL) :
-                         // ---***FYDEOS END***---
-                         GetHelpUrlWithBoard(chrome::kCupsPrintLearnMoreURL));
+                         base::ASCIIToUTF16(fydeos::constants::kCupsPrintLearnMoreURL));
   html_source->AddString(
       "printingCUPSPrintPpdLearnMoreUrl",
       GetHelpUrlWithBoard(chrome::kCupsPrintPPDLearnMoreURL));

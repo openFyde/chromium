@@ -107,6 +107,8 @@
 <translation id="1243738736603109562">您需要重启 FydeOS 才能更改设备语言。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
 <translation id="1491869033935559234">openFyde 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
 <translation id="4356727807337882306">FydeOS 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
+<translation id="7841006096296111449">请确保您的打印机与 FydeOS 设备连接到同一 Wi-Fi 网络，或者使用 USB 线。<ph name="LINK_BEGIN" />详细了解兼容性<ph name="LINK_END" /></translation>
+<translation id="8976574741886416199">请确保您的打印机与 openFyde 设备连接到同一 Wi-Fi 网络，或者使用 USB 线。<ph name="LINK_BEGIN" />详细了解兼容性<ph name="LINK_END" /></translation>
 <translation id="7456142309650173560">开发者</translation>
 <translation id="1764226536771329714">测试</translation>
 <translation id="913411432238655354">启动时恢复应用</translation>

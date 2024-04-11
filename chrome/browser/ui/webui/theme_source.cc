@@ -161,7 +161,7 @@ void ThemeSource::StartDataRequest(
         break;
     }
   } else if (parsed_path == "current-channel-os-logo") {
-    resource_id = IDR_PRODUCT_OS_LOGO_32;
+    resource_id = IDR_PRODUCT_OS_LOGO_128;
   } else {
     resource_id = ResourcesUtil::GetThemeResourceId(parsed_path);
   }

@@ -685,7 +685,7 @@ void FydeOsHandler::OnArcMediaAutoScanIndicatorFileExistenceChecked(const std::s
     saved = n ? 1 : 0;
   }
   base::Value::Dict response;
-  response.Set("enabled", !result);
+  response.Set("enabled", result);
   response.Set("saved", saved);
   if (callback_id.empty()) {
     FireWebUIListener("fydeos-arc-media-auto-scan-changed", response);
@@ -703,7 +703,7 @@ void FydeOsHandler::HandleSetArcMediaAutoScanStateForCurrentSession(const base::
 void FydeOsHandler::HandleSetArcMediaAutoScanState(const base::Value::List& args) {
   CHECK_EQ(1u, args.size());
   bool enable = args[0].GetBool();
-  if (enable) {
+  if (!enable) {
     base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
       base::BindOnce(&DeleteArcMediaAutoScanIndicatorFile),

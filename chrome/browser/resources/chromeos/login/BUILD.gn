@@ -188,6 +188,7 @@ generate_grd("build_oobe_grd") {
     "images/welcome_illustration.svg",
     "images/eula_illustration.svg",
     "images/illustration-success.svg",
+    "images/fydeos_pin_illustration.svg",
   ]
 
   if (is_openfyde) {
