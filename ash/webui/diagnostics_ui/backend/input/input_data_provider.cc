@@ -596,6 +596,13 @@ void InputDataProvider::AddKeyboard(const InputDeviceInformation* device_info) {
       !is_internal_keyboard) {
     return;
   }
+  if (keyboard->physical_layout == mojom::PhysicalLayout::kUnknown ||
+      keyboard->mechanical_layout == mojom::MechanicalLayout::kUnknown) {
+    if (is_internal_keyboard && !get_connected_devices_callback_.is_null()) {
+      std::move(get_connected_devices_callback_).Run();
+    }
+    return;
+  }
   keyboards_[device_info->evdev_id] = std::move(keyboard);
   if (device_info->connection_type == mojom::ConnectionType::kInternal &&
       keyboards_[device_info->evdev_id]->top_right_key ==

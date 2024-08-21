@@ -95,6 +95,13 @@ export class HistorySideBarElement extends PolymerElement {
       },
 
       productSpecificationsListsEnabled_: Boolean,
+
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
     };
   }
 

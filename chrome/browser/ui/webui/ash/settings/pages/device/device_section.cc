@@ -41,6 +41,7 @@
 #include "ui/events/ash/keyboard_capability.h"
 #include "ui/events/ash/keyboard_layout_util.h"
 #include "ui/events/devices/device_data_manager.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 #include "chromeos/ash/resources/internal/strings/grit/ash_internal_strings.h"
@@ -1766,6 +1767,8 @@ void DeviceSection::AddDevicePointersStrings(
   html_source->AddLocalizedStrings(kPointersStrings);
 
   html_source->AddString("naturalScrollLearnMoreLink",
+                         IsFydeProfile() ?
+                         base::ASCIIToUTF16(fydeos::constants::kNaturalScrollHelpURL) :
                          GetHelpUrlWithBoard(chrome::kNaturalScrollHelpURL));
   html_source->AddString(
       "controlledScrollingLearnMoreLink",

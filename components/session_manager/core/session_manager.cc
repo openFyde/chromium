@@ -57,7 +57,7 @@ void SessionManager::CreateSessionForRestart(const AccountId& user_account_id,
   const user_manager::User* user = user_manager->FindUser(user_account_id);
   // Tests do not always create users.
   const bool is_child =
-      user && user->GetType() == user_manager::UserType::kChild;
+      user && (user->GetType() == user_manager::UserType::kChild || user->GetType() == user_manager::UserType::kFydeChild);
   CreateSessionInternal(user_account_id, user_id_hash,
                         true /* browser_restart */, is_child);
 }

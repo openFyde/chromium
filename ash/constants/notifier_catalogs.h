@@ -195,7 +195,10 @@ enum class NotificationCatalogName {
   kGrowthFramework = 180,
   kAudioSelection = 181,
   kExtendedUpdatesAvailable = 182,
-  kMaxValue = kExtendedUpdatesAvailable
+  kFydeOSDataBackup = 183,
+  kFydeOSLicenseEnforcement = 184,
+  kFydeOSCrostiniInstall = 185,
+  kMaxValue = kFydeOSCrostiniInstall
 };
 
 // A living catalog that registers system nudges.
@@ -300,7 +303,8 @@ enum class ToastCatalogName {
   kAppNotClosable = 49,
   kGameDashboardEnterTablet = 50,
   kPineOnboarding = 51,
-  kMaxValue = kPineOnboarding
+  kImeShowFydeLanguageState = 52,
+  kMaxValue = kImeShowFydeLanguageState
 };
 
 }  // namespace ash

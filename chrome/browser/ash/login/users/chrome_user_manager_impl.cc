@@ -793,6 +793,9 @@ void ChromeUserManagerImpl::OnProfileManagerDestroying() {
 bool ChromeUserManagerImpl::IsUserAllowed(
     const user_manager::User& user) const {
   DCHECK(user.GetType() == user_manager::UserType::kRegular ||
+         user.GetType() == user_manager::UserType::kFlintAccount ||
+         user.GetType() == user_manager::UserType::kFydeAccount ||
+         user.GetType() == user_manager::UserType::kFydeChild ||
          user.GetType() == user_manager::UserType::kGuest ||
          user.GetType() == user_manager::UserType::kChild);
 

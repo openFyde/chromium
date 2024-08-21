@@ -250,6 +250,8 @@
 #include "components/enterprise/browser/controller/chrome_browser_cloud_management_controller.h"
 #endif
 
+#include "fydeos/prefs/fydeos_prefs.h"
+
 #if BUILDFLAG(IS_WIN) || (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
 // How often to check if the persistent instance of Chrome needs to restart
 // to install an update.
@@ -904,6 +906,10 @@ void BrowserProcessImpl::CreateDevToolsProtocolHandler() {
     remote_debugging_server_ = std::make_unique<RemoteDebuggingServer>();
   }
 #endif
+
+  // ---***FYDEOS BEGIN***---
+  fydeos::prefs::KeepCurrentPrefs(local_state());
+  // ---***FYDEOS END***---
 }
 
 void BrowserProcessImpl::CreateDevToolsAutoOpener() {

@@ -26,6 +26,7 @@ import {getEntry, getFileData, getStore, getVolume} from '../store.js';
 
 import {hasDlpDisabledFiles} from './current_directory.js';
 import {driveRootEntryListKey, myFilesEntryListKey, recentRootKey} from './volumes.js';
+import {fydeDropRootKey} from './volumes.js';
 
 /**
  * @fileoverview Entries slice of the store.
@@ -164,6 +165,7 @@ function getEntryIcon(
 
   // Pre-defined icons based on the URL.
   const urlToIconPath: Record<FileKey, string> = {
+    [fydeDropRootKey]: ICON_TYPES.FYDEDROP,
     [recentRootKey]: ICON_TYPES.RECENT,
     [myFilesEntryListKey]: ICON_TYPES.MY_FILES,
     [driveRootEntryListKey]: ICON_TYPES.SERVICE_DRIVE,
@@ -487,6 +489,8 @@ function getEntryType(entry: Entry|FilesAppEntry): EntryType {
         case RootType.DRIVE_SHARED_WITH_ME:
           // TODO(lucmult): This isn't really Recent but it's the closest.
           return EntryType.RECENT;
+        case RootType.FYDEDROP:
+          return EntryType.FYDEDROP;
       }
       console.warn(`Invalid fakeEntry.rootType='${entry.rootType} rootType`);
       return EntryType.PLACEHOLDER;

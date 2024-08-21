@@ -56,6 +56,7 @@
 #include "components/sync/service/trusted_vault_synthetic_field_trial.h"
 #include "google_apis/gaia/google_service_auth_error.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/account/account_switches.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/build_info.h"
@@ -225,7 +226,8 @@ SyncServiceImpl::InitParams::InitParams(InitParams&& other) = default;
 SyncServiceImpl::InitParams::~InitParams() = default;
 
 SyncServiceImpl::SyncServiceImpl(InitParams init_params)
-    : sync_client_(std::move(init_params.sync_client)),
+    : family_link_timer_(std::make_unique<base::RepeatingTimer>()),
+      sync_client_(std::move(init_params.sync_client)),
       sync_prefs_(sync_client_->GetPrefService()),
       identity_manager_(std::move(init_params.identity_manager)),
       auth_manager_(std::make_unique<SyncAuthManager>(
@@ -298,6 +300,10 @@ void SyncServiceImpl::RegisterTrustedVaultSyntheticFieldTrialsIfNecessary() {
 
   registered_trusted_vault_auto_upgrade_synthetic_field_trial_group_ = group;
   sync_client_->RegisterTrustedVaultAutoUpgradeSyntheticFieldTrial(group);
+}
+
+void SyncServiceImpl::TriggerManagedUserSettingsRefresh() {
+  TriggerRefresh(ModelTypeSet{SUPERVISED_USER_SETTINGS});
 }
 
 SyncServiceImpl::~SyncServiceImpl() {
@@ -479,6 +485,28 @@ void SyncServiceImpl::StartSyncingWithServer() {
   }
   if (IsLocalSyncEnabled()) {
     TriggerRefresh(ModelTypeSet::All());
+  }
+  if(!fydeos::switches::IsFydeAccountEnabled()) return;
+
+  ModelTypeSet all_types = GetActiveDataTypes();
+  bool is_supervised_user_setting_active = false;
+  for (ModelType type : all_types) {
+    if (type == SUPERVISED_USER_SETTINGS) {
+      is_supervised_user_setting_active = true;
+      break;
+    }
+  }
+  if (!is_supervised_user_setting_active) {
+    return;
+  }
+
+  if (engine_ && !family_link_timer_->IsRunning()) {
+    int interval = fydeos::switches::GetFydeOSSupervisedUserSettingsSyncInterval();
+    VLOG(1) << "check for fydeos supervised user settings sync data every " << interval << " seconds";
+    family_link_timer_->Start(
+        FROM_HERE,
+        base::Seconds(interval),
+        base::BindRepeating(&SyncServiceImpl::TriggerManagedUserSettingsRefresh, base::Unretained(this)));
   }
 }
 
@@ -728,6 +756,10 @@ void SyncServiceImpl::RecordReasonIfWaitingForUpdates(
 std::unique_ptr<SyncEngine> SyncServiceImpl::ResetEngine(
     ResetEngineReason reset_reason) {
   CHECK(data_type_manager_);
+
+  if (family_link_timer_->IsRunning()) {
+    family_link_timer_->AbandonAndStop();
+  }
 
   const ShutdownReason shutdown_reason =
       ShutdownReasonForResetEngineReason(reset_reason);

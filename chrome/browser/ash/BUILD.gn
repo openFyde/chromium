@@ -1948,6 +1948,10 @@ source_set("ash") {
     "login/screen_manager.h",
     "login/screens/add_child_screen.cc",
     "login/screens/add_child_screen.h",
+    "login/screens/fyde_local_signin_screen.cc",
+    "login/screens/fyde_local_signin_screen.h",
+    "login/screens/data_restore_screen.cc",
+    "login/screens/data_restore_screen.h",
     "login/screens/ai_intro_screen.cc",
     "login/screens/ai_intro_screen.h",
     "login/screens/app_downloading_screen.cc",
@@ -1993,6 +1997,8 @@ source_set("ash") {
     "login/screens/encryption_migration_screen.h",
     "login/screens/error_screen.cc",
     "login/screens/error_screen.h",
+    "login/screens/eula_screen.cc",
+    "login/screens/eula_screen.h",
     "login/screens/family_link_notice_screen.cc",
     "login/screens/family_link_notice_screen.h",
     "login/screens/fingerprint_setup_screen.cc",
@@ -3705,6 +3711,13 @@ source_set("ash") {
     "extensions/users_private/users_private_delegate_factory.h",
   ]
 
+  sources += [
+    "system_web_apps/apps/fyde_assistant_app_info.cc",
+    "system_web_apps/apps/fyde_assistant_app_info.h",
+    "system_web_apps/apps/fyde_assistant_app_ui_delegate.cc",
+    "system_web_apps/apps/fyde_assistant_app_ui_delegate.h",
+  ]
+
   allow_circular_includes_from = [
     "//chrome/browser/apps/platform_apps/api",
     "//chrome/browser/ash/crosapi",
@@ -3860,6 +3873,7 @@ source_set("ash") {
     "//chromeos/ash/components/dbus/system_clock",
     "//chromeos/ash/components/dbus/system_proxy:system_proxy_proto",
     "//chromeos/ash/components/dbus/update_engine",
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
     "//chromeos/ash/components/dbus/userdataauth",
     "//chromeos/ash/components/dbus/userdataauth:userdataauth_proto",
     "//chromeos/ash/components/dbus/vm_plugin_dispatcher",
@@ -4126,6 +4140,10 @@ source_set("ash") {
     "//url",
   ]
 
+  public_deps += [
+    "//ash/webui/fyde_assistant_app_ui",
+  ]
+
   if (is_chrome_branded) {
     public_deps += [
       "//ash/webui/conch",
@@ -4193,6 +4211,7 @@ source_set("ash") {
     "//ash/webui/vc_background_ui/resources:resources",
     "//build:branding_buildflags",
     "//build/config/chromebox_for_meetings:buildflags",
+    "//fydeos/build/config:buildflags",
     "//cc/base",
     "//cc/paint",
     "//chrome/app:branded_strings",
@@ -4546,6 +4565,12 @@ source_set("ash") {
     "//ui/ozone",
     "//ui/strings:ui_strings",
     "//ui/wm",
+    "//fydeos/switches/account/toggle:account_toggle",
+  ]
+
+  deps += [
+    "//ash/webui/fyde_assistant_app_ui",
+    "//ash/webui/fyde_assistant_app_ui/resources:resources",
   ]
 
   data_deps = [
@@ -4613,6 +4638,10 @@ source_set("ash") {
       "//ash/webui/sample_system_web_app_ui/resources/trusted:resources",
     ]
   }
+
+  sources += [
+  ]
+
 
   if (use_cups) {
     sources += [

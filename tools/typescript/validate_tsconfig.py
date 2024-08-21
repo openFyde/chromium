@@ -132,6 +132,7 @@ def validateJavaScriptAllowed(source_dir, out_dir, is_ios):
       # TODO(b/267329383): Migrate A11y to TypeScript.
       'chrome/browser/resources/chromeos/accessibility',
       'ui/file_manager/',
+      'ash/webui/fyde_assistant_app_ui/',
   ]
   for directory in ash_directories:
     if directory in source_dir:

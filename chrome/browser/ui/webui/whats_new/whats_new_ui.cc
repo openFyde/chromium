@@ -47,7 +47,7 @@ void CreateAndAddWhatsNewUIHtmlSource(Profile* profile) {
   // Allow embedding of iframe from chrome.com
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
-      "child-src chrome://webui-test https://www.google.com/;");
+      "child-src chrome://webui-test https://fydeos.com/ https://fydeos.io/ https://www.google.com/;");
 }
 
 }  // namespace

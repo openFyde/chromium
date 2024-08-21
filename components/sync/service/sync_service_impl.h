@@ -419,6 +419,10 @@ class SyncServiceImpl : public SyncService,
   // passphrase type.
   void RegisterTrustedVaultSyntheticFieldTrialsIfNecessary();
 
+  void TriggerManagedUserSettingsRefresh();
+
+  std::unique_ptr<base::RepeatingTimer> family_link_timer_;
+
   // This profile's SyncClient, which abstracts away non-Sync dependencies and
   // the Sync API component factory.
   const std::unique_ptr<SyncClient> sync_client_;

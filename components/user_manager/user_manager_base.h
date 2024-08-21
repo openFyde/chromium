@@ -165,6 +165,7 @@ class USER_MANAGER_EXPORT UserManagerBase : public UserManager {
   bool IsCurrentUserCryptohomeDataEphemeral() const override;
   bool IsUserLoggedIn() const override;
   bool IsLoggedInAsUserWithGaiaAccount() const override;
+  bool IsLoggedInAsUserWithFydeExtendedAccount() const override;
   bool IsLoggedInAsChildUser() const override;
   bool IsLoggedInAsManagedGuestSession() const override;
   bool IsLoggedInAsGuest() const override;
@@ -423,6 +424,8 @@ class USER_MANAGER_EXPORT UserManagerBase : public UserManager {
 
   // Handles multi-user sign-in policy.
   MultiUserSignInPolicyController multi_user_sign_in_policy_controller_;
+
+  void RemoveLocalAutoSigninCredential(const AccountId& account_id);
 
   // Indicates stage of loading user from prefs.
   UserLoadStage user_loading_stage_ = STAGE_NOT_LOADED;

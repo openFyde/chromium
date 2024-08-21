@@ -25,6 +25,7 @@ export enum SourceType {
   UNPACKED = 'unpacked',
   INSTALLED_BY_DEFAULT = 'installed-by-default',
   UNKNOWN = 'unknown',
+  FYDEOS_STORE = 'fydeos_store',
 }
 
 export enum EnableControl {
@@ -108,6 +109,10 @@ export function getItemSource(item: chrome.developerPrivate.ExtensionInfo):
     return SourceType.POLICY;
   }
 
+  if (isFydeOSItem(item)) {
+    return SourceType.FYDEOS_STORE;
+  }
+
   switch (item.location) {
     case chrome.developerPrivate.Location.THIRD_PARTY:
       return SourceType.SIDELOADED;
@@ -134,6 +139,8 @@ export function getItemSourceString(source: SourceType): string {
       return loadTimeData.getString('itemSourceUnpacked');
     case SourceType.WEBSTORE:
       return loadTimeData.getString('itemSourceWebstore');
+    case SourceType.FYDEOS_STORE:
+      return loadTimeData.getString('itemSourceFydeOSStore');
     case SourceType.INSTALLED_BY_DEFAULT:
       return loadTimeData.getString('itemSourceInstalledByDefault');
     case SourceType.UNKNOWN:
@@ -176,6 +183,21 @@ export function convertSafetyCheckReason(
     }
   }
 }
+
+// ---***FYDEOS BEGIN***---
+/**
+ * Returns true if the extension/app is packed by fydeos
+ * @param {!chrome.developerPrivate.ExtensionInfo} item
+ * @return {boolean}
+ */
+export function isFydeOSItem(item: chrome.developerPrivate.ExtensionInfo) {
+  const fydeosUpdateUrl = loadTimeData.getString('fydeosStoreBaseUrl');
+  if (fydeosUpdateUrl && item.updateUrl.substr(0, fydeosUpdateUrl.length) === fydeosUpdateUrl) {
+    return true;
+  }
+  return false;
+}
+// ---***FYDEOS END***---
 
 /**
  * Computes the human-facing label for the given inspectable view.

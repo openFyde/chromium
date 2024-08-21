@@ -224,7 +224,7 @@
     "structures": [2900],
   },
   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/login/resources.grd": {
-    "META": {"sizes": {"includes": [300],}},
+    "META": {"sizes": {"includes": [340],}},
     "includes": [2920],
   },
   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/lock_screen_reauth/resources.grd": {
@@ -1311,6 +1311,18 @@
     "META": {"sizes": {"includes": [50],}},
     "includes": [8460],
   },
+
+  #//---***FYDEOS BEGIN***---
+  "fydeos/extensions/common/fydeos_extensions_resources.grd": {
+    "includes": [8480],
+    "messages": [8500],
+  },
+
+  "<(SHARED_INTERMEDIATE_DIR)/ash/webui/fyde_assistant_app_ui/resources/resources.grd": {
+    "META": {"sizes": {"includes": [50],}},
+    "includes": [8520],
+  },
+  #//---***FYDEOS END***---
 
   # END "everything else" section.
   # Everything but chrome/, components/, content/, and ios/

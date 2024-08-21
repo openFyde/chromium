@@ -35,6 +35,9 @@ void DisplaySizeScreenHandler::DeclareLocalizedValues(
   builder->Add("displaySizeCameraApp", IDS_OOBE_DISPLAY_SIZE_CAMERA_APP_NAME);
   builder->Add("displaySizeFilesApp", IDS_OOBE_DISPLAY_SIZE_FILES_APP_NAME);
   builder->Add("displaySizePhotosApp", IDS_OOBE_DISPLAY_SIZE_PHOTOS_APP_NAME);
+  builder->Add("displaySizeRdpApp", IDS_OOBE_DISPLAY_SIZE_RDP_APP_NAME);
+  builder->Add("displaySizeStoreApp", IDS_OOBE_DISPLAY_SIZE_STORE_APP_NAME);
+  builder->Add("displaySizeOneDriveApp", IDS_OOBE_DISPLAY_SIZE_ONE_DRIVE_APP_NAME);
   builder->Add("displaySizeSettingsApp",
                IDS_OOBE_DISPLAY_SIZE_SETTINGS_APP_NAME);
   builder->Add("displaySizeValue", IDS_OOBE_DISPLAY_SIZE_VALUE);

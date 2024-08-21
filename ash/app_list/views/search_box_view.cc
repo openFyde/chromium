@@ -28,6 +28,7 @@
 #include "ash/public/cpp/app_list/vector_icons/vector_icons.h"
 #include "ash/public/cpp/app_menu_constants.h"
 #include "ash/public/cpp/wallpaper/wallpaper_types.h"
+#include "ash/public/cpp/resources/grit/ash_public_unscaled_resources.h"
 #include "ash/resources/vector_icons/vector_icons.h"
 #include "ash/search_box/search_box_constants.h"
 #include "ash/strings/grit/ash_strings.h"
@@ -69,6 +70,8 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/animation/ink_drop.h"
@@ -784,8 +787,13 @@ void SearchBoxView::OnThemeChanged() {
                                      GetSearchBoxIconSize()));
   assistant_button()->SetImageModel(
       views::ImageButton::STATE_NORMAL,
-      ui::ImageModel::FromVectorIcon(
-          chromeos::kAssistantIcon, button_icon_color, GetSearchBoxIconSize()));
+      ui::ImageModel::FromImageSkia(
+          gfx::ImageSkiaOperations::CreateResizedImage(
+              ui::ResourceBundle::GetSharedInstance()
+                  .GetImageNamed(IDR_FYDEOS_AI_ICON_40)
+                  .AsImageSkia(),
+              skia::ImageOperations::RESIZE_BEST,
+              gfx::Size(GetSearchBoxIconSize(), GetSearchBoxIconSize()))));
   if (filter_button()) {
     filter_button()->SetImageModel(
         views::ImageButton::STATE_NORMAL,

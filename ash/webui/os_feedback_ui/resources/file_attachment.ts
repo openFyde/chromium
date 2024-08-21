@@ -153,8 +153,8 @@ export class FileAttachmentElement extends FileAttachmentElementBase {
 
   private handleSelectedFileHelper(file: File): void {
     assert(file);
-    // Maximum file size is 10MB.
-    const MAX_ATTACH_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+    // Maximum file size is 5MB.
+    const MAX_ATTACH_FILE_SIZE_BYTES = 5 * 1024 * 1024;
     if (file.size > MAX_ATTACH_FILE_SIZE_BYTES) {
       strictQuery('#fileTooBigErrorMessage', this.shadowRoot, CrToastElement)
           .show();

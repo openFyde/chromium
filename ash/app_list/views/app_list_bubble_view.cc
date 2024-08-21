@@ -22,6 +22,7 @@
 #include "ash/app_list/views/app_list_search_view.h"
 #include "ash/app_list/views/apps_grid_view.h"
 #include "ash/app_list/views/assistant/app_list_bubble_assistant_page.h"
+#include "ash/app_list/views/assistant/fyde_assistant_page.h"
 #include "ash/app_list/views/folder_background_view.h"
 #include "ash/app_list/views/scrollable_apps_grid_view.h"
 #include "ash/app_list/views/search_box_view.h"
@@ -33,6 +34,7 @@
 #include "ash/public/cpp/app_list/app_list_config_provider.h"
 #include "ash/public/cpp/app_list/app_list_features.h"
 #include "ash/public/cpp/app_list/app_list_types.h"
+#include "ash/public/cpp/assistant/controller/assistant_ui_controller.h"
 #include "ash/public/cpp/metrics_util.h"
 #include "ash/public/cpp/shelf_config.h"
 #include "ash/public/cpp/shelf_types.h"
@@ -247,8 +249,9 @@ AppListBubbleView::AppListBubbleView(
 
   // Add assistant page as a top-level child so it will fill the bubble and
   // suggestion chips will appear at the bottom of the bubble view.
-  assistant_page_ = AddChildView(std::make_unique<AppListBubbleAssistantPage>(
-      view_delegate_->GetAssistantViewDelegate()));
+  // assistant_page_ = AddChildView(std::make_unique<AppListBubbleAssistantPage>(
+  //     view_delegate_->GetAssistantViewDelegate()));
+  assistant_page_ = AddChildView(std::make_unique<FydeAssistantPage>());
   assistant_page_->SetVisible(false);
 
   InitFolderView(drag_and_drop_host);
@@ -579,6 +582,10 @@ void AppListBubbleView::ShowPage(AppListBubblePage page) {
 
   search_page_dialog_controller_->Reset(/*enabled=*/supports_anchored_dialogs);
   assistant_page_->SetVisible(page == AppListBubblePage::kAssistant);
+  // ToggleBorderForAssistantPage(current_page_, previous_page);
+  if (current_page_ != AppListBubblePage::kAssistant && previous_page == AppListBubblePage::kAssistant) {
+    AssistantUiController::Get()->CloseUi(ash::assistant::AssistantExitPoint::kUnspecified);
+  }
   switch (current_page_) {
     case AppListBubblePage::kNone:
       NOTREACHED();
@@ -720,6 +727,12 @@ bool AppListBubbleView::AcceleratorPressed(const ui::Accelerator& accelerator) {
   return true;
 }
 
+void AppListBubbleView::BackOrExit() {
+  if (!Back()) {
+    view_delegate_->DismissAppList();
+  }
+}
+
 void AppListBubbleView::Layout(PassKey) {
   LayoutSuperclass<views::View>(this);
 
@@ -746,6 +759,9 @@ void AppListBubbleView::Layout(PassKey) {
 void AppListBubbleView::QueryChanged(const std::u16string& trimmed_query,
                                      bool initiated_by_user) {
   if (current_page_ != AppListBubblePage::kNone) {
+    if (IsShowingEmbeddedAssistantUI() && trimmed_query.empty() && initiated_by_user) {
+      return;
+    }
     search_page_->search_view()->UpdateForNewSearch(!trimmed_query.empty());
     if (!trimmed_query.empty()) {
       ShowPage(AppListBubblePage::kSearch);
@@ -947,5 +963,26 @@ void AppListBubbleView::MaybeFocusAndActivateSearchBox() {
 
 BEGIN_METADATA(AppListBubbleView)
 END_METADATA
+
+void AppListBubbleView::ToggleBorderForAssistantPage(const AppListBubblePage current, const AppListBubblePage previous) {
+  if (previous != AppListBubblePage::kAssistant && current != AppListBubblePage::kAssistant) {
+    return;
+  }
+  if (previous == AppListBubblePage::kAssistant && current == AppListBubblePage::kAssistant) {
+    NOTREACHED();
+    return;
+  }
+  if (current == AppListBubblePage::kAssistant) {
+    SetBorder(views::CreateEmptyBorder(0));
+  } else {
+    // default border impl in constructor AppListBubbleView::AppListBubbleView
+    const bool is_jelly_enabled = chromeos::features::IsJellyEnabled();
+    SetBorder(std::make_unique<views::HighlightBorder>(
+        GetBubbleCornerRadius(),
+        is_jelly_enabled ? views::HighlightBorder::Type::kHighlightBorderOnShadow
+                        : views::HighlightBorder::Type::kHighlightBorder1,
+        /*insets_type=*/views::HighlightBorder::InsetsType::kHalfInsets));
+  }
+}
 
 }  // namespace ash

@@ -91,6 +91,8 @@ struct EnrollmentConfig {
     // Forced manual enrollment triggered as a fallback to a failed
     // token-based enrollment. Cannot be skipped.
     MODE_ENROLLMENT_TOKEN_INITIAL_MANUAL_FALLBACK = 20,
+
+    MODE_FYDE_LOCAL_FORCED = 21,
   };
 
   // An enumeration of authentication mechanisms that can be used for
@@ -112,6 +114,8 @@ struct EnrollmentConfig {
     // As of writing, token-based-enrollment on ChromeOS only happens for Flex
     // Auto Enrollment.
     AUTH_MECHANISM_TOKEN_PREFERRED = 3,
+
+    AUTH_MECHANISM_FYDE = 4,
   };
 
   // An enumeration of assigned upgrades that a device can after initial
@@ -148,6 +152,8 @@ struct EnrollmentConfig {
   // attestation mode.
   static Mode GetManualFallbackMode(Mode attestation_mode);
 
+  static bool IsZeroTouchEnrollmentFydeForced();
+
   EnrollmentConfig();
   EnrollmentConfig(const EnrollmentConfig& config);
   ~EnrollmentConfig();
@@ -159,7 +165,9 @@ struct EnrollmentConfig {
 
   // Whether attestation enrollment should be triggered.
   bool should_enroll_with_attestation() const {
-    return auth_mechanism != AUTH_MECHANISM_INTERACTIVE;
+    // do not trigger enroll if auth_mechanism is fyde when oobe is completed
+    // if we want to trigger fyde enrollment even if oobe is completed, we should add a function like should_enroll_with_fyde()
+    return auth_mechanism != AUTH_MECHANISM_INTERACTIVE && auth_mechanism != AUTH_MECHANISM_FYDE;
   }
 
   // Whether interactive enrollment should be triggered.
@@ -180,6 +188,7 @@ struct EnrollmentConfig {
            mode == MODE_ATTESTATION_LOCAL_FORCED ||
            mode == MODE_ATTESTATION_SERVER_FORCED ||
            mode == MODE_INITIAL_SERVER_FORCED ||
+           mode == MODE_FYDE_LOCAL_FORCED ||
            mode == MODE_ATTESTATION_INITIAL_SERVER_FORCED ||
            mode == MODE_ATTESTATION_ROLLBACK_FORCED || mode == MODE_RECOVERY ||
            mode == MODE_ENROLLMENT_TOKEN_INITIAL_SERVER_FORCED ||
@@ -224,10 +233,15 @@ struct EnrollmentConfig {
     return is_mode_attestation_client() || is_mode_attestation_server();
   }
 
+  bool is_mode_fyde() const {
+    return mode == MODE_FYDE_LOCAL_FORCED;
+  }
+
   // Whether this configuration's mode causes the device to automatically
   // enroll without user interaction.
   bool is_automatic_enrollment() const {
     return is_mode_attestation() ||
+           is_mode_fyde() ||
            mode == MODE_ENROLLMENT_TOKEN_INITIAL_SERVER_FORCED;
   }
 

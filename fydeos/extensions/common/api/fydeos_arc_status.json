@@ -1,0 +1,31 @@
+[{
+    "namespace": "fydeosArcStatus",
+    "description": "get arc status of fydeos throught this api",
+    "compiler_options": {
+      "implemented_in": "fydeos/extensions/browser/api/fydeos_arc_status/fydeos_arc_status_api.h"
+    },
+    "types": [{
+      "id": "ArcStatus",
+      "type": "object",
+      "properties": {
+        "running": {"type": "boolean", "description": "arc is running or not, checking process org.chromium.arc.home"},
+        "installable": {"type": "boolean", "description": "arc is installable or not, checking process arc_fydeos_service"},
+        "supported": {"type": "boolean", "description": "arc is supported or not, checking file system.raw.img and vendor.raw.img"},
+        "archero": {"type": "boolean", "description": "archero or not"}
+      }
+    }],
+    "functions": [{
+      "name": "get",
+      "type": "function",
+      "description": "get arc status of fydeos throught this api",
+      "parameters": [],
+      "returns_async": {
+        "type": "function",
+        "name": "callback",
+        "parameters": [{
+          "name": "status",
+          "$ref": "ArcStatus"
+        }]
+      }
+    }]
+}]

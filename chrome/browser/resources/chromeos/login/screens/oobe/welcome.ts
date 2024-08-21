@@ -204,7 +204,17 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
         },
         readOnly: true,
       },
+
+      isInWelcomeScreen: {
+        type: Boolean,
+        value: false,
+      },
     };
+  }
+  static get observers() {
+    return [
+      'onWelcomeScreenUiStepChanged(uiStep, isInWelcomeScreen)',
+    ];
   }
 
   private currentLanguage: string;
@@ -223,6 +233,8 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   private isMeet: boolean;
   private isDeviceRequisitionConfigurable: boolean;
   private configurationApplied: boolean;
+  private isInWelcomeScreen: boolean;
+  private startupSoundPlayed: boolean;
 
   constructor() {
     super();
@@ -237,6 +249,8 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     this.chromeVoxHintGiven = false;
 
     this.configurationApplied = false;
+
+    this.startupSoundPlayed = false;
   }
 
   override get EXTERNAL_API() {
@@ -253,7 +267,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   override defaultUIStep() {
-    return WelcomeScreenState.GREETING;
+    return WelcomeScreenState.LANGUAGE;
   }
 
   override get UI_STEPS() {
@@ -272,8 +286,12 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    * @param data Screen init payload.
    */
   onBeforeShow(data: WelcomeScreenData): void {
+    this.isInWelcomeScreen = true;
     this.debuggingLinkVisible =
         data && 'isDeveloperMode' in data && data['isDeveloperMode'];
+
+    const forceDisableDebuggingLink = true;
+    this.debuggingLinkVisible = this.debuggingLinkVisible && !forceDisableDebuggingLink;
 
     window.setTimeout(() => void this.applyOobeConfiguration(), 0);
   }
@@ -294,6 +312,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    */
   onBeforeHide(): void {
     this.cleanupChromeVoxHint();
+    this.isInWelcomeScreen = false;
   }
 
   private cancel(): void {
@@ -308,12 +327,39 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     }
   }
 
+   /**
+   * FydeOS.
+   * move en-US and zh-CN to the top of languageList
+   */
+  rearrangeLanguages() {
+    const defaultLangs = [ 'en-US', 'zh-CN' ];
+    const languages = loadTimeData.getValue('languageList') as OobeTypes.LanguageDsc[];
+    const priorities : OobeTypes.LanguageDsc[] = [];
+    const left  : OobeTypes.LanguageDsc[] = [];
+    for (let i = 0; i < languages.length; i++) {
+      const lang = languages[i];
+      if (lang.code && defaultLangs.indexOf(lang.code) !== -1) {
+        priorities.push(lang);
+      } else {
+        left.push(lang);
+      }
+    }
+    priorities.sort((a, b) => {
+      const ac = a.code || '';
+      const bc = b.code || '';
+      if (ac > bc) return 1;
+      if (ac < bc) return -1;
+      return 0;
+    });
+    return priorities.concat(left);
+  }
+
   /**
    * This is called when UI strings are changed.
    * Overridden from LoginScreenBehavior.
    */
   override updateLocalizedContent(): void {
-    this.languages = loadTimeData.getValue('languageList');
+    this.languages = this.rearrangeLanguages();
     this.keyboards = loadTimeData.getValue('inputMethodsList');
     this.timezones = loadTimeData.getValue('timezoneList');
     this.highlightStrength = loadTimeData.getValue('highlightStrength');
@@ -876,6 +922,23 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    */
   private onActivateQuickStart(): void {
     this.userActed('quickStartClicked');
+  }
+
+  private requestPlayStartupSound() {
+    chrome.send('playStartupSound');
+  }
+
+  private mayPlayWelcomeSound(uiStep: WelcomeScreenState, isInWelcomeScreen: boolean) {
+    if (uiStep === WelcomeScreenState.GREETING && isInWelcomeScreen) {
+      if (!this.startupSoundPlayed) {
+        this.requestPlayStartupSound();
+        this.startupSoundPlayed = true;
+      }
+    }
+  }
+
+  private onWelcomeScreenUiStepChanged(uiStep: WelcomeScreenState, isInWelcomeScreen: boolean) {
+    this.mayPlayWelcomeSound(uiStep, isInWelcomeScreen);
   }
 }
 

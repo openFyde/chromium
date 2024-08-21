@@ -49,6 +49,10 @@
 #include "components/user_manager/user_manager.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/account/account_constants.h"
+#include "base/files/file_util.h"
+#include "base/strings/string_util.h"
+
 
 namespace ash {
 namespace {
@@ -199,6 +203,10 @@ void EnrollmentScreen::SetEnrollmentConfig(
       current_auth_ = AUTH_ENROLLMENT_TOKEN;
       next_auth_ = AUTH_OAUTH;
       break;
+    case EnrollmentConfig::AUTH_MECHANISM_FYDE:
+      current_auth_ = AUTH_FYDE;
+      next_auth_ = AUTH_FYDE;
+      break;
     default:
       NOTREACHED();
       break;
@@ -216,6 +224,12 @@ void EnrollmentScreen::SetConfig() {
     config_.mode = config_.is_attestation_auth_forced()
                        ? policy::EnrollmentConfig::MODE_ATTESTATION_LOCAL_FORCED
                        : policy::EnrollmentConfig::MODE_ATTESTATION;
+  } else if (current_auth_ == AUTH_OAUTH && config_.is_mode_fyde()) {
+    config_.mode = config_.is_forced()
+        ? policy::EnrollmentConfig::MODE_LOCAL_FORCED
+        : policy::EnrollmentConfig::MODE_MANUAL;
+  } else if (current_auth_ == AUTH_FYDE && !config_.is_mode_fyde()) {
+    config_.mode = policy::EnrollmentConfig::MODE_FYDE_LOCAL_FORCED;
   }
   // TODO(crbug.com/40805389): Logging as "WARNING" to make sure it's preserved
   // in the logs.
@@ -228,6 +242,7 @@ void EnrollmentScreen::SetConfig() {
 
 bool EnrollmentScreen::AdvanceToNextAuth() {
   if (current_auth_ != next_auth_ && (current_auth_ == AUTH_ATTESTATION ||
+                                      current_auth_ == AUTH_FYDE ||
                                       current_auth_ == AUTH_ENROLLMENT_TOKEN)) {
     LOG(WARNING) << "User stopped using auth: " << current_auth_
                  << ", current auth: " << next_auth_ << ".";
@@ -314,7 +329,7 @@ void EnrollmentScreen::UpdateFlowType() {
     } else {
       view_->SetFlowType(EnrollmentScreenView::FlowType::kEnterprise);
     }
-    if (!features::IsKioskEnrollmentInOobeEnabled()) {
+    if (!features::IsKioskEnrollmentInOobeEnabled() || config_.is_mode_fyde()) {
       view_->SetGaiaButtonsType(
           EnrollmentScreenView::GaiaButtonsType::kDefault);
       return;
@@ -376,6 +391,9 @@ void EnrollmentScreen::ShowImpl() {
       break;
     case AUTH_ENROLLMENT_TOKEN:
       AuthenticateUsingEnrollmentToken();
+      break;
+    case AUTH_FYDE:
+      AuthenticateUsingFyde();
       break;
     default:
       NOTREACHED();
@@ -514,6 +532,18 @@ void EnrollmentScreen::AuthenticateUsingEnrollmentToken() {
   }
   CreateEnrollmentLauncher();
   enrollment_launcher_->EnrollUsingEnrollmentToken();
+}
+
+void EnrollmentScreen::AuthenticateUsingFyde() {
+  elapsed_timer_ = std::make_unique<base::ElapsedTimer>();
+  if (view_)
+    view_->Show();
+  CreateEnrollmentLauncher();
+  std::string fydeToken;
+  if (base::ReadFileToString(base::FilePath(fydeos::constants::kFydeEnrollmentTokenFilePath), &fydeToken)) {
+    fydeToken = base::CollapseWhitespaceASCII(fydeToken, true);
+  }
+  enrollment_launcher_->EnrollUsingFydeToken(fydeToken);
 }
 
 void EnrollmentScreen::OnLoginDone(const std::string& user,
@@ -970,6 +1000,7 @@ void EnrollmentScreen::SetupAndShowOfflineMessage(
 
   if (LoginDisplayHost::default_host()->GetOobeUI()->current_screen() !=
       ErrorScreenView::kScreenId) {
+    error_screen_->AllowFydeLocalSignin(!policy::EnrollmentConfig::IsZeroTouchEnrollmentFydeForced());
     error_screen_->SetUIState(NetworkError::UI_STATE_SIGNIN);
     error_screen_->SetParentScreen(EnrollmentScreenView::kScreenId);
     error_screen_->SetHideCallback(

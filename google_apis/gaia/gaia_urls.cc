@@ -18,6 +18,9 @@
 #include "google_apis/google_api_keys.h"
 #include "url/url_canon.h"
 #include "url/url_constants.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/account_constants.h"
+#include "fydeos/build/config/buildflags.h"
 
 #define URL_KEY_AND_PTR(name) #name, &BASE_CONCAT(name, _)
 
@@ -133,10 +136,12 @@ url::Origin GetOriginSwitchValueWithDefault(std::string_view switch_value,
   return url::Origin::Create(GURL(default_value));
 }
 
+bool g_require_reset = false;
+
 void SetDefaultURLIfInvalid(GURL* url_to_set,
                             std::string_view switch_value,
                             std::string_view default_value) {
-  if (!url_to_set->is_valid()) {
+  if (!url_to_set->is_valid() || g_require_reset) {
     *url_to_set = GetURLSwitchValueWithDefault(switch_value, default_value);
   }
 }
@@ -145,7 +150,7 @@ void SetDefaultOriginIfOpaqueOrInvalidScheme(url::Origin* origin_to_set,
                                              std::string_view switch_value,
                                              std::string_view default_value) {
   if (origin_to_set->opaque() ||
-      !origin_to_set->GetURL().SchemeIsHTTPOrHTTPS()) {
+      !origin_to_set->GetURL().SchemeIsHTTPOrHTTPS() || g_require_reset) {
     *origin_to_set =
         GetOriginSwitchValueWithDefault(switch_value, default_value);
   }
@@ -154,7 +159,7 @@ void SetDefaultOriginIfOpaqueOrInvalidScheme(url::Origin* origin_to_set,
 void ResolveURLIfInvalid(GURL* url_to_set,
                          const GURL& base_url,
                          std::string_view suffix) {
-  if (!url_to_set->is_valid()) {
+  if (!url_to_set->is_valid() || g_require_reset) {
     *url_to_set = base_url.Resolve(suffix);
   }
 }
@@ -348,13 +353,28 @@ GURL GaiaUrls::LogOutURLWithContinueURL(const GURL& continue_url) {
   return service_logout_url_.Resolve(params);
 }
 
+// ---***FYDEOS BEGIN***---
+void GaiaUrls::Reset() {
+  g_require_reset = true;
+  InitializeDefault();
+  g_require_reset = false;
+}
+// ---***FYDEOS END***---
+
 void GaiaUrls::InitializeDefault() {
   SetDefaultURLIfInvalid(&google_url_, switches::kGoogleUrl, kDefaultGoogleUrl);
-  SetDefaultOriginIfOpaqueOrInvalidScheme(&gaia_origin_, switches::kGaiaUrl,
-                                          kDefaultGaiaUrl);
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    SetDefaultOriginIfOpaqueOrInvalidScheme(&gaia_origin_, fydeos::switches::kFydeOSGaiaUrl,
+                                            fydeos::constants::kDefaultFydeOSGaiaUrl);
+    SetDefaultURLIfInvalid(&google_apis_origin_url_, fydeos::switches::kFydeOSApisUrl,
+                           fydeos::constants::kDefaultFydeOSApisBaseUrl);
+  } else {
+    SetDefaultOriginIfOpaqueOrInvalidScheme(&gaia_origin_, switches::kGaiaUrl,
+                                            kDefaultGaiaUrl);
+    SetDefaultURLIfInvalid(&google_apis_origin_url_, switches::kGoogleApisUrl,
+                           kDefaultGoogleApisBaseUrl);
+  }
   SetDefaultURLIfInvalid(&lso_origin_url_, switches::kLsoUrl, kDefaultGaiaUrl);
-  SetDefaultURLIfInvalid(&google_apis_origin_url_, switches::kGoogleApisUrl,
-                         kDefaultGoogleApisBaseUrl);
   SetDefaultURLIfInvalid(&oauth_account_manager_origin_url_,
                          switches::kOAuthAccountManagerUrl,
                          kDefaultOAuthAccountManagerBaseUrl);
@@ -373,10 +393,24 @@ void GaiaUrls::InitializeDefault() {
     tasks_api_origin_url_ = GURL(kDefaultTasksApiBaseUrl);
   }
 
+#if BUILDFLAG(IS_OPENFYDE)
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    oauth2_chrome_client_id_ =
+        google_apis::GetOAuth2ClientID(google_apis::CLIENT_FYDEOS_MAIN);
+    oauth2_chrome_client_secret_ =
+        google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_FYDEOS_MAIN);
+  } else {
+    oauth2_chrome_client_id_ =
+        google_apis::GetOAuth2ClientID(google_apis::CLIENT_MAIN);
+    oauth2_chrome_client_secret_ =
+        google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_MAIN);
+  }
+#else
   oauth2_chrome_client_id_ =
       google_apis::GetOAuth2ClientID(google_apis::CLIENT_MAIN);
   oauth2_chrome_client_secret_ =
       google_apis::GetOAuth2ClientSecret(google_apis::CLIENT_MAIN);
+#endif
 
   CHECK(!gaia_origin_.opaque());
   const GURL gaia_url = gaia_origin_.GetURL();

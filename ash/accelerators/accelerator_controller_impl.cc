@@ -19,12 +19,14 @@
 #include "ash/constants/ash_features.h"
 #include "ash/constants/devicetype.h"
 #include "ash/debug.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ash/ime/ime_controller_impl.h"
 #include "ash/ime/ime_switch_type.h"
 #include "ash/public/cpp/accelerator_actions.h"
 #include "ash/public/cpp/accelerators.h"
 #include "ash/public/cpp/debug_delegate.h"
 #include "ash/shell.h"
+#include "ash/shelf/shelf.h"
 #include "ash/system/input_device_settings/input_device_settings_notification_controller.h"
 #include "ash/system/power/power_button_controller.h"
 #include "ash/wm/mru_window_tracker.h"
@@ -320,6 +322,14 @@ bool CanHandleToggleCapsLock(
   }
 
   return false;
+}
+
+bool CanHandleToggleFydeOSAssistant() {
+  if (!ash::features::IsFydeAssistantEnabled()) {
+    return false;
+  }
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  return shelf->fyde_assistant_view() && shelf->fyde_assistant_view()->CanHandleToggleFydeOSAssistant();
 }
 
 }  // namespace
@@ -842,7 +852,7 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kToggleStylusTools:
       return accelerators::CanShowStylusTools();
     case AcceleratorAction::kStartAssistant:
-      return true;
+      return ash::features::IsFydeAssistantEnabled();
     case AcceleratorAction::kStopScreenRecording:
       return accelerators::CanStopScreenRecording();
     case AcceleratorAction::kSwapPrimaryDisplay:
@@ -870,6 +880,8 @@ bool AcceleratorControllerImpl::CanPerformAction(
           *capslock_state_machine_, notification_controller_.get());
     case AcceleratorAction::kToggleClipboardHistory:
       return true;
+    case AcceleratorAction::kToggleFydeosAssistant:
+      return CanHandleToggleFydeOSAssistant();
     case AcceleratorAction::kEnableOrToggleDictation:
       return accelerators::CanEnableOrToggleDictation();
     case AcceleratorAction::kToggleDockedMagnifier:
@@ -950,7 +962,6 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kNewTab:
     case AcceleratorAction::kNewWindow:
     case AcceleratorAction::kOpenCalculator:
-    case AcceleratorAction::kOpenCrosh:
     case AcceleratorAction::kOpenDiagnostics:
     case AcceleratorAction::kOpenFeedbackPage:
     case AcceleratorAction::kOpenFileManager:
@@ -977,6 +988,8 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kVolumeUp:
     case AcceleratorAction::kWindowMinimize:
       return true;
+    case AcceleratorAction::kOpenCrosh:
+      return !Shell::Get()->session_controller()->IsUserGuest();
     case AcceleratorAction::kTouchFingerprintSensor1:
     case AcceleratorAction::kTouchFingerprintSensor2:
     case AcceleratorAction::kTouchFingerprintSensor3:
@@ -1427,6 +1440,9 @@ void AcceleratorControllerImpl::PerformAction(
     case AcceleratorAction::kToggleClipboardHistory:
       accelerators::ToggleClipboardHistory(/*is_plain_text_paste=*/false);
       break;
+    case AcceleratorAction::kToggleFydeosAssistant:
+      accelerators::ToggleFydeOSAssistant();
+      break;
     case AcceleratorAction::kEnableOrToggleDictation:
       // UMA metrics are recorded later in the call stack.
       accelerators::EnableOrToggleDictation();
@@ -1688,6 +1704,10 @@ void AcceleratorControllerImpl::PerformDebugActionOnDelegateIfEnabled(
     default:
       break;
   }
+}
+
+void RotateScreenFydeOS() {
+  accelerators::RotateScreenWithoutConfirmation();
 }
 
 }  // namespace ash

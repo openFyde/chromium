@@ -30,6 +30,7 @@
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/version_info/version_info.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace TemplateURLPrepopulateData {
 
@@ -239,7 +240,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   }
   if (default_search_provider_index) {
     const auto itr =
-        base::ranges::find(t_urls, google.id, &TemplateURLData::prepopulate_id);
+        base::ranges::find(t_urls, fydeos::switches::IsFydeExtendAccountEnabled() ? bing.id : google.id, &TemplateURLData::prepopulate_id);
     *default_search_provider_index =
         itr == t_urls.end() ? 0 : std::distance(t_urls.begin(), itr);
   }

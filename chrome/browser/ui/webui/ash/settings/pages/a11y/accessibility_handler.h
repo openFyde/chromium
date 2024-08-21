@@ -10,12 +10,14 @@
 #include "base/timer/timer.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/soda/soda_installer.h"
+#include "ash/public/cpp/tablet_mode_observer.h"
 
 class Profile;
 
 namespace ash::settings {
 
 class AccessibilityHandler : public ::settings::SettingsPageUIHandler,
+                             public TabletModeObserver,
                              public speech::SodaInstaller::Observer {
  public:
   explicit AccessibilityHandler(Profile* profile);
@@ -33,11 +35,15 @@ class AccessibilityHandler : public ::settings::SettingsPageUIHandler,
   // Callback which updates if startup sound is enabled. Visible for testing.
   void HandleManageA11yPageReady(const base::Value::List& args);
 
+  // TabletModeObserver:
+  void OnTabletModeEventsBlockingChanged() override;
+
  private:
   friend class AccessibilityHandlerTest;
 
   void HandleRecordSelectedShowShelfNavigationButtonsValue(
       const base::Value::List& args);
+  void GetTabletModeEnabled(const base::Value::List& args);
   void HandleShowBrowserAppearanceSettings(const base::Value::List& args);
   void HandleShowChromeVoxTutorial(const base::Value::List& args);
   void HandleSetStartupSoundEnabled(const base::Value::List& args);

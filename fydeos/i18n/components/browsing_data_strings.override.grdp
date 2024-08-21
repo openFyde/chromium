@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override components/browsing_data_strings.grdp, include from components/components_strings.grd -->
+<grit-part>
+  <message name="IDS_DEL_COOKIES_COUNTER_ADVANCED_WITH_EXCEPTION" desc="A counter showing the number of sites that use cookies.">
+    {COUNT, plural,
+      =0 {None}
+      =1 {From 1 site }
+      other {From # sites }}
+  </message>
+  <message name="IDS_DEL_HOSTED_APPS_COUNTER" desc="A counter showing how many hosted apps the user has.">
+    {COUNT, plural,
+     =0 {None}
+     =1 {1 app }
+     =2 {2 apps }
+     other {# apps }}
+  </message>
+</grit-part>
+

@@ -17,6 +17,8 @@ namespace policy {
 //  - If a nullptr is passed for |profile|, an empty test DM Token is returned.
 DMToken GetDMToken(Profile* const profile = nullptr);
 
+DMToken GetDeviceDMToken();
+
 // Overrides the DM token returned by |GetDMToken|, used for testing purposes.
 void SetDMTokenForTesting(const DMToken& dm_token);
 

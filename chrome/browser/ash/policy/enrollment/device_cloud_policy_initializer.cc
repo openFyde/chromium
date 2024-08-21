@@ -22,6 +22,7 @@
 #include "components/policy/core/common/cloud/cloud_policy_client.h"
 #include "components/policy/core/common/cloud/cloud_policy_core.h"
 #include "components/policy/core/common/cloud/device_management_service.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace policy {
 
@@ -129,9 +130,12 @@ void DeviceCloudPolicyInitializer::TryToStartConnection() {
     return;
   }
 
+  const bool allow_init_without_state_keys = fydeos::switches::IsInitDevicePolicyWithoutStateKeysAllowed();
+
   // TODO(b/181140445): If we had a separate state keys upload request to DM
   // Server we could drop the `state_keys_broker_->available()` requirement.
   if (state_keys_broker_->available() ||
+      allow_init_without_state_keys ||
       !AutoEnrollmentTypeChecker::IsFREEnabled()) {
     StartConnection(CreateClient(enterprise_service_));
   }

@@ -41,6 +41,10 @@
 #define GOOGLE_API_KEY DUMMY_API_TOKEN
 #endif
 
+#if !defined(FYDEOS_API_KEY)
+#define FYDEOS_API_KEY DUMMY_API_TOKEN
+#endif
+
 #if !defined(GOOGLE_METRICS_SIGNING_KEY)
 #define GOOGLE_METRICS_SIGNING_KEY DUMMY_API_TOKEN
 #endif
@@ -51,6 +55,16 @@
 
 #if !defined(GOOGLE_CLIENT_SECRET_MAIN)
 #define GOOGLE_CLIENT_SECRET_MAIN DUMMY_API_TOKEN
+#endif
+
+#if BUILDFLAG(IS_OPENFYDE)
+#if !defined(FYDEOS_CLIENT_ID_MAIN)
+#define FYDEOS_CLIENT_ID_MAIN DUMMY_API_TOKEN
+#endif
+
+#if !defined(FYDEOS_CLIENT_SECRET_MAIN)
+#define FYDEOS_CLIENT_SECRET_MAIN DUMMY_API_TOKEN
+#endif
 #endif
 
 #if !defined(GOOGLE_CLIENT_ID_REMOTING)
@@ -120,6 +134,15 @@
 #define GOOGLE_DEFAULT_CLIENT_SECRET ""
 #endif
 
+#if BUILDFLAG(IS_OPENFYDE)
+#if !defined(FYDEOS_DEFAULT_CLIENT_ID)
+#define FYDEOS_DEFAULT_CLIENT_ID ""
+#endif
+#if !defined(FYDEOS_DEFAULT_CLIENT_SECRET)
+#define FYDEOS_DEFAULT_CLIENT_SECRET ""
+#endif
+#endif
+
 namespace google_apis {
 
 const char kAPIKeysDevelopersHowToURL[] =
@@ -140,6 +163,11 @@ class APIKeyCache {
                                  api_key_from_feature, nullptr, std::string(),
                                  environment.get(), command_line, gaia_config);
     ::google_apis::LogAPIKeysMatchHistogram(api_key_from_feature == api_key_);
+
+    fydeos_api_key_ = CalculateKeyValue(FYDEOS_API_KEY,
+                                        STRINGIZE_NO_EXPANSION(FYDEOS_API_KEY),
+                                        std::string(), nullptr, std::string(),
+                                        environment.get(), command_line, gaia_config);
 
 // A special non-stable key is at the moment defined only for Android Chrome.
 #if BUILDFLAG(IS_ANDROID)
@@ -199,6 +227,17 @@ class APIKeyCache {
         STRINGIZE_NO_EXPANSION(GOOGLE_DEFAULT_CLIENT_SECRET), std::string(),
         nullptr, std::string(), environment.get(), command_line, gaia_config);
 
+#if BUILDFLAG(IS_OPENFYDE)
+    std::string fydeos_default_client_id = CalculateKeyValue(
+        FYDEOS_DEFAULT_CLIENT_ID,
+        STRINGIZE_NO_EXPANSION(FYDEOS_DEFAULT_CLIENT_ID), std::string(),
+        nullptr, std::string(), environment.get(), command_line, gaia_config);
+    std::string fydeos_default_client_secret = CalculateKeyValue(
+        FYDEOS_DEFAULT_CLIENT_SECRET,
+        STRINGIZE_NO_EXPANSION(FYDEOS_DEFAULT_CLIENT_SECRET), std::string(),
+        nullptr, std::string(), environment.get(), command_line, gaia_config);
+#endif
+
     // We currently only allow overriding the baked-in values for the
     // default OAuth2 client ID and secret using a command-line
     // argument and gaia config, since that is useful to enable testing against
@@ -214,6 +253,18 @@ class APIKeyCache {
         STRINGIZE_NO_EXPANSION(GOOGLE_CLIENT_SECRET_MAIN), std::string(),
         ::switches::kOAuth2ClientSecret, default_client_secret,
         environment.get(), command_line, gaia_config);
+
+#if BUILDFLAG(IS_OPENFYDE)
+    client_ids_[CLIENT_FYDEOS_MAIN] = CalculateKeyValue(
+        FYDEOS_CLIENT_ID_MAIN, STRINGIZE_NO_EXPANSION(FYDEOS_CLIENT_ID_MAIN),
+        std::string(), ::switches::kOAuth2FydeOsClientID, fydeos_default_client_id,
+        environment.get(), command_line, gaia_config);
+    client_secrets_[CLIENT_FYDEOS_MAIN] = CalculateKeyValue(
+        FYDEOS_CLIENT_SECRET_MAIN,
+        STRINGIZE_NO_EXPANSION(FYDEOS_CLIENT_SECRET_MAIN), std::string(),
+        ::switches::kOAuth2FydeOsClientSecret, fydeos_default_client_secret,
+        environment.get(), command_line, gaia_config);
+#endif
 
     client_ids_[CLIENT_REMOTING] =
         CalculateKeyValue(GOOGLE_CLIENT_ID_REMOTING,
@@ -239,6 +290,7 @@ class APIKeyCache {
   }
 
   std::string api_key() const { return api_key_; }
+  std::string fydeos_api_key() const { return fydeos_api_key_; }
 #if BUILDFLAG(SUPPORT_EXTERNAL_GOOGLE_API_KEY)
   void set_api_key(const std::string& api_key) { api_key_ = api_key; }
 #endif
@@ -363,6 +415,7 @@ class APIKeyCache {
   }
 
   std::string api_key_;
+  std::string fydeos_api_key_;
   std::string api_key_non_stable_;
   std::string api_key_remoting_;
   std::string api_key_soda_;
@@ -386,8 +439,16 @@ bool HasAPIKeyConfigured() {
   return GetAPIKey() != DUMMY_API_TOKEN;
 }
 
+bool HasFydeOSAPIKeyConfigured() {
+  return GetFydeOSAPIKey() != DUMMY_API_TOKEN;
+}
+
 std::string GetAPIKey() {
   return g_api_key_cache.Get().api_key();
+}
+
+std::string GetFydeOSAPIKey() {
+  return g_api_key_cache.Get().fydeos_api_key();
 }
 
 std::string GetNonStableAPIKey() {
@@ -432,8 +493,24 @@ std::string GetMetricsKey() {
   return g_api_key_cache.Get().metrics_key();
 }
 
+#if BUILDFLAG(IS_OPENFYDE)
+bool HasFydeOAuthClientConfigured() {
+  OAuth2Client client = CLIENT_FYDEOS_MAIN;
+  if (GetOAuth2ClientID(client) == DUMMY_API_TOKEN ||
+      GetOAuth2ClientSecret(client) == DUMMY_API_TOKEN) {
+    return false;
+  }
+  return true;
+}
+#endif
+
 bool HasOAuthClientConfigured() {
   for (size_t client_id = 0; client_id < CLIENT_NUM_ITEMS; ++client_id) {
+#if BUILDFLAG(IS_OPENFYDE)
+    if (client_id == CLIENT_FYDEOS_MAIN) {
+      continue;
+    }
+#endif
     OAuth2Client client = static_cast<OAuth2Client>(client_id);
     if (GetOAuth2ClientID(client) == DUMMY_API_TOKEN ||
         GetOAuth2ClientSecret(client) == DUMMY_API_TOKEN) {

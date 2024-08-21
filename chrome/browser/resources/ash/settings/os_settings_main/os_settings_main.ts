@@ -168,7 +168,7 @@ export class OsSettingsMainElement extends OsSettingsMainElementBase {
     if (!newRoute.isSubpage()) {
       document.title = inAbout ? loadTimeData.getStringF(
                                      'settingsAltPageTitle',
-                                     loadTimeData.getString('aboutPageTitle')) :
+                                     loadTimeData.getString('aboutOsPageTitle')) :
                                  loadTimeData.getString('settings');
     }
   }

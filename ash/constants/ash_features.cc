@@ -14,6 +14,8 @@
 #include "build/chromeos_buildflags.h"
 #include "chromeos/components/libsegmentation/buildflags.h"
 #include "chromeos/constants/chromeos_features.h"
+#include "fydeos/build/config/buildflags.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash::features {
 namespace {
@@ -523,7 +525,7 @@ BASE_FEATURE(kCrostiniMultiContainer,
 // Enables or disables Crostini Qt application IME support.
 BASE_FEATURE(kCrostiniQtImeSupport,
              "CrostiniQtImeSupport",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables or disables Crostini Virtual Keyboard support.
 BASE_FEATURE(kCrostiniVirtualKeyboardSupport,
@@ -753,7 +755,7 @@ BASE_FEATURE(kEcheMetricsRevamp,
 // may have choppier app list animations while in this mode. crbug.com/765292.
 BASE_FEATURE(kEnableBackgroundBlur,
              "EnableBackgroundBlur",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables settings to control internal display brightness and auto-brightness.
 BASE_FEATURE(kEnableBrightnessControlInSettings,
@@ -2318,6 +2320,14 @@ BASE_FEATURE(kPhoneHubCameraRoll,
 const base::FeatureParam<base::TimeDelta> kPhoneHubCameraRollThrottleInterval{
     &kPhoneHubCameraRoll, "PhoneHubCameraRollThrottleInterval",
     base::Seconds(2)};
+
+BASE_FEATURE(kFydeAssistant,
+             "FydeAssistant",
+#if BUILDFLAG(IS_OPENFYDE)
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 
 // Enable PhoneHub features setup error handling, which handles different
 // setup response from remote phone device.
@@ -4249,6 +4259,11 @@ bool IsRemoveDetectPortalFromChromeEnabled() {
 
 bool IsPhoneHubCameraRollEnabled() {
   return base::FeatureList::IsEnabled(kPhoneHubCameraRoll);
+}
+
+bool IsFydeAssistantEnabled() {
+  return base::FeatureList::IsEnabled(kFydeAssistant) &&
+         fydeos::switches::IsFydeCustomEnabled();
 }
 
 bool IsPhoneHubMonochromeNotificationIconsEnabled() {

@@ -25,6 +25,9 @@
 #include "chromeos/ash/components/network/network_state.h"
 #include "chromeos/ash/components/network/network_type_pattern.h"
 #include "chromeos/ash/components/network/shill_property_handler.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/shell_state.h"
+
+using fydeos::ash::ShellState;
 
 namespace base {
 class Location;
@@ -61,7 +64,10 @@ class NetworkStateHandlerTest;
 //   the duration of a session, even if the network drops out and returns.
 
 class COMPONENT_EXPORT(CHROMEOS_NETWORK) NetworkStateHandler
-    : public internal::ShillPropertyHandler::Listener {
+//---***FYDEOS BEGIN***---
+    : public internal::ShillPropertyHandler::Listener,
+      public base::SupportsWeakPtr<NetworkStateHandler> {
+//---***FYDEOS END***---
  public:
   typedef std::vector<std::unique_ptr<ManagedState>> ManagedStateList;
   typedef std::vector<const NetworkState*> NetworkStateList;
@@ -740,6 +746,10 @@ class COMPONENT_EXPORT(CHROMEOS_NETWORK) NetworkStateHandler
   // Calls |UpdateBlockedByPolicy()| for each given |network_type| network.
   void UpdateBlockedNetworksInternal(const NetworkTypePattern& network_type);
 
+  void ShellStateCallback(base::OnceClosure callback,
+                          std::optional<ShellState> state);
+  void InvokeExecuteReloadWifiDrv(base::OnceClosure callback);
+
   // Sets properties associated with the default network, currently the path and
   // Metered.
   void SetDefaultNetworkValues(const std::string& path, bool metered);
@@ -827,6 +837,9 @@ class COMPONENT_EXPORT(CHROMEOS_NETWORK) NetworkStateHandler
   bool allow_only_policy_wifi_networks_to_connect_if_available_ = false;
   bool allow_only_policy_cellular_networks_to_connect_ = false;
   std::vector<std::string> blocked_hex_ssids_;
+  //---***FYDEOS BEGIN***---
+  bool need_reload_wifidrv = false;
+  //---***FYDEOS END***---
 
   // After login the user's saved networks get updated asynchronously from
   // shill. These variables indicate whether a user is logged in, and if the

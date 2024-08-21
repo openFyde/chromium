@@ -34,6 +34,7 @@ namespace {
 const char kRecoveryHistogram[] = "EnterpriseCheck.EnrollementRecoveryOnBoot";
 
 const char kZeroTouchEnrollmentForced[] = "forced";
+const char kZeroTouchEnrollmentFydeForced[] = "fyde-forced";
 
 // Do not reorder or delete entries because it is used in UMA.
 enum class EnrollmentRecoveryOnBootUma {
@@ -96,6 +97,7 @@ std::string_view ToStringView(EnrollmentConfig::Mode mode) {
     CASE(MODE_ATTESTATION_LOCAL_FORCED);
     CASE(MODE_ATTESTATION_SERVER_FORCED);
     CASE(MODE_ATTESTATION_MANUAL_FALLBACK);
+    CASE(MODE_FYDE_LOCAL_FORCED);
     CASE(MODE_INITIAL_SERVER_FORCED);
     CASE(MODE_ATTESTATION_INITIAL_SERVER_FORCED);
     CASE(MODE_ATTESTATION_INITIAL_MANUAL_FALLBACK);
@@ -117,6 +119,7 @@ std::string_view ToStringView(EnrollmentConfig::AuthMechanism auth) {
   switch (auth) {
     CASE(AUTH_MECHANISM_INTERACTIVE);
     CASE(AUTH_MECHANISM_ATTESTATION);
+    CASE(AUTH_MECHANISM_FYDE);
     CASE(AUTH_MECHANISM_ATTESTATION_PREFERRED);
     CASE(AUTH_MECHANISM_TOKEN_PREFERRED);
   }
@@ -140,6 +143,10 @@ EnrollmentConfig::AuthMechanism GetPrescribedAuthMechanism(
       ash::switches::kEnterpriseEnableZeroTouchEnrollment);
   if (value == kZeroTouchEnrollmentForced) {
     return EnrollmentConfig::AUTH_MECHANISM_ATTESTATION;
+  }
+
+  if (value == kZeroTouchEnrollmentFydeForced) {
+    return EnrollmentConfig::AUTH_MECHANISM_FYDE;
   }
 
   if (value.empty()) {
@@ -221,6 +228,10 @@ EnrollmentConfig::PrescribedConfig::GetPrescribedConfig(
     ash::system::StatisticsProvider* statistics_provider,
     const base::Value::Dict& device_state,
     const ash::OobeConfiguration* oobe_configuration) {
+  if (EnrollmentConfig::IsZeroTouchEnrollmentFydeForced()) {
+    return {.mode = EnrollmentConfig::MODE_FYDE_LOCAL_FORCED,
+            .auth_mechanism = EnrollmentConfig::AUTH_MECHANISM_FYDE};
+  }
   // Decide enrollment mode. Give precedence to forced variants.
   if (IsEnrollingAfterRollback()) {
     return {.mode = EnrollmentConfig::MODE_ATTESTATION_ROLLBACK_FORCED,
@@ -346,6 +357,12 @@ struct EnrollmentConfig::PrescribedLicense {
 EnrollmentConfig::PrescribedLicense
 EnrollmentConfig::PrescribedLicense::GetPrescribedLicense(
     const base::Value::Dict& device_state) {
+  if (EnrollmentConfig::IsZeroTouchEnrollmentFydeForced()) {
+    return {.is_license_packaged_with_device = false,
+            .assigned_upgrade_type = EnrollmentConfig::AssignedUpgradeType::
+                kAssignedUpgradeTypeChromeEnterprise,
+            .license_type = LicenseType::kEnterprise};
+  }
   EnrollmentConfig::AssignedUpgradeType assigned_upgrade_type =
       EnrollmentConfig::AssignedUpgradeType::
           kAssignedUpgradeTypeChromeEnterprise;
@@ -427,6 +444,14 @@ EnrollmentConfig EnrollmentConfig::GetPrescribedEnrollmentConfig(
 }
 
 // static
+bool EnrollmentConfig::IsZeroTouchEnrollmentFydeForced() {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  const std::string value = command_line->GetSwitchValueASCII(
+      ash::switches::kEnterpriseEnableZeroTouchEnrollment);
+  return value == kZeroTouchEnrollmentFydeForced;
+}
+
+// static
 EnrollmentConfig::Mode EnrollmentConfig::GetManualFallbackMode(
     EnrollmentConfig::Mode attestation_mode) {
   switch (attestation_mode) {
@@ -445,6 +470,7 @@ EnrollmentConfig::Mode EnrollmentConfig::GetManualFallbackMode(
     case EnrollmentConfig::MODE_LOCAL_ADVERTISED:
     case EnrollmentConfig::MODE_SERVER_FORCED:
     case EnrollmentConfig::MODE_SERVER_ADVERTISED:
+    case EnrollmentConfig::MODE_FYDE_LOCAL_FORCED:
     case EnrollmentConfig::MODE_RECOVERY:
     case EnrollmentConfig::MODE_ATTESTATION:
     case EnrollmentConfig::MODE_ATTESTATION_LOCAL_FORCED:

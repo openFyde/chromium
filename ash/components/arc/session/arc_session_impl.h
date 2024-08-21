@@ -26,6 +26,10 @@ namespace cryptohome {
 class Identification;
 }
 
+namespace fydeos::ash {
+struct ShellState;
+}
+
 namespace arc {
 
 namespace mojom {
@@ -227,6 +231,10 @@ class ArcSessionImpl : public ArcSession,
   // connect.)
   void OnMojoConnected(std::unique_ptr<mojom::ArcBridgeHost> arc_bridge_host);
 
+  void MayStartPolicyManager();
+  void StartPolicyManager();
+  void OnStartPolicyManagerCommandFinished(std::optional<fydeos::ash::ShellState> state);
+
   // Request to stop ARC instance via DBus. Also backs up the ARC
   // bug report if |should_backup_log| is set to true.
   void StopArcInstance(bool on_shutdown, bool should_backup_log);
@@ -274,6 +282,8 @@ class ArcSessionImpl : public ArcSession,
 
   // Whether ARC is already signed in (provisioned).
   bool arc_signed_in_ = false;
+
+  int start_policy_manager_retry_count_ = 0;
 
   // In CONNECTING_MOJO state, this is set to the write side of the pipe
   // to notify cancelling of the procedure.

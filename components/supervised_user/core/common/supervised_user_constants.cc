@@ -6,6 +6,7 @@
 
 #include "base/notreached.h"
 #include "components/supervised_user/core/common/pref_names.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace supervised_user {
 
@@ -15,6 +16,9 @@ const int kSupervisedUserURLFilteringResultHistogramMax = 800;
 namespace {
 
 GURL KidsManagementBaseURL() {
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    return GURL(fydeos::switches::GetFydeOSKidsManagementAPIBaseUrl());
+  }
   return GURL("https://kidsmanagement-pa.googleapis.com/kidsmanagement/v1/");
 }
 

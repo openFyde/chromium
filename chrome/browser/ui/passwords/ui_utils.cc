@@ -53,6 +53,7 @@
 #include "chrome/browser/ui/user_education/show_promo_in_page.h"
 #include "chrome/browser/ui/webui/password_manager/password_manager_ui.h"
 #endif
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace {
 
@@ -197,8 +198,10 @@ bool IsSyncingAutosignSetting(Profile* profile) {
       sync_service->GetActiveDataTypes().Has(syncer::PRIORITY_PREFERENCES));
 }
 
-GURL GetGooglePasswordManagerURL(ManagePasswordsReferrer referrer) {
+GURL GetGooglePasswordManagerURL(ManagePasswordsReferrer referrer, Profile* profile) {
   GURL url(chrome::kGooglePasswordManagerURL);
+  if (profile->IsFydeProfile())
+    url = GURL(fydeos::constants::kFydeOSPasswordManagerURL);
   url = net::AppendQueryParameter(url, "utm_source", "chrome");
 #if BUILDFLAG(IS_ANDROID)
   url = net::AppendQueryParameter(url, "utm_medium", "android");

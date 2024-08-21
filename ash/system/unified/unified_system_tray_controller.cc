@@ -64,6 +64,10 @@
 #include "ash/system/unified/unified_system_tray_bubble.h"
 #include "ash/system/unified/unified_system_tray_model.h"
 #include "ash/system/unified/user_chooser_detailed_view_controller.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h"
+#include "fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.h"
+// ---***FYDEOS END***---
 #include "ash/wm/lock_state_controller.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
@@ -424,6 +428,13 @@ void UnifiedSystemTrayController::InitFeatureTiles() {
     create_tile(std::make_unique<AutozoomFeaturePodController>(),
                 feature_pod_controllers_, tiles);
   }
+
+  create_tile(std::make_unique<RotateScreenFeaturePodController>(),
+              feature_pod_controllers_, tiles);
+
+  create_tile(std::make_unique<SwitchTabletLabtopFeaturePodController>(this),
+              feature_pod_controllers_, tiles);
+
   create_tile(std::make_unique<VPNFeaturePodController>(this),
               feature_pod_controllers_, tiles);
   create_tile(std::make_unique<PrivacyScreenFeaturePodController>(),

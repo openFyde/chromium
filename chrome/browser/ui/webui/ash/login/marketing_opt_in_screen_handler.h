@@ -24,6 +24,8 @@ class MarketingOptInScreenView {
   // Shows the contents of the screen.
   virtual void Show(bool opt_in_visible,
                     bool opt_in_default_state,
+                    bool fyde_opt_in_visible,
+                    bool fyde_opt_in_default_state,
                     bool legal_footer_visible,
                     bool cloud_gaming_enabled) = 0;
 
@@ -59,6 +61,8 @@ class MarketingOptInScreenHandler final : public BaseScreenHandler,
   // MarketingOptInScreenView:
   void Show(bool opt_in_visible,
             bool opt_in_default_state,
+            bool fyde_opt_in_visible,
+            bool fyde_opt_in_default_state,
             bool legal_footer_visible,
             bool cloud_gaming_enabled) override;
   void UpdateA11ySettingsButtonVisibility(bool shown) override;

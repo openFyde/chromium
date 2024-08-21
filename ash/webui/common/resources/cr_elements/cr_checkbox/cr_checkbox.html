@@ -206,6 +206,16 @@
     overflow: hidden;
     width: 0;
   }
+
+  :host([fydeos-style]) {
+    --cr-checkbox-label-padding-start: 8px;
+  }
+
+  :host([fydeos-style]) #checkbox {
+    border-radius: 5px;
+    padding: 1px;
+  }
+
 </style>
 <div id="checkbox" tabindex$="[[tabIndex]]" role="checkbox"
     on-keydown="onKeyDown_" on-keyup="onKeyUp_" aria-disabled="false"

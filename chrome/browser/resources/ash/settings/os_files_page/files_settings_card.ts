@@ -55,6 +55,13 @@ export class FilesSettingsCardElement extends FilesSettingsCardElementBase {
         value: () => new Set<Setting>([]),
       },
 
+      hideGoogleDrive_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
       bulkPinningPrefEnabled_: Boolean,
       mirrorSyncPrefEnabled_: Boolean,
 
@@ -170,6 +177,7 @@ export class FilesSettingsCardElement extends FilesSettingsCardElementBase {
   private shouldShowAddSmbDialog_: boolean;
   private shouldShowOneDriveSettings_: boolean;
   private shouldShowOfficeSettings_: boolean;
+  private hideGoogleDrive_: boolean;
 
 
   constructor() {

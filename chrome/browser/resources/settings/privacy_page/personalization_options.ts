@@ -138,6 +138,12 @@ export class SettingsPersonalizationOptionsElement extends
           return loadTimeData.getBoolean('enablePageContentSetting');
         },
       },
+      isFydeProfile_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
     };
   }
 
@@ -328,6 +334,9 @@ export class SettingsPersonalizationOptionsElement extends
   // </if><!-- _google_chrome -->
 
   private shouldShowDriveSuggest_(): boolean {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return false;
+    }
     if (loadTimeData.getBoolean('driveSuggestNoSetting')) {
       return false;
     }

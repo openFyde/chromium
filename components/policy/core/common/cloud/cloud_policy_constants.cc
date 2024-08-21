@@ -10,6 +10,8 @@
 #include "build/build_config.h"
 #include "build/chromeos_buildflags.h"
 #include "components/policy/core/common/policy_switches.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace policy {
 
@@ -28,6 +30,7 @@ const char kParamPlatform[] = "platform";
 const char kParamRequest[] = "request";
 const char kParamRetry[] = "retry";
 const char kParamProfileID[] = "profileid";
+const char kParamFydeOsLicenseId[] = "fydeos_license_id";
 
 // Policy constants used in authorization header.
 const char kAuthHeader[] = "Authorization";
@@ -38,6 +41,8 @@ const char kOAuthTokenHeaderPrefix[] = "OAuth";
 const char kOidcAuthHeaderPrefix[] = "GoogleDM3PAuth";
 const char kOidcAuthTokenHeaderPrefix[] = " oauth_token=";
 const char kOidcIdTokenHeaderPrefix[] = " id_token=";
+
+const char kFydeEnrollmentTokenAuthHeaderPrefix[] = "FydeEnrollmentToken token=";
 
 // String constants for the device and app type we report to the server.
 const char kValueAppType[] = "Chrome";
@@ -149,6 +154,13 @@ const char kPolicyVerificationKeyHash[] = "1:356l7w";
 const char kDemoModeDomain[] = "cros-demo-mode.com";
 
 std::string GetPolicyVerificationKey() {
+  //---***FYDEOS BEGIN***---
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    const char *kKey = reinterpret_cast<const char*>(
+           fydeos::constants::kFydeOSPolicyVerificationKey);
+    return std::string(kKey, fydeos::constants::kFydeOSPolicyVerificationKeyLength);
+  }
+  //---***FYDEOS END***---
   return std::string(reinterpret_cast<const char*>(kPolicyVerificationKey),
                      sizeof(kPolicyVerificationKey));
 }
@@ -159,5 +171,15 @@ std::string GetPolicyVerificationKey() {
 // anything bound to it.
 
 const char kPolicyFCMInvalidationSenderID[] = "1013309121859";
+  
+//---***FYDEOS BEGIN***---  
+std::string GetPolicyFCMInvalidationSenderID() {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID;
+  }
+
+  return kPolicyFCMInvalidationSenderID;
+}
+//---***FYDEOS END***---  
 
 }  // namespace policy

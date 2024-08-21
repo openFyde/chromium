@@ -36,8 +36,18 @@ build_webui("build") {
     "images/notification_access_setup.svg",
     "images/notification_access_setup_dark.svg",
 
+    "images/icon_backup.png",
+    "images/backup_intro.png",
+    "images/backup_intro_dark.png",
+
     "os_settings.html",
   ]
+
+  if (fydeos_device) {
+    static_files += [
+      "images/icon_fyde_certification.png",
+    ]
+  }
 
   web_component_files = [
     "common/app_language_selection_dialog/app_language_selection_dialog.ts",
@@ -196,6 +206,16 @@ build_webui("build") {
     "os_about_page/edit_hostname_dialog.ts",
     "os_about_page/os_about_page.ts",
     "os_about_page/update_warning_dialog.ts",
+    "os_fyde_page/fydeos_account.ts",
+    "os_fyde_page/fydeos_drivers.ts",
+    "os_fyde_page/fydeos_more_info.ts",
+    "os_fyde_page/fydeos_dev_mode.ts",
+    "os_fyde_page/fydeos_remoting.ts",
+    "os_fyde_page/fydeos_tweak_ui.ts",
+    "os_fyde_page/fydeos_experiment.ts",
+    "os_fyde_page/os_fyde_page.ts",
+    "os_fyde_page/components/backup_password_prompt_dialog.ts",
+    "os_fyde_page/components/backup_intro_dialog.ts",
     "os_apps_page/android_apps_subpage.ts",
     "os_apps_page/app_management_page/app_detail_view.ts",
     "os_apps_page/app_management_page/app_details_item.ts",
@@ -351,6 +371,12 @@ build_webui("build") {
     "system_preferences_page/system_preferences_page.ts",
   ]
 
+  if (use_fydeos_license) {
+    web_component_files += [
+      "os_fyde_page/fydeos_license_info.ts",
+    ]
+  }
+
   non_web_component_files = [
     "assert_extras.ts",
     "common/app_management/actions.ts",
@@ -421,6 +447,9 @@ build_webui("build") {
     "os_about_page/about_page_browser_proxy.ts",
     "os_about_page/device_name_browser_proxy.ts",
     "os_about_page/device_name_util.ts",
+    "os_about_page/popup_license_window.ts",
+    "os_about_page/fydeos_board_name.ts",
+    "os_fyde_page/shell_client.ts",
     "os_apps_page/android_apps_browser_proxy.ts",
     "os_apps_page/app_management_page/plugin_vm_page/plugin_vm_browser_proxy.ts",
     "os_apps_page/app_management_page/util.ts",

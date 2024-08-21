@@ -19,6 +19,7 @@ import {getBulkPinProgress, getDialogCaller, getDlpBlockedComponents, getDriveCo
 import type {ArrayDataModel} from '../../common/js/array_data_model.js';
 import {crInjectTypeAndInit} from '../../common/js/cr_ui.js';
 import {isFolderDialogType} from '../../common/js/dialog_type.js';
+import {isModal} from '../../common/js/dialog_type.js';
 import {getKeyModifiers, queryDecoratedElement, queryRequiredElement} from '../../common/js/dom_utils.js';
 import type {FakeEntry, FilesAppDirEntry, FilesAppEntry} from '../../common/js/files_app_entry_types.js';
 import {EntryList, FakeEntryImpl} from '../../common/js/files_app_entry_types.js';
@@ -70,6 +71,7 @@ import {FolderShortcutsDataModel} from './folder_shortcuts_data_model.js';
 import {GearMenuController} from './gear_menu_controller.js';
 import {GuestOsController} from './guest_os_controller.js';
 import {LastModifiedController} from './last_modified_controller.js';
+import {FydeDropViewController} from './fydedrop_view_controller.js';
 import {LaunchParam} from './launch_param.js';
 import {ListThumbnailLoader} from './list_thumbnail_loader.js';
 import {MainWindowComponent} from './main_window_component.js';
@@ -78,7 +80,7 @@ import {ThumbnailModel} from './metadata/thumbnail_model.js';
 import {MetadataBoxController} from './metadata_box_controller.js';
 import {MetadataUpdateController} from './metadata_update_controller.js';
 import {NamingController} from './naming_controller.js';
-import {NavigationListModel, NavigationModelFakeItem, NavigationModelItemType} from './navigation_list_model.js';
+import {NavigationListModel, NavigationModelFakeItem, NavigationModelFydeDropItem, NavigationModelItemType} from './navigation_list_model.js';
 import {NavigationUma} from './navigation_uma.js';
 import {ProvidersModel} from './providers_model.js';
 import {QuickViewController} from './quick_view_controller.js';
@@ -254,6 +256,7 @@ export class FileManager {
    */
   protected lastModifiedController_: LastModifiedController|null = null;
 
+  protected fydeDropViewController_: FydeDropViewController|null = null;
   /**
    * Component for main window and its misc UI parts.
    */
@@ -262,6 +265,7 @@ export class FileManager {
   private quickViewUma_: QuickViewUma|null = null;
   protected quickViewController_: QuickViewController|null = null;
   protected fileTypeFiltersController_: FileTypeFiltersController|null = null;
+
 
   /**
    * Empty folder controller.
@@ -340,6 +344,8 @@ export class FileManager {
    * A fake entry for Recents.
    */
   private recentEntry_: null|FakeEntry = null;
+
+  private fydeDropEntry_: null|FakeEntry = null;
 
   /**
    * Whether or not we are running in guest mode.
@@ -579,6 +585,14 @@ export class FileManager {
         this.selectionHandler_, this.ui_);
     this.lastModifiedController_ = new LastModifiedController(
         this.ui_.listContainer.table, this.directoryModel_);
+    //---***FYDEOS BEGIN***---
+    // @ts-ignore: error TS2531: Object is possibly 'null'.
+    if (!isModal(this.launchParams_.type)) {
+      this.fydeDropViewController_ = new FydeDropViewController(
+          // @ts-ignore: error TS2531: Object is possibly 'null'.
+          this.ui_, this.ui_.fydeDropView, this.directoryModel_);
+    }
+    //---***FYDEOS END***---
 
     this.quickViewModel_ = new QuickViewModel();
     const fileListSelectionModel = this.directoryModel_.getFileListSelection();
@@ -1009,6 +1023,11 @@ export class FileManager {
         str('RECENT_ROOT_LABEL'), RootType.RECENT, this.getSourceRestriction_(),
         chrome.fileManagerPrivate.FileCategory.ALL);
     this.store_.dispatch(addUiEntry(this.recentEntry_));
+
+    this.fydeDropEntry_ = new FakeEntryImpl(
+      str('FYDEDROP_ROOT_LABEL'), RootType.FYDEDROP, this.getSourceRestriction_());
+    this.store_.dispatch(addUiEntry(this.fydeDropEntry_));
+
     assert(this.launchParams_);
     this.selectionHandler_ = new FileSelectionHandler(
         this.directoryModel_, this.ui_.listContainer, this.metadataModel_,
@@ -1103,6 +1122,7 @@ export class FileManager {
     assert(this.metadataModel_);
     assert(this.folderShortcutsModel_);
     assert(this.launchParams_);
+    assert(this.fydeDropEntry_);
     assert(this.recentEntry_);
     assert(this.androidAppListModel_);
     assert(this.crostini_);
@@ -1133,6 +1153,15 @@ export class FileManager {
                   this.recentEntry_) :
               null,
           this.directoryModel_, this.androidAppListModel_, this.dialogType);
+
+      directoryTree.dataModel.insertFydeDrop(
+        // @ts-ignore: error TS2531: Object is possibly 'null'.
+        fakeEntriesVisible && !isModal(this.launchParams_.type) ?
+          new NavigationModelFydeDropItem(
+            str('FYDEDROP_ROOT_LABEL'), NavigationModelItemType.FYDEDROP,
+            this.fydeDropEntry_) :
+          null);
+
       this.ui_.initDirectoryTree(directoryTree);
     }
 
@@ -1243,6 +1272,7 @@ export class FileManager {
    */
   private async setupCurrentDirectory_(): Promise<void> {
     assert(this.launchParams_);
+    assert(this.fydeDropEntry_);
     assert(this.recentEntry_);
     assert(this.ui_);
     assert(this.volumeManager_);

@@ -635,8 +635,11 @@ mojom::SessionType GetSessionType() {
       user_manager::UserManager::Get()->GetPrimaryUser();
   switch (user->GetType()) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
+    case user_manager::UserType::kFydeAccount:
       return mojom::SessionType::kRegularSession;
     case user_manager::UserType::kChild:
+    case user_manager::UserType::kFydeChild:
       return mojom::SessionType::kChildSession;
     case user_manager::UserType::kGuest:
       return mojom::SessionType::kGuestSession;
@@ -699,6 +702,16 @@ std::optional<account_manager::Account> GetDeviceAccount() {
           account_manager::AccountKey{account_id.GetGaiaId(),
                                       account_manager::AccountType::kGaia},
           user->GetDisplayEmail()});
+    case AccountType::FYDE_ACCOUNT:
+      return std::make_optional(account_manager::Account{
+          account_manager::AccountKey{account_id.GetFydeId(),
+                                      account_manager::AccountType::kFyde},
+              user->GetDisplayEmail()});
+    case AccountType::FLINT_ACCOUNT:
+      return std::make_optional(account_manager::Account{
+          account_manager::AccountKey{account_id.GetFlintId(),
+                                      account_manager::AccountType::kFlint},
+              user->GetDisplayEmail()});
     case AccountType::UNKNOWN:
       return std::nullopt;
   }
@@ -1202,6 +1215,9 @@ policy::CloudPolicyCore* GetCloudPolicyCoreForUser(
     const user_manager::User& user) {
   switch (user.GetType()) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
     case user_manager::UserType::kChild: {
       policy::UserCloudPolicyManagerAsh* manager =
           GetUserCloudPolicyManager(user);
@@ -1224,6 +1240,9 @@ policy::ComponentCloudPolicyService* GetComponentCloudPolicyServiceForUser(
     const user_manager::User& user) {
   switch (user.GetType()) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
     case user_manager::UserType::kChild: {
       policy::UserCloudPolicyManagerAsh* manager =
           GetUserCloudPolicyManager(user);

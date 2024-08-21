@@ -790,6 +790,9 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[::ash::prefs::kOnDeviceAppControlsSetupCompleted] =
       settings_api::PrefType::kBoolean;
 
+  (*s_allowlist)[arc::prefs::kArcSignedIn] =
+      settings_api::PrefType::kBoolean;
+
   // Ambient Mode.
   (*s_allowlist)[ash::prefs::kDarkModeScheduleType] =
       settings_api::PrefType::kNumber;
@@ -1118,10 +1121,8 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[proxy_config::prefs::kProxy] =
       settings_api::PrefType::kDictionary;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   (*s_allowlist)[::prefs::kUserFeedbackAllowed] =
       settings_api::PrefType::kBoolean;
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
   // Media Remoting settings.
   (*s_allowlist)[media_router::prefs::kMediaRouterMediaRemotingEnabled] =

@@ -180,6 +180,11 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
         value: `/${routesMojom.ABOUT_CHROME_OS_SECTION_PATH}`,
       },
 
+      fydeosMenuItemPath_: {
+        type: String,
+        value: `/${routesMojom.FYDE_OS_SECTION_PATH}`,
+      },
+
       isRevampWayfindingEnabled_: {
         type: Boolean,
         value: () => {
@@ -238,6 +243,7 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
   private isRevampWayfindingEnabled_: boolean;
   private selectedItemPath_: string;
   private aboutMenuItemPath_: string;
+  private fydeosMenuItemPath_: string;
 
   // Accounts section members.
   private accountsMenuItemDescription_: string;
@@ -476,6 +482,13 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
           icon: 'os-settings:system-preferences',
           label: this.i18n('systemPreferencesTitle'),
           sublabel: this.i18n('systemPreferencesMenuItemDescription'),
+        },
+        {
+          section: Section.kFydeOs,
+          path: this.fydeosMenuItemPath_,
+          icon: 'os-settings:fydeos',
+          label: this.i18n('fydeosSettingsPageTitle'),
+          sublabel: this.i18n('fydeosSettingsMenuItemDescription'),
         },
         {
           section: Section.kAboutChromeOs,

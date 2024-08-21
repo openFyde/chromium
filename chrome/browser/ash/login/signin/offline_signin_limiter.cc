@@ -44,6 +44,7 @@ void OfflineSigninLimiter::SignedIn(UserContext::AuthFlow auth_flow) {
 
   const AccountId account_id = user.GetAccountId();
   if (auth_flow == UserContext::AUTH_FLOW_GAIA_WITH_SAML ||
+      auth_flow == UserContext::AUTH_FLOW_FYDE_ONLINE ||
       auth_flow == UserContext::AUTH_FLOW_GAIA_WITHOUT_SAML) {
     // The user went through online authentication. Update the time of last
     // online sign-in and clear the flag enforcing it. The flag will be set

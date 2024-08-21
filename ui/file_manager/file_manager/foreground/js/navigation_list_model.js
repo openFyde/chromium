@@ -30,6 +30,9 @@ export const NavigationModelItemType = {
   DRIVE: 'drive',
   ANDROID_APP: 'android-app',
   TRASH: 'trash',
+  //---***FYDEOS BEGIN***---
+  FYDEDROP: 'fydedrop',
+  //---***FYDEOS END***---
 };
 
 /**
@@ -200,6 +203,23 @@ export class NavigationModelFakeItem extends NavigationModelItem {
   }
 }
 
+export class NavigationModelFydeDropItem extends NavigationModelItem {
+  /**
+   * @param {string} label Label on the menu button.
+   * @param {NavigationModelItemType} type
+   * @param {!FilesAppEntry} entry Fake entry for the root folder.
+   */
+  constructor(label, type, entry) {
+    console.log('NavigationModelFydeDropItem constructor');
+    super(label, type);
+    this.entry_ = entry;
+  }
+
+  get entry() {
+    return this.entry_;
+  }
+}
+
 /**
  * A navigation list model. This model combines multiple models.
  */
@@ -230,6 +250,14 @@ export class NavigationListModel extends EventTarget {
      * @const
      */
     this.shortcutListModel_ = shortcutListModel;
+
+    //---***FYDEOS BEGIN***---
+    /**
+     * @private {NavigationModelFydeDropItem}
+     * @const
+     */
+    this.fydeDropModelItem_ = null;
+    //---***FYDEOS END***---
 
     /**
      * @private @type {NavigationModelFakeItem}
@@ -509,6 +537,15 @@ export class NavigationListModel extends EventTarget {
     return this.shortcutList_;
   }
 
+  //---***FYDEOS BEGIN***---
+  /**
+   * @param {NavigationModelFydeDropItem} fydeDropModelItem
+   */
+  insertFydeDrop(fydeDropModelItem) {
+    this.fydeDropModelItem_ = fydeDropModelItem;
+  }
+  //---***FYDEOS END***---
+
   /**
    * Set the crostini Linux files root and reorder items.
    * @param {?NavigationModelFakeItem} item Linux files root.
@@ -682,6 +719,10 @@ export class NavigationListModel extends EventTarget {
 
     // Items as per required order.
     this.navigationItems_ = [];
+
+    if (this.fydeDropModelItem_) {
+      this.navigationItems_.push(this.fydeDropModelItem_);
+    }
 
     if (this.recentModelItem_) {
       this.navigationItems_.push(this.recentModelItem_);

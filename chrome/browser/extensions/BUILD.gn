@@ -1009,6 +1009,8 @@ static_library("extensions") {
     "//ui/shell_dialogs",
     "//ui/strings",
     "//url",
+    "//fydeos/build/config:buildflags",
+    "//fydeos/switches",
   ]
 
   if (is_linux || is_mac || is_win) {
@@ -1444,6 +1446,12 @@ static_library("extensions") {
       "//components/enterprise/data_controls",
     ]
   }
+
+#---***FYDEOS BEGIN***---
+  if (is_chromeos) {
+    deps += [ "//fydeos/extensions/browser" ]
+  }
+#---***FYDEOS END***---
 }
 
 proto_library("cws_item_service_proto") {

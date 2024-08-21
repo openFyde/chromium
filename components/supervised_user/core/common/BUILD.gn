@@ -31,6 +31,7 @@ static_library("common") {
     "//extensions/buildflags",
     "//ui/base",
     "//url",
+    "//fydeos/switches",
   ]
 
   public_deps = [ ":features" ]

@@ -66,6 +66,10 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/resources/cr_components/commerce/shopping_service.mojom.h"
+#if BUILDFLAG(IS_CHROMEOS_ASH)
+#include "chrome/browser/ash/profiles/profile_helper.h"
+#endif
+#include "components/user_manager/user.h"
 
 namespace {
 
@@ -161,7 +165,10 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
   bool allow_deleting_history =
       prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory);
   source->AddBoolean("allowDeletingHistory", allow_deleting_history);
-
+  const user_manager::User* user =
+      ash::ProfileHelper::Get()->GetUserByProfile(profile);
+  source->AddBoolean("isFydeLocalAccount",
+      user->GetType() == user_manager::UserType::kFlintAccount);
   source->AddBoolean("isGuestSession", profile->IsGuestSession());
   source->AddBoolean("isSignInAllowed",
                      prefs->GetBoolean(prefs::kSigninAllowed));

@@ -312,6 +312,7 @@ bool IsArcAllowedForUser(const user_manager::User* user) {
   //   above because ARC kiosk user is always the primary/active user of a
   //   user session. The same for kPublicAccount.
   if (!user->HasGaiaAccount() &&
+      !user->IsFydeExtendAccountUser() &&
       user->GetType() != user_manager::UserType::kArcKioskApp &&
       user->GetType() != user_manager::UserType::kPublicAccount) {
     VLOG(1) << "Users without GAIA account, or not ARC kiosk apps are not "

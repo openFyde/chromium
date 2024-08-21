@@ -9,8 +9,14 @@ found in the LICENSE file.
   setup-pin-keyboard {
     margin-top: 37px;
   }
+  #setup[fydeos-layout] setup-pin-keyboard {
+    margin-top: 0;
+  }
 </style>
-<oobe-adaptive-dialog id="setup" role="dialog" for-step="start,confirm">
+<oobe-adaptive-dialog
+  fydeos-layout
+  animation-url="animations/fydeos_choose_pin.json"
+  id="setup" role="dialog" for-step="start,confirm">
   <iron-icon slot="icon" icon="oobe-32:lock"></iron-icon>
   <h1 slot="title" for-step="start" aria-live="polite">
     <div hidden="[[isChildAccount]]">
@@ -67,8 +73,10 @@ found in the LICENSE file.
   </div>
 </oobe-adaptive-dialog>
 <oobe-adaptive-dialog id="doneDialog" role="dialog" for-step="done"
+    fydeos-layout
     footer-shrinkable>
   <iron-icon slot="icon" icon="oobe-32:lock"></iron-icon>
+  <img slot="fydeos-illustration" src="images/fydeos_pin_illustration.svg" />
   <h1 slot="title" hidden="[[isChildAccount]]" aria-live="polite">
     [[i18nDynamic(locale, 'discoverPinSetupTitle3')]]
   </h1>

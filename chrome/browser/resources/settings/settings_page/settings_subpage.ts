@@ -77,6 +77,11 @@ export class SettingsSubpageElement extends SettingsSubpageElementBase {
 
       learnMoreUrl: String,
 
+      showLearnMoreUrl: {
+        type: Boolean,
+        computed: 'computeShowLearnMoreUrl_(learnMoreUrl)',
+      },
+
       /** Setting a |searchLabel| will enable search. */
       searchLabel: String,
 
@@ -316,6 +321,10 @@ export class SettingsSubpageElement extends SettingsSubpageElementBase {
 
   static get template() {
     return getTemplate();
+  }
+
+  computeShowLearnMoreUrl_() {
+    return this.learnMoreUrl && !loadTimeData.getBoolean('isFydeProfile');
   }
 }
 

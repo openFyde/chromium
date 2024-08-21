@@ -59,6 +59,9 @@ bool IsUserAllowed(const user_manager::User& user,
                    bool is_guest_allowed,
                    bool is_user_allowlisted) {
   DCHECK(user.GetType() == user_manager::UserType::kRegular ||
+         user.GetType() == user_manager::UserType::kFlintAccount ||
+         user.GetType() == user_manager::UserType::kFydeAccount ||
+         user.GetType() == user_manager::UserType::kFydeChild ||
          user.GetType() == user_manager::UserType::kGuest ||
          user.GetType() == user_manager::UserType::kChild);
 

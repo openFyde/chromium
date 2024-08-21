@@ -116,6 +116,7 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
 #include "url/gurl.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash {
 
@@ -420,7 +421,7 @@ AccessibilityManager* AccessibilityManager::Get() {
 // static
 void AccessibilityManager::ShowAccessibilityHelp() {
   ShowSingletonTab(ProfileManager::GetActiveUserProfile(),
-                   GURL(chrome::kChromeAccessibilityHelpURL));
+                   GURL(fydeos::constants::kFydeAccessibilityHelpURL));
 }
 
 AccessibilityManager::AccessibilityManager() {

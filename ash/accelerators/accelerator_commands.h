@@ -267,6 +267,8 @@ ASH_EXPORT void RotateActiveWindow();
 // Rotates pane focus on next/previous pane.
 ASH_EXPORT void RotatePaneFocus(FocusCycler::Direction direction);
 
+ASH_EXPORT void RotateScreenWithoutConfirmation();
+
 // Rotates screen 90 degrees.
 ASH_EXPORT void RotateScreen();
 
@@ -323,6 +325,8 @@ ASH_EXPORT void ToggleClipboardHistory(bool is_plain_text_paste);
 // `accelerator_timestamp` is the timestamp associated with the accelerator that
 // triggered Picker.
 ASH_EXPORT void TogglePicker(base::TimeTicks accelerator_timestamp);
+
+ASH_EXPORT void ToggleFydeOSAssistant();
 
 // Enables Dictation if the feature is currently disabled. Toggles (either
 // starts or stops) Dictation if the feature is currently enabled.

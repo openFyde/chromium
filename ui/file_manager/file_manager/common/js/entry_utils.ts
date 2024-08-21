@@ -10,6 +10,7 @@ import {ODFS_EXTENSION_ID} from '../../foreground/js/constants.js';
 import type {DirectoryItem} from '../../foreground/js/ui/directory_tree.js';
 import type {TreeItem} from '../../foreground/js/ui/tree.js';
 import {driveRootEntryListKey, myFilesEntryListKey, recentRootKey, trashRootKey} from '../../state/ducks/volumes.js';
+import {fydeDropRootKey} from '../../state/ducks/volumes.js';
 import {type CurrentDirectory, EntryType, type FileData, type State, type Volume} from '../../state/state.js';
 import {getEntry, getStore, getVolume} from '../../state/store.js';
 import type {XfTreeItem} from '../../widgets/xf_tree_item.js';
@@ -1018,6 +1019,7 @@ export function isEntryScannable(entry: Entry|FilesAppEntry|null):
     return false;
   }
   const entryKeysWithoutChildren = new Set([
+    fydeDropRootKey,
     recentRootKey,
     trashRootKey,
   ]);
@@ -1042,6 +1044,7 @@ export function canHaveSubDirectories(fileData: FileData|null) {
   }
 
   const entryKeysWithoutChildren = new Set([
+    fydeDropRootKey,
     recentRootKey,
     trashRootKey,
   ]);

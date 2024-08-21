@@ -9,12 +9,15 @@
 {
   "arcAppsPrivate": {
     "channel": "stable",
-    "extension_types": ["platform_app"],
+    "extension_types": ["platform_app", "extension", "legacy_packaged_app"],
     "allowlist": [
       "46578A13607D38F1DC8E280C4F499FB0A2F9565C", // http://crbug.com/819404
       "898FB5A39687D210766B8998BA4530B99C9E6586", // http://crbug.com/819404
       "82F30B65397BC3E4ADE627BBD857AB8A58210648", // http://crbug.com/819404
-      "C74B2AF138F9EDECD04D0965AB36CA66C8290466"  // http://crbug.com/957772
+      "C74B2AF138F9EDECD04D0965AB36CA66C8290466", // http://crbug.com/957772
+      "040DC0863AC1A19D3B3D2A02143865CB697A649E",  // fydeos store
+      "9393A095080260FE92DE9B6ACAD334A2567390BE",   // fydeos store(stag)
+      "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E"   //FydeOS System Control Extension
     ]
   },
   "browser": {

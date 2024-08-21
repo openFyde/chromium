@@ -108,6 +108,9 @@ DlpPolicyEvent_UserType GetCurrentUserType() {
     case user_manager::UserType::kArcKioskApp:
     case user_manager::UserType::kWebKioskApp:
       return DlpPolicyEvent_UserType_KIOSK;
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kGuest:
     case user_manager::UserType::kChild:
       return DlpPolicyEvent_UserType_UNDEFINED_USER_TYPE;
