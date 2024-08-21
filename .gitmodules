@@ -743,10 +743,6 @@
 	path = content/test/data/plugin
 	url = https://chrome-internal.googlesource.com/chrome/data/chrome_plugin_tests
 	gclient-condition = checkout_src_internal
-[submodule "google_apis/internal"]
-	path = google_apis/internal
-	url = https://chrome-internal.googlesource.com/chrome/google_apis/internal
-	gclient-condition = checkout_src_internal
 [submodule "ios_internal"]
 	path = ios_internal
 	url = https://chrome-internal.googlesource.com/chrome/ios_internal
@@ -791,10 +787,6 @@
 	path = third_party/khronos_glcts
 	url = https://chrome-internal.googlesource.com/chrome/deps/khronos_glcts
 	gclient-condition = checkout_src_internal
-[submodule "third_party/widevine/cdm/chromeos"]
-	path = third_party/widevine/cdm/chromeos
-	url = https://chrome-internal.googlesource.com/chrome/deps/widevine/cdm/chromeos
-	gclient-condition = (checkout_chromeos or checkout_linux) and checkout_src_internal
 [submodule "third_party/widevine/cdm/linux"]
 	path = third_party/widevine/cdm/linux
 	url = https://chrome-internal.googlesource.com/chrome/deps/widevine/cdm/linux
