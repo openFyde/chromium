@@ -11,10 +11,13 @@ import '../../components/oobe_vars/oobe_shared_vars.css.js';
 import '../../components/buttons/oobe_icon_button.js';
 import '../../components/hd_iron_icon.js';
 
+import '../../components/dialogs/oobe_adaptive_dialog.js';
+
 import {assert} from '//resources/js/assert.js';
 import {loadTimeData} from '//resources/ash/common/load_time_data.m.js';
 import {PolymerElementProperties} from '//resources/polymer/v3_0/polymer/interfaces.js';
 import {mixinBehaviors, PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+
 
 import {OobeDialogHostBehavior, OobeDialogHostBehaviorInterface} from '../../components/behaviors/oobe_dialog_host_behavior.js';
 import {OobeI18nMixin, OobeI18nMixinInterface} from '../../components/mixins/oobe_i18n_mixin.js';
@@ -45,6 +48,15 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
 
   static get properties(): PolymerElementProperties {
     return {
+      fydeosLayout: {
+        // when pass this property to child component oobe-adaptive-dialog,
+        // `$` should be used, since the property `fydeosLayout` is not defined in oobe-adaptive-dialog,
+        // oobe-adaptive-dialog will not get `fydeosLayout`. With `$`, it will be passed as attribute
+        type: Boolean,
+        value: true,
+        readOnly: true,
+        reflectToAttribute: true, // with this, in css of this component itself `:host([fydeos-layout])` will work
+      },
       /**
        * Currently selected system language (display name).
        */
@@ -114,6 +126,7 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
     };
   }
 
+  private fydeosLayout: boolean;
   private currentLanguage: string;
   private timezoneButtonVisible: boolean;
   private debuggingLinkVisible: boolean;
@@ -354,7 +367,7 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
    * Determines if AnimationSlot is needed for specific flow
    */
   private showAnimationSlot(): boolean {
-    return !this.isBootAnimation;
+    return !this.isBootAnimation && !this.fydeosLayout;
   }
 }
 
