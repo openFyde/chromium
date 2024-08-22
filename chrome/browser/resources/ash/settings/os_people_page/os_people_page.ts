@@ -172,7 +172,7 @@ export class OsSettingsPeoplePageElement extends
         type: Boolean,
         value: function() {
           if (loadTimeData.getBoolean('isFydeProfile')) {
-            return true;
+            return !loadTimeData.getBoolean('isFydeLocalAccount');
           }
           return loadTimeData.getBoolean('isAccountManagerEnabled');
         },
@@ -440,6 +440,9 @@ export class OsSettingsPeoplePageElement extends
 
   private onAccountManagerClick_(): void {
     if (loadTimeData.getBoolean('isFydeProfile')) {
+      if (loadTimeData.getBoolean('isFydeLocalAccount')) {
+        return;
+      }
       const baseUrl = loadTimeData.getString('fydeosAccountBaseUrl');
       const url = `${baseUrl}/personalInfo/`;
       window.open(url);
