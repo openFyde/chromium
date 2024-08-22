@@ -21,6 +21,8 @@ build_webui("build") {
     "animations/spinner.json",
     "animations/welcome_screen_animation.json",
 
+    "animations/fydeos_spinner.json",
+
     "animations/fydeos_choose_language.json",
     "animations/fydeos_network_select.json",
     "animations/fydeos_eula.json",
