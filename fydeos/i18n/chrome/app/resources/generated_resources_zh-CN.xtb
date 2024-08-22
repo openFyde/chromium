@@ -303,6 +303,8 @@
 <translation id="8808631745882917854">若要完成 Linux 安装，请更新 FydeOS 并重试。</translation>
 <translation id="799069234167243501">请确保您的蓝牙设备处于配对模式且就在附近。应仅与您信任的设备配对。此 <ph name="DEVICE_TYPE" /> 上的所有账号都可以看到已配对的设备。</translation>
 <translation id="4329124023116919625">请确保您的蓝牙设备处于配对模式且就在附近。应仅与您信任的设备配对。此 <ph name="DEVICE_TYPE" /> 上的所有账号都可以看到已配对的设备。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="5581961046476999259">使用 FydeOS 账号密码</translation>
+<translation id="8088575026375015397">您可以为此设备创建 <ph name="DEVICE_TYPE" /> 密码，而无需输入您的 FydeOS 账号密码来登录</translation>
 <!-- generated_resources.override.grdp -->
 <translation id="358808394160762813">openFyde 系统映像写入工具</translation>
 <translation id="827071875133563393">FydeOS 系统映像写入工具</translation>

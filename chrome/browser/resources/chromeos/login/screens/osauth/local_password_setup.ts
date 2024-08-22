@@ -55,6 +55,7 @@ const LocalPasswordSetupBase = mixinBehaviors(
 interface LocalPasswordSetupScreenData {
   showBackButton: boolean;
   isRecoveryFlow: boolean;
+  isFydeProfile: boolean;
 }
 
 export class LocalPasswordSetup extends LocalPasswordSetupBase {
@@ -78,6 +79,10 @@ export class LocalPasswordSetup extends LocalPasswordSetupBase {
         type: Boolean,
       },
 
+      isFydeProfile: {
+        type: Boolean,
+      },
+
       passwordValue: {
         type: String,
         value: null,
@@ -87,6 +92,7 @@ export class LocalPasswordSetup extends LocalPasswordSetupBase {
 
   private backButtonVisible: boolean;
   private isRecoveryFlow: boolean;
+  private isFydeProfile: boolean;
   private passwordValue: string;
 
   constructor() {
@@ -126,6 +132,7 @@ export class LocalPasswordSetup extends LocalPasswordSetupBase {
     this.reset();
     this.backButtonVisible = data['showBackButton'];
     this.isRecoveryFlow = data['isRecoveryFlow'];
+    this.isFydeProfile = data['isFydeProfile'];
   }
 
   showLocalPasswordSetupFailure(): void {
@@ -184,6 +191,18 @@ export class LocalPasswordSetup extends LocalPasswordSetupBase {
 
   private isValid(password: string) {
     return !!password;
+  }
+
+  private getLocalPasswordSetupSubtitle(
+    locale: string,
+    isFydeProfile: boolean,
+  ): string {
+    return this.i18nDynamic(
+      locale,
+      isFydeProfile
+        ? "localPasswordSetupFydeSubtitle"
+        : "localPasswordSetupSubtitle",
+    );
   }
 }
 

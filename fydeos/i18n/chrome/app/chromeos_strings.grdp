@@ -249,4 +249,13 @@
   <message name="IDS_FYDEOS_OOBE_WELCOME_DISABLE_NEXT_CONTINUE_ANYWAY" desc="oobe welcome disable next, continue anyway">
     You can <ph name="LINK_BEGIN">&lt;span id="continue-anyway"&gt;</ph>continue to use this copy of FydeOS anyway<ph name="LINK_END">&lt;/span&gt;</ph>, the installation process can be executed at a later stage in the system, however, all your data will be wiped after installation and you will begin again from this page.
   </message>
+  <message name="IDS_PASSWORD_SELECTION_FYDE_SUBTITLE" desc="Message displayed on the password selection screen.">
+    Instead of entering your FydeOS account password to sign in, you can create a <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> password for this device
+  </message>
+  <message name="IDS_PASSWORD_SELECTION_FYDE_PASSWORD_LABEL" desc="Label for the online password option on the password selection screen.">
+    Use FydeOS account password
+  </message>
+  <message name="IDS_LOGIN_LOCAL_PASSWORD_FYDE_SETUP_SUBTITLE" desc="Subtitle for the local password setup dialog.">
+    Instead of entering your FydeOS account password to sign in, you can create a <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> password for this device
+  </message>
 </grit-part>

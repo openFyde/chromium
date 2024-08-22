@@ -20,6 +20,8 @@
 #include "chrome/browser/ash/login/screens/osauth/base_osauth_setup_screen.h"
 #include "chrome/browser/ash/login/wizard_context.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/webui/ash/login/local_password_setup_handler.h"
 #include "chromeos/ash/components/osauth/public/common_types.h"
 #include "chromeos/ash/services/auth_factor_config/in_process_instances.h"
@@ -126,8 +128,11 @@ void LocalPasswordSetupScreen::DoShow() {
   bool can_go_back = !context()->knowledge_factor_setup.local_password_forced;
   bool is_recovery_flow = context()->knowledge_factor_setup.auth_setup_flow ==
                           WizardContext::AuthChangeFlow::kRecovery;
+  Profile* profile = ProfileManager::GetPrimaryUserProfile();
+  bool is_fyde_profile = profile && profile->IsFydeProfile();
   view_->Show(/*can_go_back=*/can_go_back,
-              /*is_recovery_flow=*/is_recovery_flow);
+              /*is_recovery_flow=*/is_recovery_flow,
+              /*is_fyde_profile*/is_fyde_profile);
 }
 
 void LocalPasswordSetupScreen::OnUserAction(const base::Value::List& args) {
