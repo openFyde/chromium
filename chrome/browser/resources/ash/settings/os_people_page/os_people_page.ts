@@ -121,7 +121,7 @@ export class OsSettingsPeoplePageElement extends
       isRevampWayfindingEnabled_: {
         type: Boolean,
         value: () => {
-          return isRevampWayfindingEnabled();
+          return false;
         },
         readOnly: true,
       },
