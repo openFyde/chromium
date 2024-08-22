@@ -147,7 +147,7 @@ void MarketingOptInScreen::ShowImpl() {
     view_->Show(/*opt_in_visible=*/email_opt_in_visible_,
                 /*opt_in_default_state=*/IsDefaultOptInCountry(),
                 /*fyde_opt_in_visible=*/fyde_email_opt_in_visible_,
-                /*fyde_opt_in_default_state=*/true,
+                /*fyde_opt_in_default_state=*/fyde_email_opt_in_visible_,
                 /*legal_footer_visible=*/legal_footer_visible,
                 /*cloud_gaming_enabled=*/cloud_gaming_enabled);
   }

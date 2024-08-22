@@ -195,6 +195,8 @@ export class MarketingOptIn extends MarketingScreenElementBase {
       'get-started',
       this.shadowRoot!
           .querySelector<HTMLInputElement>('#fydeUpdatesOption')!.checked,
+      this.shadowRoot!
+          .querySelector<HTMLInputElement>('#fydeOSImprovementPlanOption')!.checked,
     ]);
   }
 
