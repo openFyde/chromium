@@ -18,14 +18,18 @@
 namespace ash {
 
 namespace {
+
 const char kFydeAssistantExtensionUrl[] = "chrome://fydeos-ai/bubble?source=bubble";
 constexpr int kWidthDip = 300;
 constexpr int kHeightDip = 162;
+
 }
 
 FydeAssistantBubble::~FydeAssistantBubble() = default;
 
-void FydeAssistantBubble::Init() {
+// static
+bool FydeAssistantBubble::ReadyToInit() {
+  return AshWebViewFactory::Get() != nullptr;
 }
 
 gfx::Size FydeAssistantBubble::CalculatePreferredSize(const views::SizeBounds& available_size) const {
@@ -38,43 +42,38 @@ void FydeAssistantBubble::OnThemeChanged() {
       GetColorProvider()->GetColor(cros_tokens::kCrosSysSystemBaseElevated));
 }
 
-FydeAssistantBubble::FydeAssistantBubble(
-    aura::Window* window,
-    const gfx::Rect& anchor_rect) {
+FydeAssistantBubble::FydeAssistantBubble(const gfx::Rect& anchor_rect) {
   SetAnchorRect(anchor_rect);
   SetButtons(ui::DIALOG_BUTTON_NONE);
   set_margins(gfx::Insets());
   // control hide/show on  my own
   set_close_on_deactivate(false);
-  set_parent_window(window);
-  set_has_parent(true);
-  SetBorder(std::make_unique<views::HighlightBorder>(
-      kSmallBubbleCornerRadius,
-      views::HighlightBorder::Type::kHighlightBorderOnShadow));
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
   CreateBubble(this);
+  GetBubbleFrameView()->SetCornerRadius(kBubbleCornerRadiusForAI);
+  GetBubbleFrameView()->SetBackgroundColor(color());
   // views::DialogDelegate::CreateDialogWidget(this, nullptr, window);
 }
 
-void FydeAssistantBubble::OpenWebView(FydeAssistantView* owner) {
+bool FydeAssistantBubble::InitWebView(FydeAssistantView* owner) {
   owner_ = owner;
-  OpenUrl(GURL(kFydeAssistantExtensionUrl));
+  return OpenUrl(GURL(kFydeAssistantExtensionUrl));
 }
 
-AshWebView* FydeAssistantBubble::WebView() {
-  return web_view_ptr_ ? web_view_ptr_.get() : web_view_.get();
-}
-
-void FydeAssistantBubble::OpenUrl(const GURL& url) {
+bool FydeAssistantBubble::OpenUrl(const GURL& url) {
   if (web_view_ptr_ || web_view_) {
-    return;
+    return true;
   }
   auto params = AshWebView::InitParams();
   params.can_record_media = true;
+  if (!FydeAssistantBubble::ReadyToInit()) {
+    return false;
+  }
   web_view_ = AshWebViewFactory::Get()->Create(params);
-  WebView()->AddObserver(this);
-  WebView()->Navigate(url);
+  web_view_->AddObserver(this);
+  web_view_->Navigate(url);
+  return true;
 }
 
 void FydeAssistantBubble::DidStopLoading()  {

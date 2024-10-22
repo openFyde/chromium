@@ -119,7 +119,7 @@ class EnrollmentLauncherImpl : public EnrollmentLauncher {
   // EnrollmentLauncher:
   void EnrollUsingAuthCode(const std::string& auth_code) override;
   void EnrollUsingToken(const std::string& token) override;
-  void EnrollUsingFydeToken(const std::string& token) override;
+  void EnrollUsingFydeToken() override;
   void EnrollUsingAttestation() override;
   void EnrollUsingEnrollmentToken() override;
   void ClearAuth(base::OnceClosure callback) override;
@@ -235,9 +235,12 @@ void EnrollmentLauncherImpl::EnrollUsingToken(const std::string& token) {
   DoEnroll(policy::DMAuth::FromOAuthToken(token));
 }
 
-void EnrollmentLauncherImpl::EnrollUsingFydeToken(
-    const std::string& token) {
-  DoEnroll(policy::DMAuth::FromFydeToken(token));
+void EnrollmentLauncherImpl::EnrollUsingFydeToken() {
+  CHECK(enrollment_config_.mode ==
+        policy::EnrollmentConfig::MODE_FYDE_LOCAL_FORCED);
+  CHECK(!enrollment_config_.fyde_enrollment_token.empty());
+  DoEnroll(
+      policy::DMAuth::FromFydeToken(enrollment_config_.fyde_enrollment_token));
 }
 
 void EnrollmentLauncherImpl::EnrollUsingAttestation() {

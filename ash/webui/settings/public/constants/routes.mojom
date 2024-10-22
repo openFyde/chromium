@@ -31,6 +31,7 @@ enum Section {
   kKerberos = 18,
   kSystemPreferences = 19,
   kFydeOs = 20,
+  kFydeAssistant = 21,
 };
 
 // Chrome OS Settings subpages (i.e., nested pages within a section). Each
@@ -336,6 +337,9 @@ const string kNetworkFileSharesSubpagePath = "smbShares";
 // Printing section.
 const string kPrintingSectionPath = "osPrinting";
 const string kPrintingDetailsSubpagePath = "cupsPrinters";
+
+// Fyde Assistant section.
+const string kFydeAssistantSectionPath = "osFydeAssistant";
 
 // Accessibility section.
 const string kAccessibilitySectionPath = "osAccessibility";

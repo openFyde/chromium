@@ -41,4 +41,7 @@
   <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_APK" desc="Error message when user attempts to open a apk file in the Files app via Downloads panel.">
     Unable to sideload .apk files. Please ensure that the Android subsystem has been activated and you are in FydeOS Developer mode.
   </message>
+  <message name="IDS_FILE_BROWSER_OPEN_WITH_FYDEOS_AI_BUTTON_LABEL" desc="Menu item label, open with fydeo ai">
+    Open with FydeOS AI
+  </message>
 </grit-part>

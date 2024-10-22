@@ -256,6 +256,8 @@ void AddLockScreenPageStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_PEOPLE_LOCK_SCREEN_EDIT_FINGERPRINTS_DESCRIPTION},
       {"lockScreenGoogleAccountPasswordOptionLabel",
        IDS_SETTINGS_PEOPLE_LOCK_SCREEN_GOOGLE_ACCOUNT_PASSWORD_OPTION_LABEL},
+      {"lockScreenFydeosAccountPasswordOptionLabel",
+       IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FYDEOS_ACCOUNT_PASSWORD_OPTION_LABEL},
       {"lockScreenNone", IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE},
       {"lockScreenFingerprintNewName",
        IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NEW_FINGERPRINT_DEFAULT_NAME},
@@ -334,6 +336,7 @@ void AddLockScreenPageStrings(content::WebUIDataSource* html_source,
   html_source->AddString("fingerprintLearnMoreLink",
                          fydeos::constants::kFingerprintLearnMoreURL);
   html_source->AddString("recoveryLearnMoreUrl", chrome::kRecoveryLearnMoreURL);
+  html_source->AddString("fydeosLocalAccountChangePasswordHelpUrl", fydeos::constants::kLocalAccountChangePasswordHelpURL);
 }
 
 void AddFingerprintListStrings(content::WebUIDataSource* html_source) {
@@ -542,6 +545,7 @@ void PeopleSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       {"lockScreenFingerprintTitle",
        IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_SUBPAGE_TITLE},
       {"manageOtherPeople", IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE},
+      {"fydeLocalAccountChangePasswordLinkDesc", IDS_SETTINGS_OS_SETTINGS_FYDE_LOCAL_ACCOUNT_CHANGE_PASSWORD_LINK_DESC},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 

@@ -198,18 +198,24 @@ found in the LICENSE file.
     width: 100%;
     height: 100%;
   }
+
+  #video {
+    border-radius: 50%;
+  }
 </style>
 <oobe-adaptive-dialog id="dialog"
     fydeos-layout$="[[fydeosLayout]]"
-    animation-url="animations/welcome_screen_animation.json"
     animation-loop
     class="layout vertical">
+  <video id="video" slot="fydeos-illustration" class="oobe-illustration">
+    <source src="animations/fydeos_v19_welcome.mp4" />
+  </video>
   <h1 id="title" slot="title" class="welcome-header-text">
-    [[i18nDynamic(locale, 'welcomeScreenGreeting')]]
+    [[i18nDynamic(locale, 'welcomeScreenGreeting')]] v19
   </h1>
   <template is="dom-if" if="[[!isBootAnimation]]">
     <div id="subtitle" slot="subtitle" class="welcome-header-text">
-      [[i18nDynamic(locale, 'welcomeScreenGreetingSubtitle')]]
+      Desolate Frontier
     </div>
   </template>
   <div id="content" slot="content" class="landscape-header-aligned">

@@ -2211,6 +2211,7 @@ static_library("ui") {
       "//ui/webui/resources/js/browser_command:mojo_bindings",
       "//ui/webui/resources/js/metrics_reporter:mojo_bindings",
       "//fydeos/misc",
+      "//fydeos/constants",
     ]
     public_deps += [
       "//build:branding_buildflags",
@@ -3596,6 +3597,8 @@ static_library("ui") {
       "webui/ash/settings/pages/languages/languages_section.h",
       "webui/ash/settings/pages/main/main_section.cc",
       "webui/ash/settings/pages/main/main_section.h",
+      "../../../fydeos/ui/webui/settings/ash/fyde_assistant_section.cc",
+      "../../../fydeos/ui/webui/settings/ash/fyde_assistant_section.h",
       "../../../fydeos/ui/webui/settings/ash/fydeos_section.cc",
       "../../../fydeos/ui/webui/settings/ash/fydeos_section.h",
       "../../../fydeos/ui/webui/settings/ash/fydeos_handler.cc",

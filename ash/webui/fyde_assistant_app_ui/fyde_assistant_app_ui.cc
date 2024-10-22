@@ -14,6 +14,7 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_webui_handler.h"
 #include "fydeos/switches/services/services_switches.h"
+#include "ash/public/cpp/assistant/assistant_state.h"
 
 namespace ash {
 
@@ -39,8 +40,9 @@ FydeAssistantAppUI::FydeAssistantAppUI(content::WebUI* web_ui,
   html_source->SetDefaultResource(IDR_ASH_FYDE_ASSISTANT_APP_INDEX_HTML);
 
   html_source->AddInteger("borderRadiusInLauncher", GetBubbleCornerRadius());
-  html_source->AddInteger("borderRadiusInBubble", kSmallBubbleCornerRadius);
+  html_source->AddInteger("borderRadiusInBubble", kBubbleCornerRadiusForAI);
   html_source->AddString("fydeosAssistantUrl", fydeos::switches::GetFydeOSAssistantWebUrl());
+  html_source->AddBoolean("isFydeOSAssistantEnabled", ash::AssistantState::Get()->fyde_assistant_enabled().value_or(false));
   html_source->UseStringsJs();
 
   delegate_->PopulateLoadTimeData(html_source);

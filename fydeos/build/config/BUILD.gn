@@ -10,6 +10,7 @@ buildflag_header("buildflags") {
   flags = [
     "USE_FYDEOS_COM=$use_fydeos_com",
     "IS_OPENFYDE=$is_openfyde",
+    "FYDEOS_DEVICE=$fydeos_device",
     "USE_FYDEOS_LICENSE=$use_fydeos_license",
     "FYDEOS_DEVICE=$fydeos_device",
   ]

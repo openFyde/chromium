@@ -1215,7 +1215,6 @@ policy::CloudPolicyCore* GetCloudPolicyCoreForUser(
     const user_manager::User& user) {
   switch (user.GetType()) {
     case user_manager::UserType::kRegular:
-    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kFydeAccount:
     case user_manager::UserType::kFydeChild:
     case user_manager::UserType::kChild: {
@@ -1230,6 +1229,7 @@ policy::CloudPolicyCore* GetCloudPolicyCoreForUser(
           GetDeviceLocalAccountPolicyBroker(user);
       return broker ? broker->core() : nullptr;
     }
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kGuest:
     case user_manager::UserType::kArcKioskApp:
       return nullptr;
@@ -1240,7 +1240,6 @@ policy::ComponentCloudPolicyService* GetComponentCloudPolicyServiceForUser(
     const user_manager::User& user) {
   switch (user.GetType()) {
     case user_manager::UserType::kRegular:
-    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kFydeAccount:
     case user_manager::UserType::kFydeChild:
     case user_manager::UserType::kChild: {
@@ -1255,6 +1254,7 @@ policy::ComponentCloudPolicyService* GetComponentCloudPolicyServiceForUser(
           GetDeviceLocalAccountPolicyBroker(user);
       return broker ? broker->component_policy_service() : nullptr;
     }
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kGuest:
     case user_manager::UserType::kArcKioskApp:
       return nullptr;

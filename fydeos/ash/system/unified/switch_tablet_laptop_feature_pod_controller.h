@@ -34,9 +34,9 @@ class ASH_EXPORT SwitchTabletLabtopFeaturePodController:
   void UpdateTile();
   bool IsInTabletMode();
 
-  UnifiedSystemTrayController* const tray_controller_;
+  const raw_ptr<UnifiedSystemTrayController> tray_controller_;
 
-  raw_ptr<FeatureTile> tile_ = nullptr;
+  raw_ptr<FeatureTile, DanglingUntriaged> tile_ = nullptr;
 
   base::WeakPtrFactory<SwitchTabletLabtopFeaturePodController>
     weak_factory_{this};

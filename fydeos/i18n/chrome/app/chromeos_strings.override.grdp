@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- override chrome/app/chromeos_strings.grdp, included from generated_resources.grd -->
 <grit-part>
+  <message name="IDS_NEW_WELCOME_SCREEN_GREETING" desc="Greeting message on the OOBE welcome screen">
+    Welcome to <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph>
+  </message>
   <if expr="openfyde">
     <message name="IDS_LOGIN_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
       You will not be able to add users because Google API and FydeOS API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
@@ -223,6 +226,64 @@
     <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>For the best experience, install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> to your internal disk. You can also install it later from the login screen.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
     <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>If you're not ready to install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph>, you can run from USB to try it out. Please note that running <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> from USB will introduce storage limits and performance penalties; some features, including OTA system updates, will not work.<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
   </message>
+  <if expr="openfyde">
+    <message name="IDS_BOREALIS_INSTALLER_CONFIRMATION_TITLE" desc="Title for installer for Steam (noun, name of app).">
+      Welcome to Steam on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_CONFIRMATION_MESSAGE" desc="Body text shown in the installer for 'Steam for Chromebook'.">
+      This is a beta program. You can now use Steam to play some games on your openFyde device.
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_UPDATE" desc="Body for Steam (noun, name of app) installer when installation fails due to device being out of date.">
+      Make sure your openFyde is on the latest version. Then, restart your openFyde device and try again.
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ONGOING_TITLE" desc="Title for installer while Steam (noun, name of app) is installing.">
+      Setting up Steam on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_FINISHED_MESSAGE" desc="Title for Steam (noun, name of app) installer when installation suceeded.">
+      Enjoy gaming on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_TITLE" desc="Title for installer when Steam (noun, name of app) fails to install.">
+      There was a problem setting up Steam on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_REBOOT" desc="Body for Steam (noun, name of app) installer when a restart is needed.">
+      Please restart your device to use Steam on openFyde device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_STARTUP" desc="Body for Steam (noun, name of app) installer when installation fails trying to start up after installing">
+      Couldn't launch Steam on openFyde device. Please try again
+    </message>
+    <message name="IDS_BOREALIS_DISALLOWED_HARDWARE" desc="Message shown to the user when 'Steam for Chromebook' is disabled on their device">
+      Steam for Chromebook (beta) is not available on your openFyde device.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_BOREALIS_INSTALLER_CONFIRMATION_TITLE" desc="Title for installer for Steam (noun, name of app).">
+      Welcome to Steam on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_CONFIRMATION_MESSAGE" desc="Body text shown in the installer for 'Steam for Chromebook'.">
+      This is a beta program. You can now use Steam to play some games on your FydeOS device.
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_UPDATE" desc="Body for Steam (noun, name of app) installer when installation fails due to device being out of date.">
+      Make sure your FydeOS is on the latest version. Then, restart your FydeOS device and try again.
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ONGOING_TITLE" desc="Title for installer while Steam (noun, name of app) is installing.">
+      Setting up Steam on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_FINISHED_MESSAGE" desc="Title for Steam (noun, name of app) installer when installation suceeded.">
+      Enjoy gaming on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_TITLE" desc="Title for installer when Steam (noun, name of app) fails to install.">
+      There was a problem setting up Steam on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_REBOOT" desc="Body for Steam (noun, name of app) installer when a restart is needed.">
+      Please restart your device to use Steam on FydeOS device
+    </message>
+    <message name="IDS_BOREALIS_INSTALLER_ERROR_STARTUP" desc="Body for Steam (noun, name of app) installer when installation fails trying to start up after installing">
+      Couldn't launch Steam on FydeOS device. Please try again
+    </message>
+    <message name="IDS_BOREALIS_DISALLOWED_HARDWARE" desc="Message shown to the user when 'Steam for Chromebook' is disabled on their device">
+      Steam for Chromebook (beta) is not available on your FydeOS device.
+    </message>
+  </if>
   <message name="IDS_CROSTINI_INSTALLER_NEED_UPDATE_TITLE" desc="Title shown in the Crostini installer dialog when the VM fails to install because the device must be updated">
     FydeOS update required
   </message>

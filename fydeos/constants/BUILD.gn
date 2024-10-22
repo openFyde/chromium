@@ -6,8 +6,7 @@ import("//build/config/chromeos/ui_mode.gni")
 
 assert(is_chromeos_ash, "Non-Chrome-OS builds must not depend on //ash")
 
-component("constants") {
-  output_name = "fydeos_constants"
+source_set("constants") {
   defines = [ "IS_FYDEOS_CONSTANTS_IMPL" ]
   sources = [
     "fydeos_constants.cc",

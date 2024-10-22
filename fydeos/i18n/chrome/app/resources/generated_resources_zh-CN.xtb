@@ -109,6 +109,10 @@
 <translation id="4761916003358543528">您的应用和设置会在您使用自己的 FydeOS 帐号登录的所有设备上保持同步。如需了解浏览器同步选项，请前往 <ph name="LINK_BEGIN" />Chromium 设置<ph name="LINK_END" />。</translation>
 <translation id="2284684596745086553">屏幕键盘、开关控制等</translation>
 <translation id="6391619337105968582">单声道音频、启动等</translation>
+<translation id="6688486189406151818">openFyde 版本太旧</translation>
+<translation id="4427296679979696656">FydeOS 版本太旧</translation>
+<translation id="3921455734015639682">openFyde 已是最新版本</translation>
+<translation id="4647895343128753926">FydeOS 已是最新版本</translation>
 <!-- settings_strings.override.grdp -->
 <translation id="788994565092063281">打开应用商店</translation>
 <translation id="646286410082977985">版本 <ph name="PRODUCT_VERSION" /> <ph name="PRODUCT_MODIFIER" /> <ph name="PRODUCT_VERSION_BITS" /></translation>
@@ -118,6 +122,7 @@
 <translation id="4835160910703799618">下载 PDF 文件，而不是在 Chromium 中自动打开它们</translation>
 <translation id="344806589241926887">预加载 Chromium 认为您可能会访问的网页。为此，Chromium 可能会使用 Cookie（如果您允许使用 Cookie 的话），并加密和发送网页以在网站中隐藏您的身份。</translation>
 <translation id="810783818611464909">会清除历史记录以及搜索框中的自动补全项。</translation>
+<translation id="6882329708932651909">根据系统向服务端发送的浏览数据，实时地主动保护您免受危险网站、下载内容和扩展程序的侵害</translation>
 <!-- shared_settings_strings.override.grdp -->
 <translation id="3142455651440468550">其他服务</translation>
 <translation id="8559764570013185596">同步功能和其他服务</translation>
@@ -187,6 +192,9 @@
 <translation id="8180845003886240840">自动登录选项仅限于「本地账户」类型，目前账户类型无法开启</translation>
 <translation id="595136526907376719">FydeOS 大版本更新已上线。如需进行 FydeOS 的大版本升级，请支付一次性更新费用后，再次检查更新。</translation>
 <translation id="376676483415835736">有新版本的 FydeOS 可供升级，但你的 FydeOS for You 订阅已过期。如需升级 FydeOS，请考虑续费。</translation>
+<translation id="9125114578624380848">Linux 子系统、Linux 应用程序</translation>
+<translation id="7569865733674225050">FydeOS 账号密码</translation>
+<translation id="2100769780401669290">如需更换此本地账号登录 FydeOS 所用的 PIN 码或密码，请至<ph name="BEGIN_LINK" />隐私与安全<ph name="END_LINK" />设置页找到相关选项。</translation>
 <!-- <translation id="3819257035322786455">备份</translation> -->
 <translation id="6523879681771260760">请选择存储备份的位置</translation>
 <translation id="2036152819788683293">为当前登录的账户创建备份 (beta)。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
@@ -206,6 +214,12 @@
 <translation id="7384698100459834045">订阅有效期</translation>
 <translation id="3354919960795782984">设备识别码</translation>
 <translation id="5758632069869992306">联网查看订阅信息</translation>
+<translation id="2505128566310022721">功能开关、FydeOS AI 相关设置</translation>
+<translation id="133677533106907546">启用 FydeOS AI</translation>
+<translation id="1987923075425225632">开启或关闭全部 FydeOS AI 相关功能</translation>
+<translation id="2392181387643487118">启用 FydeOS AI 便捷唤醒</translation>
+<translation id="5314803795362753367">当有内容被选中时按下键盘快捷键 Ctrl + C + C 可快速唤醒 FydeOS AI 并展示交互选项</translation>
+<translation id="3403772795089627134">更多关于 FydeOS AI 的设置选项</translation>
 <!-- chromeos_strings.override.grdp -->
 <translation id="8642537394560952908">拍摄新照片，或者选择现有照片或图标。
     <ph name="LINE_BREAK" />
@@ -299,6 +313,24 @@
 <translation id="3479561374223953616">通过「文件」应用，您可以快速存取自己在外部存储设备和 FydeOS 设备上的文件。</translation>
 <translation id="7957976220578534539"><ph name="BEGIN_PARAGRAPH1" />为获得最佳体验，请将 <ph name="DEVICE_OS" /> 安装到您的内部磁盘。您也可等到需要时再从登录屏幕安装它。<ph name="END_PARAGRAPH1" />
   <ph name="BEGIN_PARAGRAPH2" />如果还暂时不想安装，你可从 USB 启动来试用一下 <ph name="DEVICE_OS" />。请注意：从 USB 启动的 <ph name="DEVICE_OS" /> 将会带有磁盘容量限制及受到不同程度的性能损耗；而且，包括 OTA 升级在内的一些系统功能将会不可用。<ph name="END_PARAGRAPH2" /></translation>
+<translation id="5102182424405773330">欢迎使用 openFyde 版 Steam</translation>
+<translation id="2046221603131886862">欢迎使用 FydeOS 版 Steam</translation>
+<translation id="5982766962557172334">这是一项 Beta 版计划。现在，您可以在 openFyde 设备上使用 Steam 玩某些游戏了。</translation>
+<translation id="259620732786830085">这是一项 Beta 版计划。现在，您可以在 FydeOS 设备上使用 Steam 玩某些游戏了。</translation>
+<translation id="6145898822713068487">确保您的 openFyde 是最新版本。然后，重启 openFyde 并重试。</translation>
+<translation id="4585689519949068301">确保您的 FydeOS 是最新版本。然后，重启 FydeOS 并重试。</translation>
+<translation id="5734969505755598365">正在设置 openFyde 版 Steam</translation>
+<translation id="2180789554128870974">正在设置 FydeOS 版 Steam</translation>
+<translation id="7878254891479733609">在 openFyde 上畅玩游戏</translation>
+<translation id="4001114302826699703">在 FydeOS 上畅玩游戏</translation>
+<translation id="1983926257764057871">设置 openFyde 版 Steam 时出现问题</translation>
+<translation id="3287145971780381322">设置 FydeOS 版 Steam 时出现问题</translation>
+<translation id="1340981101260072214">若要使用 openFyde 版 Steam，请重启您的设备</translation>
+<translation id="7775922590354166890">若要使用 FydeOS 版 Steam，请重启您的设备</translation>
+<translation id="4635399078872099069">无法启动 openFyde 版 Steam。请重试</translation>
+<translation id="1076651593001419552">无法启动 FydeOS 版 Steam。请重试</translation>
+<translation id="828443433293845529">您的 openFyde 设备无法使用 Steam（Beta 版）。</translation>
+<translation id="3134981889850122056">您的 FydeOS 设备无法使用 Steam（Beta 版）。</translation>
 <translation id="6678369062218866475">需要更新 FydeOS</translation>
 <translation id="8808631745882917854">若要完成 Linux 安装，请更新 FydeOS 并重试。</translation>
 <translation id="799069234167243501">请确保您的蓝牙设备处于配对模式且就在附近。应仅与您信任的设备配对。此 <ph name="DEVICE_TYPE" /> 上的所有账号都可以看到已配对的设备。</translation>

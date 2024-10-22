@@ -469,6 +469,9 @@ export class EnterpriseEnrollmentElement extends
               OobeUiState.ENROLLMENT_SUCCESS :
               OobeUiState.ENROLLMENT_CANCEL_ENABLED);
     }
+    if (step === OobeTypes.EnrollmentStep.SUCCESS && this.isAutoEnroll) {
+      this.onEnrollmentFinished();
+    }
   }
 
   doReload(): void {

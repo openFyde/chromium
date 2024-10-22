@@ -3357,6 +3357,7 @@ component("ash") {
     "//ui/views/window/vector_icons",
     "//ui/wm/public",
     "//url",
+    "//fydeos/prefs",
     "//fydeos/build/config:buildflags",
   ]
 

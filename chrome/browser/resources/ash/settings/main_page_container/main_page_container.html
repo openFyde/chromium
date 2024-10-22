@@ -254,6 +254,16 @@
         </os-settings-apps-page>
       </page-displayer>
     </template>
+
+    <template is="dom-if"
+        if="[[shouldStampPage_(pageAvailability, Section.kFydeAssistant)]]"
+        restamp>
+      <page-displayer section="[[Section.kFydeAssistant]]">
+        <os-settings-fyde-assistant-page prefs="{{prefs}}">
+        </os-settings-fyde-assistant-page>
+      </page-displayer>
+    </template>
+
     <template is="dom-if"
         if="[[shouldStampPage_(pageAvailability, Section.kAccessibility)]]"
         restamp>

@@ -66,6 +66,8 @@ extern const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[];
 
 extern const char kFydeOSDevModeTransitionLearnMoreURL[];
 
+extern const char kLocalAccountChangePasswordHelpURL[];
+
 #if BUILDFLAG(FYDEOS_DEVICE)
 extern const char kFydeOSProductWarrantyDefaultURL[];
 #endif

@@ -35,6 +35,7 @@
               start-icon="[[rowIcons_.sync]]"
               label="$i18n{syncAndNonPersonalizedServices}"
               sub-label="[[getSyncAndGoogleServicesSubtext_(syncStatus)]]"
+              hidden="[[isFydeLocalAccount_]]"
               on-click="onSyncClick_"
               role-description="$i18n{subpageArrowRoleDescription}">
           </cr-link-row>

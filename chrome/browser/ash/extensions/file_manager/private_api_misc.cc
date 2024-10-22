@@ -87,6 +87,7 @@
 #include "ui/display/screen.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "url/gurl.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace extensions {
 namespace {
@@ -293,6 +294,7 @@ FileManagerPrivateGetPreferencesFunction::Run() {
       policy::local_user_files::LocalUserFilesAllowed();
   result.default_location =
       GetDefaultLocation(prefs->GetString(prefs::kFilesAppDefaultLocation));
+  result.fyde_assistant_enabled = prefs->GetBoolean(fydeos::prefs::kFydeAssistantEnabled);
 
   return RespondNow(WithArguments(result.ToValue()));
 }

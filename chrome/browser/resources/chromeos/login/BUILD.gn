@@ -23,6 +23,8 @@ build_webui("build") {
 
     "animations/fydeos_spinner.json",
 
+    "animations/fydeos_v19_welcome.mp4",
+
     "animations/fydeos_choose_language.json",
     "animations/fydeos_network_select.json",
     "animations/fydeos_eula.json",
@@ -42,17 +44,15 @@ build_webui("build") {
     "images/app_icons/fydeos/files.svg",
     "images/app_icons/fydeos/settings.svg",
     "images/app_icons/fydeos/rdp.svg",
-    "images/app_icons/fydeos/onedrive.svg",
+    # "images/app_icons/fydeos/onedrive.svg",
     "images/app_icons/fydeos/store.svg",
+    "images/app_icons/fydeos/ai.svg",
     "images/arc_vm_data_migration_icon.svg",
     "images/browser_sync.svg",
     "images/error.svg",
     "images/settings_gear.svg",
     "images/cfm/enrollment.svg",
     "images/cfm/welcome.svg",
-
-    "images/eula_illustration.svg",
-    "images/fydeos_pin_illustration.svg",
 
     # PNG resources
     "images/1x/thumbnail-theme-light-1x.png",
@@ -61,6 +61,13 @@ build_webui("build") {
     "images/2x/thumbnail-theme-dark-2x.png",
     "images/1x/thumbnail-theme-auto-1x.png",
     "images/2x/thumbnail-theme-auto-2x.png",
+
+    "images/1x/fydeos/thumbnail-theme-light-1x.png",
+    "images/2x/fydeos/thumbnail-theme-light-2x.png",
+    "images/1x/fydeos/thumbnail-theme-dark-1x.png",
+    "images/2x/fydeos/thumbnail-theme-dark-2x.png",
+    "images/1x/fydeos/thumbnail-theme-auto-1x.png",
+    "images/2x/fydeos/thumbnail-theme-auto-2x.png",
 
     "images/fydeos_touchpad_scroll_illo.png",
 

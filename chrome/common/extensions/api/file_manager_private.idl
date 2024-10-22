@@ -865,6 +865,7 @@ dictionary Preferences {
   boolean driveFsBulkPinningEnabled;
   boolean localUserFilesAllowed;
   DefaultLocation defaultLocation;
+  boolean fydeAssistantEnabled;
 };
 
 dictionary PreferencesChange {
@@ -873,6 +874,7 @@ dictionary PreferencesChange {
   boolean? arcRemovableMediaAccessEnabled;
   DOMString[]? folderShortcuts;
   boolean? driveFsBulkPinningEnabled;
+  boolean? fydeAssistantEnabled;
 };
 
 dictionary SearchParams {

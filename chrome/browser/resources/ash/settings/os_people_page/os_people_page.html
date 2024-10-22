@@ -42,7 +42,7 @@
 </style>
 
 <os-settings-animated-pages id="pages" section="[[section_]]">
-  <template is="dom-if" if="[[isRevampWayfindingEnabled_]]">
+  <template is="dom-if" if="[[shouldUseNewUI_]]">
     <div route-path="default">
       <account-manager-settings-card
           prefs="{{prefs}}"
@@ -60,7 +60,7 @@
     </div>
   </template>
 
-  <template is="dom-if" if="[[!isRevampWayfindingEnabled_]]">
+  <template is="dom-if" if="[[!shouldUseNewUI_]]">
     <div route-path="default">
       <settings-card header-text="$i18n{osPeoplePageTitle}">
         <div class="settings-box first two-line">
@@ -81,7 +81,15 @@
                 </span>
                 <div id="profile-label" class="secondary"
                     aria-hidden="true">
+                 <template is="dom-if" if="[[!isFydeLocalAccount_]]">
                   [[profileLabel_]]
+                 </template>
+                 <template is="dom-if" if="[[isFydeLocalAccount_]]">
+                  <localized-link
+                    localized-string="[[i18nAdvanced('fydeLocalAccountChangePasswordLinkDesc')]]"
+                    on-link-clicked="openLocalAccountChangePasswordSystemSettings_">
+                  </localized-link>
+                 </template>
                 </div>
               </div>
               <cr-icon-button class$=[[profileActionButtonIcon_]]
@@ -97,6 +105,7 @@
             start-icon="cr:sync"
             label="$i18n{syncAndNonPersonalizedServices}"
             sub-label="[[getSyncAndGoogleServicesSubtext_(syncStatus)]]"
+            hidden="[[isFydeLocalAccount_]]"
             on-click="onSyncClick_"
             role-description="$i18n{subpageArrowRoleDescription}">
         </cr-link-row>

@@ -46,6 +46,10 @@ void FydeAssistantWebUIHandler::RegisterMessages() {
       "setAssistantBubbleRect",
       base::BindRepeating(&FydeAssistantWebUIHandler::HandleSetAssistantBubbleRect,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "centerAssistantBubble",
+      base::BindRepeating(&FydeAssistantWebUIHandler::HandleCenterAssistantBubbleRect,
+                          base::Unretained(this)));
 }
 
 void FydeAssistantWebUIHandler::OnFydeAssistantSwaInit(const base::Value::List& args) {
@@ -74,6 +78,7 @@ void FydeAssistantWebUIHandler::OnRequestCloseAssistant(const base::Value::List&
 void FydeAssistantWebUIHandler::OnFydeAssistantOpenUrl(const base::Value::List& args) {
   CHECK_EQ(1u, args.size());
   const std::string url = args[0].GetString();
+  VLOG(3) << "OnFydeAssistantOpenUrl, url: " << url;
   ash::NewWindowDelegate::GetPrimary()->OpenUrl(
     GURL(url), ash::NewWindowDelegate::OpenUrlFrom::kUserInteraction,
     ash::NewWindowDelegate::Disposition::kNewWindow);
@@ -85,9 +90,21 @@ void FydeAssistantWebUIHandler::HandleSetAssistantBubbleRect(const base::Value::
   const int y = args[1].GetInt();
   const int width = args[2].GetInt();
   const int height = args[3].GetInt();
+  VLOG(3) << "HandleSetAssistantBubbleRect: " << x << ", " << y << ", " << width << ", " << height;
   Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
   if  (shelf && shelf->fyde_assistant_view()) {
     shelf->fyde_assistant_view()->SetBubbleRect(x, y, width, height);
+  }
+}
+
+void FydeAssistantWebUIHandler::HandleCenterAssistantBubbleRect(const base::Value::List& args) {
+  CHECK_EQ(2u, args.size());
+  const int width = args[0].GetInt();
+  const int height = args[1].GetInt();
+  VLOG(3) << "HandleCenterAssistantBubbleRect: " << width << ", " << height;
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  if  (shelf && shelf->fyde_assistant_view()) {
+    shelf->fyde_assistant_view()->CenterBubble(width, height);
   }
 }
 

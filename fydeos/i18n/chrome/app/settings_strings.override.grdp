@@ -37,4 +37,8 @@
     Signs you out of most sites.
   </message>
 
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_DESC_UPDATED" desc="Updated description of safe browsing enhanced protection mode">
+    Real-time, proactive protection against dangerous sites, downloads, and extensions that's based on your browsing data getting sent to the server
+  </message>
+
 </grit-part>

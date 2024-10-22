@@ -11,6 +11,7 @@ import 'chrome://resources/ash/common/cr_elements/cr_link_row/cr_link_row.js';
 import 'chrome://resources/ash/common/cr_elements/icons.html.js';
 import 'chrome://resources/ash/common/cr_elements/policy/cr_policy_indicator.js';
 import 'chrome://resources/ash/common/cr_elements/cr_shared_vars.css.js';
+import 'chrome://resources/ash/common/cr_elements/localized_link/localized_link.js';
 import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
 import '../controls/settings_toggle_button.js';
 import '../settings_shared.css.js';
@@ -121,9 +122,16 @@ export class OsSettingsPeoplePageElement extends
       isRevampWayfindingEnabled_: {
         type: Boolean,
         value: () => {
-          return false;
+          return isRevampWayfindingEnabled();
         },
         readOnly: true,
+      },
+
+      shouldUseNewUI_: {
+        type: Boolean,
+        value: () => {
+          return isRevampWayfindingEnabled() && !loadTimeData.getBoolean('isFydeProfile');
+        }
       },
 
       showParentalControls_: {
@@ -186,6 +194,13 @@ export class OsSettingsPeoplePageElement extends
             }
             return 'subpage-arrow';
           },
+      },
+
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
       },
 
     };
@@ -483,6 +498,11 @@ export class OsSettingsPeoplePageElement extends
     this.clearAccountPasswordTimeoutId_ = setTimeout(() => {
       this.authTokenInfo_ = undefined;
     }, lifetimeMs);
+  }
+
+  private openLocalAccountChangePasswordSystemSettings_(event: CustomEvent<{event: Event}>): void {
+    event.detail.event.preventDefault();
+    Router.getInstance().navigateTo(routes.LOCK_SCREEN);
   }
 }
 

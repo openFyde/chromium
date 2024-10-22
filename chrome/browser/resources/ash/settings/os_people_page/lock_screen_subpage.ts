@@ -436,6 +436,9 @@ export class SettingsLockScreenElement extends SettingsLockScreenElementBase {
         (await this.authFactorConfig.isConfigured(
              this.authToken, AuthFactor.kLocalPassword))
             .configured;
+    // always enable password settings if the user has a Fyde local account
+    const isFydeLocalAccount = loadTimeData.getBoolean('isFydeProfile') && loadTimeData.getBoolean('isFydeLocalAccount');
+    this.showPasswordSettings_ = this.showPasswordSettings_ || isFydeLocalAccount;
   }
 
   /**

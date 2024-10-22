@@ -96,11 +96,11 @@ void FydeLocalSigninScreenHandler::HandleCompleteAuth(
         static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_AUTH_PASSWORD));
     return;
   }
-  // if (newUser && auth::PasswordFactorEditor::CheckLocalPasswordComplexity(password) != auth::mojom::PasswordComplexity::kOk) {
-  //   SetErrorState(username,
-  //       static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_AUTH_PASSWORD_TOO_SHORT));
-  //   return;
-  // }
+  if (newUser && auth::PasswordFactorEditor::CheckLocalPasswordComplexity(password) != auth::mojom::PasswordComplexity::kOk) {
+    SetErrorState(username,
+        static_cast<int>(FYDE_LOCAL_SIGNIN_ERROR_STATE::BAD_AUTH_PASSWORD_TOO_SHORT));
+    return;
+  }
   bool exist = false;
   user_manager::KnownUser known_user(g_browser_process->local_state());
   const std::vector<AccountId> known_account_ids =

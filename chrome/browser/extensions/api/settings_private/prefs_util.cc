@@ -93,6 +93,7 @@
 #include "components/user_manager/user.h"
 #include "components/user_manager/user_manager.h"
 #include "ui/events/ash/pref_names.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 #endif
 
 #if BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_CHROMEOS_ASH)
@@ -813,6 +814,11 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[ash::ambient::prefs::kAmbientModeRunningDurationMinutes] =
       settings_api::PrefType::kNumber;
 
+  // Fyde Assistant.
+  (*s_allowlist)[fydeos::prefs::kFydeAssistantEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_allowlist)[fydeos::prefs::kFydeAssistantExtraAcceleratorEnabled] =
+      settings_api::PrefType::kBoolean;
   // Google Assistant.
   (*s_allowlist)[ash::assistant::prefs::kAssistantConsentStatus] =
       settings_api::PrefType::kNumber;

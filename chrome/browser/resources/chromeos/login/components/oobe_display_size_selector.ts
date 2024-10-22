@@ -110,7 +110,7 @@ export class OobeDisplaySizeSelector extends OobeDisplaySizeSelectorBase {
       {icon: 'images/app_icons/fydeos/store.svg', name: 'displaySizeStoreApp'},
       {icon: 'images/app_icons/fydeos/camera.svg', name: 'displaySizeCameraApp'},
       {icon: 'images/app_icons/fydeos/settings.svg', name: 'displaySizeSettingsApp'},
-      {icon: 'images/app_icons/fydeos/onedrive.svg', name: 'displaySizeOneDriveApp'},
+      {icon: 'images/app_icons/fydeos/ai.svg', name: 'displaySizeFydeosAiApp'},
     ];
   }
 

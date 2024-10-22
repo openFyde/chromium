@@ -36,6 +36,7 @@ extern const char kEnrollmentAssetId[];
 extern const char kEnrollmentLocation[];
 extern const char kEnrollmentAutoAttributes[];
 extern const char kEnrollmentToken[];
+extern const char kFydeEnrollmentToken[];
 
 enum class ConfigurationHandlerSide : unsigned int {
   HANDLER_JS,    // Handled by JS code

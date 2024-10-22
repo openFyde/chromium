@@ -338,8 +338,8 @@ void DecodeAllowedUsers(const em::ChromeDeviceSettingsProto& policy,
 
   new_values_cache->SetBoolean(
       kAccountsPrefAllowGuest,
-      !policy.has_guest_mode_enabled() ||
-          !policy.guest_mode_enabled().has_guest_mode_enabled() ||
+      policy.has_guest_mode_enabled() &&
+          policy.guest_mode_enabled().has_guest_mode_enabled() &&
           policy.guest_mode_enabled().guest_mode_enabled());
 }
 

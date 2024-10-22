@@ -256,6 +256,7 @@ class ASH_EXPORT AppListControllerImpl
   void OnAssistantSettingsEnabled(bool enabled) override;
   void OnAssistantFeatureAllowedChanged(
       assistant::AssistantAllowedState state) override;
+  void OnFydeAssistantEnabled(bool enabled) override;
 
   // WindowTreeHostManager::Observer:
   void OnDisplayConfigurationChanged() override;
@@ -395,6 +396,8 @@ class ASH_EXPORT AppListControllerImpl
   // Returns true if home screen should be shown based on the current
   // configuration.
   bool ShouldShowHomeScreen() const;
+
+  bool IsFydeAssistantEnabled() const;
 
   // Updates home launcher scale and opacity when the overview mode state
   // changes. `show_home_launcher` - whether the home launcher should be shown.

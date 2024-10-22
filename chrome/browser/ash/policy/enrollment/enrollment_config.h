@@ -285,6 +285,8 @@ struct EnrollmentConfig {
   // Enrollment token to use for authentication (for Flex Auto Enrollment).
   std::string enrollment_token;
 
+  std::string fyde_enrollment_token;
+
  private:
   // Hold fields to be filled corresponding to ones in `EnrollmentConfig`.
   struct PrescribedConfig;

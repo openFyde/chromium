@@ -7,12 +7,14 @@
   },
   "fydeosPrivate.getFydeOSInfo": {
     "dependencies": [],
-    "extension_types": ["extension", "platform_app", "legacy_packaged_app", "hosted_app"],
+    "extension_types": ["extension", "platform_app", "legacy_packaged_app"],
     "platforms" : ["chromeos"],
     "contexts": ["privileged_extension"],
     "allowlist": [
       "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E",  //FydeOS System Control Extension
-      "040DC0863AC1A19D3B3D2A02143865CB697A649E"    // fydeos store
+      "040DC0863AC1A19D3B3D2A02143865CB697A649E",    // fydeos store
+      "04DEB8A90E53908DDCD5C7FBE66E1B50CFD764E6",    // opengapps
+      "498B85A7850A04A87479743361373374A56EC30B"     // start-arc-settings
     ]
   },
   "nativeWindows": [{

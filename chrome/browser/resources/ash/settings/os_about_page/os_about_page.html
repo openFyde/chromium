@@ -342,7 +342,7 @@
         </cr-link-row>
       </settings-card>
 
-      <template is="dom-if" if="[[isRevampWayfindingEnabled_]]">
+      <template is="dom-if" if="[[showCrostiniInAboutPage_(isRevampWayfindingEnabled_)]]">
         <crostini-settings-card prefs="{{prefs}}"></crostini-settings-card>
       </template>
 

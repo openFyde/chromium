@@ -4565,7 +4565,9 @@ source_set("ash") {
     "//ui/ozone",
     "//ui/strings:ui_strings",
     "//ui/wm",
+    "//fydeos/switches:switches",
     "//fydeos/switches/account/toggle:account_toggle",
+    "//fydeos/prefs",
   ]
 
   deps += [

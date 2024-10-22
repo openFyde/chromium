@@ -119,7 +119,7 @@ void LocalPasswordSetupScreen::SetFydeLocalPassword() {
   // skip update mocified_factors, to skip factor_setup_success_screen automatically
   update_modified_factors_ = false;
   password_factor_editor.SetLocalPassword(
-    GetToken(), fyde_local_password_.value(), true,
+    GetToken(), fyde_local_password_.value(),
     base::BindOnce(&LocalPasswordSetupScreen::OnSetLocalPassword,
                    weak_factory_.GetWeakPtr()));
 }
@@ -148,7 +148,7 @@ void LocalPasswordSetupScreen::OnUserAction(const base::Value::List& args) {
     switch (context()->knowledge_factor_setup.auth_setup_flow) {
       case WizardContext::AuthChangeFlow::kInitialSetup:
         password_factor_editor.SetLocalPassword(
-            GetToken(), password, false,
+            GetToken(), password,
             base::BindOnce(&LocalPasswordSetupScreen::OnSetLocalPassword,
                            weak_factory_.GetWeakPtr()));
         break;

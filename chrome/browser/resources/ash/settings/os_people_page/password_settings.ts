@@ -5,6 +5,8 @@
 import {assert} from 'chrome://resources/js/assert.js';
 import {AuthFactor, AuthFactorConfig, FactorObserverReceiver} from 'chrome://resources/mojo/chromeos/ash/services/auth_factor_config/public/mojom/auth_factor_config.mojom-webui.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nMixin} from 'chrome://resources/ash/common/cr_elements/i18n_mixin.js';
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 
 import {getTemplate} from './password_settings.html.js';
 import {SettingsSetLocalPasswordDialogElement} from './set_local_password_dialog.js';
@@ -14,7 +16,7 @@ enum PasswordType {
   GAIA = 'gaia',
 }
 
-export class SettingsPasswordSettingsElement extends PolymerElement {
+export class SettingsPasswordSettingsElement extends I18nMixin(PolymerElement) {
   static get is() {
     return 'settings-password-settings' as const;
   }
@@ -48,6 +50,20 @@ export class SettingsPasswordSettingsElement extends PolymerElement {
         value: null,
         observer: 'onSelectedPasswordTypeChanged_',
       },
+
+      isFydeProfile_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
     };
   }
 
@@ -55,6 +71,8 @@ export class SettingsPasswordSettingsElement extends PolymerElement {
   private hasGaiaPassword_: boolean;
   private hasLocalPassword_: boolean;
   private selectedPasswordType_: PasswordType|null;
+  private isFydeProfile_: boolean;
+  private isFydeLocalAccount_: boolean;
 
   override ready(): void {
     super.ready();
@@ -157,6 +175,21 @@ export class SettingsPasswordSettingsElement extends PolymerElement {
 
   private openSetLocalPasswordDialog_(): void {
     this.setLocalPasswordDialog().showModal();
+  }
+
+  private shouldShowGaiaPassword_(): boolean {
+    return !this.isFydeLocalAccount_;
+  }
+
+  private getLockScreenOnlineAccountPasswordOptionLabel_(): string {
+    if (this.isFydeProfile_) {
+      return this.i18n('lockScreenFydeosAccountPasswordOptionLabel');
+    }
+    return this.i18n('lockScreenGoogleAccountPasswordOptionLabel');
+  }
+
+  private onChangePasswordDisabledHelpClick_(): void {
+    window.open(loadTimeData.getString('fydeosLocalAccountChangePasswordHelpUrl'));
   }
 }
 

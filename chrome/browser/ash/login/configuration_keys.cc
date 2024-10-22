@@ -95,6 +95,8 @@ const char kEnrollmentAutoAttributes[] = "enrollmentAutoAttributes";
 // Enrollment).
 const char kEnrollmentToken[] = "enrollmentToken";
 
+const char kFydeEnrollmentToken[] = "fydeEnrollmentToken";
+
 using ValueType = base::Value::Type;
 
 constexpr struct {
@@ -130,6 +132,8 @@ constexpr struct {
     {kArcTosAutoAccept, ValueType::BOOLEAN,
      ConfigurationHandlerSide::HANDLER_BOTH},
     {kEnrollmentToken, ValueType::STRING,
+     ConfigurationHandlerSide::HANDLER_CPP},
+    {kFydeEnrollmentToken, ValueType::STRING,
      ConfigurationHandlerSide::HANDLER_CPP},
     {"desc", ValueType::STRING, ConfigurationHandlerSide::HANDLER_DOC},
     {"testValue", ValueType::STRING, ConfigurationHandlerSide::HANDLER_BOTH},

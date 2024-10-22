@@ -6,7 +6,6 @@
 #include "base/logging.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "fydeos/prefs/fydeos_pref_names.h"
 #include "fydeos/constants/fydeos_constants.h"
 
 namespace fydeos {
@@ -14,6 +13,10 @@ namespace prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFydeOSImprovementPlanEnabled, false);
+
+  registry->RegisterBooleanPref(kFydeAssistantEnabled, true);
+  registry->RegisterBooleanPref(kFydeAssistantExtraAcceleratorEnabled, true);
+
   registry->RegisterBooleanPref(kFydeOSArcMediaAutoScanEnabled, true);
 #if BUILDFLAG(USE_FYDEOS_COM)
   registry->RegisterBooleanPref(kCrostiniInstallerNotificationUserInteracted, false);

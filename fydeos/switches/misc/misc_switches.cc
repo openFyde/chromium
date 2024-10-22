@@ -15,7 +15,7 @@ const char kFydeDisableCustom[] = "fyde-disable-custom";
 
 const char kEnableTpmDictionaryAttackLockout[] = "fydeos-enable-tpm-da-lockout";
 
-const char kAllowInitDevicePolicyWithoutStateKeys[] = "allow-init-device-policy-without-state-keys";
+const char kDisallowInitDevicePolicyWithoutStateKeys[] = "disallow-init-device-policy-without-state-keys";
 
 const char kDisableUnknownPeripheralBatteryNotification[] = "disable-unknown-peripheral-battery-notification";
 
@@ -29,6 +29,8 @@ const std::vector<std::string> kNonForYouBoards = {
   "amd64-generic",
   "fydetab_duo-fydeos",
 };
+
+const char kFydeAutoSigninDelay[] = "fyde-auto-signin-delay";
 
 }
 
@@ -56,7 +58,7 @@ bool IsNonForYouBoard(const std::string& board) {
 }
 
 bool IsInitDevicePolicyWithoutStateKeysAllowed() {
-  return base::CommandLine::ForCurrentProcess()->HasSwitch(kAllowInitDevicePolicyWithoutStateKeys);
+  return !base::CommandLine::ForCurrentProcess()->HasSwitch(kDisallowInitDevicePolicyWithoutStateKeys);
 }
 
 bool IsUnknownPeripheralBatteryNotificationDisabled() {
@@ -66,6 +68,13 @@ bool IsUnknownPeripheralBatteryNotificationDisabled() {
 bool IsDynamicDefaultWallpaperSupported() {
   return base::CommandLine::ForCurrentProcess()->HasSwitch(
       kFydeEnableDynamicDefaultWallpaper);
+}
+
+int64_t GetFydeOSAutoSigninDelay() {
+	std::string delayStr = base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kFydeAutoSigninDelay);
+	if (delayStr.empty())
+		return 0;
+	return (int64_t) std::stoi(delayStr);
 }
 
 } // switches

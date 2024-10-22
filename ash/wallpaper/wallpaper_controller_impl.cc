@@ -2184,7 +2184,10 @@ void WallpaperControllerImpl::ShowOobeWallpaper() {
         FILE_PATH_LITERAL("/usr/share/chromeos-assets/animated_splash_screen/"
                           "oobe_wallpaper.jpg"));
   } else {
-    file_path = GetDefaultWallpaperPath(user_manager::UserType::kRegular);
+    file_path = base::FilePath(
+        GetDefaultDarkLightWallpaperPath(user_manager::UserType::kRegular,
+                                         false,
+                                         GetDefaultWallpaperPath(user_manager::UserType::kRegular)));
   }
 
   if (!cached_oobe_wallpaper_.image.isNull() &&

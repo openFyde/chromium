@@ -256,6 +256,10 @@ found in the LICENSE file.
     overflow: hidden;
     height: 72%;
   }
+  :host([fydeos-layout]) #oobe-fydeos-illustration.oobe-fydeos-non-animation-container {
+    width: fit-content;
+    margin: 0 auto;
+  }
   :host([fydeos-layout]) #oobe-fydeos-illustration ::slotted(img) {
     width: 100%;
     height: 100%;
@@ -308,16 +312,22 @@ found in the LICENSE file.
      </template>
      <template is="dom-if" if="[[fydeosLayout]]">
       <div id="header-container" class="layout vertical flex center-justified">
-        <div id="oobe-fydeos-illustration" class="vertical-mode-centering">
-          <slot name="fydeos-illustration">
-            <template is="dom-if" if="[[animationUrl]]">
-              <oobe-cr-lottie id="fydeos-illustration-animation"
-                  hide-play-pause-icon
-                  loop="[[animationLoop]]"
-                  animation-url="[[animationUrl]]">
-            </template>
-          </slot>
-        </div>
+        <template is="dom-if" if="[[animationUrl]]">
+          <div id="oobe-fydeos-illustration" class="vertical-mode-centering">
+            <slot name="fydeos-illustration">
+              <template is="dom-if" if="[[animationUrl]]">
+                <oobe-cr-lottie id="fydeos-illustration-animation"
+                    hide-play-pause-icon
+                    loop="[[animationLoop]]"
+                    animation-url="[[animationUrl]]">
+            </slot>
+          </div>
+        </template>
+        <template is="dom-if" if="[[!animationUrl]]">
+          <div id="oobe-fydeos-illustration" class="vertical-mode-centering oobe-fydeos-non-animation-container">
+            <slot name="fydeos-illustration"></slot>
+          </div>
+        </template>
       </div>
       <div id="scrollContainer" class="layout vertical flex scrollable">
         <div id="oobe-title-container">

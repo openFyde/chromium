@@ -121,9 +121,10 @@ void ResetSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       ::settings::ResetSettingsHandler::ShouldShowResetProfileBanner(
           profile()));
 
+  const bool kForceUseNonRevampDesc = true;
   html_source->AddString(
       "powerwashDescription",
-      kIsRevampEnabled ? l10n_util::GetStringUTF16(
+      (kIsRevampEnabled && !kForceUseNonRevampDesc) ? l10n_util::GetStringUTF16(
                              IDS_OS_SETTINGS_REVAMP_FACTORY_RESET_DESCRIPTION)
                        : l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_FACTORY_RESET_DESCRIPTION,

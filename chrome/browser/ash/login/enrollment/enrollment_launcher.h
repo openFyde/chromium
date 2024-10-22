@@ -103,7 +103,7 @@ class EnrollmentLauncher {
   // distinguish from EnrollUsingEnrollmentToken.
   virtual void EnrollUsingToken(const std::string& token) = 0;
 
-  virtual void EnrollUsingFydeToken(const std::string& token) = 0;
+  virtual void EnrollUsingFydeToken() = 0;
 
   // Starts enterprise enrollment using PCA attestation.
   // EnrollUsingAttestation can be called only once during the object's

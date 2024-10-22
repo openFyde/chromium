@@ -15,6 +15,11 @@ interface ContextMenus {
   };
 }
 
+interface WebviewLoadAbortEvent extends Event {
+  url: string;
+  isTopLevel: boolean;
+}
+
 interface HTMLWebviewElement extends HTMLElement {
   src: string;
   partition: string;
@@ -59,12 +64,17 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
         type: Boolean,
         value: false,
       },
+      loadAbort_: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
   private webview_: HTMLWebviewElement;
 
   private loaded_: boolean;
+  private loadAbort_: boolean;
   private showLoading_: boolean;
   private showWebview_: boolean;
   private url_: string;
@@ -74,6 +84,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   private isFromBubble_: boolean;
   private isEventBinded_: boolean;
   private systemColors_: SystemColorInfo;
+  private files_: File[];
 
   constructor() {
     super();
@@ -85,6 +96,30 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.isFromBubble_ = false;
     this.isEventBinded_ = false;
     this.systemColors_ = { base: '', shaded: '', header: '', primary: '' };
+    this.files_ = [];
+    if (window.launchQueue) {
+      window.launchQueue.setConsumer(this.consumerFiles.bind(this));
+    }
+    if(!loadTimeData.getBoolean('isFydeOSAssistantEnabled')) {
+      window.open('chrome://os-settings/osFydeAssistant');
+      window.close();
+    }
+    if(!loadTimeData.getBoolean('isFydeOSAssistantEnabled')) {
+      window.open('chrome://os-settings/osFydeAssistant');
+      window.close();
+    }
+  }
+
+  async consumerFiles(launchParams: LaunchParams) {
+    const handles = launchParams.files as FileSystemFileHandle[];
+    const promises = handles.map(async (handle) => {
+      const file = await handle.getFile();
+      return file;
+    });
+    this.files_ = await Promise.all(promises);
+    if (this.loaded_) {
+      this.sendMessage({ method: 'files', data: { files: this.files_ } });
+    }
   }
 
   override ready(): void {
@@ -117,6 +152,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     }, this.debounceTimeout_);
     this.webview_.src = this.url_;
     this.webview_.addEventListener('contentload', this.onWebviewLoaded_.bind(this));
+    this.webview_.addEventListener('loadabort', this.onWebviewAborted_.bind(this));
   }
 
   tweakContainerStyle_() {
@@ -202,6 +238,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
       return;
     }
 
+    console.log('received message', e.data);
     const { method, message, data } = e.data;
 
     switch (method) {
@@ -224,7 +261,13 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
       case 'setRect':
         if (data) {
           const { x=0, y=0, width=0, height=0 } = data;
-          chrome.send('setAssistantBubbleRect', [x, y, width, height]);
+          chrome.send('setAssistantBubbleRect', [Math.round(x), Math.round(y), Math.round(width), Math.round(height)]);
+        }
+        break;
+      case 'centerBubble':
+        if (data) {
+          const { width=0, height=0 } = data;
+          chrome.send('centerAssistantBubble', [Math.round(width), Math.round(height)]);
         }
         break;
     }
@@ -233,24 +276,37 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   bindEvents_(): void {
     if (this.isEventBinded_) return;
     this.isEventBinded_ = true;
-    if (this.isFromLauncher_) {
-      addWebUIListener('query-from-launcher', this.onQueryFromLauncher_.bind(this));
-      addWebUIListener('ui-visibility-changed', this.onUiVisibilityChanged_.bind(this));
-    } else if (this.isFromBubble_) {
+    if (this.isFromBubble_) {
       addWebUIListener('query-from-bubble', this.onQueryFromBubble_.bind(this));
       addWebUIListener('bubble-visibility-changed', this.onBubbleVisibilityChanged_.bind(this));
+    } else {
+      addWebUIListener('query-from-launcher', this.onQueryFromLauncher_.bind(this));
+      // addWebUIListener('ui-visibility-changed', this.onUiVisibilityChanged_.bind(this));
     }
     addWebUIListener('system-color-changed', this.onSystemColorChanged_.bind(this));
   }
 
   onWebviewLoaded_(): void {
+    if (this.loadAbort_) {
+      return;
+    }
     this.loaded_ = true;
     this.showLoading_ = false;
     this.showWebview_ = true;
     chrome.send('onFydeAssistantSwaInit');
     this.bindEvents_();
-    this.sendMessage({ method: 'init' });
+    this.sendMessage({ method: 'init', data: { files: this.files_ } });
     this.webview_.focus();
+  }
+
+  onWebviewAborted_(e: Event): void {
+    if (this.loaded_) {
+      return;
+    }
+    const { isTopLevel, url } = e as WebviewLoadAbortEvent;
+    if (isTopLevel && url && url.startsWith(this.origin_)) {
+      this.loadAbort_ = true;
+    }
   }
 
   appendSource(data: MessageData) {
@@ -265,6 +321,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
 
   sendMessage(data: MessageData) {
     if (this.webview_.contentWindow) {
+      console.log('sending message', this.appendSource(data));
       this.webview_.contentWindow.postMessage(this.appendSource(data), this.webview_.src);
     } else {
       console.log('this.webview content window is null');
@@ -273,8 +330,13 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
 
   onQueryFromLauncher_(message: string): void {
     console.log('query-from-launcher', message);
-    if (this.isFromLauncher_) {
-      this.sendMessage({ method: 'query', message });
+    if (!this.isFromBubble_) {
+      // option one:
+      // this.sendMessage({ method: 'query', message });
+
+      // option two: reload with new initQuery
+      this.url_ = this.removeInitQueryParam_(this.url_);
+      this.webview_.src = `${this.url_}&initQuery=${encodeURIComponent(message)}`;
     }
   }
 

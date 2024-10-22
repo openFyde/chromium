@@ -126,7 +126,7 @@ void WelcomeScreenHandler::DeclareLocalizedValues(
 #endif
   } else {
     builder->AddF("welcomeScreenGreeting", IDS_NEW_WELCOME_SCREEN_GREETING,
-                  ui::GetChromeOSDeviceTypeResourceId());
+                  IDS_INSTALLED_PRODUCT_OS_NAME);
     builder->Add("welcomeScreenGreetingSubtitle",
                  IDS_WELCOME_SCREEN_GREETING_SUBTITLE);
   }

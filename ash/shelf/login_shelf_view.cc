@@ -71,6 +71,7 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
 #include "fydeos/switches/misc/misc_constants.h"
+#include "fydeos/switches/account/account_switches.h"
 
 using session_manager::SessionState;
 
@@ -861,7 +862,8 @@ bool LoginShelfView::ShouldShowEnterpriseEnrollmentButton() const {
   const SessionState session_state =
       Shell::Get()->session_controller()->GetSessionState();
   return session_state == SessionState::OOBE &&
-         dialog_state_ == OobeDialogState::USER_CREATION;
+        ((dialog_state_ == OobeDialogState::GAIA_SIGNIN && fydeos::switches::IsFydeAccountEnabled()) ||
+         dialog_state_ == OobeDialogState::USER_CREATION);
 }
 
 bool LoginShelfView::ShouldShowSchoolEnrollmentButton() const {

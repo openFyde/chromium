@@ -44,6 +44,7 @@
 #include "ash/public/cpp/shelf_config.h"
 #include "ash/public/cpp/shelf_types.h"
 #include "ash/public/cpp/shell_window_ids.h"
+#include "ash/public/cpp/new_window_delegate.h"
 #include "ash/root_window_controller.h"
 #include "ash/screen_util.h"
 #include "ash/session/session_controller_impl.h"
@@ -948,6 +949,10 @@ void AppListControllerImpl::OnAssistantStatusChanged(
   UpdateSearchBoxUiVisibilities();
 }
 
+void AppListControllerImpl::OnFydeAssistantEnabled(bool enabled) {
+  UpdateSearchBoxUiVisibilities();
+}
+
 void AppListControllerImpl::OnAssistantSettingsEnabled(bool enabled) {
   UpdateSearchBoxUiVisibilities();
 }
@@ -1190,12 +1195,22 @@ void AppListControllerImpl::RecordShelfAppLaunched() {
 
 void AppListControllerImpl::StartAssistant(
     assistant::AssistantEntryPoint entry_point) {
+  if (ash::features::IsFydeAssistantEnabled()) {
+    NewWindowDelegate::GetInstance()->OpenUrl(GURL("chrome://fydeos-ai"),
+      NewWindowDelegate::OpenUrlFrom::kUserInteraction,
+      NewWindowDelegate::Disposition::kNewWindow);
+    UpdateSearchBoxUiVisibilities();
+    return;
+  }
   AssistantUiController::Get()->ShowUi(entry_point);
   UpdateSearchBoxUiVisibilities();
 }
 
 void AppListControllerImpl::EndAssistant(
     assistant::AssistantExitPoint exit_point) {
+  if (ash::features::IsFydeAssistantEnabled()) {
+    return;
+  }
   AssistantUiController::Get()->CloseUi(exit_point);
 }
 
@@ -1775,7 +1790,7 @@ SearchModel* AppListControllerImpl::GetSearchModel() {
 
 void AppListControllerImpl::UpdateSearchBoxUiVisibilities() {
   GetSearchModel()->search_box()->SetShowAssistantButton(
-      IsAssistantAllowedAndEnabled() || ash::features::IsFydeAssistantEnabled());
+      IsAssistantAllowedAndEnabled() || IsFydeAssistantEnabled());
 
   if (!client_) {
     return;
@@ -1864,6 +1879,15 @@ bool AppListControllerImpl::ShouldShowHomeScreen() const {
   }
 
   return !SplitViewController::Get(window)->InSplitViewMode();
+}
+
+bool AppListControllerImpl::IsFydeAssistantEnabled() const {
+  auto featureEnabled = ash::features::IsFydeAssistantEnabled();
+  if (!featureEnabled) {
+    return false;
+  }
+  auto* state = AssistantState::Get();
+  return state->fyde_assistant_enabled().value_or(false);
 }
 
 void AppListControllerImpl::UpdateForOverviewModeChange(bool show_home_launcher,

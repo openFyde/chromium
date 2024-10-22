@@ -46,6 +46,7 @@
 #include "build/chromeos_buildflags.h"
 #if BUILDFLAG(IS_CHROMEOS_ASH)
 #include "ui/base/ime/ash/extension_ime_util.h"
+#include "fydeos/constants/fydeos_constants.h"
 #endif
 
 ToolbarActionsModel::ToolbarActionsModel(
@@ -185,6 +186,9 @@ bool ToolbarActionsModel::ShouldAddExtension(
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
   if (ash::extension_ime_util::IsFydeOSProvidedIMEByExtensionId(extension->id())) {
+    return false;
+  }
+  if (fydeos::constants::ShouldHideExtensionById(extension->id())) {
     return false;
   }
 #endif

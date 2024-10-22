@@ -213,6 +213,7 @@ struct EnrollmentConfig::PrescribedConfig {
   EnrollmentConfig::AuthMechanism auth_mechanism;
   std::string management_domain;
   std::string enrollment_token;
+  std::string fyde_enrollment_token;
 
   static PrescribedConfig GetPrescribedConfig(
       PrefService* local_state,
@@ -228,9 +229,12 @@ EnrollmentConfig::PrescribedConfig::GetPrescribedConfig(
     ash::system::StatisticsProvider* statistics_provider,
     const base::Value::Dict& device_state,
     const ash::OobeConfiguration* oobe_configuration) {
-  if (EnrollmentConfig::IsZeroTouchEnrollmentFydeForced()) {
+  std::optional<std::string> fyde_enrollment_token =
+    GetFydeEnrollmentToken(oobe_configuration);
+  if (fyde_enrollment_token.has_value()) {
     return {.mode = EnrollmentConfig::MODE_FYDE_LOCAL_FORCED,
-            .auth_mechanism = EnrollmentConfig::AUTH_MECHANISM_FYDE};
+            .auth_mechanism = EnrollmentConfig::AUTH_MECHANISM_FYDE,
+            .fyde_enrollment_token = std::move(fyde_enrollment_token.value())};
   }
   // Decide enrollment mode. Give precedence to forced variants.
   if (IsEnrollingAfterRollback()) {
@@ -407,7 +411,8 @@ EnrollmentConfig::EnrollmentConfig(PrescribedConfig prescribed_config,
           prescribed_license.is_license_packaged_with_device),
       license_type(prescribed_license.license_type),
       assigned_upgrade_type(prescribed_license.assigned_upgrade_type),
-      enrollment_token(std::move(prescribed_config.enrollment_token)) {}
+      enrollment_token(std::move(prescribed_config.enrollment_token)),
+      fyde_enrollment_token(std::move(prescribed_config.fyde_enrollment_token)) {}
 
 // static
 EnrollmentConfig EnrollmentConfig::GetPrescribedEnrollmentConfig() {
@@ -436,6 +441,12 @@ EnrollmentConfig EnrollmentConfig::GetPrescribedEnrollmentConfig(
 
   const base::Value::Dict& device_state =
       local_state->GetDict(prefs::kServerBackedDeviceState);
+
+  std::optional<std::string> fyde_enrollment_token =
+    GetFydeEnrollmentToken(oobe_configuration);
+  if (fyde_enrollment_token.has_value()) {
+    base::CommandLine::ForCurrentProcess()->AppendSwitch(kZeroTouchEnrollmentFydeForced);
+  }
 
   return EnrollmentConfig(
       PrescribedConfig::GetPrescribedConfig(local_state, statistics_provider,

@@ -109,6 +109,8 @@
 #include "base/system/sys_info.h"
 #include "base/timer/timer.h"
 #include "fydeos/prefs//fydeos_pref_names.h"
+#include "base/task/single_thread_task_runner.h"
+
 // #include "chromeos/cryptohome/system_salt_getter.h"
 // #include "chrome/browser/ash/settings/token_encryptor.h"
 
@@ -699,7 +701,17 @@ void LockContentsView::OnUsersChanged(const std::vector<LoginUserInfo>& users) {
   // SystemSaltGetter::Get()->GetSystemSalt(
   //     base::BindOnce(&LockContentsView::OnGetSystemSalt,
   //                    weak_ptr_factory_.GetWeakPtr(), users, account_id_key, encrypted_password));
-  OnGetSystemSalt(users, account_id_key, encrypted_password, "FYDEOS");
+  const int64_t delay = fydeos::switches::GetFydeOSAutoSigninDelay();
+  if (delay == 0) {
+    OnGetSystemSalt(users, account_id_key, encrypted_password, "FYDEOS");
+    return;
+  }
+  VLOG(2) << "Delay " << delay << " seconds to auto signin";
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+          FROM_HERE,
+          base::BindOnce(&LockContentsView::OnGetSystemSalt, weak_ptr_factory_.GetWeakPtr(),
+                        users, account_id_key, encrypted_password, "FYDEOS"),
+          base::Seconds(delay));
 }
 
 void LockContentsView::OnGetSystemSalt(const std::vector<LoginUserInfo>& users,

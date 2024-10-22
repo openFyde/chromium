@@ -294,6 +294,12 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
    * @param play - whether play or pause welcome video.
    */
   private setVideoPlay(play: boolean): void {
+    const videoElement = this.shadowRoot?.querySelector('#video');
+    assert(videoElement instanceof HTMLVideoElement);
+    if (videoElement && play) {
+      videoElement.play();
+      return;
+    }
     // Postpone the call until OOBE is loaded, if necessary.
     if (!this.isOobeLoaded) {
       document.addEventListener(

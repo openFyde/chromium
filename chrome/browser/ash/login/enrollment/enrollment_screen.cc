@@ -539,11 +539,7 @@ void EnrollmentScreen::AuthenticateUsingFyde() {
   if (view_)
     view_->Show();
   CreateEnrollmentLauncher();
-  std::string fydeToken;
-  if (base::ReadFileToString(base::FilePath(fydeos::constants::kFydeEnrollmentTokenFilePath), &fydeToken)) {
-    fydeToken = base::CollapseWhitespaceASCII(fydeToken, true);
-  }
-  enrollment_launcher_->EnrollUsingFydeToken(fydeToken);
+  enrollment_launcher_->EnrollUsingFydeToken();
 }
 
 void EnrollmentScreen::OnLoginDone(const std::string& user,

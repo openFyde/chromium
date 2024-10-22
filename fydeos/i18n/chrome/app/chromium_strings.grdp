@@ -79,7 +79,7 @@
         FydeOS, offered by <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>https://fydeos.io<ph name="END_LINK">&lt;/a&gt;</ph>
       </message>
       <message name="IDS_VERSION_UI_FYDEOS_PRODUCT_TOS" desc="Tos information on the about pages">
-        FydeOS and its services comply with the GDPR and are subject to the UK Data Protection Act. For more information, please consult our <ph name="BEGIN_LINK_PRIVACY">&lt;a target="_blank" href="$1"&gt;</ph>Privacy Statement<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$2"&gt;</ph>Terms of Service.<ph name="END_LINK_TOS">&lt;/a&gt;</ph>
+        FydeOS and its services comply with the GDPR and adhere to the provisions of the UK Data Protection Act. For more information, please consult our <ph name="BEGIN_LINK_PRIVACY">&lt;a target="_blank" href="$1"&gt;</ph>Privacy Statement<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$2"&gt;</ph>Terms of Service.<ph name="END_LINK_TOS">&lt;/a&gt;</ph>
       </message>
     </if>
   </if>

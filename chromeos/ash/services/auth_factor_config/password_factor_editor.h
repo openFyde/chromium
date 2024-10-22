@@ -41,7 +41,6 @@ class PasswordFactorEditor : public mojom::PasswordFactorEditor {
   void SetLocalPassword(
       const std::string& auth_token,
       const std::string& new_password,
-      const bool skip_password_complexity_check,
       base::OnceCallback<void(mojom::ConfigureResult)> callback) override;
 
   void SetOnlinePassword(

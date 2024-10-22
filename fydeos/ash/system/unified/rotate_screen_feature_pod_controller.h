@@ -36,7 +36,7 @@ class ASH_EXPORT RotateScreenFeaturePodController :
  private:
   void UpdateTile();
 
-  raw_ptr<FeatureTile> tile_ = nullptr;
+  raw_ptr<FeatureTile, DanglingUntriaged> tile_ = nullptr;
 
   base::WeakPtrFactory<RotateScreenFeaturePodController> weak_factory_{this};
 };

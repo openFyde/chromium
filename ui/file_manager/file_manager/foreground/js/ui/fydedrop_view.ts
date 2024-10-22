@@ -22,22 +22,49 @@ export class FydeDropView {
       }
     });
 
+    this.loaded_ = false;
     this.setUrl();
   }
 
   setUrl() {
     const webview = this.fydeDropView_.getElementsByTagName('webview')[0];
     if (webview && !webview.src) {
-      webview.src = loadTimeData.getString('FYDE_DROP_URL');
+      this.fydeDropView_.addEventListener(
+        "contentload",
+        this.onContentLoad_.bind(this),
+      );
+      webview.src = loadTimeData.getString("FYDE_DROP_URL");
     }
   }
 
   show() {
+    if (!this.loaded_) {
+      this.hideSpinnerCallback_ =
+        window.fileManager.spinnerController.showWithDelay(
+          100,
+          this.onSpinnerShow_.bind(this),
+        );
+    }
     this.setUrl();
     this.fydeDropView_.hidden = false;
   }
 
   hide() {
     this.fydeDropView_.hidden = true;
+    this.hideSpinner_();
+  }
+
+  onContentLoad_() {
+    this.loaded_ = true;
+    this.hideSpinner_();
+  }
+
+  onSpinnerShow_() {}
+
+  hideSpinner_() {
+    if (this.hideSpinnerCallback_) {
+      this.hideSpinnerCallback_();
+      this.hideSpinnerCallback_ = null;
+    }
   }
 }

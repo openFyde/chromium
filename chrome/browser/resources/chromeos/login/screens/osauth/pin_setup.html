@@ -76,7 +76,10 @@ found in the LICENSE file.
     fydeos-layout
     footer-shrinkable>
   <iron-icon slot="icon" icon="oobe-32:lock"></iron-icon>
-  <img slot="fydeos-illustration" src="images/fydeos_pin_illustration.svg" />
+  <iron-icon icon="oobe-illos:fydeos-pin-illo"
+      slot="fydeos-illustration"
+      class="illustration-jelly">
+  </iron-icon>
   <h1 slot="title" hidden="[[isChildAccount]]" aria-live="polite">
     [[i18nDynamic(locale, 'discoverPinSetupTitle3')]]
   </h1>

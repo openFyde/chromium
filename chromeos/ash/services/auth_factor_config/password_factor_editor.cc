@@ -104,11 +104,10 @@ void PasswordFactorEditor::UpdateOnlinePassword(
 void PasswordFactorEditor::SetLocalPassword(
     const std::string& auth_token,
     const std::string& new_password,
-    const bool skip_password_complexity_check,
     base::OnceCallback<void(mojom::ConfigureResult)> callback) {
   // Mojo strings are valid UTF-8, so the `CheckLocalPasswordComplexityImpl`
   // call is OK.
-  if (!skip_password_complexity_check && CheckLocalPasswordComplexityImpl(new_password) !=
+  if (CheckLocalPasswordComplexityImpl(new_password) !=
       mojom::PasswordComplexity::kOk) {
     std::move(callback).Run(mojom::ConfigureResult::kFatalError);
     return;

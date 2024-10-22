@@ -106,6 +106,7 @@ shown on non-ChromeOS platforms -->
         </template> <!-- if="[[!shouldShowSyncAccountControl_()]]" -->
 
         <cr-link-row id="sync-setup"
+            hidden="[[isFydeLocalAccount_]]"
             label="$i18n{syncAndNonPersonalizedServices}"
             sub-label="[[getSyncAndGoogleServicesSubtext_(syncStatus)]]"
             on-click="onSyncClick_"

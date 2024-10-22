@@ -20,6 +20,7 @@ component("fwupd") {
     "//crypto",
     "//dbus",
     "//third_party/zlib/google:compression_utils",
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
   ]
 
   sources = [

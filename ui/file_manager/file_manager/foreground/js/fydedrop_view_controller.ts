@@ -32,27 +32,29 @@ export class FydeDropViewController {
         'fydedrop-stopped', this.onFydeDropStopped_.bind(this));
   }
 
-  hideActionButtons_() {
+  hideActionButtonsAndTable_() {
     console.log('hideActionButtons_');
     this.ui_.sortButton.setAttribute('hidden', '');
     this.ui_.toggleViewButton.setAttribute('hidden', '');
+    this.ui_.listContainer.table.setAttribute('hidden', '');
   }
 
-  showActionButtons_() {
+  showActionButtonsAndTable_() {
     console.log('showActionButtons_');
     this.ui_.sortButton.removeAttribute('hidden');
     this.ui_.toggleViewButton.removeAttribute('hidden');
+    this.ui_.listContainer.table.removeAttribute('hidden');
   }
 
   onFydeDropStarted_() {
     console.log('onFydeDropStarted_');
-    this.hideActionButtons_();
+    this.hideActionButtonsAndTable_();
     this.fydeDropView_.show();
   }
 
   onFydeDropStopped_() {
     console.log('onFydeDropStopped_');
     this.fydeDropView_.hide();
-    this.showActionButtons_();
+    this.showActionButtonsAndTable_();
   }
 }

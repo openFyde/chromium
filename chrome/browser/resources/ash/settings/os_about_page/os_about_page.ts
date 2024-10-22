@@ -645,6 +645,10 @@ export class OsAboutPageElement extends OsAboutPageBase {
     });
   }
 
+  private showCrostiniInAboutPage_(_isRevampWayfindingEnabled: boolean): boolean {
+    return false;
+  }
+
   private computeShowRelaunch_(): boolean {
     return this.checkStatus_(UpdateStatus.NEARLY_UPDATED);
   }

@@ -86,6 +86,7 @@
 #include "storage/browser/file_system/file_system_url.h"
 #include "storage/common/file_system/file_system_util.h"
 #include "ui/display/tablet_state.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 using apps::AppServiceProxy;
 using apps::AppServiceProxyFactory;
@@ -737,6 +738,7 @@ void EventRouter::ObserveEvents() {
     pref_change_registrar_->Add(prefs::kOfficeFileMovedToOneDrive, cb);
     pref_change_registrar_->Add(prefs::kOfficeFileMovedToGoogleDrive, cb);
     pref_change_registrar_->Add(prefs::kLocalUserFilesAllowed, cb);
+    pref_change_registrar_->Add(fydeos::prefs::kFydeAssistantEnabled, cb);
   }
 
   {

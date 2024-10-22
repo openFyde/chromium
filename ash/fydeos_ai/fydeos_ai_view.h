@@ -8,7 +8,9 @@
 #include "ash/public/cpp/session/session_observer.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
-#include "ui/views/widget/widget_observer.h"
+#include "ui/events/event.h"
+#include "ui/events/event_handler.h"
+#include "ash/public/cpp/assistant/assistant_state.h"
 
 namespace views {
 class View;
@@ -39,9 +41,10 @@ class FydeAssistantViewObserver : public base::CheckedObserver  {
 
 class FydeAssistantBubble;
 
-class ASH_EXPORT FydeAssistantView : public SessionObserver, public views::WidgetObserver {
+class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHandler,
+                                     public AssistantStateObserver {
  public:
-  FydeAssistantView();
+  explicit FydeAssistantView(aura::Window* container);
 
   FydeAssistantView(const FydeAssistantView&) = delete;
   FydeAssistantView& operator=(const FydeAssistantView&) = delete;
@@ -51,41 +54,54 @@ class ASH_EXPORT FydeAssistantView : public SessionObserver, public views::Widge
   void AddObserver(FydeAssistantViewObserver* observer) const;
   void RemoveObserver(FydeAssistantViewObserver* observer) const;
 
-  void CreateAssistantWidget(aura::Window* window);
+  bool IsVisible() const;
 
-  void ShowBubble();
+  void ShowBubble(bool update_anchor_point = true);
   void HideBubble();
 
   void UpdateLastClipboardItem(const ClipboardHistoryItem& item);
   bool CanHandleToggleFydeOSAssistant();
 
+  bool CanHandleTouchSelectionMenuAction();
+  void HandleSendTextToAI(const gfx::Rect& anchor_rect, const std::u16string& text);
+
   void OnBubbleReady();
 
   void SetBubbleRect(int x, int y, int width, int height);
 
+  void CenterBubble(int width, int height);
+
  private:
-  bool CreateBubble();
   void OnSessionStateChanged(session_manager::SessionState state) override;
 
-  void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
-  void OnWidgetClosing(views::Widget* widget) override;
+  void OnMouseEvent(ui::MouseEvent* event) override;
+  void OnTouchEvent(ui::TouchEvent* event) override;
 
-  void Show();
+  void ProcessPressedEvent(ui::LocatedEvent* event);
+
+  void OnFydeAssistantExtraAcceleratorEnabled(bool enabled) override;
+
+  void Show(bool update_anchor_point);
   void Hide();
 
-  bool recreate_required_ = false;
-  bool visible_ = false;
-  bool can_show_ = false;
+  void InitializeBubble();
+  void ScheduleInitializeBubble();
+
+  bool init_scheduled_ = false;
+  bool enabled_ = false;
+  bool ready_to_show_bubble_ = false;
+  bool bubble_initialized_ = false;
   bool should_show_bubble_delay_ = false;
   base::TimeTicks last_clipboard_item_time_ = base::TimeTicks::Min();
   base::TimeTicks last_time_triggered_ = base::TimeTicks::Min();
   FydeAssistantViewObserver::ClipboardItemForAssistant last_clipboard_item_;
-  aura::Window* window_ = nullptr;
-  raw_ptr<FydeAssistantBubble> bubble_;
+  raw_ptr<FydeAssistantBubble, DanglingUntriaged> bubble_;
 
-  gfx::Point current_anchor_point_ = gfx::Point();
+  gfx::Point current_anchor_point_;
 
   mutable base::ObserverList<FydeAssistantViewObserver> observers_;
+
+base::WeakPtrFactory<FydeAssistantView> weak_factory_{this};
 };
 
 }  // namespace ash

@@ -30,6 +30,7 @@ import {DomRepeat, mixinBehaviors, PolymerElement} from 'chrome://resources/poly
 
 import {assertExists, castExists} from '../assert_extras.js';
 import {androidAppsVisible, isInputDeviceSettingsSplitEnabled, isRevampWayfindingEnabled} from '../common/load_time_booleans.js';
+import {isAccountManagerEnabled} from '../common/load_time_booleans.js';
 import {RouteObserverMixin, RouteObserverMixinInterface} from '../common/route_observer_mixin.js';
 import {Constructor} from '../common/types.js';
 import {DevicePageBrowserProxy, DevicePageBrowserProxyImpl} from '../device_page/device_page_browser_proxy.js';
@@ -298,10 +299,12 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
     if (this.isRevampWayfindingEnabled_) {
       // Accounts menu item is not available in guest mode.
       if (this.pageAvailability[Section.kPeople]) {
-        this.updateAccountsMenuItemDescription_();
-        this.addWebUiListener(
-            'accounts-changed',
-            this.updateAccountsMenuItemDescription_.bind(this));
+        if (isAccountManagerEnabled()) {
+          this.updateAccountsMenuItemDescription_();
+          this.addWebUiListener(
+              'accounts-changed',
+              this.updateAccountsMenuItemDescription_.bind(this));
+        }
       }
 
       // Bluetooth menu item.
@@ -470,6 +473,13 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
               this.i18n('appsmenuItemDescriptionArcUnavailable'),
         },
         {
+          section: Section.kFydeAssistant,
+          path: `/${routesMojom.FYDE_ASSISTANT_SECTION_PATH}`,
+          icon: 'os-settings:fydeos-ai',
+          label: this.i18n('fydeAssistantPageTitle'),
+          sublabel: this.i18n('fydeAssistantMenuItemDescription'),
+        },
+        {
           section: Section.kAccessibility,
           path: `/${routesMojom.ACCESSIBILITY_SECTION_PATH}`,
           icon: 'os-settings:accessibility-revamp',
@@ -482,6 +492,13 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
           icon: 'os-settings:system-preferences',
           label: this.i18n('systemPreferencesTitle'),
           sublabel: this.i18n('systemPreferencesMenuItemDescription'),
+        },
+        {
+          section: Section.kCrostini,
+          path: `/${routesMojom.CROSTINI_SECTION_PATH}`,
+          icon: 'os-settings:developer-tags',
+          label: this.i18n('crostiniPageTitle'),
+          sublabel: this.i18n('crostiniMenuItemDescription'),
         },
         {
           section: Section.kFydeOs,

@@ -168,9 +168,19 @@ void AssistantControllerImpl::OpenUrl(const GURL& url,
   }
 
   if (assistant::util::IsDeepLinkUrl(url)) {
-    if (ash::features::IsFydeAssistantEnabled() && assistant::util::GetDeepLinkType(url) == assistant::util::DeepLinkType::kQuery) {
-      // only AssistantInteractionControllerImpl will handle the query deep link, which will call ShowUi
-      NotifyDeepLinkReceived(url);
+    if (ash::features::IsFydeAssistantEnabled() && assistant::util::GetDeepLinkType(url) == assistant::util::DeepLinkType::kQuery &&
+        AssistantState::Get()->fyde_assistant_enabled().value_or(false)) {
+      const std::map<std::string, std::string> params =
+        assistant::util::GetDeepLinkParams(url);
+      const std::optional<std::string>& query =
+        GetDeepLinkParam(params, assistant::util::DeepLinkParam::kQuery);
+      if (!query.has_value()) {
+        return;
+      }
+      const bool new_window_created = assistant::AssistantBrowserDelegate::Get()->HandleQueryByFydeAssistant(query.value());
+      if (!new_window_created) {
+        NotifyDeepLinkReceived(url);
+      }
       return;
     } else {
       VLOG(2) << "Ignoring deep link url: " << url.spec();

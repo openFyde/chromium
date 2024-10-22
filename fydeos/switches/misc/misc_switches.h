@@ -25,6 +25,8 @@ CHROMEOS_EXPORT bool IsDynamicDefaultWallpaperSupported();
 
 CHROMEOS_EXPORT extern const char kFydeOSServiceHostSuffixForTesting[];
 
+CHROMEOS_EXPORT int64_t GetFydeOSAutoSigninDelay();
+
 } // switches
 } // fydeos
 

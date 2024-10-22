@@ -249,5 +249,42 @@
      Enterprise licensed version (expired)
    </message>
   </if>
+
+  <message name="IDS_SETTINGS_CROSTINI_MENU_ITEM_DESCRIPTION" desc="The description of Crostini section. It is meant to be used by software developers.">
+    Linux subsystem, Linux apps
+  </message>
+
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FYDEOS_ACCOUNT_PASSWORD_OPTION_LABEL" desc="Label for the option to use the FydeOS account password to sign in.">
+    FydeOS account password
+  </message>
+
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT" desc="fydeos assistant section title">
+    FydeOS AI
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_MENU_ITEM_DESCRIPTION" desc="sub label for os-settings fydeos ai section">
+    On/Off switch, FydeOS AI options
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_TOGGLE_LABEL" desc="label for fydeos ai toggle setting">
+    Enable FydeOS AI
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_TOGGLE_SUBLABEL" desc="">
+    Enable or disable all FydeOS AI related features
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_BUBBLE_SHORTCUT_TOGGLE_LABEL" desc="label for toggling an bubble shortcut for ai">
+    Enable FydeOS AI QuickCall
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_BUBBLE_SHORTCUT_TOGGLE_SUBLABEL" desc="sublabel for toggling an bubble shortcut for ai">
+    Quickly bring up FydeOS AI options for highlighted content by pressing Ctrl + C + C
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_SETTINGS_IN_APP_LABEL" desc="label for link of fydeos ai settings inside app">
+    More settings
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_SETTINGS_IN_APP_SUBLABEL" desc="sublabel for link of fydeos ai settings inside app">
+    Other settings and options for FydeOS AI
+  </message>
+
+  <message name="IDS_SETTINGS_OS_SETTINGS_FYDE_LOCAL_ACCOUNT_CHANGE_PASSWORD_LINK_DESC" desc="Description for fydeos local account change password link">
+    To change the sign-in PIN or password of this local account, it's within the <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>Privacy and security<ph name="END_LINK">&lt;/a&gt;</ph> settings.
+  </message>
 </if>
 </grit-part>

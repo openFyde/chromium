@@ -12,6 +12,8 @@ namespace ash {
 namespace {
 const char kFydeAssistantExtensionUrl[] = "chrome://fydeos-ai/?source=launcher";
 constexpr int kHeightDip = 440;
+
+const bool disable_fyde_assistant_page = true;
 } // namespace
 
 FydeAssistantPage::FydeAssistantPage() {
@@ -49,6 +51,9 @@ AshWebView* FydeAssistantPage::WebView() {
 void FydeAssistantPage::OnDeepLinkReceived(
     assistant::util::DeepLinkType type,
     const std::map<std::string, std::string>& params) {
+  if (disable_fyde_assistant_page) {
+    return;
+  }
   if (type == assistant::util::DeepLinkType::kQuery) {
     const std::optional<std::string>& query =
         GetDeepLinkParam(params, assistant::util::DeepLinkParam::kQuery);
@@ -65,6 +70,9 @@ void FydeAssistantPage::OnUiVisibilityChanged(
       AssistantVisibility old_visibility,
       std::optional<AssistantEntryPoint> entry_point,
       std::optional<AssistantExitPoint> exit_point) {
+  if (disable_fyde_assistant_page) {
+    return;
+  }
   if (new_visibility == AssistantVisibility::kVisible && entry_point.has_value() && (entry_point == AssistantEntryPoint::kHotkey || entry_point == AssistantEntryPoint::kLauncherSearchBoxIcon)) {
     OpenUrl(GURL(kFydeAssistantExtensionUrl));
   }
@@ -80,6 +88,9 @@ gfx::Size FydeAssistantPage::CalculatePreferredSize(const views::SizeBounds& ava
 }
 
 void FydeAssistantPage::OpenUrl(const GURL& url) {
+  if (disable_fyde_assistant_page) {
+    return;
+  }
   if (web_view_ptr_ || web_view_) {
     return;
   }

@@ -1474,7 +1474,11 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
         if ((wizard_context_->is_user_creation_enabled ||
              !wizard_context_->is_add_person_flow) &&
             result == GaiaScreen::Result::BACK) {
-          AdvanceToScreen(UserCreationView::kScreenId);
+          if (!fydeos::switches::IsFydeAccountEnabled()) {
+            AdvanceToScreen(UserCreationView::kScreenId);
+          } else {
+            GetScreen<GaiaScreen>()->LoadOnlineGaia();
+          }
           break;
         }
       }

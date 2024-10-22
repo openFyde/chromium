@@ -146,6 +146,10 @@ export class PasswordSelection extends PasswordSelectionBase {
     );
   }
 
+  private getGaiaPasswordSelectionIcon(isFydeProfile: boolean): string {
+    return isFydeProfile ? 'oobe-32:fydeos-f': 'oobe-32:google-g';
+  }
+
   private getGaiaPasswordSelectionLabel(
     locale: string,
     isFydeProfile: boolean,

@@ -655,6 +655,7 @@ source_set("browser_sources") {
     "//ui/color",
     "//ui/display",
     "//url",
+    "//fydeos/constants",
   ]
 
   public_deps = [

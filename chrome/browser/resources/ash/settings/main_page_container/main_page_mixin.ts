@@ -19,7 +19,7 @@ import {Constructor} from '../common/types.js';
 import {ensureLazyLoaded} from '../ensure_lazy_loaded.js';
 import {Section} from '../mojom-webui/routes.mojom-webui.js';
 import {SettingsIdleLoadElement} from '../os_settings_page/settings_idle_load.js';
-import {isAboutRoute, isAdvancedRoute, Route, Router, routes} from '../router.js';
+import {isAboutRoute, isAdvancedRoute, isFydeOsSettingsRoute, Route, Router, routes} from '../router.js';
 
 import {PageDisplayerElement} from './page_displayer.js';
 
@@ -429,7 +429,7 @@ export const MainPageMixin = dedupingMixin(
           const waitFn = beforeNextRender.bind(null, this);
 
           return new Promise(resolve => {
-            if (isAdvancedRoute(route) || isAboutRoute(route)) {
+            if (isAdvancedRoute(route) || isAboutRoute(route) || isFydeOsSettingsRoute(route)) {
               this.dispatchCustomEvent_('hide-container');
               waitFn(async () => {
                 await this.loadAdvancedPage();

@@ -15,5 +15,8 @@
   <message name="IDS_SETTINGS_SAFEBROWSING_NONE_FYDE_DESC" desc="Description for safe browsing no protection mode">
     Does not protect you against dangerous websites, downloads, and extensions.
    </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_NONE_FYDE_DESC_UPDATED" desc="Updated description for safe browsing no protection mode">
+    Does not protect you against dangerous websites, downloads, and extensions.
+  </message>
 
 </grit-part>

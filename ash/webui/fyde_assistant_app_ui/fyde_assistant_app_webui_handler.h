@@ -54,6 +54,7 @@ class FydeAssistantWebUIHandler
 
   void OnFydeAssistantOpenUrl(const base::Value::List& args);
   void HandleSetAssistantBubbleRect(const base::Value::List& args);
+  void HandleCenterAssistantBubbleRect(const base::Value::List& args);
 
   raw_ptr<FydeAssistantAppUI> fyde_assistant_app_ui_;
 

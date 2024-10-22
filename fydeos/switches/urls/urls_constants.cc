@@ -61,6 +61,8 @@ const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.com/docs/manual/
 const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[] = "https://fydeos.com/faq/disable-media-files-scan/";
 const char kFydeOSDevModeTransitionLearnMoreURL[] = "https://fydeos.com/docs/knowledge-base/getting-started/developer-mode";
 
+const char kLocalAccountChangePasswordHelpURL[] = "https://fydeos.com/help/knowledge-base/getting-started/update-local-account-signin-password";
+
 #if BUILDFLAG(FYDEOS_DEVICE)
 const char kFydeOSProductWarrantyDefaultURL[] = "https://sn.fydetabduo.cn";
 #endif
@@ -119,6 +121,8 @@ const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.io/docs/manual/c
 const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[] = "https://fydeos.io/faq/disable-media-files-scan/";
 
 const char kFydeOSDevModeTransitionLearnMoreURL[] = "https://fydeos.io/docs/knowledge-base/getting-started/developer-mode";
+
+const char kLocalAccountChangePasswordHelpURL[] = "https://fydeos.io/help/knowledge-base/getting-started/update-local-account-signin-password";
 
 const char kFydeOSDiscordServerURL[] = "https://discord.gg/Qv3kxGeMJQ";
 const char kFydeOSTelegramGroupURL[] = "https://t.me/hi_fydeos";

@@ -14,7 +14,6 @@
 #include "build/chromeos_buildflags.h"
 #include "chromeos/components/libsegmentation/buildflags.h"
 #include "chromeos/constants/chromeos_features.h"
-#include "fydeos/build/config/buildflags.h"
 #include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash::features {
@@ -2323,11 +2322,7 @@ const base::FeatureParam<base::TimeDelta> kPhoneHubCameraRollThrottleInterval{
 
 BASE_FEATURE(kFydeAssistant,
              "FydeAssistant",
-#if BUILDFLAG(IS_OPENFYDE)
              base::FEATURE_ENABLED_BY_DEFAULT);
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#endif
 
 // Enable PhoneHub features setup error handling, which handles different
 // setup response from remote phone device.
@@ -2878,7 +2873,7 @@ BASE_FEATURE(kUnmanagedDeviceDeviceTrustConnectorEnabled,
 // Enables firmware updates for valid firmwares uploaded to lvfs.
 BASE_FEATURE(kUpstreamTrustedReportsFirmware,
              "UpstreamTrustedReportsFirmware",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Use the Android staging SM-DS server when fetching pending eSIM profiles.
 BASE_FEATURE(kUseAndroidStagingSmds,
@@ -4173,6 +4168,9 @@ bool IsOobeLazyLoadingEnabled() {
 
 bool IsOobeQuickStartEnabled() {
   if (switches::IsRevenBranding()) {
+    return false;
+  }
+  if (fydeos::switches::IsFydeCustomEnabled()) {
     return false;
   }
 

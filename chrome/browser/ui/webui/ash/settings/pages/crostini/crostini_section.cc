@@ -271,6 +271,7 @@ void CrostiniSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       {"bruschettaEnable", IDS_SETTINGS_TURN_ON},
       {"bruschettaRemoveButton", IDS_SETTINGS_BRUSCHETTA_REMOVE_BUTTON},
       {"crostiniPageTitle", IDS_SETTINGS_CROSTINI_TITLE},
+      {"crostiniMenuItemDescription", IDS_SETTINGS_CROSTINI_MENU_ITEM_DESCRIPTION},
       {"crostiniPageLabel", IDS_SETTINGS_CROSTINI_LABEL},
       {"crostiniEnable", kIsRevampEnabled
                              ? IDS_OS_SETTINGS_REVAMP_CROSTINI_SET_UP

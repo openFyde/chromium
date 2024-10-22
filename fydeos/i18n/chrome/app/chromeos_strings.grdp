@@ -129,6 +129,9 @@
   <message name="IDS_OOBE_DISPLAY_SIZE_ONE_DRIVE_APP_NAME" desc="One drive app name in the preview section of the display size screen.">
     OneDrive
   </message>
+  <message name="IDS_OOBE_DISPLAY_SIZE_FYDEOS_AI_APP_NAME" desc="FydeOS AI app name in the preview section of the display size screen.">
+    FydeOS AI
+  </message>
   <message name="IDS_FYDEOS_INSTALLER_APP_NAME" desc="fydeos installer app name">
     Installer
   </message>

@@ -38,6 +38,9 @@ extern const char kFactoryResetRequested[];
 
 extern const char kRebootRequiredForWidevine[];
 
+extern const char kFydeAssistantEnabled[];
+extern const char kFydeAssistantExtraAcceleratorEnabled[];
+
 extern const char kFydeOSArcMediaAutoScanEnabled[];
 
 #if BUILDFLAG(USE_FYDEOS_LICENSE)

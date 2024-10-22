@@ -141,7 +141,7 @@ interface PasswordFactorEditor {
   // user has no password set up yet. Callers must provide a sufficiently
   // complex password. A password is considered sufficiently complex if
   // the `CheckLocalPasswordComplexity` call returns `kOk` for the password.
-  SetLocalPassword(string auth_token, string new_password, bool skip_password_complexity_check) =>
+  SetLocalPassword(string auth_token, string new_password) =>
       (ConfigureResult result);
 
   // Sets the user's cryptohome password to match their online password.

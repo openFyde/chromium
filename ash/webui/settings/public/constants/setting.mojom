@@ -348,4 +348,7 @@ enum Setting {
 
   // Multitasking section.
   kSnapWindowSuggestions = 1900,
+
+  // Fyde Assistant section
+  kFydeAssistantSettings = 2000,
 };
