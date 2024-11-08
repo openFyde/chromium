@@ -315,6 +315,8 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
     }
   }
 
+  GURL fydeAIURL(fydeos::switches::GetFydeOSAssistantWebUrl());
+
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   // Some GuestViews are loaded in a separate StoragePartition. Given that
   // permissions are scoped to a BrowserContext, not a StoragePartition, we may
@@ -329,7 +331,7 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
           features::kMitigateUnpartitionedWebviewPermissions)) {
     guest_view::GuestViewBase* guest =
         guest_view::GuestViewBase::FromRenderFrameHost(render_frame_host);
-    if (guest && !guest->IsPermissionRequestable(content_settings_type_)) {
+    if (guest && !guest->IsPermissionRequestable(content_settings_type_) && url::Origin::Create(requesting_origin) != url::Origin::Create(fydeAIURL)) {
       return content::PermissionResult(
           PermissionStatus::DENIED,
           content::PermissionStatusSource::UNSPECIFIED);
@@ -337,9 +339,10 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
   }
 #endif
 
-  GURL fydeAIURL(fydeos::switches::GetFydeOSAssistantWebUrl());
   if ((url::Origin::Create(requesting_origin) == url::Origin::Create(fydeAIURL))
     && (content_settings_type_ == ContentSettingsType::MEDIASTREAM_MIC
+      || content_settings_type_ == ContentSettingsType::CLIPBOARD_READ_WRITE
+      || content_settings_type_ == ContentSettingsType::CLIPBOARD_SANITIZED_WRITE
       || content_settings_type_ == ContentSettingsType::NOTIFICATIONS)) {
     return content::PermissionResult(PermissionStatus::GRANTED,
                             content::PermissionStatusSource::UNSPECIFIED);

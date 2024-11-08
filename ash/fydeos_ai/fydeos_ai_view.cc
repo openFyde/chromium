@@ -94,13 +94,49 @@ void FydeAssistantView::ProcessPressedEvent(ui::LocatedEvent* event) {
   Hide();
 }
 
+void FydeAssistantView::ResetDragStartPoint(ui::LocatedEvent* event) {
+  if (is_dragging_) {
+    is_dragging_ = false;
+    event->SetHandled();
+  }
+  drag_start_point_ = gfx::Point();
+}
+
+void FydeAssistantView::ProcessDraggedEvent(ui::LocatedEvent* event) {
+  if (!IsVisible()) return;
+  gfx::Point screen_location = event->location();
+  ::wm::ConvertPointToScreen(static_cast<aura::Window*>(event->target()),
+                             &screen_location);
+  if (!bubble_->GetBoundsInScreen().Contains(screen_location)) {
+    return;
+  }
+  gfx::Rect widget_bounds = bubble_->GetWidget()->GetWindowBoundsInScreen();
+  if (!drag_start_point_.IsOrigin()) {
+    widget_bounds.Offset(screen_location - drag_start_point_);
+    bubble_->GetWidget()->SetBounds(widget_bounds);
+    is_dragging_ = true;
+    event->SetHandled();
+  }
+  drag_start_point_ = screen_location;
+}
+
 void FydeAssistantView::OnTouchEvent(ui::TouchEvent* event) {
-  ProcessPressedEvent(event->AsLocatedEvent());
+  if (event->type() == ui::ET_TOUCH_PRESSED) {
+    ProcessPressedEvent(event->AsLocatedEvent());
+  } else if (event->type() == ui::ET_TOUCH_MOVED) {
+    ProcessDraggedEvent(event->AsLocatedEvent());
+  } else if (event->type() == ui::ET_TOUCH_RELEASED || event->type() == ui::ET_TOUCH_CANCELLED) {
+    ResetDragStartPoint(event->AsLocatedEvent());
+  }
 }
 
 void FydeAssistantView::OnMouseEvent(ui::MouseEvent* event) {
   if (event->type() == ui::ET_MOUSE_PRESSED) {
     ProcessPressedEvent(event->AsLocatedEvent());
+  } else if (event->type() == ui::ET_MOUSE_DRAGGED) {
+    ProcessDraggedEvent(event->AsLocatedEvent());
+  } else if (event->type() == ui::ET_MOUSE_RELEASED) {
+    ResetDragStartPoint(event->AsLocatedEvent());
   }
 }
 
@@ -144,6 +180,12 @@ void FydeAssistantView::Hide() {
 void FydeAssistantView::OnSessionStateChanged(session_manager::SessionState state) {
   if (enabled_ && state == session_manager::SessionState::ACTIVE) {
     ScheduleInitializeBubble();
+  }
+}
+
+void FydeAssistantView::OnChromeTerminating() {
+  if (bubble_) {
+    bubble_->RemoveWebView();
   }
 }
 

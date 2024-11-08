@@ -37,6 +37,7 @@ void ResetUrls() {
       g_browser_process->browser_policy_connector();
   if (connector) {
     connector->ResetDeviceManagementServiceConfiguration();
+    connector->ResetSenderId();
   }
 }
 

@@ -530,6 +530,12 @@ bool BrowserPolicyConnectorAsh::IsCommandLineSwitchSupported() const {
   return true;
 }
 
+void BrowserPolicyConnectorAsh::ResetSenderId() {
+  if (affiliated_invalidation_service_provider_) {
+    affiliated_invalidation_service_provider_->ResetSenderId();
+  }
+}
+
 std::vector<std::unique_ptr<ConfigurationPolicyProvider>>
 BrowserPolicyConnectorAsh::CreatePolicyProviders() {
   auto providers = ChromeBrowserPolicyConnector::CreatePolicyProviders();

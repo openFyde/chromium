@@ -69,6 +69,8 @@ class ChromeBrowserPolicyConnector : public BrowserPolicyConnector {
   // ---***FYDEOS BEGIN***---
   void ResetDeviceManagementServiceConfiguration();
   // ---***FYDEOS END***---
+  
+  virtual void ResetSenderId();
 
   // Called to signal the browser has started.
   virtual void OnBrowserStarted();

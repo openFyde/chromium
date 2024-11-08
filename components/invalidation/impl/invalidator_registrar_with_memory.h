@@ -52,6 +52,7 @@ class INVALIDATION_EXPORT InvalidatorRegistrarWithMemory {
 
   static void ClearDeprecatedPrefs(PrefService* prefs);
 
+  void ResetSenderId(const std::string sender_id);
   // Starts sending notifications to |handler|.  |handler| must not be nullptr,
   // and it must not already be registered.
   void AddObserver(InvalidationHandler* handler);
@@ -128,7 +129,7 @@ class INVALIDATION_EXPORT InvalidatorRegistrarWithMemory {
   const raw_ptr<PrefService> prefs_;
 
   // The FCM sender ID.
-  const std::string sender_id_;
+  std::string sender_id_;
 };
 
 }  // namespace invalidation

@@ -47,6 +47,7 @@ class AffiliatedInvalidationServiceProviderImpl
   void RegisterConsumer(Consumer* consumer) override;
   void UnregisterConsumer(Consumer* consumer) override;
   void Shutdown() override;
+  void ResetSenderId() override;
 
   invalidation::InvalidationService* GetDeviceInvalidationServiceForTest()
       const;

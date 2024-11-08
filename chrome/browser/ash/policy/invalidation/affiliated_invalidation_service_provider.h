@@ -72,6 +72,8 @@ class AffiliatedInvalidationServiceProvider {
   // per-profile invalidation services and no longer maintains a device-global
   // invalidation service.
   virtual void Shutdown() = 0;
+
+  virtual void ResetSenderId() {}
 };
 
 }  // namespace policy

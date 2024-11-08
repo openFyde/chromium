@@ -73,11 +73,15 @@ class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHan
 
  private:
   void OnSessionStateChanged(session_manager::SessionState state) override;
+  void OnChromeTerminating() override;
 
   void OnMouseEvent(ui::MouseEvent* event) override;
   void OnTouchEvent(ui::TouchEvent* event) override;
 
   void ProcessPressedEvent(ui::LocatedEvent* event);
+  void ProcessDraggedEvent(ui::LocatedEvent* event);
+
+  void ResetDragStartPoint(ui::LocatedEvent* event);
 
   void OnFydeAssistantExtraAcceleratorEnabled(bool enabled) override;
 
@@ -98,6 +102,8 @@ class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHan
   raw_ptr<FydeAssistantBubble, DanglingUntriaged> bubble_;
 
   gfx::Point current_anchor_point_;
+  gfx::Point drag_start_point_;
+  bool is_dragging_ = false;
 
   mutable base::ObserverList<FydeAssistantViewObserver> observers_;
 

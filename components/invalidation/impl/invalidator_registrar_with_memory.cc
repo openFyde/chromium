@@ -126,6 +126,16 @@ InvalidatorRegistrarWithMemory::InvalidatorRegistrarWithMemory(
   }
 }
 
+void InvalidatorRegistrarWithMemory::ResetSenderId(const std::string sender_id) {
+  sender_id_ = sender_id;
+  const base::Value::Dict* pref_data =
+      prefs_->GetDict(kTopicsToHandler).FindDict(sender_id_);
+  if (!pref_data) {
+    ScopedDictPrefUpdate update(prefs_, kTopicsToHandler);
+    update->Set(sender_id_, base::Value::Dict());
+  }
+}
+
 InvalidatorRegistrarWithMemory::~InvalidatorRegistrarWithMemory() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!registered_handler_to_topics_map_.empty() || !handlers_.empty()) {

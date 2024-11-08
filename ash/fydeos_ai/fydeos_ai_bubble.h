@@ -26,6 +26,8 @@ class ASH_EXPORT FydeAssistantBubble : public views::BubbleDialogDelegateView,
 
   bool InitWebView(FydeAssistantView* owner);
 
+  void RemoveWebView();
+
   // views::BubbleDialogDelegateView:
   gfx::Size CalculatePreferredSize(const views::SizeBounds& available_size) const override;
 

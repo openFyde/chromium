@@ -237,6 +237,13 @@ AffiliatedInvalidationServiceProviderImpl::GetDeviceInvalidationServiceForTest()
   return device_invalidation_service_.get();
 }
 
+void AffiliatedInvalidationServiceProviderImpl::ResetSenderId() {
+  if (device_invalidation_service_) {
+    auto service = static_cast<invalidation::FCMInvalidationService*>(device_invalidation_service_.get());
+    service->ResetSenderId();
+  }
+}
+
 void AffiliatedInvalidationServiceProviderImpl::OnInvalidationServiceConnected(
     invalidation::InvalidationService* invalidation_service) {
   DCHECK(!is_shut_down_);

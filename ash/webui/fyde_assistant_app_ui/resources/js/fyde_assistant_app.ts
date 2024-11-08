@@ -20,6 +20,11 @@ interface WebviewLoadAbortEvent extends Event {
   isTopLevel: boolean;
 }
 
+interface WebviewNewWindowEvent extends Event {
+  partition: string;
+  targetUrl: string;
+}
+
 interface HTMLWebviewElement extends HTMLElement {
   src: string;
   partition: string;
@@ -85,6 +90,8 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   private isEventBinded_: boolean;
   private systemColors_: SystemColorInfo;
   private files_: File[];
+  private latestNetworkType_: number;
+  private isBubbleVisible_: boolean;
 
   constructor() {
     super();
@@ -97,6 +104,8 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.isEventBinded_ = false;
     this.systemColors_ = { base: '', shaded: '', header: '', primary: '' };
     this.files_ = [];
+    this.latestNetworkType_ = 0;
+    this.isBubbleVisible_ = false;
     if (window.launchQueue) {
       window.launchQueue.setConsumer(this.consumerFiles.bind(this));
     }
@@ -153,6 +162,9 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.webview_.src = this.url_;
     this.webview_.addEventListener('contentload', this.onWebviewLoaded_.bind(this));
     this.webview_.addEventListener('loadabort', this.onWebviewAborted_.bind(this));
+    this.webview_.addEventListener('newwindow', this.onNewWindow_.bind(this));
+
+    this.bindNetworkEvents_();
   }
 
   tweakContainerStyle_() {
@@ -215,6 +227,8 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   }
 
   reloadWebview_(reloadParams: { keepInitQuery: boolean }) {
+    this.loadAbort_ = false;
+    this.files_ = [];
     this.url_ = this.getUrl_();
     if (reloadParams && reloadParams.keepInitQuery === false) {
       this.url_ = this.removeInitQueryParam_(this.url_);
@@ -273,6 +287,10 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     }
   }
 
+  bindNetworkEvents_(): void {
+    addWebUIListener('network-connection-changed', this.onNetworkConnectionChanged_.bind(this));
+  }
+
   bindEvents_(): void {
     if (this.isEventBinded_) return;
     this.isEventBinded_ = true;
@@ -287,13 +305,13 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   }
 
   onWebviewLoaded_(): void {
+    chrome.send('onFydeAssistantSwaInit');
     if (this.loadAbort_) {
       return;
     }
     this.loaded_ = true;
     this.showLoading_ = false;
     this.showWebview_ = true;
-    chrome.send('onFydeAssistantSwaInit');
     this.bindEvents_();
     this.sendMessage({ method: 'init', data: { files: this.files_ } });
     this.webview_.focus();
@@ -307,6 +325,15 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     if (isTopLevel && url && url.startsWith(this.origin_)) {
       this.loadAbort_ = true;
     }
+  }
+
+  onNewWindow_(e: Event): void {
+    const { partition, targetUrl } = e as WebviewNewWindowEvent;
+    if (partition !== FYDE_ASSISTANT_APP_WEBVIEW_PARTITION) {
+      return;
+    }
+    e.preventDefault();
+    window.open(targetUrl, '_blank');
   }
 
   appendSource(data: MessageData) {
@@ -352,12 +379,37 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
 
   onBubbleVisibilityChanged_(visible: boolean): void {
     this.sendMessage({ method: 'bubble-visibility-change', data: visible });
+    this.isBubbleVisible_ = visible;
   }
 
   onSystemColorChanged_(colors: SystemColorInfo): void {
     this.systemColors_ = colors;
     console.log('this.systemColors_', this.systemColors_);
     this.sendMessage({ method: 'color-change', data: colors });
+  }
+
+  onNetworkConnectionChanged_(type: number): void {
+    if (type === this.latestNetworkType_) {
+      return;
+    }
+    const shouldReload = this.shouldReloadWebviewAfterNetworkConnectionChanged_(type);
+    if (shouldReload) {
+      console.log('reload webview after network connection changed');
+      this.reloadWebview_({ keepInitQuery: false });
+    }
+  }
+
+  shouldReloadWebviewAfterNetworkConnectionChanged_(connectionType: number): boolean {
+    const latestNetworkType = this.latestNetworkType_;
+    this.latestNetworkType_ = connectionType;
+
+    // services/network/public/mojom/network_change_manager.mojom
+    if (latestNetworkType !== 6) {
+      return false;
+    }
+
+    // from offline -> online
+    return this.loadAbort_ || (this.isFromBubble_ && !this.isBubbleVisible_);
   }
 
   static get template(): HTMLTemplateElement {

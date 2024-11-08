@@ -133,6 +133,8 @@ void ChromeBrowserPolicyConnector::Init(
   InitInternal(local_state, std::move(device_management_service));
 }
 
+void ChromeBrowserPolicyConnector::ResetSenderId() {}
+
 void ChromeBrowserPolicyConnector::OnBrowserStarted() {}
 
 #if BUILDFLAG(IS_CHROMEOS_LACROS)

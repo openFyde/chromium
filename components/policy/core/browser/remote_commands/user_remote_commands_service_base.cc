@@ -43,7 +43,7 @@ void UserRemoteCommandsServiceBase::
       core_, base::DefaultClock::GetInstance(), PolicyInvalidationScope::kUser);
   invalidator_->Initialize(
       invalidation_provider->GetInvalidationServiceForCustomSender(
-          kPolicyFCMInvalidationSenderID));
+          GetPolicyFCMInvalidationSenderID()));
 }
 
 void UserRemoteCommandsServiceBase::OnPolicyRefreshed(bool success) {}

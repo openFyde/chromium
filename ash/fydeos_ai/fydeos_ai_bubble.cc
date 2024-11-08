@@ -61,6 +61,13 @@ bool FydeAssistantBubble::InitWebView(FydeAssistantView* owner) {
   return OpenUrl(GURL(kFydeAssistantExtensionUrl));
 }
 
+void FydeAssistantBubble::RemoveWebView() {
+  if (web_view_ptr_) {
+    RemoveChildViewT(web_view_ptr_.get())->RemoveObserver(this);
+    web_view_ptr_ = nullptr;
+  }
+}
+
 bool FydeAssistantBubble::OpenUrl(const GURL& url) {
   if (web_view_ptr_ || web_view_) {
     return true;

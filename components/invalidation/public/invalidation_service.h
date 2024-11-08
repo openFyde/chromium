@@ -92,6 +92,8 @@ class InvalidationService {
   // Returns the ID belonging to this invalidation handler. Can be used to
   // prevent the receipt of notifications of our own changes.
   virtual std::string GetInvalidatorClientId() const = 0;
+
+  virtual void ResetSenderId() {}
 };
 
 }  // namespace invalidation

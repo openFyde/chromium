@@ -6,6 +6,7 @@
 #include "ash/assistant/model/assistant_ui_model.h"
 #include "ash/shell.h"
 #include "chrome/browser/ash/system_web_apps/color_helpers.h"
+#include "content/public/browser/network_service_instance.h"
 #include "ui/color/color_provider_utils.h"
 
 namespace ash {
@@ -14,6 +15,7 @@ FydeAssistantWebUIHandler::FydeAssistantWebUIHandler(FydeAssistantAppUI* app_ui)
   assistant_controller_observation_.Observe(AssistantController::Get());
   theme_observation_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
   AssistantUiController::Get()->GetModel()->AddObserver(this);
+  content::GetNetworkConnectionTracker()->AddNetworkConnectionObserver(this);
   Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
   if  (shelf && shelf->fyde_assistant_view()) {
     shelf->fyde_assistant_view()->AddObserver(this);
@@ -23,6 +25,7 @@ FydeAssistantWebUIHandler::FydeAssistantWebUIHandler(FydeAssistantAppUI* app_ui)
 FydeAssistantWebUIHandler::~FydeAssistantWebUIHandler() {
   if (AssistantUiController::Get())
     AssistantUiController::Get()->GetModel()->RemoveObserver(this);
+  content::GetNetworkConnectionTracker()->RemoveNetworkConnectionObserver(this);
   Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
   if  (shelf && shelf->fyde_assistant_view()) {
     shelf->fyde_assistant_view()->RemoveObserver(this);
@@ -150,6 +153,13 @@ void FydeAssistantWebUIHandler::OnNativeThemeUpdated(ui::NativeTheme* observed_t
   value.Set("header", ui::ConvertSkColorToCSSColor(colors.header));
   value.Set("primary", ui::ConvertSkColorToCSSColor(colors.primary));
   FireWebUIListener("system-color-changed", value);
+}
+
+void FydeAssistantWebUIHandler::OnConnectionChanged(network::mojom::ConnectionType type) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("network-connection-changed", base::Value(static_cast<int>(type)));
 }
 
 void FydeAssistantWebUIHandler::OnBubbleQueryChanged(const FydeAssistantViewObserver::ClipboardItemForAssistant& item) {

@@ -66,6 +66,8 @@ class FCMInvalidationService : public InvalidationService,
 
   void Init();
 
+  void ResetSenderId() override;
+
   static void RegisterPrefs(PrefRegistrySimple* registry);
   static void ClearDeprecatedPrefs(PrefService* prefs);
 
@@ -118,7 +120,7 @@ class FCMInvalidationService : public InvalidationService,
   void DoUpdateSubscribedTopicsIfNeeded();
   const std::string GetApplicationName();
 
-  const std::string sender_id_;
+  std::string sender_id_;
   InvalidatorRegistrarWithMemory invalidator_registrar_;
 
   FCMNetworkHandlerCallback fcm_network_handler_callback_;

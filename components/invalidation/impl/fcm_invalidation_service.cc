@@ -14,6 +14,7 @@
 #include "components/invalidation/impl/invalidation_prefs.h"
 #include "components/invalidation/public/invalidation_util.h"
 #include "components/invalidation/public/invalidator_state.h"
+#include "components/policy/core/common/cloud/cloud_policy_constants.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace invalidation {
@@ -63,6 +64,11 @@ void FCMInvalidationService::Init() {
   }
 
   identity_provider_->AddObserver(this);
+}
+
+void FCMInvalidationService::ResetSenderId() {
+  sender_id_ = policy::GetPolicyFCMInvalidationSenderID();
+  invalidator_registrar_.ResetSenderId(sender_id_);
 }
 
 // static
