@@ -10,6 +10,7 @@ if (is_chromeos) {
     "native_windows.json",
     "app_management.json",
     "command_line.json",
+    "shell_client.json"
   ]
 }
 

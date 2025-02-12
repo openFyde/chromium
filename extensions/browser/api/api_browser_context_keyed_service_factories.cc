@@ -66,6 +66,8 @@
 #include "extensions/browser/api/virtual_keyboard_private/virtual_keyboard_private_api.h"  // nogncheck
 #endif
 
+#include "fydeos/extensions/browser/api/shell_client/shell_client_api.h"
+
 namespace extensions {
 
 void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
@@ -77,6 +79,7 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
   StorageFrontend::GetFactoryInstance();
   WebRequestAPI::GetFactoryInstance();
   WebRequestProxyingURLLoaderFactory::EnsureAssociatedFactoryBuilt();
+  ShellClientAPI::GetFactoryInstance();
 
 // The following are not supported in the experimental desktop-android build.
 // TODO(https://crbug.com/356905053): Enable these APIs on desktop-android.
