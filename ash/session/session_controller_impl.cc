@@ -678,6 +678,8 @@ LoginStatus SessionControllerImpl::CalculateLoginStatusForActiveSession()
   switch (user_sessions_[0]->user_info.type) {
     case user_manager::UserType::kRegular:
       return LoginStatus::USER;
+    case user_manager::UserType::kFlintAccount:
+      return LoginStatus::USER;
     case user_manager::UserType::kGuest:
       return LoginStatus::GUEST;
     case user_manager::UserType::kPublicAccount:

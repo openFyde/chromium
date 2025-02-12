@@ -128,6 +128,9 @@ std::unique_ptr<UserCloudPolicyManagerAsh> CreateUserCloudPolicyManagerAsh(
         return nullptr;
       }
       break;
+    case AccountType::FLINT_ACCOUNT:
+      // Flint accounts are not supported.
+      return nullptr;
     case AccountType::ACTIVE_DIRECTORY:
       NOTREACHED();
   }

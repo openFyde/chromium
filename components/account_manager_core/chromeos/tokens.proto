@@ -12,6 +12,9 @@ enum AccountType {
   ACCOUNT_TYPE_UNSPECIFIED = 0;  // Proto best practice for enums.
   ACCOUNT_TYPE_GAIA = 1;
   ACCOUNT_TYPE_ACTIVE_DIRECTORY = 2;
+  //---***FYDEOS BEGIN***---
+  ACCOUNT_TYPE_FLINT = 3;
+  //---***FYDEOS END***---
 }
 
 message Account {

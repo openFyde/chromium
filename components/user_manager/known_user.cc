@@ -109,6 +109,7 @@ const char kAuthFactorPresenceCache[] = "AuthFactorsPresenceCache";
 const char* kReservedKeys[] = {kCanonicalEmail,
                                kGAIAIdKey,
                                kObjGuidKey,
+                               kFlintIdKey,
                                kAccountTypeKey,
                                kUsingSAMLKey,
                                kIsUsingSAMLPrincipalsAPI,
@@ -400,11 +401,30 @@ AccountId KnownUser::GetAccountId(const std::string& user_email,
       return AccountId::AdFromUserEmailObjGuid(sanitized_email,
                                                *stored_obj_guid);
     }
+
+    if (const std::string* stored_flint_id =
+            FindStringPath(account_id, kFlintIdKey)) {
+      if (!id.empty()) {
+        DCHECK(account_type == AccountType::FLINT_ACCOUNT);
+        if (id != *stored_flint_id)
+          LOG(ERROR) << "User object guid has changed. Sync will not work.";
+      }
+
+      // obj_guid is associated with cryptohome.
+      return AccountId::FtFromUserEmailFlintId(sanitized_email,
+                                             *stored_flint_id);
+    }
   }
 
   switch (account_type) {
     case AccountType::GOOGLE:
       return AccountId::FromUserEmailGaiaId(sanitized_email, id);
+    case AccountType::FLINT_ACCOUNT:
+      if (const std::string* stored_email =
+          FindStringPath(AccountId::FtFromFlintId(id), kCanonicalEmail)) {
+        return AccountId::FtFromUserEmailFlintId(*stored_email, id);
+      }
+      return AccountId::FtFromUserEmailFlintId(sanitized_email, id);
     case AccountType::ACTIVE_DIRECTORY:
       return AccountId::AdFromUserEmailObjGuid(sanitized_email, id);
     case AccountType::UNKNOWN:
@@ -486,6 +506,9 @@ void KnownUser::UpdateId(const AccountId& account_id) {
       break;
     case AccountType::ACTIVE_DIRECTORY:
       SetStringPref(account_id, kObjGuidKey, account_id.GetObjGuid());
+      break;
+    case AccountType::FLINT_ACCOUNT:
+      SetStringPref(account_id, kFlintIdKey, account_id.GetFlintId());
       break;
     case AccountType::UNKNOWN:
       return;

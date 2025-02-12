@@ -164,6 +164,10 @@ UserType UserManager::CalculateUserType(const AccountId& account_id,
 
   CHECK(account_id.GetAccountType() != AccountType::ACTIVE_DIRECTORY);
 
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) {
+    return UserType::kFlintAccount;
+  }
+
   return UserType::kRegular;
 }
 
@@ -171,6 +175,7 @@ bool UserManager::IsUserAllowed(const user_manager::User& user,
                                 bool is_guest_allowed,
                                 bool is_user_allowlisted) {
   DCHECK(user.GetType() == UserType::kRegular ||
+         user.GetType() == UserType::kFlintAccount ||
          user.GetType() == UserType::kGuest ||
          user.GetType() == UserType::kChild);
 

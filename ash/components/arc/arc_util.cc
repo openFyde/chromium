@@ -301,6 +301,7 @@ bool IsArcAllowedForUser(const user_manager::User* user) {
   //   above because public account user is always the primary/active user of a
   //   user session.
   if (!user->HasGaiaAccount() &&
+      !user->IsFydeExtendAccountUser() &&
       user->GetType() != user_manager::UserType::kPublicAccount) {
     VLOG(1) << "Only users with GAIA account or managed guest session users "
                "are supported in ARC.";

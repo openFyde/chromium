@@ -37,6 +37,7 @@ bool IsLacrosDisallowedByCommand() {
 bool IsUserTypeAllowed(const user_manager::User& user) {
   switch (user.GetType()) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kPublicAccount:
     // Note: Lacros will not be enabled for Guest users unless LacrosOnly
     // flag is passed in --enable-features. See https://crbug.com/1294051#c25.

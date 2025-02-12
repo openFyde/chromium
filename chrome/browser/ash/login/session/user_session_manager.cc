@@ -196,6 +196,10 @@
 #include "ui/base/ime/ash/input_method_manager.h"
 #include "ui/base/ime/ash/input_method_util.h"
 #include "url/gurl.h"
+//---***FYDEOS BEGIN***---
+#include "components/omnibox/browser/omnibox_prefs.h"
+#include "components/embedder_support/pref_names.h"
+//---***FYDEOS END***---
 
 #undef ENABLED_VLOG_LEVEL
 #define ENABLED_VLOG_LEVEL 1
@@ -852,6 +856,11 @@ void UserSessionManager::SetFirstLoginPrefs(
   VLOG(1) << "Setting first login prefs";
   InitLocaleAndInputMethodsForNewUser(this, profile, public_session_locale,
                                       public_session_input_method);
+
+  if (profile->IsFydeProfile()) {
+    profile->GetPrefs()->SetBoolean(omnibox::kDocumentSuggestEnabled, false);
+    profile->GetPrefs()->SetBoolean(embedder_support::kAlternateErrorPagesEnabled, false);
+  }
 
   // Turn on the feature of the low battery sound for all users on the device
   // when a new user login.
@@ -2200,9 +2209,14 @@ void UserSessionManager::RestorePendingUserSessions() {
   if (!user_already_logged_in) {
     const user_manager::User* const user =
         user_manager::UserManager::Get()->FindUser(account_id);
+    user_manager::UserType user_type = user_manager::UserType::kRegular;
+    AccountType account_type = account_id.GetAccountType();
+    if (account_type == AccountType::FLINT_ACCOUNT) {
+      user_type = user_manager::UserType::kFlintAccount;
+    }
     UserContext user_context =
         user ? UserContext(*user)
-             : UserContext(user_manager::UserType::kRegular, account_id);
+             : UserContext(user_type, account_id);
     user_context.SetUserIDHash(user_id_hash);
     user_context.SetIsUsingOAuth(false);
 
