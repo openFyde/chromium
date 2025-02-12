@@ -480,8 +480,14 @@ template("chrome_extra_paks") {
       deps += [ "//extensions:extensions_resources" ]
     }
     if (enable_extensions) {
-      sources += [ "$root_gen_dir/chrome/extensions_resources.pak" ]
-      deps += [ "//chrome/browser/resources/extensions:resources" ]
+      sources += [
+        "$root_gen_dir/chrome/extensions_resources.pak",
+        "$root_gen_dir/fydeos/extensions/common/fydeos_extensions_resources.pak",
+      ]
+      deps += [
+        "//chrome/browser/resources/extensions:resources",
+        "//fydeos/extensions/common:resources",
+      ]
     }
 
     if (enable_pdf) {

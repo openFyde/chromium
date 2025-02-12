@@ -1470,6 +1470,12 @@ source_set("extensions") {
       "//components/enterprise/data_controls/core/browser",
     ]
   }
+
+#---***FYDEOS BEGIN***---
+  if (is_chromeos) {
+    deps += [ "//fydeos/extensions/browser" ]
+  }
+#---***FYDEOS END***---
 }
 
 # KeyedService factories initialization.

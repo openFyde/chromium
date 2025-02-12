@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit latest_public_release="0" current_release="1" output_all_resource_defines="true">
+  <outputs>
+    <output filename="grit/fydeos_extensions_resources.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="fydeos_extensions_resources.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <!-- Features specific to fydeos extensions. -->
+      <include name="IDR_FYDEOS_EXTENSION_API_FEATURES" file="api\_api_features.json" type="BINDATA" />
+    </includes>
+    <messages fallback_to_english="true">
+      <message name="IDS_EXTENSION_PROMPT_WARNING_FYDEOS_PRIVATE_API" desc="Permission string for implementing FydeOS Private Api">
+    FydeOS proprietary API and essential element for FydeOS System Control extension.
+      </message>
+    </messages>
+  </release>
+</grit>
