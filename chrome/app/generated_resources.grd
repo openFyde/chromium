@@ -273,7 +273,6 @@ are declared in tools/grit/grit_rule.gni.
     <file path="resources/generated_resources_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/generated_resources_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/generated_resources_zu.xtb" lang="zu" />
-    <file path="../../fydeos/i18n/chrome/app/resources/generated_resources_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -18671,9 +18670,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_SELECT_AUDIO_OUTPUT_DIALOG_CHOOSE_DEVICE" desc="Text displayed above the list of audio output devices in the selection dialog.">
       Choose an audio output device
     </message>
-
-    <part file="../../fydeos/i18n/chrome/app/generated_resources.grdp" />
-
   </messages>
 </release>
 </grit>

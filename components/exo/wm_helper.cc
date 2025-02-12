@@ -39,7 +39,6 @@
 #include "ui/wm/core/capture_controller.h"
 #include "ui/wm/public/activation_client.h"
 #include "ui/wm/public/tooltip_observer.h"
-#include "fydeos/switches/display/display_switches.h"
 
 namespace exo {
 
@@ -461,11 +460,6 @@ void WMHelper::RemoveExoWindowObserver(ExoWindowObserver* observer) {
 }
 
 float GetDefaultDeviceScaleFactor() {
-  float factor = fydeos::switches::GetDefaultDSF(0);
-  if (factor) {
-    return factor;
-  }
-
   if (!display::HasInternalDisplay()) {
     return 1.0;
   }

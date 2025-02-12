@@ -763,9 +763,6 @@ Called by update_extension_histograms.py.-->
   <int value="560" label="TTS_ENGINE_ON_INSTALL_LANGUAGE_REQUEST"/>
   <int value="561" label="TTS_ENGINE_ON_LANGUAGE_STATUS_REQUEST"/>
   <int value="562" label="TTS_ENGINE_ON_UNINSTALL_LANGUAGE_REQUEST"/>
-  <int value="563" label="FYDEOS_SHELL_CLIENT_SYSTEM_NOTIFICATION"/>
-  <int value="564" label="FYDEOS_SHELL_CLIENT_COMMAND_NOTIFICATION"/>
-  <int value="565" label="FYDEOS_SHELL_CLIENT_CUSTOM_NOTIFICATION"/>
 </enum>
 
 <enum name="ExtensionForceInstalledPreInstalledDeprecatedSite">
@@ -2797,12 +2794,6 @@ Called by update_extension_histograms.py.-->
   <int value="1924" label="COMMAND_LINE_REMOVESWITCH"/>
   <int value="1925" label="COMMAND_LINE_ADDSWITCH"/>
   <int value="1926" label="APP_MANAGEMENT_GETARCPOLICY"/>
-  <int value="1927" label="SHELL_SYNC_EXEC"/>
-  <int value="1928" label="SHELL_ASYNC_EXEC"/>
-  <int value="1929" label="SHELL_GET_TASK_STATE"/>
-  <int value="1930" label="SHELL_GET_TASK_OUTPUT"/>
-  <int value="1931" label="SHELL_GET_DAEMON_STATE"/>
-  <int value="1932" label="SHELL_FORCE_CLOSE_TASK"/>
 </enum>
 
 <enum name="ExtensionInstallationCrxInstallError">
@@ -3187,7 +3178,6 @@ Called by update_extension_permission.py.-->
   <int value="259" label="kAILanguageModelOriginTrial"/>
   <int value="260" label="kExperimentalAiData"/>
   <int value="261" label="kFydeOSPrivate"/>
-  <int value="262" label="kFydeOSShellClient"/>
 </enum>
 
 <enum name="ExtensionPolicyReinstallReason">

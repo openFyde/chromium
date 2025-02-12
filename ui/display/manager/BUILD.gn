@@ -69,7 +69,6 @@ component("manager") {
     "//ui/events:platform_event",
     "//ui/events/devices",
     "//ui/strings",
-    "//fydeos/switches",
   ]
 
   defines = [ "DISPLAY_MANAGER_IMPLEMENTATION" ]

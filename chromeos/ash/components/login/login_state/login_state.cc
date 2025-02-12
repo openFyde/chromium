@@ -12,7 +12,6 @@
 #include "components/device_event_log/device_event_log.h"
 #include "components/user_manager/user.h"
 #include "components/user_manager/user_manager.h"
-#include "components/user_manager/user_type.h"
 
 namespace ash {
 
@@ -31,7 +30,6 @@ LoginState::LoggedInUserType GetLoggedInUserTypeFromUser(
     const user_manager::User& active_user) {
   switch (active_user.GetType()) {
     case user_manager::UserType::kRegular:
-    case user_manager::UserType::kFlintAccount:
       return LoginState::LOGGED_IN_USER_REGULAR;
     case user_manager::UserType::kGuest:
       return LoginState::LOGGED_IN_USER_GUEST;

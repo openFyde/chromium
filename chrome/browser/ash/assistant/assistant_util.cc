@@ -61,7 +61,6 @@ AssistantAllowedState GetErrorForUserType(const Profile* profile) {
     case user_manager::UserType::kKioskIWA:
       return AssistantAllowedState::DISALLOWED_BY_KIOSK_MODE;
 
-    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kGuest:
       return AssistantAllowedState::DISALLOWED_BY_ACCOUNT_TYPE;
 

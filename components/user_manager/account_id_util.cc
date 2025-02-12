@@ -17,7 +17,6 @@ namespace user_manager {
 
 const char kCanonicalEmail[] = "email";
 const char kGAIAIdKey[] = "gaia_id";
-const char kFlintIdKey[] = "flint_id";
 const char kObjGuidKey[] = "obj_guid";
 const char kAccountTypeKey[] = "account_type";
 
@@ -25,7 +24,6 @@ std::optional<AccountId> LoadAccountId(const base::Value::Dict& dict) {
   const std::string* email = dict.FindString(kCanonicalEmail);
   const std::string* gaia_id = dict.FindString(kGAIAIdKey);
   const std::string* obj_guid = dict.FindString(kObjGuidKey);
-  const std::string* flint_id = dict.FindString(kFlintIdKey);
   AccountType account_type = AccountType::GOOGLE;
   if (const std::string* account_type_string =
           dict.FindString(kAccountTypeKey)) {
@@ -36,11 +34,6 @@ std::optional<AccountId> LoadAccountId(const base::Value::Dict& dict) {
       if (email || gaia_id) {
         return AccountId::FromUserEmailGaiaId(
             email ? *email : std::string(), gaia_id ? *gaia_id : std::string());
-      }
-      break;
-     case AccountType::FLINT_ACCOUNT:
-       if (email && flint_id) {
-        return AccountId::FtFromUserEmailFlintId(*email, *flint_id);
       }
       break;
     case AccountType::ACTIVE_DIRECTORY:
@@ -73,13 +66,6 @@ bool AccountIdMatches(const AccountId& account_id,
       }
       break;
     }
-    case AccountType::FLINT_ACCOUNT: {
-      const std::string* flint_id = dict.FindString(kFlintIdKey);
-      if (flint_id && account_id.GetFlintId() == *flint_id) {
-        return true;
-      }
-      break;
-    }
     case AccountType::ACTIVE_DIRECTORY: {
       const std::string* obj_guid = dict.FindString(kObjGuidKey);
       if (obj_guid && account_id.GetObjGuid() == *obj_guid) {
@@ -108,11 +94,6 @@ void StoreAccountId(const AccountId& account_id, base::Value::Dict& dict) {
     case AccountType::GOOGLE:
       if (!account_id.GetGaiaId().empty()) {
         dict.Set(kGAIAIdKey, account_id.GetGaiaId());
-      }
-      break;
-    case AccountType::FLINT_ACCOUNT:
-      if (!account_id.GetFlintId().empty()) {
-        dict.Set(kFlintIdKey, account_id.GetFlintId());
       }
       break;
     case AccountType::ACTIVE_DIRECTORY:

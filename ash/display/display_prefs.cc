@@ -199,7 +199,6 @@ bool UserCanSaveDisplayPreference() {
 
   return *user_type == user_manager::UserType::kRegular ||
          *user_type == user_manager::UserType::kChild ||
-         *user_type == user_manager::UserType::kFlintAccount ||
          *user_type == user_manager::UserType::kKioskApp ||
          (*user_type == user_manager::UserType::kPublicAccount &&
           Shell::Get()->local_state()->GetBoolean(

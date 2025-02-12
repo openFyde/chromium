@@ -349,7 +349,7 @@ void InitFeaturesSessionType(const user_manager::User* user) {
   }
 
   extensions::SetCurrentFeatureSessionType(
-      (user->IsFydeExtendAccountUser() || user->HasGaiaAccount()) ? extensions::mojom::FeatureSessionType::kRegular
+      user->HasGaiaAccount() ? extensions::mojom::FeatureSessionType::kRegular
                              : extensions::mojom::FeatureSessionType::kUnknown);
 }
 

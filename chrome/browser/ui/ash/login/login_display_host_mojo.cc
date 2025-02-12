@@ -747,14 +747,6 @@ void LoginDisplayHostMojo::HandleAuthenticateUserWithPasswordOrPin(
                << user_context.GetUserType();
   }
 
-  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) {
-    if (user_context.GetUserType() !=
-        user_manager::UserType::kFlintAccount) {
-      LOG(FATAL) << "Incorrect Flint Account user type "
-                 << user_context.GetUserType();
-    }
-  }
-
   existing_user_controller_->Login(user_context, SigninSpecifics());
 }
 

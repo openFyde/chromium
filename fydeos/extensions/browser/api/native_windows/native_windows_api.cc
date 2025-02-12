@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
+#include "chrome/browser/extensions/extension_tab_util.h"
 #include "fydeos/extensions/common/api/native_windows.h"
 #include "chrome/common/extensions/extension_constants.h"
 #include "chromeos/ui/base/window_pin_type.h"
@@ -47,6 +48,23 @@ namespace extensions {
   using WindowState = ash::WindowState;
   namespace keys = tabs_constants;
   using ShelfID = ash::ShelfID;
+
+  // copied from chrome/browser/extensions/browser_extension_window_controller.cc
+  // consider move them to header file, as in r126 or ealier version
+  constexpr char kFocusedKey[] = "focused";
+  constexpr char kHeightKey[] = "height";
+  constexpr char kLeftKey[] = "left";
+  constexpr char kShowStateKey[] = "state";
+  constexpr char kTopKey[] = "top";
+  constexpr char kWidthKey[] = "width";
+  constexpr char kWindowTypeKey[] = "type";
+  constexpr char kShowStateValueNormal[] = "normal";
+  constexpr char kShowStateValueMinimized[] = "minimized";
+  constexpr char kShowStateValueMaximized[] = "maximized";
+  constexpr char kShowStateValueFullscreen[] = "fullscreen";
+  constexpr char kShowStateValueLockedFullscreen[] = "locked-fullscreen";
+
+  const char kWindowTypeValueApp[] = "app";
 
   const char kAppIdKey[] = "appId";
   const char kLaunchIdKey[] = "launchId";
@@ -87,8 +105,8 @@ namespace extensions {
     base::Value CreateWindowValueFromNativeWindow(Window* aura_window)
     {
       base::Value::Dict result;
-      result.Set(keys::kIdKey, aura_window->GetId());
-      result.Set(keys::kWindowTypeKey, keys::kWindowTypeValueApp);
+      result.Set(extension_misc::kId, aura_window->GetId());
+      result.Set(kWindowTypeKey, kWindowTypeValueApp);
       ShelfID shelfId = ShelfID::Deserialize(aura_window->GetProperty(ash::kShelfIDKey));
       if (!shelfId.IsNull()) {
         result.Set(kAppIdKey, shelfId.app_id);
@@ -97,23 +115,23 @@ namespace extensions {
       std::string window_state;
       WindowState* aura_window_state = WindowState::Get(aura_window);
       if (aura_window_state->IsMinimized()) {
-        window_state = keys::kShowStateValueMinimized;
+        window_state = kShowStateValueMinimized;
       } else if (aura_window_state->IsFullscreen()) {
-        window_state = keys::kShowStateValueFullscreen;
+        window_state = kShowStateValueFullscreen;
         if (aura_window_state->IsPinned() || aura_window_state->IsTrustedPinned())
-          window_state = keys::kShowStateValueLockedFullscreen;
+          window_state = kShowStateValueLockedFullscreen;
       } else if (aura_window_state->IsMaximized()) {
-        window_state = keys::kShowStateValueMaximized;
+        window_state = kShowStateValueMaximized;
       } else {
-        window_state = keys::kShowStateValueNormal;
+        window_state = kShowStateValueNormal;
       }
-      result.Set(keys::kShowStateKey, window_state);
-      result.Set(keys::kFocusedKey, aura_window_state->IsActive());
+      result.Set(kShowStateKey, window_state);
+      result.Set(kFocusedKey, aura_window_state->IsActive());
       gfx::Rect bounds = aura_window->GetBoundsInScreen();
-      result.Set(keys::kLeftKey, bounds.x());
-      result.Set(keys::kTopKey, bounds.y());
-      result.Set(keys::kWidthKey, bounds.width());
-      result.Set(keys::kHeightKey, bounds.height());
+      result.Set(kLeftKey, bounds.x());
+      result.Set(kTopKey, bounds.y());
+      result.Set(kWidthKey, bounds.width());
+      result.Set(kHeightKey, bounds.height());
 
       return base::Value(std::move(result));
     }
@@ -139,13 +157,13 @@ namespace extensions {
   } // exit internel namespace
 
   ExtensionFunction::ResponseAction NativeWindowsGetFunction::Run() {
-    absl::optional<windows::Get::Params> params(
+    std::optional<windows::Get::Params> params(
         windows::Get::Params::Create(args()));
     EXTENSION_FUNCTION_VALIDATE(params);
     Window* window = nullptr;
     if (!GetWindowFromWindowID(params->window_id,
                                               &window)) {
-      return RespondNow(Error(keys::kNoCurrentWindowError));
+      return RespondNow(Error(ExtensionTabUtil::kNoCurrentWindowError));
     }
     return RespondNow(WithArguments(CreateWindowValueFromNativeWindow(window)));
   }
@@ -161,13 +179,13 @@ namespace extensions {
 
 
   ExtensionFunction::ResponseAction NativeWindowsUpdateFunction::Run() {
-    absl::optional<windows::Update::Params> params(
+    std::optional<windows::Update::Params> params(
         windows::Update::Params::Create(args()));
     EXTENSION_FUNCTION_VALIDATE(params);
 
     Window* target_window = nullptr;
     if (!GetWindowFromWindowID(params->window_id, &target_window))
-      return RespondNow(Error(keys::kNoCurrentWindowError));
+      return RespondNow(Error(ExtensionTabUtil::kNoCurrentWindowError));
     WindowState* target_window_state = WindowState::Get(target_window);
     if (params->update_info.state != windows::WindowState::kLockedFullscreen &&
         params->update_info.state != windows::WindowState::kNone) {
@@ -184,17 +202,17 @@ namespace extensions {
   }
 
   ExtensionFunction::ResponseAction NativeWindowsRemoveFunction::Run() {
-    absl::optional<windows::Remove::Params> params(
+    std::optional<windows::Remove::Params> params(
       windows::Remove::Params::Create(args()));
     EXTENSION_FUNCTION_VALIDATE(params);
     Window* target_window = nullptr;
     if (!GetWindowFromWindowID(params->window_id, &target_window))
-      return RespondNow(Error(keys::kNoCurrentWindowError));
+      return RespondNow(Error(ExtensionTabUtil::kNoCurrentWindowError));
 
     if (ash::IsArcWindow(target_window)){
       auto task_id = arc::GetWindowTaskId(target_window);
       if (!task_id.has_value())
-        return RespondNow(Error(keys::kNoCurrentWindowError));
+        return RespondNow(Error(ExtensionTabUtil::kNoCurrentWindowError));
       arc::CloseTask(*task_id);
     }else{
       ash::window_util::CloseWidgetForWindow(target_window);
@@ -203,7 +221,7 @@ namespace extensions {
   }
 
   ExtensionFunction::ResponseAction NativeWindowsCreateFunction::Run() {
-    absl::optional<windows::Create::Params> params(
+    std::optional<windows::Create::Params> params(
       windows::Create::Params::Create(args()));
     EXTENSION_FUNCTION_VALIDATE(params);
     if(params->app_id.empty())

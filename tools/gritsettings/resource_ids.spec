@@ -1385,12 +1385,12 @@
   "<(SHARED_INTERMEDIATE_DIR)/third_party/blink/public/strings/permission_element_generated_strings.grd": {
     "META": {"sizes": {"messages": [2000],}},
     "messages": [10080],
-  }
+  },
 
   #//---***FYDEOS BEGIN***---
   "fydeos/extensions/common/fydeos_extensions_resources.grd": {
-    "includes": [8480],
-    "messages": [8500],
+    "includes": [10100],
+    "messages": [10120],
   },
   #//---***FYDEOS END***---
 

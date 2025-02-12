@@ -177,10 +177,6 @@ void LoginPerformer::PerformLogin(const UserContext& user_context,
   auth_mode_ = auth_mode;
   user_context_ = user_context;
 
-  if (user_context.GetUserType() == user_manager::UserType::kFlintAccount) {
-    DoPerformLogin(user_context_, auth_mode);
-    return;
-  }
   if (RunTrustedCheck(base::BindOnce(&LoginPerformer::DoPerformLogin,
                                      weak_factory_.GetWeakPtr(), user_context_,
                                      auth_mode))) {
@@ -205,12 +201,6 @@ void LoginPerformer::DoPerformLogin(const UserContext& user_context,
 
   switch (auth_mode_) {
     case AuthorizationMode::kExternal: {
-      //---***FYDEOS BEGIN***---
-      if (user_context.GetAuthFlow() == UserContext::AUTH_FLOW_FLINT_ACCOUNT) {
-        StartLoginCompletion();
-        break;
-      }
-      //---***FYDEOS END***---
       RunOnlineAllowlistCheck(
           account_id, wildcard_match, user_context.GetRefreshToken(),
           base::BindOnce(&LoginPerformer::StartLoginCompletion,

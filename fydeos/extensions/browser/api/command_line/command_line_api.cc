@@ -27,7 +27,7 @@ namespace extensions {
   } //internal namespace
 
   ExtensionFunction::ResponseAction CommandLineHasSwitchFunction::Run() {
-    absl::optional<command_line::HasSwitch::Params> params(
+    std::optional<command_line::HasSwitch::Params> params(
       command_line::HasSwitch::Params::Create(args()));
     EXTENSION_FUNCTION_VALIDATE(params);
     if (params->name.empty())
@@ -38,7 +38,7 @@ namespace extensions {
   }
 
   ExtensionFunction::ResponseAction CommandLineAddSwitchFunction::Run() {
-    absl::optional<command_line::AddSwitch::Params> params(
+    std::optional<command_line::AddSwitch::Params> params(
       command_line::AddSwitch::Params::Create(args()));
     EXTENSION_FUNCTION_VALIDATE(params);
     if (params->switch_info.name.empty())
@@ -51,7 +51,7 @@ namespace extensions {
   }
 
   ExtensionFunction::ResponseAction CommandLineRemoveSwitchFunction::Run() {
-    absl::optional<command_line::RemoveSwitch::Params> params(
+    std::optional<command_line::RemoveSwitch::Params> params(
       command_line::RemoveSwitch::Params::Create(args()));
     EXTENSION_FUNCTION_VALIDATE(params);
     if (params->name.empty())

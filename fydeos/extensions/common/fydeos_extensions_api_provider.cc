@@ -47,7 +47,7 @@ bool FydeOSExtensionsAPIProvider::IsAPISchemaGenerated(
   return api::FydeOSGeneratedSchemas::IsGenerated(name);
 }
 
-base::StringPiece FydeOSExtensionsAPIProvider::GetAPISchema(
+std::string_view FydeOSExtensionsAPIProvider::GetAPISchema(
     const std::string& name) {
   return api::FydeOSGeneratedSchemas::Get(name);
 }
