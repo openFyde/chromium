@@ -13,6 +13,12 @@
   "FydeOSShellClient": {
     "channel": "stable",
     "platforms": ["chromeos"],
-    "extension_types": ["platform_app", "legacy_packaged_app"]
+    "extension_types": ["platform_app", "legacy_packaged_app"],
+    "allowlist": [
+      "A1763E74675044366F0B454A102DD7E0E797F1F6",  // fydeos installer
+      "04DEB8A90E53908DDCD5C7FBE66E1B50CFD764E6",  // fydeos opengapps
+      "040DC0863AC1A19D3B3D2A02143865CB697A649E",  // fydeos store
+      "9393A095080260FE92DE9B6ACAD334A2567390BE"   // fydeos store(stag)
+    ]
   }
 }
