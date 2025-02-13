@@ -105,6 +105,7 @@ bool CanSeeWallpaperOrPersonalizationApp(const Profile* profile) {
     case user_manager::UserType::kKioskIWA:
       return false;
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kChild:
     case user_manager::UserType::kGuest:
     // Public account users must be able to see personalization app since retail
@@ -190,6 +191,7 @@ bool IsAllowedToInstallSeaPen(Profile* profile) {
     // kPublicAccount type.
     case user_manager::UserType::kPublicAccount:
     case user_manager::UserType::kGuest:
+    case user_manager::UserType::kFlintAccount:
       return false;
     case user_manager::UserType::kRegular:
       if (profile->GetProfilePolicyConnector()->IsManaged()) {

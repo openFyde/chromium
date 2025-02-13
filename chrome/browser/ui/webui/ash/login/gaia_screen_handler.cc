@@ -1302,6 +1302,10 @@ base::WeakPtr<GaiaView> GaiaScreenHandler::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
+void GaiaScreenHandler::RequestUseLocalAccount() {
+  CallExternalAPI("requestUseLocalAccount");
+}
+
 void GaiaScreenHandler::ShowSecurityTokenPinDialog(
     const std::string& /*caller_extension_name*/,
     chromeos::security_token_pin::CodeType code_type,

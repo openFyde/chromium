@@ -603,6 +603,14 @@ void LoginDisplayHostMojo::ShowRemoteActivityNotificationScreen() {
   ShowDialog();
 }
 
+void LoginDisplayHostMojo::ShowLocalDialog() {
+  DCHECK(GetOobeUI());
+
+  ShowLocalDialogCommon();
+
+  ShowDialog();
+}
+
 void LoginDisplayHostMojo::HideOobeDialog(bool saml_page_closed) {
   DCHECK(dialog_);
 
@@ -745,6 +753,14 @@ void LoginDisplayHostMojo::HandleAuthenticateUserWithPasswordOrPin(
   if (account_id.GetAccountType() == AccountType::ACTIVE_DIRECTORY) {
     LOG(FATAL) << "Incorrect Active Directory user type "
                << user_context.GetUserType();
+  }
+
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) {
+    if (user_context.GetUserType() !=
+        user_manager::UserType::kFlintAccount) {
+      LOG(FATAL) << "Incorrect Flint Account user type "
+                 << user_context.GetUserType();
+    }
   }
 
   existing_user_controller_->Login(user_context, SigninSpecifics());

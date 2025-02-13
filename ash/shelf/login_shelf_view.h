@@ -66,6 +66,7 @@ class ASH_EXPORT LoginShelfView : public views::View,
     kSignIn,                // Start signin.
     kOsInstall,             // Start OS Install flow.
     kSchoolEnrollment,      // Start enterprise enrollment flow for child setup.
+    kUseLocalAccount,
   };
 
   // Stores and notifies UiUpdate test callbacks.
@@ -213,6 +214,8 @@ class ASH_EXPORT LoginShelfView : public views::View,
   bool ShouldShowSignInButton() const;
 
   bool ShouldShowAddUserButton() const;
+
+  bool ShouldShowUseLocalAccountButton() const;
 
   bool ShouldShowAppsButton() const;
 

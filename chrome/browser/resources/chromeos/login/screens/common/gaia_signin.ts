@@ -325,6 +325,7 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       'reset',
       'toggleLoadingUi',
       'setQuickStartEntryPointVisibility',
+      'requestUseLocalAccount',
     ];
   }
 
@@ -934,6 +935,10 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       // before reporting the result.
       chrome.send('securityTokenPinEntered', [/*user_input=*/ '']);
     }
+  }
+
+  requestUseLocalAccount() {
+    this.userActed('useLocalAccount');
   }
 
   /**

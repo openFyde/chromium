@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend chromeos/chromeos_strings.grd -->
+<grit-part>
+  <message name="IDS_ASH_USE_LOCAL_ACCOUNT_BUTTON" desc="Text shown on local account button on oobe screen.">
+    Use local account
+  </message>
+</grit-part>

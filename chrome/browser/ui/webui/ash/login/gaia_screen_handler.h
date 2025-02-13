@@ -113,6 +113,8 @@ class GaiaView {
   // Reset authenticator.
   virtual void Reset() = 0;
 
+  virtual void RequestUseLocalAccount() = 0;
+
   // Gets a WeakPtr to the instance.
   virtual base::WeakPtr<GaiaView> AsWeakPtr() = 0;
 };
@@ -163,6 +165,8 @@ class GaiaScreenHandler final
 
   void Reset() override;
   base::WeakPtr<GaiaView> AsWeakPtr() override;
+
+  void RequestUseLocalAccount() override;
 
   // SecurityTokenPinDialogHost:
   void ShowSecurityTokenPinDialog(

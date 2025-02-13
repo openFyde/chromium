@@ -1067,6 +1067,10 @@ void LoginDisplayHostWebUI::ShowRemoteActivityNotificationScreen() {
   StartWizard(RemoteActivityNotificationView::kScreenId);
 }
 
+void LoginDisplayHostWebUI::ShowLocalDialog() {
+  ShowLocalDialogCommon();
+}
+
 void LoginDisplayHostWebUI::HideOobeDialog(bool saml_page_closed) {
   DUMP_WILL_BE_NOTREACHED();
 }

@@ -220,6 +220,7 @@ bool UserCanBecomeOwner(const user_manager::User* user) {
   }
   switch (user->GetType()) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kChild:
       return true;
     case user_manager::UserType::kGuest:

@@ -118,6 +118,8 @@ class LoginDisplayHostCommon : public LoginDisplayHost,
   // Triggers |on_wizard_controller_created_for_tests_| callback.
   void NotifyWizardCreated();
 
+  void ShowLocalDialogCommon();
+
  private:
   void Cleanup();
   // Set screen, from which WC flow will continue after attempt to show

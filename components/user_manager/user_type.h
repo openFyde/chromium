@@ -48,12 +48,14 @@ enum class UserType {
   // Kiosk type for Isolated Web Apps (IWA)
   kKioskIWA = 10,
 
+  kFlintAccount = 11,
+
   // Active Directory user. Authenticates against Active Directory server. No
   // Gaia account. Could be ephemeral depending on the device policy.
   // kActiveDirectory = 8,    // deprecated
 
   // Alias for histogram.
-  kMaxValue = kKioskIWA,
+  kMaxValue = kFlintAccount,
 };
 
 // Stringifies UserType. Returns a C-style (i.e. \0-terminated) string literal.

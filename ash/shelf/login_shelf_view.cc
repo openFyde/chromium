@@ -97,6 +97,7 @@ constexpr LoginShelfView::ButtonId kButtonIds[] = {
     LoginShelfView::kSignIn,
     LoginShelfView::kOsInstall,
     LoginShelfView::kSchoolEnrollment,
+    LoginShelfView::kUseLocalAccount,
 };
 
 LoginMetricsRecorder::ShelfButtonClickTarget GetUserClickTarget(int button_id) {
@@ -125,6 +126,8 @@ LoginMetricsRecorder::ShelfButtonClickTarget GetUserClickTarget(int button_id) {
     case LoginShelfView::kSchoolEnrollment:
       return LoginMetricsRecorder::ShelfButtonClickTarget::
           kSchoolEnrollmentButton;
+    case LoginShelfView::kUseLocalAccount:
+      return LoginMetricsRecorder::ShelfButtonClickTarget::kUseLocalAccount;
   }
   return LoginMetricsRecorder::ShelfButtonClickTarget::kTargetCount;
 }
@@ -358,6 +361,12 @@ LoginShelfView::LoginShelfView() {
                  &LoginScreenController::ShowOsInstallScreen,
                  base::Unretained(Shell::Get()->login_screen_controller())),
              IDS_ASH_SHELF_OS_INSTALL_BUTTON, kShelfOsInstallButtonIcon);
+
+  add_button(kUseLocalAccount,
+             base::BindRepeating(
+                 &LoginScreenController::ShowLocalSignin,
+                 base::Unretained(Shell::Get()->login_screen_controller())),
+             IDS_ASH_USE_LOCAL_ACCOUNT_BUTTON, kShelfUseLocalAccountButtonIcon);
 
   // Adds observers for states that affect the visibility of different buttons.
   shutdown_controller_observation_.Observe(Shell::Get()->shutdown_controller());
@@ -667,6 +676,8 @@ void LoginShelfView::UpdateUi() {
 
   SetButtonVisible(kOsInstall, ShouldShowOsInstallButton());
 
+  SetButtonVisible(kUseLocalAccount, ShouldShowUseLocalAccountButton());
+
   // If there is no visible (and thus focusable) buttons, we shouldn't focus
   // LoginShelfView. We update it here, so we don't need to check visibility
   // every time we move focus to system tray.
@@ -822,6 +833,14 @@ bool LoginShelfView::ShouldShowAddUserButton() const {
   }
 
   return true;
+}
+
+bool LoginShelfView::ShouldShowUseLocalAccountButton() const {
+  const bool user_session_started =
+      Shell::Get()->session_controller()->NumberOfLoggedInUsers() != 0;
+  return (dialog_state_ == OobeDialogState::GAIA_SIGNIN ||
+          dialog_state_ == OobeDialogState::USER_CREATION)
+       && !user_session_started;
 }
 
 bool LoginShelfView::ShouldShowAppsButton() const {

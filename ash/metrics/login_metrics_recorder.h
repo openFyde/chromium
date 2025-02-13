@@ -40,6 +40,7 @@ class ASH_EXPORT LoginMetricsRecorder {
     kVirtualKeyboardTray,
     kImeTray,
     kOsInstallButton,
+    kUseLocalAccount,
     kTargetCount,
   };
 
@@ -55,6 +56,7 @@ class ASH_EXPORT LoginMetricsRecorder {
     kSignIn,
     kOsInstallButton,
     kSchoolEnrollmentButton,
+    kUseLocalAccount,
     kTargetCount,
   };
 
@@ -82,6 +84,7 @@ class ASH_EXPORT LoginMetricsRecorder {
     kOsInstallButton,
     kSignIn,
     kSchoolEnrollmentButton,
+    kUseLocalAccount,
     kTargetCount,
   };
 

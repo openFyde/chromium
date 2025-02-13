@@ -86,6 +86,10 @@ void UserImageManagerRegistry::OnUserLoggedIn(const user_manager::User& user) {
       user_is_new = user_manager_->IsCurrentUserNew();
       user_is_local = false;
       break;
+    case user_manager::UserType::kFlintAccount:
+      user_is_new = user_manager_->IsCurrentUserNew();
+      user_is_local = true;
+      break;
     case user_manager::UserType::kPublicAccount:
       // The UserImageManager chooses a random avatar picture when a user logs
       // in for the first time. Tell the UserImageManager that this user is not

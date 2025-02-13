@@ -354,6 +354,8 @@ void UserManagerImpl::UserLoggedIn(const AccountId& account_id,
   switch (user_type) {
     case UserType::kRegular:
       [[fallthrough]];
+    case UserType::kFlintAccount:
+      [[fallthrough]];
     case UserType::kChild:
       if (account_id != GetOwnerAccountId() && !user &&
           (IsEphemeralAccountId(account_id) || browser_restart)) {
@@ -1245,7 +1247,7 @@ bool UserManagerImpl::IsDeviceLocalAccountMarkedForRemoval(
 
 bool UserManagerImpl::CanUserBeRemoved(const User* user) const {
   // Only regular users are allowed to be manually removed.
-  if (!user || !user->HasGaiaAccount()) {
+  if (!user || !(user->HasGaiaAccount() || user->IsFydeExtendAccountUser())) {
     return false;
   }
 
@@ -1688,7 +1690,7 @@ User* UserManagerImpl::RemoveRegularOrSupervisedUserFromList(
       user = *it;
       it = users_.erase(it);
     } else {
-      if ((*it)->HasGaiaAccount()) {
+      if ((*it)->HasGaiaAccount() || (*it)->IsFydeExtendAccountUser()) {
         const std::string user_email = (*it)->GetAccountId().GetUserEmail();
         prefs_users_update->Append(user_email);
       }

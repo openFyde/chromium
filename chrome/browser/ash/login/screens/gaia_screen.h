@@ -45,6 +45,7 @@ class GaiaScreen : public BaseScreen, public ScreenBacklightObserver {
     BACK_CHILD,
     CANCEL,
     ENTERPRISE_ENROLL,
+    USE_LOCAL_ACCOUNT,
     ENTER_QUICK_START,
     QUICK_START_ONGOING,
   };
@@ -73,6 +74,8 @@ class GaiaScreen : public BaseScreen, public ScreenBacklightObserver {
   // ScreenBacklightObserver:
   void OnScreenBacklightStateChanged(
       ScreenBacklightState screen_backlight_state) override;
+
+  void RequestUseLocalAccount();
 
  private:
   bool MaybeSkip(WizardContext& context) override;

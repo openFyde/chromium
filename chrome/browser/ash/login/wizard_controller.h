@@ -395,6 +395,7 @@ class WizardController : public OobeUI::Observer {
   void OnEnableDebuggingScreenExit();
   void OnDemoPreferencesScreenExit(DemoPreferencesScreen::Result result);
   void OnDemoSetupScreenExit(DemoSetupScreen::Result result);
+  void OnFydeLocalSigninScreenExit();
   void OnUserCreationScreenExit(UserCreationScreen::Result result);
   // Start of online authentication sub-group
   void OnGaiaScreenExit(GaiaScreen::Result result);

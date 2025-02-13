@@ -33,6 +33,7 @@ namespace {
 constexpr char kUserActionBack[] = "back";
 constexpr char kUserActionCancel[] = "cancel";
 constexpr char kUserActionStartEnrollment[] = "startEnrollment";
+constexpr char kUserActionUseLocalAccount[] = "useLocalAccount";
 constexpr char kUserActionReloadGaia[] = "reloadGaia";
 constexpr char kUserActionEnterIdentifier[] = "identifierEntered";
 constexpr char kUserActionQuickStartButtonClicked[] = "activateQuickStart";
@@ -81,6 +82,8 @@ std::string GaiaScreen::GetResultString(Result result) {
       return "Cancel";
     case Result::ENTERPRISE_ENROLL:
       return "EnterpriseEnroll";
+    case Result::USE_LOCAL_ACCOUNT:
+      return "UseLocalAccount";
     case Result::ENTER_QUICK_START:
       return "EnterQuickStart";
     case Result::QUICK_START_ONGOING:
@@ -257,6 +260,8 @@ void GaiaScreen::OnUserAction(const base::Value::List& args) {
     exit_callback_.Run(Result::CANCEL);
   } else if (action_id == kUserActionStartEnrollment) {
     exit_callback_.Run(Result::ENTERPRISE_ENROLL);
+  } else if (action_id == kUserActionUseLocalAccount) {
+    exit_callback_.Run(Result::USE_LOCAL_ACCOUNT);
   } else if (action_id == kUserActionReloadGaia) {
     CHECK_EQ(2u, args.size());
     const bool force_default_gaia_page = args[1].GetBool();
@@ -438,6 +443,11 @@ void GaiaScreen::SetQuickStartButtonVisibility(bool visible) {
     quick_start::QuickStartMetrics::RecordEntryPointVisible(
         quick_start::QuickStartMetrics::EntryPoint::GAIA_SCREEN);
   }
+}
+
+void GaiaScreen::RequestUseLocalAccount() {
+  if (!view_) return;
+  view_->RequestUseLocalAccount();
 }
 
 }  // namespace ash

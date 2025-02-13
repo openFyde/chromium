@@ -63,6 +63,7 @@ User::User(const AccountId& account_id, UserType type)
     : account_id_(account_id), type_(type), user_image_(new UserImage()) {
   switch (type_) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kChild:
     case user_manager::UserType::kKioskApp:
     case user_manager::UserType::kWebKioskApp:
@@ -130,6 +131,14 @@ bool User::HasGaiaAccount() const {
   return TypeHasGaiaAccount(GetType());
 }
 
+bool User::IsFlintAccountUser() const {
+  return GetType() == UserType::kFlintAccount;
+}
+
+bool User::IsFydeExtendAccountUser() const {
+  return GetType() == UserType::kFlintAccount;
+}
+
 bool User::IsChild() const {
   return GetType() == UserType::kChild;
 }
@@ -144,6 +153,7 @@ std::string User::GetAccountName(bool use_display_email) const {
 bool User::CanLock() const {
   switch (type_) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kChild:
       if (!profile_prefs_) {
         return false;
@@ -183,12 +193,13 @@ bool User::is_active() const {
 }
 
 bool User::has_gaia_account() const {
-  static_assert(static_cast<int>(user_manager::UserType::kMaxValue) == 10,
-                "kMaxValue should equal 10");
+  static_assert(static_cast<int>(user_manager::UserType::kMaxValue) == 11,
+                "kMaxValue should equal 11");
   switch (GetType()) {
     case user_manager::UserType::kRegular:
     case user_manager::UserType::kChild:
       return true;
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kGuest:
     case user_manager::UserType::kPublicAccount:
     case user_manager::UserType::kKioskApp:
@@ -251,6 +262,7 @@ void User::SetAffiliated(bool is_affiliated) {
 bool User::IsDeviceLocalAccount() const {
   switch (type_) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kChild:
     case user_manager::UserType::kGuest:
       return false;
@@ -269,7 +281,7 @@ bool User::IsKioskType() const {
 
 User* User::CreateRegularUser(const AccountId& account_id,
                               const UserType type) {
-  CHECK(type == UserType::kRegular || type == UserType::kChild)
+  CHECK(type == UserType::kRegular || type == UserType::kChild || type == UserType::kFlintAccount)
       << "Invalid user type " << type;
 
   return new User(account_id, type);

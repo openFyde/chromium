@@ -622,6 +622,7 @@ mojom::SessionType GetSessionType() {
       user_manager::UserManager::Get()->GetPrimaryUser();
   switch (user->GetType()) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
       return mojom::SessionType::kRegularSession;
     case user_manager::UserType::kChild:
       return mojom::SessionType::kChildSession;
@@ -685,6 +686,11 @@ std::optional<account_manager::Account> GetDeviceAccount() {
           account_manager::AccountKey{account_id.GetGaiaId(),
                                       account_manager::AccountType::kGaia},
           user->GetDisplayEmail()});
+    case AccountType::FLINT_ACCOUNT:
+      return std::make_optional(account_manager::Account{
+          account_manager::AccountKey{account_id.GetFlintId(),
+                                      account_manager::AccountType::kFlint},
+              user->GetDisplayEmail()});
     case AccountType::UNKNOWN:
       return std::nullopt;
   }
@@ -1140,6 +1146,7 @@ policy::CloudPolicyCore* GetCloudPolicyCoreForUser(
       return broker ? broker->core() : nullptr;
     }
     case user_manager::UserType::kGuest:
+    case user_manager::UserType::kFlintAccount:
       return nullptr;
   }
 }
@@ -1161,6 +1168,7 @@ policy::ComponentCloudPolicyService* GetComponentCloudPolicyServiceForUser(
           GetDeviceLocalAccountPolicyBroker(user);
       return broker ? broker->component_policy_service() : nullptr;
     }
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kGuest:
       return nullptr;
   }

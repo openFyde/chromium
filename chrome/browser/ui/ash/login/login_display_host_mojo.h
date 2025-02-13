@@ -84,6 +84,7 @@ class LoginDisplayHostMojo : public LoginDisplayHostCommon,
   void OnStartAppLaunch() override;
   void OnBrowserCreated() override;
   void ShowGaiaDialog(const AccountId& prefilled_account) override;
+  void ShowLocalDialog() override;
   void StartUserRecovery(const AccountId& account_to_recover) override;
   void ShowOsInstallScreen() override;
   void ShowGuestTosScreen() override;
