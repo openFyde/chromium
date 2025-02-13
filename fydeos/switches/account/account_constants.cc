@@ -1,0 +1,46 @@
+// Copyright (c) 2019 The FydeOS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#include "fydeos/switches/account/account_constants.h"
+#include "fydeos/build/config/buildflags.h"
+
+namespace fydeos::constants {
+
+#if BUILDFLAG(USE_FYDEOS_COM)
+
+const char kDefaultFydeOSGaiaUrl[] = "https://account.fydeos.com";
+const char kDefaultFydeOSApisBaseUrl[] = "https://apis.fydeos.com";
+const char kDefaultFydeOSDeviceManagementServerUrl[] =
+  "https://m.fydeos.com/devicemanagement/data/api";
+const char kDefaultFydeOSRealtimeReportingServerUrl[] =
+  "https://apis.fydeos.com/report/events";
+const char kDefaultFydeOSEncryptedReportingServerUrl[] =
+  "https://apis.fydeos.com/report/record";
+const char kFydeOSSyncDevServerUrl[] =
+  "https://clients4.fydeos.com/chrome-sync/dev";
+const char kFydeOSSyncServerUrl[] = "https://clients4.fydeos.com/chrome-sync";
+const char kDefaultFydeOSFamilyLinkApisUrl[] =
+  "https://familylink-apis.fydeos.com/kidsmanagement/v1/";
+
+#else
+
+const char kDefaultFydeOSGaiaUrl[] = "https://account.fydeos.io";
+const char kDefaultFydeOSApisBaseUrl[] = "https://apis.fydeos.io";
+const char kDefaultFydeOSDeviceManagementServerUrl[] =
+  "https://m.fydeos.io/devicemanagement/data/api";
+const char kDefaultFydeOSRealtimeReportingServerUrl[] =
+  "https://apis.fydeos.io/report/events";
+const char kDefaultFydeOSEncryptedReportingServerUrl[] =
+  "https://apis.fydeos.io/report/record";
+const char kFydeOSSyncDevServerUrl[] =
+  "https://clients4.fydeos.io/chrome-sync/dev";
+const char kFydeOSSyncServerUrl[] = "https://clients4.fydeos.io/chrome-sync";
+const char kDefaultFydeOSFamilyLinkApisUrl[] =
+  "https://familylink-apis.fydeos.io/kidsmanagement/v1/";
+
+#endif
+
+const size_t kFydeOSSupervisedUserSettingsDefaultSyncIntervalInSeconds = 600;
+
+}  // namespace fydeos::constants

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <grit-part>
   <if expr="openfyde">
-    <message name="IDS_FYDEOS_LOCAL_SIGNIN_TITLE" desc="Title of oobe fydeos local signin page">
+    <message name="IDS_FYDEOS_LOCAL_SIGNUP_TITLE" desc="Title of oobe fydeos local signup page">
       Create your local openFyde account
+    </message>
+    <message name="IDS_FYDEOS_LOCAL_SIGNIN_TITLE" desc="Title of oobe fydeos local signin page">
+      Sign in your local openFyde account
     </message>
   </if>
   <if expr="not openfyde">
-    <message name="IDS_FYDEOS_LOCAL_SIGNIN_TITLE" desc="Title of oobe fydeos local signin page">
+    <message name="IDS_FYDEOS_LOCAL_SIGNUP_TITLE" desc="Title of oobe fydeos local signup page">
       Create your local FydeOS account
+    </message>
+    <message name="IDS_FYDEOS_LOCAL_SIGNIN_TITLE" desc="Title of oobe fydeos local signin page">
+      Sign in your local FydeOS account
     </message>
   </if>
   <message name="IDS_FYDEOS_LOCAL_SIGNIN_USERNAME" desc="Label of oobe fydeos local signin page, username input">
@@ -27,6 +33,15 @@
   </message>
   <message name="IDS_FYDEOS_LOCAL_SIGNIN_PASSWORD_CONFIRM_ERROR" desc="Error message of oobe fydeos local signin page, password_confirm input">
     Your passwords do not match
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_NEW_LOCAL_ACCOUNT_BUTTON_TEXT" desc="Error message of oobe fydeos local signin page, password_confirm input">
+    Create a new local account
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_EXIST_LOCAL_ACCOUNT_BUTTON_TEXT" desc="Error message of oobe fydeos local signin page, password_confirm input">
+    Sign in to an existing account
+  </message>
+  <message name="IDS_FYDEOS_LOCAL_SIGNIN_EXIST_LOCAL_ACCOUNT_ERROR_MESSAGE" desc="Error message of oobe fydeos local signin page, password_confirm input">
+    The username or password you entered is incorrect
   </message>
   <if expr="openfyde">
     <message name="IDS_FYDE_LOCAL_SIGNIN_HTML" desc="Text shown on network error screen, suggest user to use fyde local account">

@@ -714,6 +714,7 @@ void LoginShelfView::UpdateAccessiblePreviousAndNextFocus() {
 bool LoginShelfView::ShouldShowGuestAndAppsButtons() const {
   bool dialog_state_allowed = false;
   if (dialog_state_ == OobeDialogState::USER_CREATION ||
+      dialog_state_ == OobeDialogState::FYDE_LOCAL_SIGNIN ||
       dialog_state_ == OobeDialogState::GAIA_SIGNIN ||
       dialog_state_ == OobeDialogState::SETUP_CHILD ||
       dialog_state_ == OobeDialogState::ENROLL_TRIAGE ||
@@ -744,6 +745,7 @@ bool LoginShelfView::ShouldShowShutdownButton() const {
          dialog_state_ == OobeDialogState::ENROLLMENT_SUCCESS ||
          dialog_state_ == OobeDialogState::EXTENSION_LOGIN ||
          dialog_state_ == OobeDialogState::BLOCKING ||
+         dialog_state_ == OobeDialogState::FYDE_LOCAL_SIGNIN ||
          (dialog_state_ == OobeDialogState::GAIA_SIGNIN &&
           is_first_signin_step_);
 }

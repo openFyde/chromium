@@ -126,6 +126,10 @@ bool HasDedicatedAssistantKey() {
 namespace assistant {
 
 AssistantAllowedState IsAssistantAllowedForProfile(const Profile* profile) {
+  // ---***FYDEOS BEGIN***---
+  if (profile->IsFydeProfile())
+    return AssistantAllowedState::DISALLOWED_BY_ACCOUNT_TYPE;
+  // ---***FYDEOS END***---
   // Disabled because the libassistant.so is not available.
   if (!ash::assistant::features::IsLibAssistantDLCEnabled()) {
     return AssistantAllowedState::DISALLOWED_BY_NO_BINARY;

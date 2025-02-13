@@ -26,6 +26,8 @@ class PasswordFactorEditor : public mojom::PasswordFactorEditor {
   PasswordFactorEditor(const mojom::PasswordFactorEditor&) = delete;
   PasswordFactorEditor& operator=(const PasswordFactorEditor&) = delete;
 
+  static mojom::PasswordComplexity CheckLocalPasswordComplexity(const std::string& password);
+
   void UpdateOrSetLocalPassword(
       const std::string& auth_token,
       const std::string& new_password,

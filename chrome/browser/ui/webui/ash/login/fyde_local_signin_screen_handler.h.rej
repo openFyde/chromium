@@ -1,0 +1,11 @@
+--- chrome/browser/ui/webui/ash/login/fyde_local_signin_screen_handler.h
++++ chrome/browser/ui/webui/ash/login/fyde_local_signin_screen_handler.h
+@@ -50,7 +50,7 @@
+ 
+     void DoCompleteLogin(const bool newUser,
+                          const std::string& username,
+-                         const ash::Key& key);
++                         const std::string& password);
+ 
+     void Show() override;
+     void Reset() override;

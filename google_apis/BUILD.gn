@@ -188,6 +188,7 @@ component("google_apis") {
     "//mojo/public/cpp/bindings:struct_traits",
     "//net",
     "//services/network/public/mojom",
+    "//fydeos/switches",
   ]
 
   if (_use_official_google_keys_and_generate_metrics_key_header) {

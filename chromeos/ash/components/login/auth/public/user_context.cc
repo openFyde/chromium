@@ -385,6 +385,14 @@ std::optional<PasswordInput> UserContext::GetPassword() const {
   }
 }
 
+void UserContext::SetFydeLocalPasswordInput(const LocalPasswordInput& password) {
+  SetLocalPasswordInput(password);
+}
+
+std::optional<LocalPasswordInput> UserContext::GetFydeLocalPassword() const {
+  return local_input_;
+}
+
 void UserContext::SetAuthCode(const std::string& auth_code) {
   auth_code_ = auth_code;
 }

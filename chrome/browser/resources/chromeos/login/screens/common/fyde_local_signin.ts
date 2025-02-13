@@ -11,6 +11,9 @@ import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.m
 import {LoginScreenMixin} from '../../components/mixins/login_screen_mixin.js';
 import {OobeI18nMixin} from '../../components/mixins/oobe_i18n_mixin.js';
 import {OobeDialogHostMixin} from '../../components/mixins/oobe_dialog_host_mixin.js';
+import {MultiStepMixin} from '../../components/mixins/multi_step_mixin.js';
+
+import {OobeUiState} from '../../components/display_manager_types.js';
 
 import {CrInputElement} from '//resources/ash/common/cr_elements/cr_input/cr_input.js';
 import {assert} from '//resources/js/assert.js';
@@ -33,13 +36,21 @@ enum FYDE_LOCAL_SIGNIN_ERROR_STATE {
   BAD_USERNAME = 1,
   BAD_AUTH_PASSWORD = 2,
   BAD_CONFIRM_PASSWORD = 3,
+  BAD_USERNAME_OR_PASSWORD_ERROR = 4,
+  BAD_AUTH_PASSWORD_TOO_SHORT = 5,
+};
+
+enum FydeLocalSigninUIState {
+  SIGNUP = 'signup',
+  SIGNIN = 'signin',
 };
 
 interface FydeLocalSigninData {
   emailDomain: string;
+  showUsersOnSignin: boolean;
 }
 
-const FydeLocalSigninBase = OobeDialogHostMixin(LoginScreenMixin(OobeI18nMixin(PolymerElement)));
+const FydeLocalSigninBase = OobeDialogHostMixin(LoginScreenMixin(MultiStepMixin(OobeI18nMixin(PolymerElement))));
 
 export class FydeLocalSignin extends FydeLocalSigninBase {
   static get is() {
@@ -60,12 +71,23 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
         value: FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE,
         observer: 'errorStateObserver_',
       },
+      showUsersOnSignin_: {
+        type: Boolean,
+        value: true,
+      },
+      showSigninButton_: {
+        type: Boolean,
+        value: false,
+        computed: 'computeShowSigninButton_(showUsersOnSignin_, uiStep)',
+      },
       userInvalid:
           {type: Boolean, value: false, observer: 'userInvalidObserver_'},
       authPasswordInvalid:
           {type: Boolean, value: false, observer: 'authPasswordInvalidObserver_'},
       authPasswordConfirmInvalid:
           {type: Boolean, value: false, observer: 'authPasswordConfirmInvalidObserver_'},
+      authSigninPasswordInvalid:
+          {type: Boolean, value: false, observer: 'authSigninPasswordInvalidObserver_'},
     };
   }
 
@@ -79,7 +101,11 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
   private authPasswordConfirmInvalid: boolean;
   private passwordInput: CrInputElement;
   private passwordConfirmInput: CrInputElement;
+  private signinPasswordInput: CrInputElement;
   private userInput: CrInputElement;
+  private showUsersOnSignin_: boolean;
+  private showSigninButton_: boolean;
+  private authSigninPasswordInvalid: boolean;
 
   constructor() {
     super();
@@ -89,6 +115,15 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
   override get EXTERNAL_API(): string[] {
     return ['reset', 'setErrorState'];
   }
+
+  override get UI_STEPS() {
+    return FydeLocalSigninUIState;
+  }
+
+  override defaultUIStep() {
+    return FydeLocalSigninUIState.SIGNUP;
+  }
+
 
   override ready() {
     super.ready();
@@ -108,11 +143,23 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
         this.shadowRoot?.querySelector<CrInputElement>('#userInput');
     assert(userInput instanceof CrInputElement);
     this.userInput = userInput;
+
+    const signinPasswordInput =
+        this.shadowRoot?.querySelector<CrInputElement>('#signinPasswordInput');
+    assert(signinPasswordInput instanceof CrInputElement);
+    this.signinPasswordInput = signinPasswordInput;
+  }
+
+  override getOobeUIInitialState() {
+    return OobeUiState.FYDE_LOCAL_SIGNIN;
   }
 
   override onBeforeShow(data: FydeLocalSigninData) {
     if (data && 'emailDomain' in data) {
       this.userRealm = '@' + data['emailDomain'];
+    }
+    if (data && 'showUsersOnSignin' in data) {
+      this.showUsersOnSignin_ = data.showUsersOnSignin;
     }
     this.focus_();
   }
@@ -145,8 +192,9 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
     this.errorStateLocked_ = true;
 
     this.userInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_USERNAME;
-    this.authPasswordInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_AUTH_PASSWORD;
+    this.authPasswordInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_AUTH_PASSWORD || this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_AUTH_PASSWORD_TOO_SHORT;
     this.authPasswordConfirmInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_CONFIRM_PASSWORD;
+    this.authSigninPasswordInvalid = this.errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_USERNAME_OR_PASSWORD_ERROR;
 
     this.errorStateLocked_ = false;
   }
@@ -155,22 +203,46 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
     this.userInvalid = /^[a-zA-Z][a-zA-Z0-9\.\-]*$/.test(this.userInput.value) === false;
     if (this.userInvalid)
       return;
-    this.authPasswordInvalid = !this.passwordInput.validate();
-    if (this.authPasswordInvalid)
+    if (this.uiStep === FydeLocalSigninUIState.SIGNUP) {
+      this.authPasswordInvalid = !this.passwordInput.validate();
+      if (this.authPasswordInvalid)
+        return;
+      this.authPasswordConfirmInvalid = !this.passwordConfirmInput.validate() || (this.passwordInput.value !== this.passwordConfirmInput.value);
+      if (this.authPasswordConfirmInvalid)
+        return;
+    } else if (this.uiStep === FydeLocalSigninUIState.SIGNIN) {
+      this.authSigninPasswordInvalid = !this.signinPasswordInput.validate();
+      if (this.authSigninPasswordInvalid)
+        return;
+    } else {
       return;
-    this.authPasswordConfirmInvalid = !this.passwordConfirmInput.validate() || (this.passwordInput.value !== this.passwordConfirmInput.value);
-    if (this.authPasswordConfirmInvalid)
-      return;
+    }
 
     var user = /** @type {string} */ (this.userInput.value);
     if (!user.includes('@') && this.userRealm)
       user += this.userRealm;
+    let username = user;
+    let password = '';
+    let newUser = this.uiStep === FydeLocalSigninUIState.SIGNUP;
+    if (newUser) {
+      password = this.passwordInput.value;
+    } else {
+      password = this.signinPasswordInput.value;
+    }
     var msg = {
-      'username': user,
-      'password': this.passwordInput.value,
+      newUser,
+      username,
+      password,
     };
     this.loading = true;
-    chrome.send('completeFtAuthentication', [msg.username, msg.password]);
+    chrome.send('completeFtAuthentication', [msg.newUser, msg.username, msg.password]);
+  }
+
+  getInvalidPasswordMessage_(locale: string, errorState: FYDE_LOCAL_SIGNIN_ERROR_STATE) {
+    if (errorState === FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_AUTH_PASSWORD_TOO_SHORT) {
+      return this.i18nDynamic(locale, 'fydeosLocalSigninInvalidPasswordTooShort');
+    }
+    return this.i18nDynamic(locale, 'fydeosLocalSigninInvalidPassword');
   }
 
   onBackButton_() {
@@ -179,8 +251,13 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
 
   onKeydownUserInput_(e: KeyboardEvent) {
     this.errorState = FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE;
-    if (e.key == 'Enter')
-      this.switchTo_(this.passwordInput);
+    if (e.key == 'Enter') {
+      if (this.uiStep === FydeLocalSigninUIState.SIGNUP) {
+        this.switchTo_(this.passwordInput);
+      } else if (this.uiStep === FydeLocalSigninUIState.SIGNIN) {
+        this.switchTo_(this.signinPasswordInput);
+      }
+    }
   }
 
   userNameObserver_() {
@@ -198,6 +275,12 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
 
   onKeydownAuthPasswordConfirmInput_(e: KeyboardEvent) {
     this.authPasswordConfirmInvalid = false;
+    if (e.key == 'Enter')
+      this.onSubmit_();
+  }
+
+  onKeydownAuthSigninPasswordInput_(e: KeyboardEvent) {
+    this.errorState = FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE;
     if (e.key == 'Enter')
       this.onSubmit_();
   }
@@ -224,6 +307,11 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
         isInvalid, FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_CONFIRM_PASSWORD);
   }
 
+  authSigninPasswordInvalidObserver_(isInvalid: boolean) {
+    this.setErrorState_(
+        isInvalid, FYDE_LOCAL_SIGNIN_ERROR_STATE.BAD_USERNAME_OR_PASSWORD_ERROR);
+  }
+
   setErrorState_(isInvalid: boolean, error: FYDE_LOCAL_SIGNIN_ERROR_STATE) {
     if (this.errorStateLocked_)
       return;
@@ -235,6 +323,22 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
       this.errorState = FYDE_LOCAL_SIGNIN_ERROR_STATE.NONE;
 
     this.errorStateLocked_ = false;
+  }
+
+  onGotoSignupClicked_() {
+    this.reset();
+    this.loading = false;
+    this.setUIStep(FydeLocalSigninUIState.SIGNUP);
+  }
+
+  onGotoSigninClicked_() {
+    this.reset();
+    this.loading = false;
+    this.setUIStep(FydeLocalSigninUIState.SIGNIN);
+  }
+
+  computeShowSigninButton_(showUsersOnSignin: boolean, uiStep: FydeLocalSigninUIState) {
+    return !showUsersOnSignin && uiStep === FydeLocalSigninUIState.SIGNUP;
   }
 }
 

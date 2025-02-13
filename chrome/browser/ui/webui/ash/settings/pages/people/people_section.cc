@@ -535,7 +535,7 @@ PeopleSection::PeopleSection(Profile* profile,
 
   // TODO(jamescook): Sort out how account management is split between Chrome
   // OS and browser settings.
-  if (IsAccountManagerAvailable(profile)) {
+  if (IsAccountManagerAvailable(profile) && !profile->IsFydeProfile()) {
     // Some Account Manager search tags are added/removed dynamically.
     auto* factory =
         g_browser_process->platform_part()->GetAccountManagerFactory();

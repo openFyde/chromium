@@ -43,9 +43,6 @@ class FydeLocalSigninScreenHandler : public FydeLocalSigninView,
     FydeLocalSigninScreenHandler& operator=(
         const FydeLocalSigninScreenHandler&) = delete;
 
-    void DoCompleteLogin(const std::string& username,
-                         const ash::Key& key);
-
     void Show() override;
     void Reset() override;
     void SetErrorState(const std::string& username, int errorState) override;
@@ -56,7 +53,11 @@ class FydeLocalSigninScreenHandler : public FydeLocalSigninView,
         ::login::LocalizedValuesBuilder* builder) override;
 
  private:
-  void HandleCompleteAuth(const std::string& username,
+  void DoCompleteLogin(const bool newUser,
+                       const std::string& username,
+                       const std::string& password);
+  void HandleCompleteAuth(const bool newUser,
+                          const std::string& username,
                           const std::string& password);
 
   base::WeakPtrFactory<FydeLocalSigninView> weak_ptr_factory_{this};

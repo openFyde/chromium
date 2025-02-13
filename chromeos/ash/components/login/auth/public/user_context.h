@@ -184,9 +184,11 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_LOGIN_AUTH_PUBLIC) UserContext {
   void SetGaiaPassword(const GaiaPassword& password);
   void SetSamlPassword(const SamlPassword& password);
   void SetLocalPasswordInput(const LocalPasswordInput& password);
+  void SetFydeLocalPasswordInput(const LocalPasswordInput& password);
 
   std::optional<OnlinePassword> GetOnlinePassword() const;
   std::optional<PasswordInput> GetPassword() const;
+  std::optional<LocalPasswordInput> GetFydeLocalPassword() const;
 
   bool HasCredentials() const;
   bool HasReplacementKey() const;
