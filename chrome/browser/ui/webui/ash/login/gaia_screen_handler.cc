@@ -72,6 +72,7 @@
 #include "chrome/browser/ui/webui/ash/login/enrollment_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/error_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/network_state_informer.h"
+#include "chrome/browser/ui/webui/ash/login/fyde_local_signin_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/online_login_utils.h"
 #include "chrome/browser/ui/webui/ash/login/reset_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/saml_challenge_key_handler.h"
@@ -680,6 +681,13 @@ void GaiaScreenHandler::DeclareJSCallbacks() {
   AddCallback("showLoadingTimeoutError",
               &GaiaScreenHandler::HandleShowLoadingTimeoutError);
   AddCallback("getDeviceIdForLogin", &GaiaScreenHandler::HandleGetDeviceId);
+  AddCallback("fydeLocalSignin", &GaiaScreenHandler::HandleFydeLocalSignin);
+}
+
+void GaiaScreenHandler::HandleFydeLocalSignin() {
+  HideOfflineMessage(NetworkStateInformer::OFFLINE,
+                     NetworkError::ERROR_REASON_NONE);
+  LoginDisplayHost::default_host()->StartWizard(FydeLocalSigninView::kScreenId);
 }
 
 void GaiaScreenHandler::HandleAuthenticatorLoaded() {

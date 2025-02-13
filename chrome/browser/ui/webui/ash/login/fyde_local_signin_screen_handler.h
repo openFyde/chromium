@@ -8,6 +8,9 @@
 #include "chrome/browser/ui/webui/ash/login/base_screen_handler.h"
 
 namespace ash {
+
+class Key;
+
 class FydeLocalSigninView {
  public:
     inline constexpr static StaticOobeScreenId kScreenId{
@@ -39,6 +42,9 @@ class FydeLocalSigninScreenHandler : public FydeLocalSigninView,
       delete;
     FydeLocalSigninScreenHandler& operator=(
         const FydeLocalSigninScreenHandler&) = delete;
+
+    void DoCompleteLogin(const std::string& username,
+                         const ash::Key& key);
 
     void Show() override;
     void Reset() override;

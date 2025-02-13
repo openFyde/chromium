@@ -992,6 +992,11 @@ bool UserManagerImpl::IsLoggedInAsUserWithGaiaAccount() const {
   return IsUserLoggedIn() && active_user_->HasGaiaAccount();
 }
 
+bool UserManagerImpl::IsLoggedInAsUserWithFydeExtendedAccount() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return IsUserLoggedIn() && active_user_->IsFydeExtendAccountUser();
+}
+
 bool UserManagerImpl::IsLoggedInAsChildUser() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return IsUserLoggedIn() && active_user_->GetType() == UserType::kChild;
@@ -1061,7 +1066,7 @@ bool UserManagerImpl::IsUserNonCryptohomeDataEphemeral(
   // b) The user logged into any other account type.
   if (IsUserLoggedIn() && (account_id == GetActiveUser()->GetAccountId()) &&
       (is_current_user_ephemeral_regular_user_ ||
-       !IsLoggedInAsUserWithGaiaAccount())) {
+       (!IsLoggedInAsUserWithGaiaAccount() && !IsLoggedInAsUserWithFydeExtendedAccount()))) {
     return true;
   }
 

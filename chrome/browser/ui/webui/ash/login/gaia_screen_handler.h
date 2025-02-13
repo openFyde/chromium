@@ -241,6 +241,7 @@ class GaiaScreenHandler final
   void DeclareJSCallbacks() override;
   void InitAfterJavascriptAllowed() override;
 
+  void HandleFydeLocalSignin();
   // WebUI message handlers.
   void HandleWebviewLoadAborted(int error_code);
 
