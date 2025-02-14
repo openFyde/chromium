@@ -155,6 +155,7 @@ export class FydeLocalSignin extends FydeLocalSigninBase {
   }
 
   override onBeforeShow(data: FydeLocalSigninData) {
+    super.onBeforeShow(data);
     if (data && 'emailDomain' in data) {
       this.userRealm = '@' + data['emailDomain'];
     }
