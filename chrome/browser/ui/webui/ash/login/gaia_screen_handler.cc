@@ -675,6 +675,19 @@ void GaiaScreenHandler::DeclareLocalizedValues(
 
   builder->Add("signinScreenQuickStart",
                IDS_LOGIN_QUICK_START_SETUP_SIGNIN_SCREEN_ENTRY_POINT);
+
+  builder->Add("fydeosAddUserDupEmailErrorMessage",
+               IDS_FYDEOS_ADD_USER_DUP_EMAIL_ERROR_MESSAGE);
+  builder->Add("fydeosConfirmGotoLocalAccountTitle",
+							 IDS_FYDEOS_CONFIRM_GOTO_LOCAL_ACCOUNT_TITLE);
+  builder->Add("fydeosUseLocalAccount",
+							 IDS_FYDEOS_USE_LOCAL_ACCOUNT_BUTTON_TEXT);
+  builder->Add("fydeosUseOnlineAccount",
+						   IDS_FYDEOS_USE_ONLINE_ACCOUNT_BUTTON_TEXT);
+  builder->Add("fydeosConfirmGotoLocalAccountHintMessage1",
+							 IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_1);
+  builder->Add("fydeosConfirmGotoLocalAccountHintMessage2",
+					     IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2);
 }
 
 void GaiaScreenHandler::InitAfterJavascriptAllowed() {
