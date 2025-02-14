@@ -953,7 +953,7 @@ base::FilePath WallpaperControllerImpl::GetDefaultWallpaperPath(
                                                ? switches::kGuestWallpaperSmall
                                                : switches::kGuestWallpaperLarge;
     return command_line->GetSwitchValuePath(switch_string);
-  } else if (user_type == user_manager::UserType::kChild) {
+  } else if (user_type == user_manager::UserType::kChild || user_type == user_manager::UserType::kFydeChild) {
     const std::string_view switch_string = use_small
                                                ? switches::kChildWallpaperSmall
                                                : switches::kChildWallpaperLarge;

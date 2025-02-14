@@ -294,6 +294,8 @@ int CountRegularUsers(const user_manager::UserList& users) {
     // Allow offline login from the error screen if user of one of these types
     // has already logged in.
     if (user->GetType() == user_manager::UserType::kRegular ||
+        user->GetType() == user_manager::UserType::kFydeAccount ||
+        user->GetType() == user_manager::UserType::kFydeChild ||
         user->GetType() == user_manager::UserType::kChild) {
       regular_users_counter++;
     }
@@ -514,7 +516,8 @@ void ExistingUserController::Login(const UserContext& user_context,
 
   is_login_in_progress_ = true;
 
-  if (user_context.GetUserType() != user_manager::UserType::kRegular &&
+  if ((user_context.GetUserType() != user_manager::UserType::kRegular ||
+      user_context.GetUserType() != user_manager::UserType::kFydeAccount) &&
       user_manager::UserManager::Get()->IsUserLoggedIn()) {
     // Multi-login is only allowed for regular users. If we are attempting to
     // do multi-login as another type of user somehow, bail out. Do not

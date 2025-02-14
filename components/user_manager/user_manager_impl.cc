@@ -200,6 +200,7 @@ const UserList& UserManagerImpl::GetUsers() const {
 UserList UserManagerImpl::GetUsersAllowedForMultiUserSignIn() const {
   // Supervised users are not allowed to use multi-user sign-in.
   if (logged_in_users_.size() == 1 &&
+      primary_user_->GetType() != UserType::kFydeAccount && // FYDEOS_NOTE, might want to remove this line, fyde account do not allow multi-profile
       primary_user_->GetType() != UserType::kRegular) {
     return {};
   }
@@ -354,7 +355,11 @@ void UserManagerImpl::UserLoggedIn(const AccountId& account_id,
   switch (user_type) {
     case UserType::kRegular:
       [[fallthrough]];
+    case UserType::kFydeAccount:
+      [[fallthrough]];
     case UserType::kFlintAccount:
+      [[fallthrough]];
+    case UserType::kFydeChild:
       [[fallthrough]];
     case UserType::kChild:
       if (account_id != GetOwnerAccountId() && !user &&
@@ -999,7 +1004,8 @@ bool UserManagerImpl::IsLoggedInAsUserWithFydeExtendedAccount() const {
 
 bool UserManagerImpl::IsLoggedInAsChildUser() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return IsUserLoggedIn() && active_user_->GetType() == UserType::kChild;
+  return IsUserLoggedIn() && (active_user_->GetType() == UserType::kChild ||
+                              active_user_->GetType() == UserType::kFydeChild);
 }
 
 bool UserManagerImpl::IsLoggedInAsManagedGuestSession() const {
@@ -1231,6 +1237,9 @@ bool UserManagerImpl::IsGaiaUserAllowed(const User& user) const {
 bool UserManagerImpl::IsUserAllowed(const User& user) const {
   DCHECK(user.GetType() == UserType::kRegular ||
          user.GetType() == UserType::kGuest ||
+         user.GetType() == UserType::kFlintAccount ||
+         user.GetType() == UserType::kFydeAccount ||
+         user.GetType() == UserType::kFydeChild ||
          user.GetType() == UserType::kChild);
 
   return UserManager::IsUserAllowed(

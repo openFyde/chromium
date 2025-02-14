@@ -328,7 +328,7 @@ SyncConsentScreen::SyncScreenBehavior SyncConsentScreen::GetSyncScreenBehavior(
       user_manager::UserManager::Get();
   // Skip for non-regular ephemeral users.
   if (user_manager->IsUserNonCryptohomeDataEphemeral(user_->GetAccountId()) &&
-      (user_->GetType() != user_manager::UserType::kRegular)) {
+      (user_->GetType() != user_manager::UserType::kRegular) && (user_->GetType() != user_manager::UserType::kFydeAccount)) {
     return SyncScreenBehavior::kSkipAndEnableEmphemeralUser;
   }
 

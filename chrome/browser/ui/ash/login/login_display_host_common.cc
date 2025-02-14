@@ -87,6 +87,7 @@
 #include "ui/base/ime/ash/input_method_manager.h"
 #include "ui/base/ime/ash/input_method_util.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace ash {
 
@@ -710,7 +711,7 @@ void LoginDisplayHostCommon::ShowGaiaDialogCommon(
   }
   SetGaiaInputMethods(prefilled_account);
 
-  if (!prefilled_account.is_valid()) {
+  if (!prefilled_account.is_valid() && !fydeos::switches::IsFydeAccountEnabled()) {
     StartWizard(UserCreationView::kScreenId);
   } else {
     wizard_context_->gaia_config.prefilled_account = prefilled_account;

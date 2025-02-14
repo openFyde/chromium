@@ -415,6 +415,9 @@ bool IsRunningTest() {
 
 bool IsOnlineSignin(const UserContext& user_context) {
   return user_context.GetAuthFlow() == UserContext::AUTH_FLOW_GAIA_WITH_SAML ||
+  //---***FYDEOS BEGIN***---
+         user_context.GetAuthFlow() == UserContext::AUTH_FLOW_FYDE_ONLINE ||
+  //---***FYDEOS END***---
          user_context.GetAuthFlow() == UserContext::AUTH_FLOW_GAIA_WITHOUT_SAML;
 }
 
@@ -1193,7 +1196,7 @@ void UserSessionManager::CreateUserSession(const UserContext& user_context,
   StoreUserContextDataBeforeProfileIsCreated();
   session_manager::SessionManager::Get()->CreateSession(
       user_context_.GetAccountId(), user_context_.GetUserIDHash(),
-      user_context.GetUserType() == user_manager::UserType::kChild);
+      user_context.GetUserType() == user_manager::UserType::kChild || user_context.GetUserType() == user_manager::UserType::kFydeChild);
 }
 
 void UserSessionManager::PreStartSession(StartSessionType start_session_type) {
@@ -1535,9 +1538,9 @@ void UserSessionManager::InitProfilePreferences(
     }
 
     user = user_manager->FindUser(user_context.GetAccountId());
-    bool is_child = user->GetType() == user_manager::UserType::kChild;
+    bool is_child = user->GetType() == user_manager::UserType::kChild || user->GetType() == user_manager::UserType::kFydeChild;
     DCHECK(is_child ==
-           (user_context.GetUserType() == user_manager::UserType::kChild));
+           (user_context.GetUserType() == user_manager::UserType::kChild || user_context.GetUserType() == user_manager::UserType::kFydeChild));
 
     signin::Tribool is_under_advanced_protection = signin::Tribool::kUnknown;
     if (IsOnlineSignin(user_context)) {
@@ -1637,6 +1640,10 @@ void UserSessionManager::UserProfileInitialized(Profile* profile,
 
     } else if (!in_session_password_change_feature_enabled ||
                user_context_.GetAuthFlow() ==
+//---***FYDEOS BEGIN***---
+                   UserContext::AUTH_FLOW_FYDE_ONLINE ||
+							 user_context_.GetAuthFlow() ==
+//---***FYDEOS END***---
                    UserContext::AUTH_FLOW_GAIA_WITHOUT_SAML) {
       // These attributes are no longer relevant and should be deleted if
       // either a) the in-session password change feature is no longer enabled
@@ -1788,7 +1795,7 @@ void UserSessionManager::FinalizePrepareProfile(Profile* profile) {
 
     VLOG(1) << "Clearing all secrets";
     user_context_.ClearSecrets();
-    if (user->GetType() == user_manager::UserType::kChild) {
+    if (user->GetType() == user_manager::UserType::kChild || user->GetType() == user_manager::UserType::kFydeChild) {
       VLOG(1) << "Waiting for child policy refresh before showing session UI";
       DCHECK(child_policy_observer_);
       child_policy_observer_->NotifyWhenPolicyReady(
@@ -2213,6 +2220,8 @@ void UserSessionManager::RestorePendingUserSessions() {
     AccountType account_type = account_id.GetAccountType();
     if (account_type == AccountType::FLINT_ACCOUNT) {
       user_type = user_manager::UserType::kFlintAccount;
+    } else if (account_type == AccountType::FYDE_ACCOUNT) {
+      user_type = user_manager::UserType::kFydeAccount;
     }
     UserContext user_context =
         user ? UserContext(*user)

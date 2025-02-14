@@ -54,8 +54,12 @@ enum class UserType {
   // Gaia account. Could be ephemeral depending on the device policy.
   // kActiveDirectory = 8,    // deprecated
 
+  kFydeAccount = 11,
+
+  kFydeChild = 12,
+
   // Alias for histogram.
-  kMaxValue = kFlintAccount,
+  kMaxValue = kFydeChild,
 };
 
 // Stringifies UserType. Returns a C-style (i.e. \0-terminated) string literal.

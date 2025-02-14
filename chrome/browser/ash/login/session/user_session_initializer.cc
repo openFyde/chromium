@@ -196,7 +196,7 @@ void UserSessionInitializer::OnUserProfileLoaded(const AccountId& account_id) {
     }
   }
 
-  if (user->GetType() == user_manager::UserType::kChild) {
+  if (user->GetType() == user_manager::UserType::kChild || user->GetType() == user_manager::UserType::kFydeChild) {
     InitializeChildUserServices(profile);
   }
 }

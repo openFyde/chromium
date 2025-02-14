@@ -125,6 +125,7 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/account/account_switches.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -454,6 +455,13 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
     if (owner_user && owner_user->GetType() == user_manager::UserType::kChild) {
       params.Set("obfuscatedOwnerId", owner_account_id.GetGaiaId());
     }
+    // ---***FYDEOS BEGIN***---
+    if (owner_user &&
+        owner_user->GetType() == user_manager::UserType::kFydeChild) {
+      params.Set("obfuscatedOwnerId", owner_account_id.GetFydeId());
+    }
+
+    // ---***FYDEOS END***---
   }
 
   const GaiaUrls& gaia_urls = *GaiaUrls::GetInstance();
@@ -524,6 +532,27 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
   params.Set("recordAccountCreation",
              ash::features::IsGaiaRecordAccountCreationEnabled());
 
+  // ---***FYDEOS BEGIN***---
+  params.Set("enableFydeAccount", fydeos::switches::IsFydeAccountEnabled());
+  params.Set("isDMServerSet", base::CommandLine::ForCurrentProcess()->HasSwitch(
+        fydeos::switches::kFydeOSDeviceManagementUrl));
+  // add all user email and account_type
+  user_manager::KnownUser known_user(g_browser_process->local_state());
+  const std::vector<AccountId> known_account_ids =
+    known_user.GetKnownAccountIds();
+
+  base::Value::List emailList;
+
+  for (const AccountId& known_id : known_account_ids) {
+    base::Value::Dict account;
+    account.Set("email", known_id.GetUserEmail());
+    account.Set("type",
+        AccountId::AccountTypeToString(known_id.GetAccountType()));
+    emailList.Append(std::move(account));
+  }
+  params.Set("knownAccountList", std::move(emailList));
+  // ---***FYDEOS END***---
+
   if (public_saml_url_fetcher_) {
     params.Set("startsOnSamlPage", true);
     DCHECK(base::CommandLine::ForCurrentProcess()->HasSwitch(
@@ -545,7 +574,7 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
   bool is_reauth = !context.email.empty();
   if (is_reauth) {
     const AccountId account_id = login::GetAccountId(
-        context.email, context.gaia_id, AccountType::GOOGLE);
+        context.email, context.gaia_id, fydeos::switches::IsFydeAccountEnabled() ? AccountType::FYDE_ACCOUNT : AccountType::GOOGLE);
     auto* user = user_manager::UserManager::Get()->FindUser(account_id);
     DCHECK(user);
     bool is_child_account = user && user->IsChild();
@@ -908,7 +937,7 @@ void GaiaScreenHandler::CompleteAuthentication(
   }
 
   const AccountId account_id = login::GetAccountId(
-      signin_artifacts.email, signin_artifacts.gaia_id, AccountType::GOOGLE);
+      signin_artifacts.email, signin_artifacts.gaia_id, fydeos::switches::IsFydeAccountEnabled() ? AccountType::FYDE_ACCOUNT : AccountType::GOOGLE);
   // Execute delayed allowlist check that is based on user type. If Gaia done
   // times out and doesn't provide us with services list try to use a saved
   // UserType.
