@@ -86,6 +86,17 @@ UserType GetStoredUserType(const base::Value::Dict& prefs_user_types,
   return static_cast<UserType>(int_user_type);
 }
 
+UserType FixUserTypeForFyde(const UserType user_type, const AccountId& account_id) {
+  switch (account_id.GetAccountType()) {
+    case AccountType::FLINT_ACCOUNT:
+      return UserType::kFlintAccount;
+    case AccountType::FYDE_ACCOUNT:
+      return UserType::kFydeAccount;
+    default:
+      return user_type;
+  }
+}
+
 std::unique_ptr<UserImage> CreateStubImage() {
   return std::make_unique<user_manager::UserImage>(
       *ui::ResourceBundle::GetSharedInstance().GetImageSkiaNamed(
@@ -767,6 +778,10 @@ void UserManagerImpl::SaveForceOnlineSignin(const AccountId& account_id,
                                             bool force_online_signin) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) {
+    return;
+  }
+
   User* const user = FindUserAndModify(account_id);
   if (user) {
     user->set_force_online_signin(force_online_signin);
@@ -829,7 +844,7 @@ void UserManagerImpl::SaveUserDisplayEmail(const AccountId& account_id,
 UserType UserManagerImpl::GetUserType(const AccountId& account_id) {
   const base::Value::Dict& prefs_user_types =
       local_state_->GetDict(prefs::kUserType);
-  return GetStoredUserType(prefs_user_types, account_id);
+  return FixUserTypeForFyde(GetStoredUserType(prefs_user_types, account_id), account_id);
 }
 
 void UserManagerImpl::SaveUserType(const User* user) {
@@ -1364,7 +1379,7 @@ void UserManagerImpl::EnsureUsersLoaded() {
         kLegacySupervisedUsersHistogramName,
         LegacySupervisedUserStatus::kGaiaUserDisplayed);
     User* user =
-        User::CreateRegularUser(*it, GetStoredUserType(prefs_user_types, *it));
+        User::CreateRegularUser(*it, FixUserTypeForFyde(GetStoredUserType(prefs_user_types, *it), *it));
     user->set_oauth_token_status(LoadUserOAuthStatus(*it));
     user->set_force_online_signin(LoadForceOnlineSignin(*it));
     KnownUser known_user(local_state_.get());

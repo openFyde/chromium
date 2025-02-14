@@ -1481,9 +1481,16 @@ void GaiaScreenHandler::LoadAuthenticator(bool force) {
     // TODO(http://b/314902371): Figure out if we can read
     // `populated_account_id_.GetGaiaId()` instead of searching inside
     // `known_user`.
-    if (const std::string* gaia_id =
-            known_user.FindGaiaID(AccountId::FromUserEmail(context.email))) {
-      context.gaia_id = *gaia_id;
+    if (fydeos::switches::IsFydeAccountEnabled()) {
+      if (const std::string* fyde_id =
+            known_user.FindFydeID(AccountId::FromUserEmail(context.email))) {
+        context.gaia_id = *fyde_id;
+      }
+    } else {
+      if (const std::string* gaia_id =
+              known_user.FindGaiaID(AccountId::FromUserEmail(context.email))) {
+        context.gaia_id = *gaia_id;
+      }
     }
 
     // TODO(http://b/314902371): This may be dangerous.
