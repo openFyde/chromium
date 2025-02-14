@@ -54,9 +54,9 @@ enum class UserType {
   // Gaia account. Could be ephemeral depending on the device policy.
   // kActiveDirectory = 8,    // deprecated
 
-  kFydeAccount = 11,
+  kFydeAccount = 12,
 
-  kFydeChild = 12,
+  kFydeChild = 13,
 
   // Alias for histogram.
   kMaxValue = kFydeChild,

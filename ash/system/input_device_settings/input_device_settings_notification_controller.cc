@@ -309,6 +309,8 @@ bool ShouldBlockNotification() {
     case user_manager::UserType::kRegular:
     case user_manager::UserType::kChild:
     case user_manager::UserType::kFlintAccount:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
       return false;
   }
 }
