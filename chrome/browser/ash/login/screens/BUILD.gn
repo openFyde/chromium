@@ -344,6 +344,7 @@ static_library("screens") {
     # of its headers and hence need some of its public_deps.
     # TODO(b/335294371): Replace with //c/b/a/policy.
     "//third_party/private_membership",
+    "//fydeos/switches/account/toggle:account_toggle",
   ]
 
   allow_circular_includes_from = [

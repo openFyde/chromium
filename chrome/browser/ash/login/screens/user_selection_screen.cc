@@ -71,6 +71,7 @@
 #include "services/device/public/mojom/wake_lock_provider.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -615,6 +616,9 @@ void UserSelectionScreen::HandleFocusPod(const AccountId& account_id) {
     pending_focused_account_id_ = account_id;
     return;
   }
+  // ---***FYDEOS BEGIN***---
+  fydeos::switches::ToggleFydeAccountFlagByAccountId(account_id);
+  // ---***FYDEOS END***---
   proximity_auth::ScreenlockBridge::Get()->SetFocusedUser(account_id);
   if (focused_pod_account_id_ == account_id) {
     return;

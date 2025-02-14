@@ -267,6 +267,10 @@
 #include "services/service_manager/public/cpp/connector.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
 #include "ui/base/accelerators/accelerator.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+// ---***FYDEOS END***---
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -1097,6 +1101,9 @@ void WizardController::OnSignInFatalErrorScreenExit() {
 
 void WizardController::ShowLoginScreen() {
   VLOG(1) << "Showing login screen.";
+  if (!wizard_context_->is_user_creation_enabled) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
   UpdateStatusAreaVisibilityForScreen(GaiaView::kScreenId);
   GetLoginDisplayHost()->StartSignInScreen();
 }
@@ -1448,7 +1455,16 @@ void WizardController::OnUserCreationScreenExit(
       ShowEnrollmentScreenIfEligible();
       break;
     case UserCreationScreen::Result::CANCEL:
-      LoginDisplayHost::default_host()->HideOobeDialog();
+      // ---***FYDEOS BEGIN***---
+      if (!fydeos::switches::IsFydeAccountEnabled()) {
+        // back to fydeos signin webview page
+        fydeos::switches::EnableFydeAccountFlag();
+        GetScreen<GaiaScreen>()->LoadOnlineGaia();
+        AdvanceToScreen(GaiaView::kScreenId);
+      } else {
+        LoginDisplayHost::default_host()->HideOobeDialog();
+      }
+      // ---***FYDEOS END***---
       break;
   }
 }
@@ -1500,7 +1516,11 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
         if ((wizard_context_->is_user_creation_enabled ||
              !wizard_context_->is_add_person_flow) &&
             result == GaiaScreen::Result::BACK) {
-          AdvanceToScreen(UserCreationView::kScreenId);
+          if (!fydeos::switches::IsFydeAccountEnabled()) {
+            AdvanceToScreen(UserCreationView::kScreenId);
+          } else {
+            GetScreen<GaiaScreen>()->LoadOnlineGaia();
+          }
           break;
         }
       }
@@ -1539,10 +1559,16 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
            !wizard_context_->is_user_creation_enabled) ||
           (!LoginDisplayHost::default_host()->HasUserPods() &&
            gaia_page_defaults_to_saml)) {
+        if (!fydeos::switches::IsFydeAccountEnabled()) {
+          fydeos::switches::EnableFydeAccountFlag();
+        }
         GetScreen<GaiaScreen>()->Reset();
         LoginDisplayHost::default_host()->HideOobeDialog(
             gaia_page_defaults_to_saml);
       } else {
+        if (!fydeos::switches::IsFydeAccountEnabled()) {
+          fydeos::switches::EnableFydeAccountFlag();
+        }
         GetScreen<GaiaScreen>()->LoadOnlineGaia();
       }
       break;
@@ -3563,6 +3589,10 @@ bool WizardController::SetOnTimeZoneResolvedForTesting(
 }
 
 void WizardController::StartEnrollmentScreen() {
+  if (!(current_screen_ && IsSigninScreen(current_screen_->screen_id()))) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
+
   VLOG(1) << "Showing enrollment screen.";
 
   // Determine the effective enrollment configuration. If OOBE Configuration

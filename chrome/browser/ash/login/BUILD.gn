@@ -249,6 +249,7 @@ static_library("login") {
     "//ui/message_center/public/cpp",
     "//ui/ozone",
     "//ui/wm",
+    "//fydeos/switches/account/toggle:account_toggle",
   ]
 
   allow_circular_includes_from = [

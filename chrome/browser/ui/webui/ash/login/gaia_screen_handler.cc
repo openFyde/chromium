@@ -126,6 +126,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/chromeos/devicetype_utils.h"
 #include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -685,6 +686,12 @@ void GaiaScreenHandler::InitAfterJavascriptAllowed() {
 }
 
 void GaiaScreenHandler::DeclareJSCallbacks() {
+  // ---***FYDEOS BEGIN***---
+  AddCallback("userSelectGoogleAccount",
+              &GaiaScreenHandler::HandleUserSelectGoogleAccount);
+  AddCallback("resetAccountFlag",
+              &GaiaScreenHandler::HandleResetAccountFlag);
+  // ---***FYDEOS END***---
   AddCallback("webviewLoadAborted",
               &GaiaScreenHandler::HandleWebviewLoadAborted);
   AddCallback("launchSAMLPublicSession",
@@ -1002,6 +1009,20 @@ void GaiaScreenHandler::OnCookieWaitTimeout() {
   LoadAuthenticator(true /* force */);
   LoginDisplayHost::default_host()->GetSigninUI()->ShowSigninError(
       SigninError::kCookieWaitTimeout, /*details=*/std::string());
+}
+
+void GaiaScreenHandler::HandleUserSelectGoogleAccount() {
+  fydeos::switches::DisableFydeAccountFlag();
+  LoadGaiaAsync(EmptyAccountId());
+  LoginDisplayHost::default_host()->StartWizard(UserCreationView::kScreenId);
+}
+
+void GaiaScreenHandler::HandleResetAccountFlag() {
+  if (g_browser_process->platform_part()
+      ->browser_policy_connector_ash()
+      ->IsDeviceEnterpriseManaged()) return;
+  fydeos::switches::EnableFydeAccountFlag();
+  ReloadGaia(true/* force_reload */);
 }
 
 void GaiaScreenHandler::HandleLaunchSAMLPublicSession(
