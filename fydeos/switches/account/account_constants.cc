@@ -12,7 +12,7 @@ namespace fydeos::constants {
 const char kDefaultFydeOSGaiaUrl[] = "https://account.fydeos.com";
 const char kDefaultFydeOSApisBaseUrl[] = "https://apis.fydeos.com";
 const char kDefaultFydeOSDeviceManagementServerUrl[] =
-  "https://m.fydeos.com/devicemanagement/data/api";
+  "https://policy.fydeos.com";
 const char kDefaultFydeOSRealtimeReportingServerUrl[] =
   "https://apis.fydeos.com/report/events";
 const char kDefaultFydeOSEncryptedReportingServerUrl[] =
@@ -28,7 +28,7 @@ const char kDefaultFydeOSFamilyLinkApisUrl[] =
 const char kDefaultFydeOSGaiaUrl[] = "https://account.fydeos.io";
 const char kDefaultFydeOSApisBaseUrl[] = "https://apis.fydeos.io";
 const char kDefaultFydeOSDeviceManagementServerUrl[] =
-  "https://m.fydeos.io/devicemanagement/data/api";
+  "https://policy.fydeos.io";
 const char kDefaultFydeOSRealtimeReportingServerUrl[] =
   "https://apis.fydeos.io/report/events";
 const char kDefaultFydeOSEncryptedReportingServerUrl[] =

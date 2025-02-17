@@ -600,9 +600,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
 
     params.enableFydeAccount = data.enableFydeAccount;
     params.disableResetFydeAccountFlag = data.enterpriseManagedDevice;
-    if (data.enableFydeAccount) {
-      params.menuEnterpriseEnrollment = params.menuEnterpriseEnrollment && data.isDMServerSet;
-    }
 
     this.authenticatorParams = params;
 

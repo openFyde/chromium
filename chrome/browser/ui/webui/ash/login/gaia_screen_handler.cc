@@ -535,8 +535,6 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
 
   // ---***FYDEOS BEGIN***---
   params.Set("enableFydeAccount", fydeos::switches::IsFydeAccountEnabled());
-  params.Set("isDMServerSet", base::CommandLine::ForCurrentProcess()->HasSwitch(
-        fydeos::switches::kFydeOSDeviceManagementUrl));
   // add all user email and account_type
   user_manager::KnownUser known_user(g_browser_process->local_state());
   const std::vector<AccountId> known_account_ids =
