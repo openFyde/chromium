@@ -80,6 +80,10 @@ bool HasAPIKeyConfigured() {
   return GetApiKeyCacheInstance().HasAPIKeyConfigured();
 }
 
+bool HasFydeOSAPIKeyConfigured() {
+  return GetApiKeyCacheInstance().HasFydeOSAPIKeyConfigured();
+}
+
 const std::string& GetAPIKey(version_info::Channel channel) {
   return channel == version_info::Channel::STABLE
              ? GetAPIKey()
@@ -88,6 +92,10 @@ const std::string& GetAPIKey(version_info::Channel channel) {
 
 const std::string& GetAPIKey() {
   return GetApiKeyCacheInstance().api_key();
+}
+
+const std::string& GetFydeOSAPIKey() {
+  return GetApiKeyCacheInstance().fydeos_api_key();
 }
 
 const std::string& GetRemotingAPIKey() {

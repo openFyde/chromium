@@ -148,6 +148,13 @@ ApiKeyCache::ApiKeyCache(const DefaultApiKeys& default_api_keys) {
   base::UmaHistogramBoolean("Signin.APIKeyMatchesFeatureOnStartup",
                             api_key_from_feature == api_key_);
 
+  fydeos_api_key_ = CalculateKeyValue(default_api_keys.fydeos_api_key,
+                                      STRINGIZE_NO_EXPANSION(FYDEOS_API_KEY),
+                                      std::string(), nullptr, std::string(),
+                                      environment.get(), command_line, gaia_config,
+                                      default_api_keys.allow_override_via_environment,
+                                      default_api_keys.allow_unset_values);
+
 // A special non-stable key is at the moment defined only for Android Chrome.
 #if BUILDFLAG(IS_ANDROID)
   api_key_non_stable_ = CalculateKeyValue(
@@ -336,6 +343,10 @@ void ApiKeyCache::SetClientSecret(OAuth2Client client,
 
 bool ApiKeyCache::HasAPIKeyConfigured() const {
   return api_key_ != DefaultApiKeys::kUnsetApiToken;
+}
+
+bool ApiKeyCache::HasFydeOSAPIKeyConfigured() const {
+  return fydeos_api_key_ != DefaultApiKeys::kUnsetApiToken;
 }
 
 #if !BUILDFLAG(IS_OPENFYDE)

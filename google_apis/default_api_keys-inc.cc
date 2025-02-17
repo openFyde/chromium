@@ -20,6 +20,10 @@
 #define GOOGLE_API_KEY google_apis::DefaultApiKeys::kUnsetApiToken
 #endif
 
+#if !defined(FYDEOS_API_KEY)
+#define FYDEOS_API_KEY DUMMY_API_TOKEN
+#endif
+
 #if !defined(GOOGLE_METRICS_SIGNING_KEY)
 #define GOOGLE_METRICS_SIGNING_KEY google_apis::DefaultApiKeys::kUnsetApiToken
 #endif

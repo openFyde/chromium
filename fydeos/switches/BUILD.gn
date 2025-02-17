@@ -35,6 +35,9 @@ source_set("switches") {
     "services/services_switches.h",
     "services/services_constants.cc",
     "services/services_constants.h",
+
+    "accelerometer/accelerometer_switches.cc",
+    "accelerometer/accelerometer_switches.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }
