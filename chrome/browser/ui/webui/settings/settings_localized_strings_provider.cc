@@ -652,6 +652,7 @@ void AddClearBrowsingDataStrings(content::WebUIDataSource* html_source,
       {"passwordsDeletionDialogOK",
        IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE_OK},
       {"notificationWarning", IDS_SETTINGS_NOTIFICATION_WARNING},
+      {"clearBrowsingHistorySummarySignedIn", IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN},
   };
 
   html_source->AddString(

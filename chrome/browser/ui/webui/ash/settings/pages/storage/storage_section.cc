@@ -89,6 +89,8 @@ void StorageSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_EMPTY_LIST_HEADER},
       {"storageExternalStorageListHeader",
        IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER},
+      {"storageAndroidAppsExternalDrivesNote",
+       IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE},
       {"storageItemApps", kIsRevampEnabled ? IDS_OS_SETTINGS_STORAGE_ITEM_APPS
                                            : IDS_SETTINGS_STORAGE_ITEM_APPS},
       {"storageItemOffline", IDS_SETTINGS_STORAGE_ITEM_OFFLINE},
@@ -118,11 +120,11 @@ void StorageSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   };
   html_source->AddLocalizedStrings(kStorageStrings);
 
-  html_source->AddString(
-      "storageAndroidAppsExternalDrivesNote",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE,
-          chrome::kArcExternalStorageLearnMoreURL));
+  // html_source->AddString(
+  //     "storageAndroidAppsExternalDrivesNote",
+  //     l10n_util::GetStringFUTF16(
+  //         IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE,
+  //         chrome::kArcExternalStorageLearnMoreURL));
 
   // If Lacros is enabled the browsing data settings control will open a Lacros
   // window for browsing data belonging to the Lacros primary profile. The

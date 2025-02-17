@@ -17,6 +17,8 @@ CHROMEOS_EXPORT bool DisableFydeOSTimezoneAPI();
 extern std::string GetFydeOSGeolocationAPIUrl();
 extern std::string GetFydeOSTimezoneAPIUrl();
 
+extern std::string GetFydeOSLookingGlassUrl();
+
 } // switches
 } // fydeos
 

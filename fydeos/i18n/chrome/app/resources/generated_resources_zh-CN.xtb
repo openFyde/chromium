@@ -27,4 +27,38 @@
 <translation id="5566104065733539571">你将无法添加用户，因为缺少 Google API 和 FydeOS API 密钥。详情请见 <ph name="DETAILS_URL" />。</translation>
 <translation id="2529264822895109699">你将无法添加 Google 帐号，因为缺少 Google API 密钥。详情请见 <ph name="DETAILS_URL" />。</translation>
 <translation id="5035857262187007658">你将无法添加 FydeOS 帐号，因为缺少 Google API 和 FydeOS API 密钥。详情请见 <ph name="DETAILS_URL" />。</translation>
+<!-- os_settings_strings.override.grdp -->
+<translation id="4467178118407184669">Android 支持</translation>
+<translation id="7577269083417202628">删除 Android 支持</translation>
+<translation id="6763605592759679747">管理 Android 应用</translation>
+<translation id="8201879985702141998">您从下载的应用将从这台 openFyde 设备中删除。
+      <ph name="LINE_BREAKS1" />
+      您购买的内容（例如电影、电视节目、音乐、图书或其他应用内购买内容）也可能会被删除。
+      <ph name="LINE_BREAKS2" />
+      这不会影响其他设备上的应用或内容。</translation>
+<translation id="1642922089350226084">您从下载的应用将从这台 FydeOS 设备中删除。
+      <ph name="LINE_BREAKS1" />
+      您购买的内容（例如电影、电视节目、音乐、图书或其他应用内购买内容）也可能会被删除。
+      <ph name="LINE_BREAKS2" />
+      这不会影响其他设备上的应用或内容。</translation>
+<translation id="1182767881475429285">删除所有用户帐号并重置您的 <ph name="IDS_SHORT_PRODUCT_OS_NAME" /> 设备，使其焕然一新。</translation>
+<translation id="1399034565330869383">无法更新您的 openFyde 设备。请稍后再试。</translation>
+<translation id="8996840558782076079">无法更新您的 FydeOS 设备。请稍后再试。</translation>
+<translation id="7890024409713470793">FydeOS 帐号</translation>
+<translation id="1870123303114216415">您需要重启 openFyde 才能更改设备语言。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="1243738736603109562">您需要重启 FydeOS 才能更改设备语言。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="1491869033935559234">openFyde 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
+<translation id="4356727807337882306">FydeOS 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
+<!-- settings_strings.override.grdp -->
+<translation id="788994565092063281">打开应用商店</translation>
+<translation id="646286410082977985">版本 <ph name="PRODUCT_VERSION" /> <ph name="PRODUCT_MODIFIER" /> <ph name="PRODUCT_VERSION_BITS" /></translation>
+<translation id="6448652064462513778">在 openFyde 设置中管理语言</translation>
+<translation id="8978432605827551547">在 FydeOS 设置中管理语言</translation>
+<translation id="4798975186883594180">FydeOS 个人资料照片</translation>
+<translation id="4835160910703799618">下载 PDF 文件，而不是在 Chromium 中自动打开它们</translation>
+<translation id="344806589241926887">预加载 Chromium 认为您可能会访问的网页。为此，Chromium 可能会使用 Cookie（如果您允许使用 Cookie 的话），并加密和发送网页以在网站中隐藏您的身份。</translation>
+<translation id="810783818611464909">会清除历史记录以及搜索框中的自动补全项。</translation>
+<!-- shared_settings_strings.override.grdp -->
+<translation id="3142455651440468550">其他服务</translation>
+<translation id="8559764570013185596">同步功能和其他服务</translation>
 </translationbundle>

@@ -307,6 +307,7 @@ are declared in tools/grit/grit_rule.gni.
         <part file="../../fydeos/i18n/chrome/app/chromeos_strings.override.grdp" />
         <part file="../../fydeos/i18n/chrome/app/chromeos_strings.grdp" />
         <part file="os_settings_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/os_settings_strings.override.grdp" />
         <part file="os_settings_search_tag_strings.grdp" />
         <part file="sharesheet_strings.grdp" />
       </if>
@@ -314,7 +315,9 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Settings specific strings -->
       <if expr="not is_android">
         <part file="settings_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/settings_strings.override.grdp" />
         <part file="shared_settings_strings.grdp"/>
+        <part file="../../fydeos/i18n/chrome/app/shared_settings_strings.override.grdp" />
       </if>
 
       <if expr="chrome_root_store_cert_management_ui">

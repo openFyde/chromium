@@ -18,6 +18,8 @@ const char kDisableFydeOSTimezoneAPI[] = "disable-fydeos-timezone-api";
 const char kFydeOSGeolocationAPIUrl[] = "fydeos-geolocation-api-url";
 const char kFydeOSTimezoneAPIUrl[] = "fydeos-timezone-api-url";
 
+const char kFydeOSLookingGlassUrl[] = "fydeos-lookingglass-url";
+
 }
 
 bool DisableFydeOSGeolocationAPI() {
@@ -45,6 +47,15 @@ std::string GetFydeOSTimezoneAPIUrl() {
     return command_line->GetSwitchValueASCII(kFydeOSTimezoneAPIUrl);
   } else {
     return std::string(fydeos::constants::kDefaultFydeOSTimezoneAPIUrl);
+  }
+}
+
+std::string GetFydeOSLookingGlassUrl() {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(kFydeOSLookingGlassUrl)) {
+    return command_line->GetSwitchValueASCII(kFydeOSLookingGlassUrl);
+  } else {
+    return std::string(fydeos::constants::kDefaultFydeOSLookingGlassUrl);
   }
 }
 
