@@ -218,8 +218,8 @@ constexpr EngineAndTier engines_CL[] = {
 
 // China
 constexpr EngineAndTier engines_CN[] = {
-    {SearchEngineTier::kTopEngines, &baidu},
     {SearchEngineTier::kTopEngines, &bing},
+    {SearchEngineTier::kTopEngines, &baidu},
     {SearchEngineTier::kTopEngines, &sogou},
     {SearchEngineTier::kTopEngines, &so_360},
     {SearchEngineTier::kTopEngines, &google},

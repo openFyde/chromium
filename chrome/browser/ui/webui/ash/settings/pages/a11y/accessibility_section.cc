@@ -49,6 +49,7 @@
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/events/ash/keyboard_layout_util.h"
 #include "ui/native_theme/native_theme_features.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -1445,7 +1446,7 @@ void AccessibilitySection::AddLoadTimeData(
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
   html_source->AddString("a11yLearnMoreUrl",
-                         chrome::kChromeAccessibilityHelpURL);
+                         fydeos::constants::kFydeAccessibilityHelpURL);
 
   html_source->AddString("selectToSpeakLearnMoreUrl",
                          chrome::kSelectToSpeakLearnMoreURL);

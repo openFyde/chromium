@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/extensions_strings.grdp, included from generated_resources.grd -->
+<grit-part>
+
+  <message name="IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE" desc="The text for the link to get more extensions in the extensions page.">
+    Open App Store
+  </message>
+
+</grit-part>

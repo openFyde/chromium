@@ -146,7 +146,7 @@ BASE_FEATURE(kEnableCertManagementUIV2EditCerts,
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
 // Enable project Crostini, Linux VMs on Chrome OS.
-BASE_FEATURE(kCrostini, "Crostini", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kCrostini, "Crostini", base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable additional Crostini session status reporting for
 // managed devices only, i.e. reports of installed apps and kernel version.

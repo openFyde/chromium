@@ -308,6 +308,7 @@ are declared in tools/grit/grit_rule.gni.
         <part file="../../fydeos/i18n/chrome/app/chromeos_strings.grdp" />
         <part file="os_settings_strings.grdp" />
         <part file="../../fydeos/i18n/chrome/app/os_settings_strings.override.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/os_settings_strings.grdp" />
         <part file="os_settings_search_tag_strings.grdp" />
         <part file="sharesheet_strings.grdp" />
       </if>
@@ -316,6 +317,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_android">
         <part file="settings_strings.grdp" />
         <part file="../../fydeos/i18n/chrome/app/settings_strings.override.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/settings_strings.grdp" />
         <part file="shared_settings_strings.grdp"/>
         <part file="../../fydeos/i18n/chrome/app/shared_settings_strings.override.grdp" />
       </if>
@@ -332,6 +334,8 @@ are declared in tools/grit/grit_rule.gni.
       <!-- MD Extensions specific strings -->
       <if expr="enable_extensions">
         <part file="extensions_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/extensions_strings.override.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/extensions_strings.grdp" />
       </if>
 
       <!-- Nearby Share specific strings -->
@@ -18677,6 +18681,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Choose an audio output device
     </message>
 
+    <part file="../../fydeos/i18n/chrome/app/generated_resources.override.grdp" />
     <part file="../../fydeos/i18n/chrome/app/generated_resources.grdp" />
 
   </messages>

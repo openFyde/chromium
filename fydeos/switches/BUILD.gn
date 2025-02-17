@@ -38,6 +38,11 @@ source_set("switches") {
 
     "accelerometer/accelerometer_switches.cc",
     "accelerometer/accelerometer_switches.h",
+
+    "features/network_switches.cc",
+    "features/network_switches.h",
+    "features/network_constants.cc",
+    "features/network_constants.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }

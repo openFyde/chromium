@@ -228,6 +228,7 @@ void StatisticsCollector::CollectUserInfo() {
   }
   statistics_.profile_account_type =
     AccountId::AccountTypeToString(account_id.GetAccountType());
+  statistics_.is_fyde_profile = profile_->IsFydeProfile();
   statistics_.is_new_profile = profile_->IsNewProfile();
   statistics_.profile_start_time = profile_->GetStartTime();
   statistics_.profile_creation_time = profile_->GetCreationTime();

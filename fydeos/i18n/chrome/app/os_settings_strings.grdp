@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend chrome/app/os_settings_strings.grdp, included from generated_resources.grd -->
+<grit-part>
+<if expr="chromeos_ash">
+  <message name="IDS_SETTINGS_ABOUT_KEEP_FYDEOS_UPDATE_TO_DATE" desc="The text of keep fydeos update title in os-settings about section.">
+    Automatically keep my <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> up to date
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_ENABLED" desc="The text of keep fydeos update status in os-settings about section.">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> update enabled
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_DISABLED" desc="The text of disable fydeos update status in os-settings about section.">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> update disabled
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_VERSION" desc="The text label describing the version of the browser, example: Version 57.0.2937.0 (Developer Build) unknown (64-bit)">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="FYDEOS_MAJOR_VERSION">$2<ex>v9.0</ex></ph> (<ph name="PRODUCT_CHANNEL">$3<ex>Developer Build</ex></ph>) Platform <ph name="FYDEOS_PLATFORM_VERSION">$4<ex>12739.22.9.15</ex></ph> <ph name="PRODUCT_VERSION_BITS">$5</ph>
+  </message>
+  <message name="IDS_SETTINGS_FYDEOS_REMOTE_DESKTOP_APP_NAME" desc="Title of remote desktop app in os-settings menu">
+    Remote desktop
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_VERSION" desc="Version label for crostini">
+    Version
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
+    Restart
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_CHECK_FOR_UPDATES" desc="The button label to check for updates and apply (download and install) if found">
+    Check for updates
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_UPDATE" desc="Status label: just do update">
+    Update
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_UPGRADE_CHECK_STARTED" desc="Status label: About to start checking for updates">
+    Checking for updates
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_UPGRADE_UP_TO_DATE" desc="Status label: Crostini Already up to date">
+    Your Linux is up to date
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_UPDATE_AVAILABLE" desc="message of fydeos stateful update available in settings">
+    Thers's a critical update available for the Linux(beta) component. It's strongly recommended to perform this update as soon as possible or your Linux(beta) may no longer work.
+  </message>
+</if>
+</grit-part>

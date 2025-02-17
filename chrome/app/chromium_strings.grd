@@ -2621,6 +2621,9 @@ Permissions you've already given to websites and apps may apply to this account.
           To get your extensions on all your computers, sign in to Chromium
         </message>
       </if>
+
+      <part file="../../fydeos/i18n/chrome/app/chromium_strings.override.grdp" />
+
     </messages>
   </release>
 </grit>
