@@ -21,6 +21,8 @@ static_library("misc") {
     "fydeos_misc_scheduler.h",
     "fydeos_statistics_collector.cc",
     "fydeos_statistics_collector.h",
+    "fydeos_release_note_url.cc",
+    "fydeos_release_note_url.h",
   ]
 
   defines = [ "CHROMEOS_IMPLEMENTATION" ]

@@ -19,6 +19,8 @@ extern std::string GetFydeOSTimezoneAPIUrl();
 
 extern std::string GetFydeOSLookingGlassUrl();
 
+extern std::string GetFydeOSAppStoreURL();
+
 } // switches
 } // fydeos
 
