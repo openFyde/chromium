@@ -30,6 +30,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace ash {
 
@@ -366,6 +367,9 @@ TimeZoneResponseData::TimeZoneResponseData()
     : dstOffset(0), rawOffset(0), status(ZERO_RESULTS) {}
 
 GURL DefaultTimezoneProviderURL() {
+  if (!fydeos::switches::DisableFydeOSTimezoneAPI()) {
+    return GURL(fydeos::switches::GetFydeOSTimezoneAPIUrl());
+  }
   return GURL(kDefaultTimezoneProviderUrl);
 }
 

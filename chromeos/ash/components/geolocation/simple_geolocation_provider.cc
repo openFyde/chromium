@@ -20,6 +20,7 @@
 #include "chromeos/ash/components/network/geolocation_handler.h"
 #include "chromeos/ash/components/network/network_handler.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace ash {
 
@@ -204,6 +205,9 @@ std::string SimpleGeolocationProvider::GetGeolocationProviderUrl() const {
   if (!url_for_testing_.empty()) {
     CHECK_IS_TEST();
     return url_for_testing_;
+  }
+  if (!fydeos::switches::DisableFydeOSGeolocationAPI()) {
+    return fydeos::switches::GetFydeOSGeolocationAPIUrl();
   }
   return kGeolocationProviderUrl;
 }
