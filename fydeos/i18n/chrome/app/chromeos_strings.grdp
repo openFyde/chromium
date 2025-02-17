@@ -78,4 +78,12 @@
       We recommend using an online account to utilise FydeOS to its fullest.
     </message>
   </if>
+  <if expr="openfyde">
+    <message name="IDS_LOGIN_GOOGLE_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+      You will not be able to add Google accounts because Google API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+    </message>
+    <message name="IDS_LOGIN_FYDE_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+      You will not be able to add FydeOS accounts because FydeOS API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+    </message>
+  </if>
 </grit-part>

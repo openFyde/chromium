@@ -12,6 +12,7 @@
 #include "build/chromeos_buildflags.h"
 #include "google_apis/buildflags.h"
 #include "google_apis/google_api_keys.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace google_apis {
 
@@ -50,6 +51,10 @@ class COMPONENT_EXPORT(GOOGLE_APIS) ApiKeyCache {
 
   bool HasAPIKeyConfigured() const;
   bool HasOAuthClientConfigured() const;
+
+#if BUILDFLAG(IS_OPENFYDE)
+  bool HasFydeOAuthClientConfigured() const;
+#endif
 
 #if BUILDFLAG(SUPPORT_EXTERNAL_GOOGLE_API_KEY)
   void set_api_key(const std::string& api_key) { api_key_ = api_key; }

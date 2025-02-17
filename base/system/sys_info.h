@@ -236,6 +236,8 @@ class BASE_EXPORT SysInfo {
   // details.
   static std::string GetLsbReleaseBoard();
 
+  static std::string GetLsbReleaseBoardWithoutSuffix();
+
   // Returns the creation time of /etc/lsb-release. (Used to get the date and
   // time of the Chrome OS build).
   static Time GetLsbReleaseTime();

@@ -179,6 +179,8 @@
 #include "device/vr/public/cpp/features.h"
 #endif
 
+#include "fydeos/switches/urls/urls_constants.h"
+
 namespace settings {
 namespace {
 
@@ -589,6 +591,11 @@ void AddAppearanceStrings(content::WebUIDataSource* html_source,
                           tabs::GetTabSearchTrailingTabstrip(profile));
   html_source->AddBoolean("toolbarPinningEnabled",
                           features::IsToolbarPinningEnabled());
+  html_source->AddString("fydeosStoreBaseUrl",
+                         fydeos::constants::kFydeOSStoreBaseUrl);
+
+  html_source->AddString("fydeosAccountBaseUrl",
+                         fydeos::constants::kFydeOSAccountBaseUrl);
 
 #if BUILDFLAG(IS_LINUX)
   bool show_custom_chrome_frame = ui::OzonePlatform::GetInstance()
@@ -1749,6 +1756,10 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
                           ash::IsAccountManagerAvailable(profile)
                           && !profile->IsFydeProfile());
   html_source->AddBoolean("isFydeProfile", profile->IsFydeProfile());
+  const user_manager::User* user =
+      ash::ProfileHelper::Get()->GetUserByProfile(profile);
+  html_source->AddBoolean("isFydeLocalAccount",
+      user->GetType() == user_manager::UserType::kFlintAccount);
   html_source->AddString(
       "osSettingsAccountsPageUrl",
       chrome::GetOSSettingsUrl(

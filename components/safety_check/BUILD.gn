@@ -19,6 +19,7 @@ source_set("safety_check") {
     "//components/safe_browsing/core/common:safe_browsing_prefs",
     "//net",
     "//services/network/public/cpp",
+    "//fydeos/build/config:buildflags",
   ]
 }
 

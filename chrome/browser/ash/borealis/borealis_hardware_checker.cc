@@ -15,6 +15,7 @@
 #include "base/task/thread_pool.h"
 #include "chromeos/ash/components/system/statistics_provider.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace borealis {
 
@@ -89,6 +90,9 @@ bool InTargetSegment() {
 }
 
 bool Check() {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    return HasMemory(7 * kGibi) && (CpuRegexMatches(kIntelCpuRegex) || CpuRegexMatches(kAmdCpuRegex));
+  }
   if (BoardIn({"hatch", "drallion", "puff"})) {
     return HasSufficientHardware(kIntelCpuRegex);
   }

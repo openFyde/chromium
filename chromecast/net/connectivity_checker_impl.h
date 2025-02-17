@@ -16,6 +16,7 @@
 #include "chromecast/net/time_sync_tracker.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
+#include "fydeos/build/config/buildflags.h"
 
 class GURL;
 
@@ -34,6 +35,15 @@ class SimpleURLLoader;
 
 namespace chromecast {
 
+#if BUILDFLAG(USE_FYDEOS_COM)
+// Default (HTTPS) url for connectivity checking.
+constexpr char kDefaultConnectivityCheckUrl[] =
+    "https://store.fydeos.com/204";
+
+// HTTP url for connectivity checking.
+constexpr char kHttpConnectivityCheckUrl[] =
+    "http://store.fydeos.com/204";
+#else
 // Default (HTTPS) url for connectivity checking.
 constexpr char kDefaultConnectivityCheckUrl[] =
     "https://connectivitycheck.gstatic.com/generate_204";
@@ -41,6 +51,7 @@ constexpr char kDefaultConnectivityCheckUrl[] =
 // HTTP url for connectivity checking.
 constexpr char kHttpConnectivityCheckUrl[] =
     "http://connectivitycheck.gstatic.com/generate_204";
+#endif
 
 // The default URLs above are expected to respond with HTTP 204 (no content).
 constexpr net::HttpStatusCode kConnectivitySuccessStatusCode =

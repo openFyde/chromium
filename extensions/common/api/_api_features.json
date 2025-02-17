@@ -45,7 +45,8 @@
     "allowlist": [
       "B9EF10DDFEA11EF77873CC5009809E5037FC4C7A",  // Google input tools
       "06BE211D5F014BAB34BC22D9DDA09C63A81D828E",  // Official xkb extension
-      "F94EE6AB36D6C6588670B2B01EB65212D9C64E33"   // Open source xkb extension
+      "F94EE6AB36D6C6588670B2B01EB65212D9C64E33",   // Open source xkb extension
+      "7576E2B5BFBC3893C37DB1532F305BCE04270880" // rime 2
     ]
   }],
   "app.currentWindowInternal": {

@@ -2136,6 +2136,7 @@ static_library("ui") {
       "//ash/webui/vc_background_ui",
       "//ash/webui/web_applications",
       "//build:chromeos_buildflags",
+      "//fydeos/build/config:buildflags",
       "//chrome/app:generated_resources",
       "//chrome/browser/accessibility:utils",
       "//chrome/browser/apps/app_discovery_service",

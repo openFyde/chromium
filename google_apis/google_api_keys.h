@@ -12,6 +12,7 @@
 #include "build/build_config.h"
 #include "build/chromeos_buildflags.h"
 #include "google_apis/buildflags.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace version_info {
 enum class Channel;
@@ -125,12 +126,19 @@ enum OAuth2Client {
   CLIENT_REMOTING,
   CLIENT_REMOTING_HOST,
 
+#if BUILDFLAG(IS_OPENFYDE)
+  CLIENT_FYDEOS_MAIN,
+#endif
+
   CLIENT_NUM_ITEMS  // Must be last item.
 };
 
 // Returns true if no dummy OAuth2 client ID and secret are set.
 COMPONENT_EXPORT(GOOGLE_APIS) bool HasOAuthClientConfigured();
 
+#if BUILDFLAG(IS_OPENFYDE)
+COMPONENT_EXPORT(GOOGLE_APIS) bool HasFydeOAuthClientConfigured();
+#endif
 // Retrieves the OAuth2 client ID for the specified client, or the
 // empty string if not set.
 //

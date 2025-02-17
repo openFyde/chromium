@@ -20,6 +20,7 @@
 #include "url/url_constants.h"
 #include "fydeos/switches/account/account_switches.h"
 #include "fydeos/switches/account/account_constants.h"
+#include "fydeos/build/config/buildflags.h"
 
 #define URL_KEY_AND_PTR(name) #name, &BASE_CONCAT(name, _)
 

@@ -129,6 +129,11 @@ const std::string& GetMetricsKey() {
 bool HasOAuthClientConfigured() {
   return GetApiKeyCacheInstance().HasOAuthClientConfigured();
 }
+#if BUILDFLAG(IS_OPENFYDE)
+bool HasFydeOAuthClientConfigured() {
+  return GetApiKeyCacheInstance().HasFydeOAuthClientConfigured();
+}
+#endif
 
 const std::string& GetOAuth2ClientID(OAuth2Client client) {
   return GetApiKeyCacheInstance().GetClientID(client);

@@ -229,6 +229,20 @@ std::string SysInfo::GetLsbReleaseBoard() {
   return board;
 }
 
+std::string SysInfo::GetLsbReleaseBoardWithoutSuffix() {
+  std::string board = GetLsbReleaseBoard();
+  if (board.size() < 4) {
+    return board;
+  }
+  if (board.substr(board.size() - 4) == "-com") {
+    return board.substr(0, board.size() - 4);
+  }
+  if (board.substr(board.size() - 3) == "-io") {
+    return board.substr(0, board.size() - 3);
+  }
+  return board;
+}
+
 // static
 Time SysInfo::GetLsbReleaseTime() {
   return GetChromeOSVersionInfo().lsb_release_time();
