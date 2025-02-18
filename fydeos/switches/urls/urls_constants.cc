@@ -43,6 +43,8 @@ const char kHelpURLNoTaskForFile[] = "https://fydeos.com/docs/manual/manage-your
 const char kFydeDropUrl[] = "https://drop.fydeos.com";
 
 const char kFydeExperimentTpmFallbackUrl[] = "https://fydeos.com/faq/experimental-tpm-fallback";
+const char kEolNotificationURL[] = "https://fydeos.com/eol";
+const char kKeyboardShortcutHelpPageUrl[] = "https://fydeos.com/docs/knowledge-base/recipes/keyboard-shortcuts";
 
 #else
 
@@ -80,6 +82,8 @@ const char kHelpURLNoTaskForFile[] = "https://fydeos.io/docs/manual/manage-your-
 const char kFydeDropUrl[] = "https://drop.fydeos.io";
 
 const char kFydeExperimentTpmFallbackUrl[] = "https://fydeos.io/faq/experimental-tpm-fallback";
+const char kEolNotificationURL[] = "https://fydeos.io/eol";
+const char kKeyboardShortcutHelpPageUrl[] = "https://fydeos.io/docs/knowledge-base/recipes/keyboard-shortcuts";
 
 #endif
 

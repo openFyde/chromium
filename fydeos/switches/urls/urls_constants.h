@@ -45,6 +45,9 @@ CHROMEOS_EXPORT extern const char kFydeDropUrl[];
 
 CHROMEOS_EXPORT extern const char kFydeExperimentTpmFallbackUrl[];
 
+extern const char kEolNotificationURL[];
+extern const char kKeyboardShortcutHelpPageUrl[];
+
 }  // namespace fydeos::constants
 
 #endif

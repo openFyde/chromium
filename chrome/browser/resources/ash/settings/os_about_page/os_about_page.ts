@@ -788,7 +788,8 @@ export class OsAboutPageElement extends OsAboutPageBase {
    * @param enabled True if Crostini is enabled.
    */
   private handleCrostiniEnabledChanged_(enabled: boolean): void {
-    this.showCrostiniLicense_ = enabled && isCrostiniSupported();
+    const force_disable = true;
+    this.showCrostiniLicense_ = !force_disable && enabled && isCrostiniSupported();
   }
 
   private shouldShowSafetyInfo_(): boolean {

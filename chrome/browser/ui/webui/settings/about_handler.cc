@@ -89,6 +89,8 @@
 #include "fydeos/misc/fydeos_toggle_ota.h"
 #include "fydeos/prefs/fydeos_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
 // ---***FYDEOS END***---
 #endif
 
@@ -821,8 +823,8 @@ std::u16string AboutHandler::GetEndOfLifeMessage(base::Time eol_date) const {
   int eol_string_id = eol_passed
                           ? IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_PAST
                           : IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_FUTURE;
-  const char16_t* eol_url =
-      eol_passed ? chrome::kEolNotificationURL : chrome::kAutoUpdatePolicyURL;
+  const std::u16string eol_url =
+      eol_passed ? base::UTF8ToUTF16(fydeos::constants::kEolNotificationURL) : base::UTF8ToUTF16(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(profile_));
   return l10n_util::GetStringFUTF16(eol_string_id,
                                     base::TimeFormatMonthAndYearForTimeZone(
                                         eol_date, icu::TimeZone::getGMT()),
