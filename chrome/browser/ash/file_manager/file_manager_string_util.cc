@@ -1344,7 +1344,7 @@ base::Value::Dict GetFileManagerStrings() {
   dict.Set("GOOGLE_DRIVE_OVERVIEW_URL", kGoogleDriveOverviewUrl);
   dict.Set("GOOGLE_DRIVE_ROOT_URL", kGoogleDriveRootUrl);
   dict.Set("NO_TASK_FOR_FILE_URL",
-           base::StringPrintf(fydeos::constants::kHelpURLFormat, kNoActionForFileHelpNumber));
+           base::StringPrintf(kHelpURLFormat, kNoActionForFileHelpNumber));
   dict.Set("DLP_HELP_URL", policy::dlp::kDlpLearnMoreUrl);
 
   dict.Set("FYDE_DROP_URL", fydeos::constants::kFydeDropUrl);
