@@ -6,27 +6,4 @@
 <translation id="924128306905269697">openFyde 设备</translation>
 <translation id="8384638494645614970">FydeOS 设备</translation>
 <translation id="1341338423757176396">FydeOS 设备</translation>
-<!-- file_manager_strings.override.grdp -->
-<translation id="1978885974203610082">Android 文件</translation>
-<translation id="15784306981872050">显示所有 Android 文件夹</translation>
-<translation id="8411736069741605651">此文件类型不受支持。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
-<translation id="3066512636093156324">此文件类型不受支持。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
-<translation id="2191358521510072305">此文件适用于运行 Windows 软件的 PC，不适用于运行 openFyde 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
-<translation id="3719093789181227709">此文件适用于运行 Windows 软件的 PC，不适用于运行 FydeOS 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
-<translation id="4510277529649429143">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 openFyde 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
-<translation id="7582064793720640739">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 FydeOS 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
-<translation id="9113848927422449689">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 openFyde 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
-<translation id="7944500333171967397">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 FydeOS 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
-<translation id="2796340402401368720">此文件适用于运行 Windows 软件的 PC，不适用于运行 openFyde 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
-<translation id="5758099459203549695">此文件适用于运行 Windows 软件的 PC，不适用于运行 FydeOS 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
-<translation id="6092746107434295994">不支持此文件类型。请访问 FydeOS 应用商店，找到能打开此文件类型的应用。</translation>
-<!-- file_manager_strings.grdp -->
-<translation id="3164186517475962793">FydeOS × 坚果云</translation>
-<translation id="6598736015900593922">注册坚果云账号即可在 FydeOS 上让你的文件实现云同步。</translation>
-<translation id="8672291834743661083">注册坚果云账号</translation>
-<translation id="5103639294476249880">在账户信息的安全选项中点击「添加应用」按钮</translation>
-<translation id="8371020157576651120">创建并复制应用程序密码</translation>
-<translation id="3855250998276979579">打开坚果云应用</translation>
-<translation id="6540892254325675878">并使用邮箱和应用密码将坚果云账号绑定至 FydeOS</translation>
-<translation id="1515216958533722634">燧炻传送</translation>
 </translationbundle>

@@ -48,7 +48,6 @@
 #include "ui/base/ime/ash/input_method_manager.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/chromeos/devicetype_utils.h"
-#include "base/system/sys_info.h"
 
 namespace ash {
 
@@ -267,8 +266,6 @@ void WelcomeScreenHandler::GetAdditionalParameters(base::Value::Dict* dict) {
                                     input_method_manager));
   dict->Set("timezoneList", GetTimezoneList());
   dict->Set("demoModeCountryList", DemoSession::GetCountryList());
-
-  dict->Set("lsbReleaseBoard", base::SysInfo::GetLsbReleaseBoardWithoutSuffix());
 
   // If this switch is set allow to open advanced options and configure device
   // requisition.

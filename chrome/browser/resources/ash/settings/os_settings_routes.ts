@@ -186,7 +186,6 @@ export interface OsSettingsRoutes extends MinimumRoutes {
   EXTERNAL_STORAGE_PREFERENCES: Route;
   FINGERPRINT: Route;
   FILES: Route;
-  FYDEOS: Route,
   GOOGLE_ASSISTANT: Route;
   GOOGLE_DRIVE: Route;
   GRAPHICS_TABLET: Route;
@@ -550,8 +549,6 @@ export function createRoutes(): OsSettingsRoutes {
   r.INTERNAL_STORYBOOK = createSubpage(
       r.ABOUT, routesMojom.INTERNAL_STORYBOOK_SUBPAGE_PATH,
       Subpage.kInternalStorybook);
-
-  r.FYDEOS = createSection(null, routesMojom.FYDE_OS_SECTION_PATH, Section.kFydeOs);
 
   if (isRevampWayfindingEnabled()) {
     // Device section, Input subpages.

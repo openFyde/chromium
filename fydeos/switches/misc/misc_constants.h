@@ -10,8 +10,6 @@
 namespace fydeos {
 namespace constants {
 
-CHROMEOS_EXPORT extern const char kFydeOSDefaultTimeZoneId[];
-
 CHROMEOS_EXPORT extern const char kFydeOSSystemInfoHeader[];
 
 CHROMEOS_EXPORT extern const char kFydeOSSystemTempPrefix[];

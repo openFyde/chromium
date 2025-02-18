@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- extend ash/ash_strings.grd -->
-<grit-part>
-  <!-- rotate screen button -->
-  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_ROTATE_SCREEN" desc="label of unified menu rotate screen">
-    Rotate Screen
-  </message>
-</grit-part>

@@ -32,11 +32,9 @@ AppDownloadingScreenHandler::~AppDownloadingScreenHandler() = default;
 
 void AppDownloadingScreenHandler::DeclareLocalizedValues(
     ::login::LocalizedValuesBuilder* builder) {
-  // builder->AddF("appDownloadingScreenDescription",
-  //               IDS_LOGIN_APP_DOWNLOADING_SCREEN_DESCRIPTION,
-  //               ui::GetChromeOSDeviceName());
-  builder->Add("appDownloadingScreenDescription",
-                IDS_LOGIN_APP_DOWNLOADING_SCREEN_DESCRIPTION);
+  builder->AddF("appDownloadingScreenDescription",
+                IDS_LOGIN_APP_DOWNLOADING_SCREEN_DESCRIPTION,
+                ui::GetChromeOSDeviceName());
   builder->Add("appDownloadingContinueSetup",
                IDS_LOGIN_APP_DOWNLOADING_SCREEN_NEXT);
   builder->Add("appDownloadingScreenTitle",

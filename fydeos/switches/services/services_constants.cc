@@ -4,7 +4,6 @@
 
 #include "fydeos/switches/services/services_constants.h"
 #include "fydeos/build/config/buildflags.h"
-#include "fydeos/switches/account/policy_constants.h"
 
 namespace fydeos::constants {
 
@@ -13,24 +12,11 @@ const char kDefaultFydeOSGeolocationAPIUrl[] =
   "https://apis.fydeos.com/geo/locationByIp?";
 const char kDefaultFydeOSTimezoneAPIUrl[] =
   "https://apis.fydeos.com/geo/timezone?";
-const char kDefaultFydeOSLookingGlassUrl[] =
-  "https://apis.fydeos.com/lookingglass";
-const char kFydeOSWebStoreUpdateURL[] = "https://store.fydeos.com";
 #else
 const char kDefaultFydeOSGeolocationAPIUrl[] =
   "https://apis.fydeos.io/geo/locationByIp?";
 const char kDefaultFydeOSTimezoneAPIUrl[] =
   "https://apis.fydeos.io/geo/timezone?";
-const char kDefaultFydeOSLookingGlassUrl[] =
-  "https://apis.fydeos.io/lookingglass";
-const char kFydeOSWebStoreUpdateURL[] = "https://store.fydeos.io";
 #endif
-
-const uint8_t* kFydeOSCryptoKey =
-  fydeos::constants::kFydeOSPolicyVerificationKey;
-const size_t kFydeOSCryptoKeyLength =
-  fydeos::constants::kFydeOSPolicyVerificationKeyLength;
-
-const char kFydeOSStoreAppId[] = "hidnajblbifdkmheebalalchohohmaef";
 
 }  // namespace fydeos::constants

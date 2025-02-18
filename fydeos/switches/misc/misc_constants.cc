@@ -7,8 +7,6 @@
 namespace fydeos {
 namespace constants {
 
-const char kFydeOSDefaultTimeZoneId[] = "Asia/Shanghai";
-
 const char kFydeOSSystemInfoHeader[] = "--- Full System ---";
 
 const char kFydeOSSystemInfoFileName[] = "about_system.txt";

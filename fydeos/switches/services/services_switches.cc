@@ -5,9 +5,7 @@
 #include "fydeos/switches/services/services_switches.h"
 
 #include "base/command_line.h"
-#include "chrome/common/chrome_switches.h"
 #include "fydeos/switches/services/services_constants.h"
-#include "fydeos/switches/urls/urls_constants.h"
 
 namespace fydeos {
 namespace switches {
@@ -19,12 +17,6 @@ const char kDisableFydeOSTimezoneAPI[] = "disable-fydeos-timezone-api";
 
 const char kFydeOSGeolocationAPIUrl[] = "fydeos-geolocation-api-url";
 const char kFydeOSTimezoneAPIUrl[] = "fydeos-timezone-api-url";
-
-const char kFydeOSLookingGlassUrl[] = "fydeos-lookingglass-url";
-
-const char kFydeOSAppsGalleryURL[] = "fydeos-apps-gallery-url";
-
-const char kFydeOSAppsGalleryUpdateURL[] = "fydeos-apps-gallery-update-url";
 
 }
 
@@ -53,33 +45,6 @@ std::string GetFydeOSTimezoneAPIUrl() {
     return command_line->GetSwitchValueASCII(kFydeOSTimezoneAPIUrl);
   } else {
     return std::string(fydeos::constants::kDefaultFydeOSTimezoneAPIUrl);
-  }
-}
-
-std::string GetFydeOSLookingGlassUrl() {
-  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-  if (command_line->HasSwitch(kFydeOSLookingGlassUrl)) {
-    return command_line->GetSwitchValueASCII(kFydeOSLookingGlassUrl);
-  } else {
-    return std::string(fydeos::constants::kDefaultFydeOSLookingGlassUrl);
-  }
-}
-
-std::string GetFydeOSAppStoreURL() {
-  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-  if (command_line->HasSwitch(kFydeOSAppsGalleryURL)) {
-    return command_line->GetSwitchValueASCII(kFydeOSAppsGalleryURL);
-  } else {
-    return std::string(fydeos::constants::kFydeOSStoreBaseUrl);
-  }
-}
-
-std::string GetFydeOSWebStoreUpdateUrl() {
-  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-  if (command_line->HasSwitch(kFydeOSAppsGalleryUpdateURL)) {
-    return command_line->GetSwitchValueASCII(kFydeOSAppsGalleryUpdateURL);
-  } else {
-    return std::string(fydeos::constants::kFydeOSWebStoreUpdateURL);
   }
 }
 

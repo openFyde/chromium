@@ -111,9 +111,6 @@ bool IsBlocklistUpdateUrl(const GURL& url);
 // Returns true if the origin points to an URL used for safebrowsing.
 bool IsSafeBrowsingUrl(const GURL& url);
 
-// ---***FYDEOS BEGIN***---
-bool IsFydeOSWebstoreUpdateUrl(const GURL& update_url);
-// ---***FYDEOS END***---
 }  // namespace extension_urls
 
 #endif  // EXTENSIONS_COMMON_EXTENSION_URLS_H_

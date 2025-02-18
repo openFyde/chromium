@@ -54,7 +54,6 @@
 #include "crypto/nss_util_internal.h"
 #include "crypto/scoped_nss_types.h"
 #include "crypto/signature_creator.h"
-#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace em = enterprise_management;
 
@@ -234,10 +233,7 @@ bool OwnerSettingsServiceAsh::IsOwner() {
 }
 
 void OwnerSettingsServiceAsh::IsOwnerAsync(IsOwnerCallback callback) {
-  PrefService* local_state = g_browser_process->local_state();
-  bool tpm_fallback = local_state->GetBoolean(
-      fydeos::prefs::kCurrentForceTpmFallback);
-  if (InstallAttributes::Get()->IsEnterpriseManaged() || tpm_fallback) {
+  if (InstallAttributes::Get()->IsEnterpriseManaged()) {
     base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback), false));
     return;

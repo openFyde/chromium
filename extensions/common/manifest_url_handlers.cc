@@ -19,7 +19,6 @@
 #include "extensions/common/manifest_handlers/shared_module_info.h"
 #include "extensions/strings/grit/extensions_strings.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "fydeos/switches/services/services_switches.h"
 
 namespace extensions {
 
@@ -53,13 +52,6 @@ const GURL& ManifestURL::GetManifestHomePageURL(const Extension* extension) {
 
 // static
 GURL ManifestURL::GetWebStoreURL(const Extension* extension) {
-  bool use_fydeos_webstore_url = UpdatesFromFydeOSGallery(extension) &&
-                                 !SharedModuleInfo::IsSharedModule(extension);
-  if (use_fydeos_webstore_url) {
-    return GURL(fydeos::switches::GetFydeOSAppStoreURL() + "/?appid=" +
-                extension->id());
-  }
-
   bool use_webstore_url = UpdatesFromGallery(extension) &&
                           !SharedModuleInfo::IsSharedModule(extension);
   return use_webstore_url
@@ -77,13 +69,6 @@ const GURL& ManifestURL::GetUpdateURL(const Extension* extension) {
 bool ManifestURL::UpdatesFromGallery(const Extension* extension) {
   return extension_urls::IsWebstoreUpdateUrl(GetUpdateURL(extension));
 }
-
-// ---***FYDEOS BEGIN***---
-bool ManifestURL::UpdatesFromFydeOSGallery(const Extension* extension) {
-  return extension_urls::IsFydeOSWebstoreUpdateUrl(GetUpdateURL(extension));
-}
-
-// ---***FYDEOS END***---
 
 // static
 const GURL& ManifestURL::GetAboutPage(const Extension* extension) {

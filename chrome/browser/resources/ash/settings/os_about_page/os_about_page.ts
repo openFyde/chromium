@@ -313,16 +313,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
         type: Boolean,
         value: false,
       },
-      // ---***FYDEOS BEGIN***---
-      isOwner_: {
-        type: Boolean,
-        value: true,
-      },
-      fydeOTAToggleState_: {
-        type: Boolean,
-        value: true,
-      },
-      // ---***FYDEOS END***---
     };
   }
 
@@ -374,9 +364,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
   private isExtendedUpdatesOptInRequired_: boolean;
 
   private aboutBrowserProxy_: AboutPageBrowserProxy;
-
-  private isOwner_: boolean;
-  private fydeOTAToggleState_: boolean;
 
   constructor() {
     super();
@@ -432,8 +419,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
     }
 
     this.registerExtendedUpdatesObserver_();
-
-    this.fydeOTAToggleInit_();
   }
 
   override ready(): void {
@@ -920,54 +905,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
           });
         });
     extendedUpdatesObserver.observe(this.$.extendedUpdatesButton);
-  }
-
-  fydeOTAToggleInit_() {
-    this.aboutBrowserProxy_.getEnabledFydeOTA().then(enabled => {
-      console.log('getEnabledFydeOTA', enabled);
-      this.fydeOTAToggleState_ = enabled;
-    });
-    this.addWebUiListener(
-        'fyde-ota-enabled-changed',
-        this.onFydeOSOTASwitchChanged_.bind(this));
-  }
-
-  onFydeOSOTASwitchChanged_(enabled: boolean) {
-    console.log('onFydeOSOTASwitchChanged_', enabled);
-    this.fydeOTAToggleState_ = enabled;
-  }
-
-  /*
-  created() {
-    chrome.usersPrivate.getCurrentUser(user => {
-      console.log('user', user);
-      this.isOwner_ = user.isOwner;
-    });
-  }
-  */
-
-  onEnableFydeOTAChange_() {
-    this.fydeOTAToggleState_ = !this.fydeOTAToggleState_;
-    console.log('onEnableFydeOTAChange_', this.fydeOTAToggleState_);
-    this.aboutBrowserProxy_.enableFydeOTA(this.fydeOTAToggleState_);
-  }
-
-  fydeosOTAStateMessage_() {
-    if (this.fydeOTAToggleState_) {
-      return this.i18nAdvanced('aboutFydeOsUpdateEnabled');
-    } else {
-      // return isOwner ? 'OTA disabled' : "Device owner disabled OTA";
-      return this.i18nAdvanced('aboutFydeOsUpdateDisabled');
-    }
-  }
-
-  canToggleFydeOTA_() {
-    return this.isOwner_ && !(
-      this.currentUpdateStatusEvent_.status === UpdateStatus.CHECKING ||
-      this.currentUpdateStatusEvent_.status === UpdateStatus.UPDATING ||
-      this.currentUpdateStatusEvent_.status === UpdateStatus.DISABLED ||
-      this.currentUpdateStatusEvent_.status === UpdateStatus.DISABLED_BY_ADMIN
-    ) && this.currentUpdateStatusEvent_.progress === 0;
   }
 }
 

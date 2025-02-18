@@ -309,10 +309,6 @@ export class ExtensionsItemElement extends ExtensionsItemElementBase {
       case SourceType.WEBSTORE:
       case SourceType.INSTALLED_BY_DEFAULT:
         return '';
-      //---***FYDEOS BEGIN***---
-      case SourceType.FYDEOS_STORE:
-        return '';
-      //---***FYDEOS END***---
       default:
         assertNotReached();
     }
@@ -324,7 +320,7 @@ export class ExtensionsItemElement extends ExtensionsItemElementBase {
     }
 
     const sourceType = getItemSource(this.data);
-    return sourceType === SourceType.FYDEOS_STORE ? '' :
+    return sourceType === SourceType.WEBSTORE ? '' :
                                                 getItemSourceString(sourceType);
   }
 

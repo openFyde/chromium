@@ -79,10 +79,6 @@
 #else
 #include "chrome/browser/ui/signin/signin_view_controller.h"
 #endif
-//---***FYDEOS BEGIN***---
-#include "fydeos/switches/urls/urls_constants.h"
-#include "fydeos/misc/fydeos_release_note_url.h"
-//---***FYDEOS END***---
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/metrics/histogram_functions.h"
@@ -137,14 +133,6 @@ void LaunchReleaseNotesImpl(Profile* profile, apps::LaunchSource source) {
   LaunchSystemWebAppAsync(profile, ash::SystemWebAppType::HELP, params);
 }
 #endif
-
-//---***FYDEOS BEGIN***---
-void LaunchReleaseNotesInTab(Profile* profile) {
-  GURL url(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(profile));
-  auto displayer = std::make_unique<ScopedTabbedBrowserDisplayer>(profile);
-  ShowSingletonTab(displayer->browser(), url);
-}
-//---***FYDEOS END***---
 
 // Shows either the help app or the appropriate help page for |source|. If
 // |browser| is NULL and the help page is used (vs the app), the help page is
@@ -207,7 +195,6 @@ void ShowHelpImpl(Browser* browser, Profile* profile, HelpSource source) {
       NOTREACHED() << "Unhandled help source " << source;
   }
 #endif  // BUILDFLAG_IS_CHROMEOS_LACROS)
-  url = GURL(fydeos::constants::kFydeOSHelpURL);
   if (browser) {
     ShowSingletonTab(browser, url);
   } else {
@@ -404,15 +391,10 @@ void LaunchReleaseNotes(Profile* profile, apps::LaunchSource source) {
 #if BUILDFLAG(IS_CHROMEOS_ASH) && BUILDFLAG(GOOGLE_CHROME_BRANDING)
   LaunchReleaseNotesImpl(profile, source);
 #endif
-  // ---***FYDEOS BEGIN***---
-  LaunchReleaseNotesInTab(profile);
-  // ---***FYDEOS END***---
 }
 
 void ShowBetaForum(Browser* browser) {
-  //---***FYDEOS BEGIN***---
-  ShowSingletonTab(browser, GURL(fydeos::constants::kFydeOSForumURL));
-  //---***FYDEOS END***---
+  ShowSingletonTab(browser, GURL(kChromeBetaForumURL));
 }
 
 void ShowSlow(Browser* browser) {

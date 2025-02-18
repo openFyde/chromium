@@ -110,7 +110,6 @@
 #include "ui/views/style/typography.h"
 #include "ui/views/vector_icons.h"
 #include "ui/views/view.h"
-#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash {
 
@@ -661,9 +660,6 @@ void LockContentsView::ShowEnterpriseDomainManager(
 }
 
 void LockContentsView::ShowAdbEnabled() {
-  // ---***FYDEOS BEGIN***---
-  if (fydeos::switches::IsFydeCustomEnabled()) return;
-  // ---***FYDEOS END***---
   bottom_status_indicator_->SetText(
       l10n_util::GetStringUTF16(IDS_ASH_LOGIN_SCREEN_UNVERIFIED_CODE_WARNING));
   bottom_status_indicator_->GetViewAccessibility().SetRole(

@@ -28,7 +28,6 @@
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/version_info/version_info.h"
-#include "fydeos/switches/account/account_switches.h"
 
 namespace TemplateURLPrepopulateData {
 
@@ -319,7 +318,7 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
     PrefService* prefs,
     search_engines::SearchEngineChoiceService* search_engine_choice_service) {
   return FindPrepopulatedEngineInternal(prefs, search_engine_choice_service,
-                                        fydeos::switches::IsFydeExtendAccountEnabled() ? bing.id : google.id,
+                                        google.id,
                                         /*use_first_as_fallback=*/true);
 }
 

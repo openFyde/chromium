@@ -137,6 +137,7 @@ const std::string& GetMetricsKey() {
 bool HasOAuthClientConfigured() {
   return GetApiKeyCacheInstance().HasOAuthClientConfigured();
 }
+
 #if BUILDFLAG(IS_OPENFYDE)
 bool HasFydeOAuthClientConfigured() {
   return GetApiKeyCacheInstance().HasFydeOAuthClientConfigured();

@@ -104,7 +104,6 @@ static_library("search_engines") {
     "//ui/gfx",
     "//ui/gfx/geometry",
     "//url",
-    "//fydeos/switches:switches",
   ]
 
   if (!is_fuchsia) {

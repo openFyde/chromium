@@ -54,7 +54,6 @@ import type {LanguageHelper, LanguagesModel} from '../os_languages_page/language
 import type {OsPageAvailability} from '../os_page_availability.js';
 import type {Route} from '../router.js';
 import {isAboutRoute, isAdvancedRoute, isBasicRoute, Router} from '../router.js';
-import {isFydeOsSettingsRoute} from '../router.js';
 
 import {getTemplate} from './main_page_container.html.js';
 import {MainPageMixin} from './main_page_mixin.js';
@@ -168,11 +167,6 @@ export class MainPageContainerElement extends MainPageContainerElementBase {
         type: Boolean,
         computed: 'computeShouldShowAdvancedToggle(' +
             'currentRoute_, isShowingSubpage_, isRevampWayfindingEnabled_)',
-      },
-
-      shouldShowFydeOsSettingsPageContainer_: {
-        type: Boolean,
-        computed: 'computeShouldShowFydeOsSettingsPageContainer(currentRoute_)',
       },
 
       shouldShowAboutPageContainer_: {
@@ -373,7 +367,7 @@ export class MainPageContainerElement extends MainPageContainerElementBase {
     }
 
     // When infinite scroll exists, never show when the about page is visible.
-    if (isAboutRoute(this.currentRoute_) || isFydeOsSettingsRoute(this.currentRoute_)) {
+    if (isAboutRoute(this.currentRoute_)) {
       return false;
     }
 
@@ -392,7 +386,7 @@ export class MainPageContainerElement extends MainPageContainerElementBase {
     }
 
     // When infinite scroll exists, never show when the about page is visible.
-    if (isAboutRoute(this.currentRoute_) || isFydeOsSettingsRoute(this.currentRoute_)) {
+    if (isAboutRoute(this.currentRoute_)) {
       return false;
     }
 
@@ -412,7 +406,7 @@ export class MainPageContainerElement extends MainPageContainerElementBase {
     }
 
     // When infinite scroll exists, never show when the about page is visible.
-    if (isAboutRoute(this.currentRoute_) || isFydeOsSettingsRoute(this.currentRoute_)) {
+    if (isAboutRoute(this.currentRoute_)) {
       return false;
     }
 
@@ -423,10 +417,6 @@ export class MainPageContainerElement extends MainPageContainerElementBase {
   private computeShouldShowAboutPageContainer(): boolean {
     // Only show if the current route exists within the about page
     return isAboutRoute(this.currentRoute_);
-  }
-
-  private computeShouldShowFydeOsSettingsPageContainer(): boolean {
-    return isFydeOsSettingsRoute(this.currentRoute_);
   }
 
   /**

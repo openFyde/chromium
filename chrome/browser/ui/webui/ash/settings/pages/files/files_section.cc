@@ -26,8 +26,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -262,10 +260,6 @@ void FilesSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   smb_dialog::AddLocalizedStrings(html_source);
 
   html_source->AddString("smbSharesLearnMoreURL",
-                         // ---***FYDEOS BEGIN***---
-                         IsFydeProfile() ?
-                         base::ASCIIToUTF16(fydeos::constants::kSmbSharesLearnMoreURL) :
-                         // ---***FYDEOS END***---
                          GetHelpUrlWithBoard(chrome::kSmbSharesLearnMoreURL));
 
   html_source->AddString(

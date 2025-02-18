@@ -9,8 +9,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://settings/*",
-      "chrome://os-settings/*",
-      "chrome://extensions/*"
+      "chrome://os-settings/*"
     ]
   }],
   "appManagement": [{

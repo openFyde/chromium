@@ -407,16 +407,6 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
-  html_source->AddString("aboutKeepFydeOsUpdateToDate",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_KEEP_FYDEOS_UPDATE_TO_DATE,
-        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
-  html_source->AddString("aboutFydeOsUpdateEnabled",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_ENABLED,
-        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
-  html_source->AddString("aboutFydeOsUpdateDisabled",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_FYDEOS_UPDATE_DISABLED,
-        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
-
   html_source->AddString("aboutTPMFirmwareUpdateLearnMoreURL",
                          chrome::kTPMFirmwareUpdateLearnMoreURL);
   html_source->AddString(
@@ -446,7 +436,6 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
 
   html_source->AddString("aboutBrowserVersion",
                          VersionUI::GetAnnotatedVersionStringForUi());
-  html_source->AddString("aboutFydeOSBoardName", base::SysInfo::GetLsbReleaseBoard());
   html_source->AddString(
       "aboutProductCopyright",
       base::i18n::MessageFormatter::FormatWithNumberedArgs(

@@ -16,8 +16,6 @@
 #include "extensions/common/extension.h"
 #include "extensions/common/image_util.h"
 #include "extensions/common/manifest_handlers/app_display_info.h"
-#include "fydeos/switches/services/services_constants.h"
-#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace extensions {
 
@@ -26,13 +24,6 @@ namespace {
 bool IsBlockedByPolicy(const Extension* app, content::BrowserContext* context) {
   Profile* profile = Profile::FromBrowserContext(context);
   DCHECK(profile);
-  // ---***FYDEOS BEGIN***---
-  if (app->id() == fydeos::constants::kFydeOSStoreAppId &&
-      profile->GetPrefs()->GetBoolean(
-        fydeos::prefs::kPrefHideFydeOSStoreIcon)) {
-    return true;
-  }
-  // ---***FYDEOS END***---
 
   return app->id() == extensions::kWebStoreAppId &&
          profile->GetPrefs()->GetBoolean(
