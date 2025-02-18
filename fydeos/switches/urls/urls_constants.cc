@@ -36,11 +36,8 @@ const char kFydeOSPasswordManagerURL[] = "https://account.fydeos.com";
 const char kGoogleDriveBuyStorageUrl[] = "https://fydeos.com/docs/knowledge-base";
 const char kGoogleDriveOverviewUrl[] = "https://fydeos.com/docs/knowledge-base";
 const char kGoogleDriveHelpUrl[] = "https://fydeos.com/docs/knowledge-base";
-const char kGoogleDriveOfflineHelpUrl[] = "https://fydeos.com/docs/knowledge-base";
 const char kGoogleDriveRootUrl[] = "https://fydeos.com";
 const char kHelpURLFormat[] = "https://fydeos.com/docs/knowledge-base/answer/%d";
-const char kHelpURLNoTaskForFile[] = "https://fydeos.com/docs/manual/manage-your-apps/files-and-downloads/file-types-and-external-devices-that-work-on-fydeos-device/";
-const char kFydeDropUrl[] = "https://drop.fydeos.com";
 
 #else
 
@@ -71,11 +68,8 @@ const char kFydeOSPasswordManagerURL[] = "https://account.fydeos.io";
 const char kGoogleDriveBuyStorageUrl[] = "https://fydeos.io/docs/knowledge-base";
 const char kGoogleDriveOverviewUrl[] = "https://fydeos.io/docs/knowledge-base";
 const char kGoogleDriveHelpUrl[] = "https://fydeos.io/docs/knowledge-base";
-const char kGoogleDriveOfflineHelpUrl[] = "https://fydeos.io/docs/knowledge-base";
 const char kGoogleDriveRootUrl[] = "https://fydeos.io";
 const char kHelpURLFormat[] = "https://fydeos.io/docs/knowledge-base/answer/%d";
-const char kHelpURLNoTaskForFile[] = "https://fydeos.io/docs/manual/manage-your-apps/files-and-downloads/file-types-and-external-devices-that-work-on-fydeos-device/";
-const char kFydeDropUrl[] = "https://drop.fydeos.io";
 
 #endif
 

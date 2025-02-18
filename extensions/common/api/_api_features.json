@@ -849,7 +849,6 @@
     "matches": [
       "chrome://add-supervision/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",
@@ -885,7 +884,6 @@
     "matches": [
       "chrome://add-supervision/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",
@@ -919,7 +917,6 @@
     "matches": [
       "chrome://add-supervision/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",
