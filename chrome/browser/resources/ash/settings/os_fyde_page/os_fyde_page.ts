@@ -9,9 +9,11 @@ import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 import '../os_settings_page/settings_card.js';
 import '../os_settings_page/os_settings_subpage.js';
 import '../settings_shared.css.js';
+import './fydeos_account.js';
 // import './fydeos_drivers.js';
 import './fydeos_remoting.js';
 import './fydeos_tweak_ui.js';
+import './fydeos_experiment.js';
 import './fydeos_more_info.js';
 
 import {getTemplate} from './os_fyde_page.html.js';
@@ -31,10 +33,10 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
 
   static get properties() {
     return {
-      isFydeProfile_: {
+      isFydeAccount_: {
         type: Boolean,
         value() {
-          return loadTimeData.getBoolean('isFydeProfile');
+          return loadTimeData.getBoolean('isFydeProfile') && !loadTimeData.getBoolean('isFydeLocalAccount');
         },
       },
 
@@ -57,7 +59,7 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
     };
   }
 
-  private isFydeProfile_: boolean;
+  private isFydeAccount_: boolean;
   private showToggleRebootButtonInTray: boolean;
   private showToggleRotateScreenButton: boolean;
 

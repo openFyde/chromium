@@ -42,6 +42,8 @@ const char kHelpURLFormat[] = "https://fydeos.com/docs/knowledge-base/answer/%d"
 const char kHelpURLNoTaskForFile[] = "https://fydeos.com/docs/manual/manage-your-apps/files-and-downloads/file-types-and-external-devices-that-work-on-fydeos-device/";
 const char kFydeDropUrl[] = "https://drop.fydeos.com";
 
+const char kFydeExperimentTpmFallbackUrl[] = "https://fydeos.com/faq/experimental-tpm-fallback";
+
 #else
 
 const char kDefaultTestUrl[] = "http://store.fydeos.io/204";
@@ -76,6 +78,8 @@ const char kGoogleDriveRootUrl[] = "https://fydeos.io";
 const char kHelpURLFormat[] = "https://fydeos.io/docs/knowledge-base/answer/%d";
 const char kHelpURLNoTaskForFile[] = "https://fydeos.io/docs/manual/manage-your-apps/files-and-downloads/file-types-and-external-devices-that-work-on-fydeos-device/";
 const char kFydeDropUrl[] = "https://drop.fydeos.io";
+
+const char kFydeExperimentTpmFallbackUrl[] = "https://fydeos.io/faq/experimental-tpm-fallback";
 
 #endif
 

@@ -41,6 +41,9 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS" desc="fydeos settings page title">
     <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> settings
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_MENU_ITEM_DESCRIPTION" desc="fydeos settings sublabel">
+    FydeOS account, backup, misc
+  </message>
   <message name="IDS_OS_SETTINGS_FYDEOS_WIFI_DRIVER_TITLE" desc="fydeo settings wifi section title">
     Wifi settings
   </message>
@@ -85,6 +88,18 @@
   </message>
   <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_ROTATE_SCREEN_BUTTON" desc="fydeos settings show rotate screen button in tray">
     Display a "Rotate screen" button on the system menu
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_ACCOUNT_TITLE" desc="fydeos settings account section title">
+    FydeOS account settings
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_EXPERIMENTAL_FEATURES_TITLE" desc="title of fydeos settings experimental features title">
+    Experimental features
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_TITLE" desc="title of experimental feature bypass tpm checks">
+    Bypass Trusted Platform Module(TPM) checks
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_DESC" desc="short desc for experimental feature bypass tpm checks">
+    Some of the features could fail due to incompatible TPM chip in your device, you can bypass TPM checks as a workaround.
   </message>
 </if>
 </grit-part>

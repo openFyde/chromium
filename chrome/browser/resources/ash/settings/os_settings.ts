@@ -70,10 +70,12 @@ import './os_bluetooth_page/os_bluetooth_summary.js';
 import './os_bluetooth_page/os_saved_devices_list.js';
 import './os_bluetooth_page/os_saved_devices_list_item.js';
 import './os_bluetooth_page/settings_fast_pair_constants.js';
+import './os_fyde_page/fydeos_account.js';
 // import './os_fyde_page/fydeos_drivers.js';
 import './os_fyde_page/fydeos_remoting.js';
 import './os_fyde_page/fydeos_tweak_ui.js';
 import './os_fyde_page/fydeos_more_info.js';
+import './os_fyde_page/fydeos_experiment.js';
 import './os_fyde_page/os_fyde_page.js';
 
 import {ColorChangeUpdater} from 'chrome://resources/cr_components/color_change_listener/colors_css_updater.js';

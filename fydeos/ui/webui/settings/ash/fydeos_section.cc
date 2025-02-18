@@ -19,6 +19,7 @@
 #include "fydeos/switches/urls/urls_constants.h"
 
 #include "fydeos/ui/webui/settings/ash/fydeos_handler.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace ash::settings {
 
@@ -57,6 +58,7 @@ FydeOsSection::~FydeOsSection() = default;
 
 void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   static constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"fydeosSettingsAccountTitle", IDS_OS_SETTINGS_FYDEOS_ACCOUNT_TITLE},
     {"fydeosSettingsRemoteAssistanceTitle",
       IDS_OS_SETTINGS_FYDEOS_REMOTE_ASSISTANCE_TITLE},
     {"fydeosSettingsRemoteHelperServiceTitle",
@@ -83,6 +85,14 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_NOT_TABLET_STATE_DISABLE_ROTATE_SCREEN},
     {"displayFydeOsRotateScreenButton",
       IDS_OS_SETTINGS_FYDEOS_DISPLAY_ROTATE_SCREEN_BUTTON},
+    {"fydeosSettingsMenuItemDescription",
+      IDS_OS_SETTINGS_FYDEOS_MENU_ITEM_DESCRIPTION},
+    {"fydeosExperimentalFeatures",
+      IDS_OS_SETTINGS_FYDEOS_EXPERIMENTAL_FEATURES_TITLE},
+    {"fydeosBypassTpmChecksTitle",
+      IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_TITLE},
+    {"fydeosBypassTpmChecksDesc",
+      IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_DESC},
   };
 
   html_source->AddLocalizedStrings(kLocalizedStrings);
@@ -97,6 +107,14 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
 
   html_source->AddString("fydeOSRdpUrl",
       fydeos::constants::kFydeOSRemoteDesktopURL);
+  html_source->AddString("fydeosAccountBaseUrl",
+      fydeos::constants::kFydeOSAccountBaseUrl);
+
+  html_source->AddBoolean("isTpmFallbackNecessary",
+      g_browser_process->local_state()->GetBoolean(
+        fydeos::prefs::kForceTpmFallbackNecessary));
+  html_source->AddString("fydeExperimentTpmfallbackUrl",
+      fydeos::constants::kFydeExperimentTpmFallbackUrl);
 }
 
 int FydeOsSection::GetSectionNameMessageId() const {

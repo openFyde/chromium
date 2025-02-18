@@ -43,6 +43,8 @@ CHROMEOS_EXPORT extern const char kHelpURLFormat[];
 CHROMEOS_EXPORT extern const char kHelpURLNoTaskForFile[];
 CHROMEOS_EXPORT extern const char kFydeDropUrl[];
 
+CHROMEOS_EXPORT extern const char kFydeExperimentTpmFallbackUrl[];
+
 }  // namespace fydeos::constants
 
 #endif

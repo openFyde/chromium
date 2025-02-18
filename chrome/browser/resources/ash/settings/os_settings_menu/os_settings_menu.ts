@@ -35,7 +35,7 @@ import type {DomRepeat} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 import {mixinBehaviors, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {assertExists, castExists} from '../assert_extras.js';
-import {androidAppsVisible, isInputDeviceSettingsSplitEnabled, isRevampWayfindingEnabled} from '../common/load_time_booleans.js';
+import {androidAppsVisible, isInputDeviceSettingsSplitEnabled, isRevampWayfindingEnabled, isAccountManagerEnabled} from '../common/load_time_booleans.js';
 import type {RouteObserverMixinInterface} from '../common/route_observer_mixin.js';
 import {RouteObserverMixin} from '../common/route_observer_mixin.js';
 import type {Constructor} from '../common/types.js';
@@ -204,6 +204,14 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
         readOnly: true,
       },
 
+      isAccountManagerEnabled_: {
+        type: Boolean,
+        value() {
+          return isAccountManagerEnabled();
+        },
+        readOnly: true,
+      },
+
       accountsMenuItemDescription_: {
         type: String,
         value(this: OsSettingsMenuElement) {
@@ -257,6 +265,7 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
   private basicMenuItems_: MenuItemData[];
   private advancedMenuItems_: MenuItemData[];
   private isRevampWayfindingEnabled_: boolean;
+  private isAccountManagerEnabled_: boolean;
   private isRtl_: boolean;
   private selectedItemPath_: string;
   private aboutMenuItemPath_: string;
@@ -314,7 +323,7 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
 
     if (this.isRevampWayfindingEnabled_) {
       // Accounts menu item is not available in guest mode.
-      if (this.pageAvailability[Section.kPeople]) {
+      if (this.pageAvailability[Section.kPeople] && this.isAccountManagerEnabled_) {
         this.updateAccountsMenuItemDescription_();
         this.addWebUiListener(
             'accounts-changed',
@@ -505,9 +514,9 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
         {
           section: Section.kFydeOs,
           path: this.fydeosMenuItemPath_,
-          icon: 'os-settings:chrome',
+          icon: 'os-settings:fydeos',
           label: this.i18n('fydeosSettingsPageTitle'),
-          sublabel: '',
+          sublabel: this.i18n('fydeosSettingsMenuItemDescription'),
         },
         {
           section: Section.kAboutChromeOs,
