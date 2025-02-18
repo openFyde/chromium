@@ -21,6 +21,8 @@ extern std::string GetFydeOSLookingGlassUrl();
 
 extern std::string GetFydeOSAppStoreURL();
 
+extern std::string GetFydeOSWebStoreUpdateUrl();
+
 } // switches
 } // fydeos
 

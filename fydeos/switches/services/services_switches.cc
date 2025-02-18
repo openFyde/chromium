@@ -24,6 +24,8 @@ const char kFydeOSLookingGlassUrl[] = "fydeos-lookingglass-url";
 
 const char kFydeOSAppsGalleryURL[] = "fydeos-apps-gallery-url";
 
+const char kFydeOSAppsGalleryUpdateURL[] = "fydeos-apps-gallery-update-url";
+
 }
 
 bool DisableFydeOSGeolocationAPI() {
@@ -69,6 +71,15 @@ std::string GetFydeOSAppStoreURL() {
     return command_line->GetSwitchValueASCII(kFydeOSAppsGalleryURL);
   } else {
     return std::string(fydeos::constants::kFydeOSStoreBaseUrl);
+  }
+}
+
+std::string GetFydeOSWebStoreUpdateUrl() {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(kFydeOSAppsGalleryUpdateURL)) {
+    return command_line->GetSwitchValueASCII(kFydeOSAppsGalleryUpdateURL);
+  } else {
+    return std::string(fydeos::constants::kFydeOSWebStoreUpdateURL);
   }
 }
 

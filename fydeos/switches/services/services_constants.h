@@ -19,6 +19,10 @@ CHROMEOS_EXPORT extern const char kDefaultFydeOSLookingGlassUrl[];
 CHROMEOS_EXPORT extern const uint8_t* kFydeOSCryptoKey;
 extern const size_t kFydeOSCryptoKeyLength;
 
+extern const char kFydeOSStoreAppId[];
+
+CHROMEOS_EXPORT extern const char kFydeOSWebStoreUpdateURL[];
+
 } // constants
 } // fydeos
 
