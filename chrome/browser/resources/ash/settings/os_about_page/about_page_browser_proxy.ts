@@ -200,6 +200,9 @@ export interface AboutPageBrowserProxy {
    */
   getChannelInfo(): Promise<ChannelInfo>;
 
+  getEnabledFydeOTA(): Promise<boolean>;
+  enableFydeOTA(enabled: boolean): void;
+
   canChangeChannel(): Promise<boolean>;
 
   getVersionInfo(): Promise<VersionInfo>;
@@ -322,6 +325,14 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
 
   getChannelInfo(): Promise<ChannelInfo> {
     return sendWithPromise('getChannelInfo');
+  }
+
+  enableFydeOTA(enabled: boolean) {
+    chrome.send('enableFydeOTA', [enabled]);
+  }
+
+  getEnabledFydeOTA() {
+    return sendWithPromise('getEnabledFydeOTA');
   }
 
   canChangeChannel(): Promise<boolean> {

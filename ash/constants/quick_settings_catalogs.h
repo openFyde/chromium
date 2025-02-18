@@ -61,7 +61,8 @@ enum class QsFeatureCatalogName {
   kAutozoom = 16,
   kHotspot = 17,
   kFocusMode = 18,
-  kMaxValue = kFocusMode
+  kRotateScreen = 19,
+  kMaxValue = kRotateScreen,
 };
 
 // A catalog that registers all the sliders on the Quick Settings page (also

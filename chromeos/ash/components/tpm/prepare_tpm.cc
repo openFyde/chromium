@@ -17,28 +17,28 @@ namespace ash {
 namespace {
 
 void OnClearStoredOwnerPassword(
-    base::OnceClosure preparation_finished_callback,
+    base::OnceCallback<void(bool)> preparation_finished_callback,
     const ::tpm_manager::ClearStoredOwnerPasswordReply& reply) {
   LOG_IF(ERROR, reply.status() != ::tpm_manager::STATUS_SUCCESS)
       << "Failed to call ClearStoredOwnerPassword; status: " << reply.status();
-  std::move(preparation_finished_callback).Run();
+  std::move(preparation_finished_callback).Run(reply.status() == ::tpm_manager::STATUS_SUCCESS);
 }
 
-void OnTakeOwnership(base::OnceClosure preparation_finished_callback,
+void OnTakeOwnership(base::OnceCallback<void(bool)> preparation_finished_callback,
                      const ::tpm_manager::TakeOwnershipReply& reply) {
   LOG_IF(ERROR, reply.status() != ::tpm_manager::STATUS_SUCCESS)
       << "Failed to call TakeOwnership; status: " << reply.status();
-  std::move(preparation_finished_callback).Run();
+  std::move(preparation_finished_callback).Run(reply.status() == ::tpm_manager::STATUS_SUCCESS);
 }
 
-void OnGetTpmStatus(base::OnceClosure preparation_finished_callback,
+void OnGetTpmStatus(base::OnceCallback<void(bool)> preparation_finished_callback,
                     const ::tpm_manager::GetTpmNonsensitiveStatusReply& reply) {
   if (reply.status() != ::tpm_manager::STATUS_SUCCESS) {
     LOG(WARNING) << " Failed to get tpm status; status: " << reply.status();
   }
   if (reply.status() != ::tpm_manager::STATUS_SUCCESS || !reply.is_enabled()) {
     LOG_IF(WARNING, !reply.is_enabled()) << "TPM is reportedly disabled.";
-    std::move(preparation_finished_callback).Run();
+    std::move(preparation_finished_callback).Run(!reply.is_enabled());
     return;
   }
   if (reply.is_owned()) {
@@ -56,7 +56,7 @@ void OnGetTpmStatus(base::OnceClosure preparation_finished_callback,
 
 }  // namespace
 
-void PrepareTpm(base::OnceClosure preparation_finished_callback) {
+void PrepareTpm(base::OnceCallback<void(bool)> preparation_finished_callback) {
   chromeos::TpmManagerClient::Get()->GetTpmNonsensitiveStatus(
       ::tpm_manager::GetTpmNonsensitiveStatusRequest(),
       base::BindOnce(OnGetTpmStatus, std::move(preparation_finished_callback)));
