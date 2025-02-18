@@ -23,6 +23,8 @@ static_library("misc") {
     "fydeos_statistics_collector.h",
     "fydeos_release_note_url.cc",
     "fydeos_release_note_url.h",
+    "fydeos_toggle_ota.cc",
+    "fydeos_toggle_ota.h",
   ]
 
   defines = [ "CHROMEOS_IMPLEMENTATION" ]

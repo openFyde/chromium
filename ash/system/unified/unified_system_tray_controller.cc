@@ -64,6 +64,9 @@
 #include "ash/system/unified/unified_system_tray_bubble.h"
 #include "ash/system/unified/unified_system_tray_model.h"
 #include "ash/system/unified/user_chooser_detailed_view_controller.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h"
+// ---***FYDEOS END***---
 #include "ash/wm/lock_state_controller.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_macros.h"
@@ -426,6 +429,10 @@ void UnifiedSystemTrayController::InitFeatureTiles() {
                 std::make_unique<AutozoomFeaturePodController>(),
                 feature_pod_controllers_, tiles);
   }
+  create_tile(VIEW_ID_FEATURE_TILE_ROTATE_SCREEN,
+              std::make_unique<RotateScreenFeaturePodController>(),
+              feature_pod_controllers_, tiles);
+
   create_tile(VIEW_ID_FEATURE_TILE_VPN,
               std::make_unique<VPNFeaturePodController>(this),
               feature_pod_controllers_, tiles);

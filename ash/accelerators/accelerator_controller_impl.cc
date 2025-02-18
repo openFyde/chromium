@@ -1817,4 +1817,8 @@ void AcceleratorControllerImpl::PerformDebugActionOnDelegateIfEnabled(
   }
 }
 
+void RotateScreenFydeOS() {
+  accelerators::RotateScreenWithoutConfirmation();
+}
+
 }  // namespace ash
