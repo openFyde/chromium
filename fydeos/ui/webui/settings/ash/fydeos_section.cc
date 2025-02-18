@@ -1,0 +1,140 @@
+// Copyright (c) 2021 The FydeOS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#include "fydeos/ui/webui/settings/ash/fydeos_section.h"
+#include "base/no_destructor.h"
+#include "chrome/grit/generated_resources.h"
+#include "chrome/grit/branded_strings.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "content/public/browser/web_ui.h"
+#include "chrome/browser/ui/webui/webui_util.h"
+#include "ui/base/webui/web_ui_util.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+#include "base/system/sys_info.h"
+#include "chrome/browser/browser_process.h"
+#include "fydeos/switches/misc/misc_switches.h"
+#include "fydeos/switches/urls/urls_constants.h"
+
+#include "fydeos/ui/webui/settings/ash/fydeos_handler.h"
+
+namespace ash::settings {
+
+namespace mojom {
+using ::chromeos::settings::mojom::kFydeOsSectionPath;
+using ::chromeos::settings::mojom::kFydeOsSubpagePath;
+using ::chromeos::settings::mojom::Section;
+using ::chromeos::settings::mojom::Subpage;
+using ::chromeos::settings::mojom::Setting;
+}
+
+namespace {
+  const std::vector<SearchConcept>& GetFydeOsSearchConcepts() {
+    static const base::NoDestructor<std::vector<SearchConcept>> tags({
+      {IDS_OS_SETTINGS_FYDEOS_SETTINGS,
+       mojom::kFydeOsSubpagePath,
+       mojom::SearchResultIcon::kChrome,
+       mojom::SearchResultDefaultRank::kMedium,
+       mojom::SearchResultType::kSubpage,
+       {.subpage = mojom::Subpage::kFydeOsMain}},
+    });
+    return *tags;
+  }
+}
+
+FydeOsSection::FydeOsSection(Profile* profile,
+                           SearchTagRegistry* search_tag_registry,
+                           PrefService* pref_service)
+  : OsSettingsSection(profile, search_tag_registry),
+    pref_service_(pref_service) {
+  SearchTagRegistry::ScopedTagUpdater updater = registry()->StartUpdate();
+  updater.AddSearchTags(GetFydeOsSearchConcepts());
+}
+
+FydeOsSection::~FydeOsSection() = default;
+
+void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
+  static constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"fydeosSettingsRemoteAssistanceTitle",
+      IDS_OS_SETTINGS_FYDEOS_REMOTE_ASSISTANCE_TITLE},
+    {"fydeosSettingsRemoteHelperServiceTitle",
+      IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_TITLE},
+    {"fydeosSettingsRemoteHelperDesc",
+      IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_DESC},
+    {"fydeosSettingsRemoteHelperEnabledMessage",
+      IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_ENABLED_MESSAGE},
+    {"fydeosSettingsRemoteHelperRequireRestartMessage",
+      IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_REQUIRE_RESTART_MESSAGE},
+    {"fydeosSettingsRemoteHelperStartingMessage",
+      IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_STARGING_MESSAGE},
+    {"fydeosSettingsMoreInfoTitle", IDS_OS_SETTINGS_FYDEOS_MORE_INFO_TITLE},
+
+    {"fydeosSettingsOtherTweaksTitle",
+      IDS_OS_SETTINGS_FYDEOS_OTHER_TWEAKS_TITLE},
+    {"rebootButtonInTrayLabel",
+      IDS_OS_SETTINGS_FYDEOS_REBOOT_BUTTON_IN_TRAY_LABEL},
+    {"displayFydeOsRebootButtonInTray",
+      IDS_OS_SETTINGS_FYDEOS_DISPLAY_REBOOT_BUTTON_IN_TRAY},
+    {"rotateScreenButtonInTrayLabel",
+      IDS_OS_SETTINGS_FYDEOS_ROTATE_SCREEN_BUTTON_IN_TRAY_LABEL},
+    {"notTabletPhysicalStateDisableFydeOsRotateScreen",
+      IDS_OS_SETTINGS_FYDEOS_NOT_TABLET_STATE_DISABLE_ROTATE_SCREEN},
+    {"displayFydeOsRotateScreenButton",
+      IDS_OS_SETTINGS_FYDEOS_DISPLAY_ROTATE_SCREEN_BUTTON},
+  };
+
+  html_source->AddLocalizedStrings(kLocalizedStrings);
+  html_source->AddString("fydeosSettingsPageTitle",
+      l10n_util::GetStringFUTF16(IDS_OS_SETTINGS_FYDEOS_SETTINGS,
+        l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
+
+  const std::string board = base::SysInfo::GetLsbReleaseBoard();
+  html_source->AddBoolean("showToggleRebootButtonInTray", false);
+  html_source->AddBoolean("showToggleRotateScreenButton",
+      fydeos::switches::IsNonForYouBoard(board));
+
+  html_source->AddString("fydeOSRdpUrl",
+      fydeos::constants::kFydeOSRemoteDesktopURL);
+}
+
+int FydeOsSection::GetSectionNameMessageId() const {
+  return IDS_OS_SETTINGS_FYDEOS_SETTINGS;
+}
+
+mojom::Section FydeOsSection::GetSection() const {
+  return mojom::Section::kFydeOs;
+}
+
+mojom::SearchResultIcon FydeOsSection::GetSectionIcon() const {
+  NOTIMPLEMENTED();
+  return mojom::SearchResultIcon::kChrome;
+}
+
+const char* FydeOsSection::GetSectionPath() const {
+  return mojom::kFydeOsSectionPath;
+}
+
+void FydeOsSection::AddHandlers(content::WebUI* web_ui) {
+  // web_ui->AddMessageHandler(
+  //    std::make_unique<::settings::FydeOsHandler>(profile(), pref_service_));
+  web_ui->AddMessageHandler(
+      std::make_unique<FydeOsHandler>(pref_service_));
+}
+
+bool FydeOsSection::LogMetric(
+    mojom::Setting setting, base::Value& value) const {
+  // Unimplemented.
+  return false;
+}
+
+void FydeOsSection::RegisterHierarchy(HierarchyGenerator* generator) const {
+  // fydeos top level
+  generator->RegisterTopLevelSubpage(
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS, mojom::Subpage::kFydeOsMain,
+      mojom::SearchResultIcon::kChrome, mojom::SearchResultDefaultRank::kMedium,
+      mojom::kFydeOsSubpagePath);
+}
+
+}  // namespace ash::settings

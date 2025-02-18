@@ -1,0 +1,14 @@
+<style include="settings-shared">
+  .toggleTitle {
+    flex: 1;
+  }
+</style>
+<div class="settings-box two-line" hidden=[[!showToggleRotateScreenButton]]>
+  <div class="start padded">
+    $i18n{rotateScreenButtonInTrayLabel}
+    <div class="secondary">[[getShowRotateScreenButtonMessage_(isInTabletPhysicalState_, showRotateScreenButton_)]]</div>
+  </div>
+  <cr-toggle id="toggleShowRotateScreenButton" disabled="[[!canToggleRotateScreenButton_]]"
+              role="button" checked="[[shouldShowRotateScreenButton_(showRotateScreenButton_, canToggleRotateScreenButton_)]]" on-change="onToggleShowRotateScreenButton_">
+  </cr-toggle>
+</div>
