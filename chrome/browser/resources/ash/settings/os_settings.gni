@@ -21,6 +21,7 @@ ts_definition_files = [
   "//tools/typescript/definitions/users_private.d.ts",
   "//tools/typescript/definitions/app_management.d.ts",
   "//tools/typescript/definitions/native_windows.d.ts",
+  "//tools/typescript/definitions/shell_client.d.ts",
 ]
 
 if (is_chrome_branded) {
