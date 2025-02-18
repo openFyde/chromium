@@ -19,6 +19,7 @@ import {getBulkPinProgress, getDialogCaller, getDlpBlockedComponents, getDriveCo
 import type {ArrayDataModel} from '../../common/js/array_data_model.js';
 import {crInjectTypeAndInit} from '../../common/js/cr_ui.js';
 import {isFolderDialogType} from '../../common/js/dialog_type.js';
+import {isModal} from '../../common/js/dialog_type.js';
 import {getKeyModifiers, queryDecoratedElement, queryRequiredElement} from '../../common/js/dom_utils.js';
 import type {FakeEntry, FilesAppDirEntry, FilesAppEntry} from '../../common/js/files_app_entry_types.js';
 import {EntryList, FakeEntryImpl} from '../../common/js/files_app_entry_types.js';
@@ -70,6 +71,7 @@ import {FolderShortcutsDataModel} from './folder_shortcuts_data_model.js';
 import {GearMenuController} from './gear_menu_controller.js';
 import {GuestOsController} from './guest_os_controller.js';
 import {LastModifiedController} from './last_modified_controller.js';
+import {FydeDropViewController} from './fydedrop_view_controller.js';
 import {LaunchParam} from './launch_param.js';
 import {ListThumbnailLoader} from './list_thumbnail_loader.js';
 import {MainWindowComponent} from './main_window_component.js';
@@ -253,6 +255,7 @@ export class FileManager {
    */
   protected lastModifiedController_: LastModifiedController|null = null;
 
+  protected fydeDropViewController_: FydeDropViewController|null = null;
   /**
    * OneDrive controller.
    */
@@ -266,6 +269,7 @@ export class FileManager {
   private quickViewUma_: QuickViewUma|null = null;
   protected quickViewController_: QuickViewController|null = null;
   protected fileTypeFiltersController_: FileTypeFiltersController|null = null;
+
 
   /**
    * Empty folder controller.
@@ -573,6 +577,14 @@ export class FileManager {
         this.selectionHandler_, this.ui_);
     this.lastModifiedController_ = new LastModifiedController(
         this.ui_.listContainer.table, this.directoryModel_);
+    //---***FYDEOS BEGIN***---
+    // @ts-ignore: error TS2531: Object is possibly 'null'.
+    if (!isModal(this.launchParams_.type)) {
+      this.fydeDropViewController_ = new FydeDropViewController(
+          // @ts-ignore: error TS2531: Object is possibly 'null'.
+          this.ui_, this.ui_.fydeDropView, this.directoryModel_);
+    }
+    //---***FYDEOS END***---
 
     this.quickViewModel_ = new QuickViewModel();
     const fileListSelectionModel = this.directoryModel_.getFileListSelection();

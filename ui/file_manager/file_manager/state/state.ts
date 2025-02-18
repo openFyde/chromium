@@ -29,6 +29,8 @@ export enum EntryType {
   // Root for the Recent.
   RECENT = 'RECENT',
 
+  FYDEDROP = 'FYDEDROP',
+
   // A folder-like that doesn't have an entry linked to it.
   MATERIALIZED_VIEW = 'MATERIALIZED_VIEW',
 }
