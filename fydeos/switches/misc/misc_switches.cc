@@ -4,6 +4,7 @@
 
 #include "fydeos/switches/misc/misc_switches.h"
 #include "base/command_line.h"
+#include "base/strings/string_util.h"
 
 namespace fydeos {
 namespace switches {
@@ -13,6 +14,14 @@ namespace {
 const char kFydeDisableCustom[] = "fyde-disable-custom";
 
 const char kEnableTpmDictionaryAttackLockout[] = "fydeos-enable-tpm-da-lockout";
+
+const std::vector<std::string> kNonForYouBoards = {
+  "amd64-fydeos",
+  "amd64-openfyde",
+  "amd64-vmware",
+  "amd64-generic",
+  "fydetab_duo-fydeos",
+};
 
 }
 
@@ -24,6 +33,17 @@ bool IsTpmDictionaryAttackLockoutIgnored() {
   return !base::CommandLine::ForCurrentProcess()->HasSwitch(kEnableTpmDictionaryAttackLockout);
 }
 
+bool IsNonForYouBoard(const std::string& board) {
+  for (const auto& non_for_you_board : kNonForYouBoards) {
+    if (non_for_you_board == board) {
+      return true;
+    }
+    if (base::StartsWith(board, non_for_you_board)) {
+      return true;
+    }
+  }
+  return false;
+}
 
 
 } // switches
