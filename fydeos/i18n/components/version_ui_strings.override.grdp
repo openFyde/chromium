@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override components/version_ui_strings.grdp, included from components/components_strings.grd -->
+<grit-part>
+  <if expr="openfyde">
+    <message name="IDS_VERSION_UI_OFFICIAL" desc="official build on the about:version page">
+      openFyde unlicensed version
+    </message>
+    <message name="IDS_VERSION_UI_UNOFFICIAL" desc="unofficial build on the about:version page">
+      openFyde unlicensed version
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_VERSION_UI_OFFICIAL" desc="official build on the about:version page">
+      FydeOS unlicensed version
+    </message>
+    <message name="IDS_VERSION_UI_UNOFFICIAL" desc="unofficial build on the about:version page">
+      FydeOS unlicensed version
+    </message>
+  </if>
+</grit-part>

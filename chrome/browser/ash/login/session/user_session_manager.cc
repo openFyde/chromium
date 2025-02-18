@@ -198,6 +198,7 @@
 #include "url/gurl.h"
 //---***FYDEOS BEGIN***---
 #include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/prefs/fydeos_prefs.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/embedder_support/pref_names.h"
 //---***FYDEOS END***---
@@ -446,8 +447,11 @@ policy::MinimumVersionPolicyHandler* GetMinimumVersionPolicyHandler() {
       ->GetMinimumVersionPolicyHandler();
 }
 
-void OnPrepareTpmDeviceFinished() {
+void OnPrepareTpmDeviceFinished(bool tpm_fallback_not_necessary) {
   BootTimesRecorder::Get()->AddLoginTimeMarker("TPMOwn-End", false);
+  if (tpm_fallback_not_necessary) {
+    fydeos::prefs::SetNotNecessaryForceTpmFallback(g_browser_process->local_state());
+  }
 }
 
 void SaveSyncTrustedVaultKeysToProfile(

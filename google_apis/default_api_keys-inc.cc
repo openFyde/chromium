@@ -153,6 +153,7 @@ constexpr ::google_apis::DefaultApiKeys GetDefaultApiKeysFromDefinedValues() {
       .google_api_key_fresnel = GOOGLE_API_KEY_FRESNEL,
       .google_api_key_boca = GOOGLE_API_KEY_BOCA,
 #endif
+      .fydeos_api_key = FYDEOS_API_KEY,
 #if BUILDFLAG(IS_OPENFYDE)
       .fydeos_client_id_main = FYDEOS_CLIENT_ID_MAIN,
       .fydeos_client_secret_main = FYDEOS_CLIENT_SECRET_MAIN,

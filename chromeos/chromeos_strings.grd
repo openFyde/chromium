@@ -6947,6 +6947,7 @@
         School Tools
       </message>
 
+      <part file="../fydeos/i18n/chromeos/chromeos_strings.override.grdp" />
       <part file="../fydeos/i18n/chromeos/chromeos_strings.grdp" />
 
     </messages>

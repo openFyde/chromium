@@ -162,6 +162,8 @@
 #include "chrome/browser/ui/webui/certificate_manager_localized_strings_provider.h"
 #endif
 
+#include "fydeos/switches/urls/urls_constants.h"
+
 #if BUILDFLAG(IS_LINUX)
 #include "ui/linux/linux_ui_factory.h"
 #include "ui/ozone/public/ozone_platform.h"
@@ -652,6 +654,7 @@ void AddClearBrowsingDataStrings(content::WebUIDataSource* html_source,
       {"passwordsDeletionDialogOK",
        IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE_OK},
       {"notificationWarning", IDS_SETTINGS_NOTIFICATION_WARNING},
+      {"clearBrowsingHistorySummarySignedIn", IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN},
   };
 
   html_source->AddString(
@@ -1670,7 +1673,6 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
        IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
       {"peopleSignInPromptSecondaryWithNoAccount",
        IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
-      {"peoplePageTitle", IDS_SETTINGS_PEOPLE},
       {"syncSettingsSavedToast", IDS_SETTINGS_SYNC_SETTINGS_SAVED_TOAST_LABEL},
       {"peopleSignInPrompt", IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT},
       {"manageGoogleAccount", IDS_SETTINGS_MANAGE_GOOGLE_ACCOUNT},
@@ -1728,11 +1730,15 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
           optimization_guide_keyed_service
               ->ShouldModelExecutionBeAllowedForUser());
 
+  html_source->AddLocalizedString(
+      "peoplePageTitle",
+      profile->IsFydeProfile() ? IDS_SETTINGS_PEOPLE_FYDEOS : IDS_SETTINGS_PEOPLE);
   // Add Google Account URL and include UTM parameter to signal the source of
   // the navigation.
   html_source->AddString(
       "googleAccountUrl",
-      net::AppendQueryParameter(GURL(chrome::kGoogleAccountURL), "utm_source",
+      net::AppendQueryParameter(GURL(profile->IsFydeProfile() ? fydeos::constants::kFydeOSAccountURL :
+      chrome::kGoogleAccountURL), "utm_source",
                                 "chrome-settings")
           .spec());
   html_source->AddBoolean("profileShortcutsEnabled",
@@ -2347,7 +2353,9 @@ void AddSafetyHubStrings(content::WebUIDataSource* html_source) {
                          chrome::kSafetyHubHelpCenterURL);
 }
 
-void AddSearchInSettingsStrings(content::WebUIDataSource* html_source) {
+// ---***FYDEOS BEGIN***---
+void AddSearchInSettingsStrings(content::WebUIDataSource* html_source, Profile* profile) {
+// ---***FYDEOS END***---
   static constexpr webui::LocalizedString kLocalizedStrings[] = {
       {"searchPrompt", IDS_SETTINGS_SEARCH_PROMPT},
       {"searchNoResults", IDS_SEARCH_NO_RESULTS},
@@ -2358,6 +2366,10 @@ void AddSearchInSettingsStrings(content::WebUIDataSource* html_source) {
 
   std::u16string help_text = l10n_util::GetStringFUTF16(
       IDS_SETTINGS_SEARCH_NO_RESULTS_HELP, chrome::kSettingsSearchHelpURL);
+  if (profile->IsFydeProfile()) {
+    help_text = l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_SEARCH_NO_RESULTS_FYDEOS_HELP, base::UTF8ToUTF16(fydeos::constants::kFydeOSHelpURL));
+  }
   html_source->AddString("searchNoResultsHelp", help_text);
 }
 
@@ -2380,6 +2392,8 @@ void AddSearchStrings(content::WebUIDataSource* html_source, Profile* profile) {
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
   html_source->AddString("searchExplanationLearnMoreURL",
+                         profile->IsFydeProfile() ?
+                         base::UTF8ToUTF16(fydeos::constants::kFydeOSHelpURL) :
                          chrome::kOmniboxLearnMoreURL);
 
   search_engines::SearchEngineChoiceService* search_engine_choice_service =
@@ -3754,7 +3768,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
   AddSafetyHubStrings(html_source);
   AddResetStrings(html_source, profile);
   AddSearchEnginesStrings(html_source);
-  AddSearchInSettingsStrings(html_source);
+  AddSearchInSettingsStrings(html_source, profile);
   AddSearchStrings(html_source, profile);
   AddSiteSettingsStrings(html_source, profile);
   AddSiteDataPageStrings(html_source, profile);

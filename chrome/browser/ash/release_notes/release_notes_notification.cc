@@ -68,7 +68,7 @@ void ReleaseNotesNotification::ShowReleaseNotesNotification() {
   release_notes_available_notification_ = ash::CreateSystemNotificationPtr(
       message_center::NOTIFICATION_TYPE_SIMPLE, kShowNotificationID,
       std::move(title), std::move(message),
-      l10n_util::GetStringUTF16(IDS_HELP_APP_EXPLORE), GURL(),
+      std::u16string(), GURL(),
       message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
                                  kShowNotificationID,
                                  NotificationCatalogName::kReleaseNotes),
@@ -77,7 +77,7 @@ void ReleaseNotesNotification::ShowReleaseNotesNotification() {
           base::BindRepeating(
               &ReleaseNotesNotification::HandleClickShowNotification,
               weak_ptr_factory_.GetWeakPtr())),
-      kNotificationHelpAppIcon,
+      gfx::VectorIcon(),
       message_center::SystemNotificationWarningLevel::NORMAL);
   SystemNotificationHelper::GetInstance()->Display(
       *release_notes_available_notification_);
