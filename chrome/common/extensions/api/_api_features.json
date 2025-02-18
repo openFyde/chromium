@@ -223,7 +223,6 @@
       "chrome://mobilesetup/*",
       "chrome://oobe/*",
       "chrome://os-settings/*",
-      "chrome://file-manager/*",
       "chrome://parent-access/*",
       "chrome://password-change/*",
       "chrome://lock-reauth/*"

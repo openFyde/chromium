@@ -251,7 +251,6 @@
         "chrome://graduation/*",
         "chrome://home/*",
         "chrome://chrome-signin/*",
-        "chrome://file-manager/*",
         "chrome://mobilesetup/*",
         "chrome://oobe/*",
         "chrome://os-settings/*",
@@ -311,7 +310,6 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://extensions/*",
-      "chrome://file-manager/*",
       "chrome://settings/*"
     ]
   }, {
@@ -851,7 +849,6 @@
     "matches": [
       "chrome://add-supervision/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",
@@ -887,7 +884,6 @@
     "matches": [
       "chrome://add-supervision/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",
@@ -921,7 +917,6 @@
     "matches": [
       "chrome://add-supervision/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",
