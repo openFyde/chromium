@@ -5,7 +5,6 @@
 #ifndef CHROMEOS_FYDEOS_SWITCHES_MISC_SWITCHES_H_
 #define CHROMEOS_FYDEOS_SWITCHES_MISC_SWITCHES_H_
 
-#include <string>
 #include "chromeos/chromeos_export.h"
 
 namespace fydeos {
@@ -14,8 +13,6 @@ namespace switches {
 CHROMEOS_EXPORT bool IsFydeCustomEnabled();
 
 CHROMEOS_EXPORT bool IsTpmDictionaryAttackLockoutIgnored();
-
-CHROMEOS_EXPORT bool IsNonForYouBoard(const std::string& board);
 
 } // switches
 } // fydeos

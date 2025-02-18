@@ -1,0 +1,11 @@
+--- ui/file_manager/file_manager/state/ducks/all_entries.ts
++++ ui/file_manager/file_manager/state/ducks/all_entries.ts
+@@ -487,6 +487,8 @@
+         case RootType.DRIVE_SHARED_WITH_ME:
+           // TODO(lucmult): This isn't really Recent but it's the closest.
+           return EntryType.RECENT;
++        case RootType.FYDEDROP:
++          return EntryType.FYDEDROP;
+       }
+       console.warn(`Invalid fakeEntry.rootType='${entry.rootType} rootType`);
+       return EntryType.PLACEHOLDER;

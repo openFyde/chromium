@@ -38,53 +38,5 @@
   <message name="IDS_SETTINGS_CROSTINI_UPDATE_AVAILABLE" desc="message of fydeos stateful update available in settings">
     Thers's a critical update available for the Linux(beta) component. It's strongly recommended to perform this update as soon as possible or your Linux(beta) may no longer work.
   </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS" desc="fydeos settings page title">
-    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> settings
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_WIFI_DRIVER_TITLE" desc="fydeo settings wifi section title">
-    Wifi settings
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_TOUCHPAD_MODE_TITLE" desc="fydeo settings touchpad section title">
-    Touchpad settings
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_ASSISTANCE_TITLE" desc="fydeos settings remote assist section title">
-    Remote services
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_TITLE" desc="fydeos settings remote helper service title">
-    Remote diagnosis service
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_DESC" desc="fydeos settings remote helper service desc">
-    Remote diagnosis service enables official FydeOS support representatives to identify system issues. Currently remote diagnosis service can only be initialised by FydeOS official support representatives.
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_ENABLED_MESSAGE" desc="fydeos settings remote helper service message when it is enabled">
-    Please share this number to official FydeOS support representatives
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_STARGING_MESSAGE" desc="fydeos settings remote helper service message when it is starting">
-    Starting remote diagnosis service...
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_REMOTE_HELPER_SERVICE_REQUIRE_RESTART_MESSAGE" desc="fydeos settings remote helper service message when it requires restart">
-    Please stop remote diagnosis service and try again
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_MORE_INFO_TITLE" desc="fydeos settings more_info title">
-    More info
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_OTHER_TWEAKS_TITLE" desc="fydeos settings other tweaks title">
-    Miscellaneous
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_REBOOT_BUTTON_IN_TRAY_LABEL" desc="fydeos settings label show reboot button in tray">
-    "Restart" button
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_REBOOT_BUTTON_IN_TRAY" desc="fydeos settings show reboot button in tray">
-    Display a "Restart" button on the system menu
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_ROTATE_SCREEN_BUTTON_IN_TRAY_LABEL" desc="fydeos settings label show rotate screen button in tray">
-    "Rotate screen" button
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_NOT_TABLET_STATE_DISABLE_ROTATE_SCREEN" desc="fydeos settings, not in tablet state, disable rotate screen">
-    You are not on tablet-mode at the moment, "Rotate screen" button is now hidden
-  </message>
-  <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_ROTATE_SCREEN_BUTTON" desc="fydeos settings show rotate screen button in tray">
-    Display a "Rotate screen" button on the system menu
-  </message>
 </if>
 </grit-part>

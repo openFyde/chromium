@@ -591,6 +591,12 @@ export class VolumeManager extends FilesEventTarget<VolumeManagerEventMap> {
     if (isFakeEntry(entry)) {
       const rootType = getRootType(entry);
       assert(rootType);
+      if (rootType === RootType.FYDEDROP) {
+        return new EntryLocation(
+            volumeInfo, rootType,
+            true,
+            false /* hide read only for FydeDrop. */);
+      }
 
       // Aggregated views like RECENTS and TRASH exist as fake entries but may
       // actually defer their logic to some underlying implementation or

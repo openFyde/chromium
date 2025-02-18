@@ -8848,7 +8848,6 @@ To shut down the device, press and hold the power button on the device again.
       </message>
 
       <part file="../fydeos/i18n/ash/ash_strings.override.grdp" />
-      <part file="../fydeos/i18n/ash/ash_strings.grdp" />
 
      </messages>
     </release>

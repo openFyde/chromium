@@ -72,21 +72,6 @@
 <translation id="1079017345574916945">远程桌面</translation>
 <translation id="6898090158927982244">您的 Linux 已是最新版本</translation>
 <translation id="125640132000960723">检测到 Linux 子系统有可用重要更新。强烈建议尽早执行更新，否则 Linux 子系统有可能停止工作。</translation>
-<translation id="6694016202036959050"><ph name="DEVICE_OS" /> 设置</translation>
-<translation id="8509770612780794865">Wifi 设置</translation>
-<translation id="4938972461544498524">触控板设置</translation>
-<translation id="1210024513248363065">远程服务</translation>
-<translation id="7170710479480545448">远程协助服务</translation>
-<translation id="7421654468125961872">通过远程协助服务 FydeOS 官方技术支持人员可以更好地检查系统可能存在的问题及帮助你解决问题。远程协助服务仅支持由 FydeOS 官方技术支持人员发起。</translation>
-<translation id="4153448966914043142">请把显示的数字分享给与您联系的 FydeOS 官方技术支持人员</translation>
-<translation id="8447783727233371010">正在启动远程协助服务...</translation>
-<translation id="4770469035145322795">请尝试重新开启远程协助服务</translation>
-<translation id="4070039109671307724">其他选项</translation>
-<translation id="7326893024940073254">显示「重启」按钮</translation>
-<translation id="4690206696796355711">在系统任务栏菜单显示「重启」按钮</translation>
-<translation id="6243454903512423518">显示「旋转屏幕」按钮</translation>
-<translation id="7303548327449168702">当前不是平板电脑模式，已在系统任务栏菜单隐藏「旋转屏幕」按钮</translation>
-<translation id="3840770932695838898">在系统任务栏菜单显示「旋转屏幕」按钮</translation>
 <!-- chromeos_strings.override.grdp -->
 <translation id="8642537394560952908">拍摄新照片，或者选择现有照片或图标。
     <ph name="LINE_BREAK" />

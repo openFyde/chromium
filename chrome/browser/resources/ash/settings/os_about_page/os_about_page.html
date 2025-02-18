@@ -117,16 +117,6 @@
               role="presentation">
           <h1 id="productTitle">$i18n{aboutOsProductTitle}</h1>
         </div>
-        <if expr="not openfyde">
-        <div class="settings-box two-line" >
-          <div class="start padded">
-            $i18n{aboutKeepFydeOsUpdateToDate}
-            <div class="secondary">[[fydeosOTAStateMessage_(fydeOTAToggleState_, isOwner_)]]</div>
-          </div>
-          <cr-toggle id="enableFydeOTA" disabled="[[!canToggleFydeOTA_(currentUpdateStatusEvent_, isOwner_)]]" role="button" checked="[[fydeOTAToggleState_]]" on-change="onEnableFydeOTAChange_">
-          </cr-toggle>
-        </div>
-        </if>
         <div class="settings-box two-line">
           <!-- Set the icon from the iconset (when it's obsolete/EOL and
             when update is done) or set the src (when it's updating). -->
@@ -202,7 +192,6 @@
                                 currentUpdateStatusEvent_)]]
             </cr-button>
             <cr-button id="checkForUpdatesButton" hidden="[[!showCheckUpdates_]]"
-                disabled="[[!fydeOTAToggleState_]]"
                 on-click="onCheckUpdatesClick_"
                 deep-link-focus-id$="[[Setting.kCheckForOsUpdate]]">
               $i18n{aboutCheckForUpdates}
