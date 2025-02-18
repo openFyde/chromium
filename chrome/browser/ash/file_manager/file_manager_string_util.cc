@@ -44,6 +44,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/chromeos/strings/grit/ui_chromeos_strings.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace {
 
@@ -369,6 +371,27 @@ void AddStringsForPhotos(base::Value::Dict* dict) {
   SET_STRING("PHOTOS_WELCOME_DISMISS", IDS_FILE_BROWSER_PHOTOS_WELCOME_DISMISS);
   SET_STRING("PHOTOS_WELCOME_TEXT", IDS_FILE_BROWSER_PHOTOS_WELCOME_TEXT);
   SET_STRING("PHOTOS_WELCOME_TITLE", IDS_FILE_BROWSER_PHOTOS_WELCOME_TITLE);
+}
+
+void AddStringsForFyde(base::Value::Dict* dict) {
+  SET_STRING("NUTSTORE_HINT_BANNER_TITLE",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_BANNER_TITLE);
+  SET_STRING("NUTSTORE_HINT_BANNER_DESCRIPTION",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_BANNER_DESCRIPTION);
+  SET_STRING("NUTSTORE_HINT_CONFIRM_BUTTON_TEXT",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_CONFIRM_BUTTON_TEXT);
+  SET_STRING("NUTSTORE_HINT_STEPS_SIGUNUP",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_SIGUNUP);
+  SET_STRING("NUTSTORE_HINT_STEPS_ADD_APPLICATION",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_ADD_APPLICATION);
+  SET_STRING("NUTSTORE_HINT_STEPS_CREATE_PASSWORD",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_CREATE_PASSWORD);
+  SET_STRING("NUTSTORE_HINT_STEPS_OPEN_NUTSTORE",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_OPEN_NUTSTORE);
+  SET_STRING("NUTSTORE_HINT_STEPS_CONNECT_ACCOUNT",
+             IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_CONNECT_ACCOUNT);
+  SET_STRING("FYDEDROP_ROOT_LABEL",
+             IDS_FILE_BROWSER_FYDEDROP_ROOT_LABEL);
 }
 
 void AddStringsGeneric(base::Value::Dict* dict) {
@@ -1299,6 +1322,7 @@ base::Value::Dict GetFileManagerStrings() {
   AddStringsForSharesheet(&dict);
   AddStringsForHoldingSpace(&dict);
   AddStringsForPhotos(&dict);
+  AddStringsForFyde(&dict);
   AddStringsGeneric(&dict);
   AddStringsForVms(&dict);
   AddStringsForSkyVault(&dict);
@@ -1320,8 +1344,10 @@ base::Value::Dict GetFileManagerStrings() {
   dict.Set("GOOGLE_DRIVE_OVERVIEW_URL", kGoogleDriveOverviewUrl);
   dict.Set("GOOGLE_DRIVE_ROOT_URL", kGoogleDriveRootUrl);
   dict.Set("NO_TASK_FOR_FILE_URL",
-           base::StringPrintf(kHelpURLFormat, kNoActionForFileHelpNumber));
+           base::StringPrintf(fydeos::constants::kHelpURLFormat, kNoActionForFileHelpNumber));
   dict.Set("DLP_HELP_URL", policy::dlp::kDlpLearnMoreUrl);
+
+  dict.Set("FYDE_DROP_URL", fydeos::constants::kFydeDropUrl);
 
   webui::SetLoadTimeDataDefaults(g_browser_process->GetApplicationLocale(),
                                  &dict);
@@ -1423,6 +1449,8 @@ void AddFileManagerFeatureStrings(const std::string& locale,
   // Lastly, set UI_LOCALE and locale-dependent settings.
   dict->Set("UI_LOCALE", locale);
   dict->Set("WEEK_START_FROM", GetLocaleBasedWeekStart());
+
+  // dict->Set("FYDE_ACCOUNT_ENABLED", profile && profile->IsFydeProfile());
 
   // ELIGIBLE_AND_ENABLED_GOOGLE_ONE_OFFER_FILES_BANNER does additional checks
   // in addition to a feature flag check.
