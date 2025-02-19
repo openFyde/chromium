@@ -93,6 +93,11 @@
 <translation id="3840770932695838898">在系统任务栏菜单显示「旋转屏幕」按钮</translation>
 <translation id="4745886129774726269">在系统任务栏菜单显示切换平板模式和桌面模式的按钮</translation>
 <translation id="2985624172970894798">平板/桌面模式切换按钮</translation>
+<translation id="1851103550468466960">开启 Widevine 支持</translation>
+<translation id="8990695698551687522">指定 "libwidevine.so"</translation>
+<translation id="4838463656205005584">启用 Widevine 失败...</translation>
+<translation id="7386874137903403308">所选的 "libwidevine.so" 无效；请重新选择正确的文件再尝试。</translation>
+<translation id="768441431736013726">在播放受保护的流媒体内容时启用 Widevine 支持。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
 <translation id="3851274061009484883">FydeOS 帐号设置</translation>
 <translation id="6468776556018764845">实验性功能</translation>
 <translation id="6463286951433091842">绕过部分可信平台模块 (TPM) 的检查</translation>

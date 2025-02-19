@@ -2335,6 +2335,8 @@ void UserSessionManager::DoBrowserLaunchInternal(Profile* profile,
     return;
   }
 
+  fydeos::prefs::ClearRebootMarkPrefs(g_browser_process->local_state());
+
   if (RestartToApplyPerSessionFlagsIfNeed(profile, false))
     return;
 

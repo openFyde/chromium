@@ -18,6 +18,8 @@
 #include "fydeos/switches/misc/misc_switches.h"
 #include "fydeos/switches/urls/urls_constants.h"
 
+#include "base/strings/utf_string_conversions.h"
+
 #include "fydeos/ui/webui/settings/ash/fydeos_handler.h"
 #include "fydeos/prefs/fydeos_pref_names.h"
 
@@ -89,6 +91,11 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_SWITCH_TABLET_LAPTOP_MODE_BUTTON_IN_TRAY_LABEL},
     {"displaySwitchTabletLaptopModeButton",
       IDS_OS_SETTINGS_FYDEOS_DISPLAY_SWITCH_TABLET_LAPTOP_MODE_BUTTON},
+    {"enableLibwidevineLabel", IDS_OS_SETTINGS_FYDEOS_ENABLE_LIBWIDEVINE_LABEL},
+    {"failedEnableWidevineTitle",
+      IDS_OS_SETTINGS_FYDEOS_FAILED_ENABLE_WIDEVINE_TITLE},
+    {"failedEnableWidevineMessage",
+      IDS_OS_SETTINGS_FYDEOS_FAILED_ENABLE_WIDEVINE_MESSAGE},
     {"fydeosSettingsMenuItemDescription",
       IDS_OS_SETTINGS_FYDEOS_MENU_ITEM_DESCRIPTION},
     {"fydeosExperimentalFeatures",
@@ -114,6 +121,13 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   html_source->AddString("fydeosSettingsPageTitle",
       l10n_util::GetStringFUTF16(IDS_OS_SETTINGS_FYDEOS_SETTINGS,
         l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
+
+  html_source->AddString(
+      "toggleWidevineHelpMessage",
+      l10n_util::GetStringFUTF16(
+          IDS_OS_SETTINGS_FYDEOS_TOGGLE_LIBWIDEVINE_HELP_MESSAGE,
+            base::ASCIIToUTF16(
+              fydeos::constants::kFydeOSEnableWidevineLearnMoreURL)));
 
   const std::string board = base::SysInfo::GetLsbReleaseBoard();
   html_source->AddBoolean("showToggleRebootButtonInTray", false);

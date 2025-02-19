@@ -26,6 +26,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kOfflineAutoSigninPassword, std::string());
   registry->RegisterStringPref(kOfflineAutoSigninPasswordFormat, std::string());
   registry->RegisterBooleanPref(kOfflineAutoSigninIsChromeLastSignout, false);
+
+  registry->RegisterBooleanPref(kRebootRequiredForWidevine, false);
 }
 
 void KeepCurrentPrefs(PrefService* local_state) {
@@ -41,6 +43,10 @@ void SetNotNecessaryForceTpmFallback(PrefService* local_state) {
   local_state->SetBoolean(kForceTpmFallbackNecessary, false);
   local_state->SetBoolean(kCurrentForceTpmFallback, false);
   local_state->SetBoolean(kForceTpmFallback, false);
+}
+
+void ClearRebootMarkPrefs(PrefService* local_state) {
+  local_state->SetBoolean(kRebootRequiredForWidevine, false);
 }
 
 } // prefs

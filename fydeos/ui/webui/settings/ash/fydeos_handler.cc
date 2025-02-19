@@ -7,6 +7,7 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "ash/shell.h"
+#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "chrome/browser/browser_process.h"
@@ -14,8 +15,16 @@
 #include "ash/wm/tablet_mode/tablet_mode_controller.h"
 #include "fydeos/prefs/fydeos_pref_names.h"
 #include "chrome/browser/ash/profiles/profile_helper.h"
+#include "ui/base/l10n/l10n_util.h"
 // #include "chromeos/cryptohome/system_salt_getter.h"
 // #include "chrome/browser/ash/settings/token_encryptor.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/chrome_select_file_policy.h"
+#include "content/public/browser/browser_thread.h"
+#include "chrome/browser/ash/file_manager/path_util.h"
+#include "chrome/grit/generated_resources.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 
 namespace ash::settings {
 
@@ -34,6 +43,8 @@ FydeOsHandler::FydeOsHandler(Profile* profile, PrefService* prefs) :
 FydeOsHandler::~FydeOsHandler() {
   if (ash::Shell::Get()->tablet_mode_controller())
     ash::Shell::Get()->tablet_mode_controller()->RemoveObserver(this);
+  if (select_file_dialog_.get())
+    select_file_dialog_->ListenerDestroyed();
 }
 
 void FydeOsHandler::RegisterMessages() {
@@ -81,6 +92,19 @@ void FydeOsHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "setForceTpmFallback",
       base::BindRepeating(&FydeOsHandler::HandleSetForceTpmFallback,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "selectLibwidevineFile",
+      base::BindRepeating(&FydeOsHandler::HandleSelectLibwidevineFile,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getRebootRequiredForWidevine",
+      base::BindRepeating(&FydeOsHandler::HandleGetRebootRequiredForWidevine,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "toggleRebootRequiredForWidevine",
+      base::BindRepeating(&FydeOsHandler::HandleToggleRebootRequiredForWidevine,
                           base::Unretained(this)));
 }
 
@@ -306,6 +330,100 @@ void FydeOsHandler::OnForceTpmFallbackChanged() {
   response.Set("current", current_tpm_fallback);
   response.Set("pref", tpm_fallback);
   FireWebUIListener("force-tpm-fallback-changed", response);
+}
+
+void FydeOsHandler::HandleSelectLibwidevineFile(const base::Value::List& args) {
+  CHECK_EQ(0u, args.size());
+  select_file_dialog_ = ui::SelectFileDialog::Create(
+      this,
+      std::make_unique<ChromeSelectFilePolicy>(web_ui()->GetWebContents()));
+  ui::SelectFileDialog::FileTypeInfo file_type_info;
+  file_type_info.allowed_paths =
+    ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
+  file_type_info.extensions.resize(1);
+  file_type_info.extensions[0].push_back(FILE_PATH_LITERAL("so"));
+  Browser* browser =
+      chrome::FindBrowserWithTab(web_ui()->GetWebContents());
+  base::FilePath default_path =
+    file_manager::util::GetDownloadsFolderForProfile(profile_);
+  file_dialog_type_ = FileDialogType::kLibwidevine;
+  select_file_dialog_->SelectFile(
+      ui::SelectFileDialog::SELECT_OPEN_FILE,
+      l10n_util::GetStringUTF16(
+        IDS_OS_SETTINGS_FYDEOS_SELECT_WIDEVINE_FILE_DIALOG_TITLE),
+      default_path, &file_type_info, 0, base::FilePath::StringType(),
+      browser->window()->GetNativeWindow(), nullptr);
+}
+
+void FydeOsHandler::HandleGetRebootRequiredForWidevine(
+    const base::Value::List& args) {
+  DCHECK(args.size());
+  std::string callback_id = args[0].GetString();
+  PrefService* prefs = g_browser_process->local_state();
+  bool rebootRequired = prefs->GetBoolean(
+      fydeos::prefs::kRebootRequiredForWidevine);
+  ResolveJavascriptCallback(callback_id, base::Value(rebootRequired));
+}
+
+void FydeOsHandler::HandleToggleRebootRequiredForWidevine(
+    const base::Value::List& args) {
+  if (args.size() < 2 || !args[0].is_string() || !args[1].is_bool()) {
+    VLOG(2) << "Invalid arguments for toggleRebootRequiredForWidevine";
+    return;
+  }
+  std::string callback_id = args[0].GetString();
+  bool force = args[1].GetBool();
+  PrefService* prefs = g_browser_process->local_state();
+  bool current = prefs->GetBoolean(fydeos::prefs::kRebootRequiredForWidevine);
+  bool rebootRequired;
+  if (force) {
+    nextToggleRebootRequiredForWidevine_ = current;
+    rebootRequired = true;
+    lastToggleRebootRequiredForce_ = true;
+  } else {
+    if (lastToggleRebootRequiredForce_) {
+      rebootRequired = nextToggleRebootRequiredForWidevine_;
+    } else {
+      rebootRequired = !current;
+    }
+    lastToggleRebootRequiredForce_ = false;
+  }
+  prefs->SetBoolean(fydeos::prefs::kRebootRequiredForWidevine, rebootRequired);
+  ResolveJavascriptCallback(callback_id, base::Value(rebootRequired));
+}
+
+void FydeOsHandler::FileSelected(const ui::SelectedFileInfo& file,
+                                 int /*index*/) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  select_file_dialog_ = nullptr;
+  switch (file_dialog_type_) {
+    case FileDialogType::kLibwidevine:
+      OnLibwidevineFileSelected(file.path());
+      break;
+    case FileDialogType::kUnspecified:
+      NOTREACHED();
+  }
+}
+
+void FydeOsHandler::FileSelectionCanceled() {
+  select_file_dialog_ = nullptr;
+  switch (file_dialog_type_) {
+    case FileDialogType::kLibwidevine:
+      OnLibwidevineFileSelectionCanceled();
+      break;
+    case FileDialogType::kUnspecified:
+      NOTREACHED();
+  }
+}
+
+void FydeOsHandler::OnLibwidevineFileSelected(const base::FilePath& path) {
+  FireWebUIListener("fydeos-libwidevine-file-selected",
+      base::Value(path.value()));
+}
+
+void FydeOsHandler::OnLibwidevineFileSelectionCanceled() {
+  FireWebUIListener("fydeos-libwidevine-file-selected", base::Value());
 }
 
 }  // namespace ash::settings

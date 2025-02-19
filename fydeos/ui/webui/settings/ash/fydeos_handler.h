@@ -9,18 +9,21 @@
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "ash/public/cpp/tablet_mode_observer.h"
+#include "ui/shell_dialogs/select_file_dialog.h"
 
 class PrefService;
 class Profile;
 
 namespace base {
 class ListValue;
+class FilePath;
 }
 
 namespace ash::settings {
 
 class FydeOsHandler :
     public ::settings::SettingsPageUIHandler,
+    public ui::SelectFileDialog::Listener,
     public ash::TabletModeObserver {
  public:
   explicit FydeOsHandler(Profile* profile, PrefService* pref_service);
@@ -34,6 +37,10 @@ class FydeOsHandler :
   // TabletModeObserver:
   void OnTabletPhysicalStateChanged() override;
  private:
+  enum class FileDialogType {
+    kUnspecified,
+    kLibwidevine,
+  };
   void OnSystemSaltObtained(const std::string& system_salt);
   void HandleGetIsOfflineAutoSigninEnabled(const base::Value::List& args);
   void HandleSaveOfflineLoginPassword(const base::Value::List& args);
@@ -52,9 +59,27 @@ class FydeOsHandler :
   void HandleSetForceTpmFallback(const base::Value::List& args);
   void OnForceTpmFallbackChanged();
 
+  void HandleSelectLibwidevineFile(const base::Value::List& args);
+  void HandleGetRebootRequiredForWidevine(const base::Value::List& args);
+  void HandleToggleRebootRequiredForWidevine(const base::Value::List& args);
+
+
+  void FileSelected(
+      const ui::SelectedFileInfo& path, int index) override;
+  void FileSelectionCanceled() override;
+
+  void OnLibwidevineFileSelected(const base::FilePath& path);
+  void OnLibwidevineFileSelectionCanceled();
+
+  bool nextToggleRebootRequiredForWidevine_ = false;
+  bool lastToggleRebootRequiredForce_ = false;
+
   std::string system_salt_;
   Profile* profile_;
   PrefService* const prefs_;
+
+  scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
+  FileDialogType file_dialog_type_ = FileDialogType::kUnspecified;
 
   PrefChangeRegistrar pref_change_registrar_;
   PrefChangeRegistrar local_state_pref_change_registrar_;

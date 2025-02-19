@@ -30,5 +30,7 @@ const char kOfflineAutoSigninPasswordFormat[] = "offline_auto_signin.password_fo
 const char kOfflineAutoSigninIsChromeLastSignout[] = "offline_auto_signin.chrome_signout";
 
 const char kFactoryResetRequested[] = "FactoryResetRequested";
+
+const char kRebootRequiredForWidevine[] = "reboot_required_for_widevine";
 }
 }

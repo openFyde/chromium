@@ -2,6 +2,9 @@
   .toggleTitle {
     flex: 1;
   }
+  .icon-container {
+    margin-inline-end: var(--settings-controlled-by-spacing);
+  }
 </style>
 <div class="settings-box two-line" hidden=[[!showToggleRotateScreenButton]]>
   <div class="start padded">
@@ -21,3 +24,42 @@
              role="button" checked="[[showSwitchTabletLaptopButton_]]" on-change="onToggleShowSwitchTabletLaptopButton_">
   </cr-toggle>
 </div>
+<div class="settings-box two-line" hidden=[[!showToggleWidevine_]]>
+  <div class="start padded">
+    $i18n{enableLibwidevineLabel}
+    <div class="secondary">
+      <localized-link
+        localized-string="[[toggleWidevineHelpMsg_()]]">
+      </localized-link>
+    </div>
+  </div>
+  <div class="icon-container"
+       hidden="[[!togglingWidevine_]]">
+    <iron-icon src="chrome://resources/images/throbber_small.svg">
+    </iron-icon>
+  </div>
+  <cr-button id="restartForWidevineButton" on-click="onRestartForWidevineTap_" hidden="[[!shouldShowRebootButtonForWidevine_(togglingWidevine_, rebootRequiredForWidevine_)]]">
+    $i18n{restart}
+  </cr-button>
+  <div class="separator" hidden="[[!shouldShowRebootButtonForWidevine_(togglingWidevine_, rebootRequiredForWidevine_)]]"></div>
+  <cr-toggle id="toggleWidevine" disabled="[[togglingWidevine_]]"
+             role="button" checked="[[libwidevineEnabled_]]" on-change="onToggleLibwidevine_">
+  </cr-toggle>
+</div>
+<template is="dom-if" if="[[showWidevineErrorDialog_]]" restamp>
+  <cr-dialog id="widevineErrorDialog" close-text="$i18n{close}"
+      show-on-attach
+      on-close="onWidevineErrorDialogClose_">
+      ignore-enter-key>
+    <div slot="title">$i18n{failedEnableWidevineTitle}</div>
+    <div slot="body">
+      $i18n{failedEnableWidevineMessage}
+    </div>
+    <div slot="button-container">
+      <cr-button class="action-button" on-click="onWidevineErrorDialogClose_">
+        $i18n{confirm}
+      </cr-button>
+      </div>
+      </div>
+  </cr-dialog>
+</template>

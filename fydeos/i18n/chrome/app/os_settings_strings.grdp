@@ -95,6 +95,21 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_SWITCH_TABLET_LAPTOP_MODE_BUTTON" desc="fydeos settings show tablet/laptop mode switch button in tray">
     Display a tablet/laptop switch on the system menu
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_ENABLE_LIBWIDEVINE_LABEL" desc="fydeos settings libwidevine switch label">
+    Enable Widevine
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_TOGGLE_LIBWIDEVINE_HELP_MESSAGE" desc="fydeos settings libwidevine switch hint msg">
+    Enable Widevine for streaming protected premium content. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SELECT_WIDEVINE_FILE_DIALOG_TITLE" desc="fydeos settings title of selecting libwidevine dialog">
+    Select "libwidevine.so"
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_FAILED_ENABLE_WIDEVINE_TITLE" desc="fydeos settings title of failed enabling libwidevine">
+    Failed to enable Widevine...
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_FAILED_ENABLE_WIDEVINE_MESSAGE" desc="fydeos settings message of failed enabling libwidevine">
+    The selected "libwidevine.so" is not valid, please try again with a different file.
+  </message>
   <message name="IDS_OS_SETTINGS_FYDEOS_ACCOUNT_TITLE" desc="fydeos settings account section title">
     FydeOS account settings
   </message>
