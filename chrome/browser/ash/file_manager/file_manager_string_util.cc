@@ -83,13 +83,13 @@ const char kHelpURLFormat[] = "https://support.google.com/chromebook/answer/%d";
 const int kDownloadsLowSpaceWarningHelpNumber = 1061547;
 
 // Location of Files App specific help.
-const int kFilesAppHelpNumber = 1056323;
+// const int kFilesAppHelpNumber = 1056323;
 
 // Location of the help page about connecting to Google Drive.
 const int kGoogleDriveErrorHelpNumber = 2649458;
 
 // Location of the help page about no-action-available files.
-const int kNoActionForFileHelpNumber = 1700055;
+// const int kNoActionForFileHelpNumber = 1700055;
 
 // Supported locales of Google One offer banner.
 constexpr auto kGoogleOneOfferBannerSupportedLocales =
@@ -1331,8 +1331,7 @@ base::Value::Dict GetFileManagerStrings() {
   dict.Set(
       "DOWNLOADS_LOW_SPACE_WARNING_HELP_URL",
       base::StringPrintf(kHelpURLFormat, kDownloadsLowSpaceWarningHelpNumber));
-  dict.Set("FILES_APP_HELP_URL",
-           base::StringPrintf(kHelpURLFormat, kFilesAppHelpNumber));
+  dict.Set("FILES_APP_HELP_URL", fydeos::constants::kFileManagerHelpURL);
 
   dict.Set("GOOGLE_DRIVE_BUY_STORAGE_URL", kGoogleDriveBuyStorageUrl);
   dict.Set("GOOGLE_DRIVE_MANAGE_STORAGE_URL", kGoogleDriveManageStorageUrl);
@@ -1344,8 +1343,7 @@ base::Value::Dict GetFileManagerStrings() {
   dict.Set("GOOGLE_DRIVE_OFFLINE_HELP_URL", kGoogleDriveOfflineHelpUrl);
   dict.Set("GOOGLE_DRIVE_OVERVIEW_URL", kGoogleDriveOverviewUrl);
   dict.Set("GOOGLE_DRIVE_ROOT_URL", kGoogleDriveRootUrl);
-  dict.Set("NO_TASK_FOR_FILE_URL",
-           base::StringPrintf(kHelpURLFormat, kNoActionForFileHelpNumber));
+  dict.Set("NO_TASK_FOR_FILE_URL", fydeos::constants::kFileManagerHelpURL);
   dict.Set("DLP_HELP_URL", policy::dlp::kDlpLearnMoreUrl);
 
   dict.Set("FYDE_DROP_URL", fydeos::constants::kFydeDropUrl);

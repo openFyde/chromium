@@ -1473,7 +1473,7 @@ void AccessibilitySection::AddLoadTimeData(
                           AreTabletNavigationButtonsAllowed());
 
   html_source->AddString("tabletModeShelfNavigationButtonsLearnMoreUrl",
-                         chrome::kTabletModeGesturesLearnMoreURL);
+                         fydeos::constants::kTabletModeGesturesLearnMoreURL);
 
   html_source->AddBoolean("isAccessibilityReducedAnimationsEnabled",
                           IsAccessibilityReducedAnimationsEnabled());

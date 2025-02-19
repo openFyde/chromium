@@ -46,6 +46,11 @@ const char kFydeExperimentTpmFallbackUrl[] = "https://fydeos.com/faq/experimenta
 const char kEolNotificationURL[] = "https://fydeos.com/eol";
 const char kKeyboardShortcutHelpPageUrl[] = "https://fydeos.com/docs/knowledge-base/recipes/keyboard-shortcuts";
 const char kFydeOSEnableWidevineLearnMoreURL[] = "https://fydeos.com/docs/knowledge-base/recipes/widevine";
+const char kWifiHiddenNetworkURL[] = "https://fydeos.com/docs/manual/connect-your-fydeos-device/connect-to-wi-fi-&-other-networks/manage-wifi-networks/";
+const char kBluetoothPairingLearnMoreUrl[] = "https://fydeos.com/docs/manual/connect-your-fydeos-device/connect-to-other-devices/connect-to-bluetooth-devices/";
+const char kFileManagerHelpURL[] = "https://fydeos.com/docs/manual/manage-your-apps/files-and-downloads/open-save-or-delete-files/";
+const char kTabletModeGesturesLearnMoreURL[] = "https://fydeos.com/docs/manual/customize-settings/use-tablets/use-gestures-or-buttons-to-navigate-in-tablet-mode";
+const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.com/docs/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/";
 
 #else
 
@@ -86,6 +91,11 @@ const char kFydeExperimentTpmFallbackUrl[] = "https://fydeos.io/faq/experimental
 const char kEolNotificationURL[] = "https://fydeos.io/eol";
 const char kKeyboardShortcutHelpPageUrl[] = "https://fydeos.io/docs/knowledge-base/recipes/keyboard-shortcuts";
 const char kFydeOSEnableWidevineLearnMoreURL[] = "https://fydeos.io/docs/knowledge-base/recipes/widevine";
+const char kWifiHiddenNetworkURL[] = "https://fydeos.io/docs/manual/connect-your-fydeos-device/connect-to-wi-fi-&-other-networks/manage-wifi-networks/";
+const char kBluetoothPairingLearnMoreUrl[] = "https://fydeos.io/docs/manual/connect-your-fydeos-device/connect-to-other-devices/connect-to-bluetooth-devices/";
+const char kFileManagerHelpURL[] = "https://fydeos.io/docs/manual/manage-your-apps/files-and-downloads/open-save-or-delete-files/";
+const char kTabletModeGesturesLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/use-tablets/use-gestures-or-buttons-to-navigate-in-tablet-mode";
+const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.io/docs/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/";
 
 #endif
 

@@ -454,7 +454,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
               .spec()));
   source->AddString(
       "hostPermissionsLearnMoreLink",
-      extension_permissions_constants::kRuntimeHostPermissionsHelpURL);
+      fydeos::constants::kRuntimeHostPermissionsHelpURL);
   source->AddBoolean(kInDevModeKey, in_dev_mode);
   source->AddBoolean(kShowActivityLogKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(

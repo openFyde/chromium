@@ -49,6 +49,12 @@ extern const char kEolNotificationURL[];
 extern const char kKeyboardShortcutHelpPageUrl[];
 extern const char kFydeOSEnableWidevineLearnMoreURL[];
 
+extern const char kWifiHiddenNetworkURL[];
+extern const char kBluetoothPairingLearnMoreUrl[];
+extern const char kFileManagerHelpURL[];
+extern const char kTabletModeGesturesLearnMoreURL[];
+extern const char kRuntimeHostPermissionsHelpURL[];
+
 }  // namespace fydeos::constants
 
 #endif
