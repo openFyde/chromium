@@ -21,6 +21,8 @@ CHROMEOS_EXPORT bool IsInitDevicePolicyWithoutStateKeysAllowed();
 
 CHROMEOS_EXPORT bool IsUnknownPeripheralBatteryNotificationDisabled();
 
+CHROMEOS_EXPORT bool IsDynamicDefaultWallpaperSupported();
+
 } // switches
 } // fydeos
 

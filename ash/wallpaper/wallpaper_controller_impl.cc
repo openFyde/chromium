@@ -85,6 +85,8 @@
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_util.h"
 #include "url/gurl.h"
+#include "fydeos/switches/misc/misc_constants.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 using color_utils::ColorProfile;
 
@@ -309,6 +311,105 @@ std::unique_ptr<WallpaperInfo> CreateOnlineWallpaperInfo(
     return nullptr;
   }
   return std::make_unique<WallpaperInfo>(params, *selected_variant);
+}
+
+const char kWallpaperImageSuffixLightJpg[] = ".light.jpg";
+const char kWallpaperImageSuffixDarkJpg[] = ".dark.jpg";
+const char kWallpaperImageSuffixLightPng[] = ".light.png";
+const char kWallpaperImageSuffixDarkPng[] = ".dark.png";
+
+bool ShouldEnableDarkCheckpoint() {
+  const ScheduleCheckpoint checkpoint =
+    Shell::Get()->dark_light_mode_controller()->current_checkpoint();
+  bool dark = false;
+  if (checkpoint == ScheduleCheckpoint::kDisabled ||
+      checkpoint == ScheduleCheckpoint::kSunrise ||
+      checkpoint == ScheduleCheckpoint::kMorning ||
+      checkpoint == ScheduleCheckpoint::kLateAfternoon) {
+    dark = false;
+  } else {
+    dark = true;
+  }
+  return dark;
+}
+
+std::string MaybeGetNewWallpaperImagePath(
+    const std::string& file_path, bool force) {
+  std::string new_path = "";
+  if (!base::StartsWith(file_path,
+        fydeos::constants::kFydeOSWallpapersBasePath) ||
+      (!base::EndsWith(file_path, kWallpaperImageSuffixDarkPng) &&
+      !base::EndsWith(file_path, kWallpaperImageSuffixLightPng) &&
+      !base::EndsWith(file_path, kWallpaperImageSuffixDarkJpg) &&
+      !base::EndsWith(file_path, kWallpaperImageSuffixLightJpg))) {
+    return force ? file_path : "";
+  }
+  bool dark = ShouldEnableDarkCheckpoint();
+  if (dark) {
+    if (base::EndsWith(file_path, kWallpaperImageSuffixLightPng)) {
+      new_path = file_path.substr(
+          0, file_path.size() - sizeof(kWallpaperImageSuffixLightPng) + 1) +
+          kWallpaperImageSuffixDarkPng;
+    } else if (base::EndsWith(file_path, kWallpaperImageSuffixLightJpg)) {
+      new_path = file_path.substr(
+          0, file_path.size() - sizeof(kWallpaperImageSuffixLightJpg) + 1) +
+          kWallpaperImageSuffixDarkJpg;
+    } else {
+      return force ? file_path : "";
+    }
+  } else {
+    if (base::EndsWith(file_path, kWallpaperImageSuffixDarkPng)) {
+      new_path = file_path.substr(
+          0, file_path.size() - sizeof(kWallpaperImageSuffixDarkPng) + 1) +
+          kWallpaperImageSuffixLightPng;
+    } else if (base::EndsWith(file_path, kWallpaperImageSuffixDarkJpg)) {
+      new_path = file_path.substr(
+          0, file_path.size() - sizeof(kWallpaperImageSuffixDarkJpg) + 1) +
+          kWallpaperImageSuffixLightJpg;
+    } else {
+      return force ? file_path : "";
+    }
+  }
+  VLOG(3) << "MaybeGetNewWallpaperImagePath from fydeos wallpapers: "
+          << new_path;
+  if (base::PathExists(base::FilePath(new_path))) {
+    return new_path;
+  } else {
+    LOG(WARNING) << "Expect fydeos wallpaper" << new_path
+                 << ", but not exists";
+    return force ? file_path : "";
+  }
+}
+
+std::string GetDefaultDarkLightWallpaperPath(
+    const user_manager::UserType user_type,
+    const bool customized_default,
+    const base::FilePath& path) {
+  if (!fydeos::switches::IsDynamicDefaultWallpaperSupported()) {
+    return path.value();
+  }
+  if (user_type == user_manager::UserType::kGuest ||
+      user_type == user_manager::UserType::kChild ||
+      user_type == user_manager::UserType::kFydeChild ||
+      customized_default) {
+    return path.value();
+  }
+  bool dark = ShouldEnableDarkCheckpoint();
+  base::FilePath new_path = path;
+  if (dark) {
+    if (base::EndsWith(path.value(), ".jpg")) {
+      new_path = new_path.ReplaceExtension(FILE_PATH_LITERAL(".dark.jpg"));
+    } else if (base::EndsWith(path.value(), ".png")) {
+      new_path = new_path.ReplaceExtension(FILE_PATH_LITERAL(".dark.png"));
+    }
+  } else {
+    if (base::EndsWith(path.value(), ".jpg")) {
+      new_path = new_path.ReplaceExtension(FILE_PATH_LITERAL(".light.jpg"));
+    } else if (base::EndsWith(path.value(), ".png")) {
+      new_path = new_path.ReplaceExtension(FILE_PATH_LITERAL(".light.png"));
+    }
+  }
+  return new_path.value();
 }
 
 }  // namespace
@@ -666,7 +767,7 @@ bool WallpaperControllerImpl::CanSetUserWallpaper(
   return true;
 }
 
-void WallpaperControllerImpl::SetCustomWallpaper(
+void WallpaperControllerImpl::SetCustomWallpaperInternal(
     const AccountId& account_id,
     const base::FilePath& file_path,
     WallpaperLayout layout,
@@ -689,6 +790,21 @@ void WallpaperControllerImpl::SetCustomWallpaper(
                      file_path.BaseName().value(), layout, preview_mode,
                      std::move(callback), file_path.value()),
       file_path);
+}
+
+void WallpaperControllerImpl::SetCustomWallpaper(
+    const AccountId& account_id,
+    const base::FilePath& file_path,
+    WallpaperLayout layout,
+    bool preview_mode,
+    SetWallpaperCallback callback) {
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(
+        &MaybeGetNewWallpaperImagePath, file_path.value(), true),
+      base::BindOnce(
+          &WallpaperControllerImpl::OnGetNewWallpaperImagePath,
+          set_wallpaper_weak_factory_.GetWeakPtr(), account_id,
+          layout, preview_mode, std::move(callback)));
 }
 
 void WallpaperControllerImpl::SetDecodedCustomWallpaper(
@@ -1742,6 +1858,14 @@ void WallpaperControllerImpl::OnCheckpointChanged(
     return;
   }
 
+  if (info.type == WallpaperType::kCustomized) {
+    SetCustomizedWallpaperBasedOnScheduleCheckpoint(account_id, info);
+    return;
+  } else if (info.type == WallpaperType::kDefault) {
+    SetDefaultWallpaper(account_id, true, base::DoNothing());
+    return;
+  }
+
   if (!IsOnlineWallpaper(info.type) ||
       src != &GetScheduleForOnlineWallpaper(info.collection_id)) {
     return;
@@ -1751,6 +1875,31 @@ void WallpaperControllerImpl::OnCheckpointChanged(
       account_id, info,
       base::BindOnce(&WallpaperControllerImpl::RepaintOnlineWallpaper,
                      set_wallpaper_weak_factory_.GetWeakPtr()));
+}
+
+void WallpaperControllerImpl::SetCustomizedWallpaperBasedOnScheduleCheckpoint(
+    const AccountId& account_id,
+    const WallpaperInfo& info) {
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(
+        &MaybeGetNewWallpaperImagePath, info.user_file_path, false),
+      base::BindOnce(
+          &WallpaperControllerImpl::OnGetNewWallpaperImagePath,
+          set_wallpaper_weak_factory_.GetWeakPtr(), account_id,
+          info.layout, false, base::DoNothing()));
+}
+
+void WallpaperControllerImpl::OnGetNewWallpaperImagePath(
+    const AccountId& account_id,
+    WallpaperLayout layout,
+    bool preview_mode,
+    SetWallpaperCallback callback,
+    const std::string& file_path) {
+  if (file_path.empty()) {
+    return;
+  }
+  SetCustomWallpaperInternal(account_id, base::FilePath(file_path),
+      layout, preview_mode, std::move(callback));
 }
 
 void WallpaperControllerImpl::OnNativeThemeUpdated(
@@ -1936,7 +2085,10 @@ void WallpaperControllerImpl::SetDefaultWallpaperImpl(
       (GetAppropriateResolution() == WallpaperResolution::kSmall);
   WallpaperLayout layout =
       use_small ? WALLPAPER_LAYOUT_CENTER : WALLPAPER_LAYOUT_CENTER_CROPPED;
-  base::FilePath file_path = GetDefaultWallpaperPath(user_type);
+  base::FilePath file_path = base::FilePath(
+    GetDefaultDarkLightWallpaperPath(user_type,
+                                     !customized_default_small_path_.empty(),
+                                     GetDefaultWallpaperPath(user_type)));
 
   // We need to decode the image if there's no cache, or if the file path
   // doesn't match the cached value (i.e. the cache is outdated). Otherwise,
@@ -2093,7 +2245,10 @@ void WallpaperControllerImpl::ShowOobeWallpaper() {
         FILE_PATH_LITERAL("/usr/share/chromeos-assets/animated_splash_screen/"
                           "oobe_wallpaper.jpg"));
   } else {
-    file_path = GetDefaultWallpaperPath(user_manager::UserType::kRegular);
+    file_path = base::FilePath(
+        GetDefaultDarkLightWallpaperPath(user_manager::UserType::kRegular,
+                                         false,
+                                         GetDefaultWallpaperPath(user_manager::UserType::kRegular)));
   }
 
   if (!cached_oobe_wallpaper_.image.isNull() &&
@@ -2863,6 +3018,8 @@ void WallpaperControllerImpl::HandleWallpaperInfoSyncedIn(
       HandleGooglePhotosWallpaperInfoSyncedIn(account_id, info);
       break;
     case WallpaperType::kDefault:
+      SetDefaultWallpaper(account_id, true, base::DoNothing());
+      break;
     case WallpaperType::kPolicy:
     case WallpaperType::kThirdParty:
     case WallpaperType::kDevice:

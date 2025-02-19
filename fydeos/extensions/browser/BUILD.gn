@@ -23,6 +23,8 @@ static_library("fydeos_extensions_api") {
     "api/command_line/command_line_api.h",
     "api/shell_client/shell_client_api.cc",
     "api/shell_client/shell_client_api.h",
+    "api/fydeos_arc_status/fydeos_arc_status_api.cc",
+    "api/fydeos_arc_status/fydeos_arc_status_api.h",
   ]
 
   configs += [

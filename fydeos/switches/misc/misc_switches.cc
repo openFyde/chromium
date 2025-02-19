@@ -19,6 +19,9 @@ const char kDisallowInitDevicePolicyWithoutStateKeys[] = "disallow-init-device-p
 
 const char kDisableUnknownPeripheralBatteryNotification[] = "disable-unknown-peripheral-battery-notification";
 
+const char kFydeEnableDynamicDefaultWallpaper[] =
+  "fyde-dynamic-default-wallpaper";
+
 const std::vector<std::string> kNonForYouBoards = {
   "amd64-fydeos",
   "amd64-openfyde",
@@ -55,6 +58,11 @@ bool IsInitDevicePolicyWithoutStateKeysAllowed() {
 
 bool IsUnknownPeripheralBatteryNotificationDisabled() {
   return base::CommandLine::ForCurrentProcess()->HasSwitch(kDisableUnknownPeripheralBatteryNotification);
+}
+
+bool IsDynamicDefaultWallpaperSupported() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(
+      kFydeEnableDynamicDefaultWallpaper);
 }
 
 } // switches
