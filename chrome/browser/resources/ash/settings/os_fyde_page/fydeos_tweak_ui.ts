@@ -9,6 +9,8 @@ import 'chrome://resources/ash/common/cr_elements/cr_toggle/cr_toggle.js';
 import 'chrome://resources/ash/common/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/ash/common/cr_elements/cr_shared_style.css.js';
 import '../settings_shared.css.js';
+import '../common/password_prompt_dialog/password_prompt_dialog.js';
+import './components/backup_intro_dialog.js';
 import {ShellClient} from './shell_client.js';
 
 import {getTemplate} from './fydeos_tweak_ui.html.js';
@@ -132,7 +134,23 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
       rebootRequiredForWidevine_: {
         type: Boolean,
         value: false,
-      }
+      },
+      showBackup_: {
+        type: Boolean,
+        value: false,
+      },
+      backupRunning_: {
+        type: Boolean,
+        value: false,
+      },
+      showPasswordPromptDialog_: {
+        type: Boolean,
+        value: false,
+      },
+      showBackupIntroDialog_: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -145,7 +163,16 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
   private libwidevineEnabled_: boolean;
   private togglingWidevine_: boolean;
 
+  private showBackup_: boolean;
+  private backupRunning_: boolean;
+  private showPasswordPromptDialog_: boolean;
+  private showBackupIntroDialog_: boolean;
+
   private client_: WidevineHelper;
+
+  private backupEmail_: string;
+  private backupFilePassword_: string;
+  private backupCanceled_: boolean;
 
   private showWidevineErrorDialog_: boolean;
   private rebootRequiredForWidevine_: boolean;
@@ -153,6 +180,8 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
   constructor() {
     super();
     this.client_ =  new WidevineHelper(this);
+    this.backupEmail_ = '';
+    this.backupFilePassword_ = ''
   }
 
   override connectedCallback() {
@@ -165,7 +194,11 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
     this.addWebUiListener('show-switch-tablet-laptop-button-changed', this.onShowSwitchTabletLaptopButtonChanged_.bind(this));
     this.addWebUiListener('fydeos-libwidevine-file-selected', this.onLibwidevineFileSelected_.bind(this));
 
+    this.addWebUiListener('fydeos-backup-file-selected', this.onBackupFileSelected_.bind(this));
+    this.addWebUiListener('fydeos-backup-task-finished', this.onBackupDone_.bind(this));
+
     this.checkLibwidevineStatus_();
+    this.checkBackupSupported_();
   }
 
   getShowRotateScreenButton() {
@@ -322,6 +355,110 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
     } else {
       this.libwidevineEnabled_ = false;
     }
+  }
+
+  async checkBackupSupported_() {
+    sendWithPromise('fydeosBackupSupported').then((supported) => {
+      if (!supported) {
+        this.showBackup_ = false;
+        return;
+      }
+      chrome.usersPrivate.getCurrentUser().then((user) => {
+        this.backupEmail_ = user && user.email;
+        if (this.backupEmail_) {
+          this.showBackup_ = true;
+          this.getFydeosBackupState_();
+        } else {
+          console.error('failed to get current user, backup is disabled');
+          this.showBackup_ = false;
+        }
+      });
+    })
+  }
+
+  getFydeosBackupState_() {
+    sendWithPromise('getFydeosBackupState').then((state) => {
+      this.backupRunning_ = (state === 'running');
+    });
+  }
+
+  generateDefaultFilename(email: string) {
+    const date = new Date();
+    const year = date.getFullYear().toString().padStart(4, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hour = date.getHours().toString().padStart(2, '0');
+    const minute = date.getMinutes().toString().padStart(2, '0');
+
+    const regex = /[^A-Za-z0-9]/g;
+    const name = email.split('@')[0];
+    const filename = `fydeos_${name.replace(regex, '_')}_${year}${month}${day}_${hour}${minute}.bak`;
+    return filename;
+  }
+
+  onBackupClick_() {
+    // this.showPasswordPromptDialog_ = true;
+    this.backupCanceled_ = false;
+    this.showBackupIntroDialog_ = true;
+  }
+
+
+  openSelectBackupFileDialog_() {
+    const defaultFilename = this.generateDefaultFilename(this.backupEmail_);
+    console.log('defaultFilename', defaultFilename);
+    chrome.send('fydeosBackupSelectFile', [defaultFilename]);
+  }
+
+  onBackupFileSelected_(canceled: boolean) {
+    if (canceled) {
+      this.backupFilePassword_ = '';
+      return;
+    }
+    this.startBackup_();
+  }
+
+  startBackup_() {
+    this.backupRunning_ = true;
+    chrome.send('fydeosBackupStarted', [this.backupEmail_, this.backupFilePassword_]);
+  }
+
+  onBackupDone_(success: boolean) {
+    console.log('onBackupDone_, result', success);
+    this.backupRunning_ = false;
+  }
+
+  onBackupIntroDialogClosed_(e: Event) {
+    console.log('intro dialog closed', e);
+    this.showBackupIntroDialog_ = false;
+    if (!this.backupCanceled_) {
+      console.log('prompt for password');
+      this.backupFilePassword_ = '';
+      this.showPasswordPromptDialog_ = true;
+    }
+  }
+
+  onBackupIntroDialogCanceled_(e: Event) {
+    console.log('intro dialog canceled', e);
+    this.backupCanceled_ = true;
+  }
+
+  onBackupPasswordObtained_(e: Event) {
+    console.log('onBackupPasswordObtained_', e);
+    const { detail } = e as CustomEvent;
+    this.backupFilePassword_ = detail;
+  }
+
+  onPasswordPromptClosed_(e: Event) {
+    this.showPasswordPromptDialog_ = false;
+    console.log('password prompt closed', e);
+    if (this.backupFilePassword_) {
+      console.log('continue to select file');
+      this.openSelectBackupFileDialog_();
+    }
+  }
+
+  onPasswordPromptCanceled_(e: Event) {
+    console.log('password prompt cancel', e);
   }
 }
 

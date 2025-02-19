@@ -115,12 +115,33 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT},
     {"unableToSetAutoSigninForFydeNonLocalAccount",
       IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_NON_LOCAL_ACCOUNT},
+
+    {"fydeosSettingsBackupButtonLabel",
+      IDS_OS_SETTINGS_FYDEOS_BACKUP_BUTTON_LABEL},
+    {"fydeosSettingsBackupIntroTitle",
+      IDS_OS_SETTINGS_FYDEOS_BACKUP_INTRO_TITLE},
+    {"fydeosSettingsBackupPasswordPromptTitle",
+      IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TITLE},
+    {"fydeosSettingsBackupPasswordPromptText",
+      IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TEXT},
   };
 
   html_source->AddLocalizedStrings(kLocalizedStrings);
   html_source->AddString("fydeosSettingsPageTitle",
       l10n_util::GetStringFUTF16(IDS_OS_SETTINGS_FYDEOS_SETTINGS,
         l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
+
+  html_source->AddString(
+      "fydeosSettingsBackupLabel",
+      l10n_util::GetStringFUTF16(IDS_OS_SETTINGS_FYDEOS_BACKUP_LABEL,
+          base::ASCIIToUTF16(
+            fydeos::constants::kFydeOSBackupRestoreLearnMoreURL)));
+  html_source->AddString(
+      "fydeosSettingsBackupIntroText",
+      l10n_util::GetStringFUTF16(
+          IDS_OS_SETTINGS_FYDEOS_BACKUP_INTRO_TEXT,
+          base::ASCIIToUTF16(
+            fydeos::constants::kFydeOSBackupRestoreLearnMoreURL)));
 
   html_source->AddString(
       "toggleWidevineHelpMessage",

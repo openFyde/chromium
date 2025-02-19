@@ -70,6 +70,8 @@ import './os_bluetooth_page/os_bluetooth_summary.js';
 import './os_bluetooth_page/os_saved_devices_list.js';
 import './os_bluetooth_page/os_saved_devices_list_item.js';
 import './os_bluetooth_page/settings_fast_pair_constants.js';
+import './os_fyde_page/components/backup_password_prompt_dialog.js';
+import './os_fyde_page/components/backup_intro_dialog.js';
 import './os_fyde_page/fydeos_account.js';
 // import './os_fyde_page/fydeos_drivers.js';
 import './os_fyde_page/fydeos_remoting.js';

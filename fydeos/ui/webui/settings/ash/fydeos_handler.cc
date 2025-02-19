@@ -5,7 +5,10 @@
 #include "fydeos/ui/webui/settings/ash/fydeos_handler.h"
 
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/values.h"
+#include "base/files/file_util.h"
+#include "base/task/thread_pool.h"
 #include "ash/shell.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
@@ -25,8 +28,27 @@
 #include "chrome/browser/ash/file_manager/path_util.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/shell_dialogs/selected_file_info.h"
+#include "chrome/browser/ash/file_manager/volume_manager.h"
+#include "fydeos/switches/misc/misc_constants.h"
 
 namespace ash::settings {
+
+namespace {
+
+bool SuitableForBackupVolume(const file_manager::Volume* volume) {
+  if (!volume) {
+    return false;
+  }
+  return volume->type() == file_manager::VOLUME_TYPE_REMOVABLE_DISK_PARTITION
+    && base::StartsWith(volume->mount_path().value(),
+        "/media/removable", base::CompareCase::INSENSITIVE_ASCII)
+    && !volume->hidden()
+    && !volume->is_read_only_removable_device()
+    && !volume->is_read_only()
+    && volume->has_media();
+}
+
+}  // namespace
 
 // FydeOsHandler::FydeOsHandler(Profile* profile, PrefService* prefs) :
 //   profile_(profile), prefs_(prefs) {}
@@ -105,6 +127,26 @@ void FydeOsHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "toggleRebootRequiredForWidevine",
       base::BindRepeating(&FydeOsHandler::HandleToggleRebootRequiredForWidevine,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "fydeosBackupSupported",
+      base::BindRepeating(&FydeOsHandler::HandleFydeOSBackupSupported,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "fydeosBackupSelectFile",
+      base::BindRepeating(&FydeOsHandler::HandleFydeOSBackupSelectFile,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "fydeosBackupStarted",
+      base::BindRepeating(&FydeOsHandler::HandleFydeOSBackupStarted,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getFydeosBackupState",
+      base::BindRepeating(&FydeOsHandler::HandleGetFydeOSBackupState,
                           base::Unretained(this)));
 }
 
@@ -401,6 +443,9 @@ void FydeOsHandler::FileSelected(const ui::SelectedFileInfo& file,
     case FileDialogType::kLibwidevine:
       OnLibwidevineFileSelected(file.path());
       break;
+    case FileDialogType::kBackup:
+      OnBackupFileSelected(file.path());
+      break;
     case FileDialogType::kUnspecified:
       NOTREACHED();
   }
@@ -411,6 +456,9 @@ void FydeOsHandler::FileSelectionCanceled() {
   switch (file_dialog_type_) {
     case FileDialogType::kLibwidevine:
       OnLibwidevineFileSelectionCanceled();
+      break;
+    case FileDialogType::kBackup:
+      OnBackupFileSelectionCanceled();
       break;
     case FileDialogType::kUnspecified:
       NOTREACHED();
@@ -424,6 +472,118 @@ void FydeOsHandler::OnLibwidevineFileSelected(const base::FilePath& path) {
 
 void FydeOsHandler::OnLibwidevineFileSelectionCanceled() {
   FireWebUIListener("fydeos-libwidevine-file-selected", base::Value());
+}
+
+void FydeOsHandler::HandleFydeOSBackupSupported(
+    const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(1u, args.size());
+  const std::string& callback_id = args[0].GetString();
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(
+        &base::PathExists,
+        base::FilePath(fydeos::constants::kFydeOSBackupScriptDirPath)),
+      base::BindOnce(&FydeOsHandler::OnFydeOSBackupScriptChecked,
+                     weak_ptr_factory_.GetWeakPtr(), callback_id));
+}
+
+void FydeOsHandler::OnFydeOSBackupScriptChecked(const std::string& callback_id,
+                                                bool is_backup_supported) {
+  ResolveJavascriptCallback(
+      base::Value(callback_id), base::Value(is_backup_supported));
+}
+
+void FydeOsHandler::HandleFydeOSBackupSelectFile(
+    const base::Value::List& args) {
+  DCHECK(args.size());
+  std::string default_filename = args[0].GetString();
+  select_file_dialog_ = ui::SelectFileDialog::Create(
+      this,
+      std::make_unique<ChromeSelectFilePolicy>(web_ui()->GetWebContents()));
+
+  ui::SelectFileDialog::FileTypeInfo file_type_info;
+  file_type_info.allowed_paths =
+    ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
+  file_type_info.extensions.resize(1);
+  file_type_info.extensions[0].push_back(FILE_PATH_LITERAL(".bak"));
+
+  Browser* browser =
+      chrome::FindBrowserWithTab(web_ui()->GetWebContents());
+
+  auto* volume_manager = file_manager::VolumeManager::Get(profile_);
+  file_manager::Volume* volume = nullptr;
+  for (auto& v : volume_manager->GetVolumeList()) {
+    if (SuitableForBackupVolume(v.get())) {
+      volume = v.get();
+      break;
+    }
+  }
+  base::FilePath default_path = volume
+    ? volume->mount_path()
+    : file_manager::util::GetMyFilesFolderForProfile(profile_);
+  const base::FilePath default_filepath = default_path.Append(default_filename);
+  file_dialog_type_ = FileDialogType::kBackup;
+  select_file_dialog_->SelectFile(
+      ui::SelectFileDialog::SELECT_SAVEAS_FILE,
+      l10n_util::GetStringUTF16(
+        IDS_OS_SETTINGS_FYDEOS_BACKUP_SAVE_FILE_DIALOG_TITLE),
+      default_filepath, &file_type_info, 0, base::FilePath::StringType(),
+      browser->window()->GetNativeWindow(), nullptr);
+}
+
+void FydeOsHandler::OnBackupFileSelected(const base::FilePath& path) {
+  BackupTaskManager::GetInstance()->SetBackupFile(path);
+  const bool canceled = false;
+  FireWebUIListener("fydeos-backup-file-selected", base::Value(canceled));
+}
+
+void FydeOsHandler::OnBackupFileSelectionCanceled() {
+  const bool canceled = true;
+  FireWebUIListener("fydeos-backup-file-selected", base::Value(canceled));
+}
+
+void FydeOsHandler::HandleFydeOSBackupStarted(const base::Value::List& args) {
+  DCHECK_EQ(args.size(), 2u);
+  std::string email = args[0].GetString();
+  std::string password = args[1].GetString();
+
+  BackupTaskManager::GetInstance()->SetCallback(
+      base::BindRepeating(&FydeOsHandler::OnBackupTaskFinished,
+                          weak_ptr_factory_.GetWeakPtr()));
+  BackupTaskManager::GetInstance()->StartTask(profile_, email, password);
+}
+
+void FydeOsHandler::OnBackupTaskFinished(BackupTaskManager::TaskState state) {
+  if (state == BackupTaskManager::TaskState::kRunning
+      || state == BackupTaskManager::TaskState::kIdle) {
+    return;
+  }
+  FireWebUIListener("fydeos-backup-task-finished",
+      base::Value(state == BackupTaskManager::TaskState::kFinished));
+}
+
+void FydeOsHandler::HandleGetFydeOSBackupState(const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(1u, args.size());
+  const base::Value& callback_id = args[0];
+  BackupTaskManager::TaskState state =
+    BackupTaskManager::GetInstance()->GetTaskState();
+  std::string state_str;
+  switch (state) {
+    case BackupTaskManager::TaskState::kIdle:
+    case BackupTaskManager::TaskState::kFinished:
+    case BackupTaskManager::TaskState::kFailed:
+      state_str = "not_running";
+      break;
+    case BackupTaskManager::TaskState::kRunning:
+      state_str = "running";
+      break;
+    default:
+      NOTREACHED_IN_MIGRATION();
+      break;
+  }
+  ResolveJavascriptCallback(callback_id, base::Value(state_str));
 }
 
 }  // namespace ash::settings

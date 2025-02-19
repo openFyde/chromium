@@ -20,6 +20,8 @@ static_library("settings") {
     "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler.h",
     "../../../../../../fydeos/ui/webui/settings/ash/fydeos_section.cc",
     "../../../../../../fydeos/ui/webui/settings/ash/fydeos_section.h",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler_backup_task_manager.cc",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler_backup_task_manager.h",
   ]
 
   public_deps = [

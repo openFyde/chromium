@@ -143,5 +143,26 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_REQUIRES_ONE_TIME_PAYMENT" desc="message of ota disallowed requires one time payment">
     A new milestone version of FydeOS is available to update now. You need to pay a one-off fee to continue with this update.
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_SAVE_FILE_DIALOG_TITLE" desc="Title for backing up">
+    Please specify the path to store the backup file
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_LABEL" desc="Label on os-settings fydeos backup section">
+    Create a backup file for this account (beta). <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_BUTTON_LABEL" desc="Text on os-settings fydeos backup button">
+    Backup
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_INTRO_TITLE" desc="Title for backup intro">
+    Create a backup file for this account (beta)
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_INTRO_TEXT" desc="Text for backup intro">
+    This operation creates a full disk backup for this account, making it easy to restore to the state of your FydeOS when the backup was created, including settings, installed browser extensions and subsystem apps. Depending on your apps and the contents of your personal folder, the backup file may be large; it is recommended to store the backup file on an external storage device. If you have a portable USB drive, please connect it now. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TITLE" desc="Title for backup password prompt">
+    Please enter the login password for this account
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TEXT" desc="Text for backup password prompt">
+    Please remember this password, as it will be required when restoring this backup file
+  </message>
 </if>
 </grit-part>

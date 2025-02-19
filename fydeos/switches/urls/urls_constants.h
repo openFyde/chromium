@@ -56,6 +56,8 @@ extern const char kTabletModeGesturesLearnMoreURL[];
 extern const char kRuntimeHostPermissionsHelpURL[];
 extern const char kFingerprintLearnMoreURL[];
 
+extern const char kFydeOSBackupRestoreLearnMoreURL[];
+
 }  // namespace fydeos::constants
 
 #endif

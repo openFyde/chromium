@@ -86,4 +86,19 @@
       You will not be able to add FydeOS accounts because FydeOS API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
     </message>
   </if>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_RUNNING_TITLE" desc="Title of backup notification when backup is running.">
+    Creating backup file now. This may take a while; please wait…
+  </message>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FINISHED_TITLE" desc="Title of backup notification when backup is successful.">
+    Backup file was created successfully
+  </message>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FINISHED_MESSAGE" desc="Message of backup notification when backup is successful.">
+    View backup file
+  </message>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FAILED_TITLE" desc="Title of backup notification when backup is failed.">
+    Backup failed
+  </message>
+  <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FAILED_MESSAGE" desc="Message of backup notification when backup is failed.">
+    View error log
+  </message>
 </grit-part>

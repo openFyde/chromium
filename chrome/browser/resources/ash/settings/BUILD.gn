@@ -36,6 +36,10 @@ build_webui("build") {
     "images/notification_access_setup.svg",
     "images/notification_access_setup_dark.svg",
 
+    "images/icon_backup.png",
+    "images/backup_intro.png",
+    "images/backup_intro_dark.png",
+
     "os_settings.html",
   ]
 
@@ -218,6 +222,8 @@ build_webui("build") {
     "os_fyde_page/fydeos_tweak_ui.ts",
     "os_fyde_page/fydeos_experiment.ts",
     "os_fyde_page/os_fyde_page.ts",
+    "os_fyde_page/components/backup_password_prompt_dialog.ts",
+    "os_fyde_page/components/backup_intro_dialog.ts",
     "os_apps_page/android_apps_subpage.ts",
     "os_apps_page/app_management_page/app_detail_view.ts",
     "os_apps_page/app_management_page/app_details_item.ts",

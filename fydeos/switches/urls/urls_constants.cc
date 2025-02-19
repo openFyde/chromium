@@ -53,6 +53,8 @@ const char kTabletModeGesturesLearnMoreURL[] = "https://fydeos.com/docs/manual/c
 const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.com/docs/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/";
 const char kFingerprintLearnMoreURL[] = "https://fydeos.com/docs/manual/customize-settings/users-and-sync/set-up-and-sign-in-with-fingerprint-on-your-fydeos-device";
 
+const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.com/docs/manual/customize-settings/fydeos-settings/misc#backup-and-restore";
+
 #else
 
 const char kDefaultTestUrl[] = "http://store.fydeos.io/204";
@@ -98,6 +100,8 @@ const char kFileManagerHelpURL[] = "https://fydeos.io/docs/manual/manage-your-ap
 const char kTabletModeGesturesLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/use-tablets/use-gestures-or-buttons-to-navigate-in-tablet-mode";
 const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.io/docs/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/";
 const char kFingerprintLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/users-and-sync/set-up-and-sign-in-with-fingerprint-on-your-fydeos-device";
+
+const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/fydeos-settings/misc#backup-and-restore";
 
 #endif
 

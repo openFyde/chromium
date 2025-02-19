@@ -41,6 +41,8 @@
 #include "base/metrics/user_metrics.h"
 #include "base/sequence_checker.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/task/thread_pool.h"
+#include "base/files/file_util.h"
 #include "chromeos/ash/components/login/auth/auth_events_recorder.h"
 #include "chromeos/strings/grit/chromeos_strings.h"
 #include "chromeos/ui/vector_icons/vector_icons.h"
@@ -67,6 +69,7 @@
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
+#include "fydeos/switches/misc/misc_constants.h"
 
 using session_manager::SessionState;
 
@@ -383,6 +386,14 @@ LoginShelfView::LoginShelfView() {
   enterprise_domain_model_observation_.Observe(
       Shell::Get()->system_tray_model()->enterprise_domain());
 
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(
+        base::PathExists,
+        base::FilePath(fydeos::constants::kFydeOSRestoreScriptDirPath)),
+      base::BindOnce(&LoginShelfView::OnFydeOSRestoreScriptChecked,
+                     weak_ptr_factory_.GetWeakPtr()));
+
   GetViewAccessibility().SetRole(ax::mojom::Role::kToolbar);
   GetViewAccessibility().SetName(
       l10n_util::GetStringUTF8(IDS_ASH_SHELF_ACCESSIBLE_NAME));
@@ -390,6 +401,11 @@ LoginShelfView::LoginShelfView() {
 
 LoginShelfView::~LoginShelfView() {
   ShelfConfig::Get()->RemoveObserver(this);
+}
+
+void LoginShelfView::OnFydeOSRestoreScriptChecked(bool is_restore_supported) {
+  is_restore_supported_ = is_restore_supported;
+  GetViewByID(kDataRestore)->SetVisible(ShouldShowDataRestoreButton());
 }
 
 void LoginShelfView::UpdateAfterSessionChange() {
@@ -856,6 +872,9 @@ bool LoginShelfView::ShouldShowUseLocalAccountButton() const {
 }
 
 bool LoginShelfView::ShouldShowDataRestoreButton() const {
+  if (!is_restore_supported_) {
+    return false;
+  }
   const bool user_session_started =
       Shell::Get()->session_controller()->NumberOfLoggedInUsers() != 0;
   return  !user_session_started

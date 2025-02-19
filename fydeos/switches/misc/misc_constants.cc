@@ -16,5 +16,8 @@ const char kFydeOSSystemTempPrefix[] = "fydeos_sysinfo";
 
 const char kFydeOSWallpapersBasePath[] = "/usr/share/chromeos-assets/fydeos_wallpapers/";
 
+const char kFydeOSBackupScriptDirPath[] = "/usr/share/fydeos-backup";
+const char kFydeOSRestoreScriptDirPath[] = "/usr/share/fydeos-backup";
+
 } // constants
 } // fydeos
