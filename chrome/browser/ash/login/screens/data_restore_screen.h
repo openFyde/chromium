@@ -2,6 +2,7 @@
 #ifndef CHROME_BROWSER_ASH_LOGIN_SCREENS_DATA_RESTORE_SCREEN_H_
 #define CHROME_BROWSER_ASH_LOGIN_SCREENS_DATA_RESTORE_SCREEN_H_
 
+#include <string>
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ash/login/screens/base_screen.h"
@@ -23,8 +24,12 @@ class DataRestoreScreen : public BaseScreen {
     void HideImpl() override;
     void OnUserAction(const base::Value::List& args) override;
 
+    void OnGetSystemSalt(const std::string& salt);
+
     base::WeakPtr<DataRestoreScreenView> view_;
     base::RepeatingClosure exit_callback_;
+
+    base::WeakPtrFactory<DataRestoreScreen> weak_ptr_factory_{this};
 };
 
 }  // namespace ash

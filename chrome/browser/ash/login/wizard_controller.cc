@@ -1775,7 +1775,8 @@ void WizardController::OnOsTrialScreenExit(OsTrialScreen::Result result) {
 }
 
 void WizardController::OnDataRestoreScreenExit() {
-  VLOG(1) << "Exit DataRestoreScreen";
+  OnScreenExit(DataRestoreScreenView::kScreenId, kDefaultExitReason);
+  ShowLoginScreen();
 }
 
 void WizardController::OnHWDataCollectionScreenExit(

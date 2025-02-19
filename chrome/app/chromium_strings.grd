@@ -2623,6 +2623,7 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <part file="../../fydeos/i18n/chrome/app/chromium_strings.override.grdp" />
+      <part file="../../fydeos/i18n/chrome/app/chromium_strings.grdp" />
 
     </messages>
   </release>

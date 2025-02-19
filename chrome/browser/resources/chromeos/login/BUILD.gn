@@ -110,6 +110,7 @@ build_webui("build") {
     "screens/common/marketing_opt_in.ts",
     "screens/common/multidevice_setup.ts",
     "screens/common/fyde_local_signin.ts",
+    "screens/common/data_restore.ts",
     "screens/common/online_authentication_screen.ts",
     "screens/common/oobe_reset.ts",
     "screens/common/os_install.ts",

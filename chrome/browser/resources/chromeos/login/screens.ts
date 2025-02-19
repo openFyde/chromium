@@ -32,6 +32,7 @@ import './screens/common/managed_terms_of_service.js';
 import './screens/common/marketing_opt_in.js';
 import './screens/common/multidevice_setup.js';
 import './screens/common/fyde_local_signin.js';
+import './screens/common/data_restore.js';
 import './screens/common/online_authentication_screen.js';
 import './screens/common/oobe_reset.js';
 import './screens/common/os_install.js';
@@ -185,6 +186,7 @@ export const commonScreensList: OobeTypes.ScreensList = [
     condition: 'isOsInstallAllowed',
   },
   {tag: 'os-trial-element', id: 'os-trial', condition: 'isOsInstallAllowed'},
+  {tag: 'data-restore-element', id: 'data-restore'},
   {tag: 'parental-handoff-element', id: 'parental-handoff'},
   {
     tag: 'password-selection-element',

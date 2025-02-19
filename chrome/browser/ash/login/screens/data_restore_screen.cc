@@ -2,11 +2,13 @@
 #include "chrome/browser/ash/login/screens/data_restore_screen.h"
 #include "chrome/browser/ui/webui/ash/login/data_restore_screen_handler.h"
 #include "base/logging.h"
+#include "chromeos/ash/components/cryptohome/system_salt_getter.h"
 
 
 namespace ash {
 
 namespace {
+constexpr const char kUserActionExitClicked[] = "data-restore-exit";
 }
 
 DataRestoreScreen::DataRestoreScreen(
@@ -14,9 +16,19 @@ DataRestoreScreen::DataRestoreScreen(
     const base::RepeatingClosure& exit_callback)
     : BaseScreen(DataRestoreScreenView::kScreenId, OobeScreenPriority::DEFAULT),
       view_(std::move(view)),
-      exit_callback_(exit_callback) {}
+      exit_callback_(exit_callback) {
+  SystemSaltGetter::Get()->GetSystemSalt(
+      base::BindOnce(&DataRestoreScreen::OnGetSystemSalt,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
 
 DataRestoreScreen::~DataRestoreScreen() = default;
+
+void DataRestoreScreen::OnGetSystemSalt(const std::string& salt) {
+  if (view_) {
+    view_->SetSystemSalt(salt);
+  }
+}
 
 void DataRestoreScreen::ShowImpl() {
   if (view_) {
@@ -24,11 +36,19 @@ void DataRestoreScreen::ShowImpl() {
   }
 }
 
-void DataRestoreScreen::HideImpl() {}
+void DataRestoreScreen::HideImpl() {
+  if (view_) {
+    view_->Hide();
+  }
+}
 
 void DataRestoreScreen::OnUserAction(const base::Value::List& args) {
   const std::string& action_id = args[0].GetString();
-  VLOG(1) << "DataRestoreScreen::OnUserAction: " << action_id;
+  if (action_id == kUserActionExitClicked) {
+    exit_callback_.Run();
+  } else {
+    BaseScreen::OnUserAction(args);
+  }
 }
 
 }  // namespace ash
