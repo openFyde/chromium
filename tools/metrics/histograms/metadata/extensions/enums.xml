@@ -2804,6 +2804,7 @@ Called by update_extension_histograms.py.-->
   <int value="1931" label="SHELL_GET_DAEMON_STATE"/>
   <int value="1932" label="SHELL_FORCE_CLOSE_TASK"/>
   <int value="1933" label="FYDEOS_ARC_STATUS_GET"/>
+  <int value="1934" label="INPUT_IME_SHOW_FYDE_LANGUAGE_STATE"/>
 </enum>
 
 <enum name="ExtensionInstallationCrxInstallError">

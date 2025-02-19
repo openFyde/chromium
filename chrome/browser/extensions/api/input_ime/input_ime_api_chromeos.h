@@ -40,6 +40,18 @@ class InputImeSetCandidateWindowPropertiesFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class InputImeShowFydeLanguageStateFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("input.ime.showFydeLanguageState",
+                             INPUT_IME_SHOW_FYDE_LANGUAGE_STATE)
+
+ protected:
+  ~InputImeShowFydeLanguageStateFunction() override = default;
+
+  // ExtensionFunction:
+  ResponseAction Run() override;
+};
+
 class InputImeSetCandidatesFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("input.ime.setCandidates", INPUT_IME_SETCANDIDATES)
