@@ -21,6 +21,7 @@
 <translation id="5758099459203549695">此文件适用于运行 Windows 软件的 PC，不适用于运行 FydeOS 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
 <translation id="6092746107434295994">不支持此文件类型。请访问 FydeOS 应用商店，找到能打开此文件类型的应用。</translation>
 <translation id="3544837910192955131">无法直接打开 .apk 类型的文件；请检查安卓子系统已激活，且确保目前 FydeOS 处在开发者模式下。</translation>
+<translation id="1214892496854604663">我们在不断寻找各种方式来提高上网安全。之前，任何网站都可以提示您在浏览器中添加扩展程序；而在最新版本的 Chromium 中，您必须明确告诉 Chromium 您想要安装这些扩展程序（即：在“扩展程序”页添加它们）后才可以。<ph name="BEGIN_LINK" />了解详情<ph name="END_LINK" /></translation>
 <!-- file_manager_strings.grdp -->
 <translation id="3164186517475962793">FydeOS × 坚果云</translation>
 <translation id="6598736015900593922">注册坚果云账号即可在 FydeOS 上让你的文件实现云同步。</translation>

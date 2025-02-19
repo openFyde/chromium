@@ -305,6 +305,7 @@ export {StorageAndPowerSettingsCardElement} from './system_preferences_page/stor
 export {SettingsSystemPreferencesPageElement} from './system_preferences_page/system_preferences_page.js';
 export {SettingsToolbarElement as ToolbarElement} from './toolbar/toolbar.js';
 export {ShellClient} from './os_fyde_page/shell_client.js';
+export {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './os_about_page/popup_license_window.js';
 
 window.addEventListener('load', () => {
   // Listen for changes to Jelly dynamic colors.

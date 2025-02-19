@@ -47,6 +47,7 @@
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/chromeos/devicetype_utils.h"
 #include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/switches/license/license_switches.h"
 
 namespace ash::settings {
 
@@ -392,6 +393,11 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       {"aboutUpdateToRollbackVersionDisallowed",
        IDS_SETTINGS_UPDATE_TO_ROLLBACK_VERSION_DISALLOWED},
 
+      {"aboutFydeOSOtaDisallowedRequiresOneTimePayment",
+       IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_REQUIRES_ONE_TIME_PAYMENT},
+      {"aboutFydeOSOtaDisallowedByLicenseValidation",
+       IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_BY_LICENSE_VALIDATION},
+
       // About page auto update toggle.
       {"aboutConsumerAutoUpdateToggleTitle",
        IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_TITLE},
@@ -486,6 +492,8 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ABOUT_PAGE_LAST_UPDATE_MESSAGE,
                                  ui::GetChromeOSDeviceName(),
                                  base::ASCIIToUTF16(fydeos::constants::kEolNotificationURL)));
+
+  html_source->AddString("fydeosLicenseWebUrl", fydeos::switches::GetFydeOSLicenseWebUrl());
 
   html_source->AddString("eolIncentiveOfferTitle",
                          l10n_util::GetStringUTF16(

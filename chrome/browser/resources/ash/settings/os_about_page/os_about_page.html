@@ -137,12 +137,13 @@
                 them. -->
               <iron-icon id="updateRowIcon"
                   icon$="[[getUpdateStatusIcon_(
-                      hasEndOfLife_, currentUpdateStatusEvent_,
+                      hasEndOfLife_, currentUpdateStatusEvent_, renewalStatus_,
                       showExtendedUpdatesOption_)]]"
                   src="[[getThrobberSrcIfUpdating_(
                       isDarkModeActive_,
                       hasEndOfLife_,
                       currentUpdateStatusEvent_,
+                      renewalStatus_,
                       showExtendedUpdatesOption_)]]">
               </iron-icon>
             </div>
@@ -150,12 +151,13 @@
           <template is="dom-if" if="[[isRevampWayfindingEnabled_]]">
             <iron-icon id="updateRowIcon"
                 icon$="[[getUpdateStatusIcon_(
-                    hasEndOfLife_, currentUpdateStatusEvent_,
+                    hasEndOfLife_, currentUpdateStatusEvent_, renewalStatus_,
                     showExtendedUpdatesOption_)]]"
                 src="[[getThrobberSrcIfUpdating_(
                     isDarkModeActive_,
                     hasEndOfLife_,
                     currentUpdateStatusEvent_,
+                    renewalStatus_,
                     showExtendedUpdatesOption_)]]">
             </iron-icon>
           </template>
@@ -163,7 +165,7 @@
             <div id="updateStatusMessage" hidden="[[!showUpdateStatus_]]">
               <div id="updateStatusMessageInner" tabindex="-1"
                   inner-h-t-m-l="[[getUpdateStatusMessage_(
-                  currentUpdateStatusEvent_, targetChannel_)]]"></div>
+                  currentUpdateStatusEvent_, targetChannel_, renewalStatus_)]]"></div>
               <a hidden$="[[!shouldShowLearnMoreLink_(
                   currentUpdateStatusEvent_)]]" target="_blank"
                   href="https://support.google.com/chrome?p=update_error">
@@ -211,6 +213,10 @@
                 hidden="[[!showExtendedUpdatesOption_]]"
                 on-click="onExtendedUpdatesButtonClick_">
               $i18n{aboutExtendedUpdatesButton}
+            </cr-button>
+            <cr-button id="renewLearnMore" hidden="[[!showRenewLearnMore_]]"
+              on-click="onRenewLearnMoreClick_">
+              $i18n{learnMore}
             </cr-button>
           </span>
         </div>
@@ -291,6 +297,7 @@
             deep-link-focus-id$="[[Setting.kDiagnostics]]">
         </cr-link-row>
         <cr-link-row class="hr" id="firmwareUpdates"
+            hidden$="[[!showFirmwareUpdatesApp_]]"
             start-icon="[[rowIcons_.firmwareUpdates]]"
             on-click="onFirmwareUpdatesClick_"
             label="$i18n{aboutFirmwareUpdates}"

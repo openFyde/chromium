@@ -17,6 +17,10 @@ CHROMEOS_EXPORT bool IsTpmDictionaryAttackLockoutIgnored();
 
 CHROMEOS_EXPORT bool IsNonForYouBoard(const std::string& board);
 
+CHROMEOS_EXPORT bool IsInitDevicePolicyWithoutStateKeysAllowed();
+
+CHROMEOS_EXPORT bool IsUnknownPeripheralBatteryNotificationDisabled();
+
 } // switches
 } // fydeos
 

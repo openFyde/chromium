@@ -44,4 +44,14 @@
   <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE" desc="Error message when user attempts to open a non-supported file in the Files app via Downloads panel.">
     This file type is not supported. Please visit the FydeOS Web Store to find an app that can open this type of file.
   </message>
+  <if expr="use_fydeos_com">
+    <message name="IDS_FILE_BROWSER_NO_TASK_FOR_CRX" desc="Message shown when a user tries to open a *.crx file, which we don't handle in the Files app.">
+        We're constantly looking for ways to make your browsing safer. Previously, any website could prompt you to add an extension into your browser. In the latest versions of Chromium, you must explicitly tell Chromium that you want to install these extensions by adding them through the Extensions page. <ph name="BEGIN_LINK">&lt;a target='_blank' href='https://fydeos.com/help/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/'&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+  </if>
+  <if expr="not use_fydeos_com">
+    <message name="IDS_FILE_BROWSER_NO_TASK_FOR_CRX" desc="Message shown when a user tries to open a *.crx file, which we don't handle in the Files app.">
+        We're constantly looking for ways to make your browsing safer. Previously, any website could prompt you to add an extension into your browser. In the latest versions of Chromium, you must explicitly tell Chromium that you want to install these extensions by adding them through the Extensions page. <ph name="BEGIN_LINK">&lt;a target='_blank' href='https://fydeos.io/help/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/'&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+  </if>
 </grit-part>
