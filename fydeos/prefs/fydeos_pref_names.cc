@@ -20,6 +20,7 @@ const char kForceTpmFallbackNecessary[] = "force_tpm_fallback_necessary";
 const char kCurrentForceTpmFallback[] = "current_force_tpm_fallback";
 const char kForceTpmFallback[] = "force_tpm_fallback";
 
+const char kShowSwitchTabletLaptopButton[] = "show_switch_tablet_laptop_button";
 const char kShowRebootButtonInTray[] = "show_reboot_button_in_tray";
 const char kShowRotateScreenButton[] = "show_rotate_screen_button";
 

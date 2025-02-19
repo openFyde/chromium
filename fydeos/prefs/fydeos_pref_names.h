@@ -21,6 +21,7 @@ extern const char kForceTpmFallbackNecessary[];
 extern const char kCurrentForceTpmFallback[];
 extern const char kForceTpmFallback[];
 
+extern const char kShowSwitchTabletLaptopButton[];
 extern const char kShowRebootButtonInTray[];
 extern const char kShowRotateScreenButton[];
 

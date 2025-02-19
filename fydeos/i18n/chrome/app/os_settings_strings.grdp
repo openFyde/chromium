@@ -89,6 +89,12 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_ROTATE_SCREEN_BUTTON" desc="fydeos settings show rotate screen button in tray">
     Display a "Rotate screen" button on the system menu
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SWITCH_TABLET_LAPTOP_MODE_BUTTON_IN_TRAY_LABEL" desc="fydeos settings label show tablet/laptop mode switch button in tray">
+    Tablet/Laptop switch
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_DISPLAY_SWITCH_TABLET_LAPTOP_MODE_BUTTON" desc="fydeos settings show tablet/laptop mode switch button in tray">
+    Display a tablet/laptop switch on the system menu
+  </message>
   <message name="IDS_OS_SETTINGS_FYDEOS_ACCOUNT_TITLE" desc="fydeos settings account section title">
     FydeOS account settings
   </message>

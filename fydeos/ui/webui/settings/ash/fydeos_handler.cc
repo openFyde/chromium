@@ -65,6 +65,15 @@ void FydeOsHandler::RegisterMessages() {
                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
+      "getShowSwitchTabletLaptopButton",
+      base::BindRepeating(&FydeOsHandler::HandleGetShowSwitchTabletLaptopButton,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setShowSwitchTabletLaptopButton",
+      base::BindRepeating(&FydeOsHandler::HandleSetShowSwitchTabletLaptopButton,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
       "getIsForceTpmFallback",
       base::BindRepeating(&FydeOsHandler::HandleGetIsForceTpmFallback,
                           base::Unretained(this)));
@@ -83,6 +92,11 @@ void FydeOsHandler::OnJavascriptAllowed() {
       fydeos::prefs::kShowRotateScreenButton,
       base::BindRepeating(
           &FydeOsHandler::OnShowRotateScreenButtonChanged,
+          base::Unretained(this)));
+  local_state_pref_change_registrar_.Add(
+      fydeos::prefs::kShowSwitchTabletLaptopButton,
+      base::BindRepeating(
+          &FydeOsHandler::OnShowSwitchTabletLaptopButtonChanged,
           base::Unretained(this)));
   local_state_pref_change_registrar_.Add(
       fydeos::prefs::kForceTpmFallback,
@@ -222,6 +236,31 @@ void FydeOsHandler::HandleGetIsInTabletPhysicalState(
     ash::Shell::Get()->tablet_mode_controller()->is_in_tablet_physical_state();
   ResolveJavascriptCallback(base::Value(callback_id),
                             base::Value(is_in_tablet_physical_state));
+}
+
+void FydeOsHandler::OnShowSwitchTabletLaptopButtonChanged() {
+  PrefService* prefs = g_browser_process->local_state();
+  bool showButton = prefs->GetBoolean(fydeos::prefs::kShowSwitchTabletLaptopButton);
+  FireWebUIListener("show-switch-tablet-laptop-button-changed",
+                    base::Value(showButton));
+}
+
+void FydeOsHandler::HandleSetShowSwitchTabletLaptopButton(const base::Value::List& args) {
+  CHECK_EQ(1u, args.size());
+  bool showButton = args[0].GetBool();
+  PrefService* prefs = g_browser_process->local_state();
+  prefs->SetBoolean(fydeos::prefs::kShowSwitchTabletLaptopButton, showButton);
+}
+
+void FydeOsHandler::HandleGetShowSwitchTabletLaptopButton(const base::Value::List& args) {
+  AllowJavascript();
+
+  DCHECK(args.size());
+  std::string callback_id = args[0].GetString();
+  PrefService* prefs = g_browser_process->local_state();
+  bool showButton = prefs->GetBoolean(fydeos::prefs::kShowSwitchTabletLaptopButton);
+  ResolveJavascriptCallback(base::Value(callback_id),
+                            base::Value(showButton));
 }
 
 void FydeOsHandler::HandleGetIsForceTpmFallback(const base::Value::List& args) {

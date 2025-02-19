@@ -85,6 +85,10 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_NOT_TABLET_STATE_DISABLE_ROTATE_SCREEN},
     {"displayFydeOsRotateScreenButton",
       IDS_OS_SETTINGS_FYDEOS_DISPLAY_ROTATE_SCREEN_BUTTON},
+    {"switchTabletLaptopModeButtonInTrayLabel",
+      IDS_OS_SETTINGS_FYDEOS_SWITCH_TABLET_LAPTOP_MODE_BUTTON_IN_TRAY_LABEL},
+    {"displaySwitchTabletLaptopModeButton",
+      IDS_OS_SETTINGS_FYDEOS_DISPLAY_SWITCH_TABLET_LAPTOP_MODE_BUTTON},
     {"fydeosSettingsMenuItemDescription",
       IDS_OS_SETTINGS_FYDEOS_MENU_ITEM_DESCRIPTION},
     {"fydeosExperimentalFeatures",
@@ -115,6 +119,7 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   html_source->AddBoolean("showToggleRebootButtonInTray", false);
   html_source->AddBoolean("showToggleRotateScreenButton",
       fydeos::switches::IsNonForYouBoard(board));
+  html_source->AddBoolean("showToggleSwitchTabletLaptopButton", true);
 
   html_source->AddString("fydeOSRdpUrl",
       fydeos::constants::kFydeOSRemoteDesktopURL);

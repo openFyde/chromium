@@ -44,6 +44,10 @@ class FydeOsHandler :
   void HandleGetShowRotateScreenButton(const base::Value::List& args);
   void HandleGetIsInTabletPhysicalState(const base::Value::List& args);
 
+  void OnShowSwitchTabletLaptopButtonChanged();
+  void HandleSetShowSwitchTabletLaptopButton(const base::Value::List& args);
+  void HandleGetShowSwitchTabletLaptopButton(const base::Value::List& args);
+
   void HandleGetIsForceTpmFallback(const base::Value::List& args);
   void HandleSetForceTpmFallback(const base::Value::List& args);
   void OnForceTpmFallbackChanged();

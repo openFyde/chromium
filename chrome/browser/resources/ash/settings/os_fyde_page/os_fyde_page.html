@@ -12,10 +12,12 @@
   <os-settings-fydeos-remoting>
   </os-settings-fydeos-remoting>
 </settings-card>
-<settings-card header-text="$i18n{fydeosSettingsOtherTweaksTitle}" section="tweakUI" hidden="[[!showFydeOsTweakUi_(showToggleRebootButtonInTray, showToggleRotateScreenButton)]]">
+<settings-card header-text="$i18n{fydeosSettingsOtherTweaksTitle}" section="tweakUI"
+                     hidden="[[!showFydeOsTweakUi_(showToggleRebootButtonInTray, showToggleRotateScreenButton, showToggleSwitchTabletLaptopButton)]]">
   <os-settings-fydeos-tweak-ui
     show-toggle-rotate-screen-button="[[showToggleRotateScreenButton]]"
-    show-toggle-reboot-button-in-tray="[[showToggleRebootButtonInTray]]">
+    show-toggle-reboot-button-in-tray="[[showToggleRebootButtonInTray]]"
+    show-toggle-switch-tablet-laptop-button="[[showToggleSwitchTabletLaptopButton]]">
   </os-settings-fydeos-tweak-ui>
 </settings-card>
 <os-settings-fydeos-experiment class="fydeos-settings-section-wrapper"></os-settings-fydeos-experiment>

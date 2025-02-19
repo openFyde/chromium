@@ -2668,6 +2668,8 @@ component("ash") {
     "system/unified/user_chooser_view.h",
     "../fydeos/ash/system/unified/rotate_screen_feature_pod_controller.cc",
     "../fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h",
+    "../fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.cc",
+    "../fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.h",
     "system/update/eol_notice_quick_settings_view.cc",
     "system/update/eol_notice_quick_settings_view.h",
     "system/update/extended_updates_notice_quick_settings_view.cc",

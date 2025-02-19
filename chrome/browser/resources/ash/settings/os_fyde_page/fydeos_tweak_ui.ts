@@ -25,6 +25,7 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
     return {
       showRotateScreenButton_: Boolean,
       isInTabletPhysicalState_: Boolean,
+      showSwitchTabletLaptopButton_: Boolean,
       canToggleRotateScreenButton_: {
         type: Boolean,
         computed: 'computeCanToggleRotateScreenButton_(isInTabletPhysicalState_)',
@@ -34,14 +35,17 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
 
   private showRotateScreenButton_: boolean;
   private isInTabletPhysicalState_: boolean;
+  private showSwitchTabletLaptopButton_: boolean;
   private canToggleRotateScreenButton_: boolean;
 
   override connectedCallback() {
     super.connectedCallback();
     this.getShowRotateScreenButton();
     this.getIsInTabletPhysicalState();
+    this.getShowSwitchTabletLaptopButton();
     this.addWebUiListener('show-rotate-screen-button-changed', this.onShowRotateScreenButtonChanged_.bind(this));
     this.addWebUiListener('is-in-tablet-physical-state-changed', this.onIsInTabletPhysicalStateChanged_.bind(this));
+    this.addWebUiListener('show-switch-tablet-laptop-button-changed', this.onShowSwitchTabletLaptopButtonChanged_.bind(this));
   }
 
   getShowRotateScreenButton() {
@@ -83,6 +87,23 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
       return this.i18nAdvanced('notTabletPhysicalStateDisableFydeOsRotateScreen');
     }
     return this.i18nAdvanced('displayFydeOsRotateScreenButton');
+  }
+
+  getShowSwitchTabletLaptopButton() {
+    sendWithPromise('getShowSwitchTabletLaptopButton').then((enabled) => {
+      console.log('getShowSwitchTabletLaptopButton', enabled);
+      this.showSwitchTabletLaptopButton_ = enabled;
+    });
+  }
+
+  onToggleShowSwitchTabletLaptopButton_() {
+    this.showSwitchTabletLaptopButton_ = !this.showSwitchTabletLaptopButton_;
+    chrome.send('setShowSwitchTabletLaptopButton', [this.showSwitchTabletLaptopButton_]);
+  }
+
+  onShowSwitchTabletLaptopButtonChanged_(visible: boolean) {
+    console.log('onShowSwitchTabletLaptopButtonChanged_', visible);
+    this.showSwitchTabletLaptopButton_ = visible;
   }
 }
 

@@ -12,3 +12,12 @@
               role="button" checked="[[shouldShowRotateScreenButton_(showRotateScreenButton_, canToggleRotateScreenButton_)]]" on-change="onToggleShowRotateScreenButton_">
   </cr-toggle>
 </div>
+<div class="settings-box two-line" hidden=[[!showToggleSwitchTabletLaptopButton]]>
+  <div class="start padded">
+    $i18n{switchTabletLaptopModeButtonInTrayLabel}
+    <div class="secondary">$i18n{displaySwitchTabletLaptopModeButton}</div>
+  </div>
+  <cr-toggle id="toggleShowSwitchTabletLaptopModeButton"
+             role="button" checked="[[showSwitchTabletLaptopButton_]]" on-change="onToggleShowSwitchTabletLaptopButton_">
+  </cr-toggle>
+</div>
