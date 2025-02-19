@@ -42,6 +42,9 @@
       <message name="IDS_ABOUT_CROS_WITH_LINUX_VERSION_LICENSE" desc="Additional text displayed beneath the Chromium open source URLs for Chrome OS when Crostini is installed.">
         openFyde is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>, as is <ph name="BEGIN_LINK_LINUX_OSS">&lt;a target="_blank" href="$2"&gt;</ph>Linux (Beta)<ph name="END_LINK_LINUX_OSS">&lt;/a&gt;</ph>.
       </message>
+      <message name="IDS_EXTERNAL_PROTOCOL_NO_HANDLER_TITLE" desc="External Protocol Dialog Title">
+        openFyde can't open this page.
+      </message>
       <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error notification when the user's sign-in credentials are out of date.">
         openFyde could not sync your data because your account sign-in details are out of date.
       </message>
@@ -79,6 +82,9 @@
       </message>
       <message name="IDS_ABOUT_CROS_WITH_LINUX_VERSION_LICENSE" desc="Additional text displayed beneath the Chromium open source URLs for Chrome OS when Crostini is installed.">
         FydeOS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>, as is <ph name="BEGIN_LINK_LINUX_OSS">&lt;a target="_blank" href="$2"&gt;</ph>Linux (Beta)<ph name="END_LINK_LINUX_OSS">&lt;/a&gt;</ph>.
+      </message>
+      <message name="IDS_EXTERNAL_PROTOCOL_NO_HANDLER_TITLE" desc="External Protocol Dialog Title">
+        FydeOS can't open this page.
       </message>
       <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error notification when the user's sign-in credentials are out of date.">
         FydeOS could not sync your data because your account sign-in details are out of date.

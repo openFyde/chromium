@@ -46,6 +46,11 @@ source_set("switches") {
 
     "arc/arc_switches.cc",
     "arc/arc_switches.h",
+
+    "license/license_switches.cc",
+    "license/license_switches.h",
+    "license/license_constants.cc",
+    "license/license_constants.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }

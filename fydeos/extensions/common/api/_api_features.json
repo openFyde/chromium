@@ -16,7 +16,8 @@
     "matches": [
       "chrome://settings/*",
       "chrome://os-settings/*",
-      "chrome://extensions/*"
+      "chrome://extensions/*",
+      "chrome://file-manager/*"
     ]
   }],
   "appManagement": [{
@@ -29,7 +30,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://settings/*",
-      "chrome://os-settings/*"
+      "chrome://os-settings/*",
+      "chrome://file-manager/*"
     ]
   }],
   "commandLine":[{

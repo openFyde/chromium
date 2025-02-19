@@ -311,7 +311,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://extensions/*",
-      "chrome://settings/*"
+      "chrome://settings/*",
+      "chrome://file-manager/*"
     ]
   }, {
     "channel": "stable",

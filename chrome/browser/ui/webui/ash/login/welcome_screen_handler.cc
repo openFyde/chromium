@@ -49,6 +49,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/chromeos/devicetype_utils.h"
 #include "base/system/sys_info.h"
+#include "fydeos/switches/misc//misc_switches.h"
 
 namespace ash {
 
@@ -268,7 +269,9 @@ void WelcomeScreenHandler::GetAdditionalParameters(base::Value::Dict* dict) {
   dict->Set("timezoneList", GetTimezoneList());
   dict->Set("demoModeCountryList", DemoSession::GetCountryList());
 
-  dict->Set("lsbReleaseBoard", base::SysInfo::GetLsbReleaseBoardWithoutSuffix());
+  const std::string board = base::SysInfo::GetLsbReleaseBoardWithoutSuffix();
+  dict->Set("lsbReleaseBoard", board);
+  dict->Set("nonForYouBoard", fydeos::switches::IsNonForYouBoard(board));
 
   // If this switch is set allow to open advanced options and configure device
   // requisition.

@@ -20,6 +20,7 @@
 <translation id="2796340402401368720">此文件适用于运行 Windows 软件的 PC，不适用于运行 openFyde 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
 <translation id="5758099459203549695">此文件适用于运行 Windows 软件的 PC，不适用于运行 FydeOS 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
 <translation id="6092746107434295994">不支持此文件类型。请访问 FydeOS 应用商店，找到能打开此文件类型的应用。</translation>
+<translation id="3544837910192955131">无法直接打开 .apk 类型的文件；请检查安卓子系统已激活，且确保目前 FydeOS 处在开发者模式下。</translation>
 <!-- file_manager_strings.grdp -->
 <translation id="3164186517475962793">FydeOS × 坚果云</translation>
 <translation id="6598736015900593922">注册坚果云账号即可在 FydeOS 上让你的文件实现云同步。</translation>
@@ -29,4 +30,6 @@
 <translation id="3855250998276979579">打开坚果云应用</translation>
 <translation id="6540892254325675878">并使用邮箱和应用密码将坚果云账号绑定至 FydeOS</translation>
 <translation id="1515216958533722634">燧炻传送</translation>
+<translation id="2913757480900231592">你需要激活该 openFyde 设备上的 Android 子系统方可执行该操作，请点击<ph name="BEGIN_LINK_HELP" />此处<ph name="END_LINK_HELP" />完成激活操作。</translation>
+<translation id="8997186008376436820">你需要激活该 FydeOS 设备上的 Android 子系统方可执行该操作，请点击<ph name="BEGIN_LINK_HELP" />此处<ph name="END_LINK_HELP" />完成激活操作。</translation>
 </translationbundle>
