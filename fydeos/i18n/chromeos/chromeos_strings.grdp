@@ -4,4 +4,7 @@
   <message name="IDS_ASH_USE_LOCAL_ACCOUNT_BUTTON" desc="Text shown on local account button on oobe screen.">
     Use local account
   </message>
+  <message name="IDS_ASH_DATA_RESTORE_BUTTON" desc="Text shown on data restore button on oobe screen.">
+    Restore backup
+  </message>
 </grit-part>

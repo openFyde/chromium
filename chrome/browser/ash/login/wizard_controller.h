@@ -452,6 +452,9 @@ class WizardController : public OobeUI::Observer {
   void OnOfflineLoginScreenExit(OfflineLoginScreen::Result result);
   void OnOsInstallScreenExit();
   void OnOsTrialScreenExit(OsTrialScreen::Result result);
+
+  void OnDataRestoreScreenExit();
+
   void OnConsolidatedConsentScreenExit(
       ConsolidatedConsentScreen::Result result);
   void OnGuestTosScreenExit(GuestTosScreen::Result result);

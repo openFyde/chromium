@@ -59,6 +59,7 @@
 #include "chrome/browser/ash/login/screens/account_selection_screen.h"
 #include "chrome/browser/ash/login/screens/add_child_screen.h"
 #include "chrome/browser/ash/login/screens/fyde_local_signin_screen.h"
+#include "chrome/browser/ash/login/screens/data_restore_screen.h"
 #include "chrome/browser/ash/login/screens/ai_intro_screen.h"
 #include "chrome/browser/ash/login/screens/app_downloading_screen.h"
 #include "chrome/browser/ash/login/screens/app_launch_splash_screen.h"
@@ -233,6 +234,7 @@
 #include "chrome/browser/ui/webui/ash/login/user_creation_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/welcome_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/wrong_hwid_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/data_restore_screen_handler.h"
 #include "chrome/browser/ui/webui/help/help_utils_chromeos.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
@@ -903,6 +905,11 @@ WizardController::CreateScreens() {
         base::BindRepeating(&WizardController::OnOsTrialScreenExit,
                             weak_factory_.GetWeakPtr())));
   }
+
+  append(std::make_unique<DataRestoreScreen>(
+      oobe_ui->GetView<DataRestoreScreenHandler>()->AsWeakPtr(),
+      base::BindRepeating(&WizardController::OnDataRestoreScreenExit,
+                          weak_factory_.GetWeakPtr())));
 
   if (switches::IsRevenBranding()) {
     append(std::make_unique<HWDataCollectionScreen>(
@@ -1765,6 +1772,10 @@ void WizardController::OnOsTrialScreenExit(OsTrialScreen::Result result) {
       ShowOsInstallScreen();
       break;
   }
+}
+
+void WizardController::OnDataRestoreScreenExit() {
+  VLOG(1) << "Exit DataRestoreScreen";
 }
 
 void WizardController::OnHWDataCollectionScreenExit(
@@ -3343,6 +3354,7 @@ void WizardController::AdvanceToScreen(OobeScreenId screen_id) {
              screen_id == FydeLocalSigninView::kScreenId ||
              screen_id == OsInstallScreenView::kScreenId ||
              screen_id == OsTrialScreenView::kScreenId ||
+             screen_id == DataRestoreScreenView::kScreenId ||
              screen_id == ParentalHandoffScreenView::kScreenId ||
              screen_id == HWDataCollectionView::kScreenId ||
              screen_id == SmartPrivacyProtectionView::kScreenId ||

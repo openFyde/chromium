@@ -52,6 +52,7 @@
 #include "chrome/browser/ui/webui/about/about_ui.h"
 #include "chrome/browser/ui/webui/ash/login/add_child_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/fyde_local_signin_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/data_restore_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/ai_intro_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/app_downloading_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/app_launch_splash_screen_handler.h"
@@ -566,6 +567,8 @@ void OobeUI::ConfigureOobeDisplay() {
     AddScreenHandler(std::make_unique<OsInstallScreenHandler>());
     AddScreenHandler(std::make_unique<OsTrialScreenHandler>());
   }
+
+  AddScreenHandler(std::make_unique<DataRestoreScreenHandler>());
 
   AddScreenHandler(std::make_unique<HWDataCollectionScreenHandler>());
 

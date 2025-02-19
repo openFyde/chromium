@@ -74,6 +74,7 @@
 #include "chrome/browser/ui/webui/ash/login/oobe_ui.h"
 #include "chrome/browser/ui/webui/ash/login/os_install_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/welcome_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/data_restore_screen_handler.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
@@ -1057,6 +1058,10 @@ void LoginDisplayHostWebUI::ShowGaiaDialog(const AccountId& prefilled_account) {
 
 void LoginDisplayHostWebUI::ShowOsInstallScreen() {
   StartWizard(OsInstallScreenView::kScreenId);
+}
+
+void LoginDisplayHostWebUI::ShowDataRestoreScreen() {
+  StartWizard(DataRestoreScreenView::kScreenId);
 }
 
 void LoginDisplayHostWebUI::ShowGuestTosScreen() {

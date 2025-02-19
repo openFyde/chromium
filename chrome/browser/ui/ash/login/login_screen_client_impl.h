@@ -107,6 +107,7 @@ class LoginScreenClientImpl : public ash::LoginScreenClient,
   void ShowLocalSignin() override;
   void StartUserRecovery(const AccountId& account_to_recover) override;
   void ShowOsInstallScreen() override;
+  void ShowDataRestoreScreen() override;
   void OnRemoveUserWarningShown() override;
   void RemoveUser(const AccountId& account_id) override;
   void LaunchPublicSession(const AccountId& account_id,

@@ -254,6 +254,12 @@ void LoginScreenClientImpl::ShowOsInstallScreen() {
   }
 }
 
+void LoginScreenClientImpl::ShowDataRestoreScreen() {
+  if (ash::LoginDisplayHost::default_host()) {
+    ash::LoginDisplayHost::default_host()->ShowDataRestoreScreen();
+  }
+}
+
 void LoginScreenClientImpl::ShowLocalSignin() {
   if (ash::LoginDisplayHost::default_host()) {
     ash::LoginDisplayHost::default_host()->ShowLocalDialog();
