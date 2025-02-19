@@ -94,6 +94,10 @@
 <translation id="6468776556018764845">实验性功能</translation>
 <translation id="6463286951433091842">绕过部分可信平台模块 (TPM) 的检查</translation>
 <translation id="8473208832886345753">如果系统部分依赖 TPM 的相关功能出现问题，可设置绕过在这些功能上对 TPM 的检查。</translation>
+<translation id="621731412870836460">允许该账户在设备启动时免密自动登录桌面</translation>
+<translation id="2988226676715633921">检测到该设备上已有其它账户设置了自动登录，如需为目前账户设置自动登录，需要将目前设置的自动登录设置关闭</translation>
+<translation id="1674714510072289091">该账户文件系统初始化出现未知错误，暂时无法开启；请尝试重启或重新创建账户</translation>
+<translation id="8180845003886240840">自动登录选项仅限于「本地账户」类型，目前账户类型无法开启</translation>
 <!-- chromeos_strings.override.grdp -->
 <translation id="8642537394560952908">拍摄新照片，或者选择现有照片或图标。
     <ph name="LINE_BREAK" />

@@ -21,6 +21,11 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   registry->RegisterBooleanPref(kEnableArcIMEGlobally, false);
   registry->RegisterBooleanPref(kCurrentEnableArcIMEGlobally, false);
+
+  registry->RegisterStringPref(kOfflineAutoSigninAccountIdKey, std::string());
+  registry->RegisterStringPref(kOfflineAutoSigninPassword, std::string());
+  registry->RegisterStringPref(kOfflineAutoSigninPasswordFormat, std::string());
+  registry->RegisterBooleanPref(kOfflineAutoSigninIsChromeLastSignout, false);
 }
 
 void KeepCurrentPrefs(PrefService* local_state) {

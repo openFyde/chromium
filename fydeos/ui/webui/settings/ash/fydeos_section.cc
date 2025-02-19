@@ -93,6 +93,17 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_TITLE},
     {"fydeosBypassTpmChecksDesc",
       IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_DESC},
+
+    {"autoSigninForFydeLocalAccountTitle",
+      IDS_OS_SETTINGS_FYDEOS_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_TITLE},
+    {"enableAutoSigninForFydeLocalAccountHelpMessage",
+      IDS_OS_SETTINGS_FYDEOS_ENABLE_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_MESSAGE},
+    {"autoSigninForFydeLocalAccountOtherUserAlreadyEnabled",
+      IDS_OS_SETTINGS_FYDEOS_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_ALREADY_ENABLED_BY_OTHER},
+    {"unableToSetAutoSigninForFydeLocalAccount",
+      IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT},
+    {"unableToSetAutoSigninForFydeNonLocalAccount",
+      IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_NON_LOCAL_ACCOUNT},
   };
 
   html_source->AddLocalizedStrings(kLocalizedStrings);
@@ -135,10 +146,8 @@ const char* FydeOsSection::GetSectionPath() const {
 }
 
 void FydeOsSection::AddHandlers(content::WebUI* web_ui) {
-  // web_ui->AddMessageHandler(
-  //    std::make_unique<::settings::FydeOsHandler>(profile(), pref_service_));
   web_ui->AddMessageHandler(
-      std::make_unique<FydeOsHandler>(pref_service_));
+      std::make_unique<FydeOsHandler>(profile(), pref_service_));
 }
 
 bool FydeOsSection::LogMetric(

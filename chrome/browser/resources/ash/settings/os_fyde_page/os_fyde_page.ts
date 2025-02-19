@@ -36,7 +36,7 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
       isFydeAccount_: {
         type: Boolean,
         value() {
-          return loadTimeData.getBoolean('isFydeProfile') && !loadTimeData.getBoolean('isFydeLocalAccount');
+          return loadTimeData.getBoolean('isFydeProfile');
         },
       },
 

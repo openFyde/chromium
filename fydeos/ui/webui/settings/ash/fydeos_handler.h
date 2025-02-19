@@ -23,8 +23,7 @@ class FydeOsHandler :
     public ::settings::SettingsPageUIHandler,
     public ash::TabletModeObserver {
  public:
-  // explicit FydeOsHandler(Profile* profile, PrefService* pref_service);
-  explicit FydeOsHandler(PrefService* pref_service);
+  explicit FydeOsHandler(Profile* profile, PrefService* pref_service);
   ~FydeOsHandler() override;
 
   // SettingsPageUIHandler implementation.
@@ -35,6 +34,11 @@ class FydeOsHandler :
   // TabletModeObserver:
   void OnTabletPhysicalStateChanged() override;
  private:
+  void OnSystemSaltObtained(const std::string& system_salt);
+  void HandleGetIsOfflineAutoSigninEnabled(const base::Value::List& args);
+  void HandleSaveOfflineLoginPassword(const base::Value::List& args);
+  void HandleCleanOfflineLoginPassword(const base::Value::List& args);
+
   void OnShowRotateScreenButtonChanged();
   void HandleSetShowRotateScreenButton(const base::Value::List& args);
   void HandleGetShowRotateScreenButton(const base::Value::List& args);
@@ -44,7 +48,8 @@ class FydeOsHandler :
   void HandleSetForceTpmFallback(const base::Value::List& args);
   void OnForceTpmFallbackChanged();
 
-  // Profile* profile_;
+  std::string system_salt_;
+  Profile* profile_;
   PrefService* const prefs_;
 
   PrefChangeRegistrar pref_change_registrar_;

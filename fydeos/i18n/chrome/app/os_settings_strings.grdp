@@ -101,5 +101,20 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_DESC" desc="short desc for experimental feature bypass tpm checks">
     Some of the features could fail due to incompatible TPM chip in your device, you can bypass TPM checks as a workaround.
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_TITLE" desc="title of fydeos settings enable auto signin">
+    Auto sign-in
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_ENABLE_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_MESSAGE" desc="message of fydeos settings enable auto signin">
+    Allow the current account to sign-in to desktop automatically when the device reboots
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_ALREADY_ENABLED_BY_OTHER" desc="message of other user already enabled auto signin">
+    Unable to activate for this account; there is an active auto sign-in configured for other accounts in this device
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT" desc="message of unable to turn on auto signin">
+    Unable to activate for this account; there is an unknown error when initialising the file systems for this account. Please try rebooting or creating a new account
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_NON_LOCAL_ACCOUNT" desc="message of unable to turn on auto signin for non-local account">
+    Unable to activate for this account; auto sign-in option is only available for "Local account" type.
+  </message>
 </if>
 </grit-part>

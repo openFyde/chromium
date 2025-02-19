@@ -13,14 +13,22 @@
 #include "components/user_manager/user_manager.h"
 #include "ash/wm/tablet_mode/tablet_mode_controller.h"
 #include "fydeos/prefs/fydeos_pref_names.h"
+#include "chrome/browser/ash/profiles/profile_helper.h"
+// #include "chromeos/cryptohome/system_salt_getter.h"
+// #include "chrome/browser/ash/settings/token_encryptor.h"
 
 namespace ash::settings {
 
 // FydeOsHandler::FydeOsHandler(Profile* profile, PrefService* prefs) :
 //   profile_(profile), prefs_(prefs) {}
-FydeOsHandler::FydeOsHandler(PrefService* prefs) : prefs_(prefs) {
+FydeOsHandler::FydeOsHandler(Profile* profile, PrefService* prefs) :
+  profile_(profile), prefs_(prefs) {
   DCHECK(ash::Shell::Get());
   ash::Shell::Get()->tablet_mode_controller()->AddObserver(this);
+  // TODO(fangzhou) use real system_salt_ and encryptor
+  // SystemSaltGetter::Get()->GetSystemSalt(base::BindOnce(
+  //     &FydeOsHandler::OnSystemSaltObtained, weak_ptr_factory_.GetWeakPtr()));
+  OnSystemSaltObtained("FYDEOS");
 }
 
 FydeOsHandler::~FydeOsHandler() {
@@ -29,6 +37,19 @@ FydeOsHandler::~FydeOsHandler() {
 }
 
 void FydeOsHandler::RegisterMessages() {
+  web_ui()->RegisterMessageCallback(
+      "getIsOfflineAutoSigninEnabled",
+      base::BindRepeating(&FydeOsHandler::HandleGetIsOfflineAutoSigninEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+               "saveOfflineLoginPassword",
+                base::BindRepeating(&FydeOsHandler::HandleSaveOfflineLoginPassword,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+               "cleanOfflineLoginPassword",
+                base::BindRepeating(&FydeOsHandler::HandleCleanOfflineLoginPassword,
+                          base::Unretained(this)));
+
   web_ui()->RegisterMessageCallback(
       "getShowRotateScreenButton",
       base::BindRepeating(&FydeOsHandler::HandleGetShowRotateScreenButton,
@@ -80,6 +101,85 @@ void FydeOsHandler::OnShowRotateScreenButtonChanged() {
   bool showRotate = prefs->GetBoolean(fydeos::prefs::kShowRotateScreenButton);
   FireWebUIListener("show-rotate-screen-button-changed",
                     base::Value(showRotate));
+}
+
+void FydeOsHandler::OnSystemSaltObtained(const std::string& system_salt) {
+  system_salt_ = system_salt;
+  if (IsJavascriptAllowed()) {
+    FireWebUIListener("offline-auto-signin-system-salt-obtained");
+  }
+}
+
+void FydeOsHandler::HandleGetIsOfflineAutoSigninEnabled(
+    const base::Value::List& args) {
+  AllowJavascript();
+  CHECK(args.size());
+  const base::Value& callback_id = args[0];
+  PrefService* prefs = g_browser_process->local_state();
+  const std::string& password =
+    prefs->GetString(fydeos::prefs::kOfflineAutoSigninPassword);
+  const std::string& account_id_key =
+    prefs->GetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
+  base::Value::Dict response;
+  response.Set("enabled", !account_id_key.empty() && !password.empty());
+  const user_manager::User* user =
+      ProfileHelper::Get()->GetUserByProfile(profile_);
+  if (!user->GetAccountId().HasAccountIdKey() || !user->IsFlintAccountUser()) {
+    response.Set("is_current_user", false);
+  }
+  if (user->GetAccountId().GetAccountIdKey() == account_id_key) {
+    response.Set("is_current_user", true);
+  } else {
+    response.Set("is_current_user", false);
+  }
+  response.Set("system_salt_obtained", !system_salt_.empty());
+  ResolveJavascriptCallback(callback_id, response);
+}
+
+void FydeOsHandler::HandleSaveOfflineLoginPassword(
+    const base::Value::List& args) {
+  CHECK_EQ(2u, args.size());
+  const base::Value& callback_id = args[0];
+  if (!g_browser_process || system_salt_.empty()) {
+    ResolveJavascriptCallback(callback_id, base::Value(false));
+    return;
+  }
+  std::string password = args[1].GetString();
+  if (password.empty()) {
+    ResolveJavascriptCallback(callback_id, base::Value(false));
+  }
+  user_manager::User* user =
+    ash::ProfileHelper::Get()->GetUserByProfile(profile_);
+  const AccountId account_id = user->GetAccountId();
+  if (!account_id.HasAccountIdKey()) {
+    ResolveJavascriptCallback(callback_id, base::Value(false));
+    return;
+  }
+  PrefService* prefs = g_browser_process->local_state();
+  // ash::CryptohomeTokenEncryptor encryptor(system_salt_);
+  // prefs->SetString(fydeos::prefs::kOfflineAutoSigninPassword,
+  //    encryptor.EncryptWithSystemSalt(password));
+  prefs->SetString(fydeos::prefs::kOfflineAutoSigninPassword, password);
+  prefs->SetString(fydeos::prefs::kOfflineAutoSigninPasswordFormat,
+      "plaintext");
+  prefs->SetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey,
+      account_id.GetAccountIdKey());
+  ResolveJavascriptCallback(callback_id, base::Value(true));
+}
+
+void FydeOsHandler::HandleCleanOfflineLoginPassword(
+    const base::Value::List& args) {
+  CHECK_EQ(1u, args.size());
+  const base::Value& callback_id = args[0];
+  if (!g_browser_process) {
+    ResolveJavascriptCallback(callback_id, base::Value(false));
+    return;
+  }
+  PrefService* prefs = g_browser_process->local_state();
+  prefs->SetString(fydeos::prefs::kOfflineAutoSigninPassword, std::string());
+  prefs->SetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey,
+      std::string());
+  ResolveJavascriptCallback(callback_id, base::Value(true));
 }
 
 void FydeOsHandler::HandleSetShowRotateScreenButton(

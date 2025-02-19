@@ -23,5 +23,11 @@ const char kForceTpmFallback[] = "force_tpm_fallback";
 const char kShowRebootButtonInTray[] = "show_reboot_button_in_tray";
 const char kShowRotateScreenButton[] = "show_rotate_screen_button";
 
+const char kOfflineAutoSigninAccountIdKey[] = "offline_auto_signin.account_id_key";
+const char kOfflineAutoSigninPassword[] = "offline_auto_signin.password";
+const char kOfflineAutoSigninPasswordFormat[] = "offline_auto_signin.password_format";
+const char kOfflineAutoSigninIsChromeLastSignout[] = "offline_auto_signin.chrome_signout";
+
+const char kFactoryResetRequested[] = "FactoryResetRequested";
 }
 }
