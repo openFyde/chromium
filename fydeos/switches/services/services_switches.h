@@ -23,6 +23,9 @@ extern std::string GetFydeOSAppStoreURL();
 
 extern std::string GetFydeOSWebStoreUpdateUrl();
 
+CHROMEOS_EXPORT std::string MayConvertWebStoreUpdateUrl(
+    const std::string& url);
+
 } // switches
 } // fydeos
 

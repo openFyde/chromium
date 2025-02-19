@@ -146,7 +146,12 @@ base::Value::Dict ProfileInfoHandler::GetAccountNameAndIcon() {
   // issues with caching.
   scoped_refptr<base::RefCountedMemory> image =
       ash::UserImageSource::GetUserImage(user->GetAccountId());
-  icon_url = webui::GetPngDataUrl(*image);
+  user_manager::UserImage::ImageFormat image_type =
+      ash::UserImageSource::GetUserImageFormat(user->GetAccountId());
+  if (image_type == user_manager::UserImage::FORMAT_WEBP)
+    icon_url = webui::GetWebPDataUrl(image->front(), image->size());
+  else
+    icon_url = webui::GetPngDataUrl(*image);
 #else   // !BUILDFLAG(IS_CHROMEOS_ASH)
   ProfileAttributesEntry* entry =
       g_browser_process->profile_manager()

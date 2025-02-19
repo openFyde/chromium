@@ -281,4 +281,10 @@
       Steam for Chromebook (beta) is not available on your FydeOS device.
     </message>
   </if>
+  <message name="IDS_CROSTINI_INSTALLER_NEED_UPDATE_TITLE" desc="Title shown in the Crostini installer dialog when the VM fails to install because the device must be updated">
+    FydeOS update required
+  </message>
+  <message name="IDS_CROSTINI_INSTALLER_NEED_UPDATE_ERROR" desc="Text shown in the Crostini installer dialog when the VM fails to install because the device must be updated first">
+    To finish setting up Linux, update FydeOS and try again.
+  </message>
 </grit-part>

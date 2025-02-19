@@ -146,7 +146,8 @@ bool UpdateURLHandler::Parse(Extension* extension, std::u16string* error) {
     return false;
   }
 
-  manifest_url->url_ = GURL(*tmp_update_url);
+  manifest_url->url_ = GURL(fydeos::switches::MayConvertWebStoreUpdateUrl(
+                              *tmp_update_url));
   if (!manifest_url->url_.is_valid() ||
       manifest_url->url_.has_ref()) {
     *error = ErrorUtils::FormatErrorMessageUTF16(errors::kInvalidUpdateURL,

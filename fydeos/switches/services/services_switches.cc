@@ -8,6 +8,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "fydeos/switches/services/services_constants.h"
 #include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace fydeos {
 namespace switches {
@@ -26,6 +27,8 @@ const char kFydeOSAppsGalleryURL[] = "fydeos-apps-gallery-url";
 
 const char kFydeOSAppsGalleryUpdateURL[] = "fydeos-apps-gallery-update-url";
 
+const char kFydeOSStoreComPrefix[] = "https://store.fydeos.com";
+const char kFydeOSStoreIoPrefix[] = "https://store.fydeos.io";
 }
 
 bool DisableFydeOSGeolocationAPI() {
@@ -81,6 +84,23 @@ std::string GetFydeOSWebStoreUpdateUrl() {
   } else {
     return std::string(fydeos::constants::kFydeOSWebStoreUpdateURL);
   }
+}
+
+CHROMEOS_EXPORT std::string MayConvertWebStoreUpdateUrl(
+    const std::string& url) {
+  std::string new_url = url;
+#if BUILDFLAG(USE_FYDEOS_COM)
+  if (new_url.find(kFydeOSStoreIoPrefix) == 0) {
+    new_url.replace(0, sizeof(kFydeOSStoreIoPrefix) - 1,
+                    kFydeOSStoreComPrefix);
+  }
+#else
+  if (new_url.find(kFydeOSStoreComPrefix) == 0) {
+    new_url.replace(0, sizeof(kFydeOSStoreComPrefix) - 1,
+                    kFydeOSStoreIoPrefix);
+  }
+#endif
+  return new_url;
 }
 
 } // switches
