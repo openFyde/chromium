@@ -68,7 +68,7 @@
           sub-label="$i18n{audioAndCaptionsLinkDescription}"
           role-description="$i18n{subpageArrowRoleDescription}">
       </cr-link-row>
-      <template is="dom-if" if="[[!isGuest_]]">
+      <template is="dom-if" if="[[shouldShowAdditionalFeaturesLink_(isGuest_)]]">
         <cr-link-row
             id="additionalFeaturesLink" class="hr"
             start-icon="[[rowIcons_.findMore]]"

@@ -51,6 +51,7 @@ const char kBluetoothPairingLearnMoreUrl[] = "https://fydeos.com/docs/manual/con
 const char kFileManagerHelpURL[] = "https://fydeos.com/docs/manual/manage-your-apps/files-and-downloads/open-save-or-delete-files/";
 const char kTabletModeGesturesLearnMoreURL[] = "https://fydeos.com/docs/manual/customize-settings/use-tablets/use-gestures-or-buttons-to-navigate-in-tablet-mode";
 const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.com/docs/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/";
+const char kFingerprintLearnMoreURL[] = "https://fydeos.com/docs/manual/customize-settings/users-and-sync/set-up-and-sign-in-with-fingerprint-on-your-fydeos-device";
 
 #else
 
@@ -96,6 +97,7 @@ const char kBluetoothPairingLearnMoreUrl[] = "https://fydeos.io/docs/manual/conn
 const char kFileManagerHelpURL[] = "https://fydeos.io/docs/manual/manage-your-apps/files-and-downloads/open-save-or-delete-files/";
 const char kTabletModeGesturesLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/use-tablets/use-gestures-or-buttons-to-navigate-in-tablet-mode";
 const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.io/docs/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/";
+const char kFingerprintLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/users-and-sync/set-up-and-sign-in-with-fingerprint-on-your-fydeos-device";
 
 #endif
 

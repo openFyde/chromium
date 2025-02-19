@@ -54,6 +54,7 @@ extern const char kBluetoothPairingLearnMoreUrl[];
 extern const char kFileManagerHelpURL[];
 extern const char kTabletModeGesturesLearnMoreURL[];
 extern const char kRuntimeHostPermissionsHelpURL[];
+extern const char kFingerprintLearnMoreURL[];
 
 }  // namespace fydeos::constants
 
