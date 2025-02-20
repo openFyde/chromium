@@ -168,7 +168,8 @@ void AssistantControllerImpl::OpenUrl(const GURL& url,
   }
 
   if (assistant::util::IsDeepLinkUrl(url)) {
-    if (ash::features::IsFydeAssistantEnabled() && assistant::util::GetDeepLinkType(url) == assistant::util::DeepLinkType::kQuery) {
+    if (ash::features::IsFydeAssistantEnabled() && assistant::util::GetDeepLinkType(url) == assistant::util::DeepLinkType::kQuery &&
+        AssistantState::Get()->fyde_assistant_enabled().value_or(false)) {
       // only AssistantInteractionControllerImpl will handle the query deep link, which will call ShowUi
       NotifyDeepLinkReceived(url);
       return;

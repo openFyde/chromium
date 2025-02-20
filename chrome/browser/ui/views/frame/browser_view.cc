@@ -301,6 +301,7 @@
 #include "chromeos/ui/frame/caption_buttons/frame_size_button.h"
 #include "chromeos/ui/wm/desks/desks_helper.h"
 #include "ui/compositor/throughput_tracker.h"
+#include "ash/public/cpp/assistant/assistant_state.h"
 #else
 #include "chrome/browser/ui/signin/signin_view_controller.h"
 #endif  // BUILDFLAG(IS_CHROMEOS)
@@ -3371,7 +3372,7 @@ content::KeyboardEventProcessingResult BrowserView::PreHandleKeyboardEvent(
 
   // we still need ctrl+c for triggering ai bubble
 #if BUILDFLAG(IS_CHROMEOS_ASH)
-  const bool accelerator_for_ai = ash::features::IsFydeAssistantEnabled() && accelerator.key_code() == ui::VKEY_C;
+  const bool accelerator_for_ai = ash::features::IsFydeAssistantEnabled() && ash::AssistantState::Get()->fyde_assistant_enabled().value_or(false) && accelerator.key_code() == ui::VKEY_C;
 #else
   const bool accelerator_for_ai = false;
 #endif

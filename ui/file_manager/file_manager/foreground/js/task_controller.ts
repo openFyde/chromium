@@ -585,6 +585,17 @@ export class TaskController {
     }
   }
 
+  async openFileWithFydeosAI(entries: Array<Entry|FilesAppEntry>) {
+    const task: chrome.fileManagerPrivate.FileTaskDescriptor = {
+      appId: 'kdakbcblgfmbajedcadmjjjlkammcpaj',
+      taskType: 'web',
+      actionId: 'open-with',
+    };
+    chrome.fileManagerPrivate.executeTask(task, entries as FileEntry[], (result: chrome.fileManagerPrivate.TaskResult) => {
+      console.log(result);
+    });
+  }
+
   /**
    * Starts the Zip extract Here IO Task.
    * @param {!Array<!Entry|FilesAppEntry>} entries

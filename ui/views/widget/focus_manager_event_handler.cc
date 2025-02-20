@@ -30,7 +30,7 @@ FocusManagerEventHandler::~FocusManagerEventHandler() {
 void FocusManagerEventHandler::OnKeyEvent(ui::KeyEvent* event) {
   bool has_focused_view = widget_ && widget_->GetFocusManager() && widget_->GetFocusManager()->GetFocusedView() != nullptr;
 #if BUILDFLAG(IS_CHROMEOS_ASH)
-  bool special_key = event->IsControlDown() && event->key_code() == ui::VKEY_C && ash::features::IsFydeAssistantEnabled();
+  bool special_key = event->IsControlDown() && event->key_code() == ui::VKEY_C;
 #else
   bool special_key = false;
 #endif

@@ -963,6 +963,10 @@ void AppListControllerImpl::OnAssistantStatusChanged(
   UpdateSearchBoxUiVisibilities();
 }
 
+void AppListControllerImpl::OnFydeAssistantEnabled(bool enabled) {
+  UpdateSearchBoxUiVisibilities();
+}
+
 void AppListControllerImpl::OnAssistantSettingsEnabled(bool enabled) {
   UpdateSearchBoxUiVisibilities();
 }
@@ -1787,7 +1791,7 @@ SearchModel* AppListControllerImpl::GetSearchModel() {
 
 void AppListControllerImpl::UpdateSearchBoxUiVisibilities() {
   SearchBoxModel* search_box_model = GetSearchModel()->search_box();
-  search_box_model->SetShowAssistantButton(IsAssistantAllowedAndEnabled() || ash::features::IsFydeAssistantEnabled());
+  search_box_model->SetShowAssistantButton(IsAssistantAllowedAndEnabled() || IsFydeAssistantEnabled());
   search_box_model->SetShowSunfishButton(
       CaptureModeController::IsSunfishAllowedAndEnabled());
 
@@ -1878,6 +1882,15 @@ bool AppListControllerImpl::ShouldShowHomeScreen() const {
   }
 
   return !SplitViewController::Get(window)->InSplitViewMode();
+}
+
+bool AppListControllerImpl::IsFydeAssistantEnabled() const {
+  auto featureEnabled = ash::features::IsFydeAssistantEnabled();
+  if (!featureEnabled) {
+    return false;
+  }
+  auto* state = AssistantState::Get();
+  return state->fyde_assistant_enabled().value_or(false);
 }
 
 void AppListControllerImpl::UpdateForOverviewModeChange(bool show_home_launcher,

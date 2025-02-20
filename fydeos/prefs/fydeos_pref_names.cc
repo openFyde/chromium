@@ -32,5 +32,8 @@ const char kOfflineAutoSigninIsChromeLastSignout[] = "offline_auto_signin.chrome
 const char kFactoryResetRequested[] = "FactoryResetRequested";
 
 const char kRebootRequiredForWidevine[] = "reboot_required_for_widevine";
+
+const char kFydeAssistantEnabled[] = "fyde_assistant_enabled";
+const char kFydeAssistantExtraAcceleratorEnabled[] = "fyde_assistant_extra_accelerator_enabled";
 }
 }

@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "ash/fydeos_ai/fydeos_ai_view.h"
+#include "ash/constants/ash_features.h"
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
@@ -21,11 +22,17 @@ namespace ash {
 FydeAssistantView::FydeAssistantView(aura::Window* container) {
   Shell::Get()->session_controller()->AddObserver(this);
   Shell::Get()->AddPreTargetHandler(this);
+  AssistantState::Get()->AddObserver(this);
 }
 
 FydeAssistantView::~FydeAssistantView() {
-  Shell::Get()->RemovePreTargetHandler(this);
-  Shell::Get()->session_controller()->RemoveObserver(this);
+  if (Shell::Get()) {
+    Shell::Get()->RemovePreTargetHandler(this);
+    Shell::Get()->session_controller()->RemoveObserver(this);
+  }
+  if (AssistantState::Get()) {
+    AssistantState::Get()->RemoveObserver(this);
+  }
 }
 
 bool FydeAssistantView::IsVisible() const {
@@ -39,7 +46,17 @@ void FydeAssistantView::RemoveObserver(FydeAssistantViewObserver* observer) cons
   observers_.RemoveObserver(observer);
 }
 
+void FydeAssistantView::InitializeBubble() {
+  if (bubble_initialized_) return;
+  bubble_ = new FydeAssistantBubble(gfx::Rect(display::Screen::GetScreen()->GetCursorScreenPoint(), gfx::Size()));
+  bubble_->InitWebView(this);
+  bubble_initialized_ = true;
+}
+
 void FydeAssistantView::ShowBubble() {
+  if (!enabled_) {
+    return;
+  }
   if (IsVisible()) {
     return;
   }
@@ -103,13 +120,23 @@ void FydeAssistantView::Hide() {
 }
 
 void FydeAssistantView::OnSessionStateChanged(session_manager::SessionState state) {
-  if (state == session_manager::SessionState::ACTIVE) {
-    bubble_ = new FydeAssistantBubble(gfx::Rect(display::Screen::GetScreen()->GetCursorScreenPoint(), gfx::Size()));
-    bubble_->InitWebView(this);
+  if (enabled_ && state == session_manager::SessionState::ACTIVE) {
+    InitializeBubble();
+  }
+}
+
+void FydeAssistantView::OnFydeAssistantExtraAcceleratorEnabled(bool enabled) {
+  enabled_ = enabled;
+
+  if (enabled_) {
+    InitializeBubble();
   }
 }
 
 void FydeAssistantView::UpdateLastClipboardItem(const ClipboardHistoryItem& item) {
+  if (!enabled_) {
+    return;
+  }
   VLOG(3) << "clipboard update";
   last_clipboard_item_time_ = base::TimeTicks::Now();
   last_clipboard_item_.display_format = static_cast<int>(item.display_format());
@@ -123,6 +150,9 @@ void FydeAssistantView::UpdateLastClipboardItem(const ClipboardHistoryItem& item
 }
 
 bool FydeAssistantView::CanHandleToggleFydeOSAssistant() {
+  if (!enabled_) {
+    return false;
+  }
   if (!ready_to_show_bubble_) {
     return false;
   }

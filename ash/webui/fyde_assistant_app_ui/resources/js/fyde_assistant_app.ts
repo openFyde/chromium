@@ -74,6 +74,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   private isFromBubble_: boolean;
   private isEventBinded_: boolean;
   private systemColors_: SystemColorInfo;
+  private files_: File[];
 
   constructor() {
     super();
@@ -85,6 +86,26 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.isFromBubble_ = false;
     this.isEventBinded_ = false;
     this.systemColors_ = { base: '', shaded: '', header: '', primary: '' };
+    this.files_ = [];
+    if (window.launchQueue) {
+      window.launchQueue.setConsumer(this.consumerFiles.bind(this));
+    }
+    if(!loadTimeData.getBoolean('isFydeOSAssistantEnabled')) {
+      window.open('chrome://os-settings/osFydeAssistant');
+      window.close();
+    }
+  }
+
+  async consumerFiles(launchParams: LaunchParams) {
+    const handles = launchParams.files as FileSystemFileHandle[];
+    const promises = handles.map(async (handle) => {
+      const file = await handle.getFile();
+      return file;
+    });
+    this.files_ = await Promise.all(promises);
+    if (this.loaded_) {
+      this.sendMessage({ method: 'files', data: { files: this.files_ } });
+    }
   }
 
   override ready(): void {
@@ -250,7 +271,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.showWebview_ = true;
     chrome.send('onFydeAssistantSwaInit');
     this.bindEvents_();
-    this.sendMessage({ method: 'init' });
+    this.sendMessage({ method: 'init', data: { files: this.files_ } });
     this.webview_.focus();
   }
 

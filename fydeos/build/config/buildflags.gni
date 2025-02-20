@@ -5,4 +5,5 @@
 declare_args() {
   use_fydeos_com = false
   is_openfyde = true
+  fydeos_device = false
 }

@@ -35,6 +35,9 @@ extern const char kOfflineAutoSigninIsChromeLastSignout[];
 extern const char kFactoryResetRequested[];
 
 extern const char kRebootRequiredForWidevine[];
+
+extern const char kFydeAssistantEnabled[];
+extern const char kFydeAssistantExtraAcceleratorEnabled[];
 } // prefs
 } // fydeos
 

@@ -44,7 +44,7 @@ constexpr char kIdPrefix[] = "googleassistant_text://";
 // results.
 bool AreResultsAllowed() {
   if (ash::features::IsFydeAssistantEnabled()) {
-    return true;
+    return ash::AssistantState::Get()->fyde_assistant_enabled().value_or(false);
   }
 
   if (base::FeatureList::IsEnabled(

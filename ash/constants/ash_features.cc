@@ -12,7 +12,6 @@
 #include "build/chromeos_buildflags.h"
 #include "chromeos/components/libsegmentation/buildflags.h"
 #include "chromeos/constants/chromeos_features.h"
-#include "fydeos/build/config/buildflags.h"
 #include "fydeos/switches/misc/misc_switches.h"
 
 #if defined(ARCH_CPU_ARM_FAMILY)
@@ -2390,11 +2389,7 @@ const base::FeatureParam<base::TimeDelta> kPhoneHubCameraRollThrottleInterval{
 
 BASE_FEATURE(kFydeAssistant,
              "FydeAssistant",
-#if BUILDFLAG(IS_OPENFYDE)
              base::FEATURE_ENABLED_BY_DEFAULT);
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#endif
 
 // Enable PhoneHub features setup error handling, which handles different
 // setup response from remote phone device.

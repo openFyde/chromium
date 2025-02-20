@@ -414,8 +414,15 @@ bool IsShortcutBlockedByPolicy(ui::Accelerator accelerator) {
       {accelerator.key_code(), accelerator.modifiers()});
 }
 
-bool CanHandleToggleFydeOSAssistant() {
+bool CanToggleAssistant() {
   if (!ash::features::IsFydeAssistantEnabled()) {
+    return false;
+  }
+  return AssistantState::Get()->fyde_assistant_enabled().value_or(false);
+}
+
+bool CanHandleToggleFydeOSAssistantBubble() {
+  if (!CanToggleAssistant()) {
     return false;
   }
   Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
@@ -951,7 +958,7 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kToggleStylusTools:
       return accelerators::CanShowStylusTools();
     case AcceleratorAction::kStartAssistant:
-      return ash::features::IsFydeAssistantEnabled();
+      return CanToggleAssistant();
     case AcceleratorAction::kStopScreenRecording:
       return accelerators::CanStopScreenRecording();
     case AcceleratorAction::kSwapPrimaryDisplay:
@@ -987,7 +994,7 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kEnableSelectToSpeak:
       return true;
     case AcceleratorAction::kToggleFydeosAssistant:
-      return CanHandleToggleFydeOSAssistant();
+      return CanHandleToggleFydeOSAssistantBubble();
     case AcceleratorAction::kEnableOrToggleDictation:
       return accelerators::CanEnableOrToggleDictation();
     case AcceleratorAction::kToggleDockedMagnifier:

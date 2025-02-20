@@ -10,6 +10,7 @@
 #include "base/observer_list_types.h"
 #include "ui/events/event.h"
 #include "ui/events/event_handler.h"
+#include "ash/public/cpp/assistant/assistant_state.h"
 
 namespace views {
 class View;
@@ -40,7 +41,8 @@ class FydeAssistantViewObserver : public base::CheckedObserver  {
 
 class FydeAssistantBubble;
 
-class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHandler {
+class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHandler,
+                                     public AssistantStateObserver {
  public:
   explicit FydeAssistantView(aura::Window* container);
 
@@ -72,10 +74,16 @@ class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHan
 
   void ProcessPressedEvent(ui::LocatedEvent* event);
 
+  void OnFydeAssistantExtraAcceleratorEnabled(bool enabled) override;
+
   void Show();
   void Hide();
 
+  void InitializeBubble();
+
+  bool enabled_ = false;
   bool ready_to_show_bubble_ = false;
+  bool bubble_initialized_ = false;
   bool should_show_bubble_delay_ = false;
   base::TimeTicks last_clipboard_item_time_ = base::TimeTicks::Min();
   base::TimeTicks last_time_triggered_ = base::TimeTicks::Min();

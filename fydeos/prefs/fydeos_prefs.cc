@@ -12,6 +12,9 @@ namespace prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFydeOSImprovementPlanEnabled, false);
+
+  registry->RegisterBooleanPref(kFydeAssistantEnabled, true);
+  registry->RegisterBooleanPref(kFydeAssistantExtraAcceleratorEnabled, true);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
