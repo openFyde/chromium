@@ -47,6 +47,8 @@ import {Router, routes} from '../router.js';
 import type {AboutPageBrowserProxy, AboutPageUpdateInfo, BrowserChannel, RegulatoryInfo, TpmFirmwareUpdateStatusChangedEvent, UpdateStatusChangedEvent} from './about_page_browser_proxy.js';
 import {AboutPageBrowserProxyImpl, browserChannelToI18nId, UpdateStatus} from './about_page_browser_proxy.js';
 import {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './popup_license_window.js';
+import {FydeOSBoardNameTitleMap, FydeOSBoardNameReleaseNameMap} from './fydeos_board_name.js';
+
 import {getTemplate} from './os_about_page.html.js';
 
 declare global {
@@ -1042,6 +1044,46 @@ export class OsAboutPageElement extends OsAboutPageBase {
         });
     extendedUpdatesObserver.observe(this.$.extendedUpdatesButton);
   }
+
+  getFydeOSVersion_() {
+    return this.i18nAdvanced('aboutFydeOSVersionWithoutLicenseState', {
+      substitutions: [
+        this.i18n('aboutOsProductTitle'),
+        this.getTitleForFydeOSDeviceName_(),
+        this.i18n('aboutFydeOSVersionNumber'),
+        this.i18n('aboutFydeOSPlatformVersion'),
+        this.i18n('aboutFydeOSChromiumVersion'),
+      ]
+    });
+  }
+
+  tryRemoveSuffix_(boardName: string) {
+    const suffixes = ['-com', '-io'];
+    for (const suffix of suffixes) {
+      if (boardName.endsWith(suffix)) {
+        return boardName.substring(0, boardName.length - suffix.length);
+      }
+    }
+    return boardName;
+  }
+
+  getTitleForFydeOSDeviceName_() {
+    const fydeosBoardName = loadTimeData.getString('aboutFydeOSBoardName') || '';
+    let name = this.tryRemoveSuffix_(fydeosBoardName);
+    let prefix = FydeOSBoardNameReleaseNameMap[name] || '';
+    let title = FydeOSBoardNameTitleMap[name] || '';
+    if (!prefix && !title) {
+      return name;
+    }
+    if (title && !prefix) {
+      prefix = 'for You';
+    }
+
+    if (prefix && !title) {
+      return prefix; // vmware
+    }
+    return `${prefix} (${title})`;
+   }
 
   fydeOTAToggleInit_() {
     this.aboutBrowserProxy_.getEnabledFydeOTA().then(enabled => {

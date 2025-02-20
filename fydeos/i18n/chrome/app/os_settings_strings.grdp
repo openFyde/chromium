@@ -167,5 +167,41 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_TOGGLE_ARC_MEDIA_AUTO_SCAN_LABEL" desc="Text for toggling arc media autoscan">
     Disable automatic media file scanning for all partitions to optimize battery life. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION_WITHOUT_LICENSE_STATE" desc="The text label describing the version of the browser, example: FydeOS for PC (apu), v18.0-SP1, Platform 15662.71.18.6">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="DEVICE_VARIANT">$2<ex> for PC (apu)</ex></ph>, <ph name="FYDEOS_MAJOR_VERSION">$3<ex>v9.0</ex></ph>
+    <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
+    Platform <ph name="FYDEOS_PLATFORM_VERSION">$4<ex>12739.22.9.15</ex></ph>
+    <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
+    Chromium <ph name="PRODUCT_VERSION">$5<ex>57.0.2937.0</ex></ph>
+  </message>
+  <if expr="use_fydeos_license">
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_STATE_LOADING" desc="loading text of license info page">
+     Loading...
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_RETRY_BUTTON" desc="text of retry button in license page">
+     Retry
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_OFFLINE_HINT_MESSAGE" desc="offline message in license page">
+     Currently offline
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_MENU" desc="title of license info menu in os about page">
+     Check your FydeOS subscription online
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_TITLE" desc="title of license info page">
+     FydeOS subscription information
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_ERROR_MACHINE_ID" desc="error message of reading machine id/(license info)">
+     There is an error with getting your Device ID
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_EXPIRE_DATE_LABEL" desc="text of expire date label in license page">
+     Subscription ends
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_ID_LABEL" desc="text of id label in license page">
+     Device ID
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_RETRY_WEBVIEW_BUTTON" desc="text of retry webview button in license page">
+     Check your subscription online
+   </message>
+  </if>
 </if>
 </grit-part>

@@ -6,4 +6,6 @@
 <translation id="4463105096332878535">桌面模式</translation>
 <translation id="5367350932098892883">平板模式</translation>
 <translation id="102310946874312210">默认模式</translation>
+<translation id="3304408958020366228">重要信息</translation>
+<translation id="431777047441474186">很抱歉，由于订阅到期，您的 FydeOS 会话将在 <ph name="LOGOUT_DELAY" /> 秒后自动登出。</translation>
 </translationbundle>

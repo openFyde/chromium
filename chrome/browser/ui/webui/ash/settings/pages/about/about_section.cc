@@ -41,6 +41,7 @@
 #include "components/signin/public/identity_manager/tribool.h"
 #include "components/strings/grit/components_branded_strings.h"
 #include "components/strings/grit/components_strings.h"
+#include "components/version_info/version_info.h"
 #include "components/version_ui/version_ui_constants.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -48,6 +49,7 @@
 #include "ui/chromeos/devicetype_utils.h"
 #include "fydeos/switches/urls/urls_constants.h"
 #include "fydeos/switches/license/license_switches.h"
+#include "chromeos/version/version_loader.h"
 
 namespace ash::settings {
 
@@ -409,6 +411,8 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_TURN_OFF_BUTTON},
       {"aboutConsumerAutoUpdateToggleKeepUpdatesButton",
        IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_KEEP_UPDATES_BUTTON},
+      {"aboutFydeOSVersionWithoutLicenseState",
+       IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION_WITHOUT_LICENSE_STATE},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
@@ -451,6 +455,16 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
 
   html_source->AddString("aboutBrowserVersion",
                          VersionUI::GetAnnotatedVersionStringForUi());
+  std::string fydeosMajorVersion = base::SysInfo::GetLsbFydeReleaseVersion();
+  if (fydeosMajorVersion == "" || fydeosMajorVersion == "unknown") {
+    fydeosMajorVersion = "";
+  } else {
+    fydeosMajorVersion = "v" + fydeosMajorVersion;
+  }
+  auto version = chromeos::version_loader::GetVersion(chromeos::version_loader::VERSION_SHORT);
+  html_source->AddString("aboutFydeOSPlatformVersion", version.value_or(""));
+  html_source->AddString("aboutFydeOSChromiumVersion", std::string(version_info::GetVersionNumber()));
+  html_source->AddString("aboutFydeOSVersionNumber", fydeosMajorVersion);
   html_source->AddString("aboutFydeOSBoardName", base::SysInfo::GetLsbReleaseBoard());
   html_source->AddString(
       "aboutProductCopyright",

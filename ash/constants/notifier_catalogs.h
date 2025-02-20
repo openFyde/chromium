@@ -210,7 +210,8 @@ enum class NotificationCatalogName {
   kOnTaskAddContentToBundle = 191,
   kOnTaskRemoveContentFromBundle = 192,
   kFydeOSDataBackup = 193,
-  kMaxValue = kFydeOSDataBackup
+  kFydeOSLicenseEnforcement = 194,
+  kMaxValue = kFydeOSLicenseEnforcement
 };
 
 // A living catalog that registers system nudges.

@@ -4,6 +4,18 @@
 
 declare_args() {
   use_fydeos_com = false
-  is_openfyde = true
+  is_openfyde = false
   fydeos_device = false
+}
+
+declare_args() {
+  use_fydeos_license = !is_openfyde
+}
+
+if (is_openfyde) {
+  assert(!use_fydeos_license)
+}
+
+if (use_fydeos_license) {
+  assert(!is_openfyde)
 }

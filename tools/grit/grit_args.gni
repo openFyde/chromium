@@ -37,6 +37,7 @@ _grit_defines = [
 
   "openfyde=${is_openfyde}",
   "use_fydeos_com=${use_fydeos_com}",
+  "use_fydeos_license=${use_fydeos_license}",
 
   # Mac and iOS want Title Case strings.
   "use_titlecase=${is_apple}",

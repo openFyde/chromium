@@ -82,6 +82,11 @@
 <translation id="2347352406101856238"><ph name="DEVICE_OS" /> 自动更新已开启</translation>
 <translation id="185834232609012804"><ph name="DEVICE_OS" /> 自动更新已禁用</translation>
 <translation id="6095651579470426894"><ph name="DEVICE_OS" /> <ph name="FYDEOS_MAJOR_VERSION" />（<ph name="PRODUCT_CHANNEL"></ph>）平台 <ph name="FYDEOS_PLATFORM_VERSION" /><ph name="PRODUCT_VERSION_BITS" /></translation>
+<translation id="2457611068936326841"><ph name="DEVICE_OS" /> <ph name="DEVICE_VARIANT" />，<ph name="FYDEOS_MAJOR_VERSION" />
+    <ph name="LINE_BREAKS1" />
+    平台 <ph name="FYDEOS_PLATFORM_VERSION" />
+    <ph name="LINE_BREAKS2" />
+    Chromium <ph name="PRODUCT_VERSION" /></translation>
 <translation id="1079017345574916945">远程桌面</translation>
 <translation id="6898090158927982244">您的 Linux 已是最新版本</translation>
 <translation id="125640132000960723">检测到 Linux 子系统有可用重要更新。强烈建议尽早执行更新，否则 Linux 子系统有可能停止工作。</translation>
@@ -126,6 +131,12 @@
 <translation id="996700315270946845">请输入当前账户的登录密码</translation>
 <translation id="8663988871299316062">请务必牢记此密码，恢复备份时会用到</translation>
 <translation id="3176232846379750386">禁用多分区下的媒体文件自动扫描以获得更长的电池续航时间。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="771827447936691071">联网查看您的 FydeOS 订阅信息</translation>
+<translation id="2377461835684104822">FydeOS 订阅信息</translation>
+<translation id="6382379769502480932">读取设备识别码信息失败</translation>
+<translation id="7384698100459834045">订阅有效期</translation>
+<translation id="3354919960795782984">设备识别码</translation>
+<translation id="5758632069869992306">联网查看订阅信息</translation>
 <!-- chromeos_strings.override.grdp -->
 <translation id="8642537394560952908">拍摄新照片，或者选择现有照片或图标。
     <ph name="LINE_BREAK" />

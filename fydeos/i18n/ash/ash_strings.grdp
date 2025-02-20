@@ -15,4 +15,13 @@
   <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_DEFAULT_MODE" desc="label of unified menu switch to default mode">
     Default mode
   </message>
+  <if expr="use_fydeos_license">
+    <!-- fydeos license -->
+    <message name="IDS_ASH_FYDEOS_ENFORCEMENT_FORCE_QUIT_NOTIFICATION_TITLE" desc="title of license enforcement for quit notification">
+      Important information
+    </message>
+    <message name="IDS_ASH_FYDEOS_ENFORCEMENT_FORCE_QUIT_NOTIFICATION_MESSAGE" desc="message of license enforcement for quit notification">
+      Apologies, your subscription has ended. Your current FydeOS session will be signed out in <ph name="LOGOUT_DELAY">$1<ex>900</ex></ph> seconds.
+    </message>
+  </if>
 </grit-part>
