@@ -24,6 +24,7 @@
 #include "ash/display/screen_orientation_controller.h"
 #include "ash/focus_cycler.h"
 #include "ash/frame/non_client_frame_view_ash.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ash/game_dashboard/game_dashboard_controller.h"
 #include "ash/glanceables/glanceables_controller.h"
 #include "ash/ime/ime_controller_impl.h"
@@ -1461,6 +1462,14 @@ void TogglePicker(base::TimeTicks accelerator_timestamp) {
 
 void EnableSelectToSpeak() {
   Shell::Get()->accessibility_controller()->EnableSelectToSpeakWithDialog();
+}
+
+void ToggleFydeOSAssistant() {
+  if (!ash::features::IsFydeAssistantEnabled()) {
+    return;
+  }
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  shelf->fyde_assistant_view()->ShowBubble();
 }
 
 void EnableOrToggleDictation() {
