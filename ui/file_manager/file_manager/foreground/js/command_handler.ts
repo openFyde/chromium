@@ -55,6 +55,7 @@ export interface CommandHandlerDeps {
   crostini: Crostini;
   guestMode: boolean;
   trashEnabled: boolean;
+  fydeAssistantEnabled: boolean;
 
   getCurrentDirectoryEntry(): DirectoryEntry|FilesAppEntry|null|undefined;
   getSelection(): FileSelection;

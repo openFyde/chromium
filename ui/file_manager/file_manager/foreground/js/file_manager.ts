@@ -340,6 +340,8 @@ export class FileManager {
    */
   private guestMode_: boolean = false;
 
+  private fydeAssistantEnabled_: boolean = false;
+
   private store_ = getStore();
 
   /**
@@ -448,6 +450,10 @@ export class FileManager {
    */
   get guestMode(): boolean {
     return this.guestMode_;
+  }
+
+  get fydeAssistantEnabled(): boolean {
+    return this.fydeAssistantEnabled_;
   }
 
   /**
@@ -1578,6 +1584,8 @@ export class FileManager {
     if (!prefs) {
       return;
     }
+
+    this.fydeAssistantEnabled_ = prefs.fydeAssistantEnabled;
 
     if (this.driveEnabled_ !== prefs.driveEnabled) {
       this.driveEnabled_ = prefs.driveEnabled;

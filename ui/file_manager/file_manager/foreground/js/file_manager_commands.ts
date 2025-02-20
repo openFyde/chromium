@@ -1750,6 +1750,9 @@ export class OpenWithFydeosAICommand extends FilesCommand {
     if (isOnTrashRoot(fileManager)) {
       return;
     }
+    if (!fileManager.fydeAssistantEnabled) {
+      return;
+    }
     const dirEntry = fileManager.getCurrentDirectoryEntry();
     const selection = fileManager.getSelection();
     if (!dirEntry ||
@@ -1763,6 +1766,11 @@ export class OpenWithFydeosAICommand extends FilesCommand {
 
   override canExecute(event: CanExecuteEvent, fileManager: CommandHandlerDeps) {
     if (isOnTrashRoot(fileManager)) {
+      event.canExecute = false;
+      event.command.setHidden(true);
+      return;
+    }
+    if (!fileManager.fydeAssistantEnabled) {
       event.canExecute = false;
       event.command.setHidden(true);
       return;
