@@ -387,6 +387,12 @@ build_webui("build") {
     "system_preferences_page/system_preferences_page.ts",
   ]
 
+  if (use_fydeos_license) {
+    web_component_files += [
+      "os_fyde_page/fydeos_license_info.ts",
+    ]
+  }
+
   non_web_component_files = [
     "assert_extras.ts",
     "common/app_management/actions.ts",

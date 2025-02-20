@@ -30,6 +30,7 @@ class LicenseOnlineFetcher /*:  public net::URLFetcherDelegate*/ {
   void StartFetch(const std::string& id,
                   const std::string& serial_number,
                   const bool is_new_license,
+                  const std::string& oem_token,
                   SuccessCallback<std::optional<std::string>> success_callback,
                   ErrorCallback err_callback);
   FetchMode GetFetchMode();

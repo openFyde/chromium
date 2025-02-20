@@ -13,15 +13,19 @@
 #include "net/proxy_resolution/proxy_config_service_fixed.h"
 #include "net/url_request/url_request_context_builder.h"
 */
+
+#include "chrome/browser/policy/dm_token_utils.h"
+#include "fydeos/switches/license/license_constants.h"
+
 #include "services/network/public/cpp/resource_request.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "fydeos/switches/license/license_switches.h"
 
-#include "chrome/browser/profiles/profile_manager.h"
-#include "components/user_manager/user_manager.h"
 #include "net/base/url_util.h"
+#include "base/system/sys_info.h"
+#include "fydeos/license/fydeos_license_user_util.h"
 
 namespace fydeos::license {
 namespace {
@@ -57,19 +61,26 @@ namespace {
           }
         })");
 
-  GURL GetFullURL(const std::string& id, const std::string& serial_number, const bool is_new_license) {
+  GURL GetFullURL(const std::string& id,
+                  const std::string& serial_number,
+                  const bool is_new_license,
+                  const std::string& oem_token) {
     GURL url(
         fydeos::switches::GetFydeOSLicenseApiUrl() + kFydeOSLicenseQueryPath + id);
     url = net::AppendQueryParameter(url, "is_new", is_new_license ? "true" : "false");
     url = net::AppendQueryParameter(url, "serialNumber", serial_number);
+    url = net::AppendQueryParameter(
+        url, "board", base::SysInfo::GetLsbReleaseBoard());
 
-    user_manager::UserManager* user_manager = user_manager::UserManager::Get();
-    const user_manager::User* active_user = user_manager->GetActiveUser();
-    if (active_user) {
-      const std::string email = active_user->GetAccountId().GetUserEmail();
-      url = net::AppendQueryParameter(url, "userEmail", email);
+    policy::DMToken dmToken = policy::GetDeviceDMToken();
+    if (dmToken.is_valid()) {
+      url = net::AppendQueryParameter(url, "dmToken", dmToken.value());
+    }
+    if (!oem_token.empty()) {
+      url = net::AppendQueryParameter(url, "oemToken", oem_token);
     }
 
+    url = AppendAccountIdQueryParameter(url);
     return url;
   }
 }  // namespace
@@ -99,6 +110,7 @@ void LicenseOnlineFetcher::StartFetch(
     const std::string& id,
     const std::string& serial_number,
     const bool is_new_license,
+    const std::string& oem_token,
     SuccessCallback<std::optional<std::string>> success_callback,
     ErrorCallback err_callback) {
   if (id.empty()) {
@@ -115,7 +127,7 @@ void LicenseOnlineFetcher::StartFetch(
   */
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  resource_request->url = GetFullURL(id, serial_number, is_new_license);
+  resource_request->url = GetFullURL(id, serial_number, is_new_license, oem_token);
   resource_request->method = "GET";
   simple_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), kTrafficAnnotation);

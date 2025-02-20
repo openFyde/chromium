@@ -1,4 +1,5 @@
 import("//third_party/closure_compiler/compile_js.gni")
+import("//fydeos/build/config/buildflags.gni")
 import("//tools/polymer/html_to_js.gni")
 import("../os_settings.gni")
 
@@ -11,6 +12,11 @@ polymer_element_files = [
   "fydeos_experiment.js",
   "os_fyde_page.js",
 ]
+if (use_fydeos_license) {
+  polymer_element_files += [
+    "fydeos_license_info.js",
+  ]
+}
 
 js_type_check("closure_compile_module") {
   closure_flags = os_settings_closure_flags
@@ -25,6 +31,11 @@ js_type_check("closure_compile_module") {
     ":fydeos_experiment",
     ":os_fyde_page",
   ]
+  if (use_fydeos_license) {
+    deps += [
+      ":fydeos_license_info",
+    ]
+  }
 }
 
 js_library("shell_client") {
@@ -96,10 +107,22 @@ js_library("fydeos_experiment") {
   ]
 }
 
+if (use_fydeos_license) {
+  js_library("fydeos_license_info") {
+    deps = [
+      "//third_party/polymer/v3_0/components-chromium/polymer:polymer_bundled",
+      "//ui/webui/resources/js:i18n_behavior.m",
+      ":shell_client",
+    ]
+  }
+}
+
 js_library("os_fyde_page") {
   deps = [
     "//ash/webui/common/resources:i18n_behavior",
     "..:route_observer_behavior",
+    "..:os_route",
+    "../..:router",
   ]
 }
 

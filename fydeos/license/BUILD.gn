@@ -14,7 +14,11 @@ source_set("license") {
     "//crypto",
     "//net",
     "//content/public/browser",
+    "//dbus",
+    "//chromeos/ash/components/dbus/update_engine",
     "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
+    "//fydeos/constants",
+    "//fydeos/prefs",
   ]
 
   sources = [
@@ -27,6 +31,8 @@ source_set("license") {
     "fydeos_license_manager.h",
     "fydeos_license_enforcement.cc",
     "fydeos_license_enforcement.h",
+    "fydeos_license_user_util.cc",
+    "fydeos_license_user_util.h",
   ]
 
   defines = [ "CHROMEOS_IMPLEMENTATION" ]

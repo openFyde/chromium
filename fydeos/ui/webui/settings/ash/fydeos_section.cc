@@ -22,12 +22,21 @@
 
 #include "fydeos/ui/webui/settings/ash/fydeos_handler.h"
 #include "fydeos/prefs/fydeos_pref_names.h"
+#include "fydeos/build/config/buildflags.h"
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+#include "fydeos/switches/license/license_switches.h"
+#include "fydeos/license/fydeos_license_user_util.h"
+#endif
 
 namespace ash::settings {
 
 namespace mojom {
 using ::chromeos::settings::mojom::kFydeOsSectionPath;
 using ::chromeos::settings::mojom::kFydeOsSubpagePath;
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+using ::chromeos::settings::mojom::kFydeOsLicenseInfoSubpagePath;
+#endif
 using ::chromeos::settings::mojom::Section;
 using ::chromeos::settings::mojom::Subpage;
 using ::chromeos::settings::mojom::Setting;
@@ -42,10 +51,22 @@ namespace {
        mojom::SearchResultDefaultRank::kMedium,
        mojom::SearchResultType::kSubpage,
        {.subpage = mojom::Subpage::kFydeOsMain}},
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+      {IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_TITLE,
+       mojom::kFydeOsLicenseInfoSubpagePath,
+       mojom::SearchResultIcon::kChrome,
+       mojom::SearchResultDefaultRank::kMedium,
+       mojom::SearchResultType::kSubpage,
+       {.subpage = mojom::Subpage::kFydeOsLicenseInfo}},
+#endif
     });
     return *tags;
   }
-}
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  const char kFydeOSLicenseLookupPath[] = "/web/license.html";
+#endif
+}  // namespace
 
 FydeOsSection::FydeOsSection(Profile* profile,
                            SearchTagRegistry* search_tag_registry,
@@ -124,6 +145,27 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TITLE},
     {"fydeosSettingsBackupPasswordPromptText",
       IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TEXT},
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+    {"fydeosSettingsLicenseStateLoading",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_STATE_LOADING},
+    {"fydeosSettingsLicenseRetryButtonText",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_RETRY_BUTTON},
+    {"fydeosSettingsLicenseLabel",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_MENU},
+    {"fydeosSettingsLicenseTitle",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_TITLE},
+    {"fydeosSettingsLicenseErrorReadMachineId",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_ERROR_MACHINE_ID},
+    {"fydeosSettingsLicenseIdLabel",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_ID_LABEL},
+    {"fydeosSettingsLicenseExpireDateLabel",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_EXPIRE_DATE_LABEL},
+    {"fydeosSettingsLicenseRetryWebviewButtonText",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_RETRY_WEBVIEW_BUTTON},
+    {"fydeosSettingsLicenseOfflineHintMessage",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_OFFLINE_HINT_MESSAGE},
+#endif
   };
 
   html_source->AddLocalizedStrings(kLocalizedStrings);
@@ -173,6 +215,15 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
         fydeos::prefs::kForceTpmFallbackNecessary));
   html_source->AddString("fydeExperimentTpmfallbackUrl",
       fydeos::constants::kFydeExperimentTpmFallbackUrl);
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  html_source->AddBoolean("showFydeOsLicense", g_browser_process->local_state()->GetBoolean(fydeos::prefs::kFydeLicenseShouldShowInSettings));
+
+  GURL url(fydeos::switches::GetFydeOSLicenseWebUrl() + kFydeOSLicenseLookupPath);
+  html_source->AddString("fydeosSettingsLicenseUrl",
+      fydeos::license::AppendAccountIdQueryParameter(url).spec());
+  html_source->AddString("fydeosBoardName", board);
+#endif
 }
 
 int FydeOsSection::GetSectionNameMessageId() const {
@@ -209,6 +260,15 @@ void FydeOsSection::RegisterHierarchy(HierarchyGenerator* generator) const {
       IDS_OS_SETTINGS_FYDEOS_SETTINGS, mojom::Subpage::kFydeOsMain,
       mojom::SearchResultIcon::kChrome, mojom::SearchResultDefaultRank::kMedium,
       mojom::kFydeOsSubpagePath);
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  // license info.
+  generator->RegisterNestedSubpage(
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_TITLE,
+      mojom::Subpage::kFydeOsLicenseInfo, mojom::Subpage::kFydeOsMain,
+      mojom::SearchResultIcon::kChrome, mojom::SearchResultDefaultRank::kMedium,
+      mojom::kFydeOsLicenseInfoSubpagePath);
+#endif
 }
 
 }  // namespace ash::settings

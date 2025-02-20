@@ -13,6 +13,8 @@
 namespace fydeos::license {
 template <typename ResultType>
   using SuccessCallback = base::OnceCallback<void(ResultType result)>;
+  using SavePrefCallback = base::OnceCallback<void(
+    int licenseType, bool expired, int expiration_action, int showLicenseInSettings, int logOutInterval)>;
   using ErrorCallback =
     base::OnceCallback<void(int errCode, const std::string& errMsg)>;
 

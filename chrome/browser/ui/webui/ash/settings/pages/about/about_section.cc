@@ -44,12 +44,14 @@
 #include "components/version_info/version_info.h"
 #include "components/version_ui/version_ui_constants.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "fydeos/constants/fydeos_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/chromeos/devicetype_utils.h"
 #include "fydeos/switches/urls/urls_constants.h"
 #include "fydeos/switches/license/license_switches.h"
 #include "chromeos/version/version_loader.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace ash::settings {
 
@@ -413,6 +415,24 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_KEEP_UPDATES_BUTTON},
       {"aboutFydeOSVersionWithoutLicenseState",
        IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION_WITHOUT_LICENSE_STATE},
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+      {"aboutFydeOSVersion",
+       IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION},
+      {"aboutFydeOSLicenseStateUnlicensed",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_UNLICENSED},
+      {"aboutFydeOSLicenseStateForYouTrial",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_TRIAL},
+      {"aboutFydeOSLicenseStateForYouValid",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_VALID},
+      {"aboutFydeOSLicenseStateForYouExpired",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_EXPIRED},
+      {"aboutFydeOSLicenseStateEnterpriseTrial",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_TRIAL},
+      {"aboutFydeOSLicenseStateEnterpriseValid",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_VALID},
+      {"aboutFydeOSLicenseStateEnterpriseExpired",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_EXPIRED},
+#endif
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
@@ -466,6 +486,10 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   html_source->AddString("aboutFydeOSChromiumVersion", std::string(version_info::GetVersionNumber()));
   html_source->AddString("aboutFydeOSVersionNumber", fydeosMajorVersion);
   html_source->AddString("aboutFydeOSBoardName", base::SysInfo::GetLsbReleaseBoard());
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  html_source->AddInteger("aboutFydeOSLicenseState",
+                          g_browser_process->local_state()->GetInteger(fydeos::prefs::kFydeLicenseStateType));
+#endif
   html_source->AddString(
       "aboutProductCopyright",
       base::i18n::MessageFormatter::FormatWithNumberedArgs(

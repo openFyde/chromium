@@ -770,6 +770,8 @@ Called by update_extension_histograms.py.-->
   <int value="567" label="ARC_APPS_PRIVATE_ON_INSTALLATION_STARTED"/>
   <int value="568" label="ARC_APPS_PRIVATE_ON_INSTALLATION_PROGRESS_CHANGED"/>
   <int value="569" label="ARC_APPS_PRIVATE_ON_INSTALLATION_FINISHED"/>
+  <int value="570" label="FYDEOS_LICENSE_INVALID_NOTIFICATION"/>
+  <int value="571" label="FYDEOS_LICENSE_VALID_NOTIFICATION"/>
 </enum>
 
 <enum name="ExtensionForceInstalledPreInstalledDeprecatedSite">
@@ -2812,6 +2814,7 @@ Called by update_extension_histograms.py.-->
   <int value="1935" label="ARCAPPSPRIVATE_REMOVEPACKAGE"/>
   <int value="1936" label="ARCAPPSPRIVATE_INSTALLPACKAGE_FROM_PATH"/>
   <int value="1937" label="FYDEOS_PRIVATE_GET_FYDEOS_INFO"/>
+  <int value="1938" label="LICENSE_MANAGEMENT_REFRESH"/>
 </enum>
 
 <enum name="ExtensionInstallationCrxInstallError">

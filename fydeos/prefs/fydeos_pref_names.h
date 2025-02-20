@@ -5,6 +5,8 @@
 #ifndef CHROMEOS_FYDEOS_PREF_NAMES_H_
 #define CHROMEOS_FYDEOS_PREF_NAMES_H_
 
+#include "fydeos/build/config/buildflags.h"
+
 namespace fydeos {
 namespace prefs {
 
@@ -40,6 +42,13 @@ extern const char kFydeAssistantEnabled[];
 extern const char kFydeAssistantExtraAcceleratorEnabled[];
 
 extern const char kFydeOSArcMediaAutoScanEnabled[];
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+extern const char kFydeLicenseShouldShowInSettings[];
+extern const char kFydeLicenseStateType[];
+extern const char kFydeLicenseEnforcementLevel[];
+extern const char kFydeLicenseEnforcementLogOutInterval[];
+#endif
 } // prefs
 } // fydeos
 

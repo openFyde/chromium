@@ -1997,6 +1997,7 @@ enum HistogramValue {
   ARCAPPSPRIVATE_REMOVEPACKAGE = 1935,
   ARCAPPSPRIVATE_INSTALLPACKAGE_FROM_PATH = 1936,
   FYDEOS_PRIVATE_GET_FYDEOS_INFO = 1937,
+  LICENSE_MANAGEMENT_REFRESH = 1938,
   // Last entry: Add new entries above, then run:
   // tools/metrics/histograms/update_extension_histograms.py
   ENUM_BOUNDARY

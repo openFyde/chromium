@@ -69,6 +69,18 @@ export interface OsAboutPageElement {
   };
 }
 
+// fydeos/constants/fydeos_constants.h
+const LICENSE_STATE_TYPE = {
+  kUnspecified: 0,
+  kUnlicensed: 1,
+  kLicenseForYouTrial: 2 ,
+  kLicenseForYouValid: 3,
+  kLicenseForYouExpired: 4,
+  kLicenseForEnterpriseTrial: 5,
+  kLicenseForEnterpriseValid: 6,
+  kLicenseForEnterpriseExpired: 7,
+};
+
 const OsAboutPageBase = DeepLinkingMixin(
     RouteOriginMixin(I18nMixin(WebUiListenerMixin(PolymerElement))));
 
@@ -342,6 +354,16 @@ export class OsAboutPageElement extends OsAboutPageBase {
       renewalStatus_: {
         type: String,
         value: RenewalStatus.OK,
+      },
+
+      licenseStateType_: {
+        type: Number,
+        value() {
+          if (!loadTimeData.valueExists('aboutFydeOSLicenseState')) {
+            return -1;
+          }
+          return loadTimeData.getInteger('aboutFydeOSLicenseState');
+        }
       },
       // ---***FYDEOS END***---
     };
@@ -1045,7 +1067,20 @@ export class OsAboutPageElement extends OsAboutPageBase {
     extendedUpdatesObserver.observe(this.$.extendedUpdatesButton);
   }
 
-  getFydeOSVersion_() {
+  getFydeOSVersion_(licenseStateType: number, hasEndOfLife: boolean): TrustedHTML {
+    const licenseStateDesc = this.getLicenseDescription_(licenseStateType);
+    if (licenseStateDesc && !hasEndOfLife) {
+      return this.i18nAdvanced('aboutFydeOSVersion', {
+        substitutions: [
+          this.i18n('aboutOsProductTitle'),
+          this.getTitleForFydeOSDeviceName_(),
+          this.i18n('aboutFydeOSVersionNumber'),
+          licenseStateDesc,
+          this.i18n('aboutFydeOSPlatformVersion'),
+          this.i18n('aboutFydeOSChromiumVersion'),
+        ]
+      });
+    }
     return this.i18nAdvanced('aboutFydeOSVersionWithoutLicenseState', {
       substitutions: [
         this.i18n('aboutOsProductTitle'),
@@ -1084,6 +1119,36 @@ export class OsAboutPageElement extends OsAboutPageBase {
     }
     return `${prefix} (${title})`;
    }
+
+  // <if expr="not use_fydeos_license">
+  getLicenseDescription_(_licenseStateType: number) {
+    return '';
+  }
+  // </if>
+  // <if expr="use_fydeos_license">
+  getLicenseDescription_(licenseStateType: number) {
+    switch (licenseStateType) {
+      case LICENSE_STATE_TYPE.kUnspecified:
+        return '';
+      case LICENSE_STATE_TYPE.kUnlicensed:
+        return this.i18n('aboutFydeOSLicenseStateUnlicensed');
+      case LICENSE_STATE_TYPE.kLicenseForYouTrial:
+        return this.i18n('aboutFydeOSLicenseStateForYouTrial');
+      case LICENSE_STATE_TYPE.kLicenseForYouValid:
+        return this.i18n('aboutFydeOSLicenseStateForYouValid');
+      case LICENSE_STATE_TYPE.kLicenseForYouExpired:
+        return this.i18n('aboutFydeOSLicenseStateForYouExpired');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseTrial:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseTrial');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseValid:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseValid');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseExpired:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseExpired');
+      default:
+        return ''
+    }
+  }
+  // </if>
 
   fydeOTAToggleInit_() {
     this.aboutBrowserProxy_.getEnabledFydeOTA().then(enabled => {

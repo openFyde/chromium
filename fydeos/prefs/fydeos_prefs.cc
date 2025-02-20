@@ -6,6 +6,7 @@
 #include "base/logging.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "fydeos/constants/fydeos_constants.h"
 
 namespace fydeos {
 namespace prefs {
@@ -33,6 +34,15 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kOfflineAutoSigninIsChromeLastSignout, false);
 
   registry->RegisterBooleanPref(kRebootRequiredForWidevine, false);
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  registry->RegisterBooleanPref(kFydeLicenseShouldShowInSettings, false);
+  registry->RegisterIntegerPref(kFydeLicenseStateType,
+                                static_cast<int>(fydeos::constants::LicenseStateType::kUnspecified));
+  registry->RegisterIntegerPref(kFydeLicenseEnforcementLevel,
+                                static_cast<int>(fydeos::constants::LicenseEnforcementLevel::kNone));
+  registry->RegisterIntegerPref(kFydeLicenseEnforcementLogOutInterval, 0);
+#endif
 }
 
 void KeepCurrentPrefs(PrefService* local_state) {

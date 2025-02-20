@@ -6,6 +6,7 @@
 
 #include "build/build_config.h"
 #include "build/chromeos_buildflags.h"
+#include "fydeos/build/config/buildflags.h"
 #include "extensions/browser/api/alarms/alarm_manager.h"
 #include "extensions/browser/api/declarative_net_request/rules_monitor_service.h"
 #include "extensions/browser/api/idle/idle_manager_factory.h"
@@ -67,6 +68,9 @@
 #endif
 
 #include "fydeos/extensions/browser/api/shell_client/shell_client_api.h"
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+#include "fydeos/extensions/browser/api/license_management/license_management_api.h"
+#endif
 
 namespace extensions {
 
@@ -80,6 +84,10 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
   WebRequestAPI::GetFactoryInstance();
   WebRequestProxyingURLLoaderFactory::EnsureAssociatedFactoryBuilt();
   ShellClientAPI::GetFactoryInstance();
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  LicenseManagementAPI::GetFactoryInstance();
+#endif
 
 // The following are not supported in the experimental desktop-android build.
 // TODO(https://crbug.com/356905053): Enable these APIs on desktop-android.

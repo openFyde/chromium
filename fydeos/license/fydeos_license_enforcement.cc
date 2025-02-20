@@ -6,8 +6,7 @@
 
 #include "base/timer/timer.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile_manager.h"
+#include "ash/public/cpp/new_window_delegate.h"
 #include "chrome/browser/apps/app_service/app_launch_params.h"
 #include "chrome/browser/ui/extensions/application_launch.h"
 #include "chrome/common/extensions/manifest_handlers/app_launch_info.h"
@@ -26,10 +25,14 @@
 #include "fydeos/switches/license/license_switches.h"
 #include "net/base/url_util.h"
 #include "ash/constants/notifier_catalogs.h"
+#include "base/system/sys_info.h"
+#include "base/time/default_clock.h"
+#include "fydeos/license/fydeos_license_user_util.h"
 
 namespace fydeos::license {
 namespace {
-  const char kFydeOSLicensePopupPath[] = "/web/checkoutCounter.html";
+  const char kFydeOSSettingsLicensePath[] =
+    "chrome://os-settings/fydeos/license";
   const char kFydeOSLicenseForceQuitNotificationId[] =
     "fydeos.license.enforcement.forcequit";
   const char kFydeOSLicenseEnforceonmentNotifierId[] =
@@ -37,34 +40,52 @@ namespace {
   const int kFydeOSForceQuitDelayInMinutes = 15;
   const int kFydeOSRefreshForceQuitNotificationIntervalInSeconds = 10;
   const int kFydeOSEnforceIntervalInMinutes = 10;
-
-  const GURL GetLicensePageUrl(
-      const std::string& licenseId, const std::string& serialNumber) {
-    GURL url(fydeos::switches::GetFydeOSLicenseWebUrl() + kFydeOSLicensePopupPath);
-    url = net::AppendQueryParameter(url, "licenseId", licenseId);
-    url = net::AppendQueryParameter(url, "serialNumber", serialNumber);
-    const std::string locale = g_browser_process->GetApplicationLocale();
-    url = net::AppendQueryParameter(url, "hl", locale);
-    return url;
-  }
 }  // namespace
 
 LicenseEnforcement::LicenseEnforcement():
     enforce_timer_(std::make_unique<base::RepeatingTimer>()),
     force_quit_timer_(std::make_unique<base::OneShotTimer>()),
     notification_timer_(std::make_unique<base::RepeatingTimer>()),
-    webContents_(nullptr),
-    profile_(nullptr) {}
+    profile_(nullptr), is_eol_(false) {}
 
 LicenseEnforcement::~LicenseEnforcement() = default;
 
-void LicenseEnforcement::StartEnforcement(const std::string& licenseID,
+void LicenseEnforcement::StartEnforcement(Profile* profile,
+                                          const std::string& licenseID,
                                           const std::string& serialNumber,
-                                          EnforcementMode mode) {
+                                          EnforcementMode mode,
+                                          int logOutInterval) {
+  profile_ = profile;
   id_ = licenseID;
   serial_number_ = serialNumber;
   mode_ = mode;
-  profile_ = g_browser_process->profile_manager()->GetActiveUserProfile();
+
+  if (logOutInterval > 0 && logOutInterval < 2 * 60 * 60) {
+    log_out_interval_ = logOutInterval;
+  } else {
+    log_out_interval_ = kFydeOSForceQuitDelayInMinutes * 60;
+  }
+
+  VLOG(2) << "FydeOS License Enforcement, mode " << mode_ << ", log out interval: " << log_out_interval_;
+
+  ::ash::UpdateEngineClient* update_engine_client = ::ash::UpdateEngineClient::Get();
+  update_engine_client->GetEolInfo(
+      base::BindOnce(&LicenseEnforcement::OnGetEolInfo, base::Unretained(this)));
+}
+
+void LicenseEnforcement::OnGetEolInfo(::ash::UpdateEngineClient::EolInfo info) {
+  base::Clock* clock = base::DefaultClock::GetInstance();
+  const base::Time now = clock->Now();
+  const base::Time eol_date = info.eol_date;
+  if (!eol_date.is_null() && eol_date <= now) {
+    is_eol_ = true;
+    VLOG(2) << "EOL device, skip license enforcement";
+    return;
+  }
+  this->StartEnforcementInternal();
+}
+
+void LicenseEnforcement::StartEnforcementInternal() {
 
   if (enforce_timer_->IsRunning()) {
     if (fydeos::switches::IsLicenseTestMode()) {
@@ -84,7 +105,7 @@ void LicenseEnforcement::StartEnforcement(const std::string& licenseID,
 
 void LicenseEnforcement::Enforce() {
   if (mode_ > EnforcementModeLevel0) {
-    PopupLicenseWindow();
+    PopupLicenseWindow(false);
   }
 
   if (mode_ > EnforcementModeLevel1) {
@@ -93,6 +114,9 @@ void LicenseEnforcement::Enforce() {
 }
 
 void LicenseEnforcement::StopEnforcement() {
+  if (is_eol_) {
+    return;
+  }
   if (force_quit_timer_->IsRunning()) {
     force_quit_timer_->Stop();
   }
@@ -106,32 +130,20 @@ void LicenseEnforcement::StopEnforcement() {
   RemoveForceQuitNotification();
 }
 
-void LicenseEnforcement::PopupLicenseWindow() {
+void LicenseEnforcement::PopupLicenseWindow(bool from_user_interaction) {
   if (!profile_) return;
 
   VLOG(2) << "FydeOS License Enforcement, PopupLicenseWindow";
-  Browser* browser = nullptr;
-  if (webContents_) {
-    browser = chrome::FindBrowserWithTab(webContents_);
-  }
-
-  if (!browser) {
-    const GURL url = GetLicensePageUrl(id_, serial_number_);
-    webContents_ = OpenAppShortcutWindow(profile_, url);
-  } else {
-    browser->window()->Activate();
-  }
+  ash::NewWindowDelegate::GetInstance()->OpenUrl(
+      GURL(kFydeOSSettingsLicensePath),
+      from_user_interaction ?
+      ash::NewWindowDelegate::OpenUrlFrom::kUserInteraction :
+      ash::NewWindowDelegate::OpenUrlFrom::kUnspecified,
+      ash::NewWindowDelegate::Disposition::kNewWindow);
 }
 
 void LicenseEnforcement::CloseLicenseWindow() {
   if (!profile_) return;
-  Browser* browser = nullptr;
-  if (webContents_) {
-    browser = chrome::FindBrowserWithTab(webContents_);
-  }
-  if (browser) {
-    browser->window()->Close();
-  }
 }
 
 void LicenseEnforcement::ForceQuitCurrentUser() {
@@ -143,11 +155,11 @@ void LicenseEnforcement::ForceQuitCurrentUser() {
   }
 
   VLOG(2) << "FydeOS LicenseEnforcement, logout after "
-          << kFydeOSForceQuitDelayInMinutes << " minutes";
+          << log_out_interval_ << " seconds";
   ForceQuitNotification();
   force_quit_timer_->Start(
       FROM_HERE,
-      base::Minutes(kFydeOSForceQuitDelayInMinutes),
+      base::Seconds(log_out_interval_),
       base::BindOnce(&LicenseEnforcement::KickOut, base::Unretained(this)));
 }
 
@@ -157,7 +169,7 @@ void LicenseEnforcement::KickOut() {
 }
 
 void LicenseEnforcement::OnForceQuitNotificationClicked() {
-  PopupLicenseWindow();
+  PopupLicenseWindow(true);
 }
 
 void LicenseEnforcement::ForceQuitNotification() {
@@ -200,7 +212,7 @@ std::u16string LicenseEnforcement::ForceQuitNotificationMessage() {
   return l10n_util::GetStringFUTF16(
       IDS_ASH_FYDEOS_ENFORCEMENT_FORCE_QUIT_NOTIFICATION_MESSAGE,
       base::NumberToString16(
-        seconds > 0 ? seconds : kFydeOSForceQuitDelayInMinutes * 60));
+        seconds > 0 ? seconds : log_out_interval_));
 }
 
 void LicenseEnforcement::UpdateForceQuitNotification() {

@@ -169,9 +169,9 @@
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION_WITHOUT_LICENSE_STATE" desc="The text label describing the version of the browser, example: FydeOS for PC (apu), v18.0-SP1, Platform 15662.71.18.6">
     <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="DEVICE_VARIANT">$2<ex> for PC (apu)</ex></ph>, <ph name="FYDEOS_MAJOR_VERSION">$3<ex>v9.0</ex></ph>
-    <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
+    <ph name="LINE_BREAK1">&lt;br&gt;</ph>
     Platform <ph name="FYDEOS_PLATFORM_VERSION">$4<ex>12739.22.9.15</ex></ph>
-    <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
+    <ph name="LINE_BREAK2">&lt;br&gt;</ph>
     Chromium <ph name="PRODUCT_VERSION">$5<ex>57.0.2937.0</ex></ph>
   </message>
   <if expr="use_fydeos_license">
@@ -201,6 +201,34 @@
    </message>
    <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_RETRY_WEBVIEW_BUTTON" desc="text of retry webview button in license page">
      Check your subscription online
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION" desc="The text label describing the version of the browser, with license state info, example: FydeOS for PC (apu), v18.0-SP1, Unlicensed version, Platform 15662.71.18.6">
+     <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="DEVICE_VARIANT">$2<ex> for PC (apu)</ex></ph>, <ph name="FYDEOS_MAJOR_VERSION">$3<ex>v9.0</ex></ph>, <ph name="FYDEOS_LICENSE_STATE_DESC">$4<ex>Unlicensed version</ex></ph>
+     <ph name="LINE_BREAK1">&lt;br&gt;</ph>
+     Platform <ph name="FYDEOS_PLATFORM_VERSION">$5<ex>12739.22.9.15</ex></ph>
+     <ph name="LINE_BREAK2">&lt;br&gt;</ph>
+     Chromium <ph name="PRODUCT_VERSION">$6<ex>57.0.2937.0</ex></ph>
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_TRIAL" desc="The text label describing fydeos license state for you trial">
+     Trial subscription
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_VALID" desc="The text label describing fydeos license state for you valid">
+     Active subscription
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_EXPIRED" desc="The text label describing fydeos license state for you expired">
+     Subscription expired
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_UNLICENSED" desc="The text label describing fydeos license state unlicensed">
+     Unlicensed version
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_TRIAL" desc="The text label describing fydeos license state enterprise trial">
+     Enterprise licensed version (trial)
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_VALID" desc="The text label describing fydeos license state enterprise valid">
+     Enterprise licensed version
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_EXPIRED" desc="The text label describing fydeos license state enterprise expired">
+     Enterprise licensed version (expired)
    </message>
   </if>
 </if>

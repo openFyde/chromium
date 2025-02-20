@@ -3,6 +3,8 @@
 # found in the LICENSE file.
 # Author: Simon Tsao(yang@fydeos.io)
 
+import("//fydeos/build/config/buildflags.gni")
+
 extensions_api_schema_files_ = []
 
 if (is_chromeos) {
@@ -14,6 +16,11 @@ if (is_chromeos) {
     "shell_client.json",
     "fydeos_arc_status.json",
   ]
+  if (use_fydeos_license) {
+    extensions_api_schema_files_ += [
+      "license_management.json",
+    ]
+  }
 }
 
 extensions_api_schema_files =

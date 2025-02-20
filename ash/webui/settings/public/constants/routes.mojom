@@ -195,6 +195,7 @@ enum Subpage {
 
   //---***FYDEOS BEGIN***---
   kFydeOsMain = 1900,
+  kFydeOsLicenseInfo = 1901,
   //---***FYDEOS END***---
 };
 
@@ -369,5 +370,6 @@ const string kSystemPreferencesSectionPath = "systemPreferences";
 const string kInternalStorybookSubpagePath = "_internal/_storybook";
 
 // FydeOS section.
-const string kFydeOsSubpagePath = "fydeos/main";
 const string kFydeOsSectionPath = "fydeos";
+const string kFydeOsSubpagePath = "fydeos/main";
+const string kFydeOsLicenseInfoSubpagePath = "fydeos/license";

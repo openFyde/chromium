@@ -37,5 +37,12 @@ const char kFydeAssistantEnabled[] = "fyde_assistant_enabled";
 const char kFydeAssistantExtraAcceleratorEnabled[] = "fyde_assistant_extra_accelerator_enabled";
 
 const char kFydeOSArcMediaAutoScanEnabled[] = "fydeos_arc_media_auto_scan_enabled";
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+const char kFydeLicenseShouldShowInSettings[] = "fyde_license_should_show_in_settings";
+const char kFydeLicenseStateType[] = "fyde_license_state_type";
+const char kFydeLicenseEnforcementLevel[] = "fyde_license_enforcement_level";
+const char kFydeLicenseEnforcementLogOutInterval[] = "fydeo_license_enforcement_log_out_interval";
+#endif
 }
 }

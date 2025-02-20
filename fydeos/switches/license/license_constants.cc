@@ -15,4 +15,6 @@ const char kDefaultFydeOSLicenseWebUrl[] = "https://cashier.fydeos.io";
 const char kDefaultFydeOSLicenseApiUrl[] = "https://apis.fydeos.io/license";
 #endif
 
+const char kFydeOSOEMTokenFilePath[] = "/usr/share/oem/fydeos_oem_token";
+
 }  // namespace fydeos::constants

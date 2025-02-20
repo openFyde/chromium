@@ -22,6 +22,7 @@ class LicenseValidator {
   ~LicenseValidator();
   void StartValidate(const std::string& id, std::optional<std::string> license,
     SuccessCallback<std::optional<base::Value>> success_callback,
+    SavePrefCallback save_pref_callback,
     ErrorCallback err_callback);
 
  private:

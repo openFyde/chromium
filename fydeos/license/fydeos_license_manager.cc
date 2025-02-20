@@ -6,17 +6,28 @@
 #include "base/values.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
+#include "base/files/file_util.h"
+#include "base/task/thread_pool.h"
 #include "chromeos/ash/components/network/portal_detector/network_portal_detector.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_service.h"
 #include "chromeos/ash/components/network/network_state_handler.h"
 #include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
 #include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/shell_state.h"
 #include "fydeos/license/fydeos_callback_status.h"
+#include "fydeos/switches/license/license_constants.h"
+#include "fydeos/license/fydeos_license_enforcement.h"
 
 #include "fydeos/switches/license/license_switches.h"
 #include "base/strings/string_number_conversions.h"
+#include "fydeos/constants/fydeos_constants.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 using FydeOSShellClient = fydeos::ash::FydeOSShellClient;
 using ShellState = fydeos::ash::ShellState;
+using LicenseStateType = fydeos::constants::LicenseStateType;
+using LicenseEnforcementLevel = fydeos::constants::LicenseEnforcementLevel;
 
 namespace fydeos::license {
 namespace  {
@@ -29,6 +40,7 @@ namespace  {
   const char kParamSerialNumber[] = "serial_number";
   const int kTestLicenseCheckRepeatTimeInMinutes = 1;
   const int kLicenseCheckRepeatTimeInMinutes = 30;
+  const int kLicenseCheckDelayTimeInSeconds = 30;
   LicenseManager* g_license_manager = nullptr;
 
   FydeOSShellClient* GetShellClient() {
@@ -60,7 +72,18 @@ namespace  {
     }
     return base::StringPrintf(kShellCmd, result.c_str());
   }
+
+  const std::string GetOEMToken() {
+    std::string token;
+    if (base::ReadFileToString(
+          base::FilePath(fydeos::constants::kFydeOSOEMTokenFilePath), &token)) {
+      return "";
+    }
+    return token;
+  }
 }  // namespace
+
+using fydeos::constants::LicenseEnforcementLevel;
 
 void LicenseManager::Initialize() {
   CHECK(g_license_manager == nullptr);
@@ -81,6 +104,7 @@ void LicenseManager::Shutdown() {
 
 LicenseManager::LicenseManager()
   : mode_(FetchMode::OfflineMode),
+    init_timer_(std::make_unique<base::OneShotTimer>()),
     timer_(std::make_unique<base::RepeatingTimer>()),
     online_fetcher_(std::make_unique<LicenseOnlineFetcher>()),
     validator_(std::make_unique<LicenseValidator>()),
@@ -95,25 +119,45 @@ LicenseManager::~LicenseManager() = default;
 void LicenseManager::Start() {
   IGetId();
   IGetSerialNumber();
+  if (!init_timer_->IsRunning()) {
+    init_timer_->Start(
+    FROM_HERE,
+    base::Seconds(kLicenseCheckDelayTimeInSeconds),
+    base::BindOnce(&LicenseManager::InitCheckLicense, base::Unretained(this)));
+  }
   if (!timer_->IsRunning()) {
     VLOG(1) << "Start timer of checking.";
     timer_->Start(
     FROM_HERE,
     base::Minutes(fydeos::switches::IsLicenseTestMode() ?
       kTestLicenseCheckRepeatTimeInMinutes : kLicenseCheckRepeatTimeInMinutes),
-    base::BindRepeating(&LicenseManager::CheckLicense, base::Unretained(this)));
+    base::BindRepeating(&LicenseManager::CheckLicense, weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
 void LicenseManager::Stop() {
+  if (init_timer_->IsRunning())
+    init_timer_->Stop();
   if (timer_->IsRunning())
     timer_->Stop();
   Reset();
 }
 
-void LicenseManager::CheckLicense() {
+void LicenseManager::InitCheckLicense() {
+  is_init_check_ = true;
+  CheckLicenseInternal();
+}
+
+ void LicenseManager::CheckLicense() {
+  is_init_check_ = false;
+  CheckLicenseInternal();
+}
+
+
+void LicenseManager::CheckLicenseInternal() {
   if (is_valid_ && !id_.empty()) {
     VLOG(1) << "Everything is fine, stop checking.";
+    init_timer_->Stop();
     timer_->Stop();
     return;
   }
@@ -138,7 +182,7 @@ void LicenseManager::CheckLicense() {
 
 void LicenseManager::IGetId() {
   GetShellClient()->SyncExec(GetIDCmd(),
-    base::BindOnce(&LicenseManager::OnGotId, base::Unretained(this)));
+    base::BindOnce(&LicenseManager::OnGotId, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void LicenseManager::OnGotId(std::optional<ShellState> state) {
@@ -151,9 +195,26 @@ void LicenseManager::OnGotId(std::optional<ShellState> state) {
   }
 }
 
+void LicenseManager::IGetOEMToken() {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&GetOEMToken),
+      base::BindOnce(&LicenseManager::OnGotOEMToken,
+        weak_ptr_factory_.GetWeakPtr()));
+}
+
+void LicenseManager::OnGotOEMToken(const std::string& token) {
+  if (!token.empty()) {
+    VLOG(1) << "Get OEM token:" << token;
+    oem_token_ = token;
+  }
+}
+
 void LicenseManager::IGetSerialNumber() {
   GetShellClient()->SyncExec(GetSerialNumberCmd(),
-    base::BindOnce(&LicenseManager::OnGotSerialNumber, base::Unretained(this)));
+    base::BindOnce(&LicenseManager::OnGotSerialNumber, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void LicenseManager::OnGotSerialNumber(std::optional<ShellState> state) {
@@ -166,6 +227,15 @@ void LicenseManager::OnGotSerialNumber(std::optional<ShellState> state) {
         std::remove(serial_number_.begin(), serial_number_.end(), '\n'),
         serial_number_.end());
   }
+  IGetOEMToken();
+}
+
+void LicenseManager::OnFetchError(int errCode, const std::string& errMsg) {
+  if (mode_ == FetchMode::OfflineMode) {
+    return;
+  }
+  LOG(ERROR) << "Fetch online license verification error";
+  // do nothing;
 }
 
 void LicenseManager::OnError(int errCode, const std::string& errMsg) {
@@ -184,8 +254,15 @@ void LicenseManager::OnError(int errCode, const std::string& errMsg) {
 
 void LicenseManager::OnValid(std::optional<base::Value> license) {
   VLOG(1) << "license is valid.";
+  if (mode_ == FetchMode::OfflineMode && is_init_check_) {
+    ISaveLocalLicenseString(std::move(license));
+    mode_ = FetchMode::OnlineMode;
+    IFetchOnlineLicense();
+    return;
+  }
   is_valid_ = true;
   state_ = ManagerState::Idle;
+  init_timer_->Stop();
   timer_->Stop();
   if (mode_ == FetchMode::OfflineMode) {
     // save string, to prevent call shellclient to store the same license get from online
@@ -206,6 +283,10 @@ void LicenseManager::Reset() {
   enforcement_->StopEnforcement();
 }
 
+bool LicenseManager::ShouldStartEnforcement() const {
+  return !is_init_check_;
+}
+
 void LicenseManager::OnInvalid() {
   // trigger punishment
   is_valid_ = false;
@@ -213,7 +294,38 @@ void LicenseManager::OnInvalid() {
   mode_ = FetchMode::OfflineMode;
   VLOG(1) << "Start invalid effect.";
   NotifyObservers();
-  enforcement_->StartEnforcement(id_, serial_number_, EnforcementModeDefault);
+  if (!ShouldStartEnforcement()) {
+    VLOG(2) << "Skip enforcement.";
+    return;
+  }
+  StartEnforcement();
+}
+
+void LicenseManager::StartEnforcement() {
+  if (!profile_) {
+    profile_ = g_browser_process->profile_manager()->GetActiveUserProfile();
+  }
+  if (!profile_ || !profile_->GetPrefs()) return;
+  PrefService* prefs = g_browser_process->local_state();
+  if (!prefs) return;
+  LicenseEnforcementLevel level = static_cast<LicenseEnforcementLevel>(prefs->GetInteger(fydeos::prefs::kFydeLicenseEnforcementLevel));
+  EnforcementMode mode;
+  switch (level) {
+    case LicenseEnforcementLevel::kNone:
+      mode = EnforcementModeLevel0;
+      break;
+    case LicenseEnforcementLevel::kForcePopup:
+      mode = EnforcementModeLevel1;
+      break;
+    case LicenseEnforcementLevel::kForceQuit:
+      mode = EnforcementModeLevel2;
+      break;
+    default:
+      mode = EnforcementModeLevel2;
+      break;
+  }
+  int log_out_interval = prefs->GetInteger(fydeos::prefs::kFydeLicenseEnforcementLogOutInterval);
+  enforcement_->StartEnforcement(profile_, id_, serial_number_, mode, log_out_interval);
 }
 
 void LicenseManager::SkipOnline() {
@@ -228,8 +340,72 @@ void LicenseManager::IValidateLicense(std::optional<std::string> license) {
                             std::move(license),
                             base::BindOnce(
                               &LicenseManager::OnValid,
-                              base::Unretained(this)),
-    base::BindOnce(&LicenseManager::OnError, base::Unretained(this)));
+                              weak_ptr_factory_.GetWeakPtr()),
+    base::BindOnce(&LicenseManager::OnValidPref, weak_ptr_factory_.GetWeakPtr()),
+    base::BindOnce(&LicenseManager::OnError, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void LicenseManager::OnValidPref(int licenseType, bool expired, int expirationAction, int showLicenseInSettings, int logOutInterval) {
+  if (!profile_) {
+    profile_ = g_browser_process->profile_manager()->GetActiveUserProfile();
+  }
+  if (!profile_ || !profile_->GetPrefs()) return;
+
+  PrefService* prefs = g_browser_process->local_state();
+  if (!prefs) return;
+
+  LicenseStateType state = LicenseStateType::kUnspecified;
+  switch (licenseType) {
+    // trial
+    case 0:
+      state = expired ? LicenseStateType::kLicenseForYouExpired : LicenseStateType::kLicenseForYouTrial;
+      break;
+    // valid
+    case 1:
+      state = expired ? LicenseStateType::kLicenseForYouExpired : LicenseStateType::kLicenseForYouValid;
+      break;
+    // enterprise trial
+    case 2:
+      state = expired ? LicenseStateType::kLicenseForEnterpriseExpired : LicenseStateType::kLicenseForEnterpriseTrial;
+      break;
+    // enterprise valid
+    case 3:
+      state = expired ? LicenseStateType::kLicenseForEnterpriseExpired : LicenseStateType::kLicenseForEnterpriseValid;
+      break;
+    // unlicensed
+    case 4:
+      state = LicenseStateType::kUnlicensed;
+      break;
+    default:
+      state = LicenseStateType::kUnspecified;
+      break;
+  }
+  prefs->SetInteger(fydeos::prefs::kFydeLicenseStateType, static_cast<int>(state));
+
+  VLOG(2) << "license pref, state: " << static_cast<int>(state)
+    << "expiration action: " << expirationAction
+    << " show license in settings: " << showLicenseInSettings
+    << " log out interval: " << logOutInterval;
+
+  LicenseEnforcementLevel level = LicenseEnforcementLevel::kNone;
+  switch (expirationAction) {
+    case 0:
+      level = LicenseEnforcementLevel::kNone;
+      break;
+    case 1:
+      level = LicenseEnforcementLevel::kForcePopup;
+      break;
+    case 2:
+      level = LicenseEnforcementLevel::kForceQuit;
+      break;
+    default:
+      level = LicenseEnforcementLevel::kNone;
+      break;
+  }
+  prefs->SetInteger(fydeos::prefs::kFydeLicenseEnforcementLevel, static_cast<int>(level));
+
+  prefs->SetBoolean(fydeos::prefs::kFydeLicenseShouldShowInSettings, showLicenseInSettings == 1);
+  prefs->SetInteger(fydeos::prefs::kFydeLicenseEnforcementLogOutInterval, logOutInterval);
 }
 
 void LicenseManager::ISaveLocalLicenseString(std::optional<base::Value> license) {
@@ -253,7 +429,8 @@ void LicenseManager::IStoreLicense(std::optional<base::Value> license) {
       return;
     }
     GetShellClient()->SyncExec(SaveLicenseCmd(licenseDict),
-      base::BindOnce(&LicenseManager::OnStoredLicense, base::Unretained(this)));
+      base::BindOnce(&LicenseManager::OnStoredLicense,
+        weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
@@ -267,7 +444,7 @@ void LicenseManager::OnStoredLicense(std::optional<ShellState> state) {
 void LicenseManager::IFetchOfflineLicense() {
   GetShellClient()->SyncExec(GetLicenseCmd(),
     base::BindOnce(
-      &LicenseManager::OnFetchedOfflineLicense, base::Unretained(this)));
+      &LicenseManager::OnFetchedOfflineLicense, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void LicenseManager::OnFetchedOfflineLicense(std::optional<ShellState> state) {
@@ -305,10 +482,11 @@ void LicenseManager::IFetchOnlineLicense() {
   online_fetcher_->StartFetch(id_,
                               serial_number_,
                               is_new_license_,
+                              oem_token_,
                               base::BindOnce(
                                 &LicenseManager::IValidateLicense,
-                                base::Unretained(this)),
-    base::BindOnce(&LicenseManager::OnError, base::Unretained(this)));
+                                weak_ptr_factory_.GetWeakPtr()),
+    base::BindOnce(&LicenseManager::OnFetchError, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void LicenseManager::AddObserver(Observer* observer) {

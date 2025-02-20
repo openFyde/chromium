@@ -7,6 +7,7 @@
 
 #include <string>
 #include <memory>
+#include "chromeos/ash/components/dbus/update_engine/update_engine_client.h"
 
 class Profile;
 
@@ -39,12 +40,17 @@ class LicenseEnforcement {
     explicit LicenseEnforcement();
     ~LicenseEnforcement();
 
-    void StartEnforcement(const std::string& licenseID, const std::string& serialNumber, EnforcementMode mode);
+    void StartEnforcement(Profile* profile,
+                          const std::string& licenseID,
+                          const std::string& serialNumber,
+                          EnforcementMode mode,
+                          int logOutInterval);
     void StopEnforcement();
 
   private:
+    void StartEnforcementInternal();
     void Enforce();
-    void PopupLicenseWindow();
+    void PopupLicenseWindow(bool from_user_interaction);
     void CloseLicenseWindow();
     void ForceQuitCurrentUser();
 
@@ -58,15 +64,18 @@ class LicenseEnforcement {
     std::u16string ForceQuitNotificationMessage();
     void PopupForceQuitNotification();
 
+    void OnGetEolInfo(::ash::UpdateEngineClient::EolInfo info);
+
     std::unique_ptr<base::RepeatingTimer> enforce_timer_;
     std::unique_ptr<base::OneShotTimer> force_quit_timer_;
     std::unique_ptr<base::RepeatingTimer> notification_timer_;
     std::unique_ptr<message_center::Notification> notification_;
-    content::WebContents* webContents_;
     Profile* profile_;
     std::string id_;
     std::string serial_number_;
     EnforcementMode mode_;
+    int log_out_interval_;
+    bool is_eol_;
 }; // class LicenseEnforcement
 
 } // namespace license
