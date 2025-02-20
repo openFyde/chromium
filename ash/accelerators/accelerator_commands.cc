@@ -1322,6 +1322,12 @@ void ToggleAssignToAllDesk() {
 }
 
 void ToggleAssistant() {
+  if (ash::features::IsFydeAssistantEnabled()) {
+    AssistantUiController::Get()->ToggleUi(
+        /*entry_point=*/assistant::AssistantEntryPoint::kHotkey,
+        /*exit_point=*/assistant::AssistantExitPoint::kHotkey);
+    return;
+  }
   using assistant::AssistantAllowedState;
   switch (AssistantState::Get()->allowed_state().value_or(
       AssistantAllowedState::ALLOWED)) {

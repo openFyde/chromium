@@ -2,7 +2,7 @@
 
 namespace ash {
 
-const char kChromeUIFydeAssistantAppHost[] = "fydeos-assistant";
-const char kChromeUIFydeAssistantAppURL[] = "chrome://fydeos-assistant";
+const char kChromeUIFydeAssistantAppHost[] = "fydeos-ai";
+const char kChromeUIFydeAssistantAppURL[] = "chrome://fydeos-ai";
 
 } // namespace ash

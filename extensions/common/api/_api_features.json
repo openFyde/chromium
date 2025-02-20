@@ -246,7 +246,7 @@
       "contexts": ["webui"],
       "matches": [
         "chrome://add-supervision/*",
-        "chrome://fydeos-assistant/*",
+        "chrome://fydeos-ai/*",
         "chrome://assistant-optin/*",
         "chrome://file-manager/*",
         "chrome://extensions/*",
@@ -852,7 +852,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
-      "chrome://fydeos-assistant/*",
+      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
       "chrome://file-manager/*",
       "chrome://chrome-signin/*",
@@ -889,7 +889,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
-      "chrome://fydeos-assistant/*",
+      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
       "chrome://file-manager/*",
       "chrome://chrome-signin/*",
@@ -924,7 +924,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
-      "chrome://fydeos-assistant/*",
+      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
       "chrome://file-manager/*",
       "chrome://chrome-signin/*",

@@ -22,6 +22,7 @@
 #include "ash/app_list/views/app_list_search_view.h"
 #include "ash/app_list/views/apps_grid_view.h"
 #include "ash/app_list/views/assistant/app_list_bubble_assistant_page.h"
+#include "ash/app_list/views/assistant/fyde_assistant_page.h"
 #include "ash/app_list/views/folder_background_view.h"
 #include "ash/app_list/views/scrollable_apps_grid_view.h"
 #include "ash/app_list/views/search_box_view.h"
@@ -239,8 +240,9 @@ AppListBubbleView::AppListBubbleView(AppListViewDelegate* view_delegate)
 
   // Add assistant page as a top-level child so it will fill the bubble and
   // suggestion chips will appear at the bottom of the bubble view.
-  assistant_page_ = AddChildView(std::make_unique<AppListBubbleAssistantPage>(
-      view_delegate_->GetAssistantViewDelegate()));
+  // assistant_page_ = AddChildView(std::make_unique<AppListBubbleAssistantPage>(
+  //     view_delegate_->GetAssistantViewDelegate()));
+  assistant_page_ = AddChildView(std::make_unique<FydeAssistantPage>());
   assistant_page_->SetVisible(false);
 
   InitFolderView();

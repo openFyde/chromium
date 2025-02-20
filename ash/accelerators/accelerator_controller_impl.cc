@@ -941,7 +941,7 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kToggleStylusTools:
       return accelerators::CanShowStylusTools();
     case AcceleratorAction::kStartAssistant:
-      return true;
+      return ash::features::IsFydeAssistantEnabled();
     case AcceleratorAction::kStopScreenRecording:
       return accelerators::CanStopScreenRecording();
     case AcceleratorAction::kSwapPrimaryDisplay:

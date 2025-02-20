@@ -1774,7 +1774,7 @@ SearchModel* AppListControllerImpl::GetSearchModel() {
 
 void AppListControllerImpl::UpdateSearchBoxUiVisibilities() {
   SearchBoxModel* search_box_model = GetSearchModel()->search_box();
-  search_box_model->SetShowAssistantButton(IsAssistantAllowedAndEnabled());
+  search_box_model->SetShowAssistantButton(IsAssistantAllowedAndEnabled() || ash::features::IsFydeAssistantEnabled());
   search_box_model->SetShowSunfishButton(
       CaptureModeController::IsSunfishAllowedAndEnabled());
 
