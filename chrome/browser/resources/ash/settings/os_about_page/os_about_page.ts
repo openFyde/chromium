@@ -957,7 +957,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
         });
   }
 
-  // <if expr="_google_chrome">
   private onReportIssueClick_(): void {
     this.aboutBrowserProxy_.openFeedbackDialog();
   }
@@ -965,7 +964,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
   private getReportIssueLabel_(): string {
     return this.i18n('aboutSendFeedback');
   }
-  // </if>
 
   private shouldShowIcons_(): boolean {
     if (this.hasEndOfLife_) {

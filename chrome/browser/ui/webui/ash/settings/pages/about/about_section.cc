@@ -256,12 +256,10 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   // Top level About page strings.
   webui::LocalizedString kLocalizedStrings[] = {
       {"aboutProductLogoAlt", IDS_SHORT_PRODUCT_LOGO_ALT_TEXT},
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
       {"aboutReportAnIssue", IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE},
       {"aboutSendFeedback", IDS_SETTINGS_ABOUT_PAGE_SEND_FEEDBACK},
       {"aboutSendFeedbackDescription",
        IDS_OS_SETTINGS_REVAMP_SEND_FEEDBACK_DESCRIPTION},
-#endif
       {"aboutDiagnostics", IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS},
       {"aboutDiagnosticseDescription",
        IDS_OS_SETTINGS_REVAMP_DIAGNOSTICS_DESCRIPTION},

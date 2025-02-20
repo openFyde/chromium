@@ -70,7 +70,10 @@ class ChromeOsFeedbackDelegate : public OsFeedbackDelegate {
   ChromeOsFeedbackDelegate(
       Profile* profile,
       scoped_refptr<extensions::FeedbackService> feedback_service);
-  void OnSendFeedbackDone(SendReportCallback callback, bool status);
+  void OnSendFeedbackDone(
+      SendReportCallback callback,
+      const std::string& unique_report_id,
+      bool status);
   void OpenWebDialog(GURL url, const std::string& args);
   // Loading system logs could be slow. Preload them to reduce potential user
   // wait time when sending reports.

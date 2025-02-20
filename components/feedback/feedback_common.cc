@@ -175,6 +175,7 @@ void FeedbackCommon::PrepareReport(
   common_data->set_user_email(user_email());
   common_data->set_description(description());
   common_data->set_source_description_language(locale());
+  common_data->set_unique_report_identifier(unique_id());
 
   userfeedback::WebData* web_data = feedback_data->mutable_web_data();
   if (!page_url().empty()) {

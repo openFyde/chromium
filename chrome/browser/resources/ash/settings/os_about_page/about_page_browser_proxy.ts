@@ -153,12 +153,10 @@ export interface AboutPageBrowserProxy {
   /** Opens the release notes app. */
   launchReleaseNotes(): void;
 
-  // <if expr="_google_chrome">
   /**
    * Opens the feedback dialog.
    */
   openFeedbackDialog(): void;
-  // </if>
 
   /** Opens the diagnostics page. */
   openDiagnostics(): void;
@@ -285,11 +283,9 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
     chrome.send('launchReleaseNotes');
   }
 
-  // <if expr="_google_chrome">
   openFeedbackDialog(): void {
     chrome.send('openFeedbackDialog');
   }
-  // </if>
 
   openDiagnostics(): void {
     chrome.send('openDiagnostics');

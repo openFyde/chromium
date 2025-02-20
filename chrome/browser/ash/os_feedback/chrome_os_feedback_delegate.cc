@@ -61,6 +61,7 @@
 #include "ui/snapshot/snapshot.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 #include "url/gurl.h"
+#include "base/uuid.h"
 
 namespace ash {
 
@@ -84,7 +85,7 @@ scoped_refptr<base::RefCountedMemory> GetScreenshotData() {
   return nullptr;
 }
 
-constexpr std::size_t MAX_ATTACHED_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+constexpr std::size_t MAX_ATTACHED_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
 bool ShouldAddAttachment(const AttachedFilePtr& attached_file) {
   if (!(attached_file && attached_file->file_data.data())) {
@@ -288,6 +289,8 @@ void ChromeOsFeedbackDelegate::SendReport(
                           feedback_context->extra_diagnostics.value());
   }
   feedback_data->set_trace_id(report->feedback_context->trace_id);
+  const std::string unique_report_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  feedback_data->set_unique_id(unique_report_id);
   feedback_data->set_from_assistant(feedback_context->from_assistant);
   feedback_data->set_assistant_debug_info_allowed(
       feedback_context->assistant_debug_info_allowed);
@@ -379,7 +382,8 @@ void ChromeOsFeedbackDelegate::SendReport(
   feedback_service_->RedactThenSendFeedback(
       feedback_params, feedback_data,
       base::BindOnce(&ChromeOsFeedbackDelegate::OnSendFeedbackDone,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     unique_report_id));
 
   //  Only get and set the mac address if all the following are true:
   //  1. The flag is enabled,
@@ -404,11 +408,12 @@ void ChromeOsFeedbackDelegate::SendReport(
 }
 
 void ChromeOsFeedbackDelegate::OnSendFeedbackDone(SendReportCallback callback,
+                                                  const std::string& unique_id,
                                                   bool status) {
   // When status is true, it means the report will be sent shortly.
   const SendReportStatus send_status =
       status ? SendReportStatus::kSuccess : SendReportStatus::kDelayed;
-  std::move(callback).Run(send_status);
+  std::move(callback).Run(unique_id, send_status);
 }
 
 // An active feedback app can be either a SWA (for logged in users) or a dialog

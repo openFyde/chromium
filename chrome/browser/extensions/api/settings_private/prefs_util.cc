@@ -1184,10 +1184,8 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[proxy_config::prefs::kProxy] =
       settings_api::PrefType::kDictionary;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   (*s_allowlist)[::prefs::kUserFeedbackAllowed] =
       settings_api::PrefType::kBoolean;
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
   // Media Remoting settings.
   (*s_allowlist)[media_router::prefs::kMediaRouterMediaRemotingEnabled] =

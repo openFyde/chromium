@@ -16,6 +16,8 @@ CHROMEOS_EXPORT extern const char kDefaultFydeOSTimezoneAPIUrl[];
 
 CHROMEOS_EXPORT extern const char kDefaultFydeOSLookingGlassUrl[];
 
+CHROMEOS_EXPORT extern const char kFydeOSFeedbackPostUrl[];
+
 CHROMEOS_EXPORT extern const uint8_t* kFydeOSCryptoKey;
 extern const size_t kFydeOSCryptoKeyLength;
 
