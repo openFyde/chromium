@@ -25,6 +25,8 @@ static_library("fydeos_extensions_api") {
     "api/shell_client/shell_client_api.h",
     "api/fydeos_arc_status/fydeos_arc_status_api.cc",
     "api/fydeos_arc_status/fydeos_arc_status_api.h",
+    "api/fydeos_private/fydeos_private_api.cc",
+    "api/fydeos_private/fydeos_private_api.h",
   ]
 
   configs += [
@@ -43,6 +45,8 @@ static_library("fydeos_extensions_api") {
     "//ash/public/cpp",
     "//ash",
     "//ui/aura",
+    "//fydeos/switches",
+    "//fydeos/build/config:buildflags",
   ]
 }
 

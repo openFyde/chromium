@@ -1994,6 +1994,9 @@ enum HistogramValue {
   SHELL_FORCE_CLOSE_TASK = 1932,
   FYDEOS_ARC_STATUS_GET = 1933,
   INPUT_IME_SHOW_FYDE_LANGUAGE_STATE = 1934,
+  ARCAPPSPRIVATE_REMOVEPACKAGE = 1935,
+  ARCAPPSPRIVATE_INSTALLPACKAGE_FROM_PATH = 1936,
+  FYDEOS_PRIVATE_GET_FYDEOS_INFO = 1937,
   // Last entry: Add new entries above, then run:
   // tools/metrics/histograms/update_extension_histograms.py
   ENUM_BOUNDARY

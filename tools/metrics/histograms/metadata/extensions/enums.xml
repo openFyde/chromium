@@ -766,6 +766,10 @@ Called by update_extension_histograms.py.-->
   <int value="563" label="FYDEOS_SHELL_CLIENT_SYSTEM_NOTIFICATION"/>
   <int value="564" label="FYDEOS_SHELL_CLIENT_COMMAND_NOTIFICATION"/>
   <int value="565" label="FYDEOS_SHELL_CLIENT_CUSTOM_NOTIFICATION"/>
+  <int value="566" label="ARC_APPS_PRIVATE_ON_REMOVED"/>
+  <int value="567" label="ARC_APPS_PRIVATE_ON_INSTALLATION_STARTED"/>
+  <int value="568" label="ARC_APPS_PRIVATE_ON_INSTALLATION_PROGRESS_CHANGED"/>
+  <int value="569" label="ARC_APPS_PRIVATE_ON_INSTALLATION_FINISHED"/>
 </enum>
 
 <enum name="ExtensionForceInstalledPreInstalledDeprecatedSite">
@@ -2805,6 +2809,9 @@ Called by update_extension_histograms.py.-->
   <int value="1932" label="SHELL_FORCE_CLOSE_TASK"/>
   <int value="1933" label="FYDEOS_ARC_STATUS_GET"/>
   <int value="1934" label="INPUT_IME_SHOW_FYDE_LANGUAGE_STATE"/>
+  <int value="1935" label="ARCAPPSPRIVATE_REMOVEPACKAGE"/>
+  <int value="1936" label="ARCAPPSPRIVATE_INSTALLPACKAGE_FROM_PATH"/>
+  <int value="1937" label="FYDEOS_PRIVATE_GET_FYDEOS_INFO"/>
 </enum>
 
 <enum name="ExtensionInstallationCrxInstallError">

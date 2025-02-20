@@ -23,6 +23,8 @@ CHROMEOS_EXPORT bool IsUnknownPeripheralBatteryNotificationDisabled();
 
 CHROMEOS_EXPORT bool IsDynamicDefaultWallpaperSupported();
 
+CHROMEOS_EXPORT extern const char kFydeOSServiceHostSuffixForTesting[];
+
 } // switches
 } // fydeos
 

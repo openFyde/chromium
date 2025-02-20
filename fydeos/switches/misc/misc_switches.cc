@@ -32,6 +32,9 @@ const std::vector<std::string> kNonForYouBoards = {
 
 }
 
+const char kFydeOSServiceHostSuffixForTesting[] =
+  "fydeos-service-host-suffix-for-testing";
+
 bool IsFydeCustomEnabled() {
   return !base::CommandLine::ForCurrentProcess()->HasSwitch(kFydeDisableCustom);
 }
