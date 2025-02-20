@@ -84,7 +84,9 @@ void FydeAssistantPage::OpenUrl(const GURL& url) {
     return;
   }
   // RemoveContents();
-  web_view_ = AshWebViewFactory::Get()->Create(AshWebView::InitParams());
+  auto params = AshWebView::InitParams();
+  params.can_record_media = true;
+  web_view_ = AshWebViewFactory::Get()->Create(params);
   WebView()->AddObserver(this);
   WebView()->Navigate(url);
 }
