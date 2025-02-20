@@ -70,6 +70,7 @@ constexpr auto kSystemWebAppsMapping =
          {"boca", ash::SystemWebAppType::BOCA},
          {"app_mall", ash::SystemWebAppType::MALL},
          {"recorder", ash::SystemWebAppType::RECORDER},
+         {"fyde_assistant", ash::SystemWebAppType::FYDE_ASSISTANT},
          {"graduation", ash::SystemWebAppType::GRADUATION}});
 
 constexpr ash::SystemWebAppType GetMaxSystemWebAppType() {

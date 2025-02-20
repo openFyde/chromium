@@ -134,6 +134,7 @@ def validateJavaScriptAllowed(source_dir, out_dir, is_ios):
       'chrome/browser/resources/chromeos/accessibility',
       'chrome/browser/resources/chromeos/gaia_action_buttons',
       'ui/file_manager/',
+      'ash/webui/fyde_assistant_app_ui/',
   ]
   for directory in ash_directories:
     if directory in source_dir:

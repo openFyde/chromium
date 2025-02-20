@@ -1392,6 +1392,11 @@
     "includes": [10100],
     "messages": [10120],
   },
+
+  "<(SHARED_INTERMEDIATE_DIR)/ash/webui/fyde_assistant_app_ui/resources/resources.grd": {
+    "META": {"sizes": {"includes": [50],}},
+    "includes": [10140],
+  },
   #//---***FYDEOS END***---
 
   # END "everything else" section.
