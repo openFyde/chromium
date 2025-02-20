@@ -32,8 +32,10 @@ void FydeAssistantWebUIHandler::OnFydeAssistantSwaInit(const base::Value::List& 
 }
 
 void FydeAssistantWebUIHandler::OnRequestCloseAssistant(const base::Value::List& args) {
-  // auto* const app_list_controller = Shell::Get()->app_list_controller();
-  // app_list_controller->CloseAssistant();
+  auto* const app_list_controller = Shell::Get()->app_list_controller();
+  if (app_list_controller) {
+    app_list_controller->CloseFydeAssistant();
+  }
 }
 
 void FydeAssistantWebUIHandler::OnFydeAssistantOpenUrl(const base::Value::List& args) {

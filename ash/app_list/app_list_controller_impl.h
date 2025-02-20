@@ -162,6 +162,7 @@ class ASH_EXPORT AppListControllerImpl
       override;
   void StartAssistant(assistant::AssistantEntryPoint entry_point) override;
   void EndAssistant(assistant::AssistantExitPoint exit_point) override;
+  void CloseFydeAssistant() override;
   std::vector<AppListSearchControlCategory> GetToggleableCategories()
       const override;
   void StartSearch(const std::u16string& raw_query) override;

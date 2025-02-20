@@ -1222,6 +1222,19 @@ AppListControllerImpl::GetToggleableCategories() const {
   return std::vector<AppListSearchControlCategory>();
 }
 
+void AppListControllerImpl::CloseFydeAssistant() {
+  if (!IsInTabletMode()) {
+    if (bubble_presenter_) {
+      bubble_presenter_->BackOrExit();
+    }
+    return;
+  }
+  if (fullscreen_presenter_) {
+    UpdateFullscreenLauncherContainer();
+    AssistantUiController::Get()->CloseUi(AssistantExitPoint::kBackInLauncher);
+  }
+}
+
 void AppListControllerImpl::StartSearch(const std::u16string& raw_query) {
   if (client_) {
     std::u16string query;

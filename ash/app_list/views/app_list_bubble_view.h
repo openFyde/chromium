@@ -74,6 +74,8 @@ class ASH_EXPORT AppListBubbleView : public views::View,
   // Handles back action if it we have a use for it besides dismissing.
   bool Back();
 
+  void BackOrExit();
+
   // Shows a sub-page.
   void ShowPage(AppListBubblePage page);
 
@@ -185,6 +187,8 @@ class ASH_EXPORT AppListBubbleView : public views::View,
 
   // Focuses the search box if the view is not hiding.
   void MaybeFocusAndActivateSearchBox();
+
+  void ToggleBorderForAssistantPage(const AppListBubblePage current, const AppListBubblePage previous);
 
   const raw_ptr<AppListViewDelegate> view_delegate_;
 

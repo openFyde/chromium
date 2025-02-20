@@ -11,6 +11,7 @@ namespace ash {
 
 namespace {
 const char kFydeAssistantExtensionUrl[] = "chrome://fydeos-ai/?source=launcher";
+constexpr int kHeightDip = 440;
 } // namespace
 
 FydeAssistantPage::FydeAssistantPage() {
@@ -69,6 +70,10 @@ void FydeAssistantPage::OnUiVisibilityChanged(
 void FydeAssistantPage::InitializeUIForBubbleView() {
   // called from AppListBubbleView::InitializeUIForBubbleView
   VLOG(2) << "FydeAssistantPage::InitializeUIForBubbleView()";
+}
+
+gfx::Size FydeAssistantPage::CalculatePreferredSize(const views::SizeBounds& available_size) const {
+  return gfx::Size(INT_MAX, kHeightDip);
 }
 
 void FydeAssistantPage::OpenUrl(const GURL& url) {
