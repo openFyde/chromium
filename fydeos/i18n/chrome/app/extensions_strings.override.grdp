@@ -15,5 +15,8 @@
       Find extensions and themes in the <ph name="BEGIN_LINK">&lt;a href="https://store.fydeos.io/?init=extensions"&gt;</ph>FydeOS App Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
     </message>
   </if>
+  <message name="IDS_EXTENSIONS_SIDEBAR_DISCOVER_MORE" desc="The text displayed in the sidebar to open the FydeOS App Store to get more extensions.">
+    Discover more extensions and themes on the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>FydeOS App Store<ph name="END_LINK">&lt;/a&gt; <ex>&lt;/a&gt;</ex> </ph>
+  </message>
 
 </grit-part>

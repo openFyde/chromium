@@ -35,5 +35,7 @@ const char kRebootRequiredForWidevine[] = "reboot_required_for_widevine";
 
 const char kFydeAssistantEnabled[] = "fyde_assistant_enabled";
 const char kFydeAssistantExtraAcceleratorEnabled[] = "fyde_assistant_extra_accelerator_enabled";
+
+const char kFydeOSArcMediaAutoScanEnabled[] = "fydeos_arc_media_auto_scan_enabled";
 }
 }

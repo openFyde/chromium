@@ -164,5 +164,8 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TEXT" desc="Text for backup password prompt">
     Please remember this password, as it will be required when restoring this backup file
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_TOGGLE_ARC_MEDIA_AUTO_SCAN_LABEL" desc="Text for toggling arc media autoscan">
+    Disable automatic media file scanning for all partitions to optimize battery life. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
 </if>
 </grit-part>

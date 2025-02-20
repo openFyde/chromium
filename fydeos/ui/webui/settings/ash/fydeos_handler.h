@@ -89,6 +89,16 @@ class FydeOsHandler :
 
   void OnBackupTaskFinished(BackupTaskManager::TaskState state);
 
+  void HandleGetArcMediaAutoScanState(const base::Value::List& args);
+  void OnArcMediaAutoScanIndicatorFileExistenceChecked(const std::string& callback_id, bool result);
+  void HandleSetArcMediaAutoScanState(const base::Value::List& args);
+  void OnEnableArcMediaAutoScan(bool result);
+  void OnDisableArcMediaAutoScan(bool result);
+  void RefreshArcMediaAutoScanState();
+  void NotifyArcMediaAutoScanState(bool enabled);
+
+  void HandleSetArcMediaAutoScanStateForCurrentSession(const base::Value::List& args);
+
   std::string system_salt_;
   Profile* profile_;
   PrefService* const prefs_;

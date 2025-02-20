@@ -38,6 +38,8 @@ extern const char kRebootRequiredForWidevine[];
 
 extern const char kFydeAssistantEnabled[];
 extern const char kFydeAssistantExtraAcceleratorEnabled[];
+
+extern const char kFydeOSArcMediaAutoScanEnabled[];
 } // prefs
 } // fydeos
 

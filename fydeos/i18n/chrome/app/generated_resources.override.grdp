@@ -41,4 +41,8 @@
     Stay in Chromium
   </message>
 
+  <message name="IDS_EXTENSIONS_SUBMENU_CHROME_WEBSTORE_ITEM" desc="The text for the link in the extensions menu, in the app menu, to visit the Chrome Web Store to get more extensions (title case).">
+    Visit FydeOS App Store
+  </message>
+
 </grit-part>

@@ -15,6 +15,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 
   registry->RegisterBooleanPref(kFydeAssistantEnabled, true);
   registry->RegisterBooleanPref(kFydeAssistantExtraAcceleratorEnabled, true);
+
+  registry->RegisterBooleanPref(kFydeOSArcMediaAutoScanEnabled, true);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -50,6 +52,10 @@ void SetNotNecessaryForceTpmFallback(PrefService* local_state) {
 
 void ClearRebootMarkPrefs(PrefService* local_state) {
   local_state->SetBoolean(kRebootRequiredForWidevine, false);
+}
+
+void ClearOneShotProfilePrefs(PrefService* prefs) {
+  prefs->ClearPref(kFydeOSArcMediaAutoScanEnabled);
 }
 
 } // prefs

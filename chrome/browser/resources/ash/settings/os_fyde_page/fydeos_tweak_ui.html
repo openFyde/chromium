@@ -49,6 +49,20 @@
              role="button" checked="[[showSwitchTabletLaptopButton_]]" on-change="onToggleShowSwitchTabletLaptopButton_">
   </cr-toggle>
 </div>
+<div class="settings-box two-line">
+  <div class="start padded">
+    <localized-link
+      localized-string="[[i18nAdvanced('toggleArcMediaAutoScanLabel')]]">
+    </localized-link>
+  </div>
+  <cr-button id="restartForToggleArcMediaAutoScanButton" on-click="onRestartForToggleArcMediaAutoScanTap_" hidden="[[!rebootRequiredForToggleArcMediaAutoScan_]]">
+    $i18n{restart}
+  </cr-button>
+  <div class="separator" hidden="[[!rebootRequiredForToggleArcMediaAutoScan_]]"></div>
+  <cr-toggle id="toggleArcMediaAutoScan" disabled="[[disableToggleArcMediaAutoScan_]]"
+             role="button" checked="[[!arcMediaAutoScanEnabled_]]" on-change="onToggleArcMediaAutoScan_">
+  </cr-toggle>
+</div>
 <div class="settings-box two-line" hidden=[[!showToggleWidevine_]]>
   <div class="start padded">
     $i18n{enableLibwidevineLabel}

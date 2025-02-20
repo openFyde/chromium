@@ -79,6 +79,10 @@ std::string GetWebstoreExtensionsCategoryURL() {
   return GetWebstoreLaunchURL().spec() + "/category/extensions";
 }
 
+std::string GetFydeWebstoreExtensionsCategoryURL() {
+  return fydeos::switches::GetFydeOSAppStoreURL() + "/?init=extensions";
+}
+
 std::string GetWebstoreItemDetailURLPrefix() {
   return GetNewWebstoreLaunchURL().spec() + "detail/";
 }

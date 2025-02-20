@@ -21,6 +21,10 @@ CHROMEOS_EXPORT extern const char kFydeOSSyncDevServerUrl[];
 CHROMEOS_EXPORT extern const char kFydeOSSyncServerUrl[];
 
 CHROMEOS_EXPORT extern const char kDefaultFydeOSFamilyLinkApisUrl[];
+
+CHROMEOS_EXPORT extern const char kDefaultFydeFtlServerEndpoint[];
+CHROMEOS_EXPORT extern const char kDefaultFydeRemotingServerEndpoint[];
+
 extern const size_t kFydeOSSupervisedUserSettingsDefaultSyncIntervalInSeconds;
 
 #if BUILDFLAG(IS_OPENFYDE)

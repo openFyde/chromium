@@ -59,6 +59,8 @@ extern const char kFingerprintLearnMoreURL[];
 
 extern const char kFydeOSBackupRestoreLearnMoreURL[];
 
+extern const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[];
+
 #if !BUILDFLAG(USE_FYDEOS_COM)
 extern const char kFydeOSDiscordServerURL[];
 extern const char kFydeOSTelegramGroupURL[];

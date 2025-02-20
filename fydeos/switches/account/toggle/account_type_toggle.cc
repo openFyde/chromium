@@ -13,6 +13,8 @@
 #include "components/user_manager/user_manager.h"
 #include "components/account_id/account_id.h"
 #include "base/command_line.h"
+#include "remoting/base/service_urls.h"
+
 
 namespace fydeos {
 namespace switches {
@@ -23,6 +25,11 @@ void ResetUrls() {
   GaiaUrls *gaia_urls = GaiaUrls::GetInstance();
   if (gaia_urls) {
     gaia_urls->Reset();
+  }
+
+  remoting::ServiceUrls* service_urls = remoting::ServiceUrls::GetInstance();
+  if (service_urls) {
+    service_urls->ResetServerEndpoints();
   }
 
   if (!g_browser_process || !g_browser_process->platform_part()) return;

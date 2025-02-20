@@ -101,6 +101,11 @@
   :host-context(body:not(.revamp-wayfinding-enabled)) #copyrightCard {
     margin-top: var(--cr-section-vertical-margin);
   }
+
+  #product-logo {
+    height: 32px;
+    width: 32px;
+  }
 </style>
 <iron-media-query query="(prefers-color-scheme: dark)"
     query-matches="{{isDarkModeActive_}}">
@@ -111,8 +116,8 @@
       <settings-card header-text="$i18n{aboutOsPageTitle}">
         <div id="productRow" class="settings-box first">
           <img id="productLogo" on-click="onProductLogoClick_"
-              srcset="chrome://theme/current-channel-logo@1x 1x,
-                      chrome://theme/current-channel-logo@2x 2x"
+              srcset="chrome://theme/current-channel-os-logo@1x 1x,
+                      chrome://theme/current-channel-os-logo@2x 2x"
               alt="$i18n{aboutProductLogoAlt}"
               role="presentation">
           <h1 id="productTitle">$i18n{aboutOsProductTitle}</h1>

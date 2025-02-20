@@ -55,6 +55,7 @@ const char kFingerprintLearnMoreURL[] = "https://fydeos.com/docs/manual/customiz
 
 const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.com/docs/manual/customize-settings/fydeos-settings/misc#backup-and-restore";
 
+const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[] = "https://fydeos.com/faq/disable-media-files-scan/";
 #else
 
 const char kDefaultTestUrl[] = "http://store.fydeos.io/204";
@@ -102,6 +103,8 @@ const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.io/docs/manual/man
 const char kFingerprintLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/users-and-sync/set-up-and-sign-in-with-fingerprint-on-your-fydeos-device";
 
 const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/fydeos-settings/misc#backup-and-restore";
+
+const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[] = "https://fydeos.io/faq/disable-media-files-scan/";
 
 const char kFydeOSDiscordServerURL[] = "https://discord.gg/Qv3kxGeMJQ";
 const char kFydeOSTelegramGroupURL[] = "https://t.me/hi_fydeos";

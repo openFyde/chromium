@@ -150,6 +150,13 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
             base::ASCIIToUTF16(
               fydeos::constants::kFydeOSEnableWidevineLearnMoreURL)));
 
+  html_source->AddString(
+      "toggleArcMediaAutoScanLabel",
+      l10n_util::GetStringFUTF16(
+          IDS_OS_SETTINGS_FYDEOS_TOGGLE_ARC_MEDIA_AUTO_SCAN_LABEL,
+            base::ASCIIToUTF16(
+              fydeos::constants::kFydeOSToggleArcMediaAutoScanLearnMoreURL)));
+
   const std::string board = base::SysInfo::GetLsbReleaseBoard();
   html_source->AddBoolean("showToggleRebootButtonInTray", false);
   html_source->AddBoolean("showToggleRotateScreenButton",

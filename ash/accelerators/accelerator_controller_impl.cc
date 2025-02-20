@@ -1080,7 +1080,6 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kNewTab:
     case AcceleratorAction::kNewWindow:
     case AcceleratorAction::kOpenCalculator:
-    case AcceleratorAction::kOpenCrosh:
     case AcceleratorAction::kOpenDiagnostics:
     case AcceleratorAction::kOpenFeedbackPage:
     case AcceleratorAction::kOpenFileManager:
@@ -1108,6 +1107,8 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kVolumeUp:
     case AcceleratorAction::kWindowMinimize:
       return true;
+    case AcceleratorAction::kOpenCrosh:
+      return !Shell::Get()->session_controller()->IsUserGuest();
     case AcceleratorAction::kTouchFingerprintSensor1:
     case AcceleratorAction::kTouchFingerprintSensor2:
     case AcceleratorAction::kTouchFingerprintSensor3:

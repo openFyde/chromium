@@ -48,6 +48,20 @@ bool SuitableForBackupVolume(const file_manager::Volume* volume) {
     && volume->has_media();
 }
 
+const char kFydeOSArcMediaAutoScanIndicatorFile[] = "/home/chronos/user/.enable_arc_media_auto_scan";
+
+bool ArcMediaAutoScanIndicatorFileExists() {
+  return base::PathExists(base::FilePath(kFydeOSArcMediaAutoScanIndicatorFile));
+}
+
+bool DeleteArcMediaAutoScanIndicatorFile() {
+  return base::DeleteFile(base::FilePath(kFydeOSArcMediaAutoScanIndicatorFile));
+}
+
+bool CreateArcMediaAutoScanIndicatorFile() {
+  return base::WriteFile(base::FilePath(kFydeOSArcMediaAutoScanIndicatorFile), "");
+}
+
 }  // namespace
 
 // FydeOsHandler::FydeOsHandler(Profile* profile, PrefService* prefs) :
@@ -147,6 +161,19 @@ void FydeOsHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getFydeosBackupState",
       base::BindRepeating(&FydeOsHandler::HandleGetFydeOSBackupState,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getArcMediaAutoScanState",
+      base::BindRepeating(&FydeOsHandler::HandleGetArcMediaAutoScanState,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setArcMediaAutoScanState",
+      base::BindRepeating(&FydeOsHandler::HandleSetArcMediaAutoScanState,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setArcMediaAutoScanStateForCurrentSession",
+      base::BindRepeating(&FydeOsHandler::HandleSetArcMediaAutoScanStateForCurrentSession,
                           base::Unretained(this)));
 }
 
@@ -584,6 +611,77 @@ void FydeOsHandler::HandleGetFydeOSBackupState(const base::Value::List& args) {
       break;
   }
   ResolveJavascriptCallback(callback_id, base::Value(state_str));
+}
+
+void FydeOsHandler::HandleGetArcMediaAutoScanState(const base::Value::List& args) {
+  CHECK_EQ(1u, args.size());
+  const std::string& callback_id = args[0].GetString();
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&ArcMediaAutoScanIndicatorFileExists),
+      base::BindOnce(&FydeOsHandler::OnArcMediaAutoScanIndicatorFileExistenceChecked,
+                    weak_ptr_factory_.GetWeakPtr(), callback_id));
+
+}
+
+void FydeOsHandler::OnArcMediaAutoScanIndicatorFileExistenceChecked(const std::string& callback_id, bool result) {
+  const PrefService::Preference* pref = prefs_->FindPreference(fydeos::prefs::kFydeOSArcMediaAutoScanEnabled);
+  int saved = 0;
+  if (!pref || pref->IsDefaultValue()) {
+    saved = -1;
+  } else {
+    const bool n = pref->GetValue()->GetBool();
+    saved = n ? 1 : 0;
+  }
+  base::Value::Dict response;
+  response.Set("enabled", result);
+  response.Set("saved", saved);
+  if (callback_id.empty()) {
+    FireWebUIListener("fydeos-arc-media-auto-scan-changed", response);
+  } else {
+    ResolveJavascriptCallback(callback_id, response);
+  }
+}
+
+void FydeOsHandler::HandleSetArcMediaAutoScanStateForCurrentSession(const base::Value::List& args) {
+  CHECK_EQ(1u, args.size());
+  bool enabled = args[0].GetBool();
+  prefs_->SetBoolean(fydeos::prefs::kFydeOSArcMediaAutoScanEnabled, enabled);
+}
+
+void FydeOsHandler::HandleSetArcMediaAutoScanState(const base::Value::List& args) {
+  CHECK_EQ(1u, args.size());
+  bool enable = args[0].GetBool();
+  if (!enable) {
+    base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&DeleteArcMediaAutoScanIndicatorFile),
+      base::BindOnce(&FydeOsHandler::OnEnableArcMediaAutoScan,
+                     weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    const std::string empty = std::string();
+    base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&CreateArcMediaAutoScanIndicatorFile),
+      base::BindOnce(&FydeOsHandler::OnDisableArcMediaAutoScan,
+                     weak_ptr_factory_.GetWeakPtr()));
+  }
+}
+
+void FydeOsHandler::OnEnableArcMediaAutoScan(bool result) {
+  RefreshArcMediaAutoScanState();
+}
+
+void FydeOsHandler::OnDisableArcMediaAutoScan(bool result) {
+  RefreshArcMediaAutoScanState();
+}
+
+void FydeOsHandler::RefreshArcMediaAutoScanState() {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&ArcMediaAutoScanIndicatorFileExists),
+      base::BindOnce(&FydeOsHandler::OnArcMediaAutoScanIndicatorFileExistenceChecked,
+                 weak_ptr_factory_.GetWeakPtr(), ""));
 }
 
 }  // namespace ash::settings

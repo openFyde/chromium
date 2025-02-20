@@ -293,6 +293,13 @@ export class EmojiGroupComponent extends PolymerElement {
     return '';
   }
 
+  private shouldShowEmoji(emoji: EmojiVariants): boolean {
+    let show = true;
+    if (emoji.base.name && emoji.base.name.indexOf('flag of Taiwan') !== -1) show = false;
+    if (emoji.base.keywords && emoji.base.keywords?.find(k => k.indexOf(':Taiwan-flag:') !== -1) !== undefined) show = false;
+    return show;
+  }
+
   /**
    * Returns the character to be shown for the emoji.
    */

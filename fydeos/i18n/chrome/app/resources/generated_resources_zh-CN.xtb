@@ -125,6 +125,7 @@
 <translation id="6529331856800157597">此操作可以为当前登录的账户创建全盘备份，方便日后恢复至备份文件创建时 FydeOS 系统的状态，包括设置项、安装的浏览器插件以及子系统的程序等。视目前已安装的程序和你的个人文件夹的内容，备份文件可能会很大；建议将备份文件存储在外部存储设备上。如果你有便携式移动磁盘，此时请接入该设备。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
 <translation id="996700315270946845">请输入当前账户的登录密码</translation>
 <translation id="8663988871299316062">请务必牢记此密码，恢复备份时会用到</translation>
+<translation id="3176232846379750386">禁用多分区下的媒体文件自动扫描以获得更长的电池续航时间。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
 <!-- chromeos_strings.override.grdp -->
 <translation id="8642537394560952908">拍摄新照片，或者选择现有照片或图标。
     <ph name="LINE_BREAK" />
@@ -248,8 +249,10 @@
 <translation id="1104097200250520674">应用商店</translation>
 <translation id="2261245167193480027">继续使用 Chromium</translation>
 <translation id="3095811995836568724">Chromium 历史记录</translation>
+<translation id="8198313821724756746">访问 FydeOS 应用商店</translation>
 <!-- extensions_strings.override.grdp -->
 <translation id="3635723840107310657">在 <ph name="BEGIN_LINK" />FydeOS 应用商店<ph name="END_LINK" />中查找扩展程序和主题背景</translation>
+<translation id="7833783333207521175">在 <ph name="BEGIN_LINK" />FydeOS 应用商店<ph name="END_LINK" />中发现更多扩展程序和主题</translation>
 <!-- extensions_strings.grdp -->
 <translation id="4220157073401904732">FydeOS 应用商店</translation>
 <!-- nearby_share_strings.override.grdp -->

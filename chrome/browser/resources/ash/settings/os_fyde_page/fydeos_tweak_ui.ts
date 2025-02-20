@@ -151,6 +151,18 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
         type: Boolean,
         value: false,
       },
+      arcMediaAutoScanEnabled_: {
+        type: Boolean,
+        value: true,
+      },
+      savedArcMediaAutoScanEnabled_: {
+        type: Number,
+        value: -1,
+      },
+      rebootRequiredForToggleArcMediaAutoScan_: {
+        type: Boolean,
+        computed: 'computeRebootRequiredForToggleArcMediaAutoScan_(arcMediaAutoScanEnabled_, savedArcMediaAutoScanEnabled_)',
+      },
     };
   }
 
@@ -158,6 +170,11 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
   private isInTabletPhysicalState_: boolean;
   private showSwitchTabletLaptopButton_: boolean;
   private canToggleRotateScreenButton_: boolean;
+
+  private arcMediaAutoScanEnabled_: boolean;
+  private savedArcMediaAutoScanEnabled_: number;
+  private rebootRequiredForToggleArcMediaAutoScan_: boolean;
+  private togglingArcMediaAutoScan_: boolean;
 
   private showToggleWidevine_: boolean;
   private libwidevineEnabled_: boolean;
@@ -182,6 +199,7 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
     this.client_ =  new WidevineHelper(this);
     this.backupEmail_ = '';
     this.backupFilePassword_ = ''
+    this.togglingArcMediaAutoScan_ = false;
   }
 
   override connectedCallback() {
@@ -189,6 +207,7 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
     this.getShowRotateScreenButton();
     this.getIsInTabletPhysicalState();
     this.getShowSwitchTabletLaptopButton();
+    this.getArcMediaAutoScanEnabled();
     this.addWebUiListener('show-rotate-screen-button-changed', this.onShowRotateScreenButtonChanged_.bind(this));
     this.addWebUiListener('is-in-tablet-physical-state-changed', this.onIsInTabletPhysicalStateChanged_.bind(this));
     this.addWebUiListener('show-switch-tablet-laptop-button-changed', this.onShowSwitchTabletLaptopButtonChanged_.bind(this));
@@ -196,6 +215,8 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
 
     this.addWebUiListener('fydeos-backup-file-selected', this.onBackupFileSelected_.bind(this));
     this.addWebUiListener('fydeos-backup-task-finished', this.onBackupDone_.bind(this));
+
+    this.addWebUiListener('fydeos-arc-media-auto-scan-changed', this.onArcMediaAutoScanStateChanged_.bind(this));
 
     this.checkLibwidevineStatus_();
     this.checkBackupSupported_();
@@ -459,6 +480,44 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
 
   onPasswordPromptCanceled_(e: Event) {
     console.log('password prompt cancel', e);
+  }
+
+  getArcMediaAutoScanEnabled() {
+    sendWithPromise('getArcMediaAutoScanState').then((result : {enabled: boolean, saved: number}) => {
+      const { enabled, saved } = result;
+      console.log('getArcMediaAutoScanState', result);
+      this.arcMediaAutoScanEnabled_ = enabled;
+      this.savedArcMediaAutoScanEnabled_ = saved;
+      if (saved === -1) {
+        chrome.send('setArcMediaAutoScanStateForCurrentSession', [enabled]);
+      }
+    });
+  }
+
+  async onToggleArcMediaAutoScan_() {
+    if (this.togglingArcMediaAutoScan_) {
+      return;
+    }
+    this.togglingArcMediaAutoScan_ = true;
+    this.arcMediaAutoScanEnabled_ = !this.arcMediaAutoScanEnabled_;
+    chrome.send('setArcMediaAutoScanState', [this.arcMediaAutoScanEnabled_]);
+    this.togglingArcMediaAutoScan_ = false;
+  }
+
+  onArcMediaAutoScanStateChanged_(result: { enabled: boolean, saved: number} ) {
+    const { enabled, saved } = result;
+    console.log('onArcMediaAutoScanStateChanged_', result);
+    this.arcMediaAutoScanEnabled_ = enabled;
+    this.savedArcMediaAutoScanEnabled_ = saved;
+  }
+
+  computeRebootRequiredForToggleArcMediaAutoScan_(enabled: boolean, saved: number) {
+    if (saved === -1) return false;
+    return enabled !== (!!saved);
+  }
+
+  onRestartForToggleArcMediaAutoScanTap_() {
+    LifetimeBrowserProxyImpl.getInstance().relaunch();
   }
 }
 

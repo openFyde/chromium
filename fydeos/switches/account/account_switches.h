@@ -27,6 +27,9 @@ extern std::string GetFydeOSKidsManagementAPIBaseUrl();
 CHROMEOS_EXPORT int GetFydeOSSupervisedUserSettingsSyncInterval();
 CHROMEOS_EXPORT bool IsPolicyManagedByFyde();
 
+CHROMEOS_EXPORT std::string GetFydeFtlServerEndpoint();
+CHROMEOS_EXPORT std::string GetFydeRemotingServerEndpoint();
+
 }
 }
 
