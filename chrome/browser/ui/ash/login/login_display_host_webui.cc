@@ -602,7 +602,7 @@ void LoginDisplayHostWebUI::StartWizard(OobeScreenId first_screen) {
 
   DisableKeyboardOverscroll();
 
-  TryToPlayOobeStartupSound();
+  // TryToPlayOobeStartupSound();
 
   first_screen_ = first_screen;
 
@@ -888,6 +888,14 @@ bool LoginDisplayHostWebUI::HandleAccelerator(LoginAcceleratorAction action) {
   return LoginDisplayHostCommon::HandleAccelerator(action);
 }
 
+void LoginDisplayHostWebUI::HandlePlayStartupSound() {
+  // Reset timer
+  // Perhaps we should consider altering the name of this variable, since we're
+  // not playing sound after the login prompt is visible.
+  login_prompt_visible_time_ = base::TimeTicks::Now();
+  TryToPlayOobeStartupSound();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // LoginDisplayHostWebUI, private
 
@@ -1044,7 +1052,7 @@ void LoginDisplayHostWebUI::OnLoginPromptVisible() {
     return;
   }
   login_prompt_visible_time_ = base::TimeTicks::Now();
-  TryToPlayOobeStartupSound();
+  // TryToPlayOobeStartupSound();
 }
 
 void LoginDisplayHostWebUI::CreateExistingUserController() {

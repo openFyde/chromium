@@ -253,6 +253,8 @@ class LoginDisplayHost {
   // Terms of Service, user image selection) for demo mode.
   virtual void SkipPostLoginScreensForDemoMode() = 0;
 
+  virtual void HandlePlayStartupSound() = 0;
+
  protected:
   LoginDisplayHost();
   virtual ~LoginDisplayHost();

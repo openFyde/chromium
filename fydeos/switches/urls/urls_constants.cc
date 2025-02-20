@@ -103,6 +103,8 @@ const char kFingerprintLearnMoreURL[] = "https://fydeos.io/docs/manual/customize
 
 const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/fydeos-settings/misc#backup-and-restore";
 
+const char kFydeOSDiscordServerURL[] = "https://discord.gg/Qv3kxGeMJQ";
+const char kFydeOSTelegramGroupURL[] = "https://t.me/hi_fydeos";
 #endif
 
 }  // fydeos::constants

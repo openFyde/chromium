@@ -7,6 +7,7 @@
 
 #include <string>
 #include "chromeos/chromeos_export.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace fydeos::constants {
 
@@ -58,6 +59,10 @@ extern const char kFingerprintLearnMoreURL[];
 
 extern const char kFydeOSBackupRestoreLearnMoreURL[];
 
+#if !BUILDFLAG(USE_FYDEOS_COM)
+extern const char kFydeOSDiscordServerURL[];
+extern const char kFydeOSTelegramGroupURL[];
+#endif
 }  // namespace fydeos::constants
 
 #endif

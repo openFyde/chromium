@@ -108,6 +108,7 @@ class LoginDisplayHostWebUI : public LoginDisplayHostCommon,
 
   // LoginDisplayHostCommon:
   bool HandleAccelerator(LoginAcceleratorAction action) final;
+  void HandlePlayStartupSound() final;
 
   // session_manager::SessionManagerObserver:
   void OnLoginOrLockScreenVisible() override;

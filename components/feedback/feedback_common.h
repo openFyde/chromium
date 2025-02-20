@@ -74,7 +74,9 @@ class FeedbackCommon : public base::RefCountedThreadSafe<FeedbackCommon> {
   const std::string& category_tag() const { return category_tag_; }
   const std::string& page_url() const { return page_url_; }
   const std::string& description() const { return description_; }
+  const std::string& gaia_id() const { return gaia_id_; }
   const std::string& user_email() const { return user_email_; }
+  const std::string& account_type() const { return account_type_; }
   const std::string& image() const { return image_; }
   const SystemLogsMap* sys_info() const { return &logs_; }
   int32_t product_id() const { return product_id_; }
@@ -102,8 +104,14 @@ class FeedbackCommon : public base::RefCountedThreadSafe<FeedbackCommon> {
   void set_description(const std::string& description) {
     description_ = description;
   }
+  void set_gaia_id(const std::string& gaia_id) {
+    gaia_id_ = gaia_id;
+  }
   void set_user_email(const std::string& user_email) {
     user_email_ = user_email;
+  }
+  void set_account_type(const std::string& account_type) {
+    account_type_  = account_type;
   }
   void set_image(std::string image) { image_ = std::move(image); }
   void set_product_id(int32_t product_id) { product_id_ = product_id; }
@@ -151,7 +159,9 @@ class FeedbackCommon : public base::RefCountedThreadSafe<FeedbackCommon> {
   std::string category_tag_;
   std::string page_url_;
   std::string description_;
+  std::string gaia_id_;
   std::string user_email_;
+  std::string account_type_;
   int32_t product_id_;
   std::string user_agent_;
   std::string unique_id_;

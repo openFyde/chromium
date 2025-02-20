@@ -456,6 +456,11 @@ export class SearchPageElement extends SearchPageElementBase {
     showScrollingEffects(event, this as HTMLElement);
   }
 
+  private fydeosFeedbackFeatureHelpMessage() {
+    return this.i18nAdvanced(
+        'fydeosFeedbackFeatureHelpMessage', {tags: ['ul', 'li']});
+  }
+
   getSearchResultCountForTesting(): number {
     return this.helpContentSearchResultCount;
   }
