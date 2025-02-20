@@ -39,6 +39,7 @@ FydeAssistantAppUI::FydeAssistantAppUI(content::WebUI* web_ui,
   html_source->SetDefaultResource(IDR_ASH_FYDE_ASSISTANT_APP_INDEX_HTML);
 
   html_source->AddInteger("borderRadiusInLauncher", kBubbleCornerRadius);
+  html_source->AddInteger("borderRadiusInBubble", kBubbleCornerRadiusForAI);
   html_source->AddString("fydeosAssistantUrl", fydeos::switches::GetFydeOSAssistantWebUrl());
   html_source->UseStringsJs();
 

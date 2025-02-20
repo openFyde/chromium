@@ -4,6 +4,7 @@
 #include "ash/ash_export.h"
 #include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ash/public/cpp/ash_web_view.h"
 
 namespace aura {
 class Window;
@@ -11,7 +12,8 @@ class Window;
 
 namespace ash {
 
-class ASH_EXPORT FydeAssistantBubble : public views::BubbleDialogDelegateView {
+class ASH_EXPORT FydeAssistantBubble : public views::BubbleDialogDelegateView,
+                                       public AshWebView::Observer {
  public:
   explicit FydeAssistantBubble(const gfx::Rect& anchor_rect);
 
@@ -20,15 +22,21 @@ class ASH_EXPORT FydeAssistantBubble : public views::BubbleDialogDelegateView {
       delete;
   ~FydeAssistantBubble() override;
 
-  void UpdateContent(std::u16string text);
+  void InitWebView(FydeAssistantView* owner);
 
- private:
   // views::BubbleDialogDelegateView:
   gfx::Size CalculatePreferredSize(const views::SizeBounds& available_size) const override;
+
+ private:
   void OnThemeChanged() override;
+  // AshWebView::Observer:
+  void DidStopLoading() override;
 
-  views::Label* label_ = nullptr;
+  void OpenUrl(const GURL& url);
 
+  std::unique_ptr<AshWebView> web_view_;
+  raw_ptr<AshWebView, DanglingUntriaged> web_view_ptr_ = nullptr;
+  raw_ptr<FydeAssistantView> owner_ = nullptr;
 };
 
 }
