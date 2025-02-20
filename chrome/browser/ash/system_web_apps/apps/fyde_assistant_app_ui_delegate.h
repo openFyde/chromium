@@ -20,6 +20,8 @@ class ChromeFydeAssistantAppUIDelegate : public ash::FydeAssistantAppUIDelegate 
   // FydeAssistantAppUIDelegate:
   void PopulateLoadTimeData(content::WebUIDataSource* source) override;
 
+  ash::FydeAssistantAppUIDelegate::ColorInfo GetSystemColorInfo() override;
+
  private:
   raw_ptr<content::WebUI> web_ui_;  // Owns |this|.
   base::WeakPtrFactory<ChromeFydeAssistantAppUIDelegate> weak_ptr_factory_{this};

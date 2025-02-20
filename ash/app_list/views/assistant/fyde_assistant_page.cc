@@ -33,6 +33,9 @@ void FydeAssistantPage::OnBoundsChanged(
 
 void FydeAssistantPage::RequestFocus() {
   VLOG(2) << "FydeAssistantPage::RequestFocus()";
+  if (web_view_ptr_) {
+    web_view_ptr_->GetInitiallyFocusedView()->RequestFocus();
+  }
 }
 
 void FydeAssistantPage::InitLayout() {
@@ -94,6 +97,7 @@ void FydeAssistantPage::DidStopLoading() {
   web_view_->SetPreferredSize(GetPreferredSize());
   web_view_ptr_ = AddChildView(std::move(web_view_));
   web_view_ptr_->SetBorder(views::CreateEmptyBorder(0));
+  web_view_ptr_->GetInitiallyFocusedView()->RequestFocus();
 }
 
 void FydeAssistantPage::RemoveContents() {

@@ -13,12 +13,9 @@
 
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_webui_handler.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace ash {
-
-namespace {
-const char kFydeOSAssistantWebUrl[] = "https://fydeos.com";
-}
 
 FydeAssistantAppUI::FydeAssistantAppUI(content::WebUI* web_ui,
                                       std::unique_ptr<FydeAssistantAppUIDelegate> delegate)
@@ -42,12 +39,12 @@ FydeAssistantAppUI::FydeAssistantAppUI(content::WebUI* web_ui,
   html_source->SetDefaultResource(IDR_ASH_FYDE_ASSISTANT_APP_INDEX_HTML);
 
   html_source->AddInteger("borderRadiusInLauncher", kBubbleCornerRadius);
-  html_source->AddString("fydeosAssistantUrl", kFydeOSAssistantWebUrl);
+  html_source->AddString("fydeosAssistantUrl", fydeos::switches::GetFydeOSAssistantWebUrl());
   html_source->UseStringsJs();
 
   delegate_->PopulateLoadTimeData(html_source);
 
-  web_ui->AddMessageHandler(std::make_unique<FydeAssistantWebUIHandler>());
+  web_ui->AddMessageHandler(std::make_unique<FydeAssistantWebUIHandler>(this));
 }
 
 FydeAssistantAppUI::~FydeAssistantAppUI() = default;

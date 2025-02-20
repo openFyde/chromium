@@ -23,6 +23,8 @@ extern std::string GetFydeOSAppStoreURL();
 
 extern std::string GetFydeOSWebStoreUpdateUrl();
 
+extern std::string GetFydeOSAssistantWebUrl();
+
 CHROMEOS_EXPORT std::string MayConvertWebStoreUpdateUrl(
     const std::string& url);
 

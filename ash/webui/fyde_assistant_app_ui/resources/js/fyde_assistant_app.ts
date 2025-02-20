@@ -25,6 +25,14 @@ interface HTMLWebviewElement extends HTMLElement {
 interface MessageData {
   method: string;
   message?: string;
+  data?: any;
+}
+
+interface SystemColorInfo {
+  base: string;
+  shaded: string;
+  header: string;
+  primary: string;
 }
 
 const FYDE_ASSISTANT_APP_WEBVIEW_PARTITION = 'persist:fydeosAssistant';
@@ -63,6 +71,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
   private debounceTimeout_: number;
   private isFromLauncher_: boolean;
   private isEventBinded_: boolean;
+  private systemColors_: SystemColorInfo;
 
   constructor() {
     super();
@@ -72,6 +81,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.debounceTimeout_ = 200;
     this.isFromLauncher_ = false;
     this.isEventBinded_ = false;
+    this.systemColors_ = { base: '', shaded: '', header: '', primary: '' };
   }
 
   override ready(): void {
@@ -113,13 +123,54 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     if (e) e.style.borderRadius = `${borderRadius}px`;
   }
 
+  appendValueToUrl_(url: string, key: string) {
+    if (loadTimeData.valueExists(key)) {
+      return `${url}&${key}=${encodeURIComponent(loadTimeData.getString(key))}`;
+    }
+    return url;
+  }
+
+  appendColorToUrl_(url: string, key: string) {
+    if (this.systemColors_[key as keyof SystemColorInfo]) {
+      return `${url}&${key}_color=${encodeURIComponent(this.systemColors_[key as keyof SystemColorInfo])}`;
+    }
+    return this.appendValueToUrl_(url, `${key}_color`);
+  }
+
   getUrl_() {
     let url = loadTimeData.getString('fydeosAssistantUrl');
     url = `${url}${document.location.search || '?'}`;
-    if (loadTimeData.valueExists('user')) {
-      url = `${url}&user=${loadTimeData.getString('user')}`;
+    url = this.appendValueToUrl_(url, 'user');
+    const keys = ['base', 'shaded', 'header', 'primary'];
+    for (let i = 0; i < keys.length; i++) {
+      url = this.appendColorToUrl_(url, keys[i]);
     }
     return url;
+  }
+
+  removeInitQueryParam_(url: string): string {
+    try {
+      const urlObject = new URL(url);
+      const searchParams = new URLSearchParams(urlObject.search);
+
+      if (searchParams.has('initQuery')) {
+        searchParams.delete('initQuery');
+      }
+
+      const newSearchParams = searchParams.toString();
+      const newURL = new URL(`${urlObject.origin}${urlObject.pathname}?${newSearchParams}`);
+      return newURL.href;
+    } catch (error) {
+      return url;
+    }
+  }
+
+  reloadWebview_(reloadParams: { keepInitQuery: boolean }) {
+    this.url_ = this.getUrl_();
+    if (reloadParams && reloadParams.keepInitQuery === false) {
+      this.url_ = this.removeInitQueryParam_(this.url_);
+    }
+    this.webview_.src = this.url_;
   }
 
   onMessage_(e: MessageEvent): void {
@@ -145,7 +196,7 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
         chrome.send('onCloseAssistant');
       }
     } else if (method === 'reload') {
-      this.webview_.src = this.url_;
+      this.reloadWebview_(e.data.data);
     } else if (method === 'openUrl') {
       const { url } = message;
       if (url) {
@@ -159,7 +210,9 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     this.isEventBinded_ = true;
     if (this.isFromLauncher_) {
       addWebUIListener('query-from-launcher', this.onQueryFromLauncher_.bind(this));
+      addWebUIListener('ui-visibility-changed', this.onUiVisibilityChanged_.bind(this));
     }
+    addWebUIListener('system-color-changed', this.onSystemColorChanged_.bind(this));
   }
 
   onWebviewLoaded_(): void {
@@ -185,6 +238,16 @@ export class FydeAssistantAppElement extends FydeAssistantAppElementBase {
     if (this.isFromLauncher_) {
       this.sendMessage({ method: 'query', message });
     }
+  }
+
+  onUiVisibilityChanged_(visible: boolean): void {
+    this.sendMessage({ method: 'visibility-change', data: visible });
+  }
+
+  onSystemColorChanged_(colors: SystemColorInfo): void {
+    this.systemColors_ = colors;
+    console.log('this.systemColors_', this.systemColors_);
+    this.sendMessage({ method: 'color-change', data: colors });
   }
 
   static get template(): HTMLTemplateElement {
