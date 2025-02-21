@@ -102,4 +102,31 @@
   <message name="IDS_VERSION_UI_FYDEOS_PRODUCT_CHROMIUM_LICENSE" desc="Chromium and other open source project and fydeos and openfyde">
     Chromium is also made possible by other <ph name="BEGIN_LINK_1">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_1">&lt;/a&gt;</ph> and additional <ph name="BEGIN_LINK_2">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_2">&lt;/a&gt;</ph>.
   </message>
+
+  <if expr="fydeos_device">
+    <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_REGULATORY_INFO" desc="regulatory info for fyde device">
+      Designed and manufactured by Fyde Innovations.
+    </message>
+    <if expr="use_fydeos_com">
+      <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_COPYRIGHT_INFO" desc="copyright info for fyde device">
+        ©<ph name="YEAR">{0,date,y}<ex>2016</ex></ph>, Fyde Innovations (Beijing) Limited, all rights reserved.
+      </message>
+    </if>
+    <if expr="not use_fydeos_com">
+      <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_COPYRIGHT_INFO" desc="copyright info for fyde device">
+        ©<ph name="YEAR">{0,date,y}<ex>2016</ex></ph>, Fyde Innovations LTD, all rights reserved.
+      </message>
+      <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_COPYRIGHT_INFO_EXTRA" desc="extra copyright info for fyde device">
+        Fyde Innovations is the trading name of Fyde Innovations LTD and Fyde Innovations (Beijing) Limited.
+        <ph name="LINE_BREAK">&lt;br&gt;</ph>
+        Fyde Innovations LTD is a company registered in England and Wales with company number 12273803.
+      </message>
+    </if>
+    <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_WARRANTY_URL_TITLE" desc="warranty url title info for fyde device">
+      Important device warranty and service information
+    </message>
+    <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_SERIAL_NUMBER_LABEL" desc="label of sn for fyde device">
+      Device SN:
+    </message>
+  </if>
 </grit-part>

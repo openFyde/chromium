@@ -43,6 +43,12 @@ build_webui("build") {
     "os_settings.html",
   ]
 
+  if (fydeos_device) {
+    static_files += [
+      "images/icon_fyde_certification.png",
+    ]
+  }
+
   web_component_files = [
     "common/app_language_selection_dialog/app_language_selection_dialog.ts",
     "common/app_language_selection_dialog/app_language_selection_item.ts",

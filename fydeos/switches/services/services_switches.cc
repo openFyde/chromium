@@ -31,6 +31,11 @@ const char kFydeOSAssistantWebUrl[] = "fydeos-ai-url";
 
 const char kFydeOSStoreComPrefix[] = "https://store.fydeos.com";
 const char kFydeOSStoreIoPrefix[] = "https://store.fydeos.io";
+
+#if BUILDFLAG(FYDEOS_DEVICE)
+const char kFydeOSProductWarrantyURL[] = "fydeos-product-warranty-url";
+#endif
+
 }
 
 bool DisableFydeOSGeolocationAPI() {
@@ -115,6 +120,17 @@ CHROMEOS_EXPORT std::string MayConvertWebStoreUpdateUrl(
 #endif
   return new_url;
 }
+
+#if BUILDFLAG(FYDEOS_DEVICE)
+std::string GetFydeOSProductWarrantyUrl() {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(kFydeOSProductWarrantyURL)) {
+    return command_line->GetSwitchValueASCII(kFydeOSProductWarrantyURL);
+  } else {
+    return std::string(fydeos::constants::kFydeOSProductWarrantyDefaultURL);
+  }
+}
+#endif
 
 } // switches
 } // fydeos

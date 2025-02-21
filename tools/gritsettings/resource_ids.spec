@@ -277,7 +277,7 @@
     "includes": [3340],
   },
   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/login/resources.grd": {
-    "META": {"sizes": {"includes": [340],}},
+    "META": {"sizes": {"includes": [360],}},
     "includes": [3360],
   },
   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/manage_mirrorsync/resources.grd": {

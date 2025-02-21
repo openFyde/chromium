@@ -7,6 +7,7 @@
 
 #include <string>
 #include "chromeos/chromeos_export.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace fydeos {
 namespace switches {
@@ -27,6 +28,10 @@ extern std::string GetFydeOSAssistantWebUrl();
 
 CHROMEOS_EXPORT std::string MayConvertWebStoreUpdateUrl(
     const std::string& url);
+
+#if BUILDFLAG(FYDEOS_DEVICE)
+std::string GetFydeOSProductWarrantyUrl();
+#endif
 
 } // switches
 } // fydeos

@@ -60,6 +60,11 @@ const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.com/docs/manual/
 
 const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[] = "https://fydeos.com/faq/disable-media-files-scan/";
 const char kFydeOSDevModeTransitionLearnMoreURL[] = "https://fydeos.com/docs/knowledge-base/getting-started/developer-mode";
+
+#if BUILDFLAG(FYDEOS_DEVICE)
+const char kFydeOSProductWarrantyDefaultURL[] = "https://sn.fydetabduo.cn";
+#endif
+
 #else
 
 const char kDefaultTestUrl[] = "http://store.fydeos.io/204";
@@ -117,6 +122,11 @@ const char kFydeOSDevModeTransitionLearnMoreURL[] = "https://fydeos.io/docs/know
 
 const char kFydeOSDiscordServerURL[] = "https://discord.gg/Qv3kxGeMJQ";
 const char kFydeOSTelegramGroupURL[] = "https://t.me/hi_fydeos";
+
+#if BUILDFLAG(FYDEOS_DEVICE)
+const char kFydeOSProductWarrantyDefaultURL[] = "https://sn.fydetabduo.com";
+#endif
+
 #endif
 
 }  // fydeos::constants

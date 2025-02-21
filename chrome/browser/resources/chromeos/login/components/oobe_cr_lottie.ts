@@ -55,6 +55,11 @@ export class OobeCrLottie extends OobeCrLottieBase {
         value: false,
       },
 
+      loop: {
+        type: Boolean,
+        value: true,
+      },
+
       /**
        * Whether or not the illustration should render using a dynamic palette.
        * nuke this property when all animation migrated.
@@ -67,6 +72,7 @@ export class OobeCrLottie extends OobeCrLottieBase {
   }
 
   playing: boolean;
+  private loop: boolean;
   private animationUrl: string;
   private hidePlayPauseIcon: boolean;
   private preload: boolean;
@@ -110,6 +116,7 @@ export class OobeCrLottie extends OobeCrLottieBase {
     this.animationPlayer.setAttribute('asset-url', this.animationUrl);
     this.animationPlayer.setAttribute('dynamic', String(this.dynamic));
     this.animationPlayer.autoplay = autoplay;
+    this.animationPlayer.loop = this.loop;
 
     const container = this.shadowRoot?.querySelector('#container');
     assert(container instanceof HTMLElement);

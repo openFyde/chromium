@@ -79,7 +79,7 @@
   }
 
   #regulatoryInfo img {
-    width: 330px;
+    width: 168px;
   }
 
   @media(prefers-color-scheme: dark) {
@@ -110,6 +110,11 @@
   #product-logo {
     height: 32px;
     width: 32px;
+  }
+
+  .fydeos-device-sn-text {
+    margin-inline-start: 4px;
+    text-transform: uppercase;
   }
 </style>
 <iron-media-query query="(prefers-color-scheme: dark)"
@@ -381,6 +386,38 @@
           </div>
 
         </div>
+
+<if expr="fydeos_device">
+        <div class="settings-box padded block" id="regulatoryInfo">
+          <div class="info-section">
+            <div class="secondary">
+              <div>[[getFydeDeviceProductName_()]]</div>
+              <div>$i18nRaw{aboutFydeOsDeviceProductRegulatoryInfo}</div>
+            </div>
+          </div>
+          <div class="info-section" hidden="[[!fydeosDeviceSerialNumber_]]">
+            <div class="secondary">
+              <div>
+                <span >$i18nRaw{aboutFydeOsDeviceProductSerialNumberLabel}</span>
+                <span class="fydeos-device-sn-text">[[fydeosDeviceSerialNumber_]]</span>
+              </div>
+              <div><a target="_blank" href="[[getFydeosDeviceWarrantyUrl_(fydeosDeviceSerialNumber_)]]">$i18nRaw{aboutFydeOsDeviceProductWarrantyUrlTitle}</a></div>
+            </div>
+          </div>
+          <if expr="not use_fydeos_com">
+            <div class="info-section">
+              <div class="secondary">
+                $i18nRaw{aboutFydeOsDeviceProductCopyrightInfoExtra}
+              </div>
+            </div>
+          </if>
+          <div class="secondary">
+            $i18nRaw{aboutFydeOsDeviceProductCopyrightInfo}
+          </div>
+          <img src="chrome://os-settings/images/icon_fyde_certification.png" />
+        </div>
+
+</if>
       </settings-card>
 
       <settings-card hidden id="copyrightCard">

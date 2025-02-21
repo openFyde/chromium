@@ -66,6 +66,10 @@ extern const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[];
 
 extern const char kFydeOSDevModeTransitionLearnMoreURL[];
 
+#if BUILDFLAG(FYDEOS_DEVICE)
+extern const char kFydeOSProductWarrantyDefaultURL[];
+#endif
+
 #if !BUILDFLAG(USE_FYDEOS_COM)
 extern const char kFydeOSDiscordServerURL[];
 extern const char kFydeOSTelegramGroupURL[];

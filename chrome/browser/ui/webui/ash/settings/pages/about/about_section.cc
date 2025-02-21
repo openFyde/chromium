@@ -53,6 +53,11 @@
 #include "chromeos/version/version_loader.h"
 #include "fydeos/prefs/fydeos_pref_names.h"
 
+#if BUILDFLAG(FYDEOS_DEVICE)
+#include "chromeos/ash/components/system/statistics_provider.h"
+#include "fydeos/switches/services/services_switches.h"
+#endif
+
 namespace ash::settings {
 
 namespace mojom {
@@ -612,6 +617,36 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_PRODUCT_CHROMIUM_LICENSE,
                                 chrome::kChromeUICreditsURL16,
                                 chrome::kChromeUIOSCreditsURL16));
+
+#if BUILDFLAG(FYDEOS_DEVICE)
+  html_source->AddString(
+      "aboutFydeOsDeviceProductCopyrightInfo",
+                         base::i18n::MessageFormatter::FormatWithNumberedArgs(
+                         l10n_util::GetStringUTF16(IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_COPYRIGHT_INFO),
+                            base::Time::Now()));
+  html_source->AddString(
+      "aboutFydeOsDeviceProductRegulatoryInfo",
+      l10n_util::GetStringUTF16(IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_REGULATORY_INFO));
+#if !BUILDFLAG(USE_FYDEOS_COM)
+  html_source->AddString(
+      "aboutFydeOsDeviceProductCopyrightInfoExtra",
+      l10n_util::GetStringUTF16(IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_COPYRIGHT_INFO_EXTRA));
+#endif
+  html_source->AddString(
+      "aboutFydeOsDeviceProductSerialNumberLabel",
+      l10n_util::GetStringUTF16(IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_SERIAL_NUMBER_LABEL));
+  html_source->AddString(
+      "aboutFydeOsDeviceProductWarrantyUrlTitle",
+      l10n_util::GetStringUTF16(IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_WARRANTY_URL_TITLE));
+
+
+  auto provider = ::ash::system::StatisticsProvider::GetInstance();
+  if (provider) {
+    auto machine_id = provider->GetMachineID();
+    html_source->AddString("fydeosDeviceSerialNumber", base::UTF8ToUTF16(machine_id.value_or("")));
+  }
+  html_source->AddString("fydeosProductWarrentyUrl", fydeos::switches::GetFydeOSProductWarrantyUrl());
+#endif
 
   // Crostini subsection exists only when OsSettingsRevampWayfinding is enabled.
   if (crostini_subsection_) {

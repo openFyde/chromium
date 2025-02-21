@@ -23,6 +23,12 @@ build_webui("build") {
 
     "animations/fydeos_spinner.json",
 
+    "animations/fydeos_choose_language.json",
+    "animations/fydeos_network_select.json",
+    "animations/fydeos_signin.json",
+    "animations/fydeos_choose_pin.json",
+    "animations/fydeos_done.json",
+
     # Vector resources
     "images/app_icons/a4.svg",
     "images/app_icons/calculator.svg",

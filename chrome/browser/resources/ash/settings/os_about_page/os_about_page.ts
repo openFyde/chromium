@@ -240,6 +240,18 @@ export class OsAboutPageElement extends OsAboutPageBase {
         value: false,
       },
 
+// <if expr="fydeos_device">
+      fydeosDeviceSerialNumber_: {
+        type: String,
+        value: () => {
+          if (!loadTimeData.valueExists('fydeosDeviceSerialNumber')) {
+            return '';
+          }
+          return loadTimeData.getString('fydeosDeviceSerialNumber');
+        },
+      },
+// </if>
+
       showTPMFirmwareUpdateDialog_: Boolean,
 
       updateInfo_: Object,
@@ -1122,6 +1134,9 @@ export class OsAboutPageElement extends OsAboutPageBase {
     if (prefix && !title) {
       return prefix; // vmware
     }
+    if (prefix === '-') { // intend to remove prefix
+      return `(${title})`;
+    }
     return `${prefix} (${title})`;
    }
 
@@ -1202,6 +1217,19 @@ export class OsAboutPageElement extends OsAboutPageBase {
       this.currentUpdateStatusEvent_.status === UpdateStatus.DISABLED_BY_ADMIN
     ) && this.currentUpdateStatusEvent_.progress === 0;
   }
+
+// <if expr="fydeos_device">
+  getFydeDeviceProductName_() {
+    const fydeosBoardName = loadTimeData.getString('aboutFydeOSBoardName') || '';
+    let name = this.tryRemoveSuffix_(fydeosBoardName);
+    let title = FydeOSBoardNameTitleMap[name] || '';
+    return title;
+  }
+  getFydeosDeviceWarrantyUrl_(fydeosDeviceSerialNumber: string) {
+    const url = loadTimeData.getString('fydeosProductWarrentyUrl');
+    return `${url}/${fydeosDeviceSerialNumber}`;
+  }
+// </if>
 }
 
 declare global {

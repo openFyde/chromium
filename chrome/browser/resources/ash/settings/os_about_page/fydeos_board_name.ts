@@ -44,4 +44,5 @@ export const FydeOSBoardNameReleaseNameMap: {[index: string]: string} = {
   'rpi5-fydeos': 'for SBC',
   'rock5b-fydeos': 'for SBC',
   'orangepi5-fydeos': 'for SBC',
+  'fydetab_duo-fydeos': '-',
 }
