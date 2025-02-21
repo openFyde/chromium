@@ -6,7 +6,7 @@ declare global {
     export namespace shellClient {
 
       export const ON_PROCESS: number;
-      export const ON_CLOSED: number; 
+      export const ON_CLOSED: number;
       export const ON_ERROR: number;
       export const ON_NONE: number;
 
@@ -19,6 +19,7 @@ declare global {
       export function execAsync(cmd: string, callback: (state: ExecState) => void): void;
       export function getTaskOutput(key: number, lines: number, callback: (state: ExecState) => void): void;
       export function forceCloseTask(key: number, callback: (state: ExecState) => void): void;
+      export function getTaskState(key: number, callback: (state: ExecState) => void ): void;
 
       export interface ShellCommandNotifyingEvent extends ChromeEvent<(
         key: number,

@@ -1,13 +1,14 @@
-// @ts-nocheck
 // Encapsulate shellClient
 
 class FydeOSShellClient {
+  private shellClient_: typeof chrome.shellClient;
+
   constructor() {
     console.log('FydeOSShellClient constructor');
     this.shellClient_ = chrome.shellClient;
   }
 
-  runCommand(command) {
+  runCommand(command: string): Promise<string> {
     return new Promise((resolve, reject) => {
       this.shellClient_.execSync(command, (response) => {
         const { result, code } = response;
@@ -20,12 +21,12 @@ class FydeOSShellClient {
     });
   }
 
-  async fileExists(file) {
+  async fileExists(file: string) {
     const ret = await this.runCommand(`ls ${file}`);
     return ret !== '';
   }
 
-  async sleep(sec) {
+  async sleep(sec: number): Promise<void> {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve();
@@ -33,7 +34,7 @@ class FydeOSShellClient {
     });
   }
 
-  async runCommandAsync(command, callback) {
+  async runCommandAsync(command: string): Promise<number> {
     return new Promise((resolve, reject) => {
       this.shellClient_.execAsync(command, (response) => {
         const { code, result } = response;
@@ -46,7 +47,7 @@ class FydeOSShellClient {
     });
   }
 
-  async getOutputOrResult(commandKey) {
+  async getOutputOrResult(commandKey: number) {
     const lines = 10;
     return new Promise((resolve, reject) => {
       this.shellClient_.getTaskOutput(commandKey, lines, (response) => {
@@ -54,6 +55,7 @@ class FydeOSShellClient {
         switch (code) {
           case this.shellClient_.ON_PROCESS:
             resolve({ result, closed: false });
+            break;
           case this.shellClient_.ON_CLOSED:
             resolve({ code, closed: true });
             break;
@@ -71,13 +73,13 @@ class FydeOSShellClient {
     });
   }
 
-  async forceCloseTask(commandKey) {
+  async forceCloseTask(commandKey: number) {
     this.shellClient_.forceCloseTask(commandKey, (response) => {
       console.log('forceCloseTask', response);
     });
   }
 
-  async getTaskState(key) {
+  async getTaskState(key: number) {
     return new Promise((resolve, reject) => {
       this.shellClient_.getTaskState(key, (response) => {
         const { code, result } = response;

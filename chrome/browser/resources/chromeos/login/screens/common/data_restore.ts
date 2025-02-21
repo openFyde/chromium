@@ -20,10 +20,10 @@ import '../../components/dialogs/oobe_modal_dialog.js';
 
 import {PolymerElementProperties} from '//resources/polymer/v3_0/polymer/interfaces.js';
 import {afterNextRender, html, mixinBehaviors, Polymer, PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {LoginScreenBehavior, LoginScreenBehaviorInterface} from '../../components/behaviors/login_screen_behavior.js';
-import {MultiStepBehavior, MultiStepBehaviorInterface} from '../../components/behaviors/multi_step_behavior.js';
-import {OobeDialogHostBehavior, OobeDialogHostBehaviorInterface} from '../../components/behaviors/oobe_dialog_host_behavior.js';
-import {OobeI18nMixin, OobeI18nMixinInterface} from '../../components/mixins/oobe_i18n_mixin.js';
+import {LoginScreenMixin} from '../../components/mixins/login_screen_mixin.js';
+import {OobeI18nMixin} from '../../components/mixins/oobe_i18n_mixin.js';
+import {OobeDialogHostMixin} from '../../components/mixins/oobe_dialog_host_mixin.js';
+import {MultiStepMixin} from '../../components/mixins/multi_step_mixin.js';
 import {getSelectedTitle, getSelectedValue, SelectListType, setupSelect} from '../../components/oobe_select.js';
 import {FydeOSShellClient} from '../../fydeos_shell_client.js';
 
@@ -37,6 +37,11 @@ enum DataRestoreScreenState {
   SUCCESS = 'success',
 };
 
+type GetOutputResult = {
+  closed: boolean,
+  result: string,
+};
+
 class DataRestoreHelper {
   static Event = {
     RESTORE_SUCCESS: 'restore-success',
@@ -44,12 +49,12 @@ class DataRestoreHelper {
     RESTORE_PROGRESS: 'restore-progress',
   };
   static COMMAND  = '/usr/bin/fydeos-backup';
-  static generate_key(salt, password) {
+  static generate_key(salt: string, password: string) {
     const str = `${salt}${password}`;
     const hash = btoa(str);
     return `B:${hash}`;
   }
-  static restore_command(email, salt, password, backupFile) {
+  static restore_command(email: string, salt: string, password: string, backupFile: string) {
     const encodedFilePath = btoa(backupFile);
     if (salt) {
       const key = this.generate_key(salt, password);
@@ -67,12 +72,16 @@ class DataRestoreHelper {
   static unmount_command() {
     return `${this.COMMAND} unmount`;
   }
-  static peek_command(file) {
+  static peek_command(file: string) {
     const encodedFilePath = btoa(file);
     return `${this.COMMAND} peek --file ${encodedFilePath}`;
   }
 
-  constructor(element) {
+  private client_: FydeOSShellClient;
+  private element_: HTMLElement;
+  private tmpLogFile_: string;
+
+  constructor(element: HTMLElement) {
     this.client_ = new FydeOSShellClient();
     this.element_ = element;
     this.tmpLogFile_ = '';
@@ -112,14 +121,14 @@ class DataRestoreHelper {
     }
   }
 
-  fire_success_(message) {
+  fire_success_(message: string) {
     this.element_.dispatchEvent(new CustomEvent(
       DataRestoreHelper.Event.RESTORE_SUCCESS,
       { detail: { message } }
     ));
   }
 
-  fire_error_(error) {
+  fire_error_(error: Error) {
     console.log('error', error);
     this.element_.dispatchEvent(new CustomEvent(
       DataRestoreHelper.Event.RESTORE_FAILED,
@@ -127,18 +136,19 @@ class DataRestoreHelper {
     ));
   }
 
-  fire_progress_(message) {
+  fire_progress_(message: string) {
     this.element_.dispatchEvent(new CustomEvent(
       DataRestoreHelper.Event.RESTORE_PROGRESS,
       { detail: { message } }
     ));
   }
 
-  async getTaskTmpLogFile_(key) {
+  async getTaskTmpLogFile_(key: number) {
     try {
-      const res = await this.client_.getTaskState(key);
-      const { tmpFile } = res;
-      this.tmpLogFile_ = tmpFile;
+      const res = await this.client_.getTaskState(key) as { tmpFile: string };
+      if (res && res.tmpFile) {
+        this.tmpLogFile_ = res.tmpFile;
+      }
     } catch (e) {
       console.log(e);
     }
@@ -156,7 +166,7 @@ class DataRestoreHelper {
     }
   }
 
-  async peek(file) {
+  async peek(file: string) {
     try {
       return await this.client_.runCommand(DataRestoreHelper.peek_command(file));
     } catch (e) {
@@ -165,12 +175,12 @@ class DataRestoreHelper {
     }
   }
 
-  async restore(email, salt, password, backupFile) {
-    let key = '';
+  async restore(email: string, salt: string, password: string, backupFile: string) {
+    let key = -1;
     try {
       key = await this.client_.runCommandAsync(DataRestoreHelper.restore_command(email, salt, password, backupFile));
     } catch (e) {
-      this.fire_error_(e);
+      this.fire_error_(e as Error);
       return;
     }
     await this.getTaskTmpLogFile_(key);
@@ -182,11 +192,11 @@ class DataRestoreHelper {
         this.fire_error_(new Error('Timeout'));
         return;
       }
-      let response = null;
+      let response: GetOutputResult;
       try {
-        response = await this.client_.getOutputOrResult(key);
+        response = await this.client_.getOutputOrResult(key) as GetOutputResult;
       } catch (e) {
-        this.fire_error_(e);
+        this.fire_error_(e as Error);
         return;
       }
       const { closed, result } = response;
@@ -202,17 +212,7 @@ class DataRestoreHelper {
   }
 }
 
-const DataRestoreScreenElementBase = mixinBehaviors(
-  [
-    LoginScreenBehavior,
-    OobeDialogHostBehavior,
-    MultiStepBehavior,
-  ],
-  OobeI18nMixin(PolymerElement)) as {
-    new (): PolymerElement & OobeDialogHostBehaviorInterface &
-      OobeI18nMixinInterface & LoginScreenBehaviorInterface &
-      MultiStepBehaviorInterface,
-  };
+const DataRestoreScreenElementBase = OobeDialogHostMixin(LoginScreenMixin(MultiStepMixin(OobeI18nMixin(PolymerElement))));
 
 export class DataRestore extends DataRestoreScreenElementBase {
   static get is() {
@@ -300,6 +300,7 @@ export class DataRestore extends DataRestoreScreenElementBase {
   }
 
   override onBeforeShow() {
+    super.onBeforeShow();
     this.cleanup_();
     this.prepareBackupFileList_();
   }
