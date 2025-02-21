@@ -52,6 +52,7 @@ import './screens/common/theme_selection.js';
 import './screens/common/touchpad_scroll.js';
 import './screens/common/tpm_error.js';
 import './screens/common/user_allowlist_check_screen.js';
+import './screens/common/account_type_selection.js';
 import './screens/common/wrong_hwid.js';
 // COMMON SCREENS USED TO SET UP AUTHENTICATION
 import './screens/osauth/apply_online_password.js';

@@ -96,6 +96,19 @@ void UserCreationScreenHandler::DeclareLocalizedValues(
                IDS_OOBE_USER_CREATION_ENROLL_LEARN_MORE_TITLE);
   builder->Add("userCreationEnrollLearnMoreText",
                IDS_OOBE_USER_CREATION_ENROLL_LEARN_MORE_TEXT);
+
+  builder->Add("accountTypeSelectionTitle",
+               IDS_OOBE_ACCOUNT_TYPE_SELECTION_TITLE);
+  builder->Add("accountTypeSelectionSubtitle",
+               IDS_OOBE_ACCOUNT_TYPE_SELECTION_SUBTITLE);
+  builder->Add("accountTypeSelectionFydeOSTitle",
+               IDS_OOBE_ACCOUNT_TYPE_SELECTION_FYDEOS_TITLE);
+  builder->Add("accountTypeSelectionFydeOSSubtitle",
+               IDS_OOBE_ACCOUNT_TYPE_SELECTION_FYDEOS_SUBTITLE);
+  builder->Add("accountTypeSelectionGoogleTitle",
+               IDS_OOBE_ACCOUNT_TYPE_SELECTION_GOOGLE_TITLE);
+  builder->Add("accountTypeSelectionGoogleSubtitle",
+               IDS_OOBE_ACCOUNT_TYPE_SELECTION_GOOGLE_SUBTITLE);
 }
 
 void UserCreationScreenHandler::Show() {

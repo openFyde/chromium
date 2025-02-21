@@ -28,6 +28,7 @@ build_webui("build") {
     "animations/fydeos_signin.json",
     "animations/fydeos_choose_pin.json",
     "animations/fydeos_done.json",
+    "animations/fydeos_choose_account.json",
 
     # Vector resources
     "images/app_icons/a4.svg",
@@ -151,6 +152,7 @@ build_webui("build") {
     "screens/common/tpm_error.ts",
     "screens/common/user_allowlist_check_screen.ts",
     "screens/common/user_creation.ts",
+    "screens/common/account_type_selection.ts",
     "screens/common/wrong_hwid.ts",
 
     # Login screens

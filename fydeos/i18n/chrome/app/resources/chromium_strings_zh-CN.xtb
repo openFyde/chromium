@@ -8,6 +8,13 @@
 <translation id="3090326719833936311">FydeOS 版本</translation>
 <translation id="2052041943247591012">获取 openFyde 使用帮助</translation>
 <translation id="1242566302196985287">获取 FydeOS 使用帮助</translation>
+<translation id="7400849558479249342">想用哪种在线账号登录系统？</translation>
+<translation id="3617027712666644574">请选择你想要用来登录 openFyde 的在线账号种类。请注意：登录系统之后账号种类不支持修改；仅可以添加新的不同种类的账号。</translation>
+<translation id="3335961305847260544">请选择你想要用来登录 FydeOS 的在线账号种类。请注意：登录系统之后账号种类不支持修改；仅可以添加新的不同种类的账号。</translation>
+<translation id="4733308832188623874">FydeOS 账号</translation>
+<translation id="5521171551853454842">使用 FydeOS 账号登录系统并使用由 FydeOS 在线账号所提供的附属云服务。</translation>
+<translation id="153879296658682960">Google 账号</translation>
+<translation id="9095510991952324841">使用 Google 账号登录系统并使用由 Google 提供的附属云服务。</translation>
 <!-- chromium_strings.override.grdp -->
 <translation id="1593197356125639191">将崩溃报告和<ph name="UMA_LINK" />发送给燧炻创新，帮助我们完善 Chromium。</translation>
 <translation id="2048909425194476151">燧炻科技创新（北京）有限责任公司，The Chromium Authors</translation>

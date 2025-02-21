@@ -54,14 +54,17 @@ namespace {
     }
   }
 
-  std::string QueryStringifyNameAndEmailWithSysInfo(const std::string& name, const std::string& email) {
-    url::RawCanonOutputT<char> percent_encoded_name;
-    url::EncodeURIComponent(name, &percent_encoded_name);
-    std::string encoded_name = std::string(percent_encoded_name.data(), percent_encoded_name.length());
+  const std::string EncodeQueryStringData(const std::string& str) {
+    url::RawCanonOutputT<char> encoded;
+    url::EncodeURIComponent(str, &encoded);
+    std::string encoded_str = std::string(encoded.data(), encoded.length());
+    return encoded_str;
+  }
 
-    url::RawCanonOutputT<char> percent_encoded_email;
-    url::EncodeURIComponent(email, &percent_encoded_email);
-    std::string encoded_email = std::string(percent_encoded_email.data(), percent_encoded_email.length());
+  std::string QueryStringifyParamsWithSysInfo(const std::string& name, const std::string& email,
+                                              bool email_opt_in, bool improve_plan_opt_in) {
+    const std::string encoded_name = EncodeQueryStringData(name);
+    const std::string encoded_email = EncodeQueryStringData(email);
     const std::string version = base::SysInfo::GetLsbFydeReleaseVersion();
     const std::string board_name = base::SysInfo::GetLsbReleaseBoard();
 
@@ -69,13 +72,21 @@ namespace {
         encoded_name.c_str(), encoded_email.c_str(),
         board_name.c_str(), version.c_str());
 
+    if (email_opt_in) {
+      data += "&useroptions[]=newsletter";
+    }
+    if (improve_plan_opt_in) {
+      data += "&useroptions[]=improvementplan";
+    }
+
     url::RawCanonOutputT<char> percent_encoded_data;
     url::EncodeURIComponent(data, &percent_encoded_data);
 
     return std::string(percent_encoded_data.data(), percent_encoded_data.length());
   }
 
-  void StartPost(const std::string& name, const std::string& email) {
+  void StartPost(const std::string& name, const std::string& email,
+                 bool email_opt_in, bool improve_plan_opt_in) {
     if (!g_browser_process->system_network_context_manager()->HasInstance()) {
       return;
     }
@@ -112,7 +123,7 @@ namespace {
       network::SimpleURLLoader::Create(std::move(resource_request),
           traffic_annotation);
     const std::string body = base::StringPrintf("data=%s&action=%s&form_id=%s",
-        QueryStringifyNameAndEmailWithSysInfo(name, email).c_str(),
+        QueryStringifyParamsWithSysInfo(name, email, email_opt_in, improve_plan_opt_in).c_str(),
         kFydeOSSubscriptionParamAction,
         kFydeOSSubscriptionParamFormId);
     VLOG(4) << "subscription request, post data: " << body;
@@ -132,7 +143,7 @@ namespace {
 
 namespace misc {
 
-  void Subscribe(Profile* profile) {
+  void Subscribe(Profile* profile, bool email_opt_in, bool improve_plan_opt_in) {
     if (!profile) {
       return;
     }
@@ -149,7 +160,7 @@ namespace misc {
     if (name16.empty()) name16 = user->GetDisplayName();
     const std::string name = base::UTF16ToUTF8(name16);
 
-    StartPost(name, email);
+    StartPost(name, email, email_opt_in, improve_plan_opt_in);
   }
 
 }  // namespace misc

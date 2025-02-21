@@ -86,6 +86,19 @@
       You will not be able to add FydeOS accounts because FydeOS API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
     </message>
   </if>
+  <message name="IDS_LOGIN_MARKETING_OPT_IN_SCREEN_GET_FYDE_UPDATES_SIGN_ME_UP" desc="A lablel next to the checkbox that controls user subscription to marketing updates and useful information about the user's Chrome device.">
+    Sign up for the (very infrequent, promised) newsletter for FydeOS
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_MARKETING_OPT_IN_FYDEOS_IMPROVEMENT_PLAN" desc="label for fydeos improvement plan in marketing_opt_in page of oobe">
+      Join openFyde user experience improvement plan
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_MARKETING_OPT_IN_FYDEOS_IMPROVEMENT_PLAN" desc="label for fydeos improvement plan in marketing_opt_in page of oobe">
+      Join FydeOS user experience improvement plan
+    </message>
+  </if>
   <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_RUNNING_TITLE" desc="Title of backup notification when backup is running.">
     Creating backup file now. This may take a while; please wait…
   </message>

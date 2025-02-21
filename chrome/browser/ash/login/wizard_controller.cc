@@ -272,6 +272,7 @@
 // ---***FYDEOS BEGIN***---
 #include "fydeos/switches/account/account_switches.h"
 #include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/build/config/buildflags.h"
 // ---***FYDEOS END***---
 
 // Enable VLOG level 1.
@@ -1514,6 +1515,7 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
     case GaiaScreen::Result::BACK_CHILD:
       ShowAddChildScreen();
       break;
+    case GaiaScreen::Result::ACCOUNT_TYPE_SELECTION_BACK:
     case GaiaScreen::Result::BACK:
     case GaiaScreen::Result::CANCEL: {
       if (features::IsOobeSoftwareUpdateEnabled()) {
@@ -1559,10 +1561,21 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
         }
       }
 
+      // same build condition as
+      // chrome/browser/resources/chromeos/login/screens/common/gaia_signin.js
+      // `<if expr="openfyde or not use_fydeos_com">`
+      #if BUILDFLAG(IS_OPENFYDE) || !BUILDFLAG(USE_FYDEOS_COM)
+            const bool might_exit =
+              (result == GaiaScreen::Result::ACCOUNT_TYPE_SELECTION_BACK);;
+      #else
+            const bool might_exit = true;
+      #endif
+
       // If a default redirection to third party IdP is set we can hide the
       // dialog.
       const bool gaia_page_defaults_to_saml = IsGaiaPageDefaultsToSAML();
       if ((LoginDisplayHost::default_host()->HasUserPods() &&
+          might_exit &&
            !wizard_context_->is_user_creation_enabled) ||
           (!LoginDisplayHost::default_host()->HasUserPods() &&
            gaia_page_defaults_to_saml)) {

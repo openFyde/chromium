@@ -11,7 +11,7 @@ namespace fydeos {
 
 namespace misc {
 
-void Subscribe(Profile* profile);
+void Subscribe(Profile* profile, bool email_opt_in, bool improve_plan_opt_in);
 
 } // misc
 

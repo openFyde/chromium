@@ -37,6 +37,7 @@ constexpr char kUserActionUseLocalAccount[] = "useLocalAccount";
 constexpr char kUserActionReloadGaia[] = "reloadGaia";
 constexpr char kUserActionEnterIdentifier[] = "identifierEntered";
 constexpr char kUserActionQuickStartButtonClicked[] = "activateQuickStart";
+constexpr char kUserActionAccountTypeSelectionBack[] = "accountTypeSelectionBack";
 
 bool ShouldPrepareForRecovery(const AccountId& account_id) {
   if (!account_id.is_valid()) {
@@ -89,6 +90,8 @@ std::string GaiaScreen::GetResultString(Result result) {
       return "UseLocalAccount";
     case Result::ENTER_QUICK_START:
       return "EnterQuickStart";
+    case Result::ACCOUNT_TYPE_SELECTION_BACK:
+      return "AccountTypeSelectionBack";
     case Result::QUICK_START_ONGOING:
       return BaseScreen::kNotApplicable;
   }
@@ -265,6 +268,8 @@ void GaiaScreen::OnUserAction(const base::Value::List& args) {
     exit_callback_.Run(Result::ENTERPRISE_ENROLL);
   } else if (action_id == kUserActionUseLocalAccount) {
     exit_callback_.Run(Result::USE_LOCAL_ACCOUNT);
+  } else if (action_id == kUserActionAccountTypeSelectionBack) {
+    exit_callback_.Run(Result::ACCOUNT_TYPE_SELECTION_BACK);
   } else if (action_id == kUserActionReloadGaia) {
     CHECK_EQ(2u, args.size());
     const bool force_default_gaia_page = args[1].GetBool();
