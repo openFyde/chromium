@@ -36,6 +36,7 @@ import './screens/common/data_restore.js';
 import './screens/common/online_authentication_screen.js';
 import './screens/common/oobe_reset.js';
 import './screens/common/os_install.js';
+import './screens/common/fydeos_installer.js';
 import './screens/common/os_trial.js';
 import './screens/common/perks_discovery.js';
 import './screens/common/personalized_recommend_apps.js';
@@ -182,7 +183,7 @@ export const commonScreensList: OobeTypes.ScreensList = [
   },
   {tag: 'factor-setup-success-element', id: 'factor-setup-success'},
   {
-    tag: 'os-install-element',
+    tag: 'oobe-fydeos-installer',
     id: 'os-install',
     condition: 'isOsInstallAllowed',
   },

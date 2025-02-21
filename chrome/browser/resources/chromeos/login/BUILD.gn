@@ -132,6 +132,7 @@ build_webui("build") {
     "screens/common/online_authentication_screen.ts",
     "screens/common/oobe_reset.ts",
     "screens/common/os_install.ts",
+    "screens/common/fydeos_installer.ts",
     "screens/common/os_trial.ts",
     "screens/common/parental_handoff.ts",
     "screens/common/quick_start.ts",

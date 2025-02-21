@@ -126,4 +126,124 @@
   <message name="IDS_OOBE_DISPLAY_SIZE_FYDEOS_AI_APP_NAME" desc="FydeOS AI app name in the preview section of the display size screen.">
     FydeOS AI
   </message>
+  <message name="IDS_FYDEOS_INSTALLER_APP_NAME" desc="fydeos installer app name">
+    Installer
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_APP_DESC" desc="desc for fydeos installer">
+    This utility will help you install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> onto the internal storage of this device.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_APP_DISCLAIMER" desc="warning message">
+    Warning! This procedure is destructive and cannot be undone. Please note that we will not hold any responsibility for your potential data loss nor provide any urgent technical support, proceed at your own risk.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_FULL_DISK_INSTALLATION_TITLE" desc="title of full disk installation button">
+    Full disk installation
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_FULL_DISK_INSTALLATION_HELPER_TEXT" desc="helper text for full disk installation radio">
+    Install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> to occupy an entire hard disk, all data of the target hard disk will be wiped.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_INSTALLATION_TITLE" desc="title of dualboot installation button">
+    Multi-boot installation
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_INSTALLATION_HELPER_TEXT" desc="helper text for dualboot installation radio">
+    Install <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> to an existing partition of a hard disk, where <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> can exist in parallel with other OS. All data on the target partition will be wiped.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_FULL_DISK_INSTALLATION_DISCLAIMER" desc="warning message in full disk installation page">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> will be installed on your selected hard drive; all data on the target disk will be wiped.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_TEXT_ON_INSTALL_BUTTON" desc="text on fydeos installer install button">
+    Install
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_CONFIG_DISK_SELECT_LABEL" desc="fydeos installer full disk installation, disk select label">
+    Disk
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_NORMAL_CONFIG_NO_AVAILABLE_DISK" desc="error message if no disk available">
+    No disk available
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALLING_TITLE" desc="title of fydeos installer installing page">
+    Installing...
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_TEXT_ON_SHUTDOWN_BUTTON" desc="text on shutdown button of fydeos installer">
+    Shutdown
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_SUCCESS_TITLE" desc="title for installing success, fydeos installer">
+    Installation completed
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_FAILED_TITLE" desc="title for installing failure, fydeos installer">
+    Installation failed
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_SUCCESS_MESSAGE" desc="message for installing success, fydeos installer">
+    The installation has finished successfully. Please power off your device first, then remove any installation media, and power it on again to boot <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph>.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_FAILED_MESSAGE" desc="message for installing failed, fydeos installer">
+    Oops, something has gone wrong and the installation did not complete. Please retry the process. If the same error persists, please reach out for FydeOS Support with the above log.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_INSTALLATION_DESC" desc="desc message in dualboot installation page">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> will be installed on the selected partition of your hard drive. Under the current multi-boot scheme, this could only proceed if your device supports UEFI and your hard disks are formatted with GPT.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_INSTALLATION_DISCLAIMER" desc="warning message in dualboot installation page">
+    The target partition will be wiped; you also need to specify your active EFI partition (usually done automatically) as the Installer needs to modify system boot configurations.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_CONFIG_SELECT_OS_PARTITION" desc="title of select os part">
+    Select <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> target partition
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_CONFIG_PARTITION_SELECT_LABEL" desc="os part select label">
+    Partition
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_CONFIG_SELECT_EFI_PARTITION" desc="title of select efi part">
+    Select EFI partition
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_SELECTED_DISK_HAS_NO_AVAIL_OS_PARTITION" desc="selected disk has no available os part">
+    There are no partitions available for the selected disk
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_SELECTED_DISK_HAS_NO_AVAIL_EFI_PARTITION" desc="selected disk has no available efi part">
+    There are no EFI partitions available for the selected disk
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_SELECTED_PARTITION_SIZE_SMALLER" desc="warning message if small part is selected">
+    The size of the selected partition is less than 20GB, installation may fail
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_DUALBOOT_SELECTED_PARTITION_ALREADY_INSTALLED" desc="error message if part mounted fydeos_dualboot">
+    The selected partition has been mounted to <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> multi-boot, install to it again may fail
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_MULTI_BOOT_OPTION_TITLE" desc="multi boot option title">
+    After installation, how would you like to boot <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph>?
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_REFIND_TITLE" desc="refind option title">
+    Install and configure rEFInd for me (recommended)
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_REFIND_HELPER_TEXT" desc="refind helper text">
+    rEFInd is a boot manager program that offers a nice graphical interface for OS boot options when your PC starts up, you will be able to choose your desired OS to boot with it. For more information regarding rEFInd, please refer to its homepage.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_UEFI_BOOT_TITLE" desc="uefi boot option title">
+    Add a UEFI boot menu option for me
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_INSTALL_UEFI_BOOT_HELPER_TEXT" desc="uefi boot helper text">
+    When your PC starts up you may be able to enter the UEFI boot options menu (most likely by pressing a hotkey), this option adds <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> as an entry to that menu. (Only supports some models of BIOS and UEFI firmware).
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_MULTI_BOOT_CONFIGURE_BY_YOURSELF_TITLE" desc="multi boot do nothing option title">
+    Do nothing here, I will configure it myself
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_MULTI_BOOT_CONFIGURE_BY_YOURSELF_HELPER_TEXT" desc="multi boot option do nothing helper text">
+    This installation script will only put necessary .efi files for booting <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> to your EFI partition, you will need to configure how to boot it by yourself.
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_TEXT_ON_ABORT_BUTTON" desc="text on abort button, fydeos installer">
+    Force quit
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_ABORT_TITLE" desc="title for abort , fydeos installer">
+    Force quit
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_ABORT_MESSAGE" desc="message for abort, fydeos installer">
+    The installation process has been terminated
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_GET_DISK_INFO_FAILED" desc="Error message if get disk information failed">
+    Failed to get disk information
+  </message>
+  <message name="IDS_FYDEOS_INSTALLER_ABORTING_MESAGE" desc="aborting message for fydeos installer">
+    The installation is being terminated...
+  </message>
+  <message name="IDS_FYDEOS_OOBE_WELCOME_DISABLE_NEXT_DESC" desc="oobe welcome disable next desc">
+    We have detected that you are running this copy of FydeOS from a downloaded image file. To utilise the most comprehensive support features (including Over-The-Air updates) that FydeOS can offer, we strongly recommend you launch the “Installer” function to perform a full-disk installation of FydeOS to a separate storage device.
+  </message>
+  <message name="IDS_FYDEOS_OOBE_WELCOME_DISABLE_NEXT_CONTINUE_ANYWAY" desc="oobe welcome disable next, continue anyway">
+    You can <ph name="LINK_BEGIN">&lt;span id="continue-anyway"&gt;</ph>continue to use this copy of FydeOS anyway<ph name="LINK_END">&lt;/span&gt;</ph>, the installation process can be executed at a later stage in the system, however, all your data will be wiped after installation and you will begin again from this page.
+  </message>
 </grit-part>

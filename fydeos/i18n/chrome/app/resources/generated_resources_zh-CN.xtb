@@ -31,6 +31,44 @@
 <translation id="2460473797378952836">订阅 FydeOS 的新闻邮件</translation>
 <translation id="2229569409832100424">加入 openFyde 用户体验改善计划</translation>
 <translation id="1804257334637107082">加入 FydeOS 用户体验改善计划</translation>
+<!-- fydeos installer in oobe -->
+<translation id="5890206344045530832">安装程序</translation>
+<translation id="6412464734559235948">此安装程序可以帮助你将 <ph name="DEVICE_OS" /> 安装至此设备中。</translation>
+<translation id="5323182426977498659">注意！安装过程具有破坏性并且无法撤销，我们无法对潜在的数据丢失以及安装中可能出现的各种问题负责或者提供及时的技术支持。请三思而后行！</translation>
+<translation id="8517836015601969896">全盘安装</translation>
+<translation id="7670388070648888736">安装 <ph name="DEVICE_OS" /> 到整个磁盘，所选磁盘的数据将被抹去</translation>
+<translation id="8762511733918256595">多重引导安装</translation>
+<translation id="8331814752512566482">安装 <ph name="DEVICE_OS" /> 到一个磁盘分区，所选分区的数据将被抹去</translation>
+<translation id="3853374591075338656">将 <ph name="DEVICE_OS" /> 安装至此设备的磁盘上；所选目标磁盘的所有分区和数据将全部抹去。</translation>
+<translation id="4039091757234555415">磁盘</translation>
+<translation id="7783580523889684697">没有可用的磁盘</translation>
+<!-- <translation id="4148957013307229264">正在安装...</translation> -->
+<translation id="8217653566575018388">安装完成</translation>
+<translation id="8846746259444262774">安装失败</translation>
+<translation id="8826683299983762794">请先关机，然后移除任何安装介质，最后再次启动设备以引导 <ph name="DEVICE_OS" /> 系统。</translation>
+<translation id="2075096143682377607">抱歉，安装过程中出现错误，请重试。如果该错误持续出现，请收集以上日志内容并与 FydeOS 技术支持取得联系。</translation>
+<translation id="2880313280615794544">将 <ph name="DEVICE_OS" /> 安装到此设备磁盘的一个分区里；<ph name="DEVICE_OS" /> 的多重引导方案目前仅能支持携带 UEFI 启动模式配合 GPT 分区模式的设备。</translation>
+<translation id="7831363758161884243">所选目标分区的全部数据将被抹去；另外还需指定 EFI 分区，以便安装程序修改系统的启动参数。</translation>
+<translation id="1361580295752188723">选择 <ph name="DEVICE_OS" /> 目标分区</translation>
+<translation id="3695537760133394753">分区</translation>
+<translation id="5610519566593708119">选择 EFI 分区</translation>
+<translation id="3367650349940010965">所选磁盘没有可用的分区</translation>
+<translation id="7453223384507098390">所选磁盘没有可用的 EFI 分区</translation>
+<translation id="1854532683465500847">所选分区磁盘容量小于 20G，可能会安装失败</translation>
+<translation id="2353243380067885044">所选分区已经安装多重引导 <ph name="DEVICE_OS" />，再次安装可能出现错误</translation>
+<translation id="3129080457956834652">安装完成之后，你希望以怎样的方式选择引导启动 <ph name="DEVICE_OS" />？</translation>
+<translation id="4273235330352963866">帮我安装及配置 rEFInd 启动器（推荐）</translation>
+<translation id="1858708492548921044">rEFInd 是一个带图形界面的操作系统启动选择器。当你开机的时候会给你提供一个友好的多操作系统选择界面，方便选择你想要启动的操作系统。更多关于 rEFInd 的信息可以查看它的项目官网。</translation>
+<translation id="3861924051442564602">帮我添加 UEFI 启动菜单启动项</translation>
+<translation id="1442843287671278225">当你开机的时候可以唤起主板 BIOS 内置的操作系统选择菜单，此选项会在该菜单内加入 <ph name="DEVICE_OS" /> 的选项供你选择启动。（仅支持部分主板和 UEFI 固件）</translation>
+<translation id="1569398690544416170">什么都不做，我自己配置</translation>
+<translation id="5865432404169291055">此安装脚本不会主动为你配置启动引导入口，但仍会把引导启动 <ph name="DEVICE_OS" /> 所需的 .efi 文件置入你的 EFI 分区中，你需要自行配置。</translation>
+<translation id="7492832751164189534">停止安装</translation>
+<translation id="5159534860632584026">安装过程已终止</translation>
+<translation id="8686749782014838344">获取磁盘信息失败</translation>
+<translation id="5688543378771259173">正在终止安装...</translation>
+<translation id="3053987041164721826">检测到该版本的 FydeOS 正在从刚刚烧写的镜像中运行。为了让 FydeOS 的所有附属功能（包括 OTA 升级）均能得到支持，强烈建议现在执行「安装程序」将该 FydeOS 安装到系统的另一个存储设备上。</translation>
+<translation id="7121400053887368347">你可以选择<ph name="LINK_BEGIN">&lt;span id="continue-anyway"&gt;</ph>按现在的方式继续使用 FydeOS<ph name="LINK_END">&lt;/span&gt;</ph>，安装过程可以在登录系统之后执行，但届时所有的数据将会被清除。</translation>
 <translation id="2054784944085654098">正在备份中，此过程需要一段时间，请耐心等待……</translation>
 <translation id="3554401467586751874">备份文件创建成功</translation>
 <translation id="2349211327705667074">查看备份文件</translation>
