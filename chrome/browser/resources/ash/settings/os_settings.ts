@@ -77,6 +77,7 @@ import './os_fyde_page/fydeos_account.js';
 import './os_fyde_page/fydeos_remoting.js';
 import './os_fyde_page/fydeos_tweak_ui.js';
 import './os_fyde_page/fydeos_more_info.js';
+import './os_fyde_page/fydeos_dev_mode.js';
 import './os_fyde_page/fydeos_experiment.js';
 // <if expr="use_fydeos_license">
 import './os_fyde_page/fydeos_license_info.js';

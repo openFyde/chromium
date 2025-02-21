@@ -101,4 +101,16 @@
   <message name="IDS_FYDEOS_BACKUP_NOTIFICATION_FAILED_MESSAGE" desc="Message of backup notification when backup is failed.">
     View error log
   </message>
+  <message name="IDS_OOBE_DISPLAY_SIZE_RDP_APP_NAME" desc="Remote desktop app name in the preview section of the display size screen.">
+    Remote desktop
+  </message>
+  <message name="IDS_OOBE_DISPLAY_SIZE_STORE_APP_NAME" desc="Store app name in the preview section of the display size screen.">
+    App store
+  </message>
+  <message name="IDS_OOBE_DISPLAY_SIZE_ONE_DRIVE_APP_NAME" desc="One drive app name in the preview section of the display size screen.">
+    OneDrive
+  </message>
+  <message name="IDS_OOBE_DISPLAY_SIZE_FYDEOS_AI_APP_NAME" desc="FydeOS AI app name in the preview section of the display size screen.">
+    FydeOS AI
+  </message>
 </grit-part>

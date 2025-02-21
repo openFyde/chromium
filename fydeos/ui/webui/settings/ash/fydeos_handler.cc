@@ -30,6 +30,7 @@
 #include "ui/shell_dialogs/selected_file_info.h"
 #include "chrome/browser/ash/file_manager/volume_manager.h"
 #include "fydeos/switches/misc/misc_constants.h"
+#include "fydeos/misc/fydeos_dev_mode.h"
 
 namespace ash::settings {
 
@@ -175,6 +176,14 @@ void FydeOsHandler::RegisterMessages() {
       "setArcMediaAutoScanStateForCurrentSession",
       base::BindRepeating(&FydeOsHandler::HandleSetArcMediaAutoScanStateForCurrentSession,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setDevMode",
+      base::BindRepeating(&FydeOsHandler::HandleSetDevMode,
+                      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getDevModeSwitchSupported",
+      base::BindRepeating(&FydeOsHandler::HandleGetDevModeSwitchSupported,
+                      base::Unretained(this)));
 }
 
 void FydeOsHandler::OnJavascriptAllowed() {
@@ -682,6 +691,33 @@ void FydeOsHandler::RefreshArcMediaAutoScanState() {
       base::BindOnce(&ArcMediaAutoScanIndicatorFileExists),
       base::BindOnce(&FydeOsHandler::OnArcMediaAutoScanIndicatorFileExistenceChecked,
                  weak_ptr_factory_.GetWeakPtr(), ""));
+}
+
+void FydeOsHandler::OnSetDevMode(const std::string& callback_id, bool result) {
+  ResolveJavascriptCallback(base::Value(callback_id), base::Value(result));
+}
+
+void FydeOsHandler::HandleSetDevMode(const base::Value::List& args) {
+  CHECK_EQ(2u, args.size());
+  const std::string& callback_id = args[0].GetString();
+  bool enable = args[1].GetBool();
+  fydeos::misc::SetDevMode(enable, base::BindOnce(&FydeOsHandler::OnSetDevMode,
+                                                  weak_ptr_factory_.GetWeakPtr(),
+                                                  callback_id));
+}
+
+void FydeOsHandler::HandleGetDevModeSwitchSupported(const base::Value::List& args) {
+  CHECK_EQ(1u, args.size());
+  const std::string& callback_id = args[0].GetString();
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&fydeos::misc::IsDevModeSwitchSupported),
+      base::BindOnce(&FydeOsHandler::OnDevModeSwitchSupportedChecked,
+                     weak_ptr_factory_.GetWeakPtr(), callback_id));
+}
+
+void FydeOsHandler::OnDevModeSwitchSupportedChecked(const std::string& callback_id, bool result) {
+  ResolveJavascriptCallback(base::Value(callback_id), base::Value(result));
 }
 
 }  // namespace ash::settings

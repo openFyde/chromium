@@ -30,6 +30,13 @@ build_webui("build") {
     "images/app_icons/files.svg",
     "images/app_icons/photos.svg",
     "images/app_icons/settings.svg",
+    "images/app_icons/fydeos/camera.svg",
+    "images/app_icons/fydeos/files.svg",
+    "images/app_icons/fydeos/settings.svg",
+    "images/app_icons/fydeos/rdp.svg",
+    # "images/app_icons/fydeos/onedrive.svg",
+    "images/app_icons/fydeos/store.svg",
+    "images/app_icons/fydeos/ai.svg",
     "images/arc_vm_data_migration_icon.svg",
     "images/browser_sync.svg",
     "images/error.svg",
@@ -44,6 +51,8 @@ build_webui("build") {
     "images/2x/thumbnail-theme-dark-2x.png",
     "images/1x/thumbnail-theme-auto-1x.png",
     "images/2x/thumbnail-theme-auto-2x.png",
+
+    "images/fydeos_touchpad_scroll_illo.png",
 
     # Structure files
     "oobe.css",

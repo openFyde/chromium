@@ -13,6 +13,7 @@ namespace fydeos::constants {
 
 CHROMEOS_EXPORT extern const char kDefaultTestUrl[];
 CHROMEOS_EXPORT extern const char kFydeOSHomePageUrl[];
+CHROMEOS_EXPORT extern const char kOpenFydeHomePageUrl[];
 
 CHROMEOS_EXPORT extern const char kFydeOSStoreBaseUrl[];
 CHROMEOS_EXPORT extern const char kFydeOSAccountBaseUrl[];
@@ -26,6 +27,8 @@ extern const char kLanguageSettingsLearnMoreUrl[];
 extern const char kLinuxAppsLearnMoreURL[];
 extern const char kOnlineEulaURLPath[];
 extern const char kOnlinePrivacyURLPath[];
+extern const char kEulaURLPath[];
+extern const char kPrivacyURLPath[];
 extern const char kFydeAccessibilityHelpURL[];
 extern const char kFydeNewGestureHelpURL[];
 extern const char kSmbSharesLearnMoreURL[];
@@ -60,6 +63,8 @@ extern const char kFingerprintLearnMoreURL[];
 extern const char kFydeOSBackupRestoreLearnMoreURL[];
 
 extern const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[];
+
+extern const char kFydeOSDevModeTransitionLearnMoreURL[];
 
 #if !BUILDFLAG(USE_FYDEOS_COM)
 extern const char kFydeOSDiscordServerURL[];

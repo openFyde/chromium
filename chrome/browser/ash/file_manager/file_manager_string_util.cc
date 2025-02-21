@@ -769,7 +769,6 @@ void AddStringsGeneric(base::Value::Dict* dict) {
              IDS_FILE_BROWSER_NEW_WINDOW_BUTTON_LABEL);
   SET_STRING("NO_TASK_FOR_CRX", IDS_FILE_BROWSER_NO_TASK_FOR_CRX);
   SET_STRING("NO_TASK_FOR_CRX_TITLE", IDS_FILE_BROWSER_NO_TASK_FOR_CRX_TITLE);
-  SET_STRING("NO_TASK_FOR_APK", IDS_FILE_BROWSER_NO_TASK_FOR_APK);
   SET_STRING("NO_TASK_FOR_DMG", IDS_FILE_BROWSER_NO_TASK_FOR_DMG);
   SET_STRING("NO_TASK_FOR_EXECUTABLE", IDS_FILE_BROWSER_NO_TASK_FOR_EXECUTABLE);
   SET_STRING("NO_TASK_FOR_FILE", IDS_FILE_BROWSER_NO_TASK_FOR_FILE);
@@ -1329,6 +1328,12 @@ base::Value::Dict GetFileManagerStrings() {
   AddStringsGeneric(&dict);
   AddStringsForVms(&dict);
   AddStringsForSkyVault(&dict);
+
+  dict.Set("NO_TASK_FOR_APK",
+           l10n_util::GetStringFUTF16(
+               IDS_FILE_BROWSER_NO_TASK_FOR_APK,
+               base::ASCIIToUTF16(
+                   fydeos::constants::kFydeOSDevModeTransitionLearnMoreURL)));
 
   dict.Set(
       "DOWNLOADS_LOW_SPACE_WARNING_HELP_URL",

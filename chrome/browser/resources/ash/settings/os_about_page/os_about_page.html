@@ -7,6 +7,10 @@
     margin-bottom: 12px;
   }
 
+  .info-section:last-of-type {
+    margin-bottom: 0;
+  }
+
   .padded {
     padding-bottom: 10px;
     padding-top: 10px;
@@ -98,7 +102,8 @@
     margin: 6px 3px 16px 3px;
   }
 
-  :host-context(body:not(.revamp-wayfinding-enabled)) #copyrightCard {
+  :host-context(body:not(.revamp-wayfinding-enabled)) #copyrightCard,
+  :host-context(body:not(.revamp-wayfinding-enabled)) #fydeOsCopyrightCard {
     margin-top: var(--cr-section-vertical-margin);
   }
 
@@ -300,7 +305,7 @@
             deep-link-focus-id$="[[Setting.kDiagnostics]]">
         </cr-link-row>
         <cr-link-row class="hr" id="firmwareUpdates"
-            hidden$="[[!showFirmwareUpdatesApp_]]"
+            hidden$="[[!isFirmwareUpdateSupported_]]"
             start-icon="[[rowIcons_.firmwareUpdates]]"
             on-click="onFirmwareUpdatesClick_"
             label="$i18n{aboutFirmwareUpdates}"
@@ -336,7 +341,49 @@
         <crostini-settings-card prefs="{{prefs}}"></crostini-settings-card>
       </template>
 
-      <settings-card id="copyrightCard">
+      <settings-card id="fydeOsCopyrightCard">
+        <div class="settings-box padded block first">
+
+          <!-- part one, two lines -->
+          <div class="info-section">
+            <div class="secondary">
+              <localized-link
+                localized-string="$i18n{aboutFydeOsProductTitleWithLink}">
+              </localized-link>
+            </div>
+            <div class="secondary">$i18n{aboutFydeOsProductCopyright}</div>
+          </div>
+
+          <!-- part two, one line -->
+<if expr="not openfyde">
+          <div class="info-section">
+            <div class="secondary">
+              <div id="aboutFydeOsProductTos">
+                $i18nRaw{aboutFydeOsProductTos}
+              </div>
+            </div>
+          </div>
+</if>
+
+          <!-- part three, three lines -->
+          <div class="info-section">
+            <div class="secondary">
+              <localized-link
+                localized-string="$i18n{aboutFydeOsOpenFydeLicenseDesc}">
+              </localized-link>
+            </div>
+            <div class="secondary">
+              <localized-link
+                localized-string="$i18n{aboutFydeOsOpenFydeProductLicense}">
+              </localized-link>
+            </div>
+            <div class="secondary">$i18nRaw{aboutFydeOsProductAndChromiumLicense}</div>
+          </div>
+
+        </div>
+      </settings-card>
+
+      <settings-card hidden id="copyrightCard">
         <div class="settings-box padded block first">
           <div class="info-section">
             <div class="secondary">$i18n{aboutOsProductTitle}</div>

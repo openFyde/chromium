@@ -99,6 +99,11 @@ class FydeOsHandler :
 
   void HandleSetArcMediaAutoScanStateForCurrentSession(const base::Value::List& args);
 
+  void HandleSetDevMode(const base::Value::List& args);
+  void OnSetDevMode(const std::string& callback_id, bool result);
+  void HandleGetDevModeSwitchSupported(const base::Value::List& args);
+  void OnDevModeSwitchSupportedChecked(const std::string& callback_id, bool result);
+
   std::string system_salt_;
   Profile* profile_;
   PrefService* const prefs_;

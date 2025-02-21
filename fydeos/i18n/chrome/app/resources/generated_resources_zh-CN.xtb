@@ -32,6 +32,7 @@
 <translation id="2349211327705667074">查看备份文件</translation>
 <translation id="6337433855796857931">备份文件创建失败</translation>
 <translation id="3049367131589710124">查看错误日志</translation>
+<translation id="3064478898280877715">应用商店</translation>
 <!-- os_settings_strings.override.grdp -->
 <translation id="7631371713920849682">在 Chromium 浏览器中使用增强的「拼写检查」功能（您输入的文字会被发送给服务器以方便其提供拼写建议）</translation>
 <translation id="4467178118407184669">Android 支持</translation>
@@ -55,10 +56,14 @@
 <translation id="1243738736603109562">您需要重启 FydeOS 才能更改设备语言。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
 <translation id="1491869033935559234">openFyde 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
 <translation id="4356727807337882306">FydeOS 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
+<translation id="7841006096296111449">请确保您的打印机与 FydeOS 设备连接到同一 Wi-Fi 网络，或者使用 USB 线。<ph name="LINK_BEGIN" />详细了解兼容性<ph name="LINK_END" /></translation>
+<translation id="8976574741886416199">请确保您的打印机与 openFyde 设备连接到同一 Wi-Fi 网络，或者使用 USB 线。<ph name="LINK_BEGIN" />详细了解兼容性<ph name="LINK_END" /></translation>
 <translation id="7456142309650173560">开发者</translation>
 <translation id="1764226536771329714">测试</translation>
 <translation id="913411432238655354">启动时恢复应用</translation>
 <translation id="4761916003358543528">您的应用和设置会在您使用自己的 FydeOS 帐号登录的所有设备上保持同步。如需了解浏览器同步选项，请前往 <ph name="LINK_BEGIN" />Chromium 设置<ph name="LINK_END" />。</translation>
+<translation id="2284684596745086553">屏幕键盘、开关控制等</translation>
+<translation id="6391619337105968582">单声道音频、启动等</translation>
 <!-- settings_strings.override.grdp -->
 <translation id="788994565092063281">打开应用商店</translation>
 <translation id="646286410082977985">版本 <ph name="PRODUCT_VERSION" /> <ph name="PRODUCT_MODIFIER" /> <ph name="PRODUCT_VERSION_BITS" /></translation>
@@ -143,6 +148,11 @@
 <translation id="996700315270946845">请输入当前账户的登录密码</translation>
 <translation id="8663988871299316062">请务必牢记此密码，恢复备份时会用到</translation>
 <translation id="3176232846379750386">禁用多分区下的媒体文件自动扫描以获得更长的电池续航时间。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="2237927770036822831">安全选项</translation>
+<translation id="4590248637022771792">以「开发者模式」运行当前的 <ph name="IDS_SHORT_PRODUCT_OS_NAME" /> 以启用开发者相关的功能。<ph name="BEGIN_LINK_LEARN_MORE" />了解更多<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="8484013063794117855">目前已在「开发者模式」下</translation>
+<translation id="4779786050352687599">启用「开发者模式」</translation>
+<translation id="7470950608293086085">请注意！启用「开发者模式」的操作不可逆。如需关闭开发者模式需要重新安装 FydeOS，届时数据将会被覆盖。请做好数据备份工作且三思而后行。</translation>
 <translation id="771827447936691071">联网查看您的 FydeOS 订阅信息</translation>
 <translation id="2377461835684104822">FydeOS 订阅信息</translation>
 <translation id="6382379769502480932">读取设备识别码信息失败</translation>
@@ -262,6 +272,8 @@
 <translation id="3134981889850122056">您的 FydeOS 设备无法使用 Steam（Beta 版）。</translation>
 <translation id="6678369062218866475">需要更新 FydeOS</translation>
 <translation id="8808631745882917854">若要完成 Linux 安装，请更新 FydeOS 并重试。</translation>
+<translation id="799069234167243501">请确保您的蓝牙设备处于配对模式且就在附近。应仅与您信任的设备配对。此 <ph name="DEVICE_TYPE" /> 上的所有账号都可以看到已配对的设备。</translation>
+<translation id="4329124023116919625">请确保您的蓝牙设备处于配对模式且就在附近。应仅与您信任的设备配对。此 <ph name="DEVICE_TYPE" /> 上的所有账号都可以看到已配对的设备。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
 <!-- generated_resources.override.grdp -->
 <translation id="358808394160762813">openFyde 系统映像写入工具</translation>
 <translation id="827071875133563393">FydeOS 系统映像写入工具</translation>

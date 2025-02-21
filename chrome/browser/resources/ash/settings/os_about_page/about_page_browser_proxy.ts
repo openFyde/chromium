@@ -170,6 +170,7 @@ export interface AboutPageBrowserProxy {
   /** Opens the firmware updates page. */
   openFirmwareUpdatesPage(): void;
 
+  getIsFirmwareUpdateSupported(): Promise<boolean>;
   /**
    * Requests the number of firmware updates.
    */
@@ -305,6 +306,10 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
 
   getFirmwareUpdateCount(): Promise<number> {
     return sendWithPromise('getFirmwareUpdateCount');
+  }
+
+  getIsFirmwareUpdateSupported(): Promise<boolean> {
+    return sendWithPromise('getIsFirmwareUpdateSupported');
   }
 
   requestUpdate(): void {

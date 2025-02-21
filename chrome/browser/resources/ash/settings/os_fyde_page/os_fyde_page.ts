@@ -17,6 +17,7 @@ import './fydeos_remoting.js';
 import './fydeos_tweak_ui.js';
 import './fydeos_experiment.js';
 import './fydeos_more_info.js';
+import './fydeos_dev_mode.js';
 // <if expr="use_fydeos_license">
 import './fydeos_license_info.js';
 // </if>
@@ -47,6 +48,12 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
         type: Boolean,
         value() {
           return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+      isGuest_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isGuest');
         },
       },
 
@@ -85,6 +92,7 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
   }
 
   private isFydeAccount_: boolean;
+  private isGuest_: boolean;
   private showFydeOsLicense_: boolean;
   private showToggleRebootButtonInTray: boolean;
   private showToggleRotateScreenButton: boolean;

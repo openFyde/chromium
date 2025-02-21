@@ -218,6 +218,7 @@ build_webui("build") {
     "os_fyde_page/fydeos_account.ts",
     "os_fyde_page/fydeos_drivers.ts",
     "os_fyde_page/fydeos_more_info.ts",
+    "os_fyde_page/fydeos_dev_mode.ts",
     "os_fyde_page/fydeos_remoting.ts",
     "os_fyde_page/fydeos_tweak_ui.ts",
     "os_fyde_page/fydeos_experiment.ts",

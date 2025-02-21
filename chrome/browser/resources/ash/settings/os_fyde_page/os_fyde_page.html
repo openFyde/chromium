@@ -22,6 +22,8 @@
       <os-settings-fydeos-remoting>
       </os-settings-fydeos-remoting>
     </settings-card>
+<template is="dom-if" if="[[!isGuest_]]">
+    <os-settings-fydeos-dev-mode></os-settings-fydeos-dev-mode>
     <settings-card header-text="$i18n{fydeosSettingsOtherTweaksTitle}" section="tweakUI"
                         hidden="[[!showFydeOsTweakUi_(showToggleRebootButtonInTray, showToggleRotateScreenButton, showToggleSwitchTabletLaptopButton)]]">
       <os-settings-fydeos-tweak-ui
@@ -31,6 +33,7 @@
       </os-settings-fydeos-tweak-ui>
     </settings-card>
     <os-settings-fydeos-experiment class="fydeos-settings-section-wrapper"></os-settings-fydeos-experiment>
+</template>
     <settings-card header-text="$i18n{fydeosSettingsMoreInfoTitle}" section="moreInfo">
       <os-settings-fydeos-more-info>
       </os-settings-fydeos-more-info>

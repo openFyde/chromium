@@ -167,6 +167,24 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_TOGGLE_ARC_MEDIA_AUTO_SCAN_LABEL" desc="Text for toggling arc media autoscan">
     Disable automatic media file scanning for all partitions to optimize battery life. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SECURITY_SECTION_TITLE" desc="Title of security section on os-settings fydeos">
+    Security options
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_DEV_MODE_TRANSITION_LABEL" desc="Label on os-settings fydeos dev mode transition section">
+    Enable "Developer mode" for this <ph name="IDS_SHORT_PRODUCT_OS_NAME">$1<ex>FydeOS</ex></ph> installation with more developer features. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$2"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_IN_DEV_MODE_TOOLTIP" desc="In dev mode message on os-settings fydeos dev mode transition section">
+    You are already in "Developer mode"
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_BUTTON_TEXT" desc="Text on action button of os-settings fydeos dev mode transition section">
+    Enable "Developer mode"
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_CONFIRM_TITLE" desc="confirm title of os-settings fydeos dev mode transition section">
+    Warning
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_CONFIRM_MESSAGE" desc="confirm message of os-settings fydeos dev mode transition section">
+    Warning! Enabling “Developer mode“ is an irreversible operation. If you wish to disable “Developer mode“ you must reinstall FydeOS, resulting in all data being wiped. Please back up your data and proceed at your own risk.
+  </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION_WITHOUT_LICENSE_STATE" desc="The text label describing the version of the browser, example: FydeOS for PC (apu), v18.0-SP1, Platform 15662.71.18.6">
     <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="DEVICE_VARIANT">$2<ex> for PC (apu)</ex></ph>, <ph name="FYDEOS_MAJOR_VERSION">$3<ex>v9.0</ex></ph>
     <ph name="LINE_BREAK1">&lt;br&gt;</ph>

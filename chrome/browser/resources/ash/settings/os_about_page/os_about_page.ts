@@ -121,11 +121,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
         observer: 'handleUpdateStatusHttpFailed_',
       },
 
-      showFirmwareUpdatesApp_: {
-        type: Boolean,
-        value: false,
-      },
-
       /**
        * Whether the browser/ChromeOS is managed by their organization
        * through enterprise policies.
@@ -189,6 +184,11 @@ export class OsAboutPageElement extends OsAboutPageBase {
       },
 
       hasInternetConnection_: {
+        type: Boolean,
+        value: false,
+      },
+
+      isFirmwareUpdateSupported_: {
         type: Boolean,
         value: false,
       },
@@ -398,6 +398,7 @@ export class OsAboutPageElement extends OsAboutPageBase {
   private hasDeferredUpdate_: boolean;
   private eolMessageWithMonthAndYear_: string;
   private hasInternetConnection_: boolean;
+  private isFirmwareUpdateSupported_: boolean;
   private firmwareUpdateCount_: number;
   private rowIcons_: Record<string, string>;
   private showCrostiniLicense_: boolean;
@@ -474,6 +475,10 @@ export class OsAboutPageElement extends OsAboutPageBase {
 
     this.aboutBrowserProxy_.getFirmwareUpdateCount().then(result => {
       this.firmwareUpdateCount_ = result;
+    });
+
+    this.aboutBrowserProxy_.getIsFirmwareUpdateSupported().then(result => {
+      this.isFirmwareUpdateSupported_ = result;
     });
 
     if (Router.getInstance().getQueryParameters().get('checkForUpdate') ===

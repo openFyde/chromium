@@ -28,4 +28,27 @@
     FydeOS AI
   </message>
 
+  <if expr="openfyde">
+    <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_TITLE" desc="The main label for the system tray Cast view when no Chromecast devices are available.">
+      Cast your screen from your openFyde device
+    </message>
+    <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_SUBTITLE" desc="The secondary label for the system tray Cast view when no Chromecast devices are available.">
+      Make sure your openFyde device is on the same Wi-Fi network as your Chromecast device.
+    </message>
+    <message name="IDS_ASH_STATUS_TRAY_AUDIO_NBS_MESSAGE" desc="label used to warn that NBS is in use">
+      Your openFyde or Bluetooth device is using an older version of Bluetooth. Use the internal microphone for better audio quality.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_TITLE" desc="The main label for the system tray Cast view when no Chromecast devices are available.">
+      Cast your screen from your FydeOS device
+    </message>
+    <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_SUBTITLE" desc="The secondary label for the system tray Cast view when no Chromecast devices are available.">
+      Make sure your FydeOS device is on the same Wi-Fi network as your Chromecast device.
+    </message>
+    <message name="IDS_ASH_STATUS_TRAY_AUDIO_NBS_MESSAGE" desc="label used to warn that NBS is in use">
+      Your FydeOS or Bluetooth device is using an older version of Bluetooth. Use the internal microphone for better audio quality.
+    </message>
+  </if>
+
 </grit-part>

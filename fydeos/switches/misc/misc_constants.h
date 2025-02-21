@@ -22,6 +22,8 @@ CHROMEOS_EXPORT extern const char kFydeOSWallpapersBasePath[];
 
 CHROMEOS_EXPORT extern const char kFydeOSBackupScriptDirPath[];
 CHROMEOS_EXPORT extern const char kFydeOSRestoreScriptDirPath[];
+
+CHROMEOS_EXPORT extern const char kFydeOSFirmwareUpdateBinPath[];
 } // constants
 } // fydeos
 

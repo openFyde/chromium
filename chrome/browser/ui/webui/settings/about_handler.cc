@@ -50,6 +50,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "fydeos/switches/misc/misc_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "v8/include/v8-version-string.h"
 
@@ -316,6 +317,11 @@ void AboutHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "openFirmwareUpdatesPage",
       base::BindRepeating(&AboutHandler::HandleOpenFirmwareUpdates,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getIsFirmwareUpdateSupported",
+      base::BindRepeating(&AboutHandler::HandleGetIsFirmwareUpdateSupported,
                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
@@ -646,6 +652,24 @@ void AboutHandler::HandleGetVersionInfo(const base::Value::List& args) {
 void AboutHandler::OnGetVersionInfoReady(std::string callback_id,
                                          base::Value::Dict version_info) {
   ResolveJavascriptCallback(base::Value(callback_id), version_info);
+}
+
+void AboutHandler::HandleGetIsFirmwareUpdateSupported(const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  const std::string& callback_id = args[0].GetString();
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(
+        &base::PathExists,
+        base::FilePath(fydeos::constants::kFydeOSFirmwareUpdateBinPath)),
+      base::BindOnce(&AboutHandler::OnFydeOSUpdateBinCheckedChecked,
+                     weak_factory_.GetWeakPtr(), callback_id));
+}
+
+void AboutHandler::OnFydeOSUpdateBinCheckedChecked(const std::string& callback_id,
+                                                   bool is_supported) {
+  ResolveJavascriptCallback(
+      base::Value(callback_id), base::Value(is_supported));
 }
 
 void AboutHandler::HandleGetFirmwareUpdateCount(const base::Value::List& args) {

@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "fydeos/ui/webui/settings/ash/fydeos_section.h"
+#include "base/command_line.h"
 #include "base/no_destructor.h"
 #include "chrome/grit/generated_resources.h"
 #include "chrome/grit/branded_strings.h"
@@ -28,6 +29,8 @@
 #include "fydeos/switches/license/license_switches.h"
 #include "fydeos/license/fydeos_license_user_util.h"
 #endif
+
+#include "chromeos/dbus/constants/dbus_switches.h"
 
 namespace ash::settings {
 
@@ -166,6 +169,16 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
     {"fydeosSettingsLicenseOfflineHintMessage",
       IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_OFFLINE_HINT_MESSAGE},
 #endif
+    {"fydeosSettingsSecuritySectionTitle",
+      IDS_OS_SETTINGS_FYDEOS_SECURITY_SECTION_TITLE},
+    {"fydeosSettingsEnableDevModeButtonText",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_BUTTON_TEXT},
+    {"fydeosSettingsInDevModeTooltip",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_IN_DEV_MODE_TOOLTIP},
+    {"fydeosSettingsEnableDevModeConfirmTitle",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_CONFIRM_TITLE},
+    {"fydeosSettingsEnableDevModeConfirmMessage",
+      IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_CONFIRM_MESSAGE},
   };
 
   html_source->AddLocalizedStrings(kLocalizedStrings);
@@ -199,6 +212,13 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
             base::ASCIIToUTF16(
               fydeos::constants::kFydeOSToggleArcMediaAutoScanLearnMoreURL)));
 
+  html_source->AddString(
+      "fydeosSettingsDevModeTransitionLabel",
+      l10n_util::GetStringFUTF16(IDS_OS_SETTINGS_FYDEOS_DEV_MODE_TRANSITION_LABEL,
+                                 l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME),
+                                 base::ASCIIToUTF16(
+                                 fydeos::constants::kFydeOSDevModeTransitionLearnMoreURL)));
+
   const std::string board = base::SysInfo::GetLsbReleaseBoard();
   html_source->AddBoolean("showToggleRebootButtonInTray", false);
   html_source->AddBoolean("showToggleRotateScreenButton",
@@ -224,6 +244,10 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       fydeos::license::AppendAccountIdQueryParameter(url).spec());
   html_source->AddString("fydeosBoardName", board);
 #endif
+
+  html_source->AddBoolean("devMode",
+                          base::CommandLine::ForCurrentProcess()->HasSwitch(
+                          chromeos::switches::kSystemDevMode));
 }
 
 int FydeOsSection::GetSectionNameMessageId() const {

@@ -19,5 +19,7 @@ const char kFydeOSWallpapersBasePath[] = "/usr/share/chromeos-assets/fydeos_wall
 const char kFydeOSBackupScriptDirPath[] = "/usr/share/fydeos-backup";
 const char kFydeOSRestoreScriptDirPath[] = "/usr/share/fydeos-backup";
 
+const char kFydeOSFirmwareUpdateBinPath[] = "/usr/bin/fydeos-update-firmware";
+
 } // constants
 } // fydeos

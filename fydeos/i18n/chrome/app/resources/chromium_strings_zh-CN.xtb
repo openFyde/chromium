@@ -53,4 +53,14 @@
 <translation id="3260341977707949567">请点击下面的链接查看详细错误日志。如果此错误持续存在，请与 FydeOS 技术支持渠道取得联系并提供此错误日志。</translation>
 <translation id="6363786367719063276">查看日志</translation>
 <translation id="6276879052695618521">恢复备份时的错误日志</translation>
+<translation id="6339581207911044261"><ph name="BEGIN_LINK" />openFyde<ph name="END_LINK" /></translation>
+<translation id="6066618579973455158">FydeOS，来自 <ph name="BEGIN_LINK" />https://fydeos.com<ph name="END_LINK" /></translation>
+<translation id="4030243038655424404">FydeOS，来自 <ph name="BEGIN_LINK" />https://fydeos.io<ph name="END_LINK" /></translation>
+<translation id="5930613793425116883"><ph name="YEAR" />，燧炻创新，版权所有。</translation>
+<translation id="6644364876094631746">FydeOS 及其网络服务遵守 GDPR，并受英国数据保护法的约束。更多信息，请查阅我们的<ph name="BEGIN_LINK_PRIVACY" />隐私声明<ph name="END_LINK_PRIVACY" />和<ph name="BEGIN_LINK_TOS" />服务条款<ph name="END_LINK_TOS" />。</translation>
+<translation id="1482072102781423033">使用 FydeOS 及其网络服务，请查阅我们的<ph name="BEGIN_LINK_PRIVACY" />隐私声明<ph name="END_LINK_PRIVACY" />和<ph name="BEGIN_LINK_TOS" />服务条款<ph name="END_LINK_TOS" />。</translation>
+<translation id="4465701891825500184">openFyde 是 FydeOS 的基础开源项目。</translation>
+<translation id="5603933258494557073">FydeOS 是基于 <ph name="BEGIN_LINK" />openFyde<ph name="END_LINK" /> 开源项目的商业产品。</translation>
+<translation id="4672237181030062124">openFyde 和 FydeOS 的诞生离不开 <ph name="BEGIN_LINK" />Chromium<ph name="END_LINK" /> 开源项目。</translation>
+<translation id="171993882905858417">Chromium 的诞生也离不开其他<ph name="BEGIN_LINK_1" />开源软件<ph name="END_LINK_1" />，以及这些额外的<ph name="BEGIN_LINK_2" />开源软件<ph name="END_LINK_2" />的一份贡献。</translation>
 </translationbundle>

@@ -26,6 +26,8 @@ static_library("misc") {
     "fydeos_release_note_url.h",
     "fydeos_toggle_ota.cc",
     "fydeos_toggle_ota.h",
+    "fydeos_dev_mode.cc",
+    "fydeos_dev_mode.h",
   ]
 
   if (use_fydeos_com) {

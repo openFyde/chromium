@@ -573,6 +573,46 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
                          base::UTF8ToUTF16(safetyInfoLink));
 #endif
 
+  html_source->AddString(
+      "aboutFydeOsProductTitleWithLink",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_PRODUCT_TITLE_WITH_LINK,
+#if BUILDFLAG(IS_OPENFYDE)
+                                base::UTF8ToUTF16(fydeos::constants::kOpenFydeHomePageUrl)));
+#else
+                                base::UTF8ToUTF16(fydeos::constants::kFydeOSHomePageUrl)));
+#endif
+  html_source->AddString("aboutFydeOsProductCopyright",
+                         base::i18n::MessageFormatter::FormatWithNumberedArgs(
+                            l10n_util::GetStringUTF16(IDS_SETTINGS_FYDEOS_PRODUCT_COPYRIGHT),
+                            base::Time::Now()));
+#if !BUILDFLAG(IS_OPENFYDE)
+  html_source->AddString(
+      "aboutFydeOsProductTos",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_PRODUCT_TOS,
+                                 base::UTF8ToUTF16(fydeos::constants::kPrivacyURLPath),
+                                 base::UTF8ToUTF16(fydeos::constants::kEulaURLPath))),
+#endif
+
+#if BUILDFLAG(IS_OPENFYDE)
+  html_source->AddString(
+      "aboutFydeOsOpenFydeLicenseDesc",
+      l10n_util::GetStringUTF16(IDS_VERSION_UI_FYDEOS_OPENFYDE_LICENSE_DESC));
+#else
+  html_source->AddString(
+      "aboutFydeOsOpenFydeLicenseDesc",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_OPENFYDE_LICENSE_DESC,
+                                base::UTF8ToUTF16(fydeos::constants::kOpenFydeHomePageUrl)));
+#endif
+  html_source->AddString(
+      "aboutFydeOsOpenFydeProductLicense",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_OPENFYDE_PRODUCT_LICENSE,
+                                 chrome::kChromiumProjectURL));
+  html_source->AddString(
+      "aboutFydeOsProductAndChromiumLicense",
+      l10n_util::GetStringFUTF16(IDS_VERSION_UI_FYDEOS_PRODUCT_CHROMIUM_LICENSE,
+                                chrome::kChromeUICreditsURL16,
+                                chrome::kChromeUIOSCreditsURL16));
+
   // Crostini subsection exists only when OsSettingsRevampWayfinding is enabled.
   if (crostini_subsection_) {
     crostini_subsection_->AddLoadTimeData(html_source);

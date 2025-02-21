@@ -139,7 +139,12 @@ class FydeSettingsRemotingPageElement extends FydeSettingsRemotingPageElementBas
   }
 
   onRemoteDesktopClicked_() {
+// <if expr="use_fydeos_com">
     const appId = 'ihdjkfkbpkgagdkpjpifcdeeadaippme';
+// </if>
+// <if expr="not use_fydeos_com">
+    const appId = 'ddagandcjljahndgakdbdahphkljdcdg';
+// </if>
     chrome.nativeWindows.create(appId, () => {
       chrome.nativeWindows.getAll(list => {
         const created = list.find(p => p.appId === appId);
