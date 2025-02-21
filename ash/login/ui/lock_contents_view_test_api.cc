@@ -184,6 +184,7 @@ void LockContentsViewTestApi::ShowAuthErrorBubble(int unlock_attempt) const {
 
   auth_error_bubble()->ShowAuthError(
       /*anchor_view = */ big_view->auth_user()->GetActiveInputView(),
+      /*account_type = */ account_id.GetAccountType(),
       /*unlock_attempt = */ unlock_attempt,
       /*show_pin = */ user_state->show_pin,
       /*is_login_screen = */ view_->screen_type_ ==

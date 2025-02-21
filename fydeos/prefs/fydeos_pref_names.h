@@ -49,6 +49,12 @@ extern const char kFydeLicenseStateType[];
 extern const char kFydeLicenseEnforcementLevel[];
 extern const char kFydeLicenseEnforcementLogOutInterval[];
 #endif
+
+
+#if BUILDFLAG(USE_FYDEOS_COM)
+extern const char kCrostiniInstallerNotificationUserInteracted[];
+#endif
+
 } // prefs
 } // fydeos
 

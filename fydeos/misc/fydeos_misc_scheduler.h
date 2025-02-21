@@ -8,11 +8,13 @@
 #include <memory>
 #include "chromeos/chromeos_export.h"
 #include "chromeos/ash/components/login/login_state/login_state.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace fydeos {
 namespace misc {
 
 class StatisticsCollector;
+class MiscCrostiniNotifier;
 
 class CHROMEOS_EXPORT FydeMiscScheduler : public ::ash::LoginState::Observer {
  public:
@@ -28,6 +30,9 @@ class CHROMEOS_EXPORT FydeMiscScheduler : public ::ash::LoginState::Observer {
     void LoggedInStateChanged() override;
 
     bool started_ = false;
+#if BUILDFLAG(USE_FYDEOS_COM)
+    std::unique_ptr<MiscCrostiniNotifier> crostini_notifier_;
+#endif
     std::unique_ptr<StatisticsCollector> collector_;
 };
 

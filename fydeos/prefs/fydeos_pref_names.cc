@@ -44,5 +44,9 @@ const char kFydeLicenseStateType[] = "fyde_license_state_type";
 const char kFydeLicenseEnforcementLevel[] = "fyde_license_enforcement_level";
 const char kFydeLicenseEnforcementLogOutInterval[] = "fydeo_license_enforcement_log_out_interval";
 #endif
+
+#if BUILDFLAG(USE_FYDEOS_COM)
+const char kCrostiniInstallerNotificationUserInteracted[] = "fydeos_crostini_installer_notificaion_user_interacted";
+#endif
 }
 }

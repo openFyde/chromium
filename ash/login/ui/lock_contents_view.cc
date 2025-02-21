@@ -2218,6 +2218,7 @@ void LockContentsView::ShowAuthErrorMessage(bool authenticated_by_pin) {
 
   auth_error_bubble_->ShowAuthError(
       /*anchor_view = */ big_view->auth_user()->GetActiveInputView(),
+      /*account_type = */ account_id.GetAccountType(),
       /*unlock_attempt = */ unlock_attempt,
       /*authenticated_by_pin = */ authenticated_by_pin,
       /*is_login_screen = */ screen_type_ == LockScreen::ScreenType::kLogin);

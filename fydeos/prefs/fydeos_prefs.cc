@@ -18,6 +18,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFydeAssistantExtraAcceleratorEnabled, true);
 
   registry->RegisterBooleanPref(kFydeOSArcMediaAutoScanEnabled, true);
+#if BUILDFLAG(USE_FYDEOS_COM)
+  registry->RegisterBooleanPref(kCrostiniInstallerNotificationUserInteracted, false);
+#endif
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
