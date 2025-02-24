@@ -96,6 +96,7 @@
 #include "chrome/browser/ash/login/screens/multidevice_setup_screen.h"
 #include "chrome/browser/ash/login/screens/network_error.h"
 #include "chrome/browser/ash/login/screens/network_screen.h"
+#include "chrome/browser/ash/login/screens/eula_screen.h"
 #include "chrome/browser/ash/login/screens/offline_login_screen.h"
 #include "chrome/browser/ash/login/screens/online_authentication_screen.h"
 #include "chrome/browser/ash/login/screens/osauth/apply_online_password_screen.h"
@@ -199,6 +200,7 @@
 #include "chrome/browser/ui/webui/ash/login/marketing_opt_in_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/multidevice_setup_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/network_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/eula_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/offline_login_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/online_authentication_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/oobe_ui.h"
@@ -272,6 +274,7 @@
 // ---***FYDEOS BEGIN***---
 #include "fydeos/switches/account/account_switches.h"
 #include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/switches/misc/misc_switches.h"
 #include "fydeos/build/config/buildflags.h"
 // ---***FYDEOS END***---
 
@@ -300,6 +303,7 @@ constexpr char kLegacyUpdateScreenName[] = "update";
 const StaticOobeScreenId kResumableOobeScreens[] = {
     WelcomeView::kScreenId,
     NetworkScreenView::kScreenId,
+    EulaView::kScreenId,
     UpdateView::kScreenId,
     EnrollmentScreenView::kScreenId,
     AutoEnrollmentCheckScreenView::kScreenId,
@@ -679,6 +683,10 @@ WizardController::CreateScreens() {
   append(std::make_unique<NetworkScreen>(
       oobe_ui->GetView<NetworkScreenHandler>()->AsWeakPtr(),
       base::BindRepeating(&WizardController::OnNetworkScreenExit,
+                          weak_factory_.GetWeakPtr())));
+  append(std::make_unique<EulaScreen>(
+      oobe_ui->GetView<EulaScreenHandler>()->AsWeakPtr(),
+      base::BindRepeating(&WizardController::OnEulaScreenExit,
                           weak_factory_.GetWeakPtr())));
   append(std::make_unique<UpdateScreen>(
       oobe_ui->GetView<UpdateScreenHandler>()->AsWeakPtr(),
@@ -1169,6 +1177,10 @@ void WizardController::ShowDrivePinningScreen() {
   } else {
     OnDrivePinningScreenExit(DrivePinningScreen::Result::NOT_APPLICABLE);
   }
+}
+
+void WizardController::ShowEulaScreen() {
+  SetCurrentScreen(GetScreen(EulaView::kScreenId));
 }
 
 void WizardController::ShowResetScreen() {
@@ -2218,9 +2230,13 @@ void WizardController::OnNetworkScreenExit(NetworkScreen::Result result) {
     switch (result) {
       case NetworkScreen::Result::CONNECTED:
       case NetworkScreen::Result::NOT_APPLICABLE:
-        MaybeTakeTPMOwnership();
-        PerformPostNetworkScreenActions();
-        InitiateOOBEUpdate();
+        if (fydeos::switches::IsFydeCustomEnabled()) {
+          ShowEulaScreen();
+        } else {
+          MaybeTakeTPMOwnership();
+          PerformPostNetworkScreenActions();
+          InitiateOOBEUpdate();
+        }
         break;
       case NetworkScreen::Result::BACK:
         ShowOsTrialScreen();
@@ -2235,9 +2251,13 @@ void WizardController::OnNetworkScreenExit(NetworkScreen::Result result) {
   switch (result) {
     case NetworkScreen::Result::CONNECTED:
     case NetworkScreen::Result::NOT_APPLICABLE:
-      MaybeTakeTPMOwnership();
-      PerformPostNetworkScreenActions();
-      InitiateOOBEUpdate();
+      if (fydeos::switches::IsFydeCustomEnabled()) {
+        ShowEulaScreen();
+      } else {
+        MaybeTakeTPMOwnership();
+        PerformPostNetworkScreenActions();
+        InitiateOOBEUpdate();
+      }
       break;
     case NetworkScreen::Result::BACK:
       ShowWelcomeScreen();
@@ -2246,6 +2266,31 @@ void WizardController::OnNetworkScreenExit(NetworkScreen::Result result) {
       ShowQuickStartScreen();
       break;
   }
+}
+
+void WizardController::OnEulaScreenExit(EulaScreen::Result result) {
+  OnScreenExit(EulaView::kScreenId, EulaScreen::GetResultString(result));
+
+  switch (result) {
+    case EulaScreen::Result::ACCEPTED:
+      OnEulaAccepted();
+      break;
+    case EulaScreen::Result::ALREADY_ACCEPTED:
+      InitiateOOBEUpdate();
+      break;
+    case EulaScreen::Result::NOT_APPLICABLE:
+      OnEulaAccepted();
+      break;
+    case EulaScreen::Result::BACK:
+      ShowNetworkScreen();
+      break;
+  }
+}
+
+void WizardController::OnEulaAccepted() {
+  StartupUtils::MarkEulaAccepted();
+  PerformPostNetworkScreenActions();
+  InitiateOOBEUpdate();
 }
 
 void WizardController::OnUpdateScreenExit(UpdateScreen::Result result) {
@@ -3261,6 +3306,8 @@ void WizardController::AdvanceToScreen(OobeScreenId screen_id) {
     ShowPackagedLicenseScreen();
   } else if (screen_id == UpdateView::kScreenId) {
     InitiateOOBEUpdate();
+  } else if (screen_id == EulaView::kScreenId) {
+    ShowEulaScreen();
   } else if (screen_id == ResetView::kScreenId) {
     ShowResetScreen();
   } else if (screen_id == EnableAdbSideloadingScreenView::kScreenId) {

@@ -75,6 +75,8 @@ build_webui("build") {
     "oobe_screen.css",
 
     "screens/common/throbber.css",
+
+    "images/eula_illustration.svg",
   ]
 
   mojo_files_deps = [
@@ -138,6 +140,7 @@ build_webui("build") {
     "screens/common/data_restore.ts",
     "screens/common/online_authentication_screen.ts",
     "screens/common/oobe_reset.ts",
+    "screens/common/oobe_eula.ts",
     "screens/common/os_install.ts",
     "screens/common/fydeos_installer.ts",
     "screens/common/os_trial.ts",

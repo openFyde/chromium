@@ -419,6 +419,7 @@ export class DirectoryModel extends FilesEventTarget<DirectoryModelEventMap> {
   private isCurrentRootVolumeType_(volumeType: VolumeType): boolean {
     const rootType = this.getCurrentRootType();
     return rootType !== null && !isRecentRootType(rootType) &&
+        rootType != RootType.FYDEDROP &&
         getVolumeTypeFromRootType(rootType) === volumeType;
   }
 
@@ -1383,6 +1384,18 @@ export class DirectoryModel extends FilesEventTarget<DirectoryModelEventMap> {
    */
   activateDirectoryEntry(
       dirEntry: DirectoryEntry|FilesAppDirEntry, callback?: VoidCallback) {
+    let isFydeDrop = false;
+    if (isFakeEntry(dirEntry)) {
+      const fakeEntry = (dirEntry);
+      if (fakeEntry.rootType === RootType.FYDEDROP) {
+        isFydeDrop = true;
+      }
+    }
+    if (isFydeDrop) {
+      dispatchSimpleEvent(this, 'fydedrop-started');
+    } else {
+      dispatchSimpleEvent(this, 'fydedrop-stopped');
+    }
     const currentDirectoryEntry = this.getCurrentDirEntry();
     if (currentDirectoryEntry && isSameEntry(dirEntry, currentDirectoryEntry)) {
       // On activating the current directory, clear the selection on the

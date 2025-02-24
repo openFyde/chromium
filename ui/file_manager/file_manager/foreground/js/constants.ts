@@ -174,6 +174,7 @@ export const ICON_TYPES = {
   PLUGIN_VM: 'plugin_vm',
   POWERPOINT: 'ppt',
   RAW: 'raw',
+  FYDEDROP: 'fydedrop',
   RECENT: 'recent',
   REMOVABLE: 'removable',
   SCRIPT: 'script',

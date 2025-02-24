@@ -35,6 +35,7 @@ import './screens/common/fyde_local_signin.js';
 import './screens/common/data_restore.js';
 import './screens/common/online_authentication_screen.js';
 import './screens/common/oobe_reset.js';
+import './screens/common/oobe_eula.js';
 import './screens/common/os_install.js';
 import './screens/common/fydeos_installer.js';
 import './screens/common/os_trial.js';
@@ -165,6 +166,7 @@ export const commonScreensList: OobeTypes.ScreensList = [
   {tag: 'marketing-opt-in-element', id: 'marketing-opt-in'},
   {tag: 'multidevice-setup-element', id: 'multidevice-setup-screen'},
   {tag: 'fyde-local-signin-element', id: 'fyde-local-signin'},
+  {tag: 'oobe-eula-element', id: 'oobe-eula-md'},
   {
     tag: 'online-authentication-screen-element',
     id: 'online-authentication-screen',
