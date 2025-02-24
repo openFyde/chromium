@@ -249,5 +249,10 @@
      Enterprise licensed version (expired)
    </message>
   </if>
+
+  <message name="IDS_SETTINGS_CROSTINI_MENU_ITEM_DESCRIPTION" desc="The description of Crostini section. It is meant to be used by software developers.">
+    Linux subsystem, Linux apps
+  </message>
+
 </if>
 </grit-part>

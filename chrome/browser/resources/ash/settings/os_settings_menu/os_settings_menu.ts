@@ -512,6 +512,13 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
           sublabel: this.i18n('systemPreferencesMenuItemDescription'),
         },
         {
+          section: Section.kCrostini,
+          path: `/${routesMojom.CROSTINI_SECTION_PATH}`,
+          icon: 'os-settings:developer-tags',
+          label: this.i18n('crostiniPageTitle'),
+          sublabel: this.i18n('crostiniMenuItemDescription'),
+        },
+        {
           section: Section.kFydeOs,
           path: this.fydeosMenuItemPath_,
           icon: 'os-settings:fydeos',

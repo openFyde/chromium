@@ -643,13 +643,15 @@ export function createRoutes(): OsSettingsRoutes {
         Subpage.kPrintingDetails);
 
     // Crostini subpages.
+    r.CROSTINI = createSection(
+        r.ADVANCED, routesMojom.CROSTINI_SECTION_PATH, Section.kCrostini);
     if (isCrostiniSupported()) {
       r.CROSTINI_DETAILS = createSubpage(
-          r.ABOUT, routesMojom.CROSTINI_DETAILS_SUBPAGE_PATH,
+          r.CROSTINI, routesMojom.CROSTINI_DETAILS_SUBPAGE_PATH,
           Subpage.kCrostiniDetails);
 
       r.BRUSCHETTA_DETAILS = createSubpage(
-          r.ABOUT, routesMojom.BRUSCHETTA_DETAILS_SUBPAGE_PATH,
+          r.CROSTINI, routesMojom.BRUSCHETTA_DETAILS_SUBPAGE_PATH,
           Subpage.kBruschettaDetails);
     }
 

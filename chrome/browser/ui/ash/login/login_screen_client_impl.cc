@@ -369,6 +369,11 @@ void LoginScreenClientImpl::ShowGuestTosScreen() {
     return;
   }
 
+  if (ash::StartupUtils::IsEulaAccepted()) {
+    LoginAsGuest();
+    return;
+  }
+
   ash::LoginDisplayHost::default_host()->ShowGuestTosScreen();
 }
 

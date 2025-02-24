@@ -6,6 +6,7 @@
 #define FYDEOS_CONSTANTS_FYDEOS_CONSTANTS_H_
 
 #include "fydeos/build/config/buildflags.h"
+#include <string>
 
 namespace fydeos::constants {
 
@@ -32,6 +33,7 @@ enum class LicenseEnforcementLevel {
 
 #endif
 
+bool ShouldHideExtensionById(const std::string& extension_id);
 
 } // namespace fydeos::constants
 

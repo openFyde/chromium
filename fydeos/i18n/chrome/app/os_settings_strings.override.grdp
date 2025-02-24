@@ -80,6 +80,10 @@
     Mono audio, startup, and more
   </message>
 
+  <message name="IDS_SETTINGS_CROSTINI_TITLE" desc="The title of Crostini section. It is meant to be used by software developers.">
+    Linux
+  </message>
+
 </if>
 </grit-part>
 
