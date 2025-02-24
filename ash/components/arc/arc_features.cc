@@ -156,7 +156,7 @@ BASE_FEATURE(kEnablePerVmCoreScheduling,
 // Controls whether ARC handles unmanaged->managed account transition.
 BASE_FEATURE(kEnableUnmanagedToManagedTransitionFeature,
              "ArcEnableUnmanagedToManagedTransitionFeature",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Controls whether to use virtio-blk for Android /data instead of using
 // virtio-fs.

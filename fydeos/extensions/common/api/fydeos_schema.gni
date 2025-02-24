@@ -7,6 +7,7 @@ extensions_api_schema_files_ = []
 
 if (is_chromeos) {
   extensions_api_schema_files_ += [
+    "fydeos_private.json",
     "native_windows.json",
     "app_management.json",
     "command_line.json",

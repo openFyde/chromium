@@ -21,9 +21,20 @@ extern const char kForceTpmFallbackNecessary[];
 extern const char kCurrentForceTpmFallback[];
 extern const char kForceTpmFallback[];
 
+extern const char kShowSwitchTabletLaptopButton[];
 extern const char kShowRebootButtonInTray[];
 extern const char kShowRotateScreenButton[];
 
+extern const char kOfflineAutoSigninAccountIdKey[];
+extern const char kOfflineAutoSigninPassword[];
+extern const char kOfflineAutoSigninPasswordFormat[];
+extern const char kOfflineAutoSigninIsChromeLastSignout[];
+
+// same with kFactoryResetRequested in chrome/common/pref_names.cc
+// dep conflict issue
+extern const char kFactoryResetRequested[];
+
+extern const char kRebootRequiredForWidevine[];
 } // prefs
 } // fydeos
 

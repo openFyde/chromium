@@ -62,7 +62,8 @@ enum class QsFeatureCatalogName {
   kHotspot = 17,
   kFocusMode = 18,
   kRotateScreen = 19,
-  kMaxValue = kRotateScreen,
+  kSwitchLaptopTablet = 20,
+  kMaxValue = kSwitchLaptopTablet,
 };
 
 // A catalog that registers all the sliders on the Quick Settings page (also

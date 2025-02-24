@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/logging.h"
 #include "google_apis/gaia/gaia_auth_util.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace signin {
 
@@ -476,6 +477,9 @@ bool AccountManagedStatusFinder::MayBeEnterpriseDomain(
     return false;
   }
 
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return true;
+  }
   return !kKnownConsumerDomains.contains(email_domain);
 }
 

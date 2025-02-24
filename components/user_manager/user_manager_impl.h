@@ -456,6 +456,8 @@ class USER_MANAGER_EXPORT UserManagerImpl : public UserManager {
   bool IsDeprecatedArcKioskAccountId(const AccountId& account_id) const;
   void RemoveDeprecatedArcKioskUser(const AccountId& account_id);
 
+  void RemoveLocalAutoSigninCredential(const AccountId& account_id);
+
   std::unique_ptr<Delegate> delegate_;
 
   SEQUENCE_CHECKER(sequence_checker_);

@@ -36,7 +36,7 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
       isFydeAccount_: {
         type: Boolean,
         value() {
-          return loadTimeData.getBoolean('isFydeProfile') && !loadTimeData.getBoolean('isFydeLocalAccount');
+          return loadTimeData.getBoolean('isFydeProfile');
         },
       },
 
@@ -56,12 +56,19 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
           return loadTimeData.getBoolean('showToggleRotateScreenButton');
         },
       },
+      showToggleSwitchTabletLaptopButton: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('showToggleSwitchTabletLaptopButton');
+        },
+      },
     };
   }
 
   private isFydeAccount_: boolean;
   private showToggleRebootButtonInTray: boolean;
   private showToggleRotateScreenButton: boolean;
+  private showToggleSwitchTabletLaptopButton: boolean;
 
   constructor() {
     super();
@@ -77,7 +84,7 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
   }
 
   showFydeOsTweakUi_() {
-    return this.showToggleRotateScreenButton || this.showToggleRebootButtonInTray;
+    return this.showToggleRotateScreenButton || this.showToggleRebootButtonInTray || this.showToggleSwitchTabletLaptopButton;
   }
 }
 

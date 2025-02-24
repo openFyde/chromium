@@ -53,6 +53,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/chromeos/resources/grit/ui_chromeos_resources.h"
 #include "ui/gfx/image/image_skia.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace user_manager {
 namespace {
@@ -692,6 +693,7 @@ void UserManagerImpl::RemoveUserFromListImpl(
 
   RemoveNonCryptohomeData(account_id);
   KnownUser(local_state_.get()).RemovePrefs(account_id);
+  RemoveLocalAutoSigninCredential(account_id);
 
   // After the User object is deleted from memory in DeleteUser() here,
   // the account_id reference will be invalid if the reference points
@@ -1930,6 +1932,22 @@ void UserManagerImpl::RemoveDeprecatedArcKioskUser(
     base::UmaHistogramEnumeration(kDeprecatedArcKioskUsersHistogramName,
                                   DeprecatedArcKioskUserStatus::kHidden);
   }
+}
+
+void UserManagerImpl::RemoveLocalAutoSigninCredential(const AccountId& account_id) {
+  if (account_id.GetAccountType() != AccountType::FLINT_ACCOUNT) {
+    return;
+  }
+  // See FydeOsHandler::HandleSaveOfflineLoginPassword
+  PrefService* prefs = GetLocalState();
+  const std::string& account_id_key = prefs->GetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
+  if (account_id_key != account_id.GetAccountIdKey()) {
+    return;
+  }
+
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninPassword);
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninPasswordFormat);
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
 }
 
 }  // namespace user_manager

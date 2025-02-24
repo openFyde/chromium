@@ -5,4 +5,14 @@
   <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_ROTATE_SCREEN" desc="label of unified menu rotate screen">
     Rotate Screen
   </message>
+  <!-- switch tablet/laptop mode -->
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_TABLET_MODE" desc="label of unified menu switch to tablet mode">
+    Tablet mode
+  </message>
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_LAPTOP_MODE" desc="label of unified menu switch to laptop mode">
+    Laptop mode
+  </message>
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_DEFAULT_MODE" desc="label of unified menu switch to default mode">
+    Default mode
+  </message>
 </grit-part>

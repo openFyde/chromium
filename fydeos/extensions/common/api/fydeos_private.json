@@ -1,0 +1,20 @@
+[
+  {
+    "namespace": "fydeosPrivate",
+    "description": "get or set some fydeos specified prefs throught this api",
+    "properties": {
+      "services": {
+        "type": "object",
+        "value": {},
+        "description": "Prefs that enable or disable functions.",
+        "properties": {
+          "fydeosImprovementPlanEnabled": {
+            "$ref": "types.ChromeSetting",
+            "value": ["fydeosImprovementPlanEnabled", {"type":"boolean"}],
+            "description": "If enabled, Non-PII system info will be collected by fydeos server."
+          }
+        }
+      }
+    }
+  }
+]

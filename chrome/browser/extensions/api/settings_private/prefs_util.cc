@@ -848,6 +848,9 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[::ash::prefs::kOnDeviceAppControlsSetupCompleted] =
       settings_api::PrefType::kBoolean;
 
+  (*s_allowlist)[arc::prefs::kArcSignedIn] =
+      settings_api::PrefType::kBoolean;
+
   // Ambient Mode.
   (*s_allowlist)[ash::prefs::kDarkModeScheduleType] =
       settings_api::PrefType::kNumber;

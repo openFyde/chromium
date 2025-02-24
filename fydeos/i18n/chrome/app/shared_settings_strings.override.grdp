@@ -8,4 +8,7 @@
   <message name="IDS_SETTINGS_SYNC_SYNC_AND_NON_PERSONALIZED_SERVICES" desc="The name of the settings page and the label of the button that takes the user to manage their sync and non-personalized services settings.">
     Sync and other services
   </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_OFF" desc="Label for the switch that toggles whether the device is visible to all devices around it for the Nearby Share feature.">
+    You will be visible to everyone for <ph name="MINUTES">$1<ex>5</ex></ph> minutes.
+  </message>
 </grit-part>

@@ -18,6 +18,8 @@
 #include "fydeos/switches/misc/misc_switches.h"
 #include "fydeos/switches/urls/urls_constants.h"
 
+#include "base/strings/utf_string_conversions.h"
+
 #include "fydeos/ui/webui/settings/ash/fydeos_handler.h"
 #include "fydeos/prefs/fydeos_pref_names.h"
 
@@ -85,6 +87,15 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_NOT_TABLET_STATE_DISABLE_ROTATE_SCREEN},
     {"displayFydeOsRotateScreenButton",
       IDS_OS_SETTINGS_FYDEOS_DISPLAY_ROTATE_SCREEN_BUTTON},
+    {"switchTabletLaptopModeButtonInTrayLabel",
+      IDS_OS_SETTINGS_FYDEOS_SWITCH_TABLET_LAPTOP_MODE_BUTTON_IN_TRAY_LABEL},
+    {"displaySwitchTabletLaptopModeButton",
+      IDS_OS_SETTINGS_FYDEOS_DISPLAY_SWITCH_TABLET_LAPTOP_MODE_BUTTON},
+    {"enableLibwidevineLabel", IDS_OS_SETTINGS_FYDEOS_ENABLE_LIBWIDEVINE_LABEL},
+    {"failedEnableWidevineTitle",
+      IDS_OS_SETTINGS_FYDEOS_FAILED_ENABLE_WIDEVINE_TITLE},
+    {"failedEnableWidevineMessage",
+      IDS_OS_SETTINGS_FYDEOS_FAILED_ENABLE_WIDEVINE_MESSAGE},
     {"fydeosSettingsMenuItemDescription",
       IDS_OS_SETTINGS_FYDEOS_MENU_ITEM_DESCRIPTION},
     {"fydeosExperimentalFeatures",
@@ -93,6 +104,17 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_TITLE},
     {"fydeosBypassTpmChecksDesc",
       IDS_OS_SETTINGS_FYDEOS_BYPASS_TPM_CHECKS_DESC},
+
+    {"autoSigninForFydeLocalAccountTitle",
+      IDS_OS_SETTINGS_FYDEOS_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_TITLE},
+    {"enableAutoSigninForFydeLocalAccountHelpMessage",
+      IDS_OS_SETTINGS_FYDEOS_ENABLE_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_MESSAGE},
+    {"autoSigninForFydeLocalAccountOtherUserAlreadyEnabled",
+      IDS_OS_SETTINGS_FYDEOS_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT_ALREADY_ENABLED_BY_OTHER},
+    {"unableToSetAutoSigninForFydeLocalAccount",
+      IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT},
+    {"unableToSetAutoSigninForFydeNonLocalAccount",
+      IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_NON_LOCAL_ACCOUNT},
   };
 
   html_source->AddLocalizedStrings(kLocalizedStrings);
@@ -100,10 +122,18 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       l10n_util::GetStringFUTF16(IDS_OS_SETTINGS_FYDEOS_SETTINGS,
         l10n_util::GetStringUTF16(IDS_PRODUCT_OS_NAME)));
 
+  html_source->AddString(
+      "toggleWidevineHelpMessage",
+      l10n_util::GetStringFUTF16(
+          IDS_OS_SETTINGS_FYDEOS_TOGGLE_LIBWIDEVINE_HELP_MESSAGE,
+            base::ASCIIToUTF16(
+              fydeos::constants::kFydeOSEnableWidevineLearnMoreURL)));
+
   const std::string board = base::SysInfo::GetLsbReleaseBoard();
   html_source->AddBoolean("showToggleRebootButtonInTray", false);
   html_source->AddBoolean("showToggleRotateScreenButton",
       fydeos::switches::IsNonForYouBoard(board));
+  html_source->AddBoolean("showToggleSwitchTabletLaptopButton", true);
 
   html_source->AddString("fydeOSRdpUrl",
       fydeos::constants::kFydeOSRemoteDesktopURL);
@@ -135,10 +165,8 @@ const char* FydeOsSection::GetSectionPath() const {
 }
 
 void FydeOsSection::AddHandlers(content::WebUI* web_ui) {
-  // web_ui->AddMessageHandler(
-  //    std::make_unique<::settings::FydeOsHandler>(profile(), pref_service_));
   web_ui->AddMessageHandler(
-      std::make_unique<FydeOsHandler>(pref_service_));
+      std::make_unique<FydeOsHandler>(profile(), pref_service_));
 }
 
 bool FydeOsSection::LogMetric(

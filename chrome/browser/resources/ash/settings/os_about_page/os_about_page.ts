@@ -46,6 +46,7 @@ import {Router, routes} from '../router.js';
 
 import type {AboutPageBrowserProxy, AboutPageUpdateInfo, BrowserChannel, RegulatoryInfo, TpmFirmwareUpdateStatusChangedEvent, UpdateStatusChangedEvent} from './about_page_browser_proxy.js';
 import {AboutPageBrowserProxyImpl, browserChannelToI18nId, UpdateStatus} from './about_page_browser_proxy.js';
+import {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './popup_license_window.js';
 import {getTemplate} from './os_about_page.html.js';
 
 declare global {
@@ -103,6 +104,7 @@ export class OsAboutPageElement extends OsAboutPageBase {
           powerwash: false,
           status: UpdateStatus.UPDATED,
         },
+        observer: 'handleUpdateStatusHttpFailed_',
       },
 
       /**
@@ -199,7 +201,14 @@ export class OsAboutPageElement extends OsAboutPageBase {
         type: Boolean,
         computed: 'computeShowCheckUpdates_(' +
             'currentUpdateStatusEvent_, hasCheckedForUpdates_, hasEndOfLife_,' +
+            'renewalStatus_,' +
             'showExtendedUpdatesOption_)',
+      },
+
+      showRenewLearnMore_: {
+        type: Boolean,
+        value: false,
+        computed: 'computeShowRenewLearnMore_(renewalStatus_)',
       },
 
       showUpdateWarningDialog_: {
@@ -322,6 +331,11 @@ export class OsAboutPageElement extends OsAboutPageBase {
         type: Boolean,
         value: true,
       },
+
+      renewalStatus_: {
+        type: String,
+        value: RenewalStatus.OK,
+      },
       // ---***FYDEOS END***---
     };
   }
@@ -331,6 +345,7 @@ export class OsAboutPageElement extends OsAboutPageBase {
       'updateShowUpdateStatus_(hasEndOfLife_, currentUpdateStatusEvent_,' +
           'hasCheckedForUpdates_, showExtendedUpdatesOption_)',
       'updateShowButtonContainer_(showRelaunch_, showCheckUpdates_,' +
+          'showRenewLearnMore_,' +
           'showExtendedUpdatesOption_)',
       'handleCrostiniEnabledChanged_(prefs.crostini.enabled.value)',
       'updateIsExtendedUpdatesOptInEligible_(' +
@@ -378,6 +393,10 @@ export class OsAboutPageElement extends OsAboutPageBase {
   private isOwner_: boolean;
   private fydeOTAToggleState_: boolean;
 
+  private renewalStatus_: string;
+  private popupLicenseWindow_: PopupLicenseWindowProxy;
+  private showRenewLearnMore_: boolean;
+
   constructor() {
     super();
 
@@ -385,6 +404,8 @@ export class OsAboutPageElement extends OsAboutPageBase {
     this.route = routes.ABOUT;
 
     this.aboutBrowserProxy_ = AboutPageBrowserProxyImpl.getInstance();
+
+    this.popupLicenseWindow_ = PopupLicenseWindowProxyImpl.getInstance();
   }
 
   override connectedCallback(): void {
@@ -432,6 +453,8 @@ export class OsAboutPageElement extends OsAboutPageBase {
     }
 
     this.registerExtendedUpdatesObserver_();
+
+    this.popupLicenseWindow_.init();
 
     this.fydeOTAToggleInit_();
   }
@@ -521,6 +544,15 @@ export class OsAboutPageElement extends OsAboutPageBase {
   private onRelaunchClick_(): void {
     LifetimeBrowserProxyImpl.getInstance().relaunch();
   }
+  private onRenewLearnMoreClick_() {
+    if (this.checkRenewalStatus_(RenewalStatus.LICENSE_EXPIRED)) {
+      this.popupLicenseWindow_.popupRenew();
+    } else if (this.checkRenewalStatus_(RenewalStatus.SINGLE_UPGRADE)) {
+      this.popupLicenseWindow_.popupUpgrade();
+    }
+    this.renewalStatus_ = RenewalStatus.OK;
+    this.hasCheckedForUpdates_ = false;
+  }
 
   private updateShowUpdateStatus_(): void {
     // Do not show the "updated" status or error states from a previous update
@@ -554,6 +586,7 @@ export class OsAboutPageElement extends OsAboutPageBase {
    */
   private updateShowButtonContainer_(): void {
     this.showButtonContainer_ = this.showRelaunch_ || this.showCheckUpdates_ ||
+        this.showRenewLearnMore_ ||
         this.showExtendedUpdatesOption_;
 
     // Check if we have yet to focus the check for update button.
@@ -578,6 +611,19 @@ export class OsAboutPageElement extends OsAboutPageBase {
 
   private shouldShowFirmwareUpdatesBadge_(): boolean {
     return this.firmwareUpdateCount_ > 0;
+  }
+
+  private getAbnormalRenewalStatusMessage_(): TrustedHTML {
+    switch (this.renewalStatus_) {
+      case RenewalStatus.CHECKING:
+        return this.i18nAdvanced('aboutUpgradeCheckStarted');
+      case RenewalStatus.SINGLE_UPGRADE:
+        return this.i18nAdvanced('aboutFydeOSOtaDisallowedRequiresOneTimePayment');
+      case RenewalStatus.LICENSE_EXPIRED:
+        return this.i18nAdvanced('aboutFydeOSOtaDisallowedByLicenseValidation');
+      default:
+        return this.i18nAdvanced('aboutUpgradeTryAgain');
+    }
   }
 
   private getUpdateStatusMessage_(): TrustedHTML {
@@ -628,6 +674,9 @@ export class OsAboutPageElement extends OsAboutPageBase {
         }
         return this.i18nAdvanced('aboutUpgradeUpdating');
       case UpdateStatus.FAILED_HTTP:
+        if (!this.isNormalRenewalStatus_()) {
+          return this.getAbnormalRenewalStatusMessage_();
+        }
         return this.i18nAdvanced('aboutUpgradeTryAgain');
       case UpdateStatus.FAILED_DOWNLOAD:
         return this.i18nAdvanced('aboutUpgradeDownloadError');
@@ -661,6 +710,10 @@ export class OsAboutPageElement extends OsAboutPageBase {
     // TODO(b/328506053): Finalize icon.
     if (this.showExtendedUpdatesOption_) {
       return 'os-settings:about-update-complete';
+    }
+
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) {
+      return null;
     }
 
     switch (this.currentUpdateStatusEvent_.status) {
@@ -704,6 +757,11 @@ export class OsAboutPageElement extends OsAboutPageBase {
     if (this.hasEndOfLife_ || this.showExtendedUpdatesOption_) {
       return null;
     }
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) {
+      return this.isDarkModeActive_ ?
+          'chrome://resources/images/throbber_small_dark.svg' :
+          'chrome://resources/images/throbber_small.svg';
+    }
 
     switch (this.currentUpdateStatusEvent_.status) {
       case UpdateStatus.CHECKING:
@@ -718,6 +776,15 @@ export class OsAboutPageElement extends OsAboutPageBase {
 
   private checkStatus_(status: UpdateStatus): boolean {
     return this.currentUpdateStatusEvent_.status === status;
+  }
+
+  private checkRenewalStatus_(status: string): boolean {
+    return this.renewalStatus_ === status;
+  }
+
+  private isNormalRenewalStatus_() {
+    // if 'failed', we'd better not bother showing the message.
+    return this.checkRenewalStatus_(RenewalStatus.OK) || this.checkRenewalStatus_(RenewalStatus.FAILED);
   }
 
   private onManagementPageClick_(): void {
@@ -762,6 +829,9 @@ export class OsAboutPageElement extends OsAboutPageBase {
     if (this.hasEndOfLife_ || this.showExtendedUpdatesOption_) {
       return false;
     }
+    if (!this.isNormalRenewalStatus_()) {
+      return false;
+    }
 
     // Enable the update button if we are in a stale 'updated' status or
     // update has failed. Disable it otherwise.
@@ -774,6 +844,10 @@ export class OsAboutPageElement extends OsAboutPageBase {
         this.checkStatus_(UpdateStatus.UPDATE_TO_ROLLBACK_VERSION_DISALLOWED);
   }
 
+  computeShowRenewLearnMore_() {
+    return this.checkRenewalStatus_(RenewalStatus.LICENSE_EXPIRED) || this.checkRenewalStatus_(RenewalStatus.SINGLE_UPGRADE);
+  }
+
   /**
    * @param showCrostiniLicense True if Crostini is enabled and
    * Crostini UI is allowed.
@@ -784,11 +858,55 @@ export class OsAboutPageElement extends OsAboutPageBase {
         this.i18nAdvanced('aboutProductOsLicense');
   }
 
+  private handleUpdateStatusHttpFailed_(event: UpdateStatusChangedEvent, oldEvent: UpdateStatusChangedEvent) {
+    if (!event || !oldEvent) return;
+    if (oldEvent.status === event.status) {
+      return;
+    }
+    const { status } = event;
+    if (status !== UpdateStatus.FAILED_HTTP) {
+      return;
+    }
+    if (!this.hasCheckedForUpdates_) return;
+    this.fetchRenewalStatus_();
+  }
+
+  private fetchRenewalStatus_() {
+    if (this.checkRenewalStatus_(RenewalStatus.CHECKING)) return;
+    this.renewalStatus_ = RenewalStatus.CHECKING;
+    const controller_appid = 'mofiofjpikncjaigmdlblhojbnkabako';
+    const command = 'get_license_renew_state';
+    try {
+      chrome.runtime.sendMessage(controller_appid, { command }, (response: any) => {
+        if (!this.checkStatus_(UpdateStatus.FAILED_HTTP)) {
+          // ota status is changed, not failed_http any more, do inothing here
+          this.renewalStatus_ = RenewalStatus.OK;
+          return;
+        }
+        if (!response || response.state !== 'OK' || !response.data) {
+          this.renewalStatus_ = RenewalStatus.FAILED;
+          return;
+        }
+        const state = response.data ? response.data.state : '';
+        if (state === 'licenseSingleUpgrade') {
+          this.renewalStatus_ = RenewalStatus.SINGLE_UPGRADE;
+        } else if (state === 'licenseExpired') {
+          this.renewalStatus_ = RenewalStatus.LICENSE_EXPIRED;
+        } else {
+          this.renewalStatus_ = RenewalStatus.OK;
+        }
+      });
+    } catch (e) {
+      this.renewalStatus_ = RenewalStatus.FAILED;
+    }
+  }
+
   /**
    * @param enabled True if Crostini is enabled.
    */
   private handleCrostiniEnabledChanged_(enabled: boolean): void {
-    this.showCrostiniLicense_ = enabled && isCrostiniSupported();
+    const force_disable = true;
+    this.showCrostiniLicense_ = !force_disable && enabled && isCrostiniSupported();
   }
 
   private shouldShowSafetyInfo_(): boolean {

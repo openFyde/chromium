@@ -1,4 +1,10 @@
 {
+  "fydeosPrivate": {
+    "dependencies": ["permission:FydeOSPrivate"],
+    "extension_types": ["extension"],
+    "platforms" : ["chromeos"],
+    "contexts": ["privileged_extension"]
+  },
   "nativeWindows": [{
     "dependencies": ["permission:FydeOSPrivate"],
     "extension_types": ["extension"],
@@ -10,7 +16,8 @@
     "matches": [
       "chrome://settings/*",
       "chrome://os-settings/*",
-      "chrome://extensions/*"
+      "chrome://extensions/*",
+      "chrome://file-manager/*"
     ]
   }],
   "appManagement": [{
@@ -23,7 +30,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://settings/*",
-      "chrome://os-settings/*"
+      "chrome://os-settings/*",
+      "chrome://file-manager/*"
     ]
   }],
   "commandLine":[{

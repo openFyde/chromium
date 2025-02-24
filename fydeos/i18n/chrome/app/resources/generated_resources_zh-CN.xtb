@@ -31,6 +31,7 @@
 <translation id="5042404702659901995">隐私声明</translation>
 <translation id="4907736162587268100">隐私声明内容</translation>
 <!-- os_settings_strings.override.grdp -->
+<translation id="7631371713920849682">在 Chromium 浏览器中使用增强的「拼写检查」功能（您输入的文字会被发送给服务器以方便其提供拼写建议）</translation>
 <translation id="4467178118407184669">Android 支持</translation>
 <translation id="7577269083417202628">删除 Android 支持</translation>
 <translation id="6763605592759679747">管理 Android 应用</translation>
@@ -54,6 +55,7 @@
 <translation id="4356727807337882306">FydeOS 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
 <translation id="7456142309650173560">开发者</translation>
 <translation id="1764226536771329714">测试</translation>
+<translation id="913411432238655354">启动时恢复应用</translation>
 <translation id="6688486189406151818">openFyde 版本太旧</translation>
 <translation id="4427296679979696656">FydeOS 版本太旧</translation>
 <translation id="3921455734015639682">openFyde 已是最新版本</translation>
@@ -71,6 +73,7 @@
 <!-- shared_settings_strings.override.grdp -->
 <translation id="3142455651440468550">其他服务</translation>
 <translation id="8559764570013185596">同步功能和其他服务</translation>
+<translation id="2339715201705349346">您的设备将会对所有人可见，时长为 <ph name="MINUTES" /> 分钟。</translation>
 <!-- settings_strings.grdp -->
 <translation id="6133721309166765453">你与 FydeOS</translation>
 <translation id="6496949983038880601">如果您找不到要查找的内容，请参阅 <ph name="BEGIN_LINK_CHROMIUM" />FydeOS 帮助<ph name="END_LINK_CHROMIUM" /></translation>
@@ -100,10 +103,23 @@
 <translation id="6243454903512423518">显示「旋转屏幕」按钮</translation>
 <translation id="7303548327449168702">当前不是平板电脑模式，已在系统任务栏菜单隐藏「旋转屏幕」按钮</translation>
 <translation id="3840770932695838898">在系统任务栏菜单显示「旋转屏幕」按钮</translation>
+<translation id="4745886129774726269">在系统任务栏菜单显示切换平板模式和桌面模式的按钮</translation>
+<translation id="2985624172970894798">平板/桌面模式切换按钮</translation>
+<translation id="1851103550468466960">开启 Widevine 支持</translation>
+<translation id="8990695698551687522">指定 "libwidevine.so"</translation>
+<translation id="4838463656205005584">启用 Widevine 失败...</translation>
+<translation id="7386874137903403308">所选的 "libwidevine.so" 无效；请重新选择正确的文件再尝试。</translation>
+<translation id="768441431736013726">在播放受保护的流媒体内容时启用 Widevine 支持。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
 <translation id="3851274061009484883">FydeOS 帐号设置</translation>
 <translation id="6468776556018764845">实验性功能</translation>
 <translation id="6463286951433091842">绕过部分可信平台模块 (TPM) 的检查</translation>
 <translation id="8473208832886345753">如果系统部分依赖 TPM 的相关功能出现问题，可设置绕过在这些功能上对 TPM 的检查。</translation>
+<translation id="621731412870836460">允许该账户在设备启动时免密自动登录桌面</translation>
+<translation id="2988226676715633921">检测到该设备上已有其它账户设置了自动登录，如需为目前账户设置自动登录，需要将目前设置的自动登录设置关闭</translation>
+<translation id="1674714510072289091">该账户文件系统初始化出现未知错误，暂时无法开启；请尝试重启或重新创建账户</translation>
+<translation id="8180845003886240840">自动登录选项仅限于「本地账户」类型，目前账户类型无法开启</translation>
+<translation id="595136526907376719">FydeOS 大版本更新已上线。如需进行 FydeOS 的大版本升级，请支付一次性更新费用后，再次检查更新。</translation>
+<translation id="376676483415835736">有新版本的 FydeOS 可供升级，但你的 FydeOS for You 订阅已过期。如需升级 FydeOS，请考虑续费。</translation>
 <!-- chromeos_strings.override.grdp -->
 <translation id="8642537394560952908">拍摄新照片，或者选择现有照片或图标。
     <ph name="LINE_BREAK" />
@@ -206,6 +222,17 @@
 <translation id="2261245167193480027">继续使用 Chromium</translation>
 <translation id="3095811995836568724">Chromium 历史记录</translation>
 <!-- extensions_strings.override.grdp -->
+<translation id="3635723840107310657">在 <ph name="BEGIN_LINK" />FydeOS 应用商店<ph name="END_LINK" />中查找扩展程序和主题背景</translation>
 <!-- extensions_strings.grdp -->
 <translation id="4220157073401904732">FydeOS 应用商店</translation>
+<!-- nearby_share_strings.override.grdp -->
+<translation id="5893589697005440881">与附近的人分享文件</translation>
+<translation id="2498801433783134459">与附近的 openFyde 和 Android 设备分享文件</translation>
+<translation id="5769693474117280747">与附近的 FydeOS 和 Android 设备分享文件</translation>
+<translation id="7353100817790033277">请确保这两部设备均已解锁、相距很近且均已开启蓝牙。如果您的分享对象是一部不在您通讯录中的 openFyde 设备，请确保已为它开启「附近分享」的高可见度模式（先打开状态区，然后开启「附近分享」的高可见度模式）。</translation>
+<translation id="2824934793481445465">请确保这两部设备均已解锁、相距很近且均已开启蓝牙。如果您的分享对象是一部不在您通讯录中的 FydeOS 设备，请确保已为它开启「附近分享」的高可见度模式（先打开状态区，然后开启「附近分享」的高可见度模式）。</translation>
+<translation id="7171038922339110877">您可指定设备的公开范围，从而控制哪些人员能在您的屏幕处于解锁状态时与您分享内容。</translation>
+<translation id="8911625876778733358">若要使用「附近分享」功能，请确保两部设备均已解锁、相距很近且均已开启蓝牙。如果您的分享对象是一部不在您通讯录中的 openFyde 设备，请确保已为它开启「附近分享」的高可见度模式（先选择时间，打开状态区，然后开启「附近分享」的高可见度模式）。</translation>
+<translation id="6925864293458303066">若要使用「附近分享」功能，请确保两部设备均已解锁、相距很近且均已开启蓝牙。如果您的分享对象是一部不在您通讯录中的 FydeOS 设备，请确保已为它开启「附近分享」的高可见度模式（先选择时间，打开状态区，然后开启「附近分享」的高可见度模式）。</translation>
+
 </translationbundle>

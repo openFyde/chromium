@@ -2,6 +2,9 @@
 <!-- override chrome/app/os_settings_strings.grdp, included from generated_resources.grd -->
 <grit-part>
 <if expr="chromeos_ash">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for enhanced spell check toggle, the type of spell check that sends the text the user types to Google spelling service. It is important that it is communicated that the text the user types will be sent to Google.">
+    Enhanced spell check in Chromium browser (text is sent to server for spelling suggestions)
+  </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
     Android support
   </message>
