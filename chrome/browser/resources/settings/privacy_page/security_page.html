@@ -223,7 +223,7 @@
             name="[[safeBrowsingSettingEnum_.DISABLED]]"
             pref="[[prefs.generated.safe_browsing]]"
             label="$i18n{safeBrowsingNone}"
-            sub-label="$i18n{safeBrowsingNoneDesc}"
+            sub-label="[[safeBrowsingNoneDesc_()]]"
             indicator-aria-label="$i18n{controlledSettingPolicy}">
         </settings-collapse-radio-button>
       </settings-radio-group>
@@ -391,6 +391,7 @@
 </if>
 
     <cr-link-row id="advanced-protection-program-link" class="hr"
+        hidden="[[shouldHideGoogle_]]"
         label="$i18n{advancedProtectionProgramTitle}"
         sub-label="$i18n{advancedProtectionProgramDesc}"
         on-click="onAdvancedProtectionProgramLinkClick_"

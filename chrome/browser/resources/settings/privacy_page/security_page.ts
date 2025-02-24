@@ -228,6 +228,13 @@ export class SettingsSecurityPageElement extends
 
       showDisableSafebrowsingDialog_: Boolean,
 
+      shouldHideGoogle_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
       /**
        * A timestamp that records the last time the user visited this page or
        * returned to it.
@@ -279,6 +286,8 @@ export class SettingsSecurityPageElement extends
   private enableEsbAiStringUpdate_: boolean;
   private hideExtendedReportingRadioButton_: boolean;
   private enablePasswordLeakToggleMove_: boolean;
+
+  private shouldHideGoogle_: boolean;
 
   private browserProxy_: PrivacyPageBrowserProxy =
       PrivacyPageBrowserProxyImpl.getInstance();
@@ -471,9 +480,8 @@ export class SettingsSecurityPageElement extends
   }
 
   private getSafeBrowsingEnhancedSubLabel_(): string {
-    return this.i18n(
-        this.enableEsbAiStringUpdate_ ? 'safeBrowsingEnhancedDescUpdated' :
-                                        'safeBrowsingEnhancedDesc');
+    return this.enableEsbAiStringUpdate_ ? this.i18n('safeBrowsingEnhancedDescUpdated') :
+                                           this.safeBrowsingEnhancedDesc_();
   }
 
   private getSafeBrowsingStandardSubLabel_(): string {
@@ -492,7 +500,7 @@ export class SettingsSecurityPageElement extends
     if (this.prefs !== undefined) {
       const generatedPref = this.getPref('generated.password_leak_detection');
       if (this.getPref('profile.password_manager_leak_detection').value &&
-          !generatedPref.value && generatedPref.userControlDisabled) {
+          !generatedPref.value && generatedPref.userControlDisabled && !this.shouldHideGoogle_) {
         subLabel +=
             ' ' +  // Whitespace is a valid sentence separator w.r.t. i18n.
             this.i18n('passwordsLeakDetectionSignedOutEnabledDescription');
@@ -728,6 +736,29 @@ export class SettingsSecurityPageElement extends
         }
       });
     }, 0);
+  }
+
+  private maybeLastCollapseItemClass_() {
+    if (this.shouldHideGoogle_) {
+      return 'bullet-line last-collapse-item';
+    }
+    return 'bullet-line';
+  }
+
+  private safeBrowsingEnhancedDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingEnhancedFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingEnhancedDesc');
+    }
+  }
+
+  private safeBrowsingNoneDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingNoneFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingNoneDesc');
+    }
   }
 }
 

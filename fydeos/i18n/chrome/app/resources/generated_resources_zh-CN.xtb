@@ -54,6 +54,10 @@
 <translation id="4356727807337882306">FydeOS 安卓子系统的应用可能需要获得完整的文件系统访问权限，才能在外部存储设备上读取和写入文件。任何使用外部驱动器的人员都能看到在此设备上创建的文件和文件夹。</translation>
 <translation id="7456142309650173560">开发者</translation>
 <translation id="1764226536771329714">测试</translation>
+<translation id="6688486189406151818">openFyde 版本太旧</translation>
+<translation id="4427296679979696656">FydeOS 版本太旧</translation>
+<translation id="3921455734015639682">openFyde 已是最新版本</translation>
+<translation id="4647895343128753926">FydeOS 已是最新版本</translation>
 <!-- settings_strings.override.grdp -->
 <translation id="788994565092063281">打开应用商店</translation>
 <translation id="646286410082977985">版本 <ph name="PRODUCT_VERSION" /> <ph name="PRODUCT_MODIFIER" /> <ph name="PRODUCT_VERSION_BITS" /></translation>
@@ -63,12 +67,15 @@
 <translation id="4835160910703799618">下载 PDF 文件，而不是在 Chromium 中自动打开它们</translation>
 <translation id="344806589241926887">预加载 Chromium 认为您可能会访问的网页。为此，Chromium 可能会使用 Cookie（如果您允许使用 Cookie 的话），并加密和发送网页以在网站中隐藏您的身份。</translation>
 <translation id="810783818611464909">会清除历史记录以及搜索框中的自动补全项。</translation>
+<translation id="6882329708932651909">根据系统向服务端发送的浏览数据，实时地主动保护您免受危险网站、下载内容和扩展程序的侵害</translation>
 <!-- shared_settings_strings.override.grdp -->
 <translation id="3142455651440468550">其他服务</translation>
 <translation id="8559764570013185596">同步功能和其他服务</translation>
 <!-- settings_strings.grdp -->
 <translation id="6133721309166765453">你与 FydeOS</translation>
 <translation id="6496949983038880601">如果您找不到要查找的内容，请参阅 <ph name="BEGIN_LINK_CHROMIUM" />FydeOS 帮助<ph name="END_LINK_CHROMIUM" /></translation>
+<translation id="1733544241248581977">为您提供更快速主动的保护措施，免受危险网站、下载内容或扩展程序的威胁。系统会在密码遭泄露时向您发出警告。</translation>
+<translation id="1144810021918451336">不会保护您免受危险网站、下载内容和扩展程序的侵害。</translation>
 <!-- os_settings_strings.grdp -->
 <translation id="4722832498335744482">自动保持我的 <ph name="DEVICE_OS" /> 运行最新版本</translation>
 <translation id="2347352406101856238"><ph name="DEVICE_OS" /> 自动更新已开启</translation>
