@@ -37,8 +37,13 @@ CHROMEOS_EXPORT extern const char kFydeOSPasswordManagerURL[];
 CHROMEOS_EXPORT extern const char kGoogleDriveBuyStorageUrl[];
 CHROMEOS_EXPORT extern const char kGoogleDriveOverviewUrl[];
 CHROMEOS_EXPORT extern const char kGoogleDriveHelpUrl[];
+CHROMEOS_EXPORT extern const char kGoogleDriveOfflineHelpUrl[];
 CHROMEOS_EXPORT extern const char kGoogleDriveRootUrl[];
 CHROMEOS_EXPORT extern const char kHelpURLFormat[];
+CHROMEOS_EXPORT extern const char kHelpURLNoTaskForFile[];
+CHROMEOS_EXPORT extern const char kFydeDropUrl[];
+
+CHROMEOS_EXPORT extern const char kFydeExperimentTpmFallbackUrl[];
 
 }  // namespace fydeos::constants
 

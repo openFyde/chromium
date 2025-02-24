@@ -1,0 +1,74 @@
+<style include="iron-flex cr-shared-style settings-shared md-select">
+  paper-tooltip {
+    --paper-tooltip-padding: 12px 10px;
+  }
+  paper-tooltip > div {
+    margin-bottom: 6px;
+    line-height: 1.15em;
+  }
+  paper-tooltip > div:last-of-type {
+    margin-bottom: 0;
+  }
+  .fydeos-settings-wrapper {
+    align-items: center;
+    display: flex;
+    min-height: var(--settings-row-min-height);
+  }
+  iron-icon {
+    --iron-icon-fill-color: var(--cros-search-page-question-icon-color);
+  }
+  #restartButton {
+    margin-inline-end: var(--cr-controlled-by-spacing);
+  }
+</style>
+<os-settings-section page-title="$i18n{fydeosSettingsWifiDriverTitle}"
+                  section="wifiSettings" hidden="[[!tweakWifiSupported_]]">
+  <div id="wifiSettings" class="settings-box first block">
+    <div id="wifiDriverWrapper" class="fydeos-settings-wrapper">
+      <div id="wifiDriverExplanation" class="start settings-box-text">
+        $i18n{fydeosSettingsWifiDriverLabel}
+        <iron-icon id="wifi-settings-help-icon" icon="cr:help-outline"></iron-icon>
+        <paper-tooltip id="wifiSettingsTooltip" for="wifi-settings-help-icon" position="bottom"
+                                                    fit-to-visible-bounds>
+          <div>$i18n{fydeosSettingsWifiDriverDesc}</div>
+          <div>$i18n{fydeosSettingsWifiDriverNote}</div>
+        </paper-tooltip>
+      </div>
+      <cr-button id="restartButton" on-click="onRestartTap_" hidden="[[!shouldShowRestartButton_(wifiDriverOptions_, initWifiDriver_)]]">
+        $i18n{restart}
+      </cr-button>
+      <select id="wifiDriverSelect" class="md-select"
+                                on-change="onWifiSelectChange_">
+        <template is="dom-repeat" items="[[wifiDriverOptions_]]">
+          <option value="[[item.value]]" selected="[[item.selected]]">
+            [[item.name]]
+          </option>
+        </template>
+      </select>
+    </div>
+  </div>
+</os-settings-section>
+<os-settings-section page-title="$i18n{fydeosSettingsTouchpadModeTitle}"
+                  section="touchpadSettings" hidden="[[!tweakTouchpadSupported_]]">
+  <div id="touchpadSettings" class="settings-box first block">
+    <div id="touchpadDriverWrapper" class="fydeos-settings-wrapper">
+      <div id="touchpadDriverExplanation" class="start settings-box-text">
+        $i18n{fydeosSettingsTouchpadModeLabel}
+        <iron-icon id="touchpad-settings-help-icon" icon="cr:help-outline"></iron-icon>
+        <paper-tooltip id="touchpadSettingsTooltip" for="touchpad-settings-help-icon" position="bottom"
+                                                                              fit-to-visible-bounds>
+          <div>$i18n{fydeosSettingsTouchpadModeDesc}</div>
+          <div>$i18n{fydeosSettingsTouchpadModeNote}</div>
+        </paper-tooltip>
+      </div>
+      <select id="touchpadDriverSelect" class="md-select"
+                                on-change="onTouchpadSelectChange_">
+        <template is="dom-repeat" items="[[touchpadDriverOptions_]]">
+          <option value="[[item.value]]" selected="[[item.selected]]">
+            [[item.name]]
+          </option>
+        </template>
+      </select>
+    </div>
+  </div>
+</os-settings-section>

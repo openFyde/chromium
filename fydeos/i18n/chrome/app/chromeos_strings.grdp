@@ -53,4 +53,43 @@
       You can <ph name="LINK_START">$1<ex>&gt;a&lt;</ex></ph>sign in with a FydeOS local account<ph name="LINK_END">$2<ex>&gt;/a&lt;</ex></ph>.
     </message>
   </if>
+  <message name="IDS_FYDEOS_ADD_USER_DUP_EMAIL_ERROR_MESSAGE" desc="error message when user want to add existed email with different account type (fydeos or google)">
+    Email <ph name="EMAIL_ADDRESS">$1</ph> already exists. Please retry with another email.
+  </message>
+  <message name="IDS_FYDEOS_USE_LOCAL_ACCOUNT_BUTTON_TEXT" desc="text on button of modal dialog in gaia_signin screen">
+    Use local account
+  </message>
+  <message name="IDS_FYDEOS_USE_ONLINE_ACCOUNT_BUTTON_TEXT" desc="text on button of modal dialog in gaia_signin screen">
+    Continue to use online account
+  </message>
+  <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_ACCOUNT_TITLE" desc="title of modal dialog in gaia_signin screen">
+    Switch to local account?
+  </message>
+  <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_1" desc="first hint message of modal dialog in gaia_signin screen">
+    If you opt to use a local account, useful features include synchronising your data and preferences across multiple devices and automatically signing in web apps using your FydeOS account will not work.
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2" desc="first hint message of modal dialog in gaia_signin screen">
+      We recommend using an online account to utilise openFyde to its fullest.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2" desc="first hint message of modal dialog in gaia_signin screen">
+      We recommend using an online account to utilise FydeOS to its fullest.
+    </message>
+  </if>
+  <if expr="openfyde">
+    <message name="IDS_LOGIN_GOOGLE_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+      You will not be able to add Google accounts because Google API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+    </message>
+    <message name="IDS_LOGIN_FYDE_API_KEYS_NOTICE" desc="Notice displayed on the login screen in case if API keys are missing.">
+      You will not be able to add FydeOS accounts because FydeOS API keys are missing. See <ph name="DETAILS_URL">$1<ex>http://www.example.com</ex></ph> for details.
+    </message>
+  </if>
+  <message name="IDS_OOBE_PRIVACY_SECTION_TITLE" desc="Title of fydeos privacy page">
+    Privacy statement
+  </message>
+  <message name="IDS_OOBE_PRIVACY_IFRAME_LABEL" desc="label of fydeos privacy iframe">
+    Privacy statement contents
+  </message>
 </grit-part>

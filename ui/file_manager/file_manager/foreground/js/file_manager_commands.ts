@@ -34,6 +34,7 @@ import type {FilesTooltip} from '../elements/files_tooltip.js';
 import {type ActionsModel, CommonActionId, InternalActionId} from './actions_model.js';
 import {type CommandHandlerDeps, MenuCommandsForUma, recordMenuItemSelected} from './command_handler.js';
 import {canExecuteVisibleOnDriveInNormalAppModeOnly, containsNonInteractiveEntry, currentVolumeIsInteractive, getCommandEntries, getCommandEntry, getElementVolumeInfo, getEventEntry, getOnlyOneSelectedDirectory, getParentEntry, getSharesheetLaunchSource, hasCapability, isDriveEntries, isFromSelectionMenu, isOnlyMyDriveEntries, isOnTrashRoot, isRootEntry, shouldIgnoreEvents, shouldShowMenuItemsForEntry} from './file_manager_commands_util.js';
+import {isOnFydeDropRoot} from './file_manager_commands_util.js';
 import type {PasteWithDestDirectoryEvent} from './file_transfer_controller.js';
 import {getAllowedVolumeTypes, maybeStoreTimeOfFirstPin} from './holding_space_util.js';
 import {PathComponent} from './path_component.js';
@@ -291,7 +292,7 @@ export class NewFolderCommand extends FilesCommand {
   private busy_ = false;
 
   execute(event: CommandEvent, fileManager: CommandHandlerDeps) {
-    if (isOnTrashRoot(fileManager)) {
+    if (isOnTrashRoot(fileManager) || isOnFydeDropRoot(fileManager)) {
       return;
     }
     let targetDirectory: DirectoryEntry|FilesAppDirEntry|null|undefined;
@@ -392,7 +393,7 @@ export class NewFolderCommand extends FilesCommand {
   }
 
   override canExecute(event: CanExecuteEvent, fileManager: CommandHandlerDeps) {
-    if (isOnTrashRoot(fileManager)) {
+    if (isOnTrashRoot(fileManager) || isOnFydeDropRoot(fileManager)) {
       event.canExecute = false;
       event.command.setHidden(true);
       return;

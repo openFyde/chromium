@@ -151,10 +151,10 @@ void AuthErrorBubble::ShowAuthError(base::WeakPtr<views::View> anchor_view,
   MakeSectionBold(label.get(), error_text, bold_start, bold_length);
   label->SetAutoColorReadabilityEnabled(false);
 
-  auto learn_more_button = std::make_unique<PillButton>(
-      base::BindRepeating(&AuthErrorBubble::OnLearnMoreButtonPressed,
-                          base::Unretained(this)),
-      l10n_util::GetStringUTF16(IDS_ASH_LEARN_MORE));
+  // auto learn_more_button = std::make_unique<PillButton>(
+  //     base::BindRepeating(&AuthErrorBubble::OnLearnMoreButtonPressed,
+  //                         base::Unretained(this)),
+  //     l10n_util::GetStringUTF16(IDS_ASH_LEARN_MORE));
 
   auto container = std::make_unique<NonAccessibleView>(kAuthErrorContainerName);
   auto* container_layout =
@@ -164,7 +164,7 @@ void AuthErrorBubble::ShowAuthError(base::WeakPtr<views::View> anchor_view,
   container_layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kStart);
   label_ = container->AddChildView(std::move(label));
-  learn_more_button_ = container->AddChildView(std::move(learn_more_button));
+  // learn_more_button_ = container->AddChildView(std::move(learn_more_button));
 
   // The recover user flow is only accessible from the login screen but
   // not from the lock screen.

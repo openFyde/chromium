@@ -248,7 +248,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   override defaultUIStep() {
-    return WelcomeScreenState.GREETING;
+    return WelcomeScreenState.LANGUAGE;
   }
 
   override get UI_STEPS() {
@@ -271,6 +271,9 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     super.onBeforeShow(data);
     this.debuggingLinkVisible =
         data && 'isDeveloperMode' in data && data['isDeveloperMode'];
+
+    const forceDisableDebuggingLink = true;
+    this.debuggingLinkVisible = this.debuggingLinkVisible && !forceDisableDebuggingLink;
 
     window.setTimeout(() => void this.applyOobeConfiguration(), 0);
   }
@@ -306,12 +309,39 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     }
   }
 
+   /**
+   * FydeOS.
+   * move en-US and zh-CN to the top of languageList
+   */
+  rearrangeLanguages() {
+    const defaultLangs = [ 'en-US', 'zh-CN' ];
+    const languages = loadTimeData.getValue('languageList') as OobeTypes.LanguageDsc[];
+    const priorities : OobeTypes.LanguageDsc[] = [];
+    const left  : OobeTypes.LanguageDsc[] = [];
+    for (let i = 0; i < languages.length; i++) {
+      const lang = languages[i];
+      if (lang.code && defaultLangs.indexOf(lang.code) !== -1) {
+        priorities.push(lang);
+      } else {
+        left.push(lang);
+      }
+    }
+    priorities.sort((a, b) => {
+      const ac = a.code || '';
+      const bc = b.code || '';
+      if (ac > bc) return 1;
+      if (ac < bc) return -1;
+      return 0;
+    });
+    return priorities.concat(left);
+  }
+
   /**
    * This is called when UI strings are changed.
    * Overridden from LoginScreenBehavior.
    */
   override updateLocalizedContent(): void {
-    this.languages = loadTimeData.getValue('languageList');
+    this.languages = this.rearrangeLanguages();
     this.keyboards = loadTimeData.getValue('inputMethodsList');
     this.timezones = loadTimeData.getValue('timezoneList');
     this.highlightStrength = loadTimeData.getValue('highlightStrength');

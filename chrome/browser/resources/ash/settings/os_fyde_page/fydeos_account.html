@@ -1,0 +1,30 @@
+<style include="settings-shared iron-flex">
+  #profile-icon {
+    background: center / cover no-repeat;
+    border-radius: 20px;
+    flex-shrink: 0;
+    height: 40px;
+    width: 40px;
+  }
+</style>
+<div class="settings-box first two-line">
+  <div id="profile-icon"
+      style="background-image: [[getIconImageSet_(profileIconUrl_)]]"
+      on-click="onAccountTap_" actionable>
+  </div>
+  <div class="middle two-line no-min-width"
+      id="profile-row"
+      on-click="onAccountTap_" actionable>
+    <div class="flex text-elide settings-box-text">
+      <span id="profile-name" aria-hidden="true">
+        [[profileName_]]
+      </span>
+      <div id="profile-label" class="secondary"
+          aria-hidden="true">
+        [[profileLabel_]]
+      </div>
+    </div>
+    <cr-icon-button class="icon-external">
+    </cr-icon-button>
+  </div>
+</div>

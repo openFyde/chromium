@@ -72,6 +72,8 @@
 #include "components/policy/core/common/proxy_policy_provider.h"
 #endif
 
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+
 namespace policy {
 namespace {
 bool g_command_line_enabled_for_testing = false;
@@ -107,6 +109,7 @@ void ChromeBrowserPolicyConnector::Init(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   PolicyLogger::GetInstance()->EnableLogDeletion();
+  fydeos::switches::ToggleFydeAccountFlagByActiveUser();
   auto configuration = std::make_unique<DeviceManagementServiceConfiguration>(
       GetDeviceManagementUrl(), GetRealtimeReportingUrl(),
       GetEncryptedReportingUrl());
@@ -164,6 +167,18 @@ void ChromeBrowserPolicyConnector::Shutdown() {
 
   BrowserPolicyConnector::Shutdown();
 }
+
+// ---***FYDEOS BEGIN***---
+void ChromeBrowserPolicyConnector::ResetDeviceManagementServiceConfiguration() {
+  std::unique_ptr<DeviceManagementService::Configuration> configuration(
+      new DeviceManagementServiceConfiguration(
+        GetDeviceManagementUrl(),
+        GetRealtimeReportingUrl(),
+        GetEncryptedReportingUrl()));
+
+  BrowserPolicyConnector::ResetDeviceManagementServiceConfiguration(std::move(configuration));
+}
+// ---***FYDEOS END***---
 
 ConfigurationPolicyProvider*
 ChromeBrowserPolicyConnector::GetPlatformProvider() {

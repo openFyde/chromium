@@ -481,7 +481,8 @@
     "allowlist": [
       "2462D64ACB971A7E708757159C2B17761D4FF54A",  // Citrix Receiver
       "3010EF507AFEF487EEA9CDE2930EC94867C60936",  // Citrix Receiver Beta
-      "ABAABC5F49E022A76CBB12972A53B58354C04AC6"   // Citrix Receiver Dev
+      "ABAABC5F49E022A76CBB12972A53B58354C04AC6",   // Citrix Receiver Dev
+      "7576E2B5BFBC3893C37DB1532F305BCE04270880"
     ]
   },{
     "channel": "stable",
@@ -1012,7 +1013,6 @@
     "platforms": ["chromeos"],
     "extension_types": ["extension", "platform_app"],
     "allowlist": [
-      "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E",  //FydeOS System Control Extension
       // ChromeOS Autotest extension.
       "0D209B5E4401BB8E7873B5AB5B1346A1CB067015"
     ]

@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<!-- settings_chromium_strings.override.grdp -->
+<translation id="5142122574074815690">关于 openFyde</translation>
+<translation id="6192687727981687833">关于 FydeOS</translation>
+<translation id="3844063200869349024">openFyde 版本</translation>
+<translation id="3090326719833936311">FydeOS 版本</translation>
+<translation id="2052041943247591012">获取 openFyde 使用帮助</translation>
+<translation id="1242566302196985287">获取 FydeOS 使用帮助</translation>
+<!-- chromium_strings.override.grdp -->
+<translation id="1593197356125639191">将崩溃报告和<ph name="UMA_LINK" />发送给燧炻创新，帮助我们完善 Chromium。</translation>
+<translation id="2048909425194476151">燧炻科技创新（北京）有限责任公司，The Chromium Authors</translation>
+<translation id="5271316801269855654">版权所有<ph name="YEAR" /> 燧炻科技创新（北京）有限责任公司，The Chromium Authors。保留所有权利。</translation>
+<translation id="5926649962158120628">openFyde 的问世还有其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />的一份贡献。</translation>
+<translation id="3385313061592874598">FydeOS 的问世还有其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />的一份贡献。</translation>
+<translation id="2228658997317193454">openFyde 是借助了其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />才得以问世，<ph name="BEGIN_LINK_LINUX_OSS" />Linux（测试版）<ph name="END_LINK_LINUX_OSS" />也是如此。</translation>
+<translation id="4070822162072163669">FydeOS 是借助了其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />才得以问世，<ph name="BEGIN_LINK_LINUX_OSS" />Linux（测试版）<ph name="END_LINK_LINUX_OSS" />也是如此。</translation>
+<translation id="336395185237469195">您的帐号登录详细信息已过期，openFyde 无法同步您的数据。</translation>
+<translation id="7512527828090063151">您的帐号登录详细信息已过期，FydeOS 无法同步您的数据。</translation>
+<translation id="4064902838680868225">由于您的网域停用了同步功能，openFyde 无法同步您的数据。</translation>
+<translation id="2097005686169361729">由于您的网域停用了同步功能，FydeOS 无法同步您的数据。</translation>
+<translation id="931542383891203592">登录时出现错误，openFyde 无法同步您的数据。</translation>
+<translation id="2235060919092532214">登录时出现错误，FydeOS 无法同步您的数据。</translation>
+<translation id="1193874611446390378">重启 openFyde</translation>
+<translation id="4969898409030013043">重启 FydeOS</translation>
+<translation id="6513806719187193842">需要重新启动 openFyde 以应用更新。</translation>
+<translation id="7262927632213367495">需要重新启动 FydeOS 以应用更新。</translation>
+<translation id="7066505978888286411">openFyde 正在安装最新的系统更新，请稍候。</translation>
+<translation id="6128582170344862928">FydeOS 正在安装最新的系统更新，请稍候。</translation>
+<translation id="2372501256806332249">openFyde 条款</translation>
+<translation id="7927587376034945676">FydeOS 条款</translation>
+<translation id="9134354281144465798">可选：将使用情况统计信息和崩溃报告自动发送给燧炻创新，帮助我们完善 openFyde。</translation>
+<translation id="1516196642595762973">可选：将使用情况统计信息和崩溃报告自动发送给燧炻创新，帮助我们完善 FydeOS。</translation>
+<translation id="5090652682257239087"><ph name="DOMAIN" /> 要求您必须先阅读并接受以下服务条款，才能使用此设备。这些条款不会扩大、修改或限制 openFyde 最终用户许可协议。</translation>
+<translation id="6143896503986353687"><ph name="DOMAIN" /> 要求您必须先阅读并接受以下服务条款，才能使用此设备。这些条款不会扩大、修改或限制 FydeOS 最终用户许可协议。</translation>
+</translationbundle>

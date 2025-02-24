@@ -90,6 +90,15 @@ class AboutHandler : public settings::SettingsPageUIHandler,
   // Checks if system is connected to internet.
   void HandleCheckInternetConnection(const base::Value::List& args);
 
+  // ---***FYDEOS BEGIN***---
+  void HandleEnableFydeOTA(const base::Value::List& args);
+  void OnEnableFydeOTA();
+  void RefreshEnableFydeOTA(const bool enabled);
+
+  void HandleGetEnabledFydeOTA(const base::Value::List& args);
+  void OnGetEnabledFydeOTA(const std::string callback_id, const bool enabled);
+  // ---***FYDEOS END***---
+
   // Opens the release notes app. |args| must be empty.
   void HandleLaunchReleaseNotes(const base::Value::List& args);
 

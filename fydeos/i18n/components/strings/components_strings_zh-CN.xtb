@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<!-- browsing_data_strings.override.grdp -->
+<translation id="2662152293597075456">{COUNT,plural, =0{无}=1{1 个应用}=2{2 个应用}other{# 个应用}}</translation>
+<!-- password_manager_strings.override.grdp -->
+<translation id="1584908046040462475">Chromium 会定期检查您的密码是否已被列在网上发布的外泄密码列表内。当 Chromium 进行这项检查时，您的密码和用户名都会被加密，所以绝不会被任何人员/任何一方读取。</translation>
+<!-- version_ui.override.grdp -->
+<translation id="2250779803872823591">openFyde 非商业授权版</translation>
+<translation id="1578175035819084965">FydeOS 非商业授权版</translation>
+</translationbundle>

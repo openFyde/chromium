@@ -31,6 +31,15 @@
 #include "chromeos/ash/components/network/network_state_handler_observer.h"
 #include "chromeos/ash/components/network/tether_constants.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/shell_state.h"
+#include "fydeos/switches/features/network_switches.h"
+#include "fydeos/switches/features/network_constants.h"
+
+using fydeos::ash::FydeOSShellClient;
+using fydeos::ash::ShellState;
+//---***FYDEOS END***---
 
 namespace ash {
 
@@ -155,6 +164,22 @@ class NetworkStateHandler::ActiveNetworkState {
 const char NetworkStateHandler::kDefaultCheckPortalList[] =
     "ethernet,wifi,cellular";
 
+//---***FYDEOS BEGIN***---
+void NetworkStateHandler::ShellStateCallback(base::OnceClosure callback, std::optional<ShellState> state) {
+    VLOG(1) << "Shell State Callback from network state: state code:" << state->code;
+    if (callback.is_null())
+      return;
+    std::move(callback).Run();
+}
+
+void NetworkStateHandler::InvokeExecuteReloadWifiDrv(base::OnceClosure callback) {
+    VLOG(1) << "Invoke ExecuteReloadWifiDrv from network state";
+    FydeOSShellClient::Get()
+      ->SyncExec(fydeos::constants::kFydeOSReloadWifiCmd,
+        base::BindOnce(&NetworkStateHandler::ShellStateCallback, weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+//---***FYDEOS END***---
+
 NetworkStateHandler::NetworkStateHandler() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
@@ -182,6 +207,9 @@ void NetworkStateHandler::InitShillPropertyHandler() {
   shill_property_handler_ =
       std::make_unique<internal::ShillPropertyHandler>(this);
   shill_property_handler_->Init();
+//---***FYDEOS BEGIN***---
+  need_reload_wifidrv = fydeos::switches::NeedResetWifiDriver();
+//---***FYDEOS END***---
 }
 
 void NetworkStateHandler::UpdateBlockedCellularNetworks(bool only_managed) {
@@ -411,6 +439,15 @@ void NetworkStateHandler::PerformSetTechnologyEnabled(
     return;
   }
   NET_LOG(USER) << "SetTechnologyEnabled " << technology << ":" << enabled;
+  if (need_reload_wifidrv && enabled && technology == shill::kTypeWifi
+      && !shill_property_handler_->IsTechnologyEnabled(technology)) {
+    InvokeExecuteReloadWifiDrv(base::BindRepeating(
+          &internal::ShillPropertyHandler::SetTechnologyEnabled,
+          shill_property_handler_->GetWeakPtr(), technology, enabled,
+          base::Passed(std::move(error_callback)),
+          base::Passed(std::move(success_callback))));
+    return;
+  }
   shill_property_handler_->SetTechnologyEnabled(technology, enabled,
                                                 std::move(error_callback),
                                                 std::move(success_callback));

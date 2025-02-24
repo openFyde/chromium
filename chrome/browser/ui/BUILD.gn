@@ -1830,6 +1830,7 @@ static_library("ui") {
       "//ui/webui/resources/cr_components/history_embeddings:mojo_bindings",
       "//ui/webui/resources/js/browser_command:mojo_bindings",
       "//ui/webui/resources/js/metrics_reporter:mojo_bindings",
+      "//fydeos/misc",
     ]
 
     # Non-android public_deps for "ui" target.
@@ -2136,6 +2137,7 @@ static_library("ui") {
       "//ash/webui/vc_background_ui",
       "//ash/webui/web_applications",
       "//build:chromeos_buildflags",
+      "//fydeos/build/config:buildflags",
       "//chrome/app:generated_resources",
       "//chrome/browser/accessibility:utils",
       "//chrome/browser/apps/app_discovery_service",

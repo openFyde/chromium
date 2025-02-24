@@ -12,6 +12,7 @@
 #include "build/chromeos_buildflags.h"
 #include "google_apis/buildflags.h"
 #include "google_apis/google_api_keys.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace google_apis {
 
@@ -30,6 +31,7 @@ class COMPONENT_EXPORT(GOOGLE_APIS) ApiKeyCache {
   ~ApiKeyCache();
 
   const std::string& api_key() const { return api_key_; }
+  const std::string& fydeos_api_key() const { return fydeos_api_key_; }
   const std::string& api_key_non_stable() const { return api_key_non_stable_; }
   const std::string& api_key_remoting() const { return api_key_remoting_; }
   const std::string& api_key_soda() const { return api_key_soda_; }
@@ -51,6 +53,12 @@ class COMPONENT_EXPORT(GOOGLE_APIS) ApiKeyCache {
   bool HasAPIKeyConfigured() const;
   bool HasOAuthClientConfigured() const;
 
+  bool HasFydeOSAPIKeyConfigured() const;
+
+#if BUILDFLAG(IS_OPENFYDE)
+  bool HasFydeOAuthClientConfigured() const;
+#endif
+
 #if BUILDFLAG(SUPPORT_EXTERNAL_GOOGLE_API_KEY)
   void set_api_key(const std::string& api_key) { api_key_ = api_key; }
   void SetClientID(OAuth2Client client, const std::string& client_id);
@@ -59,6 +67,7 @@ class COMPONENT_EXPORT(GOOGLE_APIS) ApiKeyCache {
 
  private:
   std::string api_key_;
+  std::string fydeos_api_key_;
   std::string api_key_non_stable_;
   std::string api_key_remoting_;
   std::string api_key_soda_;

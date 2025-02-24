@@ -95,6 +95,7 @@
 #include "chrome/browser/ash/login/screens/multidevice_setup_screen.h"
 #include "chrome/browser/ash/login/screens/network_error.h"
 #include "chrome/browser/ash/login/screens/network_screen.h"
+#include "chrome/browser/ash/login/screens/eula_screen.h"
 #include "chrome/browser/ash/login/screens/offline_login_screen.h"
 #include "chrome/browser/ash/login/screens/online_authentication_screen.h"
 #include "chrome/browser/ash/login/screens/osauth/apply_online_password_screen.h"
@@ -198,6 +199,7 @@
 #include "chrome/browser/ui/webui/ash/login/marketing_opt_in_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/multidevice_setup_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/network_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/eula_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/offline_login_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/online_authentication_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/oobe_ui.h"
@@ -267,6 +269,11 @@
 #include "services/service_manager/public/cpp/connector.h"
 #include "third_party/cros_system_api/dbus/service_constants.h"
 #include "ui/base/accelerators/accelerator.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/switches/misc/misc_switches.h"
+// ---***FYDEOS END***---
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -293,6 +300,7 @@ constexpr char kLegacyUpdateScreenName[] = "update";
 const StaticOobeScreenId kResumableOobeScreens[] = {
     WelcomeView::kScreenId,
     NetworkScreenView::kScreenId,
+    EulaView::kScreenId,
     UpdateView::kScreenId,
     EnrollmentScreenView::kScreenId,
     AutoEnrollmentCheckScreenView::kScreenId,
@@ -672,6 +680,10 @@ WizardController::CreateScreens() {
   append(std::make_unique<NetworkScreen>(
       oobe_ui->GetView<NetworkScreenHandler>()->AsWeakPtr(),
       base::BindRepeating(&WizardController::OnNetworkScreenExit,
+                          weak_factory_.GetWeakPtr())));
+  append(std::make_unique<EulaScreen>(
+      oobe_ui->GetView<EulaScreenHandler>()->AsWeakPtr(),
+      base::BindRepeating(&WizardController::OnEulaScreenExit,
                           weak_factory_.GetWeakPtr())));
   append(std::make_unique<UpdateScreen>(
       oobe_ui->GetView<UpdateScreenHandler>()->AsWeakPtr(),
@@ -1097,6 +1109,9 @@ void WizardController::OnSignInFatalErrorScreenExit() {
 
 void WizardController::ShowLoginScreen() {
   VLOG(1) << "Showing login screen.";
+  if (!wizard_context_->is_user_creation_enabled) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
   UpdateStatusAreaVisibilityForScreen(GaiaView::kScreenId);
   GetLoginDisplayHost()->StartSignInScreen();
 }
@@ -1154,6 +1169,10 @@ void WizardController::ShowDrivePinningScreen() {
   } else {
     OnDrivePinningScreenExit(DrivePinningScreen::Result::NOT_APPLICABLE);
   }
+}
+
+void WizardController::ShowEulaScreen() {
+  SetCurrentScreen(GetScreen(EulaView::kScreenId));
 }
 
 void WizardController::ShowResetScreen() {
@@ -1448,7 +1467,16 @@ void WizardController::OnUserCreationScreenExit(
       ShowEnrollmentScreenIfEligible();
       break;
     case UserCreationScreen::Result::CANCEL:
-      LoginDisplayHost::default_host()->HideOobeDialog();
+      // ---***FYDEOS BEGIN***---
+      if (!fydeos::switches::IsFydeAccountEnabled()) {
+        // back to fydeos signin webview page
+        fydeos::switches::EnableFydeAccountFlag();
+        GetScreen<GaiaScreen>()->LoadOnlineGaia();
+        AdvanceToScreen(GaiaView::kScreenId);
+      } else {
+        LoginDisplayHost::default_host()->HideOobeDialog();
+      }
+      // ---***FYDEOS END***---
       break;
   }
 }
@@ -1500,7 +1528,11 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
         if ((wizard_context_->is_user_creation_enabled ||
              !wizard_context_->is_add_person_flow) &&
             result == GaiaScreen::Result::BACK) {
-          AdvanceToScreen(UserCreationView::kScreenId);
+          if (!fydeos::switches::IsFydeAccountEnabled()) {
+            AdvanceToScreen(UserCreationView::kScreenId);
+          } else {
+            GetScreen<GaiaScreen>()->LoadOnlineGaia();
+          }
           break;
         }
       }
@@ -1539,10 +1571,16 @@ void WizardController::OnGaiaScreenExit(GaiaScreen::Result result) {
            !wizard_context_->is_user_creation_enabled) ||
           (!LoginDisplayHost::default_host()->HasUserPods() &&
            gaia_page_defaults_to_saml)) {
+        if (!fydeos::switches::IsFydeAccountEnabled()) {
+          fydeos::switches::EnableFydeAccountFlag();
+        }
         GetScreen<GaiaScreen>()->Reset();
         LoginDisplayHost::default_host()->HideOobeDialog(
             gaia_page_defaults_to_saml);
       } else {
+        if (!fydeos::switches::IsFydeAccountEnabled()) {
+          fydeos::switches::EnableFydeAccountFlag();
+        }
         GetScreen<GaiaScreen>()->LoadOnlineGaia();
       }
       break;
@@ -2167,9 +2205,13 @@ void WizardController::OnNetworkScreenExit(NetworkScreen::Result result) {
     switch (result) {
       case NetworkScreen::Result::CONNECTED:
       case NetworkScreen::Result::NOT_APPLICABLE:
-        MaybeTakeTPMOwnership();
-        PerformPostNetworkScreenActions();
-        InitiateOOBEUpdate();
+        if (fydeos::switches::IsFydeCustomEnabled()) {
+          ShowEulaScreen();
+        } else {
+          MaybeTakeTPMOwnership();
+          PerformPostNetworkScreenActions();
+          InitiateOOBEUpdate();
+        }
         break;
       case NetworkScreen::Result::BACK:
         ShowOsTrialScreen();
@@ -2184,9 +2226,13 @@ void WizardController::OnNetworkScreenExit(NetworkScreen::Result result) {
   switch (result) {
     case NetworkScreen::Result::CONNECTED:
     case NetworkScreen::Result::NOT_APPLICABLE:
-      MaybeTakeTPMOwnership();
-      PerformPostNetworkScreenActions();
-      InitiateOOBEUpdate();
+      if (fydeos::switches::IsFydeCustomEnabled()) {
+        ShowEulaScreen();
+      } else {
+        MaybeTakeTPMOwnership();
+        PerformPostNetworkScreenActions();
+        InitiateOOBEUpdate();
+      }
       break;
     case NetworkScreen::Result::BACK:
       ShowWelcomeScreen();
@@ -2195,6 +2241,31 @@ void WizardController::OnNetworkScreenExit(NetworkScreen::Result result) {
       ShowQuickStartScreen();
       break;
   }
+}
+
+void WizardController::OnEulaScreenExit(EulaScreen::Result result) {
+  OnScreenExit(EulaView::kScreenId, EulaScreen::GetResultString(result));
+
+  switch (result) {
+    case EulaScreen::Result::ACCEPTED:
+      OnEulaAccepted();
+      break;
+    case EulaScreen::Result::ALREADY_ACCEPTED:
+      InitiateOOBEUpdate();
+      break;
+    case EulaScreen::Result::NOT_APPLICABLE:
+      OnEulaAccepted();
+      break;
+    case EulaScreen::Result::BACK:
+      ShowNetworkScreen();
+      break;
+  }
+}
+
+void WizardController::OnEulaAccepted() {
+  StartupUtils::MarkEulaAccepted();
+  PerformPostNetworkScreenActions();
+  InitiateOOBEUpdate();
 }
 
 void WizardController::OnUpdateScreenExit(UpdateScreen::Result result) {
@@ -3210,6 +3281,8 @@ void WizardController::AdvanceToScreen(OobeScreenId screen_id) {
     ShowPackagedLicenseScreen();
   } else if (screen_id == UpdateView::kScreenId) {
     InitiateOOBEUpdate();
+  } else if (screen_id == EulaView::kScreenId) {
+    ShowEulaScreen();
   } else if (screen_id == ResetView::kScreenId) {
     ShowResetScreen();
   } else if (screen_id == EnableAdbSideloadingScreenView::kScreenId) {
@@ -3563,6 +3636,10 @@ bool WizardController::SetOnTimeZoneResolvedForTesting(
 }
 
 void WizardController::StartEnrollmentScreen() {
+  if (!(current_screen_ && IsSigninScreen(current_screen_->screen_id()))) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
+
   VLOG(1) << "Showing enrollment screen.";
 
   // Determine the effective enrollment configuration. If OOBE Configuration

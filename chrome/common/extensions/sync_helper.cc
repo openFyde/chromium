@@ -10,11 +10,14 @@
 #include "extensions/common/extension.h"
 #include "extensions/common/manifest.h"
 #include "extensions/common/manifest_url_handlers.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 
 namespace extensions {
 namespace sync_helper {
 
-bool IsSyncable(const Extension* extension) {
+bool IsSyncable(const Extension* extension, Profile* profile) {
   // Default apps are not synced because otherwise they will pollute profiles
   // that don't already have them. Specially, if a user doesn't have default
   // apps, creates a new profile (which get default apps) and then enables sync
@@ -31,10 +34,26 @@ bool IsSyncable(const Extension* extension) {
   //
   // TODO(akalin): Relax this restriction once we've put in UI to
   // approve synced extensions.
-  if (!ManifestURL::GetUpdateURL(extension).is_empty() &&
-      !ManifestURL::UpdatesFromGallery(extension)) {
-    return false;
+  // ---***FYDEOS BEGIN***---
+  if (profile == nullptr && g_browser_process) {
+    ProfileManager* profile_manager = g_browser_process->profile_manager();
+    if (profile_manager) {
+      profile = profile_manager->GetActiveUserProfile();
+    }
   }
+  if (profile && profile->IsFydeProfile()) {
+    if (!ManifestURL::GetUpdateURL(extension).is_empty() &&
+        (!ManifestURL::UpdatesFromGallery(extension)
+         && !ManifestURL::UpdatesFromFydeOSGallery(extension))) {
+      return false;
+    }
+  } else {
+    if (!ManifestURL::GetUpdateURL(extension).is_empty() &&
+        (!ManifestURL::UpdatesFromGallery(extension))) {
+      return false;
+    }
+  }
+  // ---***FYDEOS END***---
 
   switch (extension->GetType()) {
     case Manifest::TYPE_EXTENSION:

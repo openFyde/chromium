@@ -463,6 +463,8 @@ class ArcSessionManager : public ArcSessionRunner::Observer,
   // Calls StartArc() and starts background requirement checks.
   void StartArcForRegularBoot();
 
+  void StartArcForRegularBootAfterSeconds(int64_t sec);
+
   // Requests to stop ARC instance. This resets two persistent flags:
   // kArcSignedIn and kArcTermsAccepted, so that, in next enabling,
   // it is started from Terms of Service negotiation.

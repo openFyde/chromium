@@ -113,7 +113,13 @@ class ChromeScaledImage(interface.GathererBase):
     for layout in layouts:
       for scale in scales:
         dir = '%s_%s_percent' % (layout, scale)
-        path = os.path.join(dir, self.rc_file)
+#---***FYDEOS BEGIN***---
+        if str.find(self.rc_file, 'fydeos') != -1 or \
+           str.find(self.rc_file, 'openfyde') != -1:
+          path = str.replace(self.rc_file, 'CONTEXT', dir)
+        else:
+          path = os.path.join(dir, self.rc_file)
+#---***FYDEOS END***---
         if os.path.exists(self.grd_node.ToRealPath(path)):
           return path, scale, req_scale
 

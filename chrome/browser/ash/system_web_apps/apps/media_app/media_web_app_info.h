@@ -33,6 +33,7 @@ class MediaSystemAppDelegate : public ash::SystemWebAppDelegate {
       web_app::WebAppProvider* provider,
       const GURL& url,
       const apps::AppLaunchParams& params) const override;
+  bool IsAppEnabled() const override;
 };
 
 // Return a WebAppInstallInfo used to install the app.

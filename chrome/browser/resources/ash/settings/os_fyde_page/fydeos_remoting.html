@@ -1,0 +1,42 @@
+<style include="iron-flex settings-shared">
+  paper-tooltip {
+    --paper-tooltip-padding: 12px 10px;
+  }
+  paper-tooltip > div {
+    line-height: 1.15em;
+  }
+  iron-icon {
+    --iron-icon-fill-color: var(--cros-search-page-question-icon-color);
+  }
+  #remoteHelperMessage {
+    padding: var(--cr-section-vertical-padding) 0;
+  }
+</style>
+<cr-link-row class="hr" id="remoteDesktop" on-click="onRemoteDesktopClicked_"
+                                            label="$i18n{fydeOSRemoteDesktopAppName}" external></cr-link-row>
+
+<div id="remoteHelperRow" class="cr-row" hidden=[[!remoteHelperSupported_]]>
+  <div id="remoteHelperMessage" class="flex">
+    <div id="remoteHelperTitle">
+      $i18n{fydeosSettingsRemoteHelperServiceTitle}
+      <iron-icon id="remoting-help-icon" icon="cr:help-outline"></iron-icon>
+      <paper-tooltip id="remotingHelpTooltip" for="remoting-help-icon" position="bottom"
+                                                  fit-to-visible-bounds>
+        <div>[[getPaperTooltipMessage_(remoteHelperState_)]]</div>
+      </paper-tooltip>
+    </div>
+    <div id="remoteHelperDesc" class="cr-secondary-text">
+      [[getRemoteHelperMessage_(remoteHelperState_)]]
+    </div>
+  </div>
+  <iron-icon
+    hidden="[[!isStarting_]]"
+    src="chrome://resources/images/throbber_small.svg">
+  </iron-icon>
+  <div hidden="[[!shouldShowRemoteHelperPort_(remoteHelperState_, remoteHelperPort_)]]">
+    [[remoteHelperPort_]]
+  </div>
+  <div class="separator"></div>
+  <cr-toggle id="toggleRemoteHelper" disabled="[[!canToggleRemoteHelper_()]]" role="button" checked="[[remoteHelperChecked_(remoteHelperState_)]]" on-change="onToggleRemoteHelper_">
+  </cr-toggle>
+</div>

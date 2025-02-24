@@ -1178,6 +1178,10 @@ void RotatePaneFocus(FocusCycler::Direction direction) {
   Shell::Get()->focus_cycler()->RotateFocus(direction);
 }
 
+void RotateScreenWithoutConfirmation() {
+  RotateScreenImpl();
+}
+
 void RotateScreen() {
   if (Shell::Get()->display_manager()->IsInUnifiedMode())
     return;

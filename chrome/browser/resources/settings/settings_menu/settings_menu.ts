@@ -40,6 +40,8 @@ export interface SettingsMenuElement {
 
 const SettingsMenuElementBase = RouteObserverMixin(PolymerElement);
 
+const FYDEOS_STORE_APPID: string = 'hidnajblbifdkmheebalalchohohmaef';
+
 export class SettingsMenuElement extends SettingsMenuElementBase {
   static get is() {
     return 'settings-menu';
@@ -66,6 +68,16 @@ export class SettingsMenuElement extends SettingsMenuElementBase {
         value: () => loadTimeData.getBoolean('showAdvancedFeaturesMainControl'),
       },
 
+      storeAppExists_: {
+        type: Boolean,
+        value: true,
+      },
+
+      showExtensionsLink_: {
+        type: Boolean,
+        computed: 'shouldShowExtensionsLink_(pageVisibility, storeAppExists_)',
+      },
+
       aiPageIcon_: {
         type: String,
         computed: 'computeAiPageIcon_(enableAiSettingsPageRefresh_)',
@@ -81,6 +93,8 @@ export class SettingsMenuElement extends SettingsMenuElementBase {
   pageVisibility?: PageVisibility;
   private enableAiSettingsPageRefresh_: boolean;
   private showAdvancedFeaturesMainControl_: boolean;
+  private storeAppExists_: boolean;
+  private showExtensionsLink_: boolean;
   private routes_: SettingsRoutes;
   private aiPageIcon_: string;
   private aiPageTitle_: string;
@@ -161,9 +175,29 @@ export class SettingsMenuElement extends SettingsMenuElementBase {
         route!, /* dynamicParams */ undefined, /* removeSearch */ true);
   }
 
-  private onExtensionsLinkClick_() {
-    chrome.metricsPrivate.recordUserAction(
-        'SettingsMenu_ExtensionsLinkClicked');
+  private onExtensionsLinkClick_(e: Event) {
+    // chrome.metricsPrivate.recordUserAction(
+    //     'SettingsMenu_ExtensionsLinkClicked');
+    if (!loadTimeData.getBoolean('isFydeProfile') || !this.storeAppExists_) {
+      chrome.metricsPrivate.recordUserAction('SettingsMenu_ExtensionsLinkClicked');
+      return;
+    }
+    e.preventDefault();
+    chrome.nativeWindows.create(FYDEOS_STORE_APPID);
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    chrome.appManagement.getAppList(apps => {
+      const app = apps.find(app => app.appId === FYDEOS_STORE_APPID);
+      this.storeAppExists_ = !!app;
+    });
+  }
+
+  private shouldShowExtensionsLink_() {
+    const pageVisibility = this.pageVisibility || {};
+    return pageVisibility.extensions && (!loadTimeData.getBoolean('isFydeProfile') || this.storeAppExists_);
   }
 
   private onAiPageClick_() {

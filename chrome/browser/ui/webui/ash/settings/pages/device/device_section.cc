@@ -48,6 +48,7 @@
 #include "ui/events/ash/keyboard_capability.h"
 #include "ui/events/ash/keyboard_layout_util.h"
 #include "ui/events/devices/device_data_manager.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -1765,6 +1766,8 @@ void DeviceSection::AddDevicePointersStrings(
   html_source->AddLocalizedStrings(kPointersStrings);
 
   html_source->AddString("naturalScrollLearnMoreLink",
+                         IsFydeProfile() ?
+                         base::ASCIIToUTF16(fydeos::constants::kNaturalScrollHelpURL) :
                          GetHelpUrlWithBoard(chrome::kNaturalScrollHelpURL));
   html_source->AddString(
       "controlledScrollingLearnMoreLink",

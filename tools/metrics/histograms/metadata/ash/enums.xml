@@ -1922,6 +1922,7 @@ chromeos/ash/components/peripheral_notification/peripheral_notification_manager.
   <int value="16" label="AutoZoom"/>
   <int value="17" label="Hotspot"/>
   <int value="18" label="FocusMode"/>
+  <int value="19" label="RotateScreen"/>
 </enum>
 
 <enum name="QsSliderCatalogName">

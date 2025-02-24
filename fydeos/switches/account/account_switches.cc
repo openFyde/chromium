@@ -11,9 +11,6 @@ namespace switches {
 
 namespace {
 
-const char kFydeAccountEnable[] = "fyde-account-enabled";
-const char kFydeAccountForceDisabledForTest[] = "fyde-account-force-disabled";
-
 const char kFydeOSFamilyLinkApisUrl[] = "fydeos-family-link-apis-url";
 const char kFydeOSSupervisedUserSettingsSyncIntervalInSeconds[] = "fydeos-supervised-user-settings-sync-interval";
 
@@ -24,6 +21,13 @@ const char kPolicyManagedByFyde[] = "policy-managed-by-fyde";
 bool IsFydeAccountEnabled() {
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   return command_line->HasSwitch(kFydeAccountEnable) && !command_line->HasSwitch(kFydeAccountForceDisabledForTest);
+}
+
+const char kFydeAccountEnable[] = "fyde-account-enabled";
+const char kFydeAccountForceDisabledForTest[] = "fyde-account-force-disabled";
+
+bool IsFydeExtendAccountEnabled() {
+  return IsFydeAccountEnabled();
 }
 
 const char kFydeOSGaiaUrl[] = "fydeos-gaia-url";

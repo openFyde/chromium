@@ -62,6 +62,8 @@ static_library("screens") {
     "encryption_migration_screen.h",
     "error_screen.cc",
     "error_screen.h",
+    "eula_screen.cc",
+    "eula_screen.h",
     "family_link_notice_screen.cc",
     "family_link_notice_screen.h",
     "fingerprint_setup_screen.cc",
@@ -344,6 +346,7 @@ static_library("screens") {
     # of its headers and hence need some of its public_deps.
     # TODO(b/335294371): Replace with //c/b/a/policy.
     "//third_party/private_membership",
+    "//fydeos/switches/account/toggle:account_toggle",
   ]
 
   allow_circular_includes_from = [

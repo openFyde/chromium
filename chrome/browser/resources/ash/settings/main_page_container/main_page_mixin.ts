@@ -23,6 +23,7 @@ import type {Section} from '../mojom-webui/routes.mojom-webui.js';
 import type {SettingsIdleLoadElement} from '../os_settings_page/settings_idle_load.js';
 import type {Route} from '../router.js';
 import {isAboutRoute, isAdvancedRoute, Router, routes} from '../router.js';
+import {isFydeOsSettingsRoute} from '../router.js';
 
 import type {PageDisplayerElement} from './page_displayer.js';
 
@@ -432,7 +433,7 @@ export const MainPageMixin = dedupingMixin(
           const waitFn = beforeNextRender.bind(null, this);
 
           return new Promise(resolve => {
-            if (isAdvancedRoute(route) || isAboutRoute(route)) {
+            if (isAdvancedRoute(route) || isAboutRoute(route) || isFydeOsSettingsRoute(route)) {
               this.dispatchCustomEvent_('hide-container');
               waitFn(async () => {
                 await this.loadAdvancedPage();

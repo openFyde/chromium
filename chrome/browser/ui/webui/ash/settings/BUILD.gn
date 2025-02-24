@@ -16,6 +16,10 @@ static_library("settings") {
     "os_settings_ui.h",
     "pref_names.cc",
     "pref_names.h",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler.cc",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler.h",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_section.cc",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_section.h",
   ]
 
   public_deps = [

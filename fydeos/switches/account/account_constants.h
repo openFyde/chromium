@@ -7,6 +7,7 @@
 
 #include <string>
 #include "chromeos/chromeos_export.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace fydeos {
 namespace constants {
@@ -21,6 +22,10 @@ CHROMEOS_EXPORT extern const char kFydeOSSyncServerUrl[];
 
 CHROMEOS_EXPORT extern const char kDefaultFydeOSFamilyLinkApisUrl[];
 extern const size_t kFydeOSSupervisedUserSettingsDefaultSyncIntervalInSeconds;
+
+#if BUILDFLAG(IS_OPENFYDE)
+CHROMEOS_EXPORT extern const char kFydeAPIKeysDevelopersHowToURL[];
+#endif
 
 }//constants
 }//fydeos

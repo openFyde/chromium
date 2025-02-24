@@ -50,6 +50,8 @@ build_webui("build") {
     "oobe_screen.css",
 
     "screens/common/throbber.css",
+
+    "images/eula_illustration.svg",
   ]
 
   mojo_files_deps = [
@@ -112,6 +114,7 @@ build_webui("build") {
     "screens/common/fyde_local_signin.ts",
     "screens/common/online_authentication_screen.ts",
     "screens/common/oobe_reset.ts",
+    "screens/common/oobe_eula.ts",
     "screens/common/os_install.ts",
     "screens/common/os_trial.ts",
     "screens/common/parental_handoff.ts",
@@ -225,6 +228,7 @@ build_webui("build") {
     "priority_screens_common_flow.ts",
     "priority_screens_oobe_flow.ts",
     "screens.ts",
+    "fydeos_shell_client.ts",
     "test_api/no_test_api.ts",
     "test_api/test_api.ts",
   ]
@@ -259,6 +263,7 @@ build_webui("build") {
     "//tools/typescript/definitions/tabs.d.ts",
     "//tools/typescript/definitions/webview_tag.d.ts",
     "//tools/typescript/definitions/web_request.d.ts",
+    "//tools/typescript/definitions/shell_client.d.ts",
   ]
   if (is_chrome_branded) {
     ts_definitions += [ "dummy.d.ts" ]

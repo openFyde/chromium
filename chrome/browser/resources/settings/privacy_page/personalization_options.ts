@@ -150,6 +150,12 @@ export class SettingsPersonalizationOptionsElement extends
           return loadTimeData.getBoolean('showHistorySearchControl');
         },
       },
+      isFydeProfile_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
     };
   }
 

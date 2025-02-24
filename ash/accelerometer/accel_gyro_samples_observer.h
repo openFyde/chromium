@@ -94,6 +94,7 @@ class ASH_EXPORT AccelGyroSamplesObserver
   // Channel indices (of accel_x, accel_y, and accel_z respectively) to
   // enable.
   int32_t channel_indices_[kNumberOfAxes];
+  int revert_[kNumberOfAxes];
 
   mojo::Receiver<chromeos::sensors::mojom::SensorDeviceSamplesObserver>
       receiver_{this};

@@ -2493,6 +2493,7 @@ static_library("browser") {
     "//ui/strings",
     "//ui/surface",
     "//ui/webui",
+    "//fydeos/prefs",
   ]
 
   # Platforms that have a network diagnostics dialog. All others fall through

@@ -71,6 +71,8 @@ static_library("login") {
     "enter_old_password_screen_handler.h",
     "error_screen_handler.cc",
     "error_screen_handler.h",
+    "eula_screen_handler.cc",
+    "eula_screen_handler.h",
     "family_link_notice_screen_handler.cc",
     "family_link_notice_screen_handler.h",
     "fingerprint_setup_screen_handler.cc",
@@ -337,6 +339,7 @@ static_library("login") {
     "//ui/display/manager",
     "//ui/resources:webui_resources_grd",
     "//ui/strings:ui_strings",
+    "//fydeos/switches/account/toggle:account_toggle",
   ]
 
   allow_circular_includes_from = [
