@@ -88,7 +88,6 @@
 #include "ui/base/ime/ash/input_method_util.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "fydeos/switches/account/account_switches.h"
-#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace ash {
 
@@ -710,11 +709,6 @@ void LoginDisplayHostCommon::ShowGaiaDialogCommon(
   if (GetExistingUserController()->IsSigninInProgress()) {
     return;
   }
-
-  if (prefilled_account.is_valid()) {
-    fydeos::switches::ToggleFydeAccountFlagByAccountId(prefilled_account);
-  }
-
   SetGaiaInputMethods(prefilled_account);
 
   if (!prefilled_account.is_valid() && !fydeos::switches::IsFydeAccountEnabled()) {

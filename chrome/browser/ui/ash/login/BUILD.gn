@@ -172,7 +172,6 @@ static_library("login") {
     "//ui/compositor",
     "//ui/gfx",
     "//ui/gfx/geometry",
-    "//fydeos/switches/account/toggle:account_toggle",
   ]
 
   allow_circular_includes_from = [

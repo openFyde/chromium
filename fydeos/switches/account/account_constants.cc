@@ -43,9 +43,4 @@ const char kDefaultFydeOSFamilyLinkApisUrl[] =
 
 const size_t kFydeOSSupervisedUserSettingsDefaultSyncIntervalInSeconds = 600;
 
-#if BUILDFLAG(IS_OPENFYDE)
-const char kFydeAPIKeysDevelopersHowToURL[] =
-  "https://openfyde.com/docs/developers/how-to-get-api-keys";
-#endif
-
 }  // namespace fydeos::constants

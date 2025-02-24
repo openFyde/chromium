@@ -107,7 +107,6 @@ export class Authenticator extends EventTarget {
 
   insecureContentBlockedCallback: ((url: string) => void)|null;
   missingGaiaInfoCallback: (() => void)|null;
-  accountTypeGoogleSelectedCallback: (() => void)|null;
   samlApiUsedCallback: ((isThirdPartyIdP: boolean) => void)|null;
   recordSamlProviderCallback: ((x509Certificate: string) => void)|null;
 }

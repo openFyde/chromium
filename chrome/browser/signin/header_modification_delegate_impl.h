@@ -55,7 +55,6 @@ class HeaderModificationDelegateImpl : public HeaderModificationDelegate {
 
  private:
   raw_ptr<Profile> profile_;
-  bool dontProcessHeader_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 
 #if BUILDFLAG(IS_ANDROID)

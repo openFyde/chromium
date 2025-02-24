@@ -224,13 +224,6 @@ export class OsSettingsPrivacyPageElement extends
         readOnly: true,
       },
 
-      isFydeLocalAccount_: {
-        type: Boolean,
-        value() {
-          return loadTimeData.getBoolean('isFydeLocalAccount');
-        },
-      },
-
       isRevampWayfindingEnabled_: {
         type: Boolean,
         value: () => {
@@ -306,7 +299,6 @@ export class OsSettingsPrivacyPageElement extends
   private dataAccessShiftTabPressed_: boolean;
   private fingerprintUnlockEnabled_: boolean;
   private isAccountManagerEnabled_: boolean;
-  private isFydeLocalAccount_: boolean;
   private isAuthPanelInSessionEnabled_: boolean;
   private isGuestMode_: boolean;
   private isRevampWayfindingEnabled_: boolean;

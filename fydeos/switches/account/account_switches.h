@@ -12,10 +12,6 @@ namespace fydeos {
 namespace switches {
 
 CHROMEOS_EXPORT bool IsFydeAccountEnabled();
-CHROMEOS_EXPORT bool IsFydeExtendAccountEnabled();
-
-CHROMEOS_EXPORT extern const char kFydeAccountEnable[];
-CHROMEOS_EXPORT extern const char kFydeAccountForceDisabledForTest[];
 
 CHROMEOS_EXPORT extern const char kFydeOSGaiaUrl[];
 CHROMEOS_EXPORT extern const char kFydeOSApisUrl[];

@@ -63,9 +63,6 @@ bool ShouldPrepareForRecovery(const AccountId& account_id) {
 }
 
 bool ShouldUseReauthEndpoint(const AccountId& account_id) {
-  if (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT) {
-    return false;
-  }
   // Use reauth endpoint when there is an existing user going through Gaia
   // sign-in.
   return account_id.is_valid();

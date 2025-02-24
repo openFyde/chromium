@@ -37,7 +37,6 @@ void UserOnlineSigninNotifier::CheckForPolicyEnforcedOnlineSignin() {
       min_delta = time_to_next_online_signin;
     }
     if (time_to_next_online_signin <= base::TimeDelta() &&
-        !user->IsFlintAccountUser() &&
         !user->force_online_signin()) {
       user_manager::UserManager::Get()->SaveForceOnlineSignin(
           user->GetAccountId(), true);

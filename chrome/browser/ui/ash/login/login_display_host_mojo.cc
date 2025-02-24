@@ -91,7 +91,6 @@
 #include "ui/events/keycodes/keyboard_codes_posix.h"
 #include "ui/gfx/native_widget_types.h"
 #include "ui/views/view.h"
-#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace ash {
 namespace {
@@ -580,7 +579,6 @@ void LoginDisplayHostMojo::ShowGaiaDialogImpl(
     gaia_reauth_account_id_ = prefilled_account;
   } else {
     gaia_reauth_account_id_.reset();
-    fydeos::switches::EnableFydeAccountFlag();
   }
   ShowGaiaDialogCommon(prefilled_account);
 

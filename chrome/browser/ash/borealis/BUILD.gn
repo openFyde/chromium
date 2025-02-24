@@ -120,7 +120,6 @@ static_library("borealis") {
     "//ui/base",
     "//ui/display",
     "//url",
-    "//fydeos/switches:switches",
   ]
 }
 

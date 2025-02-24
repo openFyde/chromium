@@ -26,7 +26,6 @@
 #include "components/sync/engine/syncer_error.h"
 #include "components/sync/protocol/sync_enums.pb.h"
 #include "net/http/http_status_code.h"
-#include "fydeos/switches/account/account_switches.h"
 
 namespace syncer {
 
@@ -118,8 +117,7 @@ bool Syncer::NormalSyncShare(DataTypeSet request_types,
                              SyncCycle* cycle) {
   base::AutoReset<bool> is_syncing(&is_syncing_, true);
   HandleCycleBegin(cycle);
-  if (nudge_tracker->IsGetUpdatesRequired(request_types) ||
-      fydeos::switches::IsFydeAccountEnabled()) {
+  if (nudge_tracker->IsGetUpdatesRequired(request_types)) {
     VLOG(1) << "Downloading types " << DataTypeSetToDebugString(request_types);
     if (!DownloadAndApplyUpdates(&request_types, cycle,
                                  NormalGetUpdatesDelegate(*nudge_tracker))) {

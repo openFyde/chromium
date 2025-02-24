@@ -337,7 +337,6 @@ static_library("login") {
     "//ui/display/manager",
     "//ui/resources:webui_resources_grd",
     "//ui/strings:ui_strings",
-    "//fydeos/switches/account/toggle:account_toggle",
   ]
 
   allow_circular_includes_from = [

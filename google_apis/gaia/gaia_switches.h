@@ -6,7 +6,6 @@
 #define GOOGLE_APIS_GAIA_GAIA_SWITCHES_H_
 
 #include "base/component_export.h"
-#include "fydeos/build/config/buildflags.h"
 
 namespace switches {
 
@@ -44,11 +43,6 @@ COMPONENT_EXPORT(GOOGLE_APIS) extern const char kOAuth2ClientID[];
 
 // Specifies custom OAuth2 client secret for testing purposes.
 COMPONENT_EXPORT(GOOGLE_APIS) extern const char kOAuth2ClientSecret[];
-
-#if BUILDFLAG(IS_OPENFYDE)
-COMPONENT_EXPORT(GOOGLE_APIS) extern const char kOAuth2FydeOsClientID[];
-COMPONENT_EXPORT(GOOGLE_APIS) extern const char kOAuth2FydeOsClientSecret[];
-#endif
 
 }  // namespace switches
 

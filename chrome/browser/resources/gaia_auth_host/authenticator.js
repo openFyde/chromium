@@ -101,7 +101,6 @@ export let AuthCompletedCredentials;
  *   flow: string,
  *   ignoreCrOSIdpSetting: boolean,
  *   enableGaiaActionButtons: boolean,
- *   enableFydeAccount: boolean,
  *   forceDarkMode: boolean,
  *   enterpriseEnrollmentDomain: string,
  *   samlAclUrl: string,
@@ -311,15 +310,6 @@ const messageHandlers = {
       this.maybeCompleteAuth_();
     }
   },
-  'selectAccountType'(msg) {
-    if (this.isExistedUser_) {
-      return;
-    }
-    this.selectedAccountType_ = msg.type;
-    if (this.email_ && this.gaiaId_ && this.sessionIndex_) {
-      this.maybeCompleteAuth_();
-    }
-  },
   'showIncognito'(msg) {
     this.dispatchEvent(new Event('showIncognito'));
   },
@@ -446,10 +436,7 @@ export class Authenticator extends EventTarget {
         /** @type {WebView} */ ($(webview)) :
         webview;
     assert(this.webview_);
-    this.selectedAccountType_ = null;
     this.enableGaiaActionButtons_ = false;
-    this.enableFydeAccount_ = true;
-    this.isExistedUser_ = false;
     this.webviewEventManager_ = new WebviewEventManager();
 
     this.clientId_ = null;
@@ -460,7 +447,6 @@ export class Authenticator extends EventTarget {
     this.samlApiUsedCallback = null;
     this.recordSamlProviderCallback = null;
     this.missingGaiaInfoCallback = null;
-    this.accountTypeGoogleSelectedCallback = null;
     this.needPassword = true;
     this.services_ = null;
     this.servicesProvided_ = false;
@@ -565,7 +551,6 @@ export class Authenticator extends EventTarget {
     this.gaiaId_ = null;
     this.password_ = null;
     this.readyFired_ = false;
-    this.selectedAccountType_ = null;
     this.skipForNow_ = false;
     this.sessionIndex_ = null;
     this.trusted_ = true;
@@ -746,9 +731,6 @@ export class Authenticator extends EventTarget {
     this.dontResizeNonEmbeddedPages = data.dontResizeNonEmbeddedPages;
     this.enableGaiaActionButtons_ = data.enableGaiaActionButtons;
 
-    this.enableFydeAccount_ = data.enableFydeAccount;
-    this.isExistedUser_ = data.email && data.readOnlyEmail;
-
     this.initialFrameUrl_ = this.constructInitialFrameUrl_(data);
     this.reloadUrl_ = data.frameUrl || this.initialFrameUrl_;
     this.samlAclUrl_ = data.samlAclUrl;
@@ -920,9 +902,6 @@ export class Authenticator extends EventTarget {
     }
     if (data.autoReloadAttempts) {
       url = appendParam(url, 'auto_reload_attempts', data.autoReloadAttempts);
-    }
-    if (!this.shouldWaitForFydeAccountTypeSelection_()) {
-      url = appendParam(url, 'skip_type_selection', '1');
     }
 
     return url;
@@ -1117,10 +1096,6 @@ export class Authenticator extends EventTarget {
     this.webview_.contentWindow.postMessage(payload, currentUrl);
   }
 
-  shouldWaitForFydeAccountTypeSelection_() {
-    return this.enableFydeAccount_ && !this.isExistedUser_;
-  }
-
   /**
    * Check Saml flow and start password confirmation flow if needed.
    * Otherwise, continue with auto completion.
@@ -1129,15 +1104,6 @@ export class Authenticator extends EventTarget {
   maybeCompleteAuth_() {
     if (this.authCompletedFired_) {
       return;
-    }
-    if (this.shouldWaitForFydeAccountTypeSelection_()) {
-      if (!this.selectedAccountType_) {
-        return;
-      }
-      if (this.selectedAccountType_ === 'google') {
-        this.accountTypeGoogleSelectedCallback();
-        return;
-      }
     }
     const missingGaiaInfo =
         !this.email_ || !this.gaiaId_ || !this.sessionIndex_;

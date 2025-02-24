@@ -126,7 +126,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/chromeos/devicetype_utils.h"
 #include "fydeos/switches/account/account_switches.h"
-#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -675,19 +674,6 @@ void GaiaScreenHandler::DeclareLocalizedValues(
 
   builder->Add("signinScreenQuickStart",
                IDS_LOGIN_QUICK_START_SETUP_SIGNIN_SCREEN_ENTRY_POINT);
-
-  builder->Add("fydeosAddUserDupEmailErrorMessage",
-               IDS_FYDEOS_ADD_USER_DUP_EMAIL_ERROR_MESSAGE);
-  builder->Add("fydeosConfirmGotoLocalAccountTitle",
-							 IDS_FYDEOS_CONFIRM_GOTO_LOCAL_ACCOUNT_TITLE);
-  builder->Add("fydeosUseLocalAccount",
-							 IDS_FYDEOS_USE_LOCAL_ACCOUNT_BUTTON_TEXT);
-  builder->Add("fydeosUseOnlineAccount",
-						   IDS_FYDEOS_USE_ONLINE_ACCOUNT_BUTTON_TEXT);
-  builder->Add("fydeosConfirmGotoLocalAccountHintMessage1",
-							 IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_1);
-  builder->Add("fydeosConfirmGotoLocalAccountHintMessage2",
-					     IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2);
 }
 
 void GaiaScreenHandler::InitAfterJavascriptAllowed() {
@@ -699,12 +685,6 @@ void GaiaScreenHandler::InitAfterJavascriptAllowed() {
 }
 
 void GaiaScreenHandler::DeclareJSCallbacks() {
-  // ---***FYDEOS BEGIN***---
-  AddCallback("userSelectGoogleAccount",
-              &GaiaScreenHandler::HandleUserSelectGoogleAccount);
-  AddCallback("resetAccountFlag",
-              &GaiaScreenHandler::HandleResetAccountFlag);
-  // ---***FYDEOS END***---
   AddCallback("webviewLoadAborted",
               &GaiaScreenHandler::HandleWebviewLoadAborted);
   AddCallback("launchSAMLPublicSession",
@@ -1022,20 +1002,6 @@ void GaiaScreenHandler::OnCookieWaitTimeout() {
   LoadAuthenticator(true /* force */);
   LoginDisplayHost::default_host()->GetSigninUI()->ShowSigninError(
       SigninError::kCookieWaitTimeout, /*details=*/std::string());
-}
-
-void GaiaScreenHandler::HandleUserSelectGoogleAccount() {
-  fydeos::switches::DisableFydeAccountFlag();
-  LoadGaiaAsync(EmptyAccountId());
-  LoginDisplayHost::default_host()->StartWizard(UserCreationView::kScreenId);
-}
-
-void GaiaScreenHandler::HandleResetAccountFlag() {
-  if (g_browser_process->platform_part()
-      ->browser_policy_connector_ash()
-      ->IsDeviceEnterpriseManaged()) return;
-  fydeos::switches::EnableFydeAccountFlag();
-  ReloadGaia(true/* force_reload */);
 }
 
 void GaiaScreenHandler::HandleLaunchSAMLPublicSession(

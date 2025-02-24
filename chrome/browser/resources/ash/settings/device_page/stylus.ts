@@ -241,10 +241,6 @@ export class SettingsStylusElement extends SettingsStylusElementBase {
   private onFindAppsClick_(): void {
     this.browserProxy_.showPlayStore(FIND_MORE_APPS_URL);
   }
-
-  private showStylusFindMoreApps_(arcEnabled: boolean) {
-    return arcEnabled && !loadTimeData.getBoolean('isFydeProfile');
-  }
 }
 
 declare global {

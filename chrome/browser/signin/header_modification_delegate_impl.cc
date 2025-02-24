@@ -64,9 +64,7 @@ HeaderModificationDelegateImpl::HeaderModificationDelegateImpl(
 #else
 HeaderModificationDelegateImpl::HeaderModificationDelegateImpl(Profile* profile)
     : profile_(profile),
-      cookie_settings_(CookieSettingsFactory::GetForProfile(profile_)) {
-  dontProcessHeader_ = profile_->IsFydeProfile();
-}
+      cookie_settings_(CookieSettingsFactory::GetForProfile(profile_)) {}
 #endif
 
 HeaderModificationDelegateImpl::~HeaderModificationDelegateImpl() = default;
@@ -106,8 +104,6 @@ void HeaderModificationDelegateImpl::ProcessRequest(
 #endif
     return;
   }
-  if (dontProcessHeader_)
-    return;
 
   const PrefService* prefs = profile_->GetPrefs();
 #if BUILDFLAG(ENABLE_DICE_SUPPORT)

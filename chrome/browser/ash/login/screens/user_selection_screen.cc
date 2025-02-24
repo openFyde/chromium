@@ -71,7 +71,6 @@
 #include "services/device/public/mojom/wake_lock_provider.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -616,9 +615,6 @@ void UserSelectionScreen::HandleFocusPod(const AccountId& account_id) {
     pending_focused_account_id_ = account_id;
     return;
   }
-  // ---***FYDEOS BEGIN***---
-  fydeos::switches::ToggleFydeAccountFlagByAccountId(account_id);
-  // ---***FYDEOS END***---
   proximity_auth::ScreenlockBridge::Get()->SetFocusedUser(account_id);
   if (focused_pod_account_id_ == account_id) {
     return;
@@ -676,7 +672,7 @@ void UserSelectionScreen::OnBeforeShow() {
 void UserSelectionScreen::OnUserStatusChecked(const AccountId& account_id,
                                               const std::string& token,
                                               bool reauth_required) {
-  if (reauth_required && account_id.GetAccountType() != AccountType::FLINT_ACCOUNT) {
+  if (reauth_required) {
     RecordReauthReason(account_id, ReauthReason::kInvalidTokenHandle);
     SetAuthType(account_id, proximity_auth::mojom::AuthType::ONLINE_SIGN_IN,
                 std::u16string());

@@ -8,7 +8,6 @@
 
 import '//resources/ash/common/cr_elements/icons.html.js';
 import '//resources/polymer/v3_0/iron-icon/iron-icon.js';
-import '//resources/ash/common/cr_elements/cr_dialog/cr_dialog.js';
 import '../../components/security_token_pin.js';
 import '../../components/oobe_icons.html.js';
 import '../../components/buttons/oobe_text_button.js';
@@ -17,8 +16,6 @@ import '../../components/common_styles/oobe_dialog_host_styles.css.js';
 import '../../components/dialogs/oobe_loading_dialog.js';
 import '../../components/dialogs/oobe_modal_dialog.js';
 import '../../components/gaia_dialog.js';
-
-import {CrDialogElement} from '//resources/ash/common/cr_elements/cr_dialog/cr_dialog.js';
 
 import {Authenticator, AuthFlow, AuthMode, SUPPORTED_PARAMS} from '//oobe/gaia_auth_host/authenticator.js';
 import {assert} from '//resources/js/assert.js';
@@ -66,7 +63,6 @@ enum DialogMode {
   GAIA = 'online-gaia',
   LOADING = 'loading',
   PIN_DIALOG = 'pin',
-  GAIA_DUP_EMAIL_ERROR = 'dup-email-error',
 }
 
 /**
@@ -243,11 +239,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       emailDomain: {
         type: String,
       },
-
-      isDupEmailErrorShown: {
-        type: Boolean,
-        value: false,
-      },
     };
   }
 
@@ -267,9 +258,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   private isDefaultSsoProvider: boolean;
   private isClosable: boolean;
   private emailDomain: string;
-  private dupEmail: string;
-  private knownAccountList: Array<{email: string, type: string}>;
-  private isDupEmailErrorShown: boolean;
   private authenticatorParams: null|any;
   private email: string;
   private loadingTimer: number|undefined;
@@ -279,17 +267,12 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   private authCompleted: boolean;
   private pinDialogResultReported: boolean;
 
-  private confirmGotoLocalAccountDlg: CrDialogElement;
-
   constructor() {
     super();
     /**
      * Saved authenticator load params.
      */
     this.authenticatorParams = null;
-
-    this.dupEmail = '';
-    this.knownAccountList = [];
 
     /**
      * Email of the user, which is logging in using offline mode.
@@ -349,7 +332,7 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   static get observers() {
     return [
       'refreshDialogStep(isShown, pinDialogParameters,' +
-          'isLoadingUiShown, isDupEmailErrorShown)',
+          'isLoadingUiShown)',
     ];
   }
 
@@ -375,8 +358,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
         this.onInsecureContentBlocked.bind(this);
     this.authenticator.missingGaiaInfoCallback =
         this.missingGaiaInfo.bind(this);
-    this.authenticator.accountTypeGoogleSelectedCallback =
-        this.accountTypeGoogleSelectedCallback.bind(this);
     this.authenticator.samlApiUsedCallback = this.samlApiUsed.bind(this);
     this.authenticator.recordSamlProviderCallback =
         this.recordSamlProvider.bind(this);
@@ -384,11 +365,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       sendWithPromise('getDeviceIdForLogin')
           .then(deviceId => this.authenticator.getDeviceIdResponse(deviceId));
     });
-
-    const confirmGotoLocalAccountDlg =
-        this.shadowRoot?.querySelector<CrDialogElement>('#confirmGotoLocalAccountDlg');
-    assert(confirmGotoLocalAccountDlg instanceof CrDialogElement);
-    this.confirmGotoLocalAccountDlg = confirmGotoLocalAccountDlg;
 
     this.initializeLoginScreen('GaiaSigninScreen');
   }
@@ -576,9 +552,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   loadAuthenticator(data: any) {
     this.authenticator.setWebviewPartition(data.webviewPartitionName);
 
-    this.knownAccountList = data.knownAccountList;
-    this.dupEmail = '';
-
     this.authCompleted = false;
     this.navigationButtonsHidden = false;
 
@@ -597,12 +570,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
         !(data.enterpriseManagedDevice || data.hasDeviceOwner);
     params.isFirstUser = !(data.enterpriseManagedDevice || data.hasDeviceOwner);
     params.obfuscatedOwnerId = data.obfuscatedOwnerId;
-
-    params.enableFydeAccount = data.enableFydeAccount;
-    params.disableResetFydeAccountFlag = data.enterpriseManagedDevice;
-    if (data.enableFydeAccount) {
-      params.menuEnterpriseEnrollment = params.menuEnterpriseEnrollment && data.isDMServerSet;
-    }
 
     this.authenticatorParams = params;
 
@@ -755,11 +722,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
    *     payload.
    */
   private onAuthCompletedMessage(e: CustomEvent) {
-    if (this.checkIsDupEmail_(e.detail)) {
-      this.onDupEmailError_();
-      this.dupEmail = e.detail.email;
-      return;
-    }
     const credentials = e.detail;
     if (credentials.publicSAML) {
       this.email = credentials.email;
@@ -784,35 +746,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
 
     this.clearVideoTimer();
     this.authCompleted = true;
-  }
-
-  checkIsDupEmail_(credentials: {email: string}) {
-    const { email } = credentials;
-    let targetAccountType = '';
-    if (this.authenticatorParams.enableFydeAccount) {
-      // kFyde in account_id.cc
-      targetAccountType = 'fy';
-    } else {
-      // kGoogle in account_id.cc
-      targetAccountType = 'google';
-    }
-    const dup = this.knownAccountList.find(a => a.email === email && a.type !== targetAccountType);
-    return !!dup;
-  }
-
-  onDupEmailError_() {
-    this.isDupEmailErrorShown = true;
-  }
-
-  onDupEmailErrorButtonClicked_() {
-    this.isDupEmailErrorShown = false;
-    this.userActed('retry');
-  }
-
-  dupEmailErrorMessage_(dupEmail: string) {
-    return this.i18nAdvanced('fydeosAddUserDupEmailErrorMessage', {
-      substitutions: [dupEmail],
-    });
   }
 
   /**
@@ -885,10 +818,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       return;
     }
     this.userActed(isBackClicked ? 'back' : 'cancel');
-  }
-
-  private accountTypeGoogleSelectedCallback() {
-    chrome.send('userSelectGoogleAccount');
   }
 
   /**
@@ -1009,26 +938,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   }
 
   requestUseLocalAccount() {
-    if (this.authCompleted) return;
-    this.showConfirmGotoLocalAccountDlg_();
-  }
-
-  showConfirmGotoLocalAccountDlg_() {
-    if (this.confirmGotoLocalAccountDlg.open) return;
-    chrome.send('enableShelfButtons', [false]);
-    this.confirmGotoLocalAccountDlg.showModal();
-  }
-
-  onConfirmGotoLocalAccountClosed_() {
-    chrome.send('enableShelfButtons', [true]);
-  }
-
-  onUseOnlineAccountTap_() {
-    this.confirmGotoLocalAccountDlg.close();
-  }
-
-  onUseLocalAccountTap_() {
-    this.confirmGotoLocalAccountDlg.close();
     this.userActed('useLocalAccount');
   }
 
@@ -1055,8 +964,7 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   private refreshDialogStep(
       isScreenShown: boolean,
       pinParams: OobeTypes.SecurityTokenPinDialogParameters,
-      isLoading: boolean,
-      isDupEmailError: boolean): void {
+      isLoading: boolean): void {
     if (!isScreenShown) {
       return;
     }
@@ -1066,10 +974,6 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
     }
     if (isLoading) {
       this.setUIStep(DialogMode.LOADING);
-      return;
-    }
-    if (isDupEmailError) {
-      this.setUIStep(DialogMode.GAIA_DUP_EMAIL_ERROR);
       return;
     }
     this.setUIStep(DialogMode.GAIA);

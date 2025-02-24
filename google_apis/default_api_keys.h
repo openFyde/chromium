@@ -38,11 +38,6 @@ struct DefaultApiKeys {
   const char* google_api_key_boca;
 #endif
 
-#if BUILDFLAG(IS_OPENFYDE)
-  const char* fydeos_client_id_main;
-  const char* fydeos_client_secret_main;
-#endif
-
   const char* google_client_id_main;
   const char* google_client_secret_main;
 
@@ -51,11 +46,6 @@ struct DefaultApiKeys {
 
   const char* google_client_id_remoting_host;
   const char* google_client_secret_remoting_host;
-
-#if BUILDFLAG(IS_OPENFYDE)
-  const char* fydeos_default_client_id;
-  const char* fydeos_default_client_secret;
-#endif
 
   const char* google_default_client_id;
   const char* google_default_client_secret;
