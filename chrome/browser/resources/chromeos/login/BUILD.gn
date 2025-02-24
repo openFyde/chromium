@@ -59,6 +59,13 @@ build_webui("build") {
     "images/1x/thumbnail-theme-auto-1x.png",
     "images/2x/thumbnail-theme-auto-2x.png",
 
+    "images/1x/fydeos/thumbnail-theme-light-1x.png",
+    "images/2x/fydeos/thumbnail-theme-light-2x.png",
+    "images/1x/fydeos/thumbnail-theme-dark-1x.png",
+    "images/2x/fydeos/thumbnail-theme-dark-2x.png",
+    "images/1x/fydeos/thumbnail-theme-auto-1x.png",
+    "images/2x/fydeos/thumbnail-theme-auto-2x.png",
+
     "images/fydeos_touchpad_scroll_illo.png",
 
     # Structure files

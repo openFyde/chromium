@@ -498,6 +498,13 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
               this.i18n('appsmenuItemDescriptionArcUnavailable'),
         },
         {
+          section: Section.kFydeAssistant,
+          path: `/${routesMojom.FYDE_ASSISTANT_SECTION_PATH}`,
+          icon: 'os-settings:fydeos-ai',
+          label: this.i18n('fydeAssistantPageTitle'),
+          sublabel: this.i18n('fydeAssistantMenuItemDescription'),
+        },
+        {
           section: Section.kAccessibility,
           path: `/${routesMojom.ACCESSIBILITY_SECTION_PATH}`,
           icon: 'os-settings:accessibility-revamp',

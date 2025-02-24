@@ -30,6 +30,8 @@ const std::vector<std::string> kNonForYouBoards = {
   "fydetab_duo-fydeos",
 };
 
+const char kFydeAutoSigninDelay[] = "fyde-auto-signin-delay";
+
 }
 
 const char kFydeOSServiceHostSuffixForTesting[] =
@@ -66,6 +68,13 @@ bool IsUnknownPeripheralBatteryNotificationDisabled() {
 bool IsDynamicDefaultWallpaperSupported() {
   return base::CommandLine::ForCurrentProcess()->HasSwitch(
       kFydeEnableDynamicDefaultWallpaper);
+}
+
+int64_t GetFydeOSAutoSigninDelay() {
+	std::string delayStr = base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kFydeAutoSigninDelay);
+	if (delayStr.empty())
+		return 0;
+	return (int64_t) std::stoi(delayStr);
 }
 
 } // switches

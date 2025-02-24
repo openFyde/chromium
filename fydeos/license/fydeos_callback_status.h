@@ -17,6 +17,9 @@ template <typename ResultType>
     int licenseType, bool expired, int expiration_action, int showLicenseInSettings, int logOutInterval)>;
   using ErrorCallback =
     base::OnceCallback<void(int errCode, const std::string& errMsg)>;
+template <typename ResultType>
+  using ErrorWithSaveCallback =
+    base::OnceCallback<void(int errCode, const std::string& errMsg, ResultType result)>;
 
 }  // namespace fydeos::license
 

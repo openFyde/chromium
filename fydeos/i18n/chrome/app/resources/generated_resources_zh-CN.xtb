@@ -202,6 +202,12 @@
 <translation id="7384698100459834045">订阅有效期</translation>
 <translation id="3354919960795782984">设备识别码</translation>
 <translation id="5758632069869992306">联网查看订阅信息</translation>
+<translation id="2505128566310022721">功能开关、FydeOS AI 相关设置</translation>
+<translation id="133677533106907546">启用 FydeOS AI</translation>
+<translation id="1987923075425225632">开启或关闭全部 FydeOS AI 相关功能</translation>
+<translation id="2392181387643487118">启用 FydeOS AI 便捷唤醒</translation>
+<translation id="5314803795362753367">当有内容被选中时按下键盘快捷键 Ctrl + C + C 可快速唤醒 FydeOS AI 并展示交互选项</translation>
+<translation id="3403772795089627134">更多关于 FydeOS AI 的设置选项</translation>
 <!-- chromeos_strings.override.grdp -->
 <translation id="8642537394560952908">拍摄新照片，或者选择现有照片或图标。
     <ph name="LINE_BREAK" />

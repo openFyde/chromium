@@ -67,6 +67,7 @@ class CHROMEOS_EXPORT LicenseManager : public ::ash::LoginState::Observer {
   void IStoreLicense(std::optional<base::Value> license);
   void OnStoredLicense(std::optional<fydeos::ash::ShellState> state);
   void OnError(int errCode, const std::string& errMsg);
+  void OnValidateError(int errCode, const std::string& errMsg, std::optional<base::Value> license = std::nullopt);
   void OnValidPref(int licenseType, bool expired, int expiration_action, int showLicenseInSettings, int logOutInterval);
   void OnInvalid();
   void OnValid(std::optional<base::Value> license);

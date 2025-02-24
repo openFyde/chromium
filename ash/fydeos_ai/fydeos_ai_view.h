@@ -56,31 +56,42 @@ class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHan
 
   bool IsVisible() const;
 
-  void ShowBubble();
+  void ShowBubble(bool update_anchor_point = true);
   void HideBubble();
 
   void UpdateLastClipboardItem(const ClipboardHistoryItem& item);
   bool CanHandleToggleFydeOSAssistant();
 
+  bool CanHandleTouchSelectionMenuAction();
+  void HandleSendTextToAI(const gfx::Rect& anchor_rect, const std::u16string& text);
+
   void OnBubbleReady();
 
   void SetBubbleRect(int x, int y, int width, int height);
 
+  void CenterBubble(int width, int height);
+
  private:
   void OnSessionStateChanged(session_manager::SessionState state) override;
+  void OnChromeTerminating() override;
 
   void OnMouseEvent(ui::MouseEvent* event) override;
   void OnTouchEvent(ui::TouchEvent* event) override;
 
   void ProcessPressedEvent(ui::LocatedEvent* event);
+  void ProcessDraggedEvent(ui::LocatedEvent* event);
+
+  void ResetDragStartPoint(ui::LocatedEvent* event);
 
   void OnFydeAssistantExtraAcceleratorEnabled(bool enabled) override;
 
-  void Show();
+  void Show(bool update_anchor_point);
   void Hide();
 
   void InitializeBubble();
+  void ScheduleInitializeBubble();
 
+  bool init_scheduled_ = false;
   bool enabled_ = false;
   bool ready_to_show_bubble_ = false;
   bool bubble_initialized_ = false;
@@ -90,9 +101,13 @@ class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHan
   FydeAssistantViewObserver::ClipboardItemForAssistant last_clipboard_item_;
   raw_ptr<FydeAssistantBubble, DanglingUntriaged> bubble_;
 
-  gfx::Point current_anchor_point_ = gfx::Point();
+  gfx::Point current_anchor_point_;
+  gfx::Point drag_start_point_;
+  bool is_dragging_ = false;
 
   mutable base::ObserverList<FydeAssistantViewObserver> observers_;
+
+base::WeakPtrFactory<FydeAssistantView> weak_factory_{this};
 };
 
 }  // namespace ash

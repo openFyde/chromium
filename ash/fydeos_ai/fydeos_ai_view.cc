@@ -16,8 +16,14 @@
 #include "ash/public/cpp/ash_web_view_factory.h"
 #include "ash/fydeos_ai/fydeos_ai_bubble.h"
 #include "ui/wm/core/coordinate_conversion.h"
+#include "base/task/task_traits.h"
+#include "base/task/single_thread_task_runner.h"
 
 namespace ash {
+
+namespace {
+const int kBubbleInitDelaySeconds = 5;
+}
 
 FydeAssistantView::FydeAssistantView(aura::Window* container) {
   Shell::Get()->session_controller()->AddObserver(this);
@@ -53,14 +59,29 @@ void FydeAssistantView::InitializeBubble() {
   bubble_initialized_ = true;
 }
 
-void FydeAssistantView::ShowBubble() {
+void FydeAssistantView::ScheduleInitializeBubble() {
+  if (bubble_initialized_ || init_scheduled_) return;
+  if (FydeAssistantBubble::ReadyToInit()) {
+    InitializeBubble();
+  } else {
+    VLOG(2) << "Not ready to init bubble, schedule it, after " << kBubbleInitDelaySeconds << " seconds";
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&FydeAssistantView::InitializeBubble,
+                      weak_factory_.GetWeakPtr()),
+        base::Seconds(kBubbleInitDelaySeconds));
+    init_scheduled_ = true;
+  }
+}
+
+void FydeAssistantView::ShowBubble(bool update_anchor_point) {
   if (!enabled_) {
     return;
   }
   if (IsVisible()) {
     return;
   }
-  Show();
+  Show(update_anchor_point);
 }
 
 void FydeAssistantView::ProcessPressedEvent(ui::LocatedEvent* event) {
@@ -74,13 +95,49 @@ void FydeAssistantView::ProcessPressedEvent(ui::LocatedEvent* event) {
   Hide();
 }
 
+void FydeAssistantView::ResetDragStartPoint(ui::LocatedEvent* event) {
+  if (is_dragging_) {
+    is_dragging_ = false;
+    event->SetHandled();
+  }
+  drag_start_point_ = gfx::Point();
+}
+
+void FydeAssistantView::ProcessDraggedEvent(ui::LocatedEvent* event) {
+  if (!IsVisible()) return;
+  gfx::Point screen_location = event->location();
+  ::wm::ConvertPointToScreen(static_cast<aura::Window*>(event->target()),
+                             &screen_location);
+  if (!bubble_->GetBoundsInScreen().Contains(screen_location)) {
+    return;
+  }
+  gfx::Rect widget_bounds = bubble_->GetWidget()->GetWindowBoundsInScreen();
+  if (!drag_start_point_.IsOrigin()) {
+    widget_bounds.Offset(screen_location - drag_start_point_);
+    bubble_->GetWidget()->SetBounds(widget_bounds);
+    is_dragging_ = true;
+    event->SetHandled();
+  }
+  drag_start_point_ = screen_location;
+}
+
 void FydeAssistantView::OnTouchEvent(ui::TouchEvent* event) {
-  ProcessPressedEvent(event->AsLocatedEvent());
+  if (event->type() == ui::EventType::kTouchPressed) {
+    ProcessPressedEvent(event->AsLocatedEvent());
+  } else if (event->type() == ui::EventType::kTouchMoved) {
+    ProcessDraggedEvent(event->AsLocatedEvent());
+  } else if (event->type() == ui::EventType::kTouchReleased || event->type() == ui::EventType::kTouchCancelled) {
+    ResetDragStartPoint(event->AsLocatedEvent());
+  }
 }
 
 void FydeAssistantView::OnMouseEvent(ui::MouseEvent* event) {
   if (event->type() == ui::EventType::kMousePressed) {
     ProcessPressedEvent(event->AsLocatedEvent());
+  } else if (event->type() == ui::EventType::kMouseDragged) {
+    ProcessDraggedEvent(event->AsLocatedEvent());
+  } else if (event->type() == ui::EventType::kMouseReleased) {
+    ResetDragStartPoint(event->AsLocatedEvent());
   }
 }
 
@@ -91,14 +148,16 @@ void FydeAssistantView::HideBubble() {
   Hide();
 }
 
-void FydeAssistantView::Show() {
+void FydeAssistantView::Show(bool update_anchor_point) {
   if (!ready_to_show_bubble_) {
     return;
   }
   if (!bubble_) {
     return;
   }
-  current_anchor_point_ = display::Screen::GetScreen()->GetCursorScreenPoint();
+  if (update_anchor_point) {
+    current_anchor_point_ = display::Screen::GetScreen()->GetCursorScreenPoint();
+  }
   bubble_->SetAnchorRect(gfx::Rect(current_anchor_point_, gfx::Size()));
   bubble_->SetPreferredSize(bubble_->CalculatePreferredSize({}));
   bubble_->GetWidget()->Show();
@@ -121,7 +180,13 @@ void FydeAssistantView::Hide() {
 
 void FydeAssistantView::OnSessionStateChanged(session_manager::SessionState state) {
   if (enabled_ && state == session_manager::SessionState::ACTIVE) {
-    InitializeBubble();
+    ScheduleInitializeBubble();
+  }
+}
+
+void FydeAssistantView::OnChromeTerminating() {
+  if (bubble_) {
+    bubble_->RemoveWebView();
   }
 }
 
@@ -129,8 +194,22 @@ void FydeAssistantView::OnFydeAssistantExtraAcceleratorEnabled(bool enabled) {
   enabled_ = enabled;
 
   if (enabled_) {
-    InitializeBubble();
+    ScheduleInitializeBubble();
   }
+}
+
+void FydeAssistantView::HandleSendTextToAI(const gfx::Rect& anchor_rect, const std::u16string& text) {
+  if (!enabled_) {
+    return;
+  }
+  if (text.empty()) {
+    return;
+  }
+  last_clipboard_item_.display_format = static_cast<int>(crosapi::mojom::ClipboardHistoryDisplayFormat::kText);
+  last_clipboard_item_.display_text = text;
+
+  current_anchor_point_ = anchor_rect.origin();
+  ShowBubble(false);
 }
 
 void FydeAssistantView::UpdateLastClipboardItem(const ClipboardHistoryItem& item) {
@@ -147,6 +226,16 @@ void FydeAssistantView::UpdateLastClipboardItem(const ClipboardHistoryItem& item
     VLOG(3) << "pressed twice and clipboard updated, show the bubble now";
     ShowBubble();
   }
+}
+
+bool FydeAssistantView::CanHandleTouchSelectionMenuAction() {
+  if (!enabled_) {
+    return false;
+  }
+  if (!ready_to_show_bubble_) {
+    return false;
+  }
+  return true;
 }
 
 bool FydeAssistantView::CanHandleToggleFydeOSAssistant() {
@@ -188,6 +277,12 @@ void FydeAssistantView::SetBubbleRect(int x, int y, int width, int height) {
     );
     bubble_->SetPreferredSize(gfx::Size(newRect.width(), newRect.height()));
     bubble_->SetAnchorRect(gfx::Rect(current_anchor_point_, gfx::Size()));
+  }
+}
+
+void FydeAssistantView::CenterBubble(int width, int height) {
+  if (bubble_) {
+    bubble_->GetWidget()->CenterWindow(gfx::Size(width, height));
   }
 }
 

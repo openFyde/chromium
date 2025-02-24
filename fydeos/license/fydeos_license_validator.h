@@ -23,7 +23,7 @@ class LicenseValidator {
   void StartValidate(const std::string& id, std::optional<std::string> license,
     SuccessCallback<std::optional<base::Value>> success_callback,
     SavePrefCallback save_pref_callback,
-    ErrorCallback err_callback);
+    ErrorWithSaveCallback<std::optional<base::Value>> err_callback);
 
  private:
   crypto::SignatureVerifier signature_verifier_;

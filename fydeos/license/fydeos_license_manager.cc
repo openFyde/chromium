@@ -238,6 +238,13 @@ void LicenseManager::OnFetchError(int errCode, const std::string& errMsg) {
   // do nothing;
 }
 
+void LicenseManager::OnValidateError(int errCode, const std::string& errMsg, std::optional<base::Value> license) {
+  if (mode_ == FetchMode::OnlineMode && errCode == -9 && license) {
+    IStoreLicense(std::move(license));
+  }
+  OnError(errCode, errMsg);
+}
+
 void LicenseManager::OnError(int errCode, const std::string& errMsg) {
   if (mode_ == FetchMode::OfflineMode) {
     LOG(WARNING) << "Error occured from offline verification, code:"
@@ -342,7 +349,7 @@ void LicenseManager::IValidateLicense(std::optional<std::string> license) {
                               &LicenseManager::OnValid,
                               weak_ptr_factory_.GetWeakPtr()),
     base::BindOnce(&LicenseManager::OnValidPref, weak_ptr_factory_.GetWeakPtr()),
-    base::BindOnce(&LicenseManager::OnError, weak_ptr_factory_.GetWeakPtr()));
+    base::BindOnce(&LicenseManager::OnValidateError, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void LicenseManager::OnValidPref(int licenseType, bool expired, int expirationAction, int showLicenseInSettings, int logOutInterval) {

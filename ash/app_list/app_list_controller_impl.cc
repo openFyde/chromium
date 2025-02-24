@@ -45,6 +45,7 @@
 #include "ash/public/cpp/shelf_config.h"
 #include "ash/public/cpp/shelf_types.h"
 #include "ash/public/cpp/shell_window_ids.h"
+#include "ash/public/cpp/new_window_delegate.h"
 #include "ash/public/cpp/wallpaper/wallpaper_controller.h"
 #include "ash/root_window_controller.h"
 #include "ash/screen_util.h"
@@ -1209,12 +1210,22 @@ void AppListControllerImpl::RecordShelfAppLaunched() {
 
 void AppListControllerImpl::StartAssistant(
     assistant::AssistantEntryPoint entry_point) {
+  if (ash::features::IsFydeAssistantEnabled()) {
+    NewWindowDelegate::GetInstance()->OpenUrl(GURL("chrome://fydeos-ai"),
+      NewWindowDelegate::OpenUrlFrom::kUserInteraction,
+      NewWindowDelegate::Disposition::kNewWindow);
+    UpdateSearchBoxUiVisibilities();
+    return;
+  }
   AssistantUiController::Get()->ShowUi(entry_point);
   UpdateSearchBoxUiVisibilities();
 }
 
 void AppListControllerImpl::EndAssistant(
     assistant::AssistantExitPoint exit_point) {
+  if (ash::features::IsFydeAssistantEnabled()) {
+    return;
+  }
   AssistantUiController::Get()->CloseUi(exit_point);
 }
 

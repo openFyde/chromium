@@ -9,11 +9,13 @@
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
 #include "ash/fydeos_ai/fydeos_ai_view.h"
+#include "services/network/public/cpp/network_connection_tracker.h"
 
 namespace ash {
 
 class FydeAssistantWebUIHandler
     : public content::WebUIMessageHandler,
+      public network::NetworkConnectionTracker::NetworkConnectionObserver,
       public ui::NativeThemeObserver,
       public AssistantUiModelObserver,
       public FydeAssistantViewObserver,
@@ -46,6 +48,9 @@ class FydeAssistantWebUIHandler
   // ui::NativeThemeObserver:
   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
 
+  // network::NetworkConnectionTracker::NetworkConnectionObserver:
+  void OnConnectionChanged(network::mojom::ConnectionType type) override;
+
   void OnBubbleQueryChanged(const FydeAssistantViewObserver::ClipboardItemForAssistant& item) override;
   void OnBubbleVisibilityChanged(bool visible) override;
  private:
@@ -54,6 +59,7 @@ class FydeAssistantWebUIHandler
 
   void OnFydeAssistantOpenUrl(const base::Value::List& args);
   void HandleSetAssistantBubbleRect(const base::Value::List& args);
+  void HandleCenterAssistantBubbleRect(const base::Value::List& args);
 
   raw_ptr<FydeAssistantAppUI> fyde_assistant_app_ui_;
 

@@ -860,6 +860,7 @@ class FydeOSInstallerScreen extends FydeOSInstallerScreenElementBase {
   }
 
   onBeforeShow() {
+    super.onBeforeShow();
     this.setupMultiBootOptionsSelect_();
     if (this.isLoading_) return;
     if (!this.isShellClientAvailable_) {

@@ -15,6 +15,8 @@ namespace ash {
 class ASH_EXPORT FydeAssistantBubble : public views::BubbleDialogDelegateView,
                                        public AshWebView::Observer {
  public:
+  static bool ReadyToInit();
+
   explicit FydeAssistantBubble(const gfx::Rect& anchor_rect);
 
   FydeAssistantBubble(const FydeAssistantBubble&) = delete;
@@ -22,7 +24,9 @@ class ASH_EXPORT FydeAssistantBubble : public views::BubbleDialogDelegateView,
       delete;
   ~FydeAssistantBubble() override;
 
-  void InitWebView(FydeAssistantView* owner);
+  bool InitWebView(FydeAssistantView* owner);
+
+  void RemoveWebView();
 
   // views::BubbleDialogDelegateView:
   gfx::Size CalculatePreferredSize(const views::SizeBounds& available_size) const override;
@@ -32,7 +36,7 @@ class ASH_EXPORT FydeAssistantBubble : public views::BubbleDialogDelegateView,
   // AshWebView::Observer:
   void DidStopLoading() override;
 
-  void OpenUrl(const GURL& url);
+  bool OpenUrl(const GURL& url);
 
   std::unique_ptr<AshWebView> web_view_;
   raw_ptr<AshWebView, DanglingUntriaged> web_view_ptr_ = nullptr;

@@ -12,6 +12,9 @@
 #include "ash/public/cpp/shell_window_ids.h"
 #include "ash/utility/wm_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/touch_selection/touch_editing_controller.h"
+#include "ui/strings/grit/ui_strings.h"
 #include "ui/base/models/image_model.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
@@ -31,11 +34,15 @@ TouchSelectionMenuChromeOS::TouchSelectionMenuChromeOS(
     views::TouchSelectionMenuRunnerViews* owner,
     base::WeakPtr<ui::TouchSelectionMenuClient> client,
     aura::Window* context,
+    bool can_handle_send_text_to_ai,
     arc::mojom::TextSelectionActionPtr action)
     : views::TouchSelectionMenuViews(owner, client, context),
       action_(std::move(action)),
       display_id_(
-          display::Screen::GetScreen()->GetDisplayNearestWindow(context).id()) {
+          display::Screen::GetScreen()->GetDisplayNearestWindow(context).id()),
+      can_handle_send_text_to_ai_(can_handle_send_text_to_ai),
+      owner_(owner),
+      client_(client) {
 }
 
 void TouchSelectionMenuChromeOS::SetActionsForTesting(
@@ -52,6 +59,16 @@ void TouchSelectionMenuChromeOS::SetActionsForTesting(
 }
 
 void TouchSelectionMenuChromeOS::CreateButtons() {
+  if (can_handle_send_text_to_ai_
+    && client_->IsCommandIdEnabled(ui::TouchEditable::kCopy)
+    && !client_->GetSelectedText().empty()) {
+    CreateButton(
+        l10n_util::GetStringUTF16(IDS_APP_SEND_TO_AI),
+        base::BindRepeating(&TouchSelectionMenuChromeOS::SendToAIButtonPressed,
+                            base::Unretained(this)));
+    CreateSeparator();
+  }
+
   if (action_) {
     views::LabelButton* button = CreateButton(
         base::UTF8ToUTF16(action_->title),
@@ -93,4 +110,8 @@ void TouchSelectionMenuChromeOS::ActionButtonPressed() {
 
   instance->HandleIntent(std::move(action_->action_intent),
                          std::move(action_->activity));
+}
+
+void TouchSelectionMenuChromeOS::SendToAIButtonPressed() {
+  owner_->HandleSendTextToAI(client_->GetSelectedText());
 }

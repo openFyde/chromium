@@ -1325,9 +1325,9 @@ void ToggleAssignToAllDesk() {
 void ToggleAssistant() {
   if (ash::features::IsFydeAssistantEnabled()) {
     if (AssistantState::Get()->fyde_assistant_enabled().value_or(false)) {
-      AssistantUiController::Get()->ToggleUi(
-          /*entry_point=*/assistant::AssistantEntryPoint::kHotkey,
-          /*exit_point=*/assistant::AssistantExitPoint::kHotkey);
+      NewWindowDelegate::GetInstance()->OpenUrl(GURL("chrome://fydeos-ai"),
+                                                NewWindowDelegate::OpenUrlFrom::kUserInteraction,
+                                                NewWindowDelegate::Disposition::kNewWindow);
     }
     return;
   }

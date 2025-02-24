@@ -14,6 +14,7 @@ import {assert} from 'chrome://resources/js/assert.js';
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 
 import {androidAppsVisible, isAppParentalControlsFeatureAvailable, isArcVmEnabled, isCrostiniSupported, isGuest, isInputDeviceSettingsSplitEnabled, isKerberosEnabled, isPluginVmAvailable, isPowerwashAllowed, isRevampWayfindingEnabled} from './common/load_time_booleans.js';
+import {isFydeAssistantFeatureEnabled} from './common/load_time_booleans.js';
 import * as routesMojom from './mojom-webui/routes.mojom-webui.js';
 
 /**
@@ -213,6 +214,7 @@ export interface OsSettingsRoutes extends MinimumRoutes {
   OFFICE: Route;
   ON_STARTUP: Route;
   ONE_DRIVE: Route;
+  OS_FYDE_ASSISTANT: Route;
   OS_ACCESSIBILITY: Route;
   OS_LANGUAGES: Route;
   OS_LANGUAGES_APP_LANGUAGES: Route;
@@ -467,6 +469,13 @@ export function createRoutes(): OsSettingsRoutes {
         r.APPS, routesMojom.APP_PARENTAL_CONTROLS_SUBPAGE_PATH,
         Subpage.kAppParentalControls);
   }
+
+  // Fyde Assistant section.
+  if (!isGuest() && isFydeAssistantFeatureEnabled()) {
+    r.OS_FYDE_ASSISTANT = createSection(
+        r.BASIC, routesMojom.FYDE_ASSISTANT_SECTION_PATH, Section.kFydeAssistant);
+  }
+
 
   // Accessibility section.
   r.OS_ACCESSIBILITY = createSection(

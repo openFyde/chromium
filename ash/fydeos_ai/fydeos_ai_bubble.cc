@@ -27,6 +27,11 @@ constexpr int kHeightDip = 162;
 
 FydeAssistantBubble::~FydeAssistantBubble() = default;
 
+// static
+bool FydeAssistantBubble::ReadyToInit() {
+  return AshWebViewFactory::Get() != nullptr;
+}
+
 gfx::Size FydeAssistantBubble::CalculatePreferredSize(const views::SizeBounds& available_size) const {
   return gfx::Size(kWidthDip, kHeightDip);
 }
@@ -51,20 +56,31 @@ FydeAssistantBubble::FydeAssistantBubble(const gfx::Rect& anchor_rect) {
   // views::DialogDelegate::CreateDialogWidget(this, nullptr, window);
 }
 
-void FydeAssistantBubble::InitWebView(FydeAssistantView* owner) {
+bool FydeAssistantBubble::InitWebView(FydeAssistantView* owner) {
   owner_ = owner;
-  OpenUrl(GURL(kFydeAssistantExtensionUrl));
+  return OpenUrl(GURL(kFydeAssistantExtensionUrl));
 }
 
-void FydeAssistantBubble::OpenUrl(const GURL& url) {
+void FydeAssistantBubble::RemoveWebView() {
+  if (web_view_ptr_) {
+    RemoveChildViewT(web_view_ptr_.get())->RemoveObserver(this);
+    web_view_ptr_ = nullptr;
+  }
+}
+
+bool FydeAssistantBubble::OpenUrl(const GURL& url) {
   if (web_view_ptr_ || web_view_) {
-    return;
+    return true;
   }
   auto params = AshWebView::InitParams();
   params.can_record_media = true;
+  if (!FydeAssistantBubble::ReadyToInit()) {
+    return false;
+  }
   web_view_ = AshWebViewFactory::Get()->Create(params);
   web_view_->AddObserver(this);
   web_view_->Navigate(url);
+  return true;
 }
 
 void FydeAssistantBubble::DidStopLoading()  {
