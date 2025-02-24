@@ -19,8 +19,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -316,7 +314,7 @@ void PrintingSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
   html_source->AddString("printingCUPSPrintLearnMoreUrl",
-                         base::ASCIIToUTF16(fydeos::constants::kCupsPrintLearnMoreURL));
+                         GetHelpUrlWithBoard(chrome::kCupsPrintLearnMoreURL));
   html_source->AddString(
       "printingCUPSPrintPpdLearnMoreUrl",
       GetHelpUrlWithBoard(chrome::kCupsPrintPPDLearnMoreURL));

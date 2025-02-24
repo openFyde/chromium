@@ -39,8 +39,6 @@ class ASH_PUBLIC_EXPORT AssistantStateObserver : public base::CheckedObserver {
   virtual void OnAssistantNotificationEnabled(bool notification_enabled) {}
   virtual void OnAssistantOnboardingModeChanged(
       assistant::prefs::AssistantOnboardingMode onboarding_mode) {}
-  virtual void OnFydeAssistantEnabled(bool enabled) {}
-  virtual void OnFydeAssistantExtraAcceleratorEnabled(bool enabled) {}
   virtual void OnAssistantStateDestroyed() {}
   virtual void OnAssistantStatusChanged(assistant::AssistantStatus status) {}
   virtual void OnAssistantFeatureAllowedChanged(
@@ -113,14 +111,6 @@ class ASH_PUBLIC_EXPORT AssistantStateBase {
     return locked_full_screen_enabled_;
   }
 
-  const std::optional<bool>& fyde_assistant_enabled() const {
-    return fyde_assistant_enabled_;
-  }
-
-  const std::optional<bool>& fyde_assistant_extra_accelerator_enabled() const {
-    return fyde_assistant_extra_accelerator_enabled_;
-  }
-
   std::string ToString() const;
 
   void AddObserver(AssistantStateObserver* observer);
@@ -144,7 +134,6 @@ class ASH_PUBLIC_EXPORT AssistantStateBase {
   void UpdateLaunchWithMicOpen();
   void UpdateNotificationEnabled();
   void UpdateOnboardingMode();
-  void UpdateFydeAssistantEnabled();
 
   // Called when new values of the listened states are received.
   void UpdateAssistantStatus(assistant::AssistantStatus status);
@@ -196,9 +185,6 @@ class ASH_PUBLIC_EXPORT AssistantStateBase {
   // Whether locked full screen state is enabled. nullopt if the data is not
   // available yet.
   std::optional<bool> locked_full_screen_enabled_;
-
-  std::optional<bool> fyde_assistant_enabled_;
-  std::optional<bool> fyde_assistant_extra_accelerator_enabled_;
 
   // Observes user profile prefs for the Assistant.
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;

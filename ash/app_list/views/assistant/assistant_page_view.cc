@@ -10,7 +10,6 @@
 #include "ash/app_list/app_list_view_delegate.h"
 #include "ash/app_list/views/app_list_view.h"
 #include "ash/app_list/views/assistant/assistant_main_view.h"
-#include "ash/app_list/views/assistant/fyde_assistant_page.h"
 #include "ash/app_list/views/contents_view.h"
 #include "ash/app_list/views/search_box_view.h"
 #include "ash/assistant/model/assistant_ui_model.h"
@@ -426,10 +425,8 @@ void AssistantPageView::InitLayout() {
   if (!assistant_view_delegate_)
     return;
 
-  // assistant_main_view_ = AddChildView(
-  //     std::make_unique<AssistantMainView>(assistant_view_delegate_));
   assistant_main_view_ = AddChildView(
-      std::make_unique<FydeAssistantPage>());
+      std::make_unique<AssistantMainView>(assistant_view_delegate_));
 }
 
 void AssistantPageView::UpdateBackground(bool in_tablet_mode) {

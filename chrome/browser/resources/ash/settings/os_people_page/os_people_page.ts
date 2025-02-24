@@ -133,13 +133,6 @@ export class OsSettingsPeoplePageElement extends
         readOnly: true,
       },
 
-      shouldUseNewUI_: {
-        type: Boolean,
-        value: () => {
-          return isRevampWayfindingEnabled() && !loadTimeData.getBoolean('isFydeProfile');
-        }
-      },
-
       showParentalControls_: {
         type: Boolean,
         value() {

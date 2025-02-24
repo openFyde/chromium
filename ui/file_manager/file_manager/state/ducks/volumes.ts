@@ -31,7 +31,6 @@ export {slice as volumesSlice};
 export const myFilesEntryListKey = `entry-list://${RootType.MY_FILES}`;
 export const crostiniPlaceHolderKey = `fake-entry://${RootType.CROSTINI}`;
 export const drivePlaceHolderKey = `fake-entry://${RootType.DRIVE_FAKE_ROOT}`;
-export const fydeDropRootKey = `fake-entry://${RootType.FYDEDROP}`;
 export const recentRootKey = `fake-entry://${RootType.RECENT}/all`;
 export const trashRootKey = `fake-entry://${RootType.TRASH}`;
 export const driveRootEntryListKey = `entry-list://${RootType.DRIVE_FAKE_ROOT}`;

@@ -83,7 +83,6 @@
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 #include "ui/events/event_constants.h"
 #include "url/gurl.h"
-#include "fydeos/switches/urls/urls_constants.h"
 
 using session_manager::SessionManager;
 using session_manager::SessionState;
@@ -542,14 +541,10 @@ void SystemTrayClientImpl::ShowGestureEducationHelp() {
   if (!profile)
     return;
 
-  /*
   ash::SystemAppLaunchParams params;
   params.url = GURL(chrome::kChromeOSGestureEducationHelpURL);
   params.launch_source = apps::LaunchSource::kFromOtherApp;
   ash::LaunchSystemWebAppAsync(profile, ash::SystemWebAppType::HELP, params);
-  */
-  chrome::ScopedTabbedBrowserDisplayer displayer(profile);
-  ShowSingletonTab(displayer.browser(), GURL(fydeos::constants::kFydeNewGestureHelpURL));
 }
 
 void SystemTrayClientImpl::ShowPaletteHelp() {

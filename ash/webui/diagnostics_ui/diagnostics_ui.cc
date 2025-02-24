@@ -52,7 +52,6 @@
 #include "ui/chromeos/strings/network/network_element_localized_strings_provider.h"
 #include "ui/resources/grit/webui_resources.h"
 #include "ui/webui/color_change_listener/color_change_handler.h"
-#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash {
 
@@ -109,7 +108,7 @@ base::Value::Dict GetDataSourceUpdate() {
       "keyboardTesterHelpLink",
       GetLinkLabel(
           IDS_INPUT_DIAGNOSTICS_KEYBOARD_TESTER_HELP_LINK,
-          fydeos::constants::kFydeOSHelpURL));
+          "https://support.google.com/chromebook?p=keyboard_troubleshoot"));
   return update;
 }
 

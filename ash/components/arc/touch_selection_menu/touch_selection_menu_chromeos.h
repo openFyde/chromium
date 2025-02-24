@@ -22,7 +22,6 @@ class TouchSelectionMenuChromeOS : public views::TouchSelectionMenuViews {
   TouchSelectionMenuChromeOS(views::TouchSelectionMenuRunnerViews* owner,
                              base::WeakPtr<ui::TouchSelectionMenuClient> client,
                              aura::Window* context,
-                             bool can_handle_send_text_to_ai,
                              arc::mojom::TextSelectionActionPtr action);
 
   TouchSelectionMenuChromeOS(const TouchSelectionMenuChromeOS&) = delete;
@@ -42,13 +41,9 @@ class TouchSelectionMenuChromeOS : public views::TouchSelectionMenuViews {
   ~TouchSelectionMenuChromeOS() override;
 
   void ActionButtonPressed();
-  void SendToAIButtonPressed();
 
   arc::mojom::TextSelectionActionPtr action_;
   int64_t display_id_;
-  bool can_handle_send_text_to_ai_;
-  raw_ptr<views::TouchSelectionMenuRunnerViews> owner_;
-  const base::WeakPtr<ui::TouchSelectionMenuClient> client_;
 };
 
 #endif  // ASH_COMPONENTS_ARC_TOUCH_SELECTION_MENU_TOUCH_SELECTION_MENU_CHROMEOS_H_

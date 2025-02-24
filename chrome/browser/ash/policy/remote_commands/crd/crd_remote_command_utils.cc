@@ -262,11 +262,6 @@ UserSessionType GetCurrentUserSessionType() {
     return UserSessionType::AFFILIATED_USER_SESSION;
   }
 
-  if (user_manager.GetActiveUser()->HasGaiaAccount()
-    || user_manager.GetActiveUser()->IsFydeExtendAccountUser()) {
-    return UserSessionType::FYDEOS_USER_SESSION;
-  }
-
   return UserSessionType::UNAFFILIATED_USER_SESSION;
 }
 
@@ -282,7 +277,6 @@ bool UserSessionSupportsRemoteAccess(UserSessionType user_session) {
     case UserSessionType::AFFILIATED_USER_SESSION:
     case UserSessionType::MANAGED_GUEST_SESSION:
     case UserSessionType::UNAFFILIATED_USER_SESSION:
-    case UserSessionType::FYDEOS_USER_SESSION:
     case UserSessionType::GUEST_SESSION:
     case UserSessionType::USER_SESSION_TYPE_UNKNOWN:
       return false;
@@ -295,7 +289,6 @@ bool UserSessionSupportsRemoteSupport(UserSessionType user_session) {
     case UserSessionType::MANUALLY_LAUNCHED_KIOSK_SESSION:
     case UserSessionType::AFFILIATED_USER_SESSION:
     case UserSessionType::MANAGED_GUEST_SESSION:
-    case UserSessionType::FYDEOS_USER_SESSION:
       return true;
 
     case UserSessionType::NO_SESSION:
@@ -329,7 +322,6 @@ const char* UserSessionTypeToString(UserSessionType value) {
     CASE(NO_SESSION);
     CASE(AFFILIATED_USER_SESSION);
     CASE(UNAFFILIATED_USER_SESSION);
-    CASE(FYDEOS_USER_SESSION);
     CASE(MANAGED_GUEST_SESSION);
     CASE(GUEST_SESSION);
     CASE(USER_SESSION_TYPE_UNKNOWN);

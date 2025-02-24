@@ -414,15 +414,6 @@ export function isOnTrashRoot(fileManager: CommandHandlerDeps) {
   return isTrashRootType(currentRootType);
 }
 
-export function isOnFydeDropRoot(fileManager: CommandHandlerDeps) {
-  const currentRootType = fileManager.directoryModel.getCurrentRootType();
-  if (!currentRootType) {
-    return false;
-  }
-  return currentRootType === RootType.FYDEDROP;
-}
-
-
 /**
  * Extracts entry on which command event was dispatched.
  */

@@ -224,8 +224,6 @@ EnumTraits<mojom_accelerator_action, ash::AcceleratorAction>::ToMojom(
       return mojom_accelerator_action::kToggleCapsLock;
     case ash::AcceleratorAction::kToggleClipboardHistory:
       return mojom_accelerator_action::kToggleClipboardHistory;
-    case ash::AcceleratorAction::kToggleFydeosAssistant:
-      return mojom_accelerator_action::kToggleFydeosAssistant;
     case ash::AcceleratorAction::kToggleDockedMagnifier:
       return mojom_accelerator_action::kToggleDockedMagnifier;
     case ash::AcceleratorAction::kToggleFloating:
@@ -674,9 +672,6 @@ bool EnumTraits<mojom_accelerator_action, ash::AcceleratorAction>::FromMojom(
       return true;
     case mojom_accelerator_action::kToggleClipboardHistory:
       *out = ash::AcceleratorAction::kToggleClipboardHistory;
-      return true;
-    case mojom_accelerator_action::kToggleFydeosAssistant:
-      *out = ash::AcceleratorAction::kToggleFydeosAssistant;
       return true;
     case mojom_accelerator_action::kToggleDockedMagnifier:
       *out = ash::AcceleratorAction::kToggleDockedMagnifier;

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<grit-part>
-    <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO" file="../../openfyde/resources/components/version_ui/CONTEXT/product_logo.png" />
-    <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_WHITE" file="../../openfyde/resources/components/version_ui/CONTEXT/product_logo_white.png" />
-</grit-part>

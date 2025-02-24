@@ -1013,6 +1013,7 @@
     "platforms": ["chromeos"],
     "extension_types": ["extension", "platform_app"],
     "allowlist": [
+      "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E",  //FydeOS System Control Extension
       // ChromeOS Autotest extension.
       "0D209B5E4401BB8E7873B5AB5B1346A1CB067015"
     ]

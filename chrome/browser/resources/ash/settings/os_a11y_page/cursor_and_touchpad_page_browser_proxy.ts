@@ -7,7 +7,6 @@ export interface CursorAndTouchpadPageBrowserProxy {
    * Records the value of the show shelf navigation button.
    */
   recordSelectedShowShelfNavigationButtonValue(enabled: boolean): void;
-  getTabletModeEnabled(): void;
 }
 
 let instance: CursorAndTouchpadPageBrowserProxy|null = null;
@@ -24,9 +23,5 @@ export class CursorAndTouchpadPageBrowserProxyImpl implements
 
   recordSelectedShowShelfNavigationButtonValue(enabled: boolean): void {
     chrome.send('recordSelectedShowShelfNavigationButtonValue', [enabled]);
-  }
-
-  getTabletModeEnabled(): void {
-    chrome.send('getTabletModeEnabled');
   }
 }

@@ -67,7 +67,6 @@
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
 #include "ash/constants/ash_switches.h"
-#include "fydeos/constants/fydeos_constants.h"
 #endif
 
 using content::DevToolsAgentHost;
@@ -366,9 +365,6 @@ bool ChromeDevToolsManagerDelegate::AllowInspection(
   if (extension) {
     availability =
         policy::DeveloperToolsPolicyHandler::GetEffectiveAvailability(profile);
-    if (fydeos::constants::ShouldHideExtensionById(extension->id())) {
-      availability = Availability::kDisallowed;
-    }
   } else {
     // Perform additional checks for browser windows (extension == null).
     availability = GetDevToolsAvailability(profile);

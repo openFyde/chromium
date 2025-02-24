@@ -15,7 +15,6 @@ import {PersonalizationStore} from '../personalization_store.js';
 
 import {DisplayableImage} from './constants.js';
 import {isDefaultImage, isGooglePhotosPhoto, isImageAMatchForKey, isImageEqualToSelected, isWallpaperImage} from './utils.js';
-import {isFydeImage} from './utils.js';
 import * as action from './wallpaper_actions.js';
 import {DailyRefreshType} from './wallpaper_state.js';
 
@@ -371,9 +370,6 @@ export async function selectWallpaper(
     } else if (isNonEmptyFilePath(image)) {
       return provider.selectLocalImage(
           image, layout, /*preview_mode=*/ shouldPreview);
-    } else if (isFydeImage(image)) {
-      return provider.selectLocalImage(
-          image.light, layout, /*preview_mode=*/ shouldPreview);
     } else if (isGooglePhotosPhoto(image)) {
       return provider.selectGooglePhotosPhoto(
           image.id, layout, /*preview_mode=*/ shouldPreview);

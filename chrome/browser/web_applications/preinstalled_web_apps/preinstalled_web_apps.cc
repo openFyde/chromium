@@ -44,9 +44,6 @@
 
 #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
-#include "fydeos/chrome/browser/web_applications/preinstalled_web_apps/community.h"
-#include "fydeos/chrome/browser/web_applications/preinstalled_web_apps/remote_desktop.h"
-
 namespace web_app {
 namespace {
 
@@ -161,10 +158,7 @@ std::vector<ExternalInstallOptions> GetPreinstalledWebApps(
 
   return GetChromeBrandedApps(profile, device_info);
 #else
-  return {
-    GetConfigForFydeCommunity(),
-    GetConfigForFydeRemoteDesktop(),
-  };
+  return {};
 #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 }
 

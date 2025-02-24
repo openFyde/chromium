@@ -3,24 +3,15 @@
 # found in the LICENSE file.
 # Author: Simon Tsao(yang@fydeos.io)
 
-import("//fydeos/build/config/buildflags.gni")
-
 extensions_api_schema_files_ = []
 
 if (is_chromeos) {
   extensions_api_schema_files_ += [
-    "fydeos_private.json",
     "native_windows.json",
     "app_management.json",
     "command_line.json",
-    "shell_client.json",
-    "fydeos_arc_status.json",
+    "shell_client.json"
   ]
-  if (use_fydeos_license) {
-    extensions_api_schema_files_ += [
-      "license_management.json",
-    ]
-  }
 }
 
 extensions_api_schema_files =

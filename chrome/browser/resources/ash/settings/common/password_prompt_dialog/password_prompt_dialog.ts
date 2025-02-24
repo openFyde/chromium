@@ -85,11 +85,6 @@ class SettingsPasswordPromptDialogElement extends PolymerElement {
         type: Boolean,
         value: false,
       },
-
-      exposePassword: {
-        type: Boolean,
-        value: false,
-      },
     };
   }
 
@@ -98,7 +93,6 @@ class SettingsPasswordPromptDialogElement extends PolymerElement {
   private inputValue_: string;
   private passwordInvalid_: boolean;
   private waitingForPasswordCheck_: boolean;
-  exposePassword: boolean;
 
   get passwordInput(): CrInputElement {
     return this.shadowRoot!.querySelector('cr-input')!;
@@ -151,11 +145,6 @@ class SettingsPasswordPromptDialogElement extends PolymerElement {
           'token-obtained',
           {bubbles: true, composed: true, detail: tokenInfo}));
       this.passwordInvalid_ = false;
-      console.log('this.exposePassword', this.exposePassword);
-      if (this.exposePassword) {
-        this.dispatchEvent(new CustomEvent(
-          'password-prompt-exposed', {bubbles: true, composed: true, detail: password}));
-      }
 
       if (this.$.dialog.open) {
         this.$.dialog.close();

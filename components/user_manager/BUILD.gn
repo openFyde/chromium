@@ -77,7 +77,6 @@ component("user_manager") {
       "//ui/base",
       "//ui/chromeos/resources",
       "//url",
-      "//fydeos/prefs",
     ]
   }
 }

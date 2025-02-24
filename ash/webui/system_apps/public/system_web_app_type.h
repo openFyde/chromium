@@ -146,7 +146,6 @@ enum class SystemWebAppType {
   // Contact: cros-families-eng@google.com
   GRADUATION = 31,
 
-  FYDE_ASSISTANT = 32,
   // When adding a new System App, remember to:
   //
   // 1. Add a corresponding histogram suffix in WebAppSystemAppInternalName
@@ -186,7 +185,7 @@ enum class SystemWebAppType {
   //
   // 8. Have one of System Web App Platform owners review the CL.
   //    See: //ash/webui/PLATFORM_OWNERS
-  kMaxValue = FYDE_ASSISTANT,
+  kMaxValue = GRADUATION,
 };
 
 }  // namespace ash

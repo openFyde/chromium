@@ -236,7 +236,6 @@
   E_CPONLY(kColorSubtleAccent) \
   E_CPONLY(kColorSubtleEmphasisBackground) \
   E_CPONLY(kColorTextSelectionBackground) \
-  E_CPONLY(kFydeColorTextSelectionBackground) \
   E_CPONLY(kColorTextSelectionForeground) \
   \
   /* Further UI element colors */ \
@@ -467,7 +466,6 @@
   E_CPONLY(kColorTextfieldForegroundPlaceholder) \
   E_CPONLY(kColorTextfieldHover) \
   E_CPONLY(kColorTextfieldSelectionBackground) \
-  E_CPONLY(kFydeColorTextfieldSelectionBackground) \
   E_CPONLY(kColorTextfieldSelectionForeground) \
   E_CPONLY(kColorTextfieldOutline) \
   E_CPONLY(kColorTextfieldOutlineDisabled) \

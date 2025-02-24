@@ -43,7 +43,6 @@
 #include "base/notreached.h"
 #include "ui/display/types/display_constants.h"
 #include "ui/gfx/geometry/rect.h"
-#include "ash/fydeos_ai/fydeos_ai_view.h"
 
 namespace ash {
 
@@ -486,10 +485,6 @@ void Shelf::CreateShelfWidget(aura::Window* root) {
   // instantiated later on, thus why we call it towards the end of this
   // function.
   hotseat_widget()->InitializeAccessibilityProperties();
-
-  if (ash::features::IsFydeAssistantEnabled()) {
-    fyde_assistant_view_ = std::make_unique<FydeAssistantView>(shelf_container);
-  }
 }
 
 void Shelf::ShutdownShelfWidget() {
@@ -507,7 +502,6 @@ void Shelf::ShutdownShelfWidget() {
   status_area_widget_.reset();
   navigation_widget_.reset();
   login_shelf_widget_.reset();
-  fyde_assistant_view_.reset();
 }
 
 void Shelf::DestroyShelfWidget() {

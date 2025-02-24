@@ -70,19 +70,6 @@ import './os_bluetooth_page/os_bluetooth_summary.js';
 import './os_bluetooth_page/os_saved_devices_list.js';
 import './os_bluetooth_page/os_saved_devices_list_item.js';
 import './os_bluetooth_page/settings_fast_pair_constants.js';
-import './os_fyde_page/components/backup_password_prompt_dialog.js';
-import './os_fyde_page/components/backup_intro_dialog.js';
-import './os_fyde_page/fydeos_account.js';
-// import './os_fyde_page/fydeos_drivers.js';
-import './os_fyde_page/fydeos_remoting.js';
-import './os_fyde_page/fydeos_tweak_ui.js';
-import './os_fyde_page/fydeos_more_info.js';
-import './os_fyde_page/fydeos_dev_mode.js';
-import './os_fyde_page/fydeos_experiment.js';
-// <if expr="use_fydeos_license">
-import './os_fyde_page/fydeos_license_info.js';
-// </if>
-import './os_fyde_page/os_fyde_page.js';
 
 import {ColorChangeUpdater} from 'chrome://resources/cr_components/color_change_listener/colors_css_updater.js';
 
@@ -239,7 +226,6 @@ export {getReceiveManager, observeReceiveManager, setReceiveManagerForTesting} f
 export {dataUsageStringToEnum, NearbyShareDataUsage} from './nearby_share_page/types.js';
 export {ChromeVoxSubpageBrowserProxy, ChromeVoxSubpageBrowserProxyImpl} from './os_a11y_page/chromevox_subpage_browser_proxy.js';
 export {FaceGazeSubpageBrowserProxy, FaceGazeSubpageBrowserProxyImpl} from './os_a11y_page/facegaze_subpage_browser_proxy.js';
-export {OsSettingsFydeAssistantPageElement} from './fyde_assistant_page/fyde_assistant_page.js';
 export {OsSettingsA11yPageElement} from './os_a11y_page/os_a11y_page.js';
 export {OsA11yPageBrowserProxy, OsA11yPageBrowserProxyImpl} from './os_a11y_page/os_a11y_page_browser_proxy.js';
 export {SelectToSpeakSubpageBrowserProxy, SelectToSpeakSubpageBrowserProxyImpl} from './os_a11y_page/select_to_speak_subpage_browser_proxy.js';
@@ -311,9 +297,6 @@ export {StartupSettingsCardElement} from './system_preferences_page/startup_sett
 export {StorageAndPowerSettingsCardElement} from './system_preferences_page/storage_and_power_settings_card.js';
 export {SettingsSystemPreferencesPageElement} from './system_preferences_page/system_preferences_page.js';
 export {SettingsToolbarElement as ToolbarElement} from './toolbar/toolbar.js';
-export {ShellClient} from './os_fyde_page/shell_client.js';
-export {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './os_about_page/popup_license_window.js';
-export {FydeOSBoardNameTitleMap} from './os_about_page/fydeos_board_name.js';
 
 window.addEventListener('load', () => {
   // Listen for changes to Jelly dynamic colors.

@@ -9,7 +9,6 @@
 
 import '//resources/ash/common/cr_elements/cros_color_overrides.css.js';
 import '//resources/ash/common/cr_elements/cr_toggle/cr_toggle.js';
-import '//resources/ash/common/cr_elements/cr_checkbox/cr_checkbox.js';
 import '//resources/polymer/v3_0/iron-icon/iron-icon.js';
 import '//resources/polymer/v3_0/iron-iconset-svg/iron-iconset-svg.js';
 import '../../components/oobe_a11y_option.js';
@@ -48,8 +47,6 @@ enum MarketingOptInStep {
 interface MarketingScreenData {
   optInVisibility: boolean;
   optInDefaultState: boolean;
-  fydeOptInVisibility: boolean;
-  fydeOptInDefaultState: boolean;
   legalFooterVisibility: boolean;
   cloudGamingDevice: boolean;
 }
@@ -85,10 +82,6 @@ export class MarketingOptIn extends MarketingScreenElementBase {
         value: false,
       },
 
-      fydeMarketingOptInVisible: {
-        type: Boolean,
-        value: false,
-      },
       /**
        * Whether a verbose footer will be shown to the user containing some
        * legal information such as the Google address. Currently shown for
@@ -112,7 +105,6 @@ export class MarketingOptIn extends MarketingScreenElementBase {
 
   private isA11ySettingsButtonVisible: boolean;
   private marketingOptInVisible: boolean;
-  private fydeMarketingOptInVisible: boolean;
   private hasLegalFooter: boolean;
   private isCloudGamingDevice: boolean;
 
@@ -158,14 +150,9 @@ export class MarketingOptIn extends MarketingScreenElementBase {
     super.onBeforeShow(data);
     this.marketingOptInVisible =
         'optInVisibility' in data && data.optInVisibility;
-    this.fydeMarketingOptInVisible =
-        'fydeOptInVisibility' in data && data.fydeOptInVisibility;
     this.shadowRoot!
         .querySelector<HTMLInputElement>('#chromebookUpdatesOption')!.checked =
         'optInDefaultState' in data && data.optInDefaultState;
-    this.shadowRoot!
-        .querySelector<HTMLInputElement>('#fydeUpdatesOption')!.checked =
-        'fydeOptInDefaultState' in data && data.fydeOptInDefaultState;
     this.hasLegalFooter =
         'legalFooterVisibility' in data && data.legalFooterVisibility;
     this.isCloudGamingDevice =
@@ -189,9 +176,7 @@ export class MarketingOptIn extends MarketingScreenElementBase {
     this.userActed([
       'get-started',
       this.shadowRoot!
-          .querySelector<HTMLInputElement>('#fydeUpdatesOption')!.checked,
-      this.shadowRoot!
-          .querySelector<HTMLInputElement>('#fydeOSImprovementPlanOption')!.checked,
+          .querySelector<HTMLInputElement>('#chromebookUpdatesOption')!.checked,
     ]);
   }
 

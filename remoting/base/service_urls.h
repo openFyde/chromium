@@ -22,8 +22,6 @@ class ServiceUrls {
   ServiceUrls(const ServiceUrls&) = delete;
   ServiceUrls& operator=(const ServiceUrls&) = delete;
 
-  void ResetServerEndpoints();
-
   const std::string& ftl_server_endpoint() const {
     return ftl_server_endpoint_;
   }

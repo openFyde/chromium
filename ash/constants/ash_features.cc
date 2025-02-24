@@ -12,7 +12,6 @@
 #include "build/chromeos_buildflags.h"
 #include "chromeos/components/libsegmentation/buildflags.h"
 #include "chromeos/constants/chromeos_features.h"
-#include "fydeos/switches/misc/misc_switches.h"
 
 #if defined(ARCH_CPU_ARM_FAMILY)
 #include "base/command_line.h"
@@ -518,7 +517,7 @@ BASE_FEATURE(kCrostiniMultiContainer,
 // Enables or disables Crostini Qt application IME support.
 BASE_FEATURE(kCrostiniQtImeSupport,
              "CrostiniQtImeSupport",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables or disables Crostini Virtual Keyboard support.
 BASE_FEATURE(kCrostiniVirtualKeyboardSupport,
@@ -697,7 +696,7 @@ BASE_FEATURE(kEcheSWAProcessAndroidAccessibilityTree,
 // may have choppier app list animations while in this mode. crbug.com/765292.
 BASE_FEATURE(kEnableBackgroundBlur,
              "EnableBackgroundBlur",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables settings to control internal display brightness and auto-brightness.
 BASE_FEATURE(kEnableBrightnessControlInSettings,
@@ -2387,10 +2386,6 @@ const base::FeatureParam<base::TimeDelta> kPhoneHubCameraRollThrottleInterval{
     &kPhoneHubCameraRoll, "PhoneHubCameraRollThrottleInterval",
     base::Seconds(2)};
 
-BASE_FEATURE(kFydeAssistant,
-             "FydeAssistant",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 // Enable PhoneHub features setup error handling, which handles different
 // setup response from remote phone device.
 BASE_FEATURE(kPhoneHubFeatureSetupErrorHandling,
@@ -2969,7 +2964,7 @@ BASE_FEATURE(kUnmanagedDeviceDeviceTrustConnectorEnabled,
 // Enables firmware updates for valid firmwares uploaded to lvfs.
 BASE_FEATURE(kUpstreamTrustedReportsFirmware,
              "UpstreamTrustedReportsFirmware",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Use the Android staging SM-DS server when fetching pending eSIM profiles.
 BASE_FEATURE(kUseAndroidStagingSmds,
@@ -4092,9 +4087,6 @@ bool IsLauncherContinueSectionWithRecentsEnabled() {
       !device_excluded_from_holdback_study) {
     return false;
   }
-  if (fydeos::switches::IsFydeCustomEnabled()) {
-    return false;
-  }
 
   return base::FeatureList::IsEnabled(kLauncherContinueSectionWithRecents) ||
          base::FeatureList::IsEnabled(
@@ -4412,11 +4404,6 @@ bool IsPeripheralNotificationEnabled() {
 
 bool IsPhoneHubCameraRollEnabled() {
   return base::FeatureList::IsEnabled(kPhoneHubCameraRoll);
-}
-
-bool IsFydeAssistantEnabled() {
-  return base::FeatureList::IsEnabled(kFydeAssistant) &&
-         fydeos::switches::IsFydeCustomEnabled();
 }
 
 bool IsPhoneHubMonochromeNotificationIconsEnabled() {

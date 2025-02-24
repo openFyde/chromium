@@ -72,7 +72,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "fydeos/switches/account/toggle/account_type_toggle.h"
-#include "fydeos/switches/misc/misc_switches.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -535,10 +534,6 @@ void UserSelectionScreen::Init(const user_manager::UserList& users) {
     sync_token_checkers_->StartPasswordSyncCheckers(users, this);
   } else {
     sync_token_checkers_.reset();
-  }
-
-  if (fydeos::switches::IsTpmDictionaryAttackLockoutIgnored()) {
-    return;
   }
 
   if (tpm_locked_checker_) {

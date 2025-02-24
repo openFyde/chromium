@@ -114,8 +114,6 @@ export enum RootType {
 
   // Trash.
   TRASH = 'trash',
-
-  FYDEDROP = 'fydedrop',
 }
 
 /**
@@ -154,7 +152,6 @@ export const RootTypesForUMA: Array<RootType|string> = [
   'DEPRECATED_RECENT_VIDEOS',          // 26
   RootType.TRASH,                      // 27
   RootType.GUEST_OS,                   // 28
-  RootType.FYDEDROP,                   // 29
 ];
 
 /** Error type of VolumeManager. */
@@ -243,8 +240,6 @@ export function getVolumeTypeFromRootType(rootType: RootType): VolumeType {
       return VolumeType.SMB;
     case RootType.TRASH:
       return VolumeType.TRASH;
-    case RootType.FYDEDROP:
-      return VolumeType.FYDEDROP;
   }
 
   assertNotReached('Unknown root type: ' + rootType);
@@ -281,8 +276,6 @@ export function getRootTypeFromVolumeType(volumeType: VolumeType): RootType {
       return RootType.SMB;
     case VolumeType.TRASH:
       return RootType.TRASH;
-    case VolumeType.FYDEDROP:
-      return RootType.FYDEDROP;
   }
 
   assertNotReached('Unknown volume type: ' + volumeType);

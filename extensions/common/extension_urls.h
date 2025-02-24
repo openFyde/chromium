@@ -58,8 +58,6 @@ GURL AppendUtmSource(const GURL& url, std::string_view utm_source_value);
 // depending on extensions_features::kNewWebstoreURL feature flag.
 std::string GetWebstoreExtensionsCategoryURL();
 
-std::string GetFydeWebstoreExtensionsCategoryURL();
-
 // Returns the URL prefix for an item in the extension/app gallery. This URL
 // will contain a trailing slash and should be concatenated with an item ID
 // to get the item detail URL.
@@ -113,9 +111,6 @@ bool IsBlocklistUpdateUrl(const GURL& url);
 // Returns true if the origin points to an URL used for safebrowsing.
 bool IsSafeBrowsingUrl(const GURL& url);
 
-// ---***FYDEOS BEGIN***---
-bool IsFydeOSWebstoreUpdateUrl(const GURL& update_url);
-// ---***FYDEOS END***---
 }  // namespace extension_urls
 
 #endif  // EXTENSIONS_COMMON_EXTENSION_URLS_H_

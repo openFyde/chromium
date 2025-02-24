@@ -255,12 +255,6 @@ void LoginScreenController::ShowOsInstallScreen() {
   client_->ShowOsInstallScreen();
 }
 
-void LoginScreenController::ShowDataRestoreScreen() {
-  if (!client_)
-    return;
-  client_->ShowDataRestoreScreen();
-}
-
 void LoginScreenController::ShowLocalSignin() {
   if (!client_)
     return;

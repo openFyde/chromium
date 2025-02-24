@@ -34,11 +34,8 @@ bool ShouldSync(content::BrowserContext* context, const Extension* extension) {
         << "Update URL cannot be overridden to be the webstore URL!";
     return false;
   }
-  // ---***FYDEOS BEGIN***---
-  Profile* profile = Profile::FromBrowserContext(context);
-  return sync_helper::IsSyncable(extension, profile) &&
+  return sync_helper::IsSyncable(extension) &&
          !ExtensionPrefs::Get(context)->DoNotSync(extension->id());
-  // ---***FYDEOS END***---
 }
 
 bool IsSyncingExtensionsEnabled(Profile* profile) {

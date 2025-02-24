@@ -970,8 +970,6 @@ source_set("extensions") {
     "//ui/shell_dialogs",
     "//ui/strings",
     "//url",
-    "//fydeos/build/config:buildflags",
-    "//fydeos/switches",
   ]
 
   if (is_linux || is_mac || is_win) {

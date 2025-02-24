@@ -93,8 +93,6 @@ void CoreOobeHandler::DeclareJSCallbacks() {
 
   AddCallback("updateOobeUIState", &CoreOobeHandler::HandleUpdateOobeUIState);
   AddCallback("enableShelfButtons", &CoreOobeHandler::HandleEnableShelfButtons);
-
-  AddCallback("playStartupSound", &CoreOobeHandler::HandlePlayStartupSound);
 }
 
 void CoreOobeHandler::GetAdditionalParameters(base::Value::Dict* dict) {
@@ -251,12 +249,5 @@ void CoreOobeHandler::HandleRaiseTabKeyEvent(bool reverse) {
   }
   SendEventToSink(&event);
 }
-
-void CoreOobeHandler::HandlePlayStartupSound() {
-  if (LoginDisplayHost::default_host()) {
-    LoginDisplayHost::default_host()->HandlePlayStartupSound();
-  }
-}
-
 
 }  // namespace ash

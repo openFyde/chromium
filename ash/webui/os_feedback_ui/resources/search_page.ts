@@ -344,12 +344,7 @@ export class SearchPageElement extends SearchPageElementBase {
 
   protected feedbackWritingGuidanceUrl(): string {
     // TODO(xiangdongkong): append ?hl={the application locale} to the url.
-    // <if expr="not use_fydeos_com">
-    const url = 'https://fydeos.io/docs/knowledge-base/recipes/feedback-howto';
-    // </if>
-    // <if expr="use_fydeos_com">
-    const url = 'https://fydeos.com/docs/knowledge-base/recipes/feedback-howto';
-    // </if>
+    const url = 'https://support.google.com/chromebook/answer/2982029';
     return url;
   }
 
@@ -454,11 +449,6 @@ export class SearchPageElement extends SearchPageElementBase {
 
   protected onContainerScroll(event: Event): void {
     showScrollingEffects(event, this as HTMLElement);
-  }
-
-  private fydeosFeedbackFeatureHelpMessage() {
-    return this.i18nAdvanced(
-        'fydeosFeedbackFeatureHelpMessage', {tags: ['ul', 'li']});
   }
 
   getSearchResultCountForTesting(): number {

@@ -700,11 +700,11 @@ class ChromeVoxTutorial extends ChromeVoxTutorialBase {
       },
       {
         msgId: 'chrome_keyboard_shortcuts',
-        link: 'https://fydeos.com/docs/knowledge-base/recipes/keyboard-shortcuts',
+        link: 'https://support.google.com/chromebook/answer/183101?hl=en',
       },
       {
         msgId: 'touchscreen_accessibility',
-        link: 'https://fydeos.com/docs/manual/explore-accessibility/use-the-built-in-screen-reader',
+        link: 'https://support.google.com/chromebook/answer/6103702?hl=en',
       },
     ];
     for (const resource of resources) {

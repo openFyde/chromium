@@ -246,9 +246,7 @@
       "contexts": ["webui"],
       "matches": [
         "chrome://add-supervision/*",
-        "chrome://fydeos-ai/*",
         "chrome://assistant-optin/*",
-        "chrome://file-manager/*",
         "chrome://extensions/*",
         "chrome://graduation/*",
         "chrome://home/*",
@@ -258,8 +256,7 @@
         "chrome://os-settings/*",
         "chrome://parent-access/*",
         "chrome://password-change/*",
-        "chrome://lock-reauth/*",
-        "chrome://os-settings/*"        // required by webview, FYDEOS BEGIN, FYDEOS END
+        "chrome://lock-reauth/*"
       ]
     }, {
       // This feature is used by the Controlled Frame API and is specifically
@@ -313,8 +310,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://extensions/*",
-      "chrome://settings/*",
-      "chrome://file-manager/*"
+      "chrome://settings/*"
     ]
   }, {
     "channel": "stable",
@@ -670,7 +666,6 @@
   },{
     "contexts": ["webui"],
     "matches": [
-      "chrome://os-settings/*",
       "chrome://password-change/*",
       "chrome://file-manager/*"
     ]
@@ -853,9 +848,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
-      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",
@@ -865,8 +858,7 @@
       "chrome://os-settings/*",
       "chrome://parent-access/*",
       "chrome://password-change/*",
-      "chrome://lock-reauth/*",
-      "chrome://os-settings/*"        // required by webview.request.xxxx.addListener, FYDEOS BEGIN, FYDEOS END
+      "chrome://lock-reauth/*"
     ]
   }, {
     // This feature is used by the Controlled Frame API and is specifically
@@ -891,9 +883,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
-      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",
@@ -903,8 +893,7 @@
       "chrome://os-settings/*",
       "chrome://parent-access/*",
       "chrome://password-change/*",
-      "chrome://lock-reauth/*",
-      "chrome://os-settings/*" // without this, webview tag won't work, FYDEOS BEGIN, FYDEOS END
+      "chrome://lock-reauth/*"
     ]
   }, {
     // This feature is used by the Controlled Frame API and is specifically
@@ -927,9 +916,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
-      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
-      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://discards/*",
       "chrome://graduation/*",

@@ -38,8 +38,6 @@ struct DefaultApiKeys {
   const char* google_api_key_boca;
 #endif
 
-  const char* fydeos_api_key;
-
 #if BUILDFLAG(IS_OPENFYDE)
   const char* fydeos_client_id_main;
   const char* fydeos_client_secret_main;

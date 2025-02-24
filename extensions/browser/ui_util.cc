@@ -7,7 +7,6 @@
 #include "base/command_line.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/switches.h"
-#include "fydeos/constants/fydeos_constants.h"
 
 namespace extensions {
 namespace ui_util {
@@ -41,9 +40,6 @@ bool ShouldDisplayInExtensionSettings(Manifest::Type type,
 }
 
 bool ShouldDisplayInExtensionSettings(const Extension& extension) {
-  if (fydeos::constants::ShouldHideExtensionById(extension.id())) {
-    return false;
-  }
   return ShouldDisplayInExtensionSettings(extension.GetType(),
                                           extension.location());
 }

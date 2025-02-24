@@ -62,7 +62,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/models/menu_separator_types.h"
-#include "fydeos/switches/urls//urls_constants.h"
 
 namespace extensions {
 
@@ -504,7 +503,7 @@ void ExtensionContextMenuModel::ExecuteCommand(int command_id,
       OpenUrl(
           *browser_,
           GURL(
-              fydeos::constants::kRuntimeHostPermissionsHelpURL));
+              extension_permissions_constants::kRuntimeHostPermissionsHelpURL));
 
       break;
     default:

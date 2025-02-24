@@ -94,13 +94,6 @@ export class HistorySideBarElement extends PolymerElement {
             'historyClustersEnabled, historyClustersVisible)',
       },
 
-      isFydeLocalAccount_: {
-        type: Boolean,
-        value: () => {
-          return loadTimeData.getBoolean('isFydeLocalAccount');
-        },
-      },
-
       compareHistoryEnabled_: Boolean,
     };
   }

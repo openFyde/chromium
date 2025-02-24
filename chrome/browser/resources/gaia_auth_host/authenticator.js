@@ -417,13 +417,6 @@ export class Authenticator extends EventTarget {
     /** @private {boolean}  Whether media access was requested. */
     this.videoEnabled_ = false;
 
-    // <if expr="openfyde or not use_fydeos_com">
-    this.requireSelectAccountTypeAfterSignin_ = false;
-    // </if>
-    // <if expr="not openfyde and use_fydeos_com">
-    this.requireSelectAccountTypeAfterSignin_ = true;
-    // </if>
-
     this.isLoaded_ = false;
     this.email_ = null;
     this.password_ = null;
@@ -457,7 +450,6 @@ export class Authenticator extends EventTarget {
     this.enableGaiaActionButtons_ = false;
     this.enableFydeAccount_ = true;
     this.isExistedUser_ = false;
-    this.deviceEnterpriseManaged_ = false;
     this.webviewEventManager_ = new WebviewEventManager();
 
     this.clientId_ = null;
@@ -756,7 +748,6 @@ export class Authenticator extends EventTarget {
 
     this.enableFydeAccount_ = data.enableFydeAccount;
     this.isExistedUser_ = data.email && data.readOnlyEmail;
-    this.deviceEnterpriseManaged_ = data.enterpriseDomainManager || data.enterpriseEnrollmentDomain;
 
     this.initialFrameUrl_ = this.constructInitialFrameUrl_(data);
     this.reloadUrl_ = data.frameUrl || this.initialFrameUrl_;
@@ -1127,8 +1118,7 @@ export class Authenticator extends EventTarget {
   }
 
   shouldWaitForFydeAccountTypeSelection_() {
-    return this.enableFydeAccount_ && !this.isExistedUser_ && !this.deviceEnterpriseManaged_ &&
-           this.requireSelectAccountTypeAfterSignin_;
+    return this.enableFydeAccount_ && !this.isExistedUser_;
   }
 
   /**

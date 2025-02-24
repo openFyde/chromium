@@ -362,10 +362,6 @@ bool MediaSystemAppDelegate::ShouldHandleFileOpenIntents() const {
   return true;
 }
 
-bool MediaSystemAppDelegate::IsAppEnabled() const {
-  return false;
-}
-
 Browser* MediaSystemAppDelegate::LaunchAndNavigateSystemWebApp(
     Profile* profile,
     web_app::WebAppProvider* provider,

@@ -184,11 +184,6 @@ export class BaseDialog {
     }
   }
 
-  findLinkElementInText() {
-    // @ts-ignore: error TS2531: Object is possibly 'null'.
-    return this.text.querySelector('a');
-  }
-
   setOkLabel(label: string) {
     // We have child elements (hover/ripple) inside the button, setting
     // textContent of the button will remove all children

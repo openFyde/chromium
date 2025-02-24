@@ -25,7 +25,6 @@ struct InputComponentInfo {
 
   std::string name;
   std::string id;
-  std::string indicator;
   std::set<std::string> languages;
   std::set<std::string> layouts;
   GURL options_page_url;

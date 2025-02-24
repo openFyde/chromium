@@ -30,27 +30,6 @@ source_set("switches") {
     "misc/misc_switches.h",
     "misc/misc_constants.cc",
     "misc/misc_constants.h",
-
-    "services/services_switches.cc",
-    "services/services_switches.h",
-    "services/services_constants.cc",
-    "services/services_constants.h",
-
-    "accelerometer/accelerometer_switches.cc",
-    "accelerometer/accelerometer_switches.h",
-
-    "features/network_switches.cc",
-    "features/network_switches.h",
-    "features/network_constants.cc",
-    "features/network_constants.h",
-
-    "arc/arc_switches.cc",
-    "arc/arc_switches.h",
-
-    "license/license_switches.cc",
-    "license/license_switches.h",
-    "license/license_constants.cc",
-    "license/license_constants.h",
   ]
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }

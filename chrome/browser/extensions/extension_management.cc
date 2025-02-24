@@ -63,8 +63,6 @@
 #include "chrome/browser/enterprise/browser_management/management_service_factory.h"
 #endif
 
-#include "fydeos/switches/services/services_switches.h"
-
 namespace extensions {
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
@@ -162,7 +160,7 @@ ExtensionManagement::InstallationMode ExtensionManagement::GetInstallationMode(
   const std::string* update_url =
       extension->manifest()->FindStringPath(manifest_keys::kUpdateURL);
   return GetInstallationMode(extension->id(),
-                             update_url ? fydeos::switches::MayConvertWebStoreUpdateUrl(*update_url) : std::string());
+                             update_url ? *update_url : std::string());
 }
 
 ExtensionManagement::InstallationMode ExtensionManagement::GetInstallationMode(
@@ -475,7 +473,7 @@ APIPermissionSet ExtensionManagement::GetBlockedAPIPermissions(
   const std::string* update_url =
       extension->manifest()->FindStringPath(manifest_keys::kUpdateURL);
   return GetBlockedAPIPermissions(extension->id(),
-                                  update_url ? fydeos::switches::MayConvertWebStoreUpdateUrl(*update_url) : std::string());
+                                  update_url ? *update_url : std::string());
 }
 
 APIPermissionSet ExtensionManagement::GetBlockedAPIPermissions(
@@ -549,7 +547,7 @@ bool ExtensionManagement::IsPermissionSetAllowed(const Extension* extension,
   const std::string* update_url =
       extension->manifest()->FindStringPath(manifest_keys::kUpdateURL);
   return IsPermissionSetAllowed(
-      extension->id(), update_url ? fydeos::switches::MayConvertWebStoreUpdateUrl(*update_url) : std::string(), perms);
+      extension->id(), update_url ? *update_url : std::string(), perms);
 }
 
 bool ExtensionManagement::IsPermissionSetAllowed(

@@ -298,7 +298,6 @@
   <template is="dom-if" if="[[!isVisual(category)]]">
     <template is="dom-if" if="[[hasAnyVariants(data)]]">
       <template is="dom-repeat" items="[[data]]">
-       <template is="dom-if" if="[[shouldShowEmoji(item)]]">
         <div class="emoji-button-container">
         <button id="emoji-[[index]]" data-index$="[[index]]"
           class="emoji-button" has-variants$="[[hasVariants(item)]]"
@@ -317,12 +316,10 @@
           </emoji-variants>
         </template>
         </div>
-       </template>
       </template>
     </template>
     <template is="dom-if" if="[[!hasAnyVariants(data)]]">
       <template is="dom-repeat" items="[[data]]">
-       <template is="dom-if" if="[[shouldShowEmoji(item)]]">
         <div class="emoji-button-container">
         <button id="emoji-[[index]]" data-index$="[[index]]"
           class="emoji-button"
@@ -331,7 +328,6 @@
           [[getDisplayEmojiForEmoji(item.base.string, item)]]
         </button>
         </div>
-       </template>
       </template>
     </template>
   </template>

@@ -28,7 +28,6 @@
 #include "ui/message_center/public/cpp/message_center_constants.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_delegate.h"
-#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash {
 

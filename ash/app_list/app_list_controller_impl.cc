@@ -45,7 +45,6 @@
 #include "ash/public/cpp/shelf_config.h"
 #include "ash/public/cpp/shelf_types.h"
 #include "ash/public/cpp/shell_window_ids.h"
-#include "ash/public/cpp/new_window_delegate.h"
 #include "ash/public/cpp/wallpaper/wallpaper_controller.h"
 #include "ash/root_window_controller.h"
 #include "ash/screen_util.h"
@@ -964,10 +963,6 @@ void AppListControllerImpl::OnAssistantStatusChanged(
   UpdateSearchBoxUiVisibilities();
 }
 
-void AppListControllerImpl::OnFydeAssistantEnabled(bool enabled) {
-  UpdateSearchBoxUiVisibilities();
-}
-
 void AppListControllerImpl::OnAssistantSettingsEnabled(bool enabled) {
   UpdateSearchBoxUiVisibilities();
 }
@@ -1210,22 +1205,12 @@ void AppListControllerImpl::RecordShelfAppLaunched() {
 
 void AppListControllerImpl::StartAssistant(
     assistant::AssistantEntryPoint entry_point) {
-  if (ash::features::IsFydeAssistantEnabled()) {
-    NewWindowDelegate::GetInstance()->OpenUrl(GURL("chrome://fydeos-ai"),
-      NewWindowDelegate::OpenUrlFrom::kUserInteraction,
-      NewWindowDelegate::Disposition::kNewWindow);
-    UpdateSearchBoxUiVisibilities();
-    return;
-  }
   AssistantUiController::Get()->ShowUi(entry_point);
   UpdateSearchBoxUiVisibilities();
 }
 
 void AppListControllerImpl::EndAssistant(
     assistant::AssistantExitPoint exit_point) {
-  if (ash::features::IsFydeAssistantEnabled()) {
-    return;
-  }
   AssistantUiController::Get()->CloseUi(exit_point);
 }
 
@@ -1235,19 +1220,6 @@ AppListControllerImpl::GetToggleableCategories() const {
     return client_->GetToggleableCategories();
   }
   return std::vector<AppListSearchControlCategory>();
-}
-
-void AppListControllerImpl::CloseFydeAssistant() {
-  if (!IsInTabletMode()) {
-    if (bubble_presenter_) {
-      bubble_presenter_->BackOrExit();
-    }
-    return;
-  }
-  if (fullscreen_presenter_) {
-    UpdateFullscreenLauncherContainer();
-    AssistantUiController::Get()->CloseUi(AssistantExitPoint::kBackInLauncher);
-  }
 }
 
 void AppListControllerImpl::StartSearch(const std::u16string& raw_query) {
@@ -1802,7 +1774,7 @@ SearchModel* AppListControllerImpl::GetSearchModel() {
 
 void AppListControllerImpl::UpdateSearchBoxUiVisibilities() {
   SearchBoxModel* search_box_model = GetSearchModel()->search_box();
-  search_box_model->SetShowAssistantButton(IsAssistantAllowedAndEnabled() || IsFydeAssistantEnabled());
+  search_box_model->SetShowAssistantButton(IsAssistantAllowedAndEnabled());
   search_box_model->SetShowSunfishButton(
       CaptureModeController::IsSunfishAllowedAndEnabled());
 
@@ -1893,15 +1865,6 @@ bool AppListControllerImpl::ShouldShowHomeScreen() const {
   }
 
   return !SplitViewController::Get(window)->InSplitViewMode();
-}
-
-bool AppListControllerImpl::IsFydeAssistantEnabled() const {
-  auto featureEnabled = ash::features::IsFydeAssistantEnabled();
-  if (!featureEnabled) {
-    return false;
-  }
-  auto* state = AssistantState::Get();
-  return state->fyde_assistant_enabled().value_or(false);
 }
 
 void AppListControllerImpl::UpdateForOverviewModeChange(bool show_home_launcher,

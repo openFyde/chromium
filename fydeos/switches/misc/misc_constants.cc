@@ -7,19 +7,10 @@
 namespace fydeos {
 namespace constants {
 
-const char kFydeOSDefaultTimeZoneId[] = "Asia/Shanghai";
-
 const char kFydeOSSystemInfoHeader[] = "--- Full System ---";
 
 const char kFydeOSSystemInfoFileName[] = "about_system.txt";
 const char kFydeOSSystemTempPrefix[] = "fydeos_sysinfo";
-
-const char kFydeOSWallpapersBasePath[] = "/usr/share/chromeos-assets/fydeos_wallpapers/";
-
-const char kFydeOSBackupScriptDirPath[] = "/usr/share/fydeos-backup";
-const char kFydeOSRestoreScriptDirPath[] = "/usr/share/fydeos-backup";
-
-const char kFydeOSFirmwareUpdateBinPath[] = "/usr/bin/fydeos-update-firmware";
 
 } // constants
 } // fydeos

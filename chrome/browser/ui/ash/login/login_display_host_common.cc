@@ -503,10 +503,6 @@ void LoginDisplayHostCommon::SkipPostLoginScreensForDemoMode() {
   wizard_context_->skip_post_login_screens_for_tests = true;
 }
 
-void LoginDisplayHostCommon::HandlePlayStartupSound() {
-  // Do nothing by default
-}
-
 void LoginDisplayHostCommon::SetScreenAfterManagedTos(OobeScreenId screen_id) {
   // If user stopped onboarding flow on TermsOfServiceScreen make sure that
   // next screen will be FamilyLinkNoticeView::kScreenId.

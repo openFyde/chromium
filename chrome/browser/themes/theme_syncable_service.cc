@@ -641,9 +641,7 @@ bool ThemeSyncableService::IsCurrentThemeSyncable() const {
                 .GetByID(theme_id)
           : nullptr;
   if (current_extension &&
-      // ---***FYDEOS BEGIN***---
-      !extensions::sync_helper::IsSyncable(current_extension, profile_)) {
-      // ---***FYDEOS END***---
+      !extensions::sync_helper::IsSyncable(current_extension)) {
     DVLOG(1) << "Ignoring non-syncable extension: " << current_extension->id();
     return false;
   }

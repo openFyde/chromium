@@ -32,12 +32,9 @@ import './screens/common/managed_terms_of_service.js';
 import './screens/common/marketing_opt_in.js';
 import './screens/common/multidevice_setup.js';
 import './screens/common/fyde_local_signin.js';
-import './screens/common/data_restore.js';
 import './screens/common/online_authentication_screen.js';
 import './screens/common/oobe_reset.js';
-import './screens/common/oobe_eula.js';
 import './screens/common/os_install.js';
-import './screens/common/fydeos_installer.js';
 import './screens/common/os_trial.js';
 import './screens/common/perks_discovery.js';
 import './screens/common/personalized_recommend_apps.js';
@@ -54,7 +51,6 @@ import './screens/common/theme_selection.js';
 import './screens/common/touchpad_scroll.js';
 import './screens/common/tpm_error.js';
 import './screens/common/user_allowlist_check_screen.js';
-import './screens/common/account_type_selection.js';
 import './screens/common/wrong_hwid.js';
 // COMMON SCREENS USED TO SET UP AUTHENTICATION
 import './screens/osauth/apply_online_password.js';
@@ -166,7 +162,6 @@ export const commonScreensList: OobeTypes.ScreensList = [
   {tag: 'marketing-opt-in-element', id: 'marketing-opt-in'},
   {tag: 'multidevice-setup-element', id: 'multidevice-setup-screen'},
   {tag: 'fyde-local-signin-element', id: 'fyde-local-signin'},
-  {tag: 'oobe-eula-element', id: 'oobe-eula-md'},
   {
     tag: 'online-authentication-screen-element',
     id: 'online-authentication-screen',
@@ -185,12 +180,11 @@ export const commonScreensList: OobeTypes.ScreensList = [
   },
   {tag: 'factor-setup-success-element', id: 'factor-setup-success'},
   {
-    tag: 'oobe-fydeos-installer',
+    tag: 'os-install-element',
     id: 'os-install',
     condition: 'isOsInstallAllowed',
   },
   {tag: 'os-trial-element', id: 'os-trial', condition: 'isOsInstallAllowed'},
-  {tag: 'data-restore-element', id: 'data-restore'},
   {tag: 'parental-handoff-element', id: 'parental-handoff'},
   {
     tag: 'password-selection-element',

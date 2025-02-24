@@ -42,7 +42,7 @@
 </style>
 
 <os-settings-animated-pages id="pages" section="[[section_]]">
-  <template is="dom-if" if="[[shouldUseNewUI_]]">
+  <template is="dom-if" if="[[isRevampWayfindingEnabled_]]">
     <div route-path="default">
       <account-manager-settings-card
           prefs="{{prefs}}"
@@ -63,7 +63,7 @@
   </div>
   </template>
 
-  <template is="dom-if" if="[[!shouldUseNewUI_]]">
+  <template is="dom-if" if="[[!isRevampWayfindingEnabled_]]">
     <div route-path="default">
       <settings-card header-text="$i18n{osPeoplePageTitle}">
         <div class="settings-box first two-line">

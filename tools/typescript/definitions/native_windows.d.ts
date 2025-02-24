@@ -38,7 +38,5 @@ declare namespace chrome {
     }
 
     export function create(appId: string, callback?: (window?: Window) => void): void;
-
-    export function getAll(callback: (windows: Window[]) => void): void;
   }
 }

@@ -15,10 +15,6 @@ export function isGuest(): boolean {
   return loadTimeData.getBoolean('isGuest');
 }
 
-export function isFydeAssistantFeatureEnabled(): boolean {
-  return loadTimeData.getBoolean('fydeAssistantFeatureEnabled');
-}
-
 export function isChild(): boolean {
   return loadTimeData.getBoolean('isChild');
 }

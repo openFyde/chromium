@@ -18,8 +18,6 @@ class LabelButton;
 class View;
 }  // namespace views
 
-enum class AccountType;
-
 namespace ash {
 
 class ASH_EXPORT AuthErrorBubble : public LoginErrorBubble {
@@ -32,7 +30,6 @@ class ASH_EXPORT AuthErrorBubble : public LoginErrorBubble {
   ~AuthErrorBubble() override;
 
   void ShowAuthError(base::WeakPtr<views::View> anchor_view,
-                     AccountType account_type,
                      int unlock_attempt,
                      bool authenticated_by_pin,
                      bool is_login_screen);

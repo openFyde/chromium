@@ -66,7 +66,6 @@
 #include "chrome/browser/ui/webui/ash/login/remote_activity_notification_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/reset_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/user_creation_screen_handler.h"
-#include "chrome/browser/ui/webui/ash/login/data_restore_screen_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chromeos/ash/components/browser_context_helper/browser_context_helper.h"
 #include "chromeos/ash/components/login/auth/public/auth_failure.h"
@@ -593,11 +592,6 @@ void LoginDisplayHostMojo::ShowGaiaDialogImpl(
 
 void LoginDisplayHostMojo::ShowOsInstallScreen() {
   StartWizard(OsInstallScreenView::kScreenId);
-  ShowDialog();
-}
-
-void LoginDisplayHostMojo::ShowDataRestoreScreen() {
-  StartWizard(DataRestoreScreenView::kScreenId);
   ShowDialog();
 }
 

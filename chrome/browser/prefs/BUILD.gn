@@ -32,7 +32,6 @@ source_set("prefs") {
     "//mojo/public/cpp/bindings",
     "//services/preferences/public/mojom",
     "//url",
-    "//fydeos/prefs",
   ]
 }
 

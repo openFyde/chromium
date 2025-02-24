@@ -34,11 +34,6 @@
 #include "content/public/browser/service_process_host.h"
 #include "content/public/common/content_switches.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/ash/system_web_apps/system_web_app_ui_utils.h"
-#include "ash/webui/system_apps/public/system_web_app_type.h"
-#include "ash/webui/fyde_assistant_app_ui/url_constants.h"
-#include "net/base/url_util.h"
 
 #if BUILDFLAG(ENABLE_CROS_LIBASSISTANT)
 #include "chromeos/ash/services/libassistant/public/mojom/service.mojom.h"
@@ -64,7 +59,6 @@ AssistantBrowserDelegateImpl::~AssistantBrowserDelegateImpl() {
 void AssistantBrowserDelegateImpl::MaybeInit(Profile* profile) {
   if (assistant::IsAssistantAllowedForProfile(profile) !=
       ash::assistant::AssistantAllowedState::ALLOWED) {
-    profile_for_fyde_assistant_ = profile;
     return;
   }
 
@@ -170,20 +164,6 @@ void AssistantBrowserDelegateImpl::OpenUrl(GURL url) {
   ash::NewWindowDelegate::GetPrimary()->OpenUrl(
       url, ash::NewWindowDelegate::OpenUrlFrom::kUserInteraction,
       ash::NewWindowDelegate::Disposition::kNewForegroundTab);
-}
-
-bool AssistantBrowserDelegateImpl::HandleQueryByFydeAssistant(const std::string& query) {
-  GURL url_with_query = GURL(ash::kChromeUIFydeAssistantAppURL);
-  url_with_query = net::AppendQueryParameter(url_with_query, "initQuery", query);
-  Browser* browser = FindSystemWebAppBrowser(profile_for_fyde_assistant_, ash::SystemWebAppType::FYDE_ASSISTANT);
-  if (browser) {
-    browser->window()->Show();
-    return false;
-  }
-  ash::NewWindowDelegate::GetInstance()->OpenUrl(url_with_query,
-    ash::NewWindowDelegate::OpenUrlFrom::kUserInteraction,
-    ash::NewWindowDelegate::Disposition::kNewWindow);
-  return true;
 }
 
 #if BUILDFLAG(ENABLE_CROS_LIBASSISTANT)

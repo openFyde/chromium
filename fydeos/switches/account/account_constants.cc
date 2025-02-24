@@ -12,7 +12,7 @@ namespace fydeos::constants {
 const char kDefaultFydeOSGaiaUrl[] = "https://account.fydeos.com";
 const char kDefaultFydeOSApisBaseUrl[] = "https://apis.fydeos.com";
 const char kDefaultFydeOSDeviceManagementServerUrl[] =
-  "https://policy.fydeos.com";
+  "https://m.fydeos.com/devicemanagement/data/api";
 const char kDefaultFydeOSRealtimeReportingServerUrl[] =
   "https://apis.fydeos.com/report/events";
 const char kDefaultFydeOSEncryptedReportingServerUrl[] =
@@ -23,15 +23,12 @@ const char kFydeOSSyncServerUrl[] = "https://clients4.fydeos.com/chrome-sync";
 const char kDefaultFydeOSFamilyLinkApisUrl[] =
   "https://familylink-apis.fydeos.com/kidsmanagement/v1/";
 
-const char kDefaultFydeFtlServerEndpoint[] = "im.fydeos.com";
-const char kDefaultFydeRemotingServerEndpoint[] = "remoting.fydeos.com";
-
 #else
 
 const char kDefaultFydeOSGaiaUrl[] = "https://account.fydeos.io";
 const char kDefaultFydeOSApisBaseUrl[] = "https://apis.fydeos.io";
 const char kDefaultFydeOSDeviceManagementServerUrl[] =
-  "https://policy.fydeos.io";
+  "https://m.fydeos.io/devicemanagement/data/api";
 const char kDefaultFydeOSRealtimeReportingServerUrl[] =
   "https://apis.fydeos.io/report/events";
 const char kDefaultFydeOSEncryptedReportingServerUrl[] =
@@ -41,9 +38,6 @@ const char kFydeOSSyncDevServerUrl[] =
 const char kFydeOSSyncServerUrl[] = "https://clients4.fydeos.io/chrome-sync";
 const char kDefaultFydeOSFamilyLinkApisUrl[] =
   "https://familylink-apis.fydeos.io/kidsmanagement/v1/";
-
-const char kDefaultFydeFtlServerEndpoint[] = "im.fydeos.io";
-const char kDefaultFydeRemotingServerEndpoint[] = "remoting.fydeos.io";
 
 #endif
 

@@ -192,10 +192,6 @@ void AssistantInteractionControllerImpl::OnDeepLinkReceived(
   if (type != DeepLinkType::kQuery)
     return;
 
-  if (ash::features::IsFydeAssistantEnabled()) {
-    return;
-  }
-
   const std::optional<std::string>& query =
       GetDeepLinkParam(params, DeepLinkParam::kQuery);
 
@@ -748,7 +744,6 @@ void AssistantInteractionControllerImpl::OnUiVisible(
   // is hotword since in such cases a voice interaction will already be in
   // progress.
   if (assistant::util::IsVoiceEntryPoint(entry_point, IsPreferVoice()) &&
-      !ash::features::IsFydeAssistantEnabled() &&
       entry_point != AssistantEntryPoint::kHotword) {
     StartVoiceInteraction();
     return;

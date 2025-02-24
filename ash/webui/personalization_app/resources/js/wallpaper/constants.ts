@@ -16,14 +16,8 @@ export const kDefaultImageSymbol: unique symbol =
 
 export type DefaultImageSymbol = typeof kDefaultImageSymbol;
 
-export interface FydeImage {
-  name: string;
-  light: FilePath;
-  dark: FilePath;
-}
-
 export type DisplayableImage =
-    FilePath|GooglePhotosPhoto|WallpaperImage|DefaultImageSymbol|FydeImage;
+    FilePath|GooglePhotosPhoto|WallpaperImage|DefaultImageSymbol;
 
 export const kMaximumLocalImagePreviews = 4;
 
@@ -39,10 +33,3 @@ export interface ImageTile {
   isTimeOfDayWallpaper?: boolean;
   hasPreviewImage?: boolean;
 }
-
-export const kFydeLightDarkImageSuffixes = [
-  '.light.jpg',
-  '.dark.jpg',
-  '.light.png',
-  '.dark.png',
-]

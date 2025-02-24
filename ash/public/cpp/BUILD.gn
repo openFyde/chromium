@@ -489,7 +489,6 @@ component("cpp") {
     "//ui/views",
     "//ui/wm",
     "//ui/wm/public",
-    "//fydeos/prefs",
   ]
 
   public_deps = [

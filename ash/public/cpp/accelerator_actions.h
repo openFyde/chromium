@@ -129,7 +129,6 @@ namespace ash {
   ACCELERATOR_ACTION_ENTRY(ToggleCalendar)                             \
   ACCELERATOR_ACTION_ENTRY(ToggleCapsLock)                             \
   ACCELERATOR_ACTION_ENTRY(ToggleClipboardHistory)                     \
-  ACCELERATOR_ACTION_ENTRY(ToggleFydeosAssistant)                      \
   ACCELERATOR_ACTION_ENTRY(ToggleDockedMagnifier)                      \
   ACCELERATOR_ACTION_ENTRY(ToggleFloating)                             \
   ACCELERATOR_ACTION_ENTRY(ToggleFullscreen)                           \

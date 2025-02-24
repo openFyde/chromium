@@ -693,10 +693,6 @@ void AuthFactorEditor::OnListAuthFactors(
             factor_with_status_proto.auth_factor().type())) {
       continue;
     }
-    if (factor_with_status_proto.auth_factor().type() ==
-      user_data_auth::AUTH_FACTOR_TYPE_CRYPTOHOME_RECOVERY) {
-      continue;
-    }
     auto factor = cryptohome::DeserializeAuthFactor(factor_with_status_proto,
                                                     fallback_type);
     factor_list.emplace_back(std::move(factor));
@@ -712,9 +708,6 @@ void AuthFactorEditor::OnListAuthFactors(
     // TODO(b/272312302): Actually handle the AUTH_FACTORY_TYPE_FINGERPRINT
     // value.
     if (proto_type == user_data_auth::AUTH_FACTOR_TYPE_FINGERPRINT) {
-      continue;
-    }
-    if (proto_type == user_data_auth::AUTH_FACTOR_TYPE_CRYPTOHOME_RECOVERY) {
       continue;
     }
     std::optional<cryptohome::AuthFactorType> type =

@@ -25,7 +25,6 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/user_metrics.h"
-#include "ash/constants/ash_features.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/scoped_observation.h"
@@ -301,7 +300,6 @@
 #include "chromeos/ui/frame/caption_buttons/frame_size_button.h"
 #include "chromeos/ui/wm/desks/desks_helper.h"
 #include "ui/compositor/throughput_tracker.h"
-#include "ash/public/cpp/assistant/assistant_state.h"
 #else
 #include "chrome/browser/ui/signin/signin_view_controller.h"
 #endif  // BUILDFLAG(IS_CHROMEOS)
@@ -3370,14 +3368,7 @@ content::KeyboardEventProcessingResult BrowserView::PreHandleKeyboardEvent(
   // - If the |browser_| is not for an app, and the |accelerator| is associated
   //   with the browser, and it is not a reserved one, do nothing.
 
-  // we still need ctrl+c for triggering ai bubble
-#if BUILDFLAG(IS_CHROMEOS_ASH)
-  const bool accelerator_for_ai = ash::features::IsFydeAssistantEnabled() && ash::AssistantState::Get()->fyde_assistant_enabled().value_or(false) && accelerator.key_code() == ui::VKEY_C;
-#else
-  const bool accelerator_for_ai = false;
-#endif
-  if ((browser_->is_type_app() || browser_->is_type_app_popup())
-      && !accelerator_for_ai) {
+  if (browser_->is_type_app() || browser_->is_type_app_popup()) {
     // Let all keys fall through to a v1 app's web content, even accelerators.
     // We don't use NOT_HANDLED_IS_SHORTCUT here. If we do that, the app
     // might not be able to see a subsequent Char event. See OnHandleInputEvent

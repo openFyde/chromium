@@ -380,12 +380,6 @@ void AppListBubblePresenter::ShowEmbeddedAssistantUI() {
   }
 }
 
-void AppListBubblePresenter::BackOrExit() {
-  if (bubble_view_) {
-    bubble_view_->BackOrExit();
-  }
-}
-
 void AppListBubblePresenter::OnWidgetDestroying(views::Widget* widget) {
   DVLOG(1) << __PRETTY_FUNCTION__;
   // NOTE: While the widget is usually cached after Show(), this method can be

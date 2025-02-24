@@ -73,8 +73,6 @@ COMPONENT_EXPORT(GOOGLE_APIS) extern const char kAPIKeysDevelopersHowToURL[];
 // Returns true if no dummy API key is set.
 COMPONENT_EXPORT(GOOGLE_APIS) bool HasAPIKeyConfigured();
 
-COMPONENT_EXPORT(GOOGLE_APIS) bool HasFydeOSAPIKeyConfigured();
-
 // Retrieves the API key, a.k.a. developer key, or a dummy string
 // if not set.
 //
@@ -87,7 +85,6 @@ COMPONENT_EXPORT(GOOGLE_APIS) bool HasFydeOSAPIKeyConfigured();
 COMPONENT_EXPORT(GOOGLE_APIS)
 const std::string& GetAPIKey(version_info::Channel channel);
 
-COMPONENT_EXPORT(GOOGLE_APIS) const std::string& GetFydeOSAPIKey();
 // Retrieves the API key, for the stable channel.
 //
 // DEPRECATED: Use `GetAPIKey(channel)` to get the right key for your

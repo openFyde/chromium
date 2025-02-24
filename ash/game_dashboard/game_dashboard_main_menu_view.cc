@@ -84,7 +84,6 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
-#include "fydeos/build/config/buildflags.h"
 
 namespace ash {
 
@@ -149,13 +148,8 @@ constexpr int kSetupPulseTimes = 3;
 constexpr base::TimeDelta kSetupPulseDuration = base::Seconds(2);
 
 constexpr char kSetupNudgeId[] = "SetupNudgeId";
-#if BUILDFLAG(USE_FYDEOS_COM)
 constexpr char kHelpUrl[] =
-    "https://fydeos.com/help/knowledge-base/getting-started/game-dashboard";
-#else
-constexpr char kHelpUrl[] =
-    "https://fydeos.io/help/knowledge-base/getting-started/game-dashboard";
-#endif
+    "https://support.google.com/chromebook/?p=game-dashboard-help";
 
 // Creates an individual Game Dashboard Tile.
 std::unique_ptr<FeatureTile> CreateFeatureTile(

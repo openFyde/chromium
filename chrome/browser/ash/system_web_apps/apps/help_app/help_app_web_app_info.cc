@@ -80,10 +80,6 @@ bool HelpAppSystemAppDelegate::ShouldCaptureNavigations() const {
   return true;
 }
 
-bool HelpAppSystemAppDelegate::IsAppEnabled() const {
-  return false;
-}
-
 gfx::Size HelpAppSystemAppDelegate::GetMinimumWindowSize() const {
   return {600, 320};
 }

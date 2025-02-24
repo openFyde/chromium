@@ -209,7 +209,7 @@ void CrostiniInstaller::ShowDialog(CrostiniUISurface ui_surface) {
 
   // TODO(lxj): We should pass the dialog |this| here instead of letting the
   // webui to call |GetForProfile()| later.
-  ash::CrostiniInstallerDialog::Show(profile_, ui_surface);
+  ash::CrostiniInstallerDialog::Show(profile_);
 }
 
 void CrostiniInstaller::Install(CrostiniManager::RestartOptions options,

@@ -67,7 +67,7 @@ int GetNumberOfThreadsForSoftwareEncoding(gfx::Size frame_size) {
 
   // Clamp to the number of available logical processors/cores.
   desired_threads =
-      std::min(desired_threads, (base::SysInfo::NumberOfProcessors() + 1) / 2);
+      std::min(desired_threads, base::SysInfo::NumberOfProcessors());
 
   return desired_threads;
 }

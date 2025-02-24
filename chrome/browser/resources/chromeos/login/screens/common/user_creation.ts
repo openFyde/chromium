@@ -290,7 +290,6 @@ export class UserCreation extends UserCreationScreenElementBase {
       Oobe.getInstance().setOobeUiState(OobeUiState.USER_CREATION);
     } else {
       this.userActed(UserAction.CANCEL);
-      this.dispatchEvent(new CustomEvent('user-creation-canceled', { bubbles: true, composed: true }));
     }
   }
 
@@ -302,17 +301,14 @@ export class UserCreation extends UserCreationScreenElementBase {
   private onNextClicked_(): void {
     if (this.uiStep === UserCreationUIState.CREATE) {
       if (this.selectedUserType === UserCreationUserType.SELF) {
-        this.dispatchEvent(new CustomEvent('user-creation-next', { bubbles: true, composed: true }));
         this.userActed(UserAction.SIGNIN);
       } else if (this.selectedUserType === UserCreationUserType.CHILD) {
-        this.dispatchEvent(new CustomEvent('user-creation-next', { bubbles: true, composed: true }));
         if (this.isOobeSoftwareUpdateEnabled_) {
           this.userActed(UserAction.CHILD_SETUP);
         } else {
           this.userActed(UserAction.ADD_CHILD);
         }
       } else if (this.selectedUserType === UserCreationUserType.ENROLL) {
-        this.dispatchEvent(new CustomEvent('user-creation-next', { bubbles: true, composed: true }));
         this.userActed(UserAction.TRIAGE);
       }
     }
