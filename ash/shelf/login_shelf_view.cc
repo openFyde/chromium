@@ -41,6 +41,8 @@
 #include "base/metrics/user_metrics.h"
 #include "base/sequence_checker.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/task/thread_pool.h"
+#include "base/files/file_util.h"
 #include "chromeos/ash/components/login/auth/auth_events_recorder.h"
 #include "chromeos/strings/grit/chromeos_strings.h"
 #include "chromeos/ui/vector_icons/vector_icons.h"
@@ -67,6 +69,8 @@
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
+#include "fydeos/switches/misc/misc_constants.h"
+#include "fydeos/switches/account/account_switches.h"
 
 using session_manager::SessionState;
 
@@ -98,6 +102,7 @@ constexpr LoginShelfView::ButtonId kButtonIds[] = {
     LoginShelfView::kOsInstall,
     LoginShelfView::kSchoolEnrollment,
     LoginShelfView::kUseLocalAccount,
+    LoginShelfView::kDataRestore,
 };
 
 LoginMetricsRecorder::ShelfButtonClickTarget GetUserClickTarget(int button_id) {
@@ -128,6 +133,8 @@ LoginMetricsRecorder::ShelfButtonClickTarget GetUserClickTarget(int button_id) {
           kSchoolEnrollmentButton;
     case LoginShelfView::kUseLocalAccount:
       return LoginMetricsRecorder::ShelfButtonClickTarget::kUseLocalAccount;
+    case LoginShelfView::kDataRestore:
+      return LoginMetricsRecorder::ShelfButtonClickTarget::kDataRestore;
   }
   return LoginMetricsRecorder::ShelfButtonClickTarget::kTargetCount;
 }
@@ -367,6 +374,11 @@ LoginShelfView::LoginShelfView() {
                  &LoginScreenController::ShowLocalSignin,
                  base::Unretained(Shell::Get()->login_screen_controller())),
              IDS_ASH_USE_LOCAL_ACCOUNT_BUTTON, kShelfUseLocalAccountButtonIcon);
+  add_button(kDataRestore,
+             base::BindRepeating(
+                 &LoginScreenController::ShowDataRestoreScreen,
+                 base::Unretained(Shell::Get()->login_screen_controller())),
+             IDS_ASH_DATA_RESTORE_BUTTON, kShelfFydeosDataRestoreButtonIcon);
 
   // Adds observers for states that affect the visibility of different buttons.
   shutdown_controller_observation_.Observe(Shell::Get()->shutdown_controller());
@@ -375,6 +387,14 @@ LoginShelfView::LoginShelfView() {
   enterprise_domain_model_observation_.Observe(
       Shell::Get()->system_tray_model()->enterprise_domain());
 
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(
+        base::PathExists,
+        base::FilePath(fydeos::constants::kFydeOSRestoreScriptDirPath)),
+      base::BindOnce(&LoginShelfView::OnFydeOSRestoreScriptChecked,
+                     weak_ptr_factory_.GetWeakPtr()));
+
   GetViewAccessibility().SetRole(ax::mojom::Role::kToolbar);
   GetViewAccessibility().SetName(
       l10n_util::GetStringUTF8(IDS_ASH_SHELF_ACCESSIBLE_NAME));
@@ -382,6 +402,11 @@ LoginShelfView::LoginShelfView() {
 
 LoginShelfView::~LoginShelfView() {
   ShelfConfig::Get()->RemoveObserver(this);
+}
+
+void LoginShelfView::OnFydeOSRestoreScriptChecked(bool is_restore_supported) {
+  is_restore_supported_ = is_restore_supported;
+  GetViewByID(kDataRestore)->SetVisible(ShouldShowDataRestoreButton());
 }
 
 void LoginShelfView::UpdateAfterSessionChange() {
@@ -678,6 +703,8 @@ void LoginShelfView::UpdateUi() {
 
   SetButtonVisible(kUseLocalAccount, ShouldShowUseLocalAccountButton());
 
+  SetButtonVisible(kDataRestore, ShouldShowDataRestoreButton());
+
   // If there is no visible (and thus focusable) buttons, we shouldn't focus
   // LoginShelfView. We update it here, so we don't need to check visibility
   // every time we move focus to system tray.
@@ -794,7 +821,8 @@ bool LoginShelfView::ShouldShowEnterpriseEnrollmentButton() const {
   const SessionState session_state =
       Shell::Get()->session_controller()->GetSessionState();
   return session_state == SessionState::OOBE &&
-         dialog_state_ == OobeDialogState::USER_CREATION;
+        ((dialog_state_ == OobeDialogState::GAIA_SIGNIN && fydeos::switches::IsFydeAccountEnabled()) ||
+         dialog_state_ == OobeDialogState::USER_CREATION);
 }
 
 bool LoginShelfView::ShouldShowSchoolEnrollmentButton() const {
@@ -843,6 +871,17 @@ bool LoginShelfView::ShouldShowUseLocalAccountButton() const {
   return (dialog_state_ == OobeDialogState::GAIA_SIGNIN ||
           dialog_state_ == OobeDialogState::USER_CREATION)
        && !user_session_started;
+}
+
+bool LoginShelfView::ShouldShowDataRestoreButton() const {
+  if (!is_restore_supported_) {
+    return false;
+  }
+  const bool user_session_started =
+      Shell::Get()->session_controller()->NumberOfLoggedInUsers() != 0;
+  return  !user_session_started
+    && (dialog_state_ == OobeDialogState::GAIA_SIGNIN
+        || dialog_state_ == OobeDialogState::FYDE_LOCAL_SIGNIN);
 }
 
 bool LoginShelfView::ShouldShowAppsButton() const {

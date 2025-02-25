@@ -10,6 +10,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "ash/public/cpp/tablet_mode_observer.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
+#include "fydeos/ui/webui/settings/ash/fydeos_handler_backup_task_manager.h"
 
 class PrefService;
 class Profile;
@@ -40,6 +41,7 @@ class FydeOsHandler :
   enum class FileDialogType {
     kUnspecified,
     kLibwidevine,
+    kBackup,
   };
   void OnSystemSaltObtained(const std::string& system_salt);
   void HandleGetIsOfflineAutoSigninEnabled(const base::Value::List& args);
@@ -73,6 +75,34 @@ class FydeOsHandler :
 
   bool nextToggleRebootRequiredForWidevine_ = false;
   bool lastToggleRebootRequiredForce_ = false;
+
+  void HandleFydeOSBackupSupported(const base::Value::List& args);
+  void HandleFydeOSBackupSelectFile(const base::Value::List& args);
+  void HandleFydeOSBackupStarted(const base::Value::List& args);
+  void HandleGetFydeOSBackupState(const base::Value::List& args);
+
+  void OnFydeOSBackupScriptChecked(const std::string& callback_id,
+                                   bool supported);
+
+  void OnBackupFileSelected(const base::FilePath& path);
+  void OnBackupFileSelectionCanceled();
+
+  void OnBackupTaskFinished(BackupTaskManager::TaskState state);
+
+  void HandleGetArcMediaAutoScanState(const base::Value::List& args);
+  void OnArcMediaAutoScanIndicatorFileExistenceChecked(const std::string& callback_id, bool result);
+  void HandleSetArcMediaAutoScanState(const base::Value::List& args);
+  void OnEnableArcMediaAutoScan(bool result);
+  void OnDisableArcMediaAutoScan(bool result);
+  void RefreshArcMediaAutoScanState();
+  void NotifyArcMediaAutoScanState(bool enabled);
+
+  void HandleSetArcMediaAutoScanStateForCurrentSession(const base::Value::List& args);
+
+  void HandleSetDevMode(const base::Value::List& args);
+  void OnSetDevMode(const std::string& callback_id, bool result);
+  void HandleGetDevModeSwitchSupported(const base::Value::List& args);
+  void OnDevModeSwitchSupportedChecked(const std::string& callback_id, bool result);
 
   std::string system_salt_;
   Profile* profile_;

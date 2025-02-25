@@ -11,6 +11,7 @@ namespace fydeos::constants {
 
 const char kDefaultTestUrl[] = "http://store.fydeos.com/204";
 const char kFydeOSHomePageUrl[] = "https://fydeos.com";
+const char kOpenFydeHomePageUrl[] = "https://openfyde.cn";
 
 const char kFydeOSStoreBaseUrl[] = "https://store.fydeos.com";
 const char kFydeOSAccountBaseUrl[] = "https://account.fydeos.com";
@@ -24,10 +25,12 @@ const char kLanguageSettingsLearnMoreUrl[] = "https://fydeos.com/docs/manual/cus
 const char kLinuxAppsLearnMoreURL[] = "https://fydeos.com/docs/manual/manage-your-apps/add-apps-and-extensions/set-up-linux-on-your-fydeos-device/";
 const char kOnlineEulaURLPath[] = "https://fydeos.com/terms-of-service/?agent=oobe";
 const char kOnlinePrivacyURLPath[] = "https://fydeos.com/privacy/?agent=oobe";
+const char kEulaURLPath[] = "https://fydeos.com/terms-of-service";
+const char kPrivacyURLPath[] = "https://fydeos.com/privacy";
 const char kFydeAccessibilityHelpURL[] = "https://fydeos.com/docs/manual/explore-accessibility";
 const char kFydeNewGestureHelpURL[] = "https://fydeos.com/docs/manual/customize-settings/use-tablets/use-gestures-or-buttons-to-navigate-in-tablet-mode";
 const char kSmbSharesLearnMoreURL[] = "https://fydeos.com/docs";
-const char kCupsPrintLearnMoreURL[] = "https://fydeos.com/docs";
+const char kCupsPrintLearnMoreURL[] = "https://fydeos.com/docs/manual/connect-your-fydeos-device/connect-to-other-devices/set-up-your-printer";
 const char kNaturalScrollHelpURL[] = "https://fydeos.com/docs/manual/customize-settings/appearance/use-your-fydeos-device-touchpad/";
 const char kFydeOSAccountURL[] = "https://account.fydeos.com";
 const char kFydeOSAccountChooserURL[] = "https://account.fydeos.com";
@@ -53,10 +56,20 @@ const char kTabletModeGesturesLearnMoreURL[] = "https://fydeos.com/docs/manual/c
 const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.com/docs/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/";
 const char kFingerprintLearnMoreURL[] = "https://fydeos.com/docs/manual/customize-settings/users-and-sync/set-up-and-sign-in-with-fingerprint-on-your-fydeos-device";
 
+const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.com/docs/manual/customize-settings/fydeos-settings/misc#backup-and-restore";
+
+const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[] = "https://fydeos.com/faq/disable-media-files-scan/";
+const char kFydeOSDevModeTransitionLearnMoreURL[] = "https://fydeos.com/docs/knowledge-base/getting-started/developer-mode";
+
+#if BUILDFLAG(FYDEOS_DEVICE)
+const char kFydeOSProductWarrantyDefaultURL[] = "https://sn.fydetabduo.cn";
+#endif
+
 #else
 
 const char kDefaultTestUrl[] = "http://store.fydeos.io/204";
 const char kFydeOSHomePageUrl[] = "https://fydeos.io";
+const char kOpenFydeHomePageUrl[] = "https://openfyde.io";
 
 const char kFydeOSStoreBaseUrl[] = "https://store.fydeos.io";
 const char kFydeOSAccountBaseUrl[] = "https://account.fydeos.io";
@@ -70,10 +83,12 @@ const char kLanguageSettingsLearnMoreUrl[] = "https://fydeos.io/docs/manual/cust
 const char kLinuxAppsLearnMoreURL[] = "https://fydeos.io/docs/manual/manage-your-apps/add-apps-and-extensions/set-up-linux-on-your-fydeos-device/";
 const char kOnlineEulaURLPath[] = "https://fydeos.io/terms-of-service/?agent=oobe";
 const char kOnlinePrivacyURLPath[] = "https://fydeos.io/privacy/?agent=oobe";
+const char kEulaURLPath[] = "https://fydeos.io/terms-of-service";
+const char kPrivacyURLPath[] = "https://fydeos.io/privacy";
 const char kFydeAccessibilityHelpURL[] = "https://fydeos.io/docs/manual/explore-accessibility";
 const char kFydeNewGestureHelpURL[] = "https://fydeos.io/docs/manual/customize-settings/use-tablets/use-gestures-or-buttons-to-navigate-in-tablet-mode";
 const char kSmbSharesLearnMoreURL[] = "https://fydeos.io/docs";
-const char kCupsPrintLearnMoreURL[] = "https://fydeos.io/docs";
+const char kCupsPrintLearnMoreURL[] = "https://fydeos.io/docs/manual/connect-your-fydeos-device/connect-to-other-devices/set-up-your-printer";
 const char kNaturalScrollHelpURL[] = "https://fydeos.io/docs/manual/customize-settings/appearance/use-your-fydeos-device-touchpad/";
 const char kFydeOSAccountURL[] = "https://account.fydeos.io";
 const char kFydeOSAccountChooserURL[] = "https://account.fydeos.io";
@@ -98,6 +113,19 @@ const char kFileManagerHelpURL[] = "https://fydeos.io/docs/manual/manage-your-ap
 const char kTabletModeGesturesLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/use-tablets/use-gestures-or-buttons-to-navigate-in-tablet-mode";
 const char kRuntimeHostPermissionsHelpURL[] = "https://fydeos.io/docs/manual/manage-your-apps/add-apps-and-extensions/add-apps-and-extensions/";
 const char kFingerprintLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/users-and-sync/set-up-and-sign-in-with-fingerprint-on-your-fydeos-device";
+
+const char kFydeOSBackupRestoreLearnMoreURL[] = "https://fydeos.io/docs/manual/customize-settings/fydeos-settings/misc#backup-and-restore";
+
+const char kFydeOSToggleArcMediaAutoScanLearnMoreURL[] = "https://fydeos.io/faq/disable-media-files-scan/";
+
+const char kFydeOSDevModeTransitionLearnMoreURL[] = "https://fydeos.io/docs/knowledge-base/getting-started/developer-mode";
+
+const char kFydeOSDiscordServerURL[] = "https://discord.gg/Qv3kxGeMJQ";
+const char kFydeOSTelegramGroupURL[] = "https://t.me/hi_fydeos";
+
+#if BUILDFLAG(FYDEOS_DEVICE)
+const char kFydeOSProductWarrantyDefaultURL[] = "https://sn.fydetabduo.com";
+#endif
 
 #endif
 

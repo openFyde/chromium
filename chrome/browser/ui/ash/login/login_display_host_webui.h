@@ -83,6 +83,7 @@ class LoginDisplayHostWebUI : public LoginDisplayHostCommon,
   void ShowLocalDialog() override;
   void StartUserRecovery(const AccountId& account_to_recover) override;
   void ShowOsInstallScreen() override;
+  void ShowDataRestoreScreen() override;
   void ShowGuestTosScreen() override;
   void ShowRemoteActivityNotificationScreen() override;
   void HideOobeDialog(bool saml_page_closed = false) override;
@@ -107,6 +108,7 @@ class LoginDisplayHostWebUI : public LoginDisplayHostCommon,
 
   // LoginDisplayHostCommon:
   bool HandleAccelerator(LoginAcceleratorAction action) final;
+  void HandlePlayStartupSound() final;
 
   // session_manager::SessionManagerObserver:
   void OnLoginOrLockScreenVisible() override;

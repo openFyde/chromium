@@ -30,6 +30,7 @@ const char kParamPlatform[] = "platform";
 const char kParamRequest[] = "request";
 const char kParamRetry[] = "retry";
 const char kParamProfileID[] = "profileid";
+const char kParamFydeOsLicenseId[] = "fydeos_license_id";
 
 // Policy constants used in authorization header.
 const char kAuthHeader[] = "Authorization";

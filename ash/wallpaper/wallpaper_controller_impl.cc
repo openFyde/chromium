@@ -1790,6 +1790,9 @@ void WallpaperControllerImpl::OnActiveUserSessionChanged(
 
 void WallpaperControllerImpl::OnOobeDialogStateChanged(OobeDialogState state) {
   oobe_state_ = state;
+  if (state == OobeDialogState::HIDDEN) {
+    CalculateWallpaperColors();
+  }
 }
 
 void WallpaperControllerImpl::OnSessionStateChanged(

@@ -162,14 +162,30 @@ void AssistantControllerImpl::OpenUrl(const GURL& url,
                                       bool from_server) {
   // app_list search result will be opened by `OpenUrl()`. However, the
   // `assistant_` may not be ready. Show a toast to indicate it.
-  if (!IsAssistantReady()) {
+  if (!IsAssistantReady() && !ash::features::IsFydeAssistantEnabled()) {
     assistant_ui_controller_.ShowUnboundErrorToast();
     return;
   }
 
   if (assistant::util::IsDeepLinkUrl(url)) {
-    NotifyDeepLinkReceived(url);
-    return;
+    if (ash::features::IsFydeAssistantEnabled() && assistant::util::GetDeepLinkType(url) == assistant::util::DeepLinkType::kQuery &&
+        AssistantState::Get()->fyde_assistant_enabled().value_or(false)) {
+      const std::map<std::string, std::string> params =
+        assistant::util::GetDeepLinkParams(url);
+      const std::optional<std::string>& query =
+        GetDeepLinkParam(params, assistant::util::DeepLinkParam::kQuery);
+      if (!query.has_value()) {
+        return;
+      }
+      const bool new_window_created = assistant::AssistantBrowserDelegate::Get()->HandleQueryByFydeAssistant(query.value());
+      if (!new_window_created) {
+        NotifyDeepLinkReceived(url);
+      }
+      return;
+    } else {
+      VLOG(2) << "Ignoring deep link url: " << url.spec();
+      return;
+    }
   }
 
   auto* android_helper = AndroidIntentHelper::GetInstance();

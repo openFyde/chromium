@@ -364,6 +364,12 @@ class ColorPaletteControllerImpl : public ColorPaletteController,
   // LoginDataDispatcher::Observer overrides:
   void OnOobeDialogStateChanged(OobeDialogState state) override {
     oobe_state_ = state;
+    bool dark_mode_enabled = dark_light_mode_controller_->IsDarkModeEnabled();
+    bool mode_changed = !is_dark_mode_last_value_.has_value() || is_dark_mode_last_value_.value() != dark_mode_enabled;
+    if (mode_changed && oobe_state_ != OobeDialogState::HIDDEN) {
+      NotifyObservers(BestEffortSeed(GetActiveUserSession()));
+    }
+    is_dark_mode_last_value_ = dark_light_mode_controller_->IsDarkModeEnabled();
   }
 
   // WallpaperControllerObserver overrides:
@@ -702,6 +708,8 @@ class ColorPaletteControllerImpl : public ColorPaletteController,
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   OobeDialogState oobe_state_ = OobeDialogState::HIDDEN;
+
+  std::optional<bool> is_dark_mode_last_value_;
 
   // Number of live ScopedNotificationPausers.
   int notification_pauser_count_ = 0;

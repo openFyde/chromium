@@ -217,6 +217,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://assistant-optin/*",
+      "chrome://fydeos-ai/*",
       "chrome://add-supervision/*",
       "chrome://chrome-signin/*",
       "chrome://graduation/*",

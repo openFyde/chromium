@@ -40,6 +40,9 @@
 #include "components/sync_preferences/pref_service_syncable.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#include "fydeos/misc/fydeos_email_subscription.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
+
 namespace ash {
 
 namespace {
@@ -47,6 +50,10 @@ namespace {
 constexpr char kUserActionGetStarted[] = "get-started";
 constexpr char kUserActionSetA11yNavigationButtonsEnabled[] =
     "set-a11y-button-enable";
+
+bool IsFydeOSBuild() {
+  return true;
+}
 
 void RecordShowShelfNavigationButtonsValueChange(bool enabled) {
   base::UmaHistogramBoolean(
@@ -118,7 +125,7 @@ bool MarketingOptInScreen::MaybeSkip(WizardContext& context) {
   Initialize();
 
   if (chrome_user_manager_util::IsManagedGuestSessionOrEphemeralLogin() ||
-      IsCurrentUserManaged() || !context.is_branded_build) {
+      IsCurrentUserManaged()) {
     exit_callback_.Run(Result::NOT_APPLICABLE);
     return true;
   }
@@ -130,15 +137,17 @@ void MarketingOptInScreen::ShowImpl() {
   DCHECK(initialized_);
 
   // Show a verbose legal footer for Canada. (https://crbug.com/1124956)
-  const bool legal_footer_visible =
+  const bool legal_footer_visible = !IsFydeOSBuild() &&
       email_opt_in_visible_ && countries_with_legal_footer.count(country_);
 
-  const bool cloud_gaming_enabled =
+  const bool cloud_gaming_enabled = !IsFydeOSBuild() &&
       chromeos::features::IsCloudGamingDeviceEnabled();
 
   if (view_) {
     view_->Show(/*opt_in_visible=*/email_opt_in_visible_,
                 /*opt_in_default_state=*/IsDefaultOptInCountry(),
+                /*fyde_opt_in_visible=*/fyde_email_opt_in_visible_,
+                /*fyde_opt_in_default_state=*/fyde_email_opt_in_visible_,
                 /*legal_footer_visible=*/legal_footer_visible,
                 /*cloud_gaming_enabled=*/cloud_gaming_enabled);
   }
@@ -179,9 +188,10 @@ void MarketingOptInScreen::OnUserAction(const base::Value::List& args) {
   const std::string& action_id = args[0].GetString();
 
   if (action_id == kUserActionGetStarted) {
-    CHECK_EQ(args.size(), 2u);
+    CHECK_EQ(args.size(), 3u);
     const bool chromebook_email_opt_in = args[1].GetBool();
-    OnGetStarted(chromebook_email_opt_in);
+    const bool fydeos_improvement_plan_opt_in = args[2].GetBool();
+    OnFydeGetStarted(chromebook_email_opt_in, fydeos_improvement_plan_opt_in);
     return;
   }
   if (action_id == kUserActionSetA11yNavigationButtonsEnabled) {
@@ -191,6 +201,24 @@ void MarketingOptInScreen::OnUserAction(const base::Value::List& args) {
     return;
   }
   BaseScreen::OnUserAction(args);
+}
+
+void MarketingOptInScreen::OnFydeGetStarted(bool email_opt_in, bool improvement_plan_opt_in) {
+  if (is_hidden())
+    return;
+  DCHECK(initialized_);
+
+  if (fyde_email_opt_in_visible_) {
+    Profile* profile = ProfileManager::GetActiveUserProfile();
+    DCHECK(profile);
+    profile->GetPrefs()->SetBoolean(prefs::kOobeMarketingOptInChoice, email_opt_in);
+    profile->GetPrefs()->SetBoolean(fydeos::prefs::kFydeOSImprovementPlanEnabled,
+                                    improvement_plan_opt_in);
+  }
+  fydeos::misc::Subscribe(ProfileManager::GetActiveUserProfile(),
+                          email_opt_in, improvement_plan_opt_in);
+
+  exit_callback_.Run(Result::NEXT);
 }
 
 void MarketingOptInScreen::OnGetStarted(bool chromebook_email_opt_in) {
@@ -248,7 +276,9 @@ void MarketingOptInScreen::Initialize() {
 
   // Only show the opt in option if this is a supported region, and if the user
   // never made a choice regarding emails.
-  email_opt_in_visible_ = !country_.empty() && ShouldShowOptionToSubscribe();
+  email_opt_in_visible_ = !IsFydeOSBuild() && !country_.empty() && ShouldShowOptionToSubscribe();
+
+  fyde_email_opt_in_visible_ = IsFydeOSBuild() && ShouldShowOptionToSubscribe();
 
   initialized_ = true;
 }
@@ -287,6 +317,10 @@ void MarketingOptInScreen::SetA11yNavigationButtonsEnabled(bool enabled) {
 bool MarketingOptInScreen::ShouldShowOptionToSubscribe() {
   // Directly access PrefServiceSyncable instead of PrefService because
   // we need to know whether the prefs have been loaded.
+  if (IsFydeOSBuild()) {
+    const std::string email = ProfileManager::GetActiveUserProfile()->GetProfileUserName();
+    return !base::EndsWith(email, "@fydeos.local", base::CompareCase::INSENSITIVE_ASCII);
+  }
   sync_preferences::PrefServiceSyncable* prefs =
       PrefServiceSyncableFromProfile(ProfileManager::GetActiveUserProfile());
   const bool sync_complete =

@@ -76,6 +76,8 @@ class ASH_EXPORT AppListBubblePresenter : public views::WidgetObserver,
   // Switches to the assistant page. Requires the bubble to be open.
   void ShowEmbeddedAssistantUI();
 
+  void BackOrExit();
+
   // Updates the continue section visibility based on user preference.
   void UpdateContinueSectionVisibility();
 

@@ -21,6 +21,7 @@ void KeepCurrentPrefs(PrefService* local_state);
 void SetNotNecessaryForceTpmFallback(PrefService* local_state);
 
 void ClearRebootMarkPrefs(PrefService* local_state);
+void ClearOneShotProfilePrefs(PrefService* prefs);
 
 } // prefs
 

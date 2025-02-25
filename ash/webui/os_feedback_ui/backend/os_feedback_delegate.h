@@ -17,7 +17,8 @@ namespace ash {
 using GetScreenshotPngCallback =
     base::OnceCallback<void(const std::vector<uint8_t>&)>;
 using SendReportCallback =
-    base::OnceCallback<void(os_feedback_ui::mojom::SendReportStatus)>;
+    base::OnceCallback<void(
+        const std::string&, os_feedback_ui::mojom::SendReportStatus)>;
 
 // A delegate which exposes browser functionality from //chrome to the OS
 // Feedback UI.

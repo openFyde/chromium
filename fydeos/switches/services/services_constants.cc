@@ -16,6 +16,9 @@ const char kDefaultFydeOSTimezoneAPIUrl[] =
 const char kDefaultFydeOSLookingGlassUrl[] =
   "https://apis.fydeos.com/lookingglass";
 const char kFydeOSWebStoreUpdateURL[] = "https://store.fydeos.com";
+const char kFydeOSFeedbackPostUrl[] = "https://apis.fydeos.com/feedback/submit";
+
+const char kFydeOSAssistantDefaultWebUrl[] = "https://ai.fydeos.com/chat/";
 #else
 const char kDefaultFydeOSGeolocationAPIUrl[] =
   "https://apis.fydeos.io/geo/locationByIp?";
@@ -24,6 +27,9 @@ const char kDefaultFydeOSTimezoneAPIUrl[] =
 const char kDefaultFydeOSLookingGlassUrl[] =
   "https://apis.fydeos.io/lookingglass";
 const char kFydeOSWebStoreUpdateURL[] = "https://store.fydeos.io";
+const char kFydeOSFeedbackPostUrl[] = "https://apis.fydeos.io/feedback/submit";
+
+const char kFydeOSAssistantDefaultWebUrl[] = "https://ai.fydeos.io/chat/";
 #endif
 
 const uint8_t* kFydeOSCryptoKey =

@@ -4,7 +4,12 @@
 
 #include "fydeos/misc/fydeos_misc_scheduler.h"
 #include "fydeos/misc/fydeos_statistics_collector.h"
+#include "fydeos/build/config/buildflags.h"
 #include <base/logging.h>
+
+#if BUILDFLAG(USE_FYDEOS_COM)
+#include "fydeos/misc/fydeos_crostini_notifier.h"
+#endif
 
 namespace fydeos {
 namespace misc {
@@ -30,6 +35,9 @@ void FydeMiscScheduler::Shutdown() {
 }
 
 FydeMiscScheduler::FydeMiscScheduler() :
+#if BUILDFLAG(USE_FYDEOS_COM)
+  crostini_notifier_(std::make_unique<MiscCrostiniNotifier>()),
+#endif
   collector_(std::make_unique<StatisticsCollector>()) {
   if (::ash::LoginState::IsInitialized()) {
     ::ash::LoginState::Get()->AddObserver(this);
@@ -43,6 +51,9 @@ void FydeMiscScheduler::Start() {
   VLOG(2) << "FydeMiscScheduler Start";
   started_ = true;
   collector_->Start();
+#if BUILDFLAG(USE_FYDEOS_COM)
+  crostini_notifier_->Start();
+#endif
 }
 
 void FydeMiscScheduler::Stop() {

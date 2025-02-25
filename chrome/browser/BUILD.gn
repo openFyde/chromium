@@ -2496,6 +2496,14 @@ static_library("browser") {
     "//fydeos/prefs",
   ]
 
+  if (is_chromeos) {
+    if (use_fydeos_license) {
+      deps += [
+        "//fydeos/license",
+      ]
+    }
+  }
+
   # Platforms that have a network diagnostics dialog. All others fall through
   # to the stub which is not implemented.
   if (is_chromeos_ash) {

@@ -105,8 +105,13 @@ found in the LICENSE file.
     border-bottom: var(--oobe-a11y-dialog-list-item-border);
   }
 
+  .fydeos-toggle-row {
+    margin-bottom: 12px;
+  }
 </style>
 <oobe-adaptive-dialog id="marketingOptInOverviewDialog" role="dialog"
+    fydeos-layout
+    animation-url="animations/fydeos_done.json"
     for-step="overview"
     aria-label$="[[i18nDynamic(locale, 'marketingOptInScreenTitle')]]"
     aria-describedby="marketing-opt-in-subtitle">
@@ -175,13 +180,35 @@ found in the LICENSE file.
   </div>
 
   <div hidden="[[isCloudGamingDevice]]" id="contentArea"
-        slot="content" class="layout flex vertical">
-    <!-- Animation -->
-    <div  class="marketing-animation-content">
-      <oobe-cr-lottie id="animation"
-          animation-url="animations/all_set.json"
-          singleLoop="true">
-      </oobe-cr-lottie>
+        slot="content" class="layout flex vertical landscape-header-aligned">
+    <div class="layout horizontal center fydeos-toggle-row"
+        hidden="[[!fydeMarketingOptInVisible]]"
+        id="fydeGetUpdatesToggleRow">
+      <cr-checkbox id="fydeUpdatesOption" checked
+          class="fydeos-toggle-option"
+          fydeos-style
+          aria-labelledby="fydeUpdatesOptionLabel">
+      </cr-checkbox>
+      <div id="fydeUpdatesOptionLabel" class="flex layout vertical"
+          aria-hidden="true">
+        <div class="toggle-title">
+          [[i18nDynamic(locale, 'marketingOptInGetFydeUpdates')]]
+        </div>
+      </div>
+    </div>
+    <div class="layout horizontal center fydeos-toggle-row"
+        id="fydeOSImprovementPlanToggleRow">
+      <cr-checkbox id="fydeOSImprovementPlanOption" checked
+          class="fydeos-toggle-option"
+          fydeos-style
+          aria-labelledby="fydeOSImprovementPlanOptionLabel">
+      </cr-checkbox>
+      <div id="fydeOSImprovementPlanOptionLabel" class="flex layout vertical"
+          aria-hidden="true">
+        <div class="toggle-title">
+          [[i18nDynamic(locale, 'fydeOSImprovementPlanOptionLabel')]]
+        </div>
+      </div>
     </div>
   </div>
   <div hidden="[[!isCloudGamingDevice]]" slot="content"

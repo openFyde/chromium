@@ -69,6 +69,8 @@ class LoginDisplayHostCommon : public LoginDisplayHost,
   bool HandleAccelerator(LoginAcceleratorAction action) override;
   void SkipPostLoginScreensForDemoMode() override;
 
+  void HandlePlayStartupSound() override;
+
   // SigninUI:
   void SetAuthSessionForOnboarding(const UserContext& user_context) final;
   void ClearOnboardingAuthSession() final;

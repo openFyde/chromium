@@ -16,6 +16,8 @@ const char kFydeOSSupervisedUserSettingsSyncIntervalInSeconds[] = "fydeos-superv
 
 const char kPolicyManagedByFyde[] = "policy-managed-by-fyde";
 
+const char kFydeFtlServerEndpointSwitch[] = "fyde-ftl-server-endpoint";
+const char kFydeRemotingServerEndpointSwitch[] = "fyde-remoting-server-endpoint";
 }
 
 bool IsFydeAccountEnabled() {
@@ -59,6 +61,35 @@ int GetFydeOSSupervisedUserSettingsSyncInterval() {
 bool IsPolicyManagedByFyde() {
   return base::CommandLine::ForCurrentProcess()->HasSwitch(kPolicyManagedByFyde) || IsFydeAccountEnabled();
 }
+
+bool IsFydeDMServerUrl(const std::string& url) {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(fydeos::switches::kFydeOSDeviceManagementUrl)) {
+    return url == command_line->GetSwitchValueASCII(fydeos::switches::kFydeOSDeviceManagementUrl);
+  } else {
+    return url == fydeos::constants::kDefaultFydeOSDeviceManagementServerUrl;
+  }
+}
+
+
+std::string GetFydeFtlServerEndpoint() {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(fydeos::switches::kFydeFtlServerEndpointSwitch)) {
+    return command_line->GetSwitchValueASCII(fydeos::switches::kFydeFtlServerEndpointSwitch);
+  } else {
+    return fydeos::constants::kDefaultFydeFtlServerEndpoint;
+  }
+}
+
+std::string GetFydeRemotingServerEndpoint() {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(fydeos::switches::kFydeRemotingServerEndpointSwitch)) {
+    return command_line->GetSwitchValueASCII(fydeos::switches::kFydeRemotingServerEndpointSwitch);
+  } else {
+    return fydeos::constants::kDefaultFydeRemotingServerEndpoint;
+  }
+}
+
 
 }// namespace switches
 }// namespace fydeos

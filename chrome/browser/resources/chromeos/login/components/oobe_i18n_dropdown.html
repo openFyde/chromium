@@ -11,12 +11,26 @@ found in the LICENSE file.
     --md-select-width: 240px;
   }
 
+  :host-context([fydeos-layout]):host {
+    width: 100%;
+    --md-select-width: 100%;
+    --oobe-select-height: 40px;
+  }
+
   select {
     height: var(--oobe-select-height);
   }
 
   :host-context(.jelly-enabled) select.md-select {
     --md-select-bg-color: var(--cros-sys-input_field_on_shaded);
+  }
+
+  :host-context([fydeos-layout]) select.md-select {
+    padding: 8px 24px;
+    background: var(--cros-sys-white);
+    border-radius: 32px;
+    border: solid 1px var(--color-combobox-container-outline,
+        var(--cr-fallback-color-neutral-outline));
   }
 </style>
 <select id="select" aria-label$="[[labelForAria]]" class="md-select" >

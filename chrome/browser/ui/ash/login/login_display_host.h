@@ -160,6 +160,8 @@ class LoginDisplayHost {
   // Show the os install dialog.
   virtual void ShowOsInstallScreen() = 0;
 
+  virtual void ShowDataRestoreScreen() = 0;
+
   // Show the guest terms of service screen.
   virtual void ShowGuestTosScreen() = 0;
 
@@ -250,6 +252,8 @@ class LoginDisplayHost {
   // Skips any screens that may normally be shown after login (registration,
   // Terms of Service, user image selection) for demo mode.
   virtual void SkipPostLoginScreensForDemoMode() = 0;
+
+  virtual void HandlePlayStartupSound() = 0;
 
  protected:
   LoginDisplayHost();

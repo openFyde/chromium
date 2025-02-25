@@ -7,6 +7,7 @@ import("//fydeos/extensions/common/api/fydeos_schema.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 import("//tools/json_schema_compiler/json_features.gni")
+import("//fydeos/build/config/buildflags.gni")
 
 
 assert(enable_extensions)
@@ -53,6 +54,11 @@ json_features("api_features") {
   sources = [
     "_api_features.json",
   ]
+  if (use_fydeos_license) {
+    sources += [
+      "_license_api_features.json",
+    ]
+  }
   visibility = [ ":fydeos_features" ]
 }
 

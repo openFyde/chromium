@@ -50,6 +50,7 @@ class StatusAreaWidget;
 class ShelfObserver;
 class WorkAreaInsets;
 class ShelfTooltipManager;
+class FydeAssistantView;
 
 // TODO(oshima) : move to .cc
 
@@ -271,6 +272,9 @@ class ASH_EXPORT Shelf : public ShelfLayoutManagerObserver {
   StatusAreaWidget* status_area_widget() const {
     return status_area_widget_.get();
   }
+  FydeAssistantView* fyde_assistant_view() const {
+    return fyde_assistant_view_.get();
+  }
   LoginShelfWidget* login_shelf_widget() { return login_shelf_widget_.get(); }
 
   ShelfAlignment alignment() const { return alignment_; }
@@ -338,6 +342,7 @@ class ASH_EXPORT Shelf : public ShelfLayoutManagerObserver {
   std::unique_ptr<DeskButtonWidget> desk_button_widget_;
   std::unique_ptr<HotseatWidget> hotseat_widget_;
   std::unique_ptr<StatusAreaWidget> status_area_widget_;
+
   // Null during display teardown, see WindowTreeHostManager::DeleteHost() and
   // RootWindowController::CloseAllChildWindows().
   std::unique_ptr<ShelfWidget> shelf_widget_;
@@ -383,6 +388,8 @@ class ASH_EXPORT Shelf : public ShelfLayoutManagerObserver {
 
   // Used by `ScopedDisableAutoHide` to disable auto-hide shelf behavior.
   int disable_auto_hide_ = 0;
+
+  std::unique_ptr<FydeAssistantView> fyde_assistant_view_;
 
   std::unique_ptr<ShelfTooltipManager> tooltip_;
 

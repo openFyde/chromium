@@ -3,6 +3,7 @@
 # found in the LICENSE file.
 
 import("//build/config/chromeos/rules.gni")
+import("//fydeos/build/config/buildflags.gni")
 
 assert(is_chromeos, "Non-Chrome-OS builds must not depend on //chromeos")
 
@@ -25,7 +26,16 @@ static_library("misc") {
     "fydeos_release_note_url.h",
     "fydeos_toggle_ota.cc",
     "fydeos_toggle_ota.h",
+    "fydeos_dev_mode.cc",
+    "fydeos_dev_mode.h",
   ]
+
+  if (use_fydeos_com) {
+    sources += [
+      "fydeos_crostini_notifier.cc",
+      "fydeos_crostini_notifier.h",
+    ]
+  }
 
   defines = [ "CHROMEOS_IMPLEMENTATION" ]
 }

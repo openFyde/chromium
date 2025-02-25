@@ -94,6 +94,7 @@
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
 #include "ash/constants/url_constants.h"
+#include "ash/webui/fyde_assistant_app_ui/url_constants.h"
 #include "ash/webui/camera_app_ui/url_constants.h"
 #include "ash/webui/file_manager/url_constants.h"
 #include "ash/webui/files_internals/url_constants.h"
@@ -501,6 +502,7 @@ ChromeWebUIControllerFactory::GetListOfAcceptableURLs() {
     // Lacros. They are reachable via both chrome:// and os:// (from Lacros).
     // Note: chrome://os-settings is also reachable via os://settings.
     GURL(ash::file_manager::kChromeUIFileManagerUntrustedURL),
+    GURL(ash::kChromeUIFydeAssistantAppURL),
     GURL(ash::file_manager::kChromeUIFileManagerURL),
     GURL(ash::kChromeUICameraAppURL),
     GURL(ash::kChromeUIFilesInternalsURL),

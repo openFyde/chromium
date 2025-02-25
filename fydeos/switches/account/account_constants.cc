@@ -23,6 +23,9 @@ const char kFydeOSSyncServerUrl[] = "https://clients4.fydeos.com/chrome-sync";
 const char kDefaultFydeOSFamilyLinkApisUrl[] =
   "https://familylink-apis.fydeos.com/kidsmanagement/v1/";
 
+const char kDefaultFydeFtlServerEndpoint[] = "im.fydeos.com";
+const char kDefaultFydeRemotingServerEndpoint[] = "remoting.fydeos.com";
+
 #else
 
 const char kDefaultFydeOSGaiaUrl[] = "https://account.fydeos.io";
@@ -38,6 +41,9 @@ const char kFydeOSSyncDevServerUrl[] =
 const char kFydeOSSyncServerUrl[] = "https://clients4.fydeos.io/chrome-sync";
 const char kDefaultFydeOSFamilyLinkApisUrl[] =
   "https://familylink-apis.fydeos.io/kidsmanagement/v1/";
+
+const char kDefaultFydeFtlServerEndpoint[] = "im.fydeos.io";
+const char kDefaultFydeRemotingServerEndpoint[] = "remoting.fydeos.io";
 
 #endif
 

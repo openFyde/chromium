@@ -153,12 +153,10 @@ export interface AboutPageBrowserProxy {
   /** Opens the release notes app. */
   launchReleaseNotes(): void;
 
-  // <if expr="_google_chrome">
   /**
    * Opens the feedback dialog.
    */
   openFeedbackDialog(): void;
-  // </if>
 
   /** Opens the diagnostics page. */
   openDiagnostics(): void;
@@ -172,6 +170,7 @@ export interface AboutPageBrowserProxy {
   /** Opens the firmware updates page. */
   openFirmwareUpdatesPage(): void;
 
+  getIsFirmwareUpdateSupported(): Promise<boolean>;
   /**
    * Requests the number of firmware updates.
    */
@@ -285,11 +284,9 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
     chrome.send('launchReleaseNotes');
   }
 
-  // <if expr="_google_chrome">
   openFeedbackDialog(): void {
     chrome.send('openFeedbackDialog');
   }
-  // </if>
 
   openDiagnostics(): void {
     chrome.send('openDiagnostics');
@@ -309,6 +306,10 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
 
   getFirmwareUpdateCount(): Promise<number> {
     return sendWithPromise('getFirmwareUpdateCount');
+  }
+
+  getIsFirmwareUpdateSupported(): Promise<boolean> {
+    return sendWithPromise('getIsFirmwareUpdateSupported');
   }
 
   requestUpdate(): void {

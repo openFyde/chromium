@@ -98,6 +98,7 @@ AuthErrorBubble::AuthErrorBubble(
 AuthErrorBubble::~AuthErrorBubble() {}
 
 void AuthErrorBubble::ShowAuthError(base::WeakPtr<views::View> anchor_view,
+                                    AccountType account_type,
                                     int unlock_attempt,
                                     bool authenticated_by_pin,
                                     bool is_login_screen) {
@@ -138,12 +139,22 @@ void AuthErrorBubble::ShowAuthError(base::WeakPtr<views::View> anchor_view,
     *bold_start += shortcut_offset_in_string;
   }
 
-  if (unlock_attempt > 1) {
-    base::StrAppend(&error_text,
-                    {u"\n\n", l10n_util::GetStringUTF16(
-                                  authenticated_by_pin
-                                      ? IDS_ASH_LOGIN_ERROR_RECOVER_USER
-                                      : IDS_ASH_LOGIN_ERROR_RECOVER_USER_PWD)});
+  if (unlock_attempt > 1 && account_type != AccountType::FLINT_ACCOUNT) {
+    if (account_type == AccountType::FYDE_ACCOUNT) {
+      base::StrAppend(
+          &error_text,
+          {u"\n\n", l10n_util::GetStringUTF16(
+                        authenticated_by_pin
+                            ? IDS_ASH_LOGIN_ERROR_RECOVER_USER_FYDEOS
+                            : IDS_ASH_LOGIN_ERROR_RECOVER_USER_PWD_FYDEOS)});
+    } else {
+      base::StrAppend(
+          &error_text,
+          {u"\n\n", l10n_util::GetStringUTF16(
+                        authenticated_by_pin
+                            ? IDS_ASH_LOGIN_ERROR_RECOVER_USER
+                            : IDS_ASH_LOGIN_ERROR_RECOVER_USER_PWD)});
+      }
   }
 
   auto label = std::make_unique<views::StyledLabel>();
@@ -169,6 +180,7 @@ void AuthErrorBubble::ShowAuthError(base::WeakPtr<views::View> anchor_view,
   // The recover user flow is only accessible from the login screen but
   // not from the lock screen.
   if (is_login_screen &&
+      account_type != AccountType::FLINT_ACCOUNT &&
       Shell::Get()->session_controller()->GetSessionState() !=
           session_manager::SessionState::LOGIN_SECONDARY) {
     auto recover_user_button = std::make_unique<PillButton>(

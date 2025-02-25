@@ -498,6 +498,13 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
               this.i18n('appsmenuItemDescriptionArcUnavailable'),
         },
         {
+          section: Section.kFydeAssistant,
+          path: `/${routesMojom.FYDE_ASSISTANT_SECTION_PATH}`,
+          icon: 'os-settings:fydeos-ai',
+          label: this.i18n('fydeAssistantPageTitle'),
+          sublabel: this.i18n('fydeAssistantMenuItemDescription'),
+        },
+        {
           section: Section.kAccessibility,
           path: `/${routesMojom.ACCESSIBILITY_SECTION_PATH}`,
           icon: 'os-settings:accessibility-revamp',
@@ -510,6 +517,13 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
           icon: 'os-settings:system-preferences',
           label: this.i18n('systemPreferencesTitle'),
           sublabel: this.i18n('systemPreferencesMenuItemDescription'),
+        },
+        {
+          section: Section.kCrostini,
+          path: `/${routesMojom.CROSTINI_SECTION_PATH}`,
+          icon: 'os-settings:developer-tags',
+          label: this.i18n('crostiniPageTitle'),
+          sublabel: this.i18n('crostiniMenuItemDescription'),
         },
         {
           section: Section.kFydeOs,

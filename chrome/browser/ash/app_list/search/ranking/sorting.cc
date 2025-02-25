@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "chrome/browser/ash/app_list/search/ranking/sorting.h"
+#include "ash/public/cpp/app_list/app_list_types.h"
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
@@ -62,6 +63,11 @@ void SortResults(
           return (a_best_match_rank ^ b_best_match_rank) < 0
                      ? a_best_match_rank > b_best_match_rank
                      : a_best_match_rank < b_best_match_rank;
+        }
+
+        if (a->result_type() == ash::AppListSearchResultType::kAssistantText
+         && b->result_type() != ash::AppListSearchResultType::kAssistantText) {
+          return true;
         }
 
         const bool ignore_categories =

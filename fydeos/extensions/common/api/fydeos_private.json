@@ -2,6 +2,9 @@
   {
     "namespace": "fydeosPrivate",
     "description": "get or set some fydeos specified prefs throught this api",
+    "compiler_options": {
+      "implemented_in": "fydeos/extensions/browser/api/fydeos_private/fydeos_private_api.h"
+    },
     "properties": {
       "services": {
         "type": "object",
@@ -15,6 +18,28 @@
           }
         }
       }
-    }
+    },
+    "types": [{
+      "id": "OsInfo",
+      "type": "object",
+      "properties": {
+        "host_suffix": { "type": "string" },
+        "fydeos": { "type": "boolean" }
+      }
+    }],
+    "functions": [{
+      "name": "getFydeOSInfo",
+      "type": "function",
+      "description": "host info",
+      "parameters": [],
+      "returns_async": {
+        "type": "function",
+        "name": "callback",
+        "parameters": [{
+          "name": "info",
+          "$ref": "OsInfo"
+        }]
+      }
+    }]
   }
 ]

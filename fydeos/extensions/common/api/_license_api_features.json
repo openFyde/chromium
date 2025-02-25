@@ -1,0 +1,8 @@
+{
+  "licenseManagement": {
+    "dependencies": ["permission:FydeOSPrivate"],
+    "extension_types": ["extension"],
+    "platforms": ["chromeos"],
+    "contexts": ["privileged_extension"]
+  }
+}

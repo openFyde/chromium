@@ -16,6 +16,7 @@ source_set("prefs") {
 
   deps = [
     "//base",
+    "//fydeos/constants",
   ]
 
   defines = [ "CHROMEOS_IMPLEMENTATION" ]

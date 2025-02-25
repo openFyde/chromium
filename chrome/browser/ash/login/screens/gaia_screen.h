@@ -46,6 +46,7 @@ class GaiaScreen : public BaseScreen, public ScreenBacklightObserver {
     CANCEL,
     ENTERPRISE_ENROLL,
     USE_LOCAL_ACCOUNT,
+    ACCOUNT_TYPE_SELECTION_BACK,
     ENTER_QUICK_START,
     QUICK_START_ONGOING,
   };

@@ -83,6 +83,7 @@
 #include "fydeos/switches/urls/urls_constants.h"
 #include "fydeos/misc/fydeos_release_note_url.h"
 #include "chrome/common/webui_url_constants.h"
+#include "fydeos/switches/services/services_switches.h"
 //---***FYDEOS END***---
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -593,14 +594,16 @@ void ShowSearchEngineSettings(Browser* browser) {
 }
 
 void ShowWebStore(Browser* browser, std::string_view utm_source_value) {
-  GURL webstore_url = extension_urls::GetWebstoreLaunchURL();
-  // TODO(crbug.com/40073814): Refactor this check into
-  // extension_urls::GetWebstoreLaunchURL() and fix tests relying on it.
-  if (base::FeatureList::IsEnabled(extensions_features::kNewWebstoreURL)) {
-    webstore_url = extension_urls::GetNewWebstoreLaunchURL();
-  }
-  ShowSingletonTabIgnorePathOverwriteNTP(
-      browser, extension_urls::AppendUtmSource(webstore_url, utm_source_value));
+  GURL webstore_url = GURL(fydeos::switches::GetFydeOSAppStoreURL() + "/?init=");
+  NavigateParams params(browser, webstore_url, ui::PAGE_TRANSITION_AUTO_BOOKMARK);
+  params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  params.window_action = NavigateParams::NO_ACTION;
+  params.opened_by_another_window = true;
+  params.should_replace_current_entry = false;
+  params.user_gesture = true;
+  params.tabstrip_add_types |= AddTabTypes::ADD_NONE;
+  params.path_behavior = NavigateParams::IGNORE_AND_NAVIGATE;
+  Navigate(&params);
 }
 
 void ShowPrivacySandboxSettings(Browser* browser) {

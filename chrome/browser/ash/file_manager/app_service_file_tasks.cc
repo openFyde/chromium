@@ -57,6 +57,8 @@
 #include "storage/browser/file_system/file_system_context.h"
 #include "storage/browser/file_system/file_system_url.h"
 #include "url/gurl.h"
+#include "base/command_line.h"
+#include "chromeos/dbus/constants/dbus_switches.h"
 
 namespace file_manager::file_tasks {
 
@@ -251,7 +253,6 @@ void FindAppServiceTasks(Profile* profile,
       proxy->GetAppsForFiles(std::move(intent_files));
 
   std::vector<apps::AppType> supported_app_types = {
-      apps::AppType::kArc,
       apps::AppType::kWeb,
       apps::AppType::kSystemWeb,
       apps::AppType::kChromeApp,
@@ -262,6 +263,10 @@ void FindAppServiceTasks(Profile* profile,
       apps::AppType::kCrostini,
       apps::AppType::kPluginVm,
   };
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+                            chromeos::switches::kSystemDevMode)) {
+    supported_app_types.push_back(apps::AppType::kArc);
+  }
   for (auto& launch_entry : intent_launch_info) {
     auto app_type = proxy->AppRegistryCache().GetAppType(launch_entry.app_id);
     if (!base::Contains(supported_app_types, app_type)) {

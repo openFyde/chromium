@@ -174,6 +174,11 @@ export class EnterpriseEnrollmentElement extends
         value: false,
       },
 
+      isFallbackEnabled: {
+        type: Boolean,
+        value: true,
+      },
+
       /**
        * Bound to gaia-dialog::authFlow.
        */
@@ -210,6 +215,7 @@ export class EnterpriseEnrollmentElement extends
   private hasAccountCheck: boolean;
   private isAutoEnroll: boolean;
   private isForced: boolean;
+  private isFallbackEnabled: boolean;
   private authFlow: number;
   private email: string;
   private readonly isMeet: boolean;
@@ -333,8 +339,9 @@ export class EnterpriseEnrollmentElement extends
     this.isManualEnrollment = (data.enrollment_mode === 'manual');
     this.isForced = data.is_enrollment_enforced;
     this.isAutoEnroll = data.attestationBased;
-    this.isAutoEnroll = this.isAutoEnroll
-                          || ('fydeBased' in data ? (!!data.fydeBased) : false);
+    const isFydeBased = ('fydeBased' in data ? (!!data.fydeBased) : false);
+    this.isAutoEnroll = this.isAutoEnroll || isFydeBased;
+    this.isFallbackEnabled = !isFydeBased;
     this.hasAccountCheck =
         ((data.flow === 'enterpriseLicense') ||
          (data.flow === 'educationLicense'));
@@ -457,7 +464,7 @@ export class EnterpriseEnrollmentElement extends
     // TODO(b/238175743) Do not set `ENROLLMENT_CANCEL_ENABLED` if enrollment is
     // forced. Keep setting `isCancelDisabled` to false if enrollment is forced,
     // otherwise the manual fallback button does nothing.
-    if (this.isCancelDisabled ||
+    if (this.isCancelDisabled || this.isForced ||
         step === OobeTypes.EnrollmentStep.ATTRIBUTE_PROMPT) {
       Oobe.getInstance().setOobeUiState(OobeUiState.ENROLLMENT_CANCEL_DISABLED);
     } else {
@@ -465,6 +472,9 @@ export class EnterpriseEnrollmentElement extends
           step === OobeTypes.EnrollmentStep.SUCCESS ?
               OobeUiState.ENROLLMENT_SUCCESS :
               OobeUiState.ENROLLMENT_CANCEL_ENABLED);
+    }
+    if (step === OobeTypes.EnrollmentStep.SUCCESS && this.isAutoEnroll) {
+      this.onEnrollmentFinished();
     }
   }
 
@@ -724,8 +734,8 @@ export class EnterpriseEnrollmentElement extends
    * @param automatic - Whether the enrollment is automatic
    * @param enforced  - Whether the enrollment is enforced
    */
-  private isGenericCancel(automatic: boolean, enforced: boolean): boolean {
-    return automatic || (!automatic && !enforced);
+  private isGenericCancel(automatic: boolean, enforced: boolean, fallbackEnabled: boolean): boolean {
+    return (automatic && fallbackEnabled) || (!automatic && !enforced);
   }
 
   /**

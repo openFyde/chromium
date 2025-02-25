@@ -79,6 +79,8 @@ static_library("login") {
     "fingerprint_setup_screen_handler.h",
     "fyde_local_signin_screen_handler.cc",
     "fyde_local_signin_screen_handler.h",
+    "data_restore_screen_handler.cc",
+    "data_restore_screen_handler.h",
     "gaia_info_screen_handler.cc",
     "gaia_info_screen_handler.h",
     "gaia_screen_handler.cc",

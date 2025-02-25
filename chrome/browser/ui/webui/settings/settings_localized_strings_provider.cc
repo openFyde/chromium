@@ -304,8 +304,8 @@ void AddAboutStrings(content::WebUIDataSource* html_source, Profile* profile) {
   // Top level About Page strings.
   static constexpr webui::LocalizedString kLocalizedStrings[] = {
       {"aboutProductLogoAlt", IDS_SHORT_PRODUCT_LOGO_ALT_TEXT},
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
       {"aboutReportAnIssue", IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE},
+#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
       {"aboutPrivacyPolicy", IDS_SETTINGS_ABOUT_PAGE_PRIVACY_POLICY},
 #endif
       {"aboutRelaunch", IDS_SETTINGS_ABOUT_PAGE_RELAUNCH},

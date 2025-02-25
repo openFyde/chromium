@@ -246,6 +246,7 @@
       "contexts": ["webui"],
       "matches": [
         "chrome://add-supervision/*",
+        "chrome://fydeos-ai/*",
         "chrome://assistant-optin/*",
         "chrome://file-manager/*",
         "chrome://extensions/*",
@@ -257,7 +258,8 @@
         "chrome://os-settings/*",
         "chrome://parent-access/*",
         "chrome://password-change/*",
-        "chrome://lock-reauth/*"
+        "chrome://lock-reauth/*",
+        "chrome://os-settings/*"        // required by webview, FYDEOS BEGIN, FYDEOS END
       ]
     }, {
       // This feature is used by the Controlled Frame API and is specifically
@@ -851,6 +853,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
+      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
       "chrome://file-manager/*",
       "chrome://chrome-signin/*",
@@ -862,7 +865,8 @@
       "chrome://os-settings/*",
       "chrome://parent-access/*",
       "chrome://password-change/*",
-      "chrome://lock-reauth/*"
+      "chrome://lock-reauth/*",
+      "chrome://os-settings/*"        // required by webview.request.xxxx.addListener, FYDEOS BEGIN, FYDEOS END
     ]
   }, {
     // This feature is used by the Controlled Frame API and is specifically
@@ -887,6 +891,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
+      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
       "chrome://file-manager/*",
       "chrome://chrome-signin/*",
@@ -898,7 +903,8 @@
       "chrome://os-settings/*",
       "chrome://parent-access/*",
       "chrome://password-change/*",
-      "chrome://lock-reauth/*"
+      "chrome://lock-reauth/*",
+      "chrome://os-settings/*" // without this, webview tag won't work, FYDEOS BEGIN, FYDEOS END
     ]
   }, {
     // This feature is used by the Controlled Frame API and is specifically
@@ -921,6 +927,7 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
+      "chrome://fydeos-ai/*",
       "chrome://assistant-optin/*",
       "chrome://file-manager/*",
       "chrome://chrome-signin/*",

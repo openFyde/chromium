@@ -143,5 +143,140 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_REQUIRES_ONE_TIME_PAYMENT" desc="message of ota disallowed requires one time payment">
     A new milestone version of FydeOS is available to update now. You need to pay a one-off fee to continue with this update.
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_SAVE_FILE_DIALOG_TITLE" desc="Title for backing up">
+    Please specify the path to store the backup file
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_LABEL" desc="Label on os-settings fydeos backup section">
+    Create a backup file for this account (beta). <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_BUTTON_LABEL" desc="Text on os-settings fydeos backup button">
+    Backup
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_INTRO_TITLE" desc="Title for backup intro">
+    Create a backup file for this account (beta)
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_INTRO_TEXT" desc="Text for backup intro">
+    This operation creates a full disk backup for this account, making it easy to restore to the state of your FydeOS when the backup was created, including settings, installed browser extensions and subsystem apps. Depending on your apps and the contents of your personal folder, the backup file may be large; it is recommended to store the backup file on an external storage device. If you have a portable USB drive, please connect it now. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TITLE" desc="Title for backup password prompt">
+    Please enter the login password for this account
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_BACKUP_PASSWORD_PROMPT_TEXT" desc="Text for backup password prompt">
+    Please remember this password, as it will be required when restoring this backup file
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_TOGGLE_ARC_MEDIA_AUTO_SCAN_LABEL" desc="Text for toggling arc media autoscan">
+    Disable automatic media file scanning for all partitions to optimize battery life. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SECURITY_SECTION_TITLE" desc="Title of security section on os-settings fydeos">
+    Security options
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_DEV_MODE_TRANSITION_LABEL" desc="Label on os-settings fydeos dev mode transition section">
+    Enable "Developer mode" for this <ph name="IDS_SHORT_PRODUCT_OS_NAME">$1<ex>FydeOS</ex></ph> installation with more developer features. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$2"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_IN_DEV_MODE_TOOLTIP" desc="In dev mode message on os-settings fydeos dev mode transition section">
+    You are already in "Developer mode"
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_BUTTON_TEXT" desc="Text on action button of os-settings fydeos dev mode transition section">
+    Enable "Developer mode"
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_CONFIRM_TITLE" desc="confirm title of os-settings fydeos dev mode transition section">
+    Warning
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_ENABLE_DEV_MODE_CONFIRM_MESSAGE" desc="confirm message of os-settings fydeos dev mode transition section">
+    Warning! Enabling “Developer mode“ is an irreversible operation. If you wish to disable “Developer mode“ you must reinstall FydeOS, resulting in all data being wiped. Please back up your data and proceed at your own risk.
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION_WITHOUT_LICENSE_STATE" desc="The text label describing the version of the browser, example: FydeOS for PC (apu), v18.0-SP1, Platform 15662.71.18.6">
+    <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="DEVICE_VARIANT">$2<ex> for PC (apu)</ex></ph>, <ph name="FYDEOS_MAJOR_VERSION">$3<ex>v9.0</ex></ph>
+    <ph name="LINE_BREAK1">&lt;br&gt;</ph>
+    Platform <ph name="FYDEOS_PLATFORM_VERSION">$4<ex>12739.22.9.15</ex></ph>
+    <ph name="LINE_BREAK2">&lt;br&gt;</ph>
+    Chromium <ph name="PRODUCT_VERSION">$5<ex>57.0.2937.0</ex></ph>
+  </message>
+  <if expr="use_fydeos_license">
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_STATE_LOADING" desc="loading text of license info page">
+     Loading...
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_RETRY_BUTTON" desc="text of retry button in license page">
+     Retry
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_OFFLINE_HINT_MESSAGE" desc="offline message in license page">
+     Currently offline
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_MENU" desc="title of license info menu in os about page">
+     Check your FydeOS subscription online
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_TITLE" desc="title of license info page">
+     FydeOS subscription information
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_ERROR_MACHINE_ID" desc="error message of reading machine id/(license info)">
+     There is an error with getting your Device ID
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_EXPIRE_DATE_LABEL" desc="text of expire date label in license page">
+     Subscription ends
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_ID_LABEL" desc="text of id label in license page">
+     Device ID
+   </message>
+   <message name="IDS_OS_SETTINGS_FYDEOS_SETTINGS_FYDEOS_LICENSE_INFO_RETRY_WEBVIEW_BUTTON" desc="text of retry webview button in license page">
+     Check your subscription online
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION" desc="The text label describing the version of the browser, with license state info, example: FydeOS for PC (apu), v18.0-SP1, Unlicensed version, Platform 15662.71.18.6">
+     <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="DEVICE_VARIANT">$2<ex> for PC (apu)</ex></ph>, <ph name="FYDEOS_MAJOR_VERSION">$3<ex>v9.0</ex></ph>, <ph name="FYDEOS_LICENSE_STATE_DESC">$4<ex>Unlicensed version</ex></ph>
+     <ph name="LINE_BREAK1">&lt;br&gt;</ph>
+     Platform <ph name="FYDEOS_PLATFORM_VERSION">$5<ex>12739.22.9.15</ex></ph>
+     <ph name="LINE_BREAK2">&lt;br&gt;</ph>
+     Chromium <ph name="PRODUCT_VERSION">$6<ex>57.0.2937.0</ex></ph>
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_TRIAL" desc="The text label describing fydeos license state for you trial">
+     Trial subscription
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_VALID" desc="The text label describing fydeos license state for you valid">
+     Active subscription
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_FOR_YOU_EXPIRED" desc="The text label describing fydeos license state for you expired">
+     Subscription expired
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_UNLICENSED" desc="The text label describing fydeos license state unlicensed">
+     Unlicensed version
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_TRIAL" desc="The text label describing fydeos license state enterprise trial">
+     Enterprise licensed version (trial)
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_VALID" desc="The text label describing fydeos license state enterprise valid">
+     Enterprise licensed version
+   </message>
+   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_EXPIRED" desc="The text label describing fydeos license state enterprise expired">
+     Enterprise licensed version (expired)
+   </message>
+  </if>
+
+  <message name="IDS_SETTINGS_CROSTINI_MENU_ITEM_DESCRIPTION" desc="The description of Crostini section. It is meant to be used by software developers.">
+    Linux subsystem, Linux apps
+  </message>
+
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT" desc="fydeos assistant section title">
+    FydeOS AI
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_MENU_ITEM_DESCRIPTION" desc="sub label for os-settings fydeos ai section">
+    On/Off switch, FydeOS AI options
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_TOGGLE_LABEL" desc="label for fydeos ai toggle setting">
+    Enable FydeOS AI
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_TOGGLE_SUBLABEL" desc="">
+    Enable or disable all FydeOS AI related features
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_BUBBLE_SHORTCUT_TOGGLE_LABEL" desc="label for toggling an bubble shortcut for ai">
+    Enable FydeOS AI QuickCall
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_BUBBLE_SHORTCUT_TOGGLE_SUBLABEL" desc="sublabel for toggling an bubble shortcut for ai">
+    Quickly bring up FydeOS AI options for highlighted content by pressing Ctrl + C + C
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_SETTINGS_IN_APP_LABEL" desc="label for link of fydeos ai settings inside app">
+    More settings
+  </message>
+  <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_SETTINGS_IN_APP_SUBLABEL" desc="sublabel for link of fydeos ai settings inside app">
+    Other settings and options for FydeOS AI
+  </message>
 </if>
 </grit-part>

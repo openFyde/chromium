@@ -40,6 +40,10 @@ enum PasswordSelectionState {
 const PasswordSelectionBase = OobeDialogHostMixin(
     LoginScreenMixin(MultiStepMixin(OobeI18nMixin(PolymerElement))));
 
+interface PasswordSelectionScreenData {
+  isFydeProfile: boolean;
+}
+
 export class PasswordSelection extends PasswordSelectionBase {
   static get is() {
     return 'password-selection-element' as const;
@@ -56,6 +60,10 @@ export class PasswordSelection extends PasswordSelectionBase {
        */
       selectedPasswordType: {
         type: String,
+      },
+
+      isFydeProfile: {
+        type: Boolean,
       },
 
       /**
@@ -77,6 +85,7 @@ export class PasswordSelection extends PasswordSelectionBase {
   }
 
   private selectedPasswordType: string;
+  private isFydeProfile: boolean;
   private passwordTypeEnum: PasswordType;
   private backButtonVisible: boolean;
 
@@ -103,9 +112,10 @@ export class PasswordSelection extends PasswordSelectionBase {
   }
 
   // Invoked just before being shown. Contains all the data for the screen.
-  override onBeforeShow(): void {
+  override onBeforeShow(data: PasswordSelectionScreenData): void {
     super.onBeforeShow();
     this.selectedPasswordType = PasswordType.LOCAL_PASSWORD;
+    this.isFydeProfile = data["isFydeProfile"];
   }
 
   override onBeforeHide(): void {
@@ -131,6 +141,34 @@ export class PasswordSelection extends PasswordSelectionBase {
 
   private onNextClicked(): void {
     this.userActed(this.selectedPasswordType);
+  }
+
+  private getPasswordSelectionSubtitile(
+    locale: string,
+    isFydeProfile: boolean,
+  ): string {
+    return this.i18nDynamic(
+      locale,
+      isFydeProfile
+        ? "passwordSelectionFydeSubtitle"
+        : "passwordSelectionSubtitile",
+    );
+  }
+
+  private getGaiaPasswordSelectionIcon(isFydeProfile: boolean): string {
+    return isFydeProfile ? 'oobe-32:fydeos-f': 'oobe-32:google-g';
+  }
+
+  private getGaiaPasswordSelectionLabel(
+    locale: string,
+    isFydeProfile: boolean,
+  ): string {
+    return this.i18nDynamic(
+      locale,
+      isFydeProfile
+        ? "gaiaPasswordSelectionFydeLabel"
+        : "gaiaPasswordSelectionLabel",
+    );
   }
 }
 

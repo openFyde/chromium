@@ -59,13 +59,11 @@ export interface AboutPageBrowserProxy {
   /** Opens the help page. */
   openHelpPage(): void;
 
-  // <if expr="_google_chrome">
   /**
    * Opens the feedback dialog.
    */
   openFeedbackDialog(): void;
 
-  // </if>
 
   // <if expr="_google_chrome and is_macosx">
   /**
@@ -94,11 +92,9 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
     chrome.send('openHelpPage');
   }
 
-  // <if expr="_google_chrome">
   openFeedbackDialog() {
     chrome.send('openFeedbackDialog');
   }
-  // </if>
 
   static getInstance(): AboutPageBrowserProxy {
     return instance || (instance = new AboutPageBrowserProxyImpl());

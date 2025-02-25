@@ -4,6 +4,8 @@
 
 import("//chrome/common/features.gni")
 
+import("//fydeos/build/config/buildflags.gni")
+
 ts_definition_files = [
   "//tools/typescript/definitions/bluetooth.d.ts",
   "//tools/typescript/definitions/bluetooth_private.d.ts",

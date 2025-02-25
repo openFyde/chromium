@@ -42,6 +42,7 @@
 #include "mojo/public/cpp/platform/named_platform_channel.h"
 #include "mojo/public/cpp/platform/platform_channel.h"
 #include "mojo/public/cpp/platform/socket_utils_posix.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
 
 namespace arc {
 
@@ -657,6 +658,53 @@ void ArcSessionImpl::OnMojoConnected(
 
   VLOG(0) << "ARC ready.";
   state_ = State::RUNNING_FULL_INSTANCE;
+  MayStartPolicyManager();
+}
+
+void ArcSessionImpl::MayStartPolicyManager() {
+  if (!upgrade_params_.is_account_managed && !upgrade_params_.is_device_managed) {
+    return;
+  }
+
+  StartPolicyManager();
+}
+
+void ArcSessionImpl::StartPolicyManager() {
+  fydeos::ash::FydeOSShellClient* shellClient = fydeos::ash::FydeOSShellClient::Get();
+  if (!shellClient) {
+    LOG(ERROR) << "Failed to get shell client, unable to start arc policy manager";
+    OnStartPolicyManagerCommandFinished(std::nullopt);
+    return;
+  }
+  VLOG(2) << "Starting arc policy manager.";
+  shellClient->SyncExec("/usr/sbin/start-arc-policy-manager",
+      base::BindOnce(&ArcSessionImpl::OnStartPolicyManagerCommandFinished,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void ArcSessionImpl::OnStartPolicyManagerCommandFinished(std::optional<fydeos::ash::ShellState> state) {
+  if (state && state->code == 0) {
+    VLOG(2) << "Arc policy manager started.";
+    start_policy_manager_retry_count_ = 0;
+    return;
+  }
+  int delay_seconds = 3;
+  if (state) {
+    LOG(ERROR) << "Failed to start arc policy manager. code: " << state->code << " result: " << state->result;
+  } else {
+    LOG(ERROR) << "Failed to start arc policy manager. No response from shell client.";
+  }
+  if (start_policy_manager_retry_count_ < 3) {
+    LOG(INFO) << "Retry starting arc policy manager in " << delay_seconds <<  " seconds";
+    start_policy_manager_retry_count_++;
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&ArcSessionImpl::StartPolicyManager,
+                     weak_factory_.GetWeakPtr()),
+      base::Seconds(delay_seconds));
+  } else {
+    LOG(ERROR) << "Give up starting arc policy manager";
+  }
 }
 
 void ArcSessionImpl::Stop() {

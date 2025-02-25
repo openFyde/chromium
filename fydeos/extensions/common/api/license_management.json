@@ -1,0 +1,36 @@
+// Copyright 2020 The FydeOS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// Author: Simon Tsao(yang@fydeos.io)
+
+[
+{
+  "namespace": "licenseManagement",
+  "description": "fydeos license management api",
+  "compiler_options": {
+    "implemented_in": "fydeos/extensions/browser/api/license_management/license_management_api.h"
+  },
+  "functions": [
+    {
+			
+      "name": "refreshLicense",
+      "type": "function",
+			"description": "Pull new license from online",
+			"parameters": []
+    }
+  ],
+  "events": [
+		{
+			"name": "onValid",
+			"type": "function",
+			"description": "Fired when get a valid license from online",
+			"parameters": []
+		},{
+			"name": "onInvalid",
+			"type": "function",
+			"description": "Fired when all licenses are invalid",
+			"parameters": []
+		}
+  ] 
+}
+]

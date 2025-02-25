@@ -13,6 +13,7 @@ source_set("account_toggle") {
     "//base",
     "//components/account_id:account_id",
     "//fydeos/switches/account/base:account_base",
+    "//remoting/base:base",
   ]
   sources = [
     "account_type_toggle.cc",

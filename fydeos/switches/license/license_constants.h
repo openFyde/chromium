@@ -13,6 +13,8 @@ namespace constants {
 CHROMEOS_EXPORT extern const char kDefaultFydeOSLicenseWebUrl[];
 CHROMEOS_EXPORT extern const char kDefaultFydeOSLicenseApiUrl[];
 
+CHROMEOS_EXPORT extern const char kFydeOSOEMTokenFilePath[];
+
 } // constants
 } // fydeos
 

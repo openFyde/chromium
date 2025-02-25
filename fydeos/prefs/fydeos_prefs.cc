@@ -6,12 +6,21 @@
 #include "base/logging.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "fydeos/constants/fydeos_constants.h"
 
 namespace fydeos {
 namespace prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFydeOSImprovementPlanEnabled, false);
+
+  registry->RegisterBooleanPref(kFydeAssistantEnabled, true);
+  registry->RegisterBooleanPref(kFydeAssistantExtraAcceleratorEnabled, true);
+
+  registry->RegisterBooleanPref(kFydeOSArcMediaAutoScanEnabled, true);
+#if BUILDFLAG(USE_FYDEOS_COM)
+  registry->RegisterBooleanPref(kCrostiniInstallerNotificationUserInteracted, false);
+#endif
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -28,6 +37,15 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kOfflineAutoSigninIsChromeLastSignout, false);
 
   registry->RegisterBooleanPref(kRebootRequiredForWidevine, false);
+
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+  registry->RegisterBooleanPref(kFydeLicenseShouldShowInSettings, false);
+  registry->RegisterIntegerPref(kFydeLicenseStateType,
+                                static_cast<int>(fydeos::constants::LicenseStateType::kUnspecified));
+  registry->RegisterIntegerPref(kFydeLicenseEnforcementLevel,
+                                static_cast<int>(fydeos::constants::LicenseEnforcementLevel::kNone));
+  registry->RegisterIntegerPref(kFydeLicenseEnforcementLogOutInterval, 0);
+#endif
 }
 
 void KeepCurrentPrefs(PrefService* local_state) {
@@ -47,6 +65,10 @@ void SetNotNecessaryForceTpmFallback(PrefService* local_state) {
 
 void ClearRebootMarkPrefs(PrefService* local_state) {
   local_state->SetBoolean(kRebootRequiredForWidevine, false);
+}
+
+void ClearOneShotProfilePrefs(PrefService* prefs) {
+  prefs->ClearPref(kFydeOSArcMediaAutoScanEnabled);
 }
 
 } // prefs

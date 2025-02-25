@@ -199,7 +199,17 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
         },
         readOnly: true,
       },
+
+      isInWelcomeScreen: {
+        type: Boolean,
+        value: false,
+      },
     };
+  }
+  static get observers() {
+    return [
+      'onWelcomeScreenUiStepChanged(uiStep, isInWelcomeScreen)',
+    ];
   }
 
   private currentLanguage: string;
@@ -218,6 +228,8 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   private isMeet: boolean;
   private isDeviceRequisitionConfigurable: boolean;
   private configurationApplied: boolean;
+  private isInWelcomeScreen: boolean;
+  private startupSoundPlayed: boolean;
 
   constructor() {
     super();
@@ -232,6 +244,8 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     this.chromeVoxHintGiven = false;
 
     this.configurationApplied = false;
+
+    this.startupSoundPlayed = false;
   }
 
   override get EXTERNAL_API() {
@@ -269,6 +283,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    */
   override onBeforeShow(data: WelcomeScreenData): void {
     super.onBeforeShow(data);
+    this.isInWelcomeScreen = true;
     this.debuggingLinkVisible =
         data && 'isDeveloperMode' in data && data['isDeveloperMode'];
 
@@ -295,6 +310,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   override onBeforeHide(): void {
     super.onBeforeHide();
     this.cleanupChromeVoxHint();
+    this.isInWelcomeScreen = false;
   }
 
   private cancel(): void {
@@ -904,6 +920,23 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    */
   private onActivateQuickStart(): void {
     this.userActed('quickStartClicked');
+  }
+
+  private requestPlayStartupSound() {
+    chrome.send('playStartupSound');
+  }
+
+  private mayPlayWelcomeSound(uiStep: WelcomeScreenState, isInWelcomeScreen: boolean) {
+    if (uiStep === WelcomeScreenState.GREETING && isInWelcomeScreen) {
+      if (!this.startupSoundPlayed) {
+        this.requestPlayStartupSound();
+        this.startupSoundPlayed = true;
+      }
+    }
+  }
+
+  private onWelcomeScreenUiStepChanged(uiStep: WelcomeScreenState, isInWelcomeScreen: boolean) {
+    this.mayPlayWelcomeSound(uiStep, isInWelcomeScreen);
   }
 }
 

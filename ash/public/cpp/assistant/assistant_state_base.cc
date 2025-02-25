@@ -15,6 +15,8 @@
 #include "chromeos/ash/components/audio/cras_audio_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "device_management_backend.pb.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace ash {
 
@@ -89,6 +91,14 @@ void AssistantStateBase::RegisterPrefChanges(PrefService* pref_service) {
       assistant::prefs::kAssistantOnboardingMode,
       base::BindRepeating(&AssistantStateBase::UpdateOnboardingMode,
                           base::Unretained(this)));
+  pref_change_registrar_->Add(
+      fydeos::prefs::kFydeAssistantEnabled,
+      base::BindRepeating(&AssistantStateBase::UpdateFydeAssistantEnabled,
+                          base::Unretained(this)));
+  pref_change_registrar_->Add(
+      fydeos::prefs::kFydeAssistantExtraAcceleratorEnabled,
+      base::BindRepeating(&AssistantStateBase::UpdateFydeAssistantEnabled,
+                          base::Unretained(this)));
 
   UpdateConsentStatus();
   UpdateContextEnabled();
@@ -98,6 +108,7 @@ void AssistantStateBase::RegisterPrefChanges(PrefService* pref_service) {
   UpdateLaunchWithMicOpen();
   UpdateNotificationEnabled();
   UpdateOnboardingMode();
+  UpdateFydeAssistantEnabled();
 }
 
 bool AssistantStateBase::IsScreenContextAllowed() const {
@@ -133,6 +144,10 @@ void AssistantStateBase::InitializeObserver(AssistantStateObserver* observer) {
     observer->OnAssistantNotificationEnabled(notification_enabled_.value());
   if (onboarding_mode_.has_value())
     observer->OnAssistantOnboardingModeChanged(onboarding_mode_.value());
+  if (fyde_assistant_enabled_.has_value())
+    observer->OnFydeAssistantEnabled(fyde_assistant_enabled_.value());
+  if (fyde_assistant_extra_accelerator_enabled_.has_value())
+    observer->OnFydeAssistantExtraAcceleratorEnabled(fyde_assistant_extra_accelerator_enabled_.value());
 
   observer->OnAssistantStatusChanged(assistant_status_);
   if (allowed_state_.has_value())
@@ -238,6 +253,30 @@ void AssistantStateBase::UpdateOnboardingMode() {
   onboarding_mode_ = onboarding_mode;
   for (auto& observer : observers_)
     observer.OnAssistantOnboardingModeChanged(onboarding_mode_.value());
+}
+
+void AssistantStateBase::UpdateFydeAssistantEnabled() {
+  auto fyde_assistant_enabled = pref_change_registrar_->prefs()->GetBoolean(
+      fydeos::prefs::kFydeAssistantEnabled);
+  if (!fyde_assistant_enabled_.has_value() ||
+      fyde_assistant_enabled_.value() != fyde_assistant_enabled) {
+    fyde_assistant_enabled_ = fyde_assistant_enabled;
+    for (auto& observer : observers_) {
+      observer.OnFydeAssistantEnabled(fyde_assistant_enabled_.value());
+    }
+  }
+
+  auto fyde_assistant_extra_accelerator_enabled = pref_change_registrar_->prefs()->GetBoolean(
+      fydeos::prefs::kFydeAssistantExtraAcceleratorEnabled);
+  fyde_assistant_extra_accelerator_enabled = fyde_assistant_enabled && fyde_assistant_extra_accelerator_enabled;
+  if (fyde_assistant_extra_accelerator_enabled_.has_value() &&
+      fyde_assistant_extra_accelerator_enabled_.value() == fyde_assistant_extra_accelerator_enabled) {
+    return;
+  }
+  fyde_assistant_extra_accelerator_enabled_ = fyde_assistant_extra_accelerator_enabled;
+  for (auto& observer : observers_) {
+    observer.OnFydeAssistantExtraAcceleratorEnabled(fyde_assistant_extra_accelerator_enabled_.value());
+  }
 }
 
 void AssistantStateBase::UpdateAssistantStatus(

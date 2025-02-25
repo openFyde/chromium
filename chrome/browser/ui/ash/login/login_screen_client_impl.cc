@@ -254,6 +254,12 @@ void LoginScreenClientImpl::ShowOsInstallScreen() {
   }
 }
 
+void LoginScreenClientImpl::ShowDataRestoreScreen() {
+  if (ash::LoginDisplayHost::default_host()) {
+    ash::LoginDisplayHost::default_host()->ShowDataRestoreScreen();
+  }
+}
+
 void LoginScreenClientImpl::ShowLocalSignin() {
   if (ash::LoginDisplayHost::default_host()) {
     ash::LoginDisplayHost::default_host()->ShowLocalDialog();
@@ -359,6 +365,11 @@ void LoginScreenClientImpl::ShowGuestTosScreen() {
   // Unmanaged guests on managed devices should login directly without seeing
   // the ToS screen. Managed guest sessions are handled separately.
   if (ash::InstallAttributes::Get()->IsEnterpriseManaged()) {
+    LoginAsGuest();
+    return;
+  }
+
+  if (ash::StartupUtils::IsEulaAccepted()) {
     LoginAsGuest();
     return;
   }

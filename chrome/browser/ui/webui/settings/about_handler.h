@@ -113,6 +113,9 @@ class AboutHandler : public settings::SettingsPageUIHandler,
   void OnGetVersionInfoReady(std::string callback_id,
                              base::Value::Dict version_info);
 
+  void HandleGetIsFirmwareUpdateSupported(const base::Value::List& args);
+  void OnFydeOSUpdateBinCheckedChecked(const std::string& callback_id, bool is_supported);
+
   // Retrieves the number of firmware updates available.
   void HandleGetFirmwareUpdateCount(const base::Value::List& args);
 

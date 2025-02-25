@@ -47,6 +47,8 @@ import {Router, routes} from '../router.js';
 import type {AboutPageBrowserProxy, AboutPageUpdateInfo, BrowserChannel, RegulatoryInfo, TpmFirmwareUpdateStatusChangedEvent, UpdateStatusChangedEvent} from './about_page_browser_proxy.js';
 import {AboutPageBrowserProxyImpl, browserChannelToI18nId, UpdateStatus} from './about_page_browser_proxy.js';
 import {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './popup_license_window.js';
+import {FydeOSBoardNameTitleMap, FydeOSBoardNameReleaseNameMap} from './fydeos_board_name.js';
+
 import {getTemplate} from './os_about_page.html.js';
 
 declare global {
@@ -66,6 +68,18 @@ export interface OsAboutPageElement {
     updateStatusMessageInner: HTMLDivElement,
   };
 }
+
+// fydeos/constants/fydeos_constants.h
+const LICENSE_STATE_TYPE = {
+  kUnspecified: 0,
+  kUnlicensed: 1,
+  kLicenseForYouTrial: 2 ,
+  kLicenseForYouValid: 3,
+  kLicenseForYouExpired: 4,
+  kLicenseForEnterpriseTrial: 5,
+  kLicenseForEnterpriseValid: 6,
+  kLicenseForEnterpriseExpired: 7,
+};
 
 const OsAboutPageBase = DeepLinkingMixin(
     RouteOriginMixin(I18nMixin(WebUiListenerMixin(PolymerElement))));
@@ -105,11 +119,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
           status: UpdateStatus.UPDATED,
         },
         observer: 'handleUpdateStatusHttpFailed_',
-      },
-
-      showFirmwareUpdatesApp_: {
-        type: Boolean,
-        value: false,
       },
 
       /**
@@ -179,6 +188,11 @@ export class OsAboutPageElement extends OsAboutPageBase {
         value: false,
       },
 
+      isFirmwareUpdateSupported_: {
+        type: Boolean,
+        value: false,
+      },
+
       firmwareUpdateCount_: {
         type: Number,
         value: 0,
@@ -225,6 +239,18 @@ export class OsAboutPageElement extends OsAboutPageBase {
         type: Boolean,
         value: false,
       },
+
+// <if expr="fydeos_device">
+      fydeosDeviceSerialNumber_: {
+        type: String,
+        value: () => {
+          if (!loadTimeData.valueExists('fydeosDeviceSerialNumber')) {
+            return '';
+          }
+          return loadTimeData.getString('fydeosDeviceSerialNumber');
+        },
+      },
+// </if>
 
       showTPMFirmwareUpdateDialog_: Boolean,
 
@@ -341,6 +367,16 @@ export class OsAboutPageElement extends OsAboutPageBase {
         type: String,
         value: RenewalStatus.OK,
       },
+
+      licenseStateType_: {
+        type: Number,
+        value() {
+          if (!loadTimeData.valueExists('aboutFydeOSLicenseState')) {
+            return -1;
+          }
+          return loadTimeData.getInteger('aboutFydeOSLicenseState');
+        }
+      },
       // ---***FYDEOS END***---
     };
   }
@@ -374,6 +410,7 @@ export class OsAboutPageElement extends OsAboutPageBase {
   private hasDeferredUpdate_: boolean;
   private eolMessageWithMonthAndYear_: string;
   private hasInternetConnection_: boolean;
+  private isFirmwareUpdateSupported_: boolean;
   private firmwareUpdateCount_: number;
   private rowIcons_: Record<string, string>;
   private showCrostiniLicense_: boolean;
@@ -450,6 +487,10 @@ export class OsAboutPageElement extends OsAboutPageBase {
 
     this.aboutBrowserProxy_.getFirmwareUpdateCount().then(result => {
       this.firmwareUpdateCount_ = result;
+    });
+
+    this.aboutBrowserProxy_.getIsFirmwareUpdateSupported().then(result => {
+      this.isFirmwareUpdateSupported_ = result;
     });
 
     if (Router.getInstance().getQueryParameters().get('checkForUpdate') ===
@@ -604,6 +645,10 @@ export class OsAboutPageElement extends OsAboutPageBase {
         this.isPendingOsUpdateDeepLink_ = false;
       }
     });
+  }
+
+  private showCrostiniInAboutPage_(_isRevampWayfindingEnabled: boolean): boolean {
+    return false;
   }
 
   private computeShowRelaunch_(): boolean {
@@ -957,7 +1002,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
         });
   }
 
-  // <if expr="_google_chrome">
   private onReportIssueClick_(): void {
     this.aboutBrowserProxy_.openFeedbackDialog();
   }
@@ -965,7 +1009,6 @@ export class OsAboutPageElement extends OsAboutPageBase {
   private getReportIssueLabel_(): string {
     return this.i18n('aboutSendFeedback');
   }
-  // </if>
 
   private shouldShowIcons_(): boolean {
     if (this.hasEndOfLife_) {
@@ -1045,6 +1088,92 @@ export class OsAboutPageElement extends OsAboutPageBase {
     extendedUpdatesObserver.observe(this.$.extendedUpdatesButton);
   }
 
+  getFydeOSVersion_(licenseStateType: number, hasEndOfLife: boolean): TrustedHTML {
+    const licenseStateDesc = this.getLicenseDescription_(licenseStateType);
+    if (licenseStateDesc && !hasEndOfLife) {
+      return this.i18nAdvanced('aboutFydeOSVersion', {
+        substitutions: [
+          this.i18n('aboutOsProductTitle'),
+          this.getTitleForFydeOSDeviceName_(),
+          this.i18n('aboutFydeOSVersionNumber'),
+          licenseStateDesc,
+          this.i18n('aboutFydeOSPlatformVersion'),
+          this.i18n('aboutFydeOSChromiumVersion'),
+        ]
+      });
+    }
+    return this.i18nAdvanced('aboutFydeOSVersionWithoutLicenseState', {
+      substitutions: [
+        this.i18n('aboutOsProductTitle'),
+        this.getTitleForFydeOSDeviceName_(),
+        this.i18n('aboutFydeOSVersionNumber'),
+        this.i18n('aboutFydeOSPlatformVersion'),
+        this.i18n('aboutFydeOSChromiumVersion'),
+      ]
+    });
+  }
+
+  tryRemoveSuffix_(boardName: string) {
+    const suffixes = ['-com', '-io'];
+    for (const suffix of suffixes) {
+      if (boardName.endsWith(suffix)) {
+        return boardName.substring(0, boardName.length - suffix.length);
+      }
+    }
+    return boardName;
+  }
+
+  getTitleForFydeOSDeviceName_() {
+    const fydeosBoardName = loadTimeData.getString('aboutFydeOSBoardName') || '';
+    let name = this.tryRemoveSuffix_(fydeosBoardName);
+    let prefix = FydeOSBoardNameReleaseNameMap[name] || '';
+    let title = FydeOSBoardNameTitleMap[name] || '';
+    if (!prefix && !title) {
+      return name;
+    }
+    if (title && !prefix) {
+      prefix = 'for You';
+    }
+
+    if (prefix && !title) {
+      return prefix; // vmware
+    }
+    if (prefix === '-') { // intend to remove prefix
+      return `(${title})`;
+    }
+    return `${prefix} (${title})`;
+   }
+
+  // <if expr="not use_fydeos_license">
+  getLicenseDescription_(_licenseStateType: number) {
+    return '';
+  }
+  // </if>
+  // <if expr="use_fydeos_license">
+  getLicenseDescription_(licenseStateType: number) {
+    switch (licenseStateType) {
+      case LICENSE_STATE_TYPE.kUnspecified:
+        return '';
+      case LICENSE_STATE_TYPE.kUnlicensed:
+        return this.i18n('aboutFydeOSLicenseStateUnlicensed');
+      case LICENSE_STATE_TYPE.kLicenseForYouTrial:
+        return this.i18n('aboutFydeOSLicenseStateForYouTrial');
+      case LICENSE_STATE_TYPE.kLicenseForYouValid:
+        return this.i18n('aboutFydeOSLicenseStateForYouValid');
+      case LICENSE_STATE_TYPE.kLicenseForYouExpired:
+        return this.i18n('aboutFydeOSLicenseStateForYouExpired');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseTrial:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseTrial');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseValid:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseValid');
+      case LICENSE_STATE_TYPE.kLicenseForEnterpriseExpired:
+        return this.i18n('aboutFydeOSLicenseStateEnterpriseExpired');
+      default:
+        return ''
+    }
+  }
+  // </if>
+
   fydeOTAToggleInit_() {
     this.aboutBrowserProxy_.getEnabledFydeOTA().then(enabled => {
       console.log('getEnabledFydeOTA', enabled);
@@ -1092,6 +1221,19 @@ export class OsAboutPageElement extends OsAboutPageBase {
       this.currentUpdateStatusEvent_.status === UpdateStatus.DISABLED_BY_ADMIN
     ) && this.currentUpdateStatusEvent_.progress === 0;
   }
+
+// <if expr="fydeos_device">
+  getFydeDeviceProductName_() {
+    const fydeosBoardName = loadTimeData.getString('aboutFydeOSBoardName') || '';
+    let name = this.tryRemoveSuffix_(fydeosBoardName);
+    let title = FydeOSBoardNameTitleMap[name] || '';
+    return title;
+  }
+  getFydeosDeviceWarrantyUrl_(fydeosDeviceSerialNumber: string) {
+    const url = loadTimeData.getString('fydeosProductWarrentyUrl');
+    return `${url}/${fydeosDeviceSerialNumber}`;
+  }
+// </if>
 }
 
 declare global {
