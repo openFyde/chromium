@@ -20,7 +20,7 @@ const char kFydeOSRemoteDesktopURL[] = "https://rdp.fydeos.com/";
 const char kFydeOSHelpURL[] = "https://fydeos.com/help/";
 const char kFydeOSReleaseNotesURL[] = "https://fydeos.com/release";
 const char kMultiDeviceLearnMoreURL[] = "https://fydeos.com/docs";
-const char kLanguageSettingsLearnMoreUrl[] = "https://fydeos.com/docs/manual/customize-settings/language";
+const char kLanguageSettingsLearnMoreUrl[] = "https://fydeos.com/docs/manual/customize-settings/language/manage-your-fydeos-devices-languages/";
 const char kLinuxAppsLearnMoreURL[] = "https://fydeos.com/docs/manual/manage-your-apps/add-apps-and-extensions/set-up-linux-on-your-fydeos-device/";
 const char kOnlineEulaURLPath[] = "https://fydeos.com/terms-of-service/?agent=oobe";
 const char kOnlinePrivacyURLPath[] = "https://fydeos.com/privacy/?agent=oobe";

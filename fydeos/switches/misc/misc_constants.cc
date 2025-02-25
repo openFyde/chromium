@@ -14,5 +14,7 @@ const char kFydeOSSystemInfoHeader[] = "--- Full System ---";
 const char kFydeOSSystemInfoFileName[] = "about_system.txt";
 const char kFydeOSSystemTempPrefix[] = "fydeos_sysinfo";
 
+const char kFydeOSWallpapersBasePath[] = "/usr/share/chromeos-assets/fydeos_wallpapers/";
+
 } // constants
 } // fydeos

@@ -454,11 +454,22 @@ void VpxVideoEncoder::Initialize(VideoCodecProfile profile,
   // For VP8 typical values used for real-time encoding are -4, -6, -8,
   // -10, -12. Again larger magnitude means faster encoding but lower
   // quality.
-  int cpu_used = is_vp9 ? 7 : -6;
+  int cpu_used = is_vp9 ? 7 : -4;
   vpx_error = vpx_codec_control(codec.get(), VP8E_SET_CPUUSED, cpu_used);
   if (vpx_error != VPX_CODEC_OK) {
     auto msg = LogVpxErrorMessage(
         codec.get(), "VPX encoder VP8E_SET_CPUUSED error", vpx_error);
+    std::move(done_cb).Run(
+        EncoderStatus(EncoderStatus::Codes::kEncoderInitializationError, msg));
+    return;
+  }
+
+  vpx_error = vpx_codec_control(codec.get(), VP8E_SET_NOISE_SENSITIVITY, 0);
+  if (vpx_error != VPX_CODEC_OK) {
+    std::string msg =
+        base::StringPrintf("VPX encoder VP8E_SET_NOISE_SENSITIVITY error: %s",
+                           vpx_codec_err_to_string(vpx_error));
+    DLOG(ERROR) << msg;
     std::move(done_cb).Run(
         EncoderStatus(EncoderStatus::Codes::kEncoderInitializationError, msg));
     return;

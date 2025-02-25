@@ -216,6 +216,24 @@
 <translation id="3479561374223953616">通过「文件」应用，您可以快速存取自己在外部存储设备和 FydeOS 设备上的文件。</translation>
 <translation id="7957976220578534539"><ph name="BEGIN_PARAGRAPH1" />为获得最佳体验，请将 <ph name="DEVICE_OS" /> 安装到您的内部磁盘。您也可等到需要时再从登录屏幕安装它。<ph name="END_PARAGRAPH1" />
   <ph name="BEGIN_PARAGRAPH2" />如果还暂时不想安装，你可从 USB 启动来试用一下 <ph name="DEVICE_OS" />。请注意：从 USB 启动的 <ph name="DEVICE_OS" /> 将会带有磁盘容量限制及受到不同程度的性能损耗；而且，包括 OTA 升级在内的一些系统功能将会不可用。<ph name="END_PARAGRAPH2" /></translation>
+<translation id="5102182424405773330">欢迎使用 openFyde 版 Steam</translation>
+<translation id="2046221603131886862">欢迎使用 FydeOS 版 Steam</translation>
+<translation id="5982766962557172334">这是一项 Beta 版计划。现在，您可以在 openFyde 设备上使用 Steam 玩某些游戏了。</translation>
+<translation id="259620732786830085">这是一项 Beta 版计划。现在，您可以在 FydeOS 设备上使用 Steam 玩某些游戏了。</translation>
+<translation id="6145898822713068487">确保您的 openFyde 是最新版本。然后，重启 openFyde 并重试。</translation>
+<translation id="4585689519949068301">确保您的 FydeOS 是最新版本。然后，重启 FydeOS 并重试。</translation>
+<translation id="5734969505755598365">正在设置 openFyde 版 Steam</translation>
+<translation id="2180789554128870974">正在设置 FydeOS 版 Steam</translation>
+<translation id="7878254891479733609">在 openFyde 上畅玩游戏</translation>
+<translation id="4001114302826699703">在 FydeOS 上畅玩游戏</translation>
+<translation id="1983926257764057871">设置 openFyde 版 Steam 时出现问题</translation>
+<translation id="3287145971780381322">设置 FydeOS 版 Steam 时出现问题</translation>
+<translation id="1340981101260072214">若要使用 openFyde 版 Steam，请重启您的设备</translation>
+<translation id="7775922590354166890">若要使用 FydeOS 版 Steam，请重启您的设备</translation>
+<translation id="4635399078872099069">无法启动 openFyde 版 Steam。请重试</translation>
+<translation id="1076651593001419552">无法启动 FydeOS 版 Steam。请重试</translation>
+<translation id="828443433293845529">您的 openFyde 设备无法使用 Steam（Beta 版）。</translation>
+<translation id="3134981889850122056">您的 FydeOS 设备无法使用 Steam（Beta 版）。</translation>
 <!-- generated_resources.override.grdp -->
 <translation id="358808394160762813">openFyde 系统映像写入工具</translation>
 <translation id="827071875133563393">FydeOS 系统映像写入工具</translation>

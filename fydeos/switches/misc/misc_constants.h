@@ -18,6 +18,7 @@ CHROMEOS_EXPORT extern const char kFydeOSSystemTempPrefix[];
 
 CHROMEOS_EXPORT extern const char kFydeOSSystemInfoFileName[];
 
+CHROMEOS_EXPORT extern const char kFydeOSWallpapersBasePath[];
 } // constants
 } // fydeos
 
