@@ -119,7 +119,7 @@ std::string GetFydeOsLicenseId() {
   ash::system::StatisticsProvider* provider =
       ash::system::StatisticsProvider::GetInstance();
   std::string fydeos_license_id = "";
-  const std::optional<base::StringPiece> str =
+  const std::optional<std::string_view> str =
     provider->GetMachineStatistic(ash::system::kFydeOsLicenseIdKey);
   if (str) {
     fydeos_license_id = std::string(str.value());
