@@ -27,6 +27,7 @@ extern const size_t kFydeOSSupervisedUserSettingsDefaultSyncIntervalInSeconds;
 CHROMEOS_EXPORT extern const char kFydeAPIKeysDevelopersHowToURL[];
 #endif
 
+CHROMEOS_EXPORT extern const char kFydeEnrollmentTokenFilePath[];
 }//constants
 }//fydeos
 

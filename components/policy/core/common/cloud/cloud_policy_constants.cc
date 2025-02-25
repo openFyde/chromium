@@ -41,6 +41,8 @@ const char kOidcAuthHeaderPrefix[] = "GoogleDM3PAuth";
 const char kOidcAuthTokenHeaderPrefix[] = " oauth_token=";
 const char kOidcIdTokenHeaderPrefix[] = " id_token=";
 
+const char kFydeEnrollmentTokenAuthHeaderPrefix[] = "FydeEnrollmentToken token=";
+
 // String constants for the device and app type we report to the server.
 const char kValueAppType[] = "Chrome";
 const char kValueBrowserUploadPublicKey[] = "browser_public_key_upload";

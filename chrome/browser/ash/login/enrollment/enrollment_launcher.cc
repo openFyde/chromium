@@ -87,6 +87,7 @@ class EnrollmentLauncherImpl : public EnrollmentLauncher {
   // EnrollmentLauncher:
   void EnrollUsingAuthCode(const std::string& auth_code) override;
   void EnrollUsingToken(const std::string& token) override;
+  void EnrollUsingFydeToken() override;
   void EnrollUsingAttestation() override;
   void EnrollUsingEnrollmentToken() override;
   void ClearAuth(base::OnceClosure callback,
@@ -204,6 +205,14 @@ void EnrollmentLauncherImpl::EnrollUsingToken(const std::string& token) {
   DoEnroll(policy::DMAuth::FromOAuthToken(token));
 }
 
+void EnrollmentLauncherImpl::EnrollUsingFydeToken() {
+  CHECK(enrollment_config_.mode ==
+        policy::EnrollmentConfig::MODE_FYDE_LOCAL_FORCED);
+  CHECK(!enrollment_config_.fyde_enrollment_token.empty());
+  DoEnroll(
+      policy::DMAuth::FromFydeToken(enrollment_config_.fyde_enrollment_token));
+}
+
 void EnrollmentLauncherImpl::EnrollUsingAttestation() {
   CHECK(enrollment_config_.is_mode_attestation());
   // The tokens are not used in attestation mode.
@@ -253,6 +262,7 @@ void EnrollmentLauncherImpl::RevokeOAuth2Tokens() {
 void EnrollmentLauncherImpl::DoEnroll(policy::DMAuth auth_data) {
   DCHECK(auth_data_.empty() || auth_data_ == auth_data);
   DCHECK(enrollment_config_.is_mode_attestation() ||
+         enrollment_config_.is_mode_fyde() ||
          oauth_status_ == OAUTH_STARTED_WITH_AUTH_CODE ||
          oauth_status_ == OAUTH_STARTED_WITH_TOKEN);
 

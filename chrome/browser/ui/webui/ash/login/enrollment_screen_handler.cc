@@ -72,6 +72,7 @@ std::string EnrollmentModeToUIMode(policy::EnrollmentConfig::Mode mode) {
     case policy::EnrollmentConfig::MODE_ATTESTATION:
       return kEnrollmentModeUIManual;
     case policy::EnrollmentConfig::MODE_LOCAL_FORCED:
+    case policy::EnrollmentConfig::MODE_FYDE_LOCAL_FORCED:
     case policy::EnrollmentConfig::MODE_SERVER_FORCED:
     case policy::EnrollmentConfig::MODE_ATTESTATION_LOCAL_FORCED:
     case policy::EnrollmentConfig::MODE_ATTESTATION_SERVER_FORCED:
@@ -836,6 +837,7 @@ base::Value::Dict EnrollmentScreenHandler::ScreenDataCommon() {
   // isAutomaticEnrollment now that this UI flow also encompasses token-based
   // auto-enrollment.
   screen_data.Set("attestationBased", config_.is_automatic_enrollment());
+  screen_data.Set("fydeBased", config_.is_mode_fyde());
   screen_data.Set("flow", GetFlowString(flow_type_));
 
   if (ash::features::IsOobeAddUserDuringEnrollmentEnabled()) {

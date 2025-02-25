@@ -333,6 +333,8 @@ export class EnterpriseEnrollmentElement extends
     this.isManualEnrollment = (data.enrollment_mode === 'manual');
     this.isForced = data.is_enrollment_enforced;
     this.isAutoEnroll = data.attestationBased;
+    this.isAutoEnroll = this.isAutoEnroll
+                          || ('fydeBased' in data ? (!!data.fydeBased) : false);
     this.hasAccountCheck =
         ((data.flow === 'enterpriseLicense') ||
          (data.flow === 'educationLicense'));

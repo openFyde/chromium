@@ -88,6 +88,10 @@ EulaScreen::EulaScreen(base::WeakPtr<EulaView> view,
 EulaScreen::~EulaScreen() = default;
 
 bool EulaScreen::MaybeSkip(WizardContext& context) {
+  if (policy::EnrollmentConfig::IsZeroTouchEnrollmentFydeForced()) {
+    exit_callback_.Run(Result::NOT_APPLICABLE);
+    return true;
+  }
   const auto* const demo_setup_controller =
       WizardController::default_controller()->demo_setup_controller();
   if (demo_setup_controller) {

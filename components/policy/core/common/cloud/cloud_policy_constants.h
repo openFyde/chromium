@@ -37,6 +37,8 @@ extern const char kOidcAuthHeaderPrefix[];
 extern const char kOidcAuthTokenHeaderPrefix[];
 extern const char kOidcIdTokenHeaderPrefix[];
 
+POLICY_EXPORT extern const char kFydeEnrollmentTokenAuthHeaderPrefix[];
+
 // String extern constants for the device and app type we report to the server.
 extern const char kValueAppType[];
 extern const char kValueBrowserUploadPublicKey[];

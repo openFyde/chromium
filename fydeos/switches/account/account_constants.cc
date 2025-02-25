@@ -42,6 +42,8 @@ const char kDefaultFydeOSFamilyLinkApisUrl[] =
 #endif
 
 const size_t kFydeOSSupervisedUserSettingsDefaultSyncIntervalInSeconds = 600;
+const char kFydeEnrollmentTokenFilePath[] =
+  "/usr/share/oem/fydeos_enroll_token";
 
 #if BUILDFLAG(IS_OPENFYDE)
 const char kFydeAPIKeysDevelopersHowToURL[] =

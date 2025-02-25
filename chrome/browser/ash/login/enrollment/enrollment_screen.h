@@ -162,6 +162,7 @@ class EnrollmentScreen
     AUTH_ATTESTATION,
     AUTH_OAUTH,
     AUTH_ENROLLMENT_TOKEN,
+    AUTH_FYDE,
   };
 
   // Updates view GAIA flow type which is used to modify visual appearance
@@ -199,6 +200,8 @@ class EnrollmentScreen
   void AuthenticateUsingAttestation();
 
   void AuthenticateUsingEnrollmentToken();
+
+  void AuthenticateUsingFyde();
 
   // Shows the interactive screen. Resets auth then shows the signin screen.
   void ShowInteractiveScreen();

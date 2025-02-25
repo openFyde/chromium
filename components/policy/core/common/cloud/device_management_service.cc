@@ -421,6 +421,12 @@ JobConfigurationBase::GetResourceRequest(bool bypass_proxy, int last_error) {
           std::string(dm_protocol::kEnrollmentTokenAuthHeaderPrefix) +
               auth_data_.enrollment_token());
       break;
+    case DMAuthTokenType::kFyde:
+      rr->headers.SetHeader(
+          dm_protocol::kAuthHeader,
+          std::string(dm_protocol::kFydeEnrollmentTokenAuthHeaderPrefix) +
+              auth_data_.fyde_token());
+      break;
     case DMAuthTokenType::kOauth:
       // OAuth token is transferred as a HTTP query parameter.
       break;

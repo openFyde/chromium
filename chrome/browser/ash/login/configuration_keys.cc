@@ -106,6 +106,8 @@ const char kSkipEnrollmentSuccessScreen[] = "skipEnrollmentSuccessScreen";
 // - "PACKAGING_TOOL"
 const char kSource[] = "source";
 
+const char kFydeEnrollmentToken[] = "fydeEnrollmentToken";
+
 using ValueType = base::Value::Type;
 
 constexpr struct {
@@ -141,6 +143,8 @@ constexpr struct {
     {kArcTosAutoAccept, ValueType::BOOLEAN,
      ConfigurationHandlerSide::HANDLER_BOTH},
     {kEnrollmentToken, ValueType::STRING,
+     ConfigurationHandlerSide::HANDLER_CPP},
+    {kFydeEnrollmentToken, ValueType::STRING,
      ConfigurationHandlerSide::HANDLER_CPP},
     {kSkipEnrollmentSuccessScreen, ValueType::BOOLEAN,
      ConfigurationHandlerSide::HANDLER_CPP},

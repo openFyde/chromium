@@ -34,4 +34,20 @@ std::optional<std::string> GetEnrollmentToken(
   return std::nullopt;
 }
 
+std::optional<std::string> GetFydeEnrollmentToken(
+    const ash::OobeConfiguration* oobe_config) {
+  if (!oobe_config) {
+    LOG(ERROR) << "OobeConfiguration is not initialized";
+    return std::nullopt;
+  }
+
+  const std::string* fyde_enrollment_token =
+      oobe_config->configuration().FindString(
+          ash::configuration::kFydeEnrollmentToken);
+  if (fyde_enrollment_token && !fyde_enrollment_token->empty()) {
+    return *fyde_enrollment_token;
+  }
+  return std::nullopt;
+}
+
 }  // namespace policy

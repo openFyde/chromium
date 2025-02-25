@@ -39,6 +39,10 @@ void ErrorScreenHandler::SetGuestSigninAllowed(bool value) {
   CallExternalAPI("allowGuestSignin", value);
 }
 
+void ErrorScreenHandler::SetFydeLocalSigninAllowed(bool value) {
+  CallExternalAPI("allowFydeLocalSignin", value);
+}
+
 void ErrorScreenHandler::SetOfflineSigninAllowed(bool value) {
   CallExternalAPI("allowOfflineLogin", value);
 }
