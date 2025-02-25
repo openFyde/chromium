@@ -82,6 +82,7 @@
 //---***FYDEOS BEGIN***---
 #include "fydeos/switches/urls/urls_constants.h"
 #include "fydeos/misc/fydeos_release_note_url.h"
+#include "chrome/common/webui_url_constants.h"
 //---***FYDEOS END***---
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -140,9 +141,8 @@ void LaunchReleaseNotesImpl(Profile* profile, apps::LaunchSource source) {
 
 //---***FYDEOS BEGIN***---
 void LaunchReleaseNotesInTab(Profile* profile) {
-  GURL url(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(profile));
   auto displayer = std::make_unique<ScopedTabbedBrowserDisplayer>(profile);
-  ShowSingletonTab(displayer->browser(), url);
+  ShowSingletonTab(displayer->browser(), GURL(chrome::kChromeUIWhatsNewURL));
 }
 //---***FYDEOS END***---
 

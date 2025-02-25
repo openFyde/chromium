@@ -4,7 +4,6 @@
 #include "fydeos/misc/fydeos_release_note_url.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/browser_process.h"
 #include "fydeos/switches/urls/urls_constants.h"
 
@@ -25,7 +24,7 @@ const std::string trim_suffix(const std::string& str) {
 }
 }  // namespace
 
-const std::string BuildFydeReleaseNoteUrlWithPath(Profile* profile) {
+const std::string BuildFydeReleaseNoteUrlWithPath(bool staging) {
   const std::string version = base::SysInfo::GetLsbFydeReleaseVersion();
   const std::string board_name = base::SysInfo::GetLsbReleaseBoard();
   const std::string language = g_browser_process->GetApplicationLocale();

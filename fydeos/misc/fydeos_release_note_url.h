@@ -12,7 +12,7 @@ class Profile;
 namespace fydeos {
 namespace misc {
 
-const std::string BuildFydeReleaseNoteUrlWithPath(Profile* profile);
+const std::string BuildFydeReleaseNoteUrlWithPath(bool staging);
 
 }
 }

@@ -33,6 +33,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
 
 namespace whats_new {
 const char kChromeWhatsNewURL[] = "https://www.google.com/chrome/whats-new/";
@@ -46,10 +47,7 @@ const char kChromeWhatsNewV2StagingURL[] =
 const int64_t kMaxDownloadBytes = 1024 * 1024;
 
 GURL GetV2ServerURL(bool is_staging) {
-  const GURL base_url = is_staging ? GURL(kChromeWhatsNewV2StagingURL)
-                                   : GURL(kChromeWhatsNewV2URL);
-  return net::AppendQueryParameter(base_url, "version",
-                                   base::NumberToString(CHROME_VERSION_MAJOR));
+  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(nullptr));
 }
 
 GURL GetV2ServerURLForRender(const WhatsNewRegistry& whats_new_registry,
@@ -78,14 +76,7 @@ GURL GetV2ServerURLForRender(const WhatsNewRegistry& whats_new_registry,
 }
 
 GURL GetServerURL(bool may_redirect, bool is_staging) {
-  const GURL base_url =
-      is_staging ? GURL(kChromeWhatsNewStagingURL) : GURL(kChromeWhatsNewURL);
-  const GURL url =
-      may_redirect
-          ? net::AppendQueryParameter(
-                base_url, "version", base::NumberToString(CHROME_VERSION_MAJOR))
-          : base_url.Resolve(base::StringPrintf("m%d", CHROME_VERSION_MAJOR));
-  return net::AppendQueryParameter(url, "internal", "true");
+  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(nullptr));
 }
 
 namespace {

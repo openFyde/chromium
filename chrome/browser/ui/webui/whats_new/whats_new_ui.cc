@@ -56,8 +56,10 @@ void CreateAndAddWhatsNewUIHtmlSource(Profile* profile, bool enable_staging) {
       network::mojom::CSPDirectiveName::ChildSrc,
       enable_staging
           ? "child-src chrome://webui-test https://www.google.com/ "
-            "https://chrome-staging.corp.google.com/;"
-          : "child-src chrome://webui-test https://www.google.com/;");
+            "https://fydeos.com/ https://fydeos.io/ "
+            "https://staging.fydeos.com/ https://staging.fydeos.io/ "
+            "https://chrome-staging.corp.google.com/ ;"
+          : "child-src chrome://webui-test https://www.google.com/ https://fydeos.com/ https://fydeos.io/;");
 }
 
 }  // namespace
