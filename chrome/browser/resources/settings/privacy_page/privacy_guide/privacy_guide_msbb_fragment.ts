@@ -17,6 +17,7 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 
 import type {MetricsBrowserProxy} from '../../metrics_browser_proxy.js';
 import {MetricsBrowserProxyImpl, PrivacyGuideSettingsStates, PrivacyGuideStepsEligibleAndReached} from '../../metrics_browser_proxy.js';
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 
 import {getTemplate} from './privacy_guide_msbb_fragment.html.js';
 
@@ -40,6 +41,11 @@ export class PrivacyGuideMsbbFragmentElement extends
       prefs: {
         type: Object,
         notify: true,
+      },
+
+      isFydeProfile_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isFydeProfile'),
       },
     };
   }

@@ -18,7 +18,7 @@
         pref="[[prefs.generated.safe_browsing]]"
         name="[[safeBrowsingSettingEnum_.ENHANCED]]"
         label="$i18n{safeBrowsingEnhanced}"
-        sub-label="$i18n{safeBrowsingEnhancedDesc}"
+        sub-label="[[safeBrowsingEnhancedDesc_()]]"
         expand-aria-label="$i18n{safeBrowsingEnhancedExpandA11yLabel}"
         on-click="onSafeBrowsingEnhancedClick_">
           <div slot="collapse" class="settings-columned-section">
@@ -33,6 +33,7 @@
                     label="$i18n{safeBrowsingEnhancedWhenOnBulOne}">
                 </privacy-guide-description-item>
                 <privacy-guide-description-item
+                    hidden="[[isFydeProfile_]]"
                     role="listitem"
                     icon="settings20:download"
                     label="$i18n{safeBrowsingEnhancedWhenOnBulTwo}">
@@ -61,6 +62,7 @@
               </h3>
               <div role="list">
                 <privacy-guide-description-item
+                    hidden="[[isFydeProfile_]]"
                     role="listitem"
                     icon="settings20:link"
                     label="$i18n{safeBrowsingEnhancedThingsToConsiderBulOne}">

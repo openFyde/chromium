@@ -62,6 +62,11 @@ export class PrivacyGuideSafeBrowsingFragmentElement extends
           return loadTimeData.getBoolean('enableHashPrefixRealTimeLookups');
         },
       },
+
+      isFydeProfile_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isFydeProfile'),
+      },
     };
   }
 
@@ -140,6 +145,15 @@ export class PrivacyGuideSafeBrowsingFragmentElement extends
             'privacyGuideSafeBrowsingCardStandardProtectionPrivacyDescription1Proxy' :
             'privacyGuideSafeBrowsingCardStandardProtectionPrivacyDescription1');
   }
+
+  private safeBrowsingEnhancedDesc_(): string {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      return this.i18n('safeBrowsingEnhancedFydeDesc');
+    } else {
+      return this.i18n('safeBrowsingEnhancedDesc');
+    }
+  }
+
 }
 
 declare global {
