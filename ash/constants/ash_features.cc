@@ -4092,9 +4092,6 @@ bool IsLauncherContinueSectionWithRecentsEnabled() {
       !device_excluded_from_holdback_study) {
     return false;
   }
-  if (fydeos::switches::IsFydeCustomEnabled()) {
-    return false;
-  }
 
   return base::FeatureList::IsEnabled(kLauncherContinueSectionWithRecents) ||
          base::FeatureList::IsEnabled(
@@ -4339,6 +4336,10 @@ bool IsOobePerksDiscoveryEnabled() {
 }
 
 bool IsOobeQuickStartEnabled() {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    return false;
+  }
+
   return IsCrossDeviceFeatureSuiteAllowed() &&
          base::FeatureList::IsEnabled(kOobeQuickStart);
 }
