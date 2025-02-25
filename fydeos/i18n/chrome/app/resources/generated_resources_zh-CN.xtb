@@ -56,6 +56,7 @@
 <translation id="7456142309650173560">开发者</translation>
 <translation id="1764226536771329714">测试</translation>
 <translation id="913411432238655354">启动时恢复应用</translation>
+<translation id="4761916003358543528">您的应用和设置会在您使用自己的 FydeOS 帐号登录的所有设备上保持同步。如需了解浏览器同步选项，请前往 <ph name="LINK_BEGIN" />Chromium 设置<ph name="LINK_END" />。</translation>
 <translation id="6688486189406151818">openFyde 版本太旧</translation>
 <translation id="4427296679979696656">FydeOS 版本太旧</translation>
 <translation id="3921455734015639682">openFyde 已是最新版本</translation>
@@ -74,6 +75,8 @@
 <translation id="3142455651440468550">其他服务</translation>
 <translation id="8559764570013185596">同步功能和其他服务</translation>
 <translation id="2339715201705349346">您的设备将会对所有人可见，时长为 <ph name="MINUTES" /> 分钟。</translation>
+<translation id="2478287783239434203">您的数据将在已为该帐号开启同步功能的所有 Chromium 浏览器之间同步。如需了解 openFyde 同步选项，请前往 <ph name="LINK_BEGIN" />openFyde 设置<ph name="LINK_END" />。</translation>
+<translation id="5695932594681655884">您的数据将在已为该帐号开启同步功能的所有 Chromium 浏览器之间同步。如需了解 FydeOS 同步选项，请前往 <ph name="LINK_BEGIN" />FydeOS 设置<ph name="LINK_END" />。</translation>
 <!-- settings_strings.grdp -->
 <translation id="6133721309166765453">你与 FydeOS</translation>
 <translation id="6496949983038880601">如果您找不到要查找的内容，请参阅 <ph name="BEGIN_LINK_CHROMIUM" />FydeOS 帮助<ph name="END_LINK_CHROMIUM" /></translation>
@@ -211,6 +214,8 @@
 <translation id="2254630710642766991">很遗憾，您的计算机配置了格式错误的硬件 ID。这导致 FydeOS 无法使用最新的安全修正程序进行更新，以致您的计算机<ph name="BEGIN_BOLD" />很容易遭到恶意攻击<ph name="END_BOLD" />。</translation>
 <translation id="3853717759226146308">通过「文件」应用，您可以快速存取自己在外部存储设备和 openFyde 设备上的文件。</translation>
 <translation id="3479561374223953616">通过「文件」应用，您可以快速存取自己在外部存储设备和 FydeOS 设备上的文件。</translation>
+<translation id="7957976220578534539"><ph name="BEGIN_PARAGRAPH1" />为获得最佳体验，请将 <ph name="DEVICE_OS" /> 安装到您的内部磁盘。您也可等到需要时再从登录屏幕安装它。<ph name="END_PARAGRAPH1" />
+  <ph name="BEGIN_PARAGRAPH2" />如果还暂时不想安装，你可从 USB 启动来试用一下 <ph name="DEVICE_OS" />。请注意：从 USB 启动的 <ph name="DEVICE_OS" /> 将会带有磁盘容量限制及受到不同程度的性能损耗；而且，包括 OTA 升级在内的一些系统功能将会不可用。<ph name="END_PARAGRAPH2" /></translation>
 <!-- generated_resources.override.grdp -->
 <translation id="358808394160762813">openFyde 系统映像写入工具</translation>
 <translation id="827071875133563393">FydeOS 系统映像写入工具</translation>

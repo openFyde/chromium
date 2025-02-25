@@ -297,6 +297,7 @@
             deep-link-focus-id$="[[Setting.kDiagnostics]]">
         </cr-link-row>
         <cr-link-row class="hr" id="firmwareUpdates"
+            hidden$="[[!showFirmwareUpdatesApp_]]"
             start-icon="[[rowIcons_.firmwareUpdates]]"
             on-click="onFirmwareUpdatesClick_"
             label="$i18n{aboutFirmwareUpdates}"

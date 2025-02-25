@@ -107,6 +107,11 @@ export class OsAboutPageElement extends OsAboutPageBase {
         observer: 'handleUpdateStatusHttpFailed_',
       },
 
+      showFirmwareUpdatesApp_: {
+        type: Boolean,
+        value: false,
+      },
+
       /**
        * Whether the browser/ChromeOS is managed by their organization
        * through enterprise policies.

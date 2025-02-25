@@ -1906,16 +1906,8 @@ export class SettingsInternetDetailPageElement extends
     }
   }
 
-  private syncedString_(managedProperties: ManagedProperties): string {
-    if (!managedProperties.typeProperties.wifi) {
-      return '';
-    } else if (!managedProperties.typeProperties.wifi.isSyncable) {
-      return this.i18nAdvanced('networkNotSynced').toString();
-    } else if (managedProperties.source === OncSource.kUser) {
-      return this.i18nAdvanced('networkSyncedUser').toString();
-    } else {
-      return this.i18nAdvanced('networkSyncedDevice').toString();
-    }
+  private syncedString_(_unused_managedProperties: ManagedProperties): string {
+    return '';
   }
 
   /**

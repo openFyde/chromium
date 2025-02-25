@@ -15,6 +15,10 @@ const char kFydeDisableCustom[] = "fyde-disable-custom";
 
 const char kEnableTpmDictionaryAttackLockout[] = "fydeos-enable-tpm-da-lockout";
 
+const char kDisallowInitDevicePolicyWithoutStateKeys[] = "disallow-init-device-policy-without-state-keys";
+
+const char kDisableUnknownPeripheralBatteryNotification[] = "disable-unknown-peripheral-battery-notification";
+
 const std::vector<std::string> kNonForYouBoards = {
   "amd64-fydeos",
   "amd64-openfyde",
@@ -45,6 +49,13 @@ bool IsNonForYouBoard(const std::string& board) {
   return false;
 }
 
+bool IsInitDevicePolicyWithoutStateKeysAllowed() {
+  return !base::CommandLine::ForCurrentProcess()->HasSwitch(kDisallowInitDevicePolicyWithoutStateKeys);
+}
+
+bool IsUnknownPeripheralBatteryNotificationDisabled() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(kDisableUnknownPeripheralBatteryNotification);
+}
 
 } // switches
 } // fydeos

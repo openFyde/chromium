@@ -216,6 +216,10 @@ export class OsSettingsA11yPageElement extends OsSettingsA11yPageElementBase {
     }
   }
 
+  private shouldShowAdditionalFeaturesLink_(_unused_isGuest: boolean): boolean {
+    return false;
+  }
+
   private redirectToOldA11ySettings(): void {
     Router.getInstance().navigateTo(routes.MANAGE_ACCESSIBILITY);
   }
