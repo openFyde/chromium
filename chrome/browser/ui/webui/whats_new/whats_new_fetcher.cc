@@ -47,7 +47,7 @@ const char kChromeWhatsNewV2StagingURL[] =
 const int64_t kMaxDownloadBytes = 1024 * 1024;
 
 GURL GetV2ServerURL(bool is_staging) {
-  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(nullptr));
+  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath());
 }
 
 GURL GetV2ServerURLForRender(const WhatsNewRegistry& whats_new_registry,
@@ -76,7 +76,7 @@ GURL GetV2ServerURLForRender(const WhatsNewRegistry& whats_new_registry,
 }
 
 GURL GetServerURL(bool may_redirect, bool is_staging) {
-  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(nullptr));
+  return GURL(fydeos::misc::BuildFydeReleaseNoteUrlWithPath());
 }
 
 namespace {

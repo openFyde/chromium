@@ -7,12 +7,10 @@
 
 #include <string>
 
-class Profile;
-
 namespace fydeos {
 namespace misc {
 
-const std::string BuildFydeReleaseNoteUrlWithPath(bool staging);
+const std::string BuildFydeReleaseNoteUrlWithPath(bool staging = false);
 
 }
 }

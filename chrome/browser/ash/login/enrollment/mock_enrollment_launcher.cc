@@ -73,6 +73,10 @@ void FakeEnrollmentLauncher::EnrollUsingToken(const std::string& token) {
   mock_->EnrollUsingToken(token);
 }
 
+void FakeEnrollmentLauncher::EnrollUsingFydeToken() {
+  mock_->EnrollUsingFydeToken();
+}
+
 void FakeEnrollmentLauncher::EnrollUsingAttestation() {
   mock_->EnrollUsingAttestation();
 }

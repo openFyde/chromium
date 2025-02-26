@@ -5,7 +5,6 @@
 #include "fydeos/switches/services/services_switches.h"
 
 #include "base/command_line.h"
-#include "chrome/common/chrome_switches.h"
 #include "fydeos/switches/services/services_constants.h"
 #include "fydeos/switches/urls/urls_constants.h"
 #include "fydeos/build/config/buildflags.h"

@@ -4,6 +4,7 @@
 #include "fydeos/misc/fydeos_release_note_url.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/browser_process.h"
 #include "fydeos/switches/urls/urls_constants.h"
 

@@ -848,7 +848,7 @@ std::u16string AboutHandler::GetEndOfLifeMessage(base::Time eol_date) const {
                           ? IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_PAST
                           : IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_FUTURE;
   const std::u16string eol_url =
-      eol_passed ? base::UTF8ToUTF16(fydeos::constants::kEolNotificationURL) : base::UTF8ToUTF16(fydeos::misc::BuildFydeReleaseNoteUrlWithPath(profile_));
+      eol_passed ? base::UTF8ToUTF16(fydeos::constants::kEolNotificationURL) : base::UTF8ToUTF16(fydeos::misc::BuildFydeReleaseNoteUrlWithPath());
   return l10n_util::GetStringFUTF16(eol_string_id,
                                     base::TimeFormatMonthAndYearForTimeZone(
                                         eol_date, icu::TimeZone::getGMT()),

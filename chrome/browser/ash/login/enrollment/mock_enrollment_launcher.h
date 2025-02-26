@@ -56,6 +56,7 @@ class MockEnrollmentLauncher {
                const std::string& enrolling_user_domain));
   MOCK_METHOD(void, EnrollUsingAuthCode, (const std::string& auth_code));
   MOCK_METHOD(void, EnrollUsingToken, (const std::string& token));
+  MOCK_METHOD(void, EnrollUsingFydeToken, ());
   MOCK_METHOD(void, EnrollUsingAttestation, ());
   MOCK_METHOD(void, EnrollUsingEnrollmentToken, ());
   MOCK_METHOD(void, RestoreAfterRollback, ());
@@ -111,6 +112,7 @@ class FakeEnrollmentLauncher : public EnrollmentLauncher {
   // EnrollmentLauncher:
   void EnrollUsingAuthCode(const std::string& auth_code) override;
   void EnrollUsingToken(const std::string& token) override;
+  void EnrollUsingFydeToken() override;
   void EnrollUsingAttestation() override;
   void EnrollUsingEnrollmentToken() override;
   void ClearAuth(base::OnceClosure callback,

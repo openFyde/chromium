@@ -271,7 +271,7 @@ void EolNotification::Click(const std::optional<int>& button_index,
       case BUTTON_MORE_INFO: {
         const GURL url(dismiss_pref_ == prefs::kEolNotificationDismissed
                            ? (fydeos::constants::kEolNotificationURL)
-                           : fydeos::misc::BuildFydeReleaseNoteUrlWithPath(profile_));
+                           : fydeos::misc::BuildFydeReleaseNoteUrlWithPath());
         // Show eol link.
         NewWindowDelegate::GetPrimary()->OpenUrl(
             url, NewWindowDelegate::OpenUrlFrom::kUserInteraction,
