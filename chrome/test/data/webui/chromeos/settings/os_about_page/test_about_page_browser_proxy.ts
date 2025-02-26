@@ -25,6 +25,7 @@ export class TestAboutPageBrowserProxy extends TestBrowserProxy implements
     isLts: false,
   };
   private fydeOtaEnabled_ = false;
+  private firmwareUpdateSupported_ = false;
   private canChangeChannel_ = true;
   private regulatoryInfo_: RegulatoryInfo|null = null;
   private tpmFirmwareUpdateStatus_: TpmFirmwareUpdateStatusChangedEvent = {
@@ -56,6 +57,7 @@ export class TestAboutPageBrowserProxy extends TestBrowserProxy implements
       'getVersionInfo',
       'getRegulatoryInfo',
       'getEnabledFydeOTA',
+      'getIsFirmwareUpdateSupported',
       'checkInternetConnection',
       'getEndOfLifeInfo',
       'endOfLifeIncentiveButtonClicked',
@@ -190,6 +192,11 @@ export class TestAboutPageBrowserProxy extends TestBrowserProxy implements
   getEnabledFydeOTA(): Promise<boolean> {
     this.methodCalled('getEnabledFydeOTA');
     return Promise.resolve(this.fydeOtaEnabled_);
+  }
+
+  getIsFirmwareUpdateSupported(): Promise<boolean> {
+    this.methodCalled('getIsFirmwareUpdateSupported');
+    return Promise.resolve(this.firmwareUpdateSupported_);
   }
 
   getEndOfLifeInfo(): Promise<EndOfLifeInfo> {
