@@ -138,11 +138,11 @@
     </cr-radio-group>
   </div>
   <div slot="back-navigation">
-    <oobe-back-button on-tap="onBackClicked_">
+    <oobe-back-button on-click="onBackClicked_">
     </oobe-back-button>
   </div>
   <div slot="bottom-buttons" class="layout horizontal end-justified">
-    <oobe-next-button class="focus-on-show" on-tap="onConfigClicked_">
+    <oobe-next-button class="focus-on-show" on-click="onConfigClicked_">
     </oobe-next-button>
   </div>
 </oobe-adaptive-dialog>
@@ -164,11 +164,11 @@
     <div id="normalConfigMessage">[[normalConfigMessage_]]</div>
   </div>
   <div slot="back-navigation">
-    <oobe-back-button on-tap="onBackClicked_">
+    <oobe-back-button on-click="onBackClicked_">
     </oobe-back-button>
   </div>
   <div slot="bottom-buttons">
-    <oobe-text-button inverse on-tap="onInstallClicked_" disabled="[[!isNormalSetup_]]" text-key="fydeosInstallerInstallButton">
+    <oobe-text-button inverse on-click="onInstallClicked_" disabled="[[!isNormalSetup_]]" text-key="fydeosInstallerInstallButton">
     </oobe-text-button>
   </div>
 </oobe-adaptive-dialog>
@@ -227,11 +227,11 @@
     </div>
   </div>
   <div slot="back-navigation">
-    <oobe-back-button on-tap="onBackClicked_">
+    <oobe-back-button on-click="onBackClicked_">
     </oobe-back-button>
   </div>
   <div slot="bottom-buttons">
-    <oobe-text-button inverse on-tap="onInstallClicked_" disabled="[[!isDualbootSetup_]]" text-key="fydeosInstallerInstallButton">
+    <oobe-text-button inverse on-click="onInstallClicked_" disabled="[[!isDualbootSetup_]]" text-key="fydeosInstallerInstallButton">
     </oobe-text-button>
   </div>
 </oobe-adaptive-dialog>
@@ -247,13 +247,13 @@
     </div>
   </div>
   <div slot="back-navigation">
-    <oobe-back-button on-tap="onBackClicked_" disabled="[[!shouldEnableBackButton_(uiStep)]]" hidden="[[!shouldShowBackButton_(uiStep, result_)]]">
+    <oobe-back-button on-click="onBackClicked_" disabled="[[!shouldEnableBackButton_(uiStep)]]" hidden="[[!shouldShowBackButton_(uiStep, result_)]]">
     </oobe-back-button>
   </div>
   <div slot="bottom-buttons">
-    <oobe-text-button on-tap="onAbortClicked_" hidden="[[!shouldShowAbortButton_(uiStep)]]" disabled="[[!shouldEnableAbortButton_(uiStep)]]" text-key="fydeosInstallerAbortButton">
+    <oobe-text-button on-click="onAbortClicked_" hidden="[[!shouldShowAbortButton_(uiStep)]]" disabled="[[!shouldEnableAbortButton_(uiStep)]]" text-key="fydeosInstallerAbortButton">
     </oobe-text-button>
-    <oobe-text-button inverse on-tap="onShutdownClicked_" hidden="[[!shouldShowShutdownButton_(uiStep, result_)]]" text-key="fydeosInstallerShutdownButton">
+    <oobe-text-button inverse on-click="onShutdownClicked_" hidden="[[!shouldShowShutdownButton_(uiStep, result_)]]" text-key="fydeosInstallerShutdownButton">
     </oobe-text-button>
   </div>
 </oobe-adaptive-dialog>
