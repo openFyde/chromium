@@ -141,8 +141,9 @@ void LaunchReleaseNotesImpl(Profile* profile, apps::LaunchSource source) {
 
 //---***FYDEOS BEGIN***---
 void LaunchReleaseNotesInTab(Profile* profile) {
+  GURL url(fydeos::misc::BuildFydeReleaseNoteUrlWithPath());
   auto displayer = std::make_unique<ScopedTabbedBrowserDisplayer>(profile);
-  ShowSingletonTab(displayer->browser(), GURL(chrome::kChromeUIWhatsNewURL));
+  ShowSingletonTab(displayer->browser(), url);
 }
 //---***FYDEOS END***---
 

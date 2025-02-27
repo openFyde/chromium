@@ -37,7 +37,7 @@ bool IsEnabled() {
 #elif !BUILDFLAG(IS_CHROMEOS)
   return base::FeatureList::IsEnabled(whats_new::kForceEnabled);
 #else
-  return true;
+  return false;
 #endif
 }
 
