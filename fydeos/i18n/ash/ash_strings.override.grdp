@@ -38,6 +38,9 @@
     <message name="IDS_ASH_STATUS_TRAY_AUDIO_NBS_MESSAGE" desc="label used to warn that NBS is in use">
       Your openFyde or Bluetooth device is using an older version of Bluetooth. Use the internal microphone for better audio quality.
     </message>
+    <message name="IDS_ASH_BIRCH_RELEASE_NOTES_TITLE" desc="Title for the suggestion chip that links to release notes">
+      openFyde Updated
+    </message>
   </if>
   <if expr="not openfyde">
     <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_TITLE" desc="The main label for the system tray Cast view when no Chromecast devices are available.">
@@ -48,6 +51,9 @@
     </message>
     <message name="IDS_ASH_STATUS_TRAY_AUDIO_NBS_MESSAGE" desc="label used to warn that NBS is in use">
       Your FydeOS or Bluetooth device is using an older version of Bluetooth. Use the internal microphone for better audio quality.
+    </message>
+    <message name="IDS_ASH_BIRCH_RELEASE_NOTES_TITLE" desc="Title for the suggestion chip that links to release notes">
+      FydeOS Updated
     </message>
   </if>
 
