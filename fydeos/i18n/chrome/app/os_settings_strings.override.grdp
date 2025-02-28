@@ -73,14 +73,14 @@
     <message name="IDS_SETTINGS_SAFETY_HUB_VERSION_CARD_HEADER_UPDATED" desc="Safety Hub settings page (chrome://settings/safetyHub) gives users an overview over their safety status. The version card, which this text is a part of, informs the user whether their Chrome is up to date. This title of the card is shown when Chrome is up to date and the user does not need to take any action. Shown above the subtitle that is the Chrome version.">
       FydeOS is up to date
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_HELP_SECTION_DESCRIPTION" desc="In CUPS printing settings subpage, this description helps users when trying to connect to a local printer.">
+      Make sure your printer is connected to the same Wi-Fi network as your FydeOS device or use a USB cable. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more about compatibility<ph name="LINK_END">&lt;/a&gt;</ph>
+    </message>
   </if>
 
   <if expr="not reven">
     <message name="IDS_OS_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the OS sync feature.">
       Your apps and settings will sync across all devices where you are signed in with your FydeOS account. For browser sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Chromium settings<ph name="LINK_END">&lt;/a&gt;</ph>.
-    </message>
-    <message name="IDS_SETTINGS_PRINTING_CUPS_HELP_SECTION_DESCRIPTION" desc="In CUPS printing settings subpage, this description helps users when trying to connect to a local printer.">
-      Make sure your printer is connected to the same Wi-Fi network as your FydeOS device or use a USB cable. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more about compatibility<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
   </if>
   <if expr="use_fydeos_com">
