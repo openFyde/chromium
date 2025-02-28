@@ -2494,6 +2494,7 @@ static_library("browser") {
     "//ui/surface",
     "//ui/webui",
     "//fydeos/prefs",
+    "//fydeos/switches",
   ]
 
   if (is_chromeos) {

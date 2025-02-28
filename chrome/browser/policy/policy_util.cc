@@ -14,6 +14,8 @@
 #include "components/policy/core/common/cloud/policy_invalidation_scope.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace policy {
 
@@ -91,6 +93,9 @@ bool IsOriginInAllowlist(const GURL& url,
 
 std::string_view GetPolicyInvalidationProjectNumber(
     PolicyInvalidationScope scope) {
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID;
+  }
   if (IsDirectInvalidationEnabledForScope(scope)) {
     return kPolicyInvalidationProjectNumber;
   }

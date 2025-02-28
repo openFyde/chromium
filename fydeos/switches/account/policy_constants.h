@@ -14,6 +14,7 @@ namespace constants {
 CHROMEOS_EXPORT extern const uint8_t kFydeOSPolicyVerificationKey[];
 extern const size_t kFydeOSPolicyVerificationKeyLength;
 
+inline constexpr char kFydeOSPolicyFCMInvalidationSenderID[] = "384261808202";
 }
 }
 
