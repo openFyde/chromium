@@ -193,6 +193,7 @@
 <translation id="595136526907376719">FydeOS 大版本更新已上线。如需进行 FydeOS 的大版本升级，请支付一次性更新费用后，再次检查更新。</translation>
 <translation id="376676483415835736">有新版本的 FydeOS 可供升级，但你的 FydeOS for You 订阅已过期。如需升级 FydeOS，请考虑续费。</translation>
 <translation id="9125114578624380848">Linux 子系统、Linux 应用程序</translation>
+<translation id="2100769780401669290">如需更换此本地账号登录 FydeOS 所用的 PIN 码或密码，请至<ph name="BEGIN_LINK" />隐私与安全<ph name="END_LINK" />设置页找到相关选项。</translation>
 <!-- <translation id="3819257035322786455">备份</translation> -->
 <translation id="6523879681771260760">请选择存储备份的位置</translation>
 <translation id="2036152819788683293">为当前登录的账户创建备份 (beta)。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>

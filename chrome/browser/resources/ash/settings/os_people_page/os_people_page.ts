@@ -11,6 +11,7 @@ import 'chrome://resources/ash/common/cr_elements/cr_link_row/cr_link_row.js';
 import 'chrome://resources/ash/common/cr_elements/icons.html.js';
 import 'chrome://resources/ash/common/cr_elements/policy/cr_policy_indicator.js';
 import 'chrome://resources/ash/common/cr_elements/cr_shared_vars.css.js';
+import 'chrome://resources/ash/common/cr_elements/localized_link/localized_link.js';
 import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
 import '../controls/settings_toggle_button.js';
 import '../settings_shared.css.js';
@@ -514,6 +515,11 @@ export class OsSettingsPeoplePageElement extends
   onGraduationAppUpdated(isAppEnabled: boolean): void {
     this.showGraduationApp_ =
         loadTimeData.getBoolean('isGraduationFlagEnabled') && isAppEnabled;
+  }
+
+  private openLocalAccountChangePasswordSystemSettings_(event: CustomEvent<{event: Event}>): void {
+    event.detail.event.preventDefault();
+    Router.getInstance().navigateTo(routes.LOCK_SCREEN);
   }
 }
 

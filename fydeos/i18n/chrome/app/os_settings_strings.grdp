@@ -278,5 +278,9 @@
   <message name="IDS_OS_SETTINGS_FYDE_ASSISTANT_SETTINGS_IN_APP_SUBLABEL" desc="sublabel for link of fydeos ai settings inside app">
     Other settings and options for FydeOS AI
   </message>
+
+  <message name="IDS_SETTINGS_OS_SETTINGS_FYDE_LOCAL_ACCOUNT_CHANGE_PASSWORD_LINK_DESC" desc="Description for fydeos local account change password link">
+    To change the sign-in PIN or password of this local account, it's within the <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>Privacy and security<ph name="END_LINK">&lt;/a&gt;</ph> settings.
+  </message>
 </if>
 </grit-part>

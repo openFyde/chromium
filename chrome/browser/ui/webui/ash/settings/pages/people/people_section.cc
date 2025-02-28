@@ -580,6 +580,7 @@ void PeopleSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       {"lockScreenFingerprintTitle",
        IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_SUBPAGE_TITLE},
       {"manageOtherPeople", IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE},
+      {"fydeLocalAccountChangePasswordLinkDesc", IDS_SETTINGS_OS_SETTINGS_FYDE_LOCAL_ACCOUNT_CHANGE_PASSWORD_LINK_DESC},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
