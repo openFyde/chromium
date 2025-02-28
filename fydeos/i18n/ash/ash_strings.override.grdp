@@ -41,6 +41,9 @@
     <message name="IDS_ASH_BIRCH_RELEASE_NOTES_TITLE" desc="Title for the suggestion chip that links to release notes">
       openFyde Updated
     </message>
+    <message name="IDS_ASH_IN_SESSION_AUTH_SETTINGS_PROMPT" desc="Text shown in the settings auth dialog.">
+      openFyde Settings would like to confirm it's you
+    </message>
   </if>
   <if expr="not openfyde">
     <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_TITLE" desc="The main label for the system tray Cast view when no Chromecast devices are available.">
@@ -54,6 +57,9 @@
     </message>
     <message name="IDS_ASH_BIRCH_RELEASE_NOTES_TITLE" desc="Title for the suggestion chip that links to release notes">
       FydeOS Updated
+    </message>
+    <message name="IDS_ASH_IN_SESSION_AUTH_SETTINGS_PROMPT" desc="Text shown in the settings auth dialog.">
+      FydeOS Settings would like to confirm it's you
     </message>
   </if>
 

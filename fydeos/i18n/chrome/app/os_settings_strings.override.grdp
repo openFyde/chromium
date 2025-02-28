@@ -96,6 +96,10 @@
     Linux
   </message>
 
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_SWITCH_LOCAL_PASSWORD_DESCRIPTION" desc="Description of the password authentication factor on the lock screen page.">
+    Currently using online account password. You can set up a <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> password to make it easier to sign in.
+  </message>
+
 </if>
 </grit-part>
 
