@@ -17,7 +17,7 @@ class ASH_EXPORT FydeAssistantBubble : public views::BubbleDialogDelegateView,
  public:
   static bool ReadyToInit();
 
-  explicit FydeAssistantBubble(const gfx::Rect& anchor_rect);
+  explicit FydeAssistantBubble(aura::Window* container, const gfx::Rect& anchor_rect);
 
   FydeAssistantBubble(const FydeAssistantBubble&) = delete;
   FydeAssistantBubble& operator=(const FydeAssistantBubble&) =

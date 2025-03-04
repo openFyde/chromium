@@ -42,12 +42,13 @@ void FydeAssistantBubble::OnThemeChanged() {
       GetColorProvider()->GetColor(cros_tokens::kCrosSysSystemBaseElevated));
 }
 
-FydeAssistantBubble::FydeAssistantBubble(const gfx::Rect& anchor_rect) {
+FydeAssistantBubble::FydeAssistantBubble(aura::Window* window, const gfx::Rect& anchor_rect) {
   SetAnchorRect(anchor_rect);
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   set_margins(gfx::Insets());
   // control hide/show on  my own
   set_close_on_deactivate(false);
+  set_parent_window(window);
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
   CreateBubble(this);

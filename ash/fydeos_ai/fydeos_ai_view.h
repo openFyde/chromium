@@ -101,6 +101,8 @@ class ASH_EXPORT FydeAssistantView : public SessionObserver, public ui::EventHan
   FydeAssistantViewObserver::ClipboardItemForAssistant last_clipboard_item_;
   raw_ptr<FydeAssistantBubble, DanglingUntriaged> bubble_;
 
+  raw_ptr<aura::Window, DanglingUntriaged> window_ = nullptr;
+
   gfx::Point current_anchor_point_;
   gfx::Point drag_start_point_;
   bool is_dragging_ = false;

@@ -25,7 +25,7 @@ namespace {
 const int kBubbleInitDelaySeconds = 5;
 }
 
-FydeAssistantView::FydeAssistantView(aura::Window* container) {
+FydeAssistantView::FydeAssistantView(aura::Window* container): window_(container) {
   Shell::Get()->session_controller()->AddObserver(this);
   Shell::Get()->AddPreTargetHandler(this);
   AssistantState::Get()->AddObserver(this);
@@ -54,7 +54,7 @@ void FydeAssistantView::RemoveObserver(FydeAssistantViewObserver* observer) cons
 
 void FydeAssistantView::InitializeBubble() {
   if (bubble_initialized_) return;
-  bubble_ = new FydeAssistantBubble(gfx::Rect(display::Screen::GetScreen()->GetCursorScreenPoint(), gfx::Size()));
+  bubble_ = new FydeAssistantBubble(window_, gfx::Rect(display::Screen::GetScreen()->GetCursorScreenPoint(), gfx::Size()));
   bubble_->InitWebView(this);
   bubble_initialized_ = true;
 }
