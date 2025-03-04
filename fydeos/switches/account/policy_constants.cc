@@ -36,5 +36,6 @@ const uint8_t kFydeOSPolicyVerificationKey[] = {
 
 const size_t kFydeOSPolicyVerificationKeyLength = sizeof(kFydeOSPolicyVerificationKey);
 
+const char kFydeOSOobeZteConfigFile[] = "/usr/share/oem/flex_config/config.json";
 }
 }

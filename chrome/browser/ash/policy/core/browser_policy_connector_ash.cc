@@ -16,6 +16,7 @@
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/overloaded.h"
 #include "base/location.h"
@@ -106,6 +107,7 @@
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace policy {
 
@@ -244,6 +246,9 @@ BrowserPolicyConnectorAsh::~BrowserPolicyConnectorAsh() = default;
 void BrowserPolicyConnectorAsh::Init(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  if (base::PathExists(base::FilePath(fydeos::constants::kFydeOSOobeZteConfigFile))) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
   local_state_ = local_state;
   // ---***FYDEOS BEGIN***---
   auto install_attributes = ash::InstallAttributes::Get();
