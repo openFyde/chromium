@@ -8,9 +8,11 @@
 #include "base/strings/stringprintf.h"
 #include "base/files/file_util.h"
 #include "base/task/thread_pool.h"
+#include "chrome/browser/ash/login/oobe_configuration.h"
 #include "chromeos/ash/components/network/portal_detector/network_portal_detector.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/ash/policy/enrollment/enrollment_token_provider.h"
 #include "components/prefs/pref_service.h"
 #include "chromeos/ash/components/network/network_state_handler.h"
 #include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
@@ -71,15 +73,6 @@ namespace  {
       }
     }
     return base::StringPrintf(kShellCmd, result.c_str());
-  }
-
-  const std::string GetOEMToken() {
-    std::string token;
-    if (base::ReadFileToString(
-          base::FilePath(fydeos::constants::kFydeOSOEMTokenFilePath), &token)) {
-      return "";
-    }
-    return token;
   }
 }  // namespace
 
@@ -196,13 +189,11 @@ void LicenseManager::OnGotId(std::optional<ShellState> state) {
 }
 
 void LicenseManager::IGetOEMToken() {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&GetOEMToken),
-      base::BindOnce(&LicenseManager::OnGotOEMToken,
-        weak_ptr_factory_.GetWeakPtr()));
+  auto* oobe_configuration = ::ash::OobeConfiguration::Get();
+  auto token = policy::GetFydeEnrollmentToken(oobe_configuration);
+  if (token.has_value()) {
+    OnGotOEMToken(token.value());
+  }
 }
 
 void LicenseManager::OnGotOEMToken(const std::string& token) {

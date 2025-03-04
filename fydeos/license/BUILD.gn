@@ -16,6 +16,8 @@ source_set("license") {
     "//content/public/browser",
     "//dbus",
     "//chromeos/ash/components/dbus/update_engine",
+    "//chrome/browser/ash/policy/enrollment",
+    "//chrome/browser/ash/login",
     "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
     "//fydeos/constants",
     "//fydeos/prefs",
