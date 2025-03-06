@@ -19,24 +19,22 @@
 #include "chrome/browser/ash/profiles/profile_helper.h"
 #include "components/user_manager/user.h"
 #include "base/system/sys_info.h"
+#include "base/json/json_writer.h"
 
 #include "fydeos/build/config/buildflags.h"
 
 namespace fydeos {
 
 namespace {
-  const char kFormEncodedContentType[] = "application/x-www-form-urlencoded";
+  const char kJSONContentType[] = "application/json";
 #if BUILDFLAG(USE_FYDEOS_COM)
   const char kFydeOSSubscriptionUrl[] =
-    "https://fydeos.com/content/wp-admin/admin-ajax.php";
+    "https://apis.fydeos.com/mailing/oobe/completion";
 #else
   const char kFydeOSSubscriptionUrl[] =
-    "https://fydeos.io/content/wp-admin/admin-ajax.php";
+    "https://apis.fydeos.io/mailing/oobe/completion";
 #endif
   const size_t kMaxMessageSize = 1024 * 1;  // 1MB
-
-  const char kFydeOSSubscriptionParamAction[] = "fluentform_submit";
-  const char kFydeOSSubscriptionParamFormId[] = "5";
 
   void OnSimpleLoaderComplete(
       std::unique_ptr<network::SimpleURLLoader> url_loader,
@@ -61,28 +59,27 @@ namespace {
     return encoded_str;
   }
 
-  std::string QueryStringifyParamsWithSysInfo(const std::string& name, const std::string& email,
+  std::string GenerateRequestBodyWithSysInfo(const std::string& name, const std::string& email,
                                               bool email_opt_in, bool improve_plan_opt_in) {
     const std::string encoded_name = EncodeQueryStringData(name);
     const std::string encoded_email = EncodeQueryStringData(email);
     const std::string version = base::SysInfo::GetLsbFydeReleaseVersion();
     const std::string board_name = base::SysInfo::GetLsbReleaseBoard();
 
-    std::string data = base::StringPrintf("name=%s&email=%s&board=%s&osver=%s",
-        encoded_name.c_str(), encoded_email.c_str(),
-        board_name.c_str(), version.c_str());
-
-    if (email_opt_in) {
-      data += "&useroptions[]=newsletter";
+    base::Value::Dict post_body_value;
+    post_body_value.Set("name", encoded_name);
+    post_body_value.Set("email", encoded_email);
+    post_body_value.Set("os_version", version);
+    post_body_value.Set("board_name", board_name);
+    post_body_value.Set("subscribe_newsletter", email_opt_in);
+    post_body_value.Set("join_improvement_plan", improve_plan_opt_in);
+    std::string post_body;
+    bool write_success = base::JSONWriter::Write(post_body_value, &post_body);
+    if (!write_success) {
+      return std::string();
     }
-    if (improve_plan_opt_in) {
-      data += "&useroptions[]=improvementplan";
-    }
 
-    url::RawCanonOutputT<char> percent_encoded_data;
-    url::EncodeURIComponent(data, &percent_encoded_data);
-
-    return std::string(percent_encoded_data.data(), percent_encoded_data.length());
+    return post_body;
   }
 
   void StartPost(const std::string& name, const std::string& email,
@@ -122,12 +119,12 @@ namespace {
     std::unique_ptr<network::SimpleURLLoader> simple_loader =
       network::SimpleURLLoader::Create(std::move(resource_request),
           traffic_annotation);
-    const std::string body = base::StringPrintf("data=%s&action=%s&form_id=%s",
-        QueryStringifyParamsWithSysInfo(name, email, email_opt_in, improve_plan_opt_in).c_str(),
-        kFydeOSSubscriptionParamAction,
-        kFydeOSSubscriptionParamFormId);
+    const std::string body = GenerateRequestBodyWithSysInfo(name, email, email_opt_in, improve_plan_opt_in);
     VLOG(4) << "subscription request, post data: " << body;
-    simple_loader->AttachStringForUpload(body, kFormEncodedContentType);
+    if (body.empty()) {
+      return;
+    }
+    simple_loader->AttachStringForUpload(body, kJSONContentType);
     simple_loader->SetTimeoutDuration(base::Minutes(1));
     int retry_mode = network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE
                       | network::SimpleURLLoader::RETRY_ON_NAME_NOT_RESOLVED;
