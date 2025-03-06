@@ -34,4 +34,11 @@
     <ph name="LIST_ITEM" />再次感谢你愿意为提升 FydeOS 的使用体验出一份力。
     <ph name="END_LIST" />
 </translation>
+<translation id="7197603148392530336">安全重置会关闭浏览器扩展程序，并将网络和其他设置重置为安全的默认设置。
+          标签页、文件、Cookie 和历史记录不会更改。</translation>
+<translation id="7095692272156034947">openFyde 已重置为安全的默认设置。您可以随时在“设置”中调整这些设置。</translation>
+<translation id="160810443451206697">FydeOS 已重置为安全的默认设置。您可以随时在“设置”中调整这些设置。</translation>
+<translation id="96830970519341589">openFyde 设置</translation>
+<translation id="448831382522909186">FydeOS 设置</translation>
+<translation id="1588240398285670601">浏览器设置</translation>
 </translationbundle>

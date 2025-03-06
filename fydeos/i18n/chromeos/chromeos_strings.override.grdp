@@ -51,4 +51,27 @@
   <message name="IDS_FEEDBACK_TOOL_RESOURCES_ASK_COMMUNITY_DESCRIPTION" desc="Description of the ask community link">
     Ask other experienced users in the community forum
   </message>
+  <message name="IDS_SANITIZE_WARNING" desc="Warning text in the safety reset">
+    Safety reset turns off browser extensions and resets network and other settings to safe defaults.
+    Your tabs, files, cookies, and history won’t be changed.
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_SANITIZE_DONE_DESCRIPTION" desc="Description of the safety reset done dialog">
+      Your openFyde was reset to safe defaults. You can adjust these changes anytime in Settings.
+    </message>
+    <message name="IDS_SANITIZE_DONE_ACCORDION_CHROMEOS_TITLE" desc="Accordion title for ChromeOS resets">
+      openFyde Settings
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_SANITIZE_DONE_DESCRIPTION" desc="Description of the safety reset done dialog">
+      Your FydeOS was reset to safe defaults. You can adjust these changes anytime in Settings.
+    </message>
+    <message name="IDS_SANITIZE_DONE_ACCORDION_CHROMEOS_TITLE" desc="Accordion title for ChromeOS resets">
+      FydeOS Settings
+    </message>
+  </if>
+  <message name="IDS_SANITIZE_DONE_ACCORDION_CHROME_TITLE" desc="Accordion title for Chrome resets">
+    Browser Settings
+  </message>
 </grit-part>
