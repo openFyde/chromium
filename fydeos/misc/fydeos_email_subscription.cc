@@ -52,23 +52,14 @@ namespace {
     }
   }
 
-  const std::string EncodeQueryStringData(const std::string& str) {
-    url::RawCanonOutputT<char> encoded;
-    url::EncodeURIComponent(str, &encoded);
-    std::string encoded_str = std::string(encoded.data(), encoded.length());
-    return encoded_str;
-  }
-
   std::string GenerateRequestBodyWithSysInfo(const std::string& name, const std::string& email,
                                               bool email_opt_in, bool improve_plan_opt_in) {
-    const std::string encoded_name = EncodeQueryStringData(name);
-    const std::string encoded_email = EncodeQueryStringData(email);
     const std::string version = base::SysInfo::GetLsbFydeReleaseVersion();
     const std::string board_name = base::SysInfo::GetLsbReleaseBoard();
 
     base::Value::Dict post_body_value;
-    post_body_value.Set("name", encoded_name);
-    post_body_value.Set("email", encoded_email);
+    post_body_value.Set("name", name);
+    post_body_value.Set("email", email);
     post_body_value.Set("os_version", version);
     post_body_value.Set("board_name", board_name);
     post_body_value.Set("subscribe_newsletter", email_opt_in);
