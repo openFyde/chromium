@@ -45,6 +45,8 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_SYSTEM) StatisticsProviderImpl
     // Binary to fake crossystem tool with arguments. E.g. echo.
     base::CommandLine crossystem_tool{base::CommandLine::NO_PROGRAM};
 
+    base::CommandLine fydeos_hardward_id_tool{base::CommandLine::NO_PROGRAM};
+
     base::FilePath machine_info_filepath;
     base::FilePath oem_manifest_filepath;
     base::FilePath cros_regions_filepath;
@@ -120,6 +122,8 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_SYSTEM) StatisticsProviderImpl
   // Extracts known data from `regional_data_`.
   std::optional<std::string_view> GetRegionalInformation(
       std::string_view name) const;
+
+  std::string GetFallbackHardwareClass() const;
 
   StatisticsSources sources_;
 
