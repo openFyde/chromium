@@ -878,8 +878,8 @@ void DecodeHeartbeatPolicies(const em::ChromeDeviceSettingsProto& policy,
   const em::DeviceHeartbeatSettingsProto& heartbeat_policy =
       policy.device_heartbeat_settings();
   if (heartbeat_policy.has_heartbeat_enabled()) {
-    new_values_cache->SetBoolean(kHeartbeatEnabled,
-                                 heartbeat_policy.heartbeat_enabled());
+    // new_values_cache->SetBoolean(kHeartbeatEnabled,
+    //                              heartbeat_policy.heartbeat_enabled());
   }
   if (heartbeat_policy.has_heartbeat_frequency()) {
     new_values_cache->SetInteger(kHeartbeatFrequency,
