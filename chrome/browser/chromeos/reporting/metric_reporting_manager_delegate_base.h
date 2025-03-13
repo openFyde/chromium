@@ -68,7 +68,8 @@ class MetricReportingManagerDelegateBase {
       const std::string& rate_setting_path,
       base::TimeDelta default_rate,
       int rate_unit_to_ms,
-      base::TimeDelta init_delay = base::TimeDelta());
+      base::TimeDelta init_delay = base::TimeDelta(),
+      bool should_send_to_fyde = false);
 
   // Creates a new collector for one shot metric collection. The rate is
   // controlled by the specified setting and we fall back to the defaults

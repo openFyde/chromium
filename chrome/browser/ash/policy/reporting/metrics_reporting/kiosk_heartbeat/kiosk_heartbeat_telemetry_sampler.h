@@ -6,6 +6,7 @@
 #define CHROME_BROWSER_ASH_POLICY_REPORTING_METRICS_REPORTING_KIOSK_HEARTBEAT_KIOSK_HEARTBEAT_TELEMETRY_SAMPLER_H_
 
 #include "components/reporting/metrics/sampler.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace reporting {
 // Sampler used to create KioskHeartbeat messages to be sent via ERP controlled
@@ -21,6 +22,17 @@ class KioskHeartbeatTelemetrySampler : public Sampler {
 
   // Sends KioskHeartbeats whenever called and passes it to the callback.
   void MaybeCollect(OptionalMetricCallback callback) override;
+
+  void MaybeSendHeartBeatToFyde() override;
+
+ private:
+  void OnURLFetchComplete(std::unique_ptr<std::string> response_body);
+  void OnTimeout();
+
+  std::unique_ptr<network::SimpleURLLoader> simple_loader_;
+
+  bool requesting_ = false;
+
 };
 }  // namespace reporting
 
