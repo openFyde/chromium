@@ -123,6 +123,7 @@ std::set<std::string> GetAllInvalidationProjectNumbers() {
   // Cannot be a static constant because project number is decided by feature,
   // which is not available during static initialization.
   return {
+      std::string(fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID),
       std::string(policy::GetPolicyInvalidationProjectNumber(
           PolicyInvalidationScope::kDevice)),
       std::string(policy::GetPolicyInvalidationProjectNumber(
