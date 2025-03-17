@@ -23,7 +23,7 @@ build_webui("build") {
 
     "animations/fydeos_spinner.json",
 
-    "animations/fydeos_v19_welcome.mp4",
+    "animations/fydeos_v20_welcome.mp4",
 
     "animations/fydeos_choose_language.json",
     "animations/fydeos_network_select.json",
