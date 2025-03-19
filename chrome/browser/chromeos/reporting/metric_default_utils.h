@@ -136,7 +136,7 @@ constexpr bool kReportDeviceCrashReportInfoDefaultValue = false;
 constexpr bool kReportWebsiteActivityEnabledDefaultValue = false;
 
 // Default value for kHeartbeatTelemetry heartbeats to be sent.
-constexpr bool kHeartbeatTelemetryDefaultValue = true;
+constexpr bool kHeartbeatTelemetryDefaultValue = false;
 
 // Default value for kKioskVisionTelemetry data to be sent.
 constexpr inline bool kKioskVisionTelemetryDefaultValue = false;
