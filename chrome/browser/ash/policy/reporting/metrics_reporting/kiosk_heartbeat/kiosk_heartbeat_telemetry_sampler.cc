@@ -17,18 +17,27 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "base/json/json_writer.h"
 #include "fydeos/build/config/buildflags.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/account_constants.h"
+#include "base/command_line.h"
 
 namespace reporting {
 
 namespace {
 
-#if BUILDFLAG(USE_FYDEOS_COM)
-constexpr char kFydeosKioskHeartbeatServerURL[] =
-  "https://policy.fydeos.com/report/kioskHeartbeat";
-#else
-constexpr char kFydeosKioskHeartbeatServerURL[] =
-  "https://policy.fydeos.io/report/kioskHeartbeat";
-#endif
+constexpr char kFydeosKioskHeartbeatServerPath[] =
+  "/report/kioskHeartbeat";
+
+std::string heartbeat_server_url() {
+  std::string base_url;
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(fydeos::switches::kFydeOSDeviceManagementUrl)) {
+    base_url = command_line->GetSwitchValueASCII(fydeos::switches::kFydeOSDeviceManagementUrl);
+  } else {
+    base_url = fydeos::constants::kDefaultFydeOSDeviceManagementServerUrl;
+  }
+  return base::StrCat({base_url, kFydeosKioskHeartbeatServerPath});
+}
 
 constexpr char kJsonContentType[] = "application/json";
 constexpr int kHeartBeatRequestTimeoutInSeconds = 30;
@@ -83,7 +92,7 @@ void KioskHeartbeatTelemetrySampler::MaybeSendHeartBeatToFyde() {
   requesting_ = true;
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  resource_request->url = GURL(kFydeosKioskHeartbeatServerURL);
+  resource_request->url = GURL(heartbeat_server_url());
   resource_request->method = "POST";
   simple_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), kTrafficAnnotation);

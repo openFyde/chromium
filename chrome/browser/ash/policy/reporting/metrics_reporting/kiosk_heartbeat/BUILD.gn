@@ -25,6 +25,7 @@ static_library("kiosk_heartbeat") {
     "//services/network/public/cpp:cpp_base",
     "//chrome/browser:browser_process",
     "//services/network/public/mojom:url_loader_base",
+    "//fydeos/switches",
   ]
 }
 
