@@ -230,6 +230,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   private configurationApplied: boolean;
   private isInWelcomeScreen: boolean;
   private startupSoundPlayed: boolean;
+  private autoWelcomeNext: boolean;
 
   constructor() {
     super();
@@ -244,6 +245,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     this.chromeVoxHintGiven = false;
 
     this.configurationApplied = false;
+    this.autoWelcomeNext = false;
 
     this.startupSoundPlayed = false;
   }
@@ -392,6 +394,9 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
    */
   private applyOobeConfiguration(): void {
     if (this.configurationApplied) {
+      if (this.autoWelcomeNext) {
+        this.onWelcomeNextButtonClicked();
+      }
       return;
     }
     const configuration = Oobe.getInstance().getOobeConfiguration();
@@ -414,6 +419,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     }
 
     if (configuration.welcomeNext) {
+      this.autoWelcomeNext = true;
       this.onWelcomeNextButtonClicked();
     }
 

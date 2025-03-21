@@ -536,6 +536,7 @@ void WizardController::Init(OobeScreenId first_screen) {
       !user_manager::UserManager::Get()->GetUsers().empty();
   // Do not show the HID Detection screen if device is owned.
   if (!device_is_owned && HIDDetectionScreen::CanShowScreen() &&
+      !prescribed_enrollment_config_.is_mode_fyde() &&
       first_screen == ash::OOBE_SCREEN_UNKNOWN) {
     // TODO(https://crbug.com/1275960): Move logic into
     // HIDDetectionScreen::MaybeSkip.
