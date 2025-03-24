@@ -2146,7 +2146,7 @@ BASE_FEATURE(kOobeLazyLoading,
 // Enables OOBE perks discovery feature.
 BASE_FEATURE(kOobePerksDiscovery,
              "OobePerksDiscovery",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables OOBE ai intro feature.
 BASE_FEATURE(kFeatureManagementOobeAiIntro,
