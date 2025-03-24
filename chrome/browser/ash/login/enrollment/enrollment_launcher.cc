@@ -365,7 +365,7 @@ EnrollmentLauncherImpl::GetDMAuthForDeviceAttributeUpdate(
   // is performing the attestation-based enrollment.
   if (auth_data_.has_oauth_token()) {
     return auth_data_.Clone();
-  } else if (enrollment_config_.is_mode_initial_attestation_server_forced()) {
+  } else if (enrollment_config_.is_mode_initial_attestation_server_forced() || enrollment_config_.is_mode_fyde()) {
     return policy::DMAuth::FromDMToken(device_cloud_policy_client->dm_token());
   } else {
     return {};
