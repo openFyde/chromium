@@ -114,6 +114,8 @@
 <translation id="3921455734015639682">openFyde 已是最新版本</translation>
 <translation id="4647895343128753926">FydeOS 已是最新版本</translation>
 <translation id="6651661126628304713">目前使用的是在线账号密码。您可以设置一个 <ph name="DEVICE_TYPE" /> 密码，使登录更便捷。</translation>
+<translation id="755005132658805001">在浏览器设置中设置搜索引擎</translation>
+<translation id="5237069277384497771">为浏览器和 <ph name="DEVICE_TYPE" /> 启动器设置默认搜索引擎</translation>
 <!-- settings_strings.override.grdp -->
 <translation id="788994565092063281">打开应用商店</translation>
 <translation id="646286410082977985">版本 <ph name="PRODUCT_VERSION" /> <ph name="PRODUCT_MODIFIER" /> <ph name="PRODUCT_VERSION_BITS" /></translation>

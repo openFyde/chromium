@@ -100,6 +100,13 @@
     Currently using online account password. You can set up a <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> password to make it easier to sign in.
   </message>
 
+  <message name="IDS_OS_SETTINGS_REVAMP_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
+    Set search engine in browser settings
+  </message>
+  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Chrome browser and the ChromeOS app launcher.">
+    Set your default search engine for browser and <ph name="DEVICE_TYPE">$1<ex>FydeOS</ex></ph> Launcher
+  </message>
+
 </if>
 </grit-part>
 

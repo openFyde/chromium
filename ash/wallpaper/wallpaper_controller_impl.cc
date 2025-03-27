@@ -384,6 +384,7 @@ std::string MaybeGetNewWallpaperImagePath(
 std::string GetDefaultDarkLightWallpaperPath(
     const user_manager::UserType user_type,
     const bool customized_default,
+    const bool is_oobe,
     const base::FilePath& path) {
   if (!fydeos::switches::IsDynamicDefaultWallpaperSupported()) {
     return path.value();
@@ -394,7 +395,7 @@ std::string GetDefaultDarkLightWallpaperPath(
       customized_default) {
     return path.value();
   }
-  bool dark = ShouldEnableDarkCheckpoint();
+  bool dark = ShouldEnableDarkCheckpoint() && !is_oobe;
   base::FilePath new_path = path;
   if (dark) {
     if (base::EndsWith(path.value(), ".jpg")) {
@@ -2091,6 +2092,7 @@ void WallpaperControllerImpl::SetDefaultWallpaperImpl(
   base::FilePath file_path = base::FilePath(
     GetDefaultDarkLightWallpaperPath(user_type,
                                      !customized_default_small_path_.empty(),
+                                     IsOobeState(),
                                      GetDefaultWallpaperPath(user_type)));
 
   // We need to decode the image if there's no cache, or if the file path
@@ -2251,6 +2253,7 @@ void WallpaperControllerImpl::ShowOobeWallpaper() {
     file_path = base::FilePath(
         GetDefaultDarkLightWallpaperPath(user_manager::UserType::kRegular,
                                          false,
+                                         IsOobeState(),
                                          GetDefaultWallpaperPath(user_manager::UserType::kRegular)));
   }
 
