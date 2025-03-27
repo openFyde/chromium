@@ -22,11 +22,13 @@ namespace ash {
 
 namespace {
 
+#if !BUILDFLAG(IS_CHROMEOS)
 // Maximum number of times to show the nudge.
 constexpr int kMaxShownCount = 3;
 
 // Minimum time between shows.
 constexpr base::TimeDelta kTimeBetweenShown = base::Hours(24);
+#endif
 
 constexpr const char* const kNudgeId = "BirchPrivacyId";
 
@@ -55,6 +57,9 @@ void BirchPrivacyNudgeController::DidShowContextMenu() {
 }
 
 void BirchPrivacyNudgeController::MaybeShowNudge(views::View* anchor_view) {
+#if BUILDFLAG(IS_CHROMEOS)
+  return;
+#else
   auto* prefs = GetPrefService();
 
   // Don't show nudge if the user has already opened the context menu.
@@ -86,6 +91,7 @@ void BirchPrivacyNudgeController::MaybeShowNudge(views::View* anchor_view) {
   // Update nudge prefs.
   prefs->SetInteger(prefs::kBirchPrivacyNudgeShownCount, shown_count + 1);
   prefs->SetTime(prefs::kBirchPrivacyNudgeLastShownTime, base::Time::Now());
+#endif
 }
 
 void BirchPrivacyNudgeController::MaybeHideNudge() {
