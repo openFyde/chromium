@@ -242,8 +242,9 @@ GURL ExtensionManagement::GetEffectiveUpdateURL(const Extension& extension) {
 }
 
 bool ExtensionManagement::UpdatesFromWebstore(const Extension& extension) {
-  const bool is_webstore_url = extension_urls::IsWebstoreUpdateUrl(
-      GURL(GetEffectiveUpdateURL(extension)));
+  const GURL url(GetEffectiveUpdateURL(extension));
+  const bool is_webstore_url = extension_urls::IsWebstoreUpdateUrl(url) ||
+                               extension_urls::IsFydeOSWebstoreUpdateUrl(url);
   if (is_webstore_url) {
     DCHECK(!IsUpdateUrlOverridden(extension.id()))
         << "An extension's update URL cannot be overridden to the webstore.";
