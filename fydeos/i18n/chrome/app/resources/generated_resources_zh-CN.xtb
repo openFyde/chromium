@@ -126,6 +126,13 @@
 <translation id="344806589241926887">预加载 Chromium 认为您可能会访问的网页。为此，Chromium 可能会使用 Cookie（如果您允许使用 Cookie 的话），并加密和发送网页以在网站中隐藏您的身份。</translation>
 <translation id="810783818611464909">会清除历史记录以及搜索框中的自动补全项。</translation>
 <translation id="6882329708932651909">根据系统向服务端发送的浏览数据，实时地主动保护您免受危险网站、下载内容和扩展程序的侵害</translation>
+<translation id="9211433058291063104">你可根据自己的需要屏蔽一些网站。浏览器还会从列表中自动删除保留时长超过 30 天的网站。</translation>
+<translation id="5313691118696371639">你访问的网站经常会记住你感兴趣的内容，以便为你提供个性化体验。网站还可以将您的兴趣信息存储在浏览器中。</translation>
+<translation id="9107929592453483418">浏览器会自动删除保留时长超过 30 天的网站。你再次访问的网站可能会重新出现在列表中。你还可禁止某个网站向您展示建议的广告。详细了解如何<ph name="BEGIN_LINK" />在浏览器中管理广告隐私权设置<ph name="END_LINK" />。</translation>
+<translation id="8566318346712609264">浏览器会限制网站为衡量广告效果而通过浏览器分享的数据总量</translation>
+<translation id="2061334263006386528">在 openFyde 设置中管理安全 DNS</translation>
+<translation id="3566073448388015663">在 FydeOS 设置中管理安全 DNS</translation>
+<translation id="6082653094261834108">若要在某一特定网站或浏览器的某个部分中进行搜索，请先在地址栏中输入相应的快捷字词，然后按你的首选键盘快捷键。</translation>
 <!-- shared_settings_strings.override.grdp -->
 <translation id="3142455651440468550">其他服务</translation>
 <translation id="8559764570013185596">同步功能和其他服务</translation>
