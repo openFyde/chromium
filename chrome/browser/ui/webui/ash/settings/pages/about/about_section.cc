@@ -438,6 +438,12 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       {"aboutFydeOSLicenseStateEnterpriseExpired",
        IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_EXPIRED},
 #endif
+      {"aboutFydeOSDeviceTitleLegacyIntel",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_LEGACY_INTEL},
+      {"aboutFydeOSDeviceTitleModernIntel",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_MODERN_INTEL},
+      {"aboutFydeOSDeviceTitleAMDGraphics",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_AMD_GRAPHICS},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 

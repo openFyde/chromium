@@ -159,13 +159,16 @@
     平台 <ph name="FYDEOS_PLATFORM_VERSION" />
     <ph name="LINE_BREAK2" />
     Chromium <ph name="PRODUCT_VERSION" /></translation>
-<translation id="8028480877468483924">非商用授权版</translation>
+<translation id="7392552814771602496">非商用授权版</translation>
 <translation id="2896503748067813182">订阅试用</translation>
 <translation id="4362781408813685579">有效订阅</translation>
 <translation id="6478848278025138641">订阅失效</translation>
 <translation id="8466048683756385518">企业授权版（试用）</translation>
 <translation id="2853871047705932424">企业授权版</translation>
 <translation id="5239675900317881945">企业授权版（已失效）</translation>
+<translation id="189101945990408398">经典 Intel</translation>
+<translation id="6816405236809604904">现代 Intel</translation>
+<translation id="6169452478137972655">AMD 显卡</translation>
 <translation id="1079017345574916945">远程桌面</translation>
 <translation id="6898090158927982244">您的 Linux 已是最新版本</translation>
 <translation id="125640132000960723">检测到 Linux 子系统有可用重要更新。强烈建议尽早执行更新，否则 Linux 子系统有可能停止工作。</translation>

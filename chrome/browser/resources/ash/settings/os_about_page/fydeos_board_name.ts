@@ -30,10 +30,21 @@ export const FydeOSBoardNameTitleMap: {[index: string]: string} = {
   'orangepi5-fydeos': 'Orange Pi 5',
   'rock5b-fydeos': 'Rock 5B',
   'fydetab_duo-fydeos': 'Fydetab Duo',
-  'amd64-fydeos': 'hd',
-  'amd64-fydeos_iris': 'iris',
-  'amd64-fydeos_apu': 'apu',
 };
+
+export const FydeOSBoardNameTitleListWithI18n = [{
+  board: 'amd64-fydeos',
+  key: 'aboutFydeOSDeviceTitleLegacyIntel',
+  fallback: 'Legacy Intel',
+}, {
+  board: 'amd64-fydeos_iris',
+  key: 'aboutFydeOSDeviceTitleModernIntel',
+  fallback: 'Modern Intel',
+}, {
+  board: 'amd64-fydeos_apu',
+  key: 'aboutFydeOSDeviceTitleAMDGraphics',
+  fallback: 'AMD Graphics',
+}];
 
 export const FydeOSBoardNameReleaseNameMap: {[index: string]: string} = {
   'amd64-fydeos': 'for PC',

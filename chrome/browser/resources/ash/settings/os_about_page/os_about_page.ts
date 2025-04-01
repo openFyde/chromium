@@ -47,7 +47,7 @@ import {Router, routes} from '../router.js';
 import type {AboutPageBrowserProxy, AboutPageUpdateInfo, BrowserChannel, RegulatoryInfo, TpmFirmwareUpdateStatusChangedEvent, UpdateStatusChangedEvent} from './about_page_browser_proxy.js';
 import {AboutPageBrowserProxyImpl, browserChannelToI18nId, UpdateStatus} from './about_page_browser_proxy.js';
 import {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './popup_license_window.js';
-import {FydeOSBoardNameTitleMap, FydeOSBoardNameReleaseNameMap} from './fydeos_board_name.js';
+import {FydeOSBoardNameTitleMap, FydeOSBoardNameTitleListWithI18n, FydeOSBoardNameReleaseNameMap} from './fydeos_board_name.js';
 
 import {getTemplate} from './os_about_page.html.js';
 
@@ -1123,11 +1123,29 @@ export class OsAboutPageElement extends OsAboutPageBase {
     return boardName;
   }
 
+  getI18nForTitle_(name: string): string {
+    let result = '';
+    if (!name) return '';
+    let obj = FydeOSBoardNameTitleListWithI18n.find(item => item.board === name);
+    if (obj) {
+      try {
+        result = this.i18n(obj.key);
+        return result;
+      } catch (err) {
+        console.log('no i18n for title', name, err);
+        return obj.fallback || '';
+      }
+    } else {
+      // same with previous impl
+      return FydeOSBoardNameTitleMap[name] || '';
+    }
+  }
+
   getTitleForFydeOSDeviceName_() {
     const fydeosBoardName = loadTimeData.getString('aboutFydeOSBoardName') || '';
     let name = this.tryRemoveSuffix_(fydeosBoardName);
     let prefix = FydeOSBoardNameReleaseNameMap[name] || '';
-    let title = FydeOSBoardNameTitleMap[name] || '';
+    let title = this.getI18nForTitle_(name);
     if (!prefix && !title) {
       return name;
     }

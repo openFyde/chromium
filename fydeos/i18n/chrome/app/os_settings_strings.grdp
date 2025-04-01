@@ -221,7 +221,7 @@
      Check your subscription online
    </message>
    <message name="IDS_SETTINGS_ABOUT_PAGE_NEW_FYDEOS_VERSION" desc="The text label describing the version of the browser, with license state info, example: FydeOS for PC (apu), v18.0-SP1, Unlicensed version, Platform 15662.71.18.6">
-     <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="DEVICE_VARIANT">$2<ex> for PC (apu)</ex></ph>, <ph name="FYDEOS_MAJOR_VERSION">$3<ex>v9.0</ex></ph>, <ph name="FYDEOS_LICENSE_STATE_DESC">$4<ex>Unlicensed version</ex></ph>
+     <ph name="DEVICE_OS">$1<ex>FydeOS</ex></ph> <ph name="DEVICE_VARIANT">$2<ex> for PC (apu)</ex></ph>, <ph name="FYDEOS_MAJOR_VERSION">$3<ex>v9.0</ex></ph>, <ph name="FYDEOS_LICENSE_STATE_DESC">$4<ex>Non-commercial Edition</ex></ph>
      <ph name="LINE_BREAK1">&lt;br&gt;</ph>
      Platform <ph name="FYDEOS_PLATFORM_VERSION">$5<ex>12739.22.9.15</ex></ph>
      <ph name="LINE_BREAK2">&lt;br&gt;</ph>
@@ -237,7 +237,7 @@
      Subscription expired
    </message>
    <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_UNLICENSED" desc="The text label describing fydeos license state unlicensed">
-     Unlicensed version
+     Non-commercial Edition
    </message>
    <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_LICENSE_STATE_ENTERPRISE_TRIAL" desc="The text label describing fydeos license state enterprise trial">
      Enterprise licensed version (trial)
@@ -249,6 +249,16 @@
      Enterprise licensed version (expired)
    </message>
   </if>
+
+  <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_LEGACY_INTEL" desc="The text label describing fydeos device for pc(amd)">
+    Legacy Intel
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_MODERN_INTEL" desc="The text label describing fydeos device for pc(iris)">
+    Modern Intel
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_AMD_GRAPHICS" desc="The text label describing fydeos device for pc(apu)">
+    AMD Graphics
+  </message>
 
   <message name="IDS_SETTINGS_CROSTINI_MENU_ITEM_DESCRIPTION" desc="The description of Crostini section. It is meant to be used by software developers.">
     Linux subsystem, Linux apps
