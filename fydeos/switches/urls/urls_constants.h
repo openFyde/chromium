@@ -35,6 +35,8 @@ extern const char kSmbSharesLearnMoreURL[];
 extern const char kCupsPrintLearnMoreURL[];
 extern const char kNaturalScrollHelpURL[];
 extern const char kControlledScrollingHelpURL[];
+extern const char kTimeZoneSettingsLearnMoreURL[];
+
 CHROMEOS_EXPORT extern const char kFydeOSAccountURL[];
 CHROMEOS_EXPORT extern const char kFydeOSAccountChooserURL[];
 CHROMEOS_EXPORT extern const char kFydeOSPasswordManagerURL[];
