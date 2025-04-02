@@ -1766,12 +1766,10 @@ void DeviceSection::AddDevicePointersStrings(
   html_source->AddLocalizedStrings(kPointersStrings);
 
   html_source->AddString("naturalScrollLearnMoreLink",
-                         IsFydeProfile() ?
-                         base::ASCIIToUTF16(fydeos::constants::kNaturalScrollHelpURL) :
-                         GetHelpUrlWithBoard(chrome::kNaturalScrollHelpURL));
+                         base::ASCIIToUTF16(fydeos::constants::kNaturalScrollHelpURL));
   html_source->AddString(
       "controlledScrollingLearnMoreLink",
-      GetHelpUrlWithBoard(chrome::kControlledScrollingHelpURL));
+      base::ASCIIToUTF16(fydeos::constants::kNaturalScrollHelpURL));
   html_source->AddString("hapticFeedbackLearnMoreLink",
                          GetHelpUrlWithBoard(chrome::kHapticFeedbackHelpURL));
 
