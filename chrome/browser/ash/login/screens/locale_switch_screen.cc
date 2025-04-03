@@ -202,7 +202,7 @@ bool LocaleSwitchScreen::MaybeSkip(WizardContext& wizard_context) {
   }
 
   user_manager::User* user = user_manager::UserManager::Get()->GetActiveUser();
-  if (user->HasGaiaAccount() && !user->IsFydeAccountUser()) {
+  if (user->HasGaiaAccount()) {
     return false;
   }
 
