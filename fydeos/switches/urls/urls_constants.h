@@ -36,6 +36,7 @@ extern const char kCupsPrintLearnMoreURL[];
 extern const char kNaturalScrollHelpURL[];
 extern const char kControlledScrollingHelpURL[];
 extern const char kTimeZoneSettingsLearnMoreURL[];
+extern const char kResetProfileSettingsLearnMoreURL[];
 
 CHROMEOS_EXPORT extern const char kFydeOSAccountURL[];
 CHROMEOS_EXPORT extern const char kFydeOSAccountChooserURL[];

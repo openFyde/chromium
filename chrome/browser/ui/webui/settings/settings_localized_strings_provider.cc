@@ -792,7 +792,7 @@ void AddResetStrings(content::WebUIDataSource* html_source, Profile* profile) {
                           is_reset_shortcuts_feature_enabled);
 
   html_source->AddString("resetPageLearnMoreUrl",
-                         chrome::kResetProfileSettingsLearnMoreURL);
+                         fydeos::constants::kResetProfileSettingsLearnMoreURL);
   html_source->AddString("resetProfileBannerLearnMoreUrl",
                          chrome::kAutomaticSettingsResetLearnMoreURL);
 }
