@@ -116,6 +116,7 @@
 <translation id="6651661126628304713">目前使用的是在线账号密码。您可以设置一个 <ph name="DEVICE_TYPE" /> 密码，使登录更便捷。</translation>
 <translation id="755005132658805001">在浏览器设置中设置搜索引擎</translation>
 <translation id="5237069277384497771">为浏览器和 <ph name="DEVICE_TYPE" /> 启动器设置默认搜索引擎</translation>
+<translation id="6241348249981760096">通过降低亮度、限制后台活动和视觉效果、延迟通知和开启节能模式来延长电池续航时间。</translation>
 <!-- settings_strings.override.grdp -->
 <translation id="788994565092063281">打开应用商店</translation>
 <translation id="646286410082977985">版本 <ph name="PRODUCT_VERSION" /> <ph name="PRODUCT_MODIFIER" /> <ph name="PRODUCT_VERSION_BITS" /></translation>
@@ -130,9 +131,9 @@
 <translation id="5313691118696371639">你访问的网站经常会记住你感兴趣的内容，以便为你提供个性化体验。网站还可以将您的兴趣信息存储在浏览器中。</translation>
 <translation id="9107929592453483418">浏览器会自动删除保留时长超过 30 天的网站。你再次访问的网站可能会重新出现在列表中。你还可禁止某个网站向您展示建议的广告。详细了解如何<ph name="BEGIN_LINK" />在浏览器中管理广告隐私权设置<ph name="END_LINK" />。</translation>
 <translation id="8566318346712609264">浏览器会限制网站为衡量广告效果而通过浏览器分享的数据总量</translation>
+<translation id="6082653094261834108">若要在某一特定网站或浏览器的某个部分中进行搜索，请先在地址栏中输入相应的快捷字词，然后按你的首选键盘快捷键。</translation>
 <translation id="2061334263006386528">在 openFyde 设置中管理安全 DNS</translation>
 <translation id="3566073448388015663">在 FydeOS 设置中管理安全 DNS</translation>
-<translation id="6082653094261834108">若要在某一特定网站或浏览器的某个部分中进行搜索，请先在地址栏中输入相应的快捷字词，然后按你的首选键盘快捷键。</translation>
 <!-- shared_settings_strings.override.grdp -->
 <translation id="3142455651440468550">其他服务</translation>
 <translation id="8559764570013185596">同步功能和其他服务</translation>

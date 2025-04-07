@@ -107,6 +107,10 @@
     Set your default search engine for browser and <ph name="DEVICE_TYPE">$1<ex>FydeOS</ex></ph> Launcher
   </message>
 
+  <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_SUBTEXT" desc="In Device Settings > Power, description of the behavior of battery saver mode">
+    Extends battery life by reducing brightness, limiting background activity and visual effects, delaying notifications, and turning on Energy Saver.
+  </message>
+
 </if>
 </grit-part>
 

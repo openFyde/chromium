@@ -15,6 +15,9 @@
 <translation id="5521171551853454842">使用 FydeOS 账号登录系统并使用由 FydeOS 在线账号所提供的附属云服务。</translation>
 <translation id="153879296658682960">Google 账号</translation>
 <translation id="9095510991952324841">使用 Google 账号登录系统并使用由 Google 提供的附属云服务。</translation>
+<translation id="6612493011368822295">浏览器会释放闲置标签页占用的内存。这可让使用中的标签页和其他应用获得更多计算机资源，并让浏览器保持快速运行。当您返回到闲置标签页时，它们会自动重新变为活跃状态。</translation>
+<translation id="3881521827899273698">浏览器会通过限制后台活动和视觉效果（例如流畅滚动和视频帧速率）来节省电池电量。</translation>
+<translation id="855000782089941672">浏览器会预加载网页，以便您更快速地浏览和搜索。</translation>
 <!-- chromium_strings.override.grdp -->
 <translation id="1593197356125639191">将崩溃报告和<ph name="UMA_LINK" />发送给燧炻创新，帮助我们完善 Chromium。</translation>
 <translation id="2048909425194476151">燧炻科技创新（北京）有限责任公司，The Chromium Authors</translation>

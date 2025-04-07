@@ -53,6 +53,9 @@
   <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_2" desc="2 of 3 bullets in the 'Things to consider' section that describes the Ad measurement setting.">
     The browser limits the total amount of data that sites can share through the browser to measure ad performance
   </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION" desc="Explanation for 'Site Search' section. Used interchangeably with IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK">
+    To search a specific site or part of the browser, type its shortcut in the address bar, followed by your preferred keyboard shortcut.
+  </message>
   <if expr="openfyde">
     <message name="IDS_SETTINGS_SECURE_DNS_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open Secure DNS settings in ChromeOS.">
       Manage secure DNS in openFyde settings
@@ -63,8 +66,5 @@
       Manage secure DNS in FydeOS settings
     </message>
   </if>
-  <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION" desc="Explanation for 'Site Search' section. Used interchangeably with IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK">
-    To search a specific site or part of the browser, type its shortcut in the address bar, followed by your preferred keyboard shortcut.
-  </message>
 
 </grit-part>
