@@ -3596,7 +3596,7 @@
 <translation id="3518866566087677312">为您暂不需要的内容添加书签以备后用</translation>
 <translation id="3519564332031442870">打印后端服务</translation>
 <translation id="3519938335881974273">将页面另存为…</translation>
-<translation id="3520824492621090923">确认进行自助服务终端和数字标牌设备注册？</translation>
+<!-- <translation id="3520824492621090923">确认进行自助服务终端和数字标牌设备注册？</translation> -->
 <translation id="3521388823983121502">无法使用 <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE" /> 继续操作</translation>
 <translation id="3521405806571557477">删除 <ph name="SITE_NAME" /> 的已存数据</translation>
 <translation id="3521606918211282604">更改磁盘大小</translation>

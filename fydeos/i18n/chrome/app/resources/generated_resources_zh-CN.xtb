@@ -348,6 +348,9 @@
 <translation id="8808631745882917854">若要完成 Linux 安装，请更新 FydeOS 并重试。</translation>
 <translation id="799069234167243501">请确保您的蓝牙设备处于配对模式且就在附近。应仅与您信任的设备配对。此 <ph name="DEVICE_TYPE" /> 上的所有账号都可以看到已配对的设备。</translation>
 <translation id="4329124023116919625">请确保您的蓝牙设备处于配对模式且就在附近。应仅与您信任的设备配对。此 <ph name="DEVICE_TYPE" /> 上的所有账号都可以看到已配对的设备。<ph name="BEGIN_LINK_LEARN_MORE" />了解详情<ph name="END_LINK_LEARN_MORE" /></translation>
+<translation id="7810198884977336267">您将使用自助终端或数字标牌的授权许可，此模式仅允许设备运行自助终端或数字标牌模式。如果您希望用户能够登录设备，请返回并使用高级版进行注册。</translation>
+<translation id="3520824492621090923">确认把设备注册为自助终端或数字标牌？</translation>
+<translation id="5658446439144437349">您没有足够的授权许可来注册此设备。请联系销售部门购买更多升级。如果您认为此消息有误，请联系支持部门。</translation>
 <translation id="5581961046476999259">使用 FydeOS 账号密码</translation>
 <translation id="8088575026375015397">您可以为此设备创建 <ph name="DEVICE_TYPE" /> 密码，而无需输入您的 FydeOS 账号密码来登录</translation>
 <!-- generated_resources.override.grdp -->
