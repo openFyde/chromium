@@ -18,6 +18,7 @@ const char kFydeOSAccountBaseUrl[] = "https://account.fydeos.com";
 
 const char kFydeOSForumURL[] = "https://community.fydeos.com/";
 const char kFydeOSRemoteDesktopURL[] = "https://rdp.fydeos.com/";
+const char kFydeOSNotesAppURL[] = "https://notes.fydeos.com";
 const char kFydeOSHelpURL[] = "https://fydeos.com/help/";
 const char kFydeOSReleaseNotesURL[] = "https://fydeos.com/release";
 const char kFydeOSNewsURL[] = "https://fydeos.com/blog";
@@ -81,6 +82,7 @@ const char kFydeOSAccountBaseUrl[] = "https://account.fydeos.io";
 
 const char kFydeOSForumURL[] = "https://community.fydeos.io/";
 const char kFydeOSRemoteDesktopURL[] = "https://rdp.fydeos.io/";
+const char kFydeOSNotesAppURL[] = "https://notes.fydeos.io";
 const char kFydeOSHelpURL[] = "https://fydeos.io/help/";
 const char kFydeOSReleaseNotesURL[] = "https://fydeos.io/release";
 const char kFydeOSNewsURL[] = "https://fydeos.io/blog";

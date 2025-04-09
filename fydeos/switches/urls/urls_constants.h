@@ -20,6 +20,7 @@ CHROMEOS_EXPORT extern const char kFydeOSAccountBaseUrl[];
 
 extern const char kFydeOSForumURL[];
 extern const char kFydeOSRemoteDesktopURL[];
+extern const char kFydeOSNotesAppURL[];
 extern const char kFydeOSHelpURL[];
 extern const char kFydeOSReleaseNotesURL[];
 extern const char kFydeOSNewsURL[];

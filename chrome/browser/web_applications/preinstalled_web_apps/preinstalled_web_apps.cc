@@ -46,6 +46,7 @@
 
 #include "fydeos/chrome/browser/web_applications/preinstalled_web_apps/community.h"
 #include "fydeos/chrome/browser/web_applications/preinstalled_web_apps/remote_desktop.h"
+#include "fydeos/chrome/browser/web_applications/preinstalled_web_apps/notes.h"
 
 namespace web_app {
 namespace {
@@ -164,6 +165,7 @@ std::vector<ExternalInstallOptions> GetPreinstalledWebApps(
   return {
     GetConfigForFydeCommunity(),
     GetConfigForFydeRemoteDesktop(),
+    GetConfigForFydeNotes(),
   };
 #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 }
