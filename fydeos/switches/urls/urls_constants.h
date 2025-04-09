@@ -22,6 +22,7 @@ extern const char kFydeOSForumURL[];
 extern const char kFydeOSRemoteDesktopURL[];
 extern const char kFydeOSHelpURL[];
 extern const char kFydeOSReleaseNotesURL[];
+extern const char kFydeOSNewsURL[];
 extern const char kMultiDeviceLearnMoreURL[];
 extern const char kLanguageSettingsLearnMoreUrl[];
 extern const char kLinuxAppsLearnMoreURL[];

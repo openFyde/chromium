@@ -11,6 +11,7 @@
 namespace fydeos::misc {
 
 namespace {
+/*
 const std::string trim_suffix(const std::string& str) {
   if (str.size() < 4) {
     return str;
@@ -23,9 +24,8 @@ const std::string trim_suffix(const std::string& str) {
   }
   return str;
 }
-}  // namespace
 
-const std::string BuildFydeReleaseNoteUrlWithPath(bool staging) {
+const std::string ReleaseNoteUrlWithVersionAndBoard() {
   const std::string version = base::SysInfo::GetLsbFydeReleaseVersion();
   const std::string board_name = base::SysInfo::GetLsbReleaseBoard();
   const std::string language = g_browser_process->GetApplicationLocale();
@@ -33,6 +33,17 @@ const std::string BuildFydeReleaseNoteUrlWithPath(bool staging) {
       {fydeos::constants::kFydeOSReleaseNotesURL,
       "/", version, "/", trim_suffix(board_name)});
   return url;
+}
+*/
+
+const std::string FydeOSNewsURL() {
+  return fydeos::constants::kFydeOSNewsURL;
+}
+
+}  // namespace
+
+const std::string BuildFydeReleaseNoteUrlWithPath(bool staging) {
+  return FydeOSNewsURL();
 }
 
 }  // namespace fydeos::misc
