@@ -597,7 +597,7 @@ void Preferences::RegisterProfilePrefs(
                                 true);
 
   registry->RegisterBooleanPref(
-      prefs::kSuggestedContentEnabled, true,
+      prefs::kSuggestedContentEnabled, false,
       user_prefs::PrefRegistrySyncable::SYNCABLE_OS_PREF);
 
   registry->RegisterBooleanPref(prefs::kMagicBoostEnabled, true);

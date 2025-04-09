@@ -46,6 +46,7 @@
   </template>
   <template is="dom-if" if="[[isRevampWayfindingEnabled_]]">
     <settings-toggle-button id="contentRecommendationsToggle"
+        hidden
         class="hr"
         icon="[[rowIcons_.contentRecommendations]]"
         pref="{{prefs.settings.suggested_content_enabled}}"
