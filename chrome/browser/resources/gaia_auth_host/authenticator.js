@@ -320,6 +320,10 @@ const messageHandlers = {
       this.maybeCompleteAuth_();
     }
   },
+  'setLicenseType'(msg) {
+    this.dispatchEvent(
+        new CustomEvent('setLicenseType', {detail: msg.type}));
+  },
   'showIncognito'(msg) {
     this.dispatchEvent(new Event('showIncognito'));
   },

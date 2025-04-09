@@ -340,6 +340,11 @@ export class GaiaDialog extends GaiaDialogBase {
             [CHROMEOS_GAIA_PASSWORD_METRIC, false]);
         chrome.send('passwordEntered');
       },
+      'setLicenseType': (e: CustomEvent) => {
+        const type = e.detail;
+        console.log('setLicenseType', type);
+        this.setLicenseType(type === 'kiosk' ? OobeTypes.LicenseType.KIOSK : OobeTypes.LicenseType.ENTERPRISE);
+      },
       'authCompleted': (e: CustomEvent) => {
         // Only record the metric for Gaia flow without 3rd-party SAML IdP.
         if (this.authFlow === AuthFlow.DEFAULT) {
