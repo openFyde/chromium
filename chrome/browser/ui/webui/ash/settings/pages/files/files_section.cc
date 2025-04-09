@@ -262,11 +262,7 @@ void FilesSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   smb_dialog::AddLocalizedStrings(html_source);
 
   html_source->AddString("smbSharesLearnMoreURL",
-                         // ---***FYDEOS BEGIN***---
-                         IsFydeProfile() ?
-                         base::ASCIIToUTF16(fydeos::constants::kSmbSharesLearnMoreURL) :
-                         // ---***FYDEOS END***---
-                         GetHelpUrlWithBoard(chrome::kSmbSharesLearnMoreURL));
+                         base::ASCIIToUTF16(fydeos::constants::kSmbSharesLearnMoreURL));
 
   html_source->AddString(
       "googleDriveCleanUpStorageLearnMoreLink",
