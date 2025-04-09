@@ -2,6 +2,8 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
 <!-- settings_chromium_strings.override.grdp -->
+<translation id="8551772682046551906">关于浏览器</translation>
+<translation id="8490972672529577501">获取有关 Chromium 浏览器的帮助</translation>
 <translation id="5142122574074815690">关于 openFyde</translation>
 <translation id="6192687727981687833">关于 FydeOS</translation>
 <translation id="3844063200869349024">openFyde 版本</translation>
@@ -19,6 +21,7 @@
 <translation id="3881521827899273698">浏览器会通过限制后台活动和视觉效果（例如流畅滚动和视频帧速率）来节省电池电量。</translation>
 <translation id="855000782089941672">浏览器会预加载网页，以便您更快速地浏览和搜索。</translation>
 <!-- chromium_strings.override.grdp -->
+<translation id="6165720105278553476">关于浏览器</translation>
 <translation id="1593197356125639191">将崩溃报告和<ph name="UMA_LINK" />发送给燧炻创新，帮助我们完善 Chromium。</translation>
 <translation id="2048909425194476151">燧炻科技创新（北京）有限责任公司，The Chromium Authors</translation>
 <translation id="5271316801269855654">版权所有<ph name="YEAR" /> 燧炻科技创新（北京）有限责任公司，The Chromium Authors。保留所有权利。</translation>

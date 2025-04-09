@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- override chrome/app/settings_chromium_strings.grdp, included from chromium_strings.grd -->
 <grit-part>
+  <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Chromium page.">
+    About Browser
+  </message>
+  <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Chrome help page.">
+    Get help with Chromium browser
+  </message>
   <if expr="chromeos_ash">
     <if expr="openfyde">
       <message name="IDS_SETTINGS_ABOUT_OS" desc="Menu title for the About Chromium OS page.">

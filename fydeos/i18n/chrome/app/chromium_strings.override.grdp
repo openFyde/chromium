@@ -31,6 +31,9 @@
   <message name="IDS_SHORT_PRODUCT_NAME" desc="The Chrome application short name." translateable="false">
     Browser
   </message>
+  <message name="IDS_ABOUT" desc="The text label of the About Chrome menu item">
+    About &amp;Browser
+  </message>
   <message name="IDS_SESSION_CRASHED_VIEW_UMA_OPTIN" desc="Text besides the checkbox to let users optin to UMA in the restore from previous crash bubble.">
     Help make Chromium better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Fyde Innovations
   </message>
