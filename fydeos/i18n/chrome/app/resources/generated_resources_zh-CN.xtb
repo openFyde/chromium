@@ -351,6 +351,9 @@
 <translation id="7810198884977336267">您将使用自助终端或数字标牌的授权许可，此模式仅允许设备运行自助终端或数字标牌模式。如果您希望用户能够登录设备，请返回并使用高级版进行注册。</translation>
 <translation id="3520824492621090923">确认把设备注册为自助终端或数字标牌？</translation>
 <translation id="5658446439144437349">您没有足够的授权许可来注册此设备。请联系销售部门购买更多升级。如果您认为此消息有误，请联系支持部门。</translation>
+<translation id="3476266622859415268">欢迎使用 FydeOS AI，你的系统级 AI 助手</translation>
+<translation id="8947422922793200440"><ph name="BEGIN_PARAGRAPH1" />开始在 FydeOS AI 中随便聊聊，通过创建各种 AI 助手开始写作、计划、学习等。按下 Ctrl + C + C 快捷键组合可以在任何地方随时唤醒 FydeOS AI 以进行可定制的快捷操作。<ph name="END_PARAGRAPH1" />
+    <ph name="BEGIN_PARAGRAPH2" />要使用 FydeOS AI，你需要使用 FydeOS 账号登录。如果你还没有 FydeOS 账号，可以免费注册一个。<ph name="END_PARAGRAPH2" /></translation>
 <translation id="5581961046476999259">使用 FydeOS 账号密码</translation>
 <translation id="8088575026375015397">您可以为此设备创建 <ph name="DEVICE_TYPE" /> 密码，而无需输入您的 FydeOS 账号密码来登录</translation>
 <!-- generated_resources.override.grdp -->

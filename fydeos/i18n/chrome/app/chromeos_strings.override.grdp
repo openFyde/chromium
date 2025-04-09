@@ -303,4 +303,12 @@
   <message name="IDS_ENTERPRISE_ENROLLMENT_MISSING_LICENSES_ERROR" desc="Error message to show when the domain the device is trying to enroll into has expired or exhausted licenses.">
     You do not have enough license to enroll this device. Please contact sales to purchase more. If you believe you're seeing this message in error, please contact support.
   </message>
+
+  <message name="IDS_GEMINI_INTRO_TITLE" desc="The title of the gemini intro dialog">
+    Introducing FydeOS AI, your OS level AI assistant
+  </message>
+  <message name="IDS_GEMINI_INTRO_SUBTITLE" desc="The subtitle of the gemini intro dialog">
+    <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>Start a quick chat in FydeOS AI to begin writing, planning, learning, and more by creating various AI assistants. FydeOS AI is also accessible by pressing Ctrl + C + C anywhere for customisable quick actions.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
+    <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>To use FydeOS AI, you'll need to sign in with a FydeOS account. If you don’t have one yet, you can sign up for free.<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
+  </message>
 </grit-part>
