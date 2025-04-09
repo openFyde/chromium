@@ -111,6 +111,10 @@
     Extends battery life by reducing brightness, limiting background activity and visual effects, delaying notifications, and turning on Energy Saver.
   </message>
 
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_ASSISTANT" desc="In keyboard remap keys subpage, the label and dropdown list item for the Assistant key.">
+    FydeOS AI
+  </message>
+
 </if>
 </grit-part>
 
