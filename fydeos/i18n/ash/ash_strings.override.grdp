@@ -44,6 +44,13 @@
     <message name="IDS_ASH_IN_SESSION_AUTH_SETTINGS_PROMPT" desc="Text shown in the settings auth dialog.">
       openFyde Settings would like to confirm it's you
     </message>
+
+    <message name="IDS_ASH_INFORMED_RESTORE_DIALOG_CRASH_DESCRIPTION" desc="Label of the description for the informed restore dialog, if the previous session ended with a crash. Gives a little more information than the title.">
+      Your openFyde restarted unexpectedly. Open your previous windows and apps.
+    </message>
+    <message name="IDS_ASH_INFORMED_RESTORE_DIALOG_UPDATE_DESCRIPTION" desc="Label of the description for the informed restore dialog, if the previous session was on a earlier version.">
+      Your openFyde has been updated. Open your previous windows and apps.
+    </message>
   </if>
   <if expr="not openfyde">
     <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_TITLE" desc="The main label for the system tray Cast view when no Chromecast devices are available.">
@@ -60,6 +67,13 @@
     </message>
     <message name="IDS_ASH_IN_SESSION_AUTH_SETTINGS_PROMPT" desc="Text shown in the settings auth dialog.">
       FydeOS Settings would like to confirm it's you
+    </message>
+
+    <message name="IDS_ASH_INFORMED_RESTORE_DIALOG_CRASH_DESCRIPTION" desc="Label of the description for the informed restore dialog, if the previous session ended with a crash. Gives a little more information than the title.">
+      Your FydeOS restarted unexpectedly. Open your previous windows and apps.
+    </message>
+    <message name="IDS_ASH_INFORMED_RESTORE_DIALOG_UPDATE_DESCRIPTION" desc="Label of the description for the informed restore dialog, if the previous session was on a earlier version.">
+      Your FydeOS has been updated. Open your previous windows and apps.
     </message>
   </if>
 
