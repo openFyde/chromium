@@ -149,7 +149,7 @@ PickerFeatureTour::~PickerFeatureTour() {
 }
 
 void PickerFeatureTour::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kFeatureTourCompletedPref, false);
+  registry->RegisterBooleanPref(kFeatureTourCompletedPref, true);
 }
 
 bool PickerFeatureTour::MaybeShowForFirstUse(
