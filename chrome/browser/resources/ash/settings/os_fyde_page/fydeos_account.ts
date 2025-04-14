@@ -15,12 +15,15 @@ import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 import {ProfileInfo, ProfileInfoBrowserProxyImpl} from '/shared/settings/people_page/profile_info_browser_proxy.js';
 import {SignedInState, SyncBrowserProxy, SyncBrowserProxyImpl, SyncStatus} from '/shared/settings/people_page/sync_browser_proxy.js';
 import {AccountManagerBrowserProxyImpl} from '../os_people_page/account_manager_browser_proxy.js';
+import {RouteObserverMixin} from '../common/route_observer_mixin.js';
+import type {Route} from '../router.js';
+import {routes} from '../router.js';
 import '../settings_shared.css.js';
 import '../common/password_prompt_dialog/password_prompt_dialog.js';
 import {getTemplate} from './fydeos_account.html.js';
 
 const FydeSettingsAccountPageElementBase =
-    WebUiListenerMixin(I18nMixin(PolymerElement));
+    WebUiListenerMixin(RouteObserverMixin(I18nMixin(PolymerElement)));
 
 /** @polymer */
 class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase {
@@ -118,6 +121,14 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
     if (!loadTimeData.getBoolean('isGuest')) {
       this.addWebUiListener('offline-auto-signin-system-salt-obtained',
           this.onOfflineAutoSigninSystemSaltObtained_.bind(this));
+    }
+    // this.getIsOfflineAutoSigninEnabled_();
+    // move this.getIsOfflineAutoSigninEnabled_ to routeChange observer
+  }
+
+  override async currentRouteChanged(route: Route): Promise<void> {
+    // move getIsOfflineAutoSigninEnabled_ here
+    if (route === routes.FYDEOS) {
       this.getIsOfflineAutoSigninEnabled_();
     }
   }

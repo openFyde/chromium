@@ -707,6 +707,7 @@ void FydeOsHandler::HandleSetDevMode(const base::Value::List& args) {
 }
 
 void FydeOsHandler::HandleGetDevModeSwitchSupported(const base::Value::List& args) {
+  AllowJavascript();
   CHECK_EQ(1u, args.size());
   const std::string& callback_id = args[0].GetString();
   base::ThreadPool::PostTaskAndReplyWithResult(
