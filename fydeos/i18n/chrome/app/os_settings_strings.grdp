@@ -137,6 +137,9 @@
   <message name="IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_NON_LOCAL_ACCOUNT" desc="message of unable to turn on auto signin for non-local account">
     Unable to activate for this account; auto sign-in option is only available for "Local account" type.
   </message>
+  <message name="IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_WITHOUT_PASSWORD_AUTH_FACTOR" desc="message of unable to turn on auto signin without password auth factor">
+    Please add a login password in the <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>Privacy and security<ph name="END_LINK">&lt;/a&gt;</ph> settings before enabling automatic sign-in.
+  </message>
   <message name="IDS_OS_SETTINGS_FYDEOS_OTA_DISALLOWED_BY_LICENSE_VALIDATION" desc="message of ota disallowed by license validation">
     A newer version of FydeOS is available to update now. However, your FydeOS for You subscription has expired, you need an active subscription to update your FydeOS.
   </message>

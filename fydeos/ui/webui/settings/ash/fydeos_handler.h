@@ -7,10 +7,13 @@
 
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include "components/account_id/account_id.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "ash/public/cpp/tablet_mode_observer.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "fydeos/ui/webui/settings/ash/fydeos_handler_backup_task_manager.h"
+#include "chromeos/ash/components/dbus/cryptohome/UserDataAuth.pb.h"
+#include "chromeos/ash/components/dbus/userdataauth/userdataauth_client.h"
 
 class PrefService;
 class Profile;
@@ -104,7 +107,11 @@ class FydeOsHandler :
   void HandleGetDevModeSwitchSupported(const base::Value::List& args);
   void OnDevModeSwitchSupportedChecked(const std::string& callback_id, bool result);
 
+  void ListAuthFactors(const AccountId& account_id, const std::string& callback_id);
+  void OnListAuthFactors(const std::string& callback_id, std::optional<user_data_auth::ListAuthFactorsReply> reply);
+
   std::string system_salt_;
+  bool auth_factor_has_password_ = false;
   Profile* profile_;
   PrefService* const prefs_;
 

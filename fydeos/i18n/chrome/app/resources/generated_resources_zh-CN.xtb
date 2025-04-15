@@ -204,6 +204,7 @@
 <translation id="2988226676715633921">检测到该设备上已有其它账户设置了自动登录，如需为目前账户设置自动登录，需要将目前设置的自动登录设置关闭</translation>
 <translation id="1674714510072289091">该账户文件系统初始化出现未知错误，暂时无法开启；请尝试重启或重新创建账户</translation>
 <translation id="8180845003886240840">自动登录选项仅限于「本地账户」类型，目前账户类型无法开启</translation>
+<translation id="157949693054552220">请在<ph name="BEGIN_LINK" />隐私与安全<ph name="END_LINK" />设置中添加登录密码，然后再启用自动登录</translation>
 <translation id="595136526907376719">FydeOS 大版本更新已上线。如需进行 FydeOS 的大版本升级，请支付一次性更新费用后，再次检查更新。</translation>
 <translation id="376676483415835736">有新版本的 FydeOS 可供升级，但你的 FydeOS for You 订阅已过期。如需升级 FydeOS，请考虑续费。</translation>
 <translation id="9125114578624380848">Linux 子系统、Linux 应用程序</translation>

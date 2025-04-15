@@ -17,7 +17,7 @@ import {SignedInState, SyncBrowserProxy, SyncBrowserProxyImpl, SyncStatus} from 
 import {AccountManagerBrowserProxyImpl} from '../os_people_page/account_manager_browser_proxy.js';
 import {RouteObserverMixin} from '../common/route_observer_mixin.js';
 import type {Route} from '../router.js';
-import {routes} from '../router.js';
+import {Router, routes} from '../router.js';
 import '../settings_shared.css.js';
 import '../common/password_prompt_dialog/password_prompt_dialog.js';
 import {getTemplate} from './fydeos_account.html.js';
@@ -73,6 +73,11 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
         value: false,
       },
 
+      authFactorHasPassword_: {
+        type: Boolean,
+        value: false,
+      },
+
       showPasswordPromptDialog_: {
         type: Boolean,
         value: false,
@@ -91,6 +96,7 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
   private systemSaltObtained_: boolean;
   private isOfflineAutoSigninEnabled_: boolean;
   private isOfflineAutoSigninEnabledForCurrentUser_: boolean;
+  private authFactorHasPassword_: boolean;
   private showPasswordPromptDialog_: boolean;
   private profileIconUrl_: string;
   private profileName_: string;
@@ -136,10 +142,11 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
   getIsOfflineAutoSigninEnabled_() {
     sendWithPromise('getIsOfflineAutoSigninEnabled').then((result) => {
       console.log('getIsOfflineAutoSigninEnabled_', result);
-      const { is_current_user, enabled, system_salt_obtained } = result;
+      const { is_current_user, enabled, system_salt_obtained, auth_factor_has_password } = result;
       this.isOfflineAutoSigninEnabled_ = enabled;
       this.isOfflineAutoSigninEnabledForCurrentUser_ = is_current_user;
       this.systemSaltObtained_ = system_salt_obtained;
+      this.authFactorHasPassword_ = auth_factor_has_password;
     }).finally(() => {
       const ele = this.shadowRoot!.querySelector('#toggleOfflineAutoSignin') as CrToggleElement;
       ele.checked = this.getOfflineAutoSigninCheckedState_();
@@ -221,6 +228,9 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
     if (!this.isFydeLocalAccount_) {
       return this.i18n('unableToSetAutoSigninForFydeNonLocalAccount');
     }
+    // if (!this.authFactorHasPassword_) {
+    //   return this.i18n('unableToSetAutoSigninWithoutPasswordAuthFactor');
+    // }
     if (this.isOfflineAutoSigninEnabled_) {
       if (this.isOfflineAutoSigninEnabledForCurrentUser_) {
         return defaultMessage;
@@ -229,7 +239,7 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
         return this.i18n('autoSigninForFydeLocalAccountOtherUserAlreadyEnabled');
       }
     } else {
-      if (this.systemSaltObtained_) {
+      if (this.systemSaltObtained_ && this.authFactorHasPassword_) {
         return defaultMessage;
       } else {
         return this.i18n('unableToSetAutoSigninForFydeLocalAccount');
@@ -237,8 +247,20 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
     }
   }
 
+  openLocalAccountChangePasswordSystemSettings_(event: CustomEvent<{event: Event}>): void {
+    event.detail.event.preventDefault();
+    Router.getInstance().navigateTo(routes.LOCK_SCREEN);
+  }
+
+  shouldShowSetPasswordLink_() {
+    return this.isFydeLocalAccount_ && !this.authFactorHasPassword_;
+  }
+
   getCanToggleAutoSignin_() {
     if (!this.isFydeLocalAccount_) {
+      return false;
+    }
+    if (!this.authFactorHasPassword_) {
       return false;
     }
     if (this.isOfflineAutoSigninEnabled_) {

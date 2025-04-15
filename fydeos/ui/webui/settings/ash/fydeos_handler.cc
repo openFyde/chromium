@@ -12,6 +12,8 @@
 #include "ash/shell.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chromeos/ash/components/cryptohome/error_util.h"
+#include "chromeos/ash/components/cryptohome/userdataauth_util.h"
 #include "components/prefs/pref_service.h"
 #include "chrome/browser/browser_process.h"
 #include "components/user_manager/user_manager.h"
@@ -31,6 +33,8 @@
 #include "chrome/browser/ash/file_manager/volume_manager.h"
 #include "fydeos/switches/misc/misc_constants.h"
 #include "fydeos/misc/fydeos_dev_mode.h"
+#include "chromeos/ash/components/login/auth/auth_factor_editor.h"
+#include "chromeos/ash/components/cryptohome/auth_factor_conversions.h"
 
 namespace ash::settings {
 
@@ -226,11 +230,35 @@ void FydeOsHandler::OnSystemSaltObtained(const std::string& system_salt) {
   }
 }
 
-void FydeOsHandler::HandleGetIsOfflineAutoSigninEnabled(
-    const base::Value::List& args) {
-  AllowJavascript();
-  CHECK(args.size());
-  const base::Value& callback_id = args[0];
+void FydeOsHandler::ListAuthFactors(const AccountId& account_id, const std::string& callback_id) {
+  auto client = UserDataAuthClient::Get();
+  user_data_auth::ListAuthFactorsRequest request;
+  *request.mutable_account_id() =
+      cryptohome::CreateAccountIdentifierFromAccountId(account_id);
+  client->ListAuthFactors(
+      request, base::BindOnce(&FydeOsHandler::OnListAuthFactors,
+                              weak_ptr_factory_.GetWeakPtr(),
+                              callback_id));
+}
+
+void FydeOsHandler::OnListAuthFactors(const std::string& callback_id, std::optional<user_data_auth::ListAuthFactorsReply> reply) {
+  auto error = user_data_auth::ReplyToCryptohomeError(reply);
+  if (cryptohome::HasError(error)) {
+    LOG(ERROR) << "Could not list auth factors " << error;
+    return;
+  }
+  CHECK(reply.has_value());
+  auth_factor_has_password_ = false;
+  for (const auto& factor_with_status_proto :
+       reply->configured_auth_factors_with_status()) {
+    if (factor_with_status_proto.auth_factor().type() == user_data_auth::AUTH_FACTOR_TYPE_PASSWORD) {
+      auth_factor_has_password_ = true;
+      break;
+    }
+  }
+
+  const user_manager::User* user =
+      ProfileHelper::Get()->GetUserByProfile(profile_);
   PrefService* prefs = g_browser_process->local_state();
   const std::string& password =
     prefs->GetString(fydeos::prefs::kOfflineAutoSigninPassword);
@@ -238,8 +266,6 @@ void FydeOsHandler::HandleGetIsOfflineAutoSigninEnabled(
     prefs->GetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
   base::Value::Dict response;
   response.Set("enabled", !account_id_key.empty() && !password.empty());
-  const user_manager::User* user =
-      ProfileHelper::Get()->GetUserByProfile(profile_);
   if (!user->GetAccountId().HasAccountIdKey() || !user->IsFlintAccountUser()) {
     response.Set("is_current_user", false);
   }
@@ -249,7 +275,18 @@ void FydeOsHandler::HandleGetIsOfflineAutoSigninEnabled(
     response.Set("is_current_user", false);
   }
   response.Set("system_salt_obtained", !system_salt_.empty());
+  response.Set("auth_factor_has_password", auth_factor_has_password_);
   ResolveJavascriptCallback(callback_id, response);
+}
+
+void FydeOsHandler::HandleGetIsOfflineAutoSigninEnabled(
+    const base::Value::List& args) {
+  AllowJavascript();
+  CHECK(args.size());
+  std::string callback_id = args[0].GetString();
+  const user_manager::User* user =
+      ProfileHelper::Get()->GetUserByProfile(profile_);
+  ListAuthFactors(user->GetAccountId(), callback_id);
 }
 
 void FydeOsHandler::HandleSaveOfflineLoginPassword(

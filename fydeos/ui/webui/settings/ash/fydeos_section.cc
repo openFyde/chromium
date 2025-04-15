@@ -139,6 +139,8 @@ void FydeOsSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_LOCAL_ACCOUNT},
     {"unableToSetAutoSigninForFydeNonLocalAccount",
       IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_FOR_NON_LOCAL_ACCOUNT},
+    {"unableToSetAutoSigninWithoutPasswordAuthFactor",
+      IDS_OS_SETTINGS_FYDEOS_UNABLE_TO_SET_AUTO_SIGNIN_WITHOUT_PASSWORD_AUTH_FACTOR},
 
     {"fydeosSettingsBackupButtonLabel",
       IDS_OS_SETTINGS_FYDEOS_BACKUP_BUTTON_LABEL},
