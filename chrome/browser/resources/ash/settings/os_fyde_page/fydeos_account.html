@@ -33,16 +33,14 @@
 <div class="settings-box two-line">
   <div class="start padded">
     $i18n{autoSigninForFydeLocalAccountTitle}
-    <template is="dom-if" if="[[shouldShowSetPasswordLink_(isFydeLocalAccount_, isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_, systemSaltObtained_, authFactorHasPassword_)]]" restamp>
         <localized-link
+          hidden="[[!shouldShowSetPasswordLink_(isFydeLocalAccount_, isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_, systemSaltObtained_, authFactorHasPassword_)]]"
           localized-string="[[i18nAdvanced('unableToSetAutoSigninWithoutPasswordAuthFactor')]]"
           on-link-clicked="openLocalAccountChangePasswordSystemSettings_">
         </localized-link>
-    <template>
-    <template is="dom-if" if="[[!shouldShowSetPasswordLink_(isFydeLocalAccount_, isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_, systemSaltObtained_, authFactorHasPassword_)]]" restamp>
     <div
+      hidden="[[shouldShowSetPasswordLink_(isFydeLocalAccount_, isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_, systemSaltObtained_, authFactorHasPassword_)]]"
       class="secondary">[[getOfflineAutoSigninMessage_(isFydeLocalAccount_, isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_, systemSaltObtained_, authFactorHasPassword_)]]</div>
-    <template>
   </div>
   <cr-toggle id="toggleOfflineAutoSignin"
               disabled="[[!getCanToggleAutoSignin_(isFydeLocalAccount_, isOfflineAutoSigninEnabled_, isOfflineAutoSigninEnabledForCurrentUser_, systemSaltObtained_, authFactorHasPassword_)]]"

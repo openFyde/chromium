@@ -226,6 +226,7 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
   getOfflineAutoSigninMessage_() {
     const defaultMessage = this.i18n('enableAutoSigninForFydeLocalAccountHelpMessage');
     if (!this.isFydeLocalAccount_) {
+      console.log('non local account');
       return this.i18n('unableToSetAutoSigninForFydeNonLocalAccount');
     }
     // if (!this.authFactorHasPassword_) {
@@ -233,13 +234,16 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
     // }
     if (this.isOfflineAutoSigninEnabled_) {
       if (this.isOfflineAutoSigninEnabledForCurrentUser_) {
+        console.log('default')
         return defaultMessage;
       }
       else {
+        console.log('other user enabled');
         return this.i18n('autoSigninForFydeLocalAccountOtherUserAlreadyEnabled');
       }
     } else {
       if (this.systemSaltObtained_ && this.authFactorHasPassword_) {
+        console.log('default');
         return defaultMessage;
       } else {
         return this.i18n('unableToSetAutoSigninForFydeLocalAccount');
@@ -253,7 +257,9 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
   }
 
   shouldShowSetPasswordLink_() {
-    return this.isFydeLocalAccount_ && !this.authFactorHasPassword_;
+    const ret = this.isFydeLocalAccount_ && !this.authFactorHasPassword_;
+    console.log('should show set password link', ret);
+    return ret;
   }
 
   getCanToggleAutoSignin_() {
