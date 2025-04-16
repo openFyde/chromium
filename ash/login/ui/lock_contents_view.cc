@@ -825,6 +825,11 @@ bool LockContentsView::IsOfflineAutoSigninEnabled() const {
 }
 
 void LockContentsView::OnUsersChanged(const std::vector<LoginUserInfo>& users) {
+  if (screen_type_ != LockScreen::ScreenType::kLogin) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
   if (!IsOfflineAutoSigninEnabled()) {
     OnUsersChangedInternal(users);
     return;

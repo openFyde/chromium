@@ -116,6 +116,8 @@ class ASH_EXPORT LoginPinInputView : public views::View,
   // Whether the 'Return' key should trigger an unlock with an empty PIN.
   bool authenticate_with_empty_pin_on_return_key_ = false;
 
+  bool should_visible_ = false;
+
   OnPinSubmit on_submit_;
   OnPinChanged on_changed_;
 

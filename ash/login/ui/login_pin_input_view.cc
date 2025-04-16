@@ -196,7 +196,9 @@ LoginPinInputView::~LoginPinInputView() = default;
 
 void LoginPinInputView::OnImplicitAnimationsCompleted() {
   Reset();
-  SetVisible(false);
+  if (!should_visible_) {
+    SetVisible(false);
+  }
   StopObservingImplicitAnimations();
 }
 
@@ -244,6 +246,7 @@ void LoginPinInputView::UpdateLength(const size_t pin_length) {
   SetReadOnly(was_readonly);
   DeprecatedLayoutImmediately();
   SetVisible(was_visible);
+  should_visible_ = was_visible;
 }
 
 void LoginPinInputView::SetAuthenticateWithEmptyPinOnReturnKey(bool enabled) {
