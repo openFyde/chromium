@@ -115,6 +115,7 @@
 #include "base/timer/timer.h"
 #include "fydeos/prefs//fydeos_pref_names.h"
 #include "base/task/single_thread_task_runner.h"
+#include "ash/wm/lock_state_controller.h"
 
 // #include "chromeos/cryptohome/system_salt_getter.h"
 // #include "chrome/browser/ash/settings/token_encryptor.h"
@@ -919,8 +920,12 @@ void LockContentsView::OnOfflineAutoSigninComplete(const AccountId& account_id,
       base::BindOnce(&LockContentsView::TryToAutoSigninForLocalAccount,
                      weak_ptr_factory_.GetWeakPtr(), account_id, password, users));
   } else {
-    VLOG(3) << "auto signin failed, fallback to normal login screen";
-    OnUsersChangedInternal(users);
+    VLOG(3) << "auto signin failed, attempt to restart to fallback to normal login screen";
+    // OnUsersChangedInternal(users);
+    Shell::Get()->local_state()->SetString(fydeos::prefs::kOfflineAutoSigninPassword, std::string());
+    Shell::Get()->local_state()->SetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey,
+                     std::string());
+    Shell::Get()->lock_state_controller()->RequestRestart();
   }
 }
 

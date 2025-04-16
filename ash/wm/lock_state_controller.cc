@@ -530,6 +530,10 @@ void LockStateController::RequestSignOut() {
   }
 }
 
+void LockStateController::RequestRestart() {
+  Shell::Get()->session_controller()->AttemptRestartChrome();
+}
+
 void LockStateController::OnHostCloseRequested(aura::WindowTreeHost* host) {
   Shell::Get()->session_controller()->RequestSignOut();
 }

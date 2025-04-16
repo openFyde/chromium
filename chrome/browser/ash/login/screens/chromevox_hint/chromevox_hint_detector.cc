@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "chromeos/ash/experiences/idle_detector/idle_detector.h"
 #include "chromeos/dbus/constants/dbus_switches.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash {
 namespace {
@@ -30,6 +31,9 @@ ChromeVoxHintDetector::~ChromeVoxHintDetector() {}
 
 void ChromeVoxHintDetector::StartIdleDetection() {
   if (switches::IsOOBEChromeVoxHintTimerDisabledForTesting()) {
+    return;
+  }
+  if (fydeos::switches::IsFydeCustomEnabled()) {
     return;
   }
 
