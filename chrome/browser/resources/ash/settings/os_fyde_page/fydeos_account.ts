@@ -147,6 +147,13 @@ class FydeSettingsAccountPageElement extends FydeSettingsAccountPageElementBase 
       this.isOfflineAutoSigninEnabledForCurrentUser_ = is_current_user;
       this.systemSaltObtained_ = system_salt_obtained;
       this.authFactorHasPassword_ = auth_factor_has_password;
+      const event = new CustomEvent(
+        'auth-factor-has-password-changed',
+        {
+          bubbles: true, composed: true,
+          detail: auth_factor_has_password,
+        });
+      this.dispatchEvent(event);
     }).finally(() => {
       const ele = this.shadowRoot!.querySelector('#toggleOfflineAutoSignin') as CrToggleElement;
       ele.checked = this.getOfflineAutoSigninCheckedState_();

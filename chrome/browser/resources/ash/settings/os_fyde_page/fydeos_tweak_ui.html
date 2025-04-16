@@ -14,7 +14,7 @@
     <!-- <div class="secondary"></div> -->
   </div>
   <div class="separator"></div>
-  <cr-button on-click="onBackupClick_" disabled="[[backupRunning_]]">
+  <cr-button on-click="onBackupClick_" disabled="[[backupDisabled_(backupRunning_, authFactorHasPassword)]]">
     $i18n{fydeosSettingsBackupButtonLabel}
   </cr-button>
 </div>

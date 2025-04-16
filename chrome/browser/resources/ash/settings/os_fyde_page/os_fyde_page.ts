@@ -88,6 +88,8 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
           return loadTimeData.getBoolean('showToggleSwitchTabletLaptopButton');
         },
       },
+
+      authFactorHasPassword_: Boolean,
     };
   }
 
@@ -97,6 +99,7 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
   private showToggleRebootButtonInTray: boolean;
   private showToggleRotateScreenButton: boolean;
   private showToggleSwitchTabletLaptopButton: boolean;
+  private authFactorHasPassword_: boolean;
 
   constructor() {
     super();
@@ -114,6 +117,10 @@ class OsSettingsFydePageElement extends OsSettingsFydePageElementBase {
 
   showFydeOsTweakUi_() {
     return this.showToggleRotateScreenButton || this.showToggleRebootButtonInTray || this.showToggleSwitchTabletLaptopButton;
+  }
+
+  onAuthFactorHasPasswordChanged_(e: CustomEvent) {
+    this.authFactorHasPassword_ = e.detail;
   }
 
 // <if expr="use_fydeos_license">

@@ -151,6 +151,7 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
         type: Boolean,
         value: false,
       },
+      authFactorHasPassword: Boolean,
       arcMediaAutoScanEnabled_: {
         type: Boolean,
         value: true,
@@ -184,6 +185,7 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
   private backupRunning_: boolean;
   private showPasswordPromptDialog_: boolean;
   private showBackupIntroDialog_: boolean;
+  private authFactorHasPassword: boolean;
 
   private client_: WidevineHelper;
 
@@ -395,6 +397,10 @@ class FydeSettingsTweakUiPageElement extends FydeSettingsTweakUIPageElementBase 
         }
       });
     })
+  }
+
+  backupDisabled_() {
+    return this.backupRunning_ || !this.authFactorHasPassword;
   }
 
   getFydeosBackupState_() {

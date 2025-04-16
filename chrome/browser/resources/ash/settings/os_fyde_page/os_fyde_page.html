@@ -3,7 +3,8 @@
 <os-settings-animated-pages id="pages" section="[[section_]]">
   <div route-path="default">
     <settings-card header-text="$i18n{fydeosSettingsAccountTitle}" section="fydeosAccount" hidden="[[!isFydeAccount_]]">
-      <os-settings-fydeos-account>
+      <os-settings-fydeos-account
+        on-auth-factor-has-password-changed="onAuthFactorHasPasswordChanged_">
       </os-settings-fydeos-account>
     </settings-card>
     <if expr="use_fydeos_license">
@@ -27,6 +28,7 @@
     <settings-card header-text="$i18n{fydeosSettingsOtherTweaksTitle}" section="tweakUI"
                         hidden="[[!showFydeOsTweakUi_(showToggleRebootButtonInTray, showToggleRotateScreenButton, showToggleSwitchTabletLaptopButton)]]">
       <os-settings-fydeos-tweak-ui
+        auth-factor-has-password="[[authFactorHasPassword_]]"
         show-toggle-rotate-screen-button="[[showToggleRotateScreenButton]]"
         show-toggle-reboot-button-in-tray="[[showToggleRebootButtonInTray]]"
         show-toggle-switch-tablet-laptop-button="[[showToggleSwitchTabletLaptopButton]]">
