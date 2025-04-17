@@ -35,11 +35,11 @@ void ChromeVoxHintDetector::StartIdleDetection() {
 
   // This is done so that developers and testers don't repeatedly receive
   // the hint when flashing.
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          chromeos::switches::kSystemDevMode) &&
-      !switches::IsOOBEChromeVoxHintEnabledForDevMode()) {
-    return;
-  }
+  // if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+  //         chromeos::switches::kSystemDevMode) &&
+  //     !switches::IsOOBEChromeVoxHintEnabledForDevMode()) {
+  //   return;
+  // }
 
   // Only start the idle detector once.
   if (idle_detector_)

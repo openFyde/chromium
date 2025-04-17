@@ -225,6 +225,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private DEFAULT_CHROMEVOX_HINT_TIMEOUT_MS: number;
   private chromeVoxHintGiven: boolean;
+  private shouldBackToLanguageScreen: boolean;
   private isMeet: boolean;
   private isDeviceRequisitionConfigurable: boolean;
   private configurationApplied: boolean;
@@ -243,6 +244,7 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
     this.defaultChromeVoxHintTimeoutId = undefined;
     this.DEFAULT_CHROMEVOX_HINT_TIMEOUT_MS = 40 * 1000;
     this.chromeVoxHintGiven = false;
+    this.shouldBackToLanguageScreen = false;
 
     this.configurationApplied = false;
     this.autoWelcomeNext = false;
@@ -765,6 +767,10 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   }
 
   private onChromeVoxHintDismissed(): void {
+    if (this.shouldBackToLanguageScreen) {
+      this.shouldBackToLanguageScreen = false;
+      this.setUIStep(WelcomeScreenState.LANGUAGE);
+    }
     this.userActed('dismissChromeVoxHint');
     chrome.tts.isSpeaking((speaking) => {
       if (speaking) {
@@ -871,6 +877,10 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
       return;
     }
 
+    if (this.uiStep === WelcomeScreenState.LANGUAGE) {
+      this.shouldBackToLanguageScreen = true;
+      this.setUIStep(WelcomeScreenState.GREETING);
+    }
     this.chromeVoxHintGiven = true;
     if (isDefaultHint) {
       console.warn(
