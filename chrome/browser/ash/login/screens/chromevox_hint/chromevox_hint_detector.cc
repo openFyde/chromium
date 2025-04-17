@@ -10,13 +10,12 @@
 #include "base/functional/bind.h"
 #include "chromeos/ash/experiences/idle_detector/idle_detector.h"
 #include "chromeos/dbus/constants/dbus_switches.h"
-#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash {
 namespace {
 
 // Amount of time the user has to be idle for before giving the ChromeVox hint.
-const base::TimeDelta kChromeVoxHintIdleDuration = base::Seconds(180);
+const base::TimeDelta kChromeVoxHintIdleDuration = base::Seconds(20);
 
 }  // namespace
 
@@ -33,9 +32,6 @@ void ChromeVoxHintDetector::StartIdleDetection() {
   if (switches::IsOOBEChromeVoxHintTimerDisabledForTesting()) {
     return;
   }
-  // if (fydeos::switches::IsFydeCustomEnabled()) {
-  //   return;
-  // }
 
   // This is done so that developers and testers don't repeatedly receive
   // the hint when flashing.
