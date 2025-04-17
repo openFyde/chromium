@@ -311,4 +311,21 @@
     <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>Start a quick chat in FydeOS AI to begin writing, planning, learning, and more by creating various AI assistants. FydeOS AI is also accessible by pressing Ctrl + C + C anywhere for customisable quick actions.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
     <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>To use FydeOS AI, you'll need to sign in with a FydeOS account. If you don’t have one yet, you can sign up for free.<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
   </message>
+
+  <if expr="openfyde">
+    <message name="IDS_OOBE_CHROMEVOX_HINT_ANNOUNCEMENT_TEXT_LAPTOP_EXPANDED" desc="The new string spoken when the ChromeVox hint is activated when the device is in laptop mode." is_accessibility_with_no_ui="true">
+      The screen reader on openFyde, ChromeVox, is primarily used by people with blindness or low vision to read text displayed on the screen with a speech synthesizer or braille display. Press the space bar to turn on ChromeVox. When ChromeVox is activated, you’ll go through a quick tour.
+    </message>
+    <message name="IDS_OOBE_CHROMEVOX_HINT_ANNOUNCEMENT_TEXT_TABLET_EXPANDED" desc="The new string spoken when the ChromeVox hint is activated when the device is in tablet mode." is_accessibility_with_no_ui="true">
+      The screen reader on openFyde, ChromeVox, is primarily used by people with blindness or low vision to read text displayed on the screen with a speech synthesizer or braille display. Press and hold both volume keys for five seconds to turn on ChromeVox. When ChromeVox is activated, you’ll go through a quick tour.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_OOBE_CHROMEVOX_HINT_ANNOUNCEMENT_TEXT_LAPTOP_EXPANDED" desc="The new string spoken when the ChromeVox hint is activated when the device is in laptop mode." is_accessibility_with_no_ui="true">
+      The screen reader on FydeOS, ChromeVox, is primarily used by people with blindness or low vision to read text displayed on the screen with a speech synthesizer or braille display. Press the space bar to turn on ChromeVox. When ChromeVox is activated, you’ll go through a quick tour.
+    </message>
+    <message name="IDS_OOBE_CHROMEVOX_HINT_ANNOUNCEMENT_TEXT_TABLET_EXPANDED" desc="The new string spoken when the ChromeVox hint is activated when the device is in tablet mode." is_accessibility_with_no_ui="true">
+      The screen reader on FydeOS, ChromeVox, is primarily used by people with blindness or low vision to read text displayed on the screen with a speech synthesizer or braille display. Press and hold both volume keys for five seconds to turn on ChromeVox. When ChromeVox is activated, you’ll go through a quick tour.
+    </message>
+  </if>
 </grit-part>

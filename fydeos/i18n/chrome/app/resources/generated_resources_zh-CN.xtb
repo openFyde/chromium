@@ -357,6 +357,10 @@
     <ph name="BEGIN_PARAGRAPH2" />要使用 FydeOS AI，你需要使用 FydeOS 账号登录。如果你还没有 FydeOS 账号，可以免费注册一个。<ph name="END_PARAGRAPH2" /></translation>
 <translation id="5581961046476999259">使用 FydeOS 账号密码</translation>
 <translation id="8088575026375015397">您可以为此设备创建 <ph name="DEVICE_TYPE" /> 密码，而无需输入您的 FydeOS 账号密码来登录</translation>
+<translation id="3799407636624949294">openFyde 中的屏幕阅读器 (ChromeVox) 主要供盲人或低视力用户使用，以便这些用户通过语音合成器或盲文显示屏获知屏幕上显示的文字。按空格键即可开启 ChromeVox。启用 ChromeVox 后，系统将带您快速了解相关功能。</translation>
+<translation id="2683487493202901019">FydeOS 中的屏幕阅读器 (ChromeVox) 主要供盲人或低视力用户使用，以便这些用户通过语音合成器或盲文显示屏获知屏幕上显示的文字。按空格键即可开启 ChromeVox。启用 ChromeVox 后，系统将带您快速了解相关功能。</translation>
+<translation id="4070255317789114827">openFyde 中的屏幕阅读器 (ChromeVox) 主要供盲人或低视力用户使用，以便这些用户通过语音合成器或盲文显示屏获知屏幕上显示的文字。同时按住两个音量键 5 秒钟即可开启 ChromeVox。启用 ChromeVox 后，系统将带您快速了解相关功能。</translation>
+<translation id="8267804093719089914">FydeOS 中的屏幕阅读器 (ChromeVox) 主要供盲人或低视力用户使用，以便这些用户通过语音合成器或盲文显示屏获知屏幕上显示的文字。同时按住两个音量键 5 秒钟即可开启 ChromeVox。启用 ChromeVox 后，系统将带您快速了解相关功能。</translation>
 <!-- generated_resources.override.grdp -->
 <translation id="358808394160762813">openFyde 系统映像写入工具</translation>
 <translation id="827071875133563393">FydeOS 系统映像写入工具</translation>
