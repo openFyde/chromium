@@ -262,6 +262,9 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_AMD_GRAPHICS" desc="The text label describing fydeos device for pc(apu)">
     AMD Graphics
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_INTEL_SLIM" desc="The text label describing fydeos device for pc(slim)">
+    Intel Slim
+  </message>
 
   <message name="IDS_SETTINGS_CROSTINI_MENU_ITEM_DESCRIPTION" desc="The description of Crostini section. It is meant to be used by software developers.">
     Linux subsystem, Linux apps

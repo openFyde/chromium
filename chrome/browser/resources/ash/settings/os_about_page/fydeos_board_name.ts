@@ -44,6 +44,10 @@ export const FydeOSBoardNameTitleListWithI18n = [{
   board: 'amd64-fydeos_apu',
   key: 'aboutFydeOSDeviceTitleAMDGraphics',
   fallback: 'AMD Graphics',
+}, {
+  board: 'amd64-fydeos_slim',
+  key: 'aboutFydeOSDeviceTitleIntelSlim',
+  fallback: 'Intel Slim',
 }];
 
 export const FydeOSBoardNameReleaseNameMap: {[index: string]: string} = {

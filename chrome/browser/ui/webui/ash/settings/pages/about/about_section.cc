@@ -444,6 +444,8 @@ void AboutSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_MODERN_INTEL},
       {"aboutFydeOSDeviceTitleAMDGraphics",
        IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_AMD_GRAPHICS},
+      {"aboutFydeOSDeviceTitleIntelSlim",
+       IDS_SETTINGS_ABOUT_PAGE_FYDEOS_DEVICE_TITLE_INTEL_SLIM},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
