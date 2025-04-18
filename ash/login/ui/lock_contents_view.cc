@@ -2090,7 +2090,7 @@ void LockContentsView::LayoutAuth(LoginBigUserView* to_update,
           CHECK(IsTimeInFuture(state->pin_available_at))
               << "Password or pin factor must be present, if pin is not locked";
           to_update_auth =
-              screen_type_ == LockScreen::ScreenType::kLogin
+              screen_type_ == LockScreen::ScreenType::kLogin && (view->auth_user()->current_user().basic_user_info.account_id.GetAccountType() != AccountType::FLINT_ACCOUNT)
                   ? LoginAuthUserView::AUTH_PIN_LOCKED_SHOW_RECOVERY
                   : LoginAuthUserView::AUTH_PIN_LOCKED;
           // The auth error message might be shown at the moment due to previous
