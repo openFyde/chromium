@@ -802,7 +802,10 @@ export class OobeWelcomeScreen extends OobeWelcomeScreenBase {
   maybeGiveChromeVoxHint(): void {
     chrome.tts.getVoices((voices) => {
       const locale = loadTimeData.getString('language');
-      const voiceName = this.findVoiceForLocale(voices, locale);
+      let voiceName = this.findVoiceForLocale(voices, locale);
+      if (!voiceName && locale.startsWith('zh')) {
+        voiceName = this.findVoiceForLocale(voices, 'cmn');
+      }
       if (!voiceName) {
         this.onVoiceNotLoaded();
         return;
