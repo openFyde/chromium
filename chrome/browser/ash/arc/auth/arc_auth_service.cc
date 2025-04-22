@@ -319,9 +319,14 @@ void ArcAuthService::OnConnectionClosed() {
 
 void ArcAuthService::OnAuthorizationResult(mojom::ArcSignInResultPtr result,
                                            mojom::ArcSignInAccountPtr account) {
+  if ((!account || !account->is_initial_signin()) && profile_->IsFydeProfile()) {
+    VLOG(1) << __func__ << "force arc sigin success";
+    result = arc::mojom::ArcSignInResult::NewSuccess(
+                 arc::mojom::ArcSignInSuccess::SUCCESS);
+  }
   ArcProvisioningResult provisioning_result(std::move(result));
 
-  if (account->is_initial_signin()) {
+  if (account->is_initial_signin() || profile_->IsFydeProfile()) {
     // UMA for initial signin is updated from ArcSessionManager.
     ArcSessionManager::Get()->OnProvisioningFinished(provisioning_result);
     return;
