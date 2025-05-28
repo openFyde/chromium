@@ -647,6 +647,9 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
     if (data.email && data.readOnlyEmail) {
       this.isAccountTypeSelectionRequired = false;
     }
+    if (data.enterpriseManagedDevice) {
+      this.isAccountTypeSelectionRequired = false;
+    }
 
     this.loadAuthenticator_(params.doSamlRedirect);
     chrome.send('authenticatorLoaded');

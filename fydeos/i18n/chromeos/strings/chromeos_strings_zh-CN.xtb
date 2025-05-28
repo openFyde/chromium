@@ -8,6 +8,8 @@
 <translation id="2812272711783038973">查找帮助文章及常见的 FydeOS 问题解答</translation>
 <translation id="3160172848211257835">发送<ph name="BEGIN_LINK1" />系统和应用信息<ph name="END_LINK1" />以及<ph name="BEGIN_LINK2" />系统运行数据<ph name="END_LINK2" /></translation>
 <!-- chromeos_strings.override.grdp -->
+<translation id="4363460497103457018">openFyde 更新</translation>
+<translation id="6285517448888170195">FydeOS 更新</translation>
 <translation id="676750809707619649">安装 openFyde</translation>
 <translation id="8896685659418072052">安装 FydeOS</translation>
 <translation id="6538994383867720138">发送反馈给 FydeOS 技术支持团队</translation>

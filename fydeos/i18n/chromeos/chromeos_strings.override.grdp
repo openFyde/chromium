@@ -2,11 +2,17 @@
 <!-- override chromeos/chromeos_strings.grd -->
 <grit-part>
   <if expr="openfyde">
+    <message name="IDS_HELP_APP_WHATS_NEW_CONTINUE_TASK_TITLE" desc="Title for a ChromeOS launcher continue section item that can be used to quickly access most recent ChromeOS release notes. Continue section contains set of UI elements that are suggestions for continuing recent user workflows. Release notes element is shown after ChromeOS device updates to a new version. Clicking the relese notes element will redirect user to an app that gives the user more information about the ChromeOS update [CHAR_LIMIT=20]">
+      openFyde update
+    </message>
     <message name="IDS_ASH_SHELF_OS_INSTALL_BUTTON" desc="Text shown on install cloudready button on login screen.">
       Install openFyde
     </message>
   </if>
   <if expr="not openfyde">
+    <message name="IDS_HELP_APP_WHATS_NEW_CONTINUE_TASK_TITLE" desc="Title for a ChromeOS launcher continue section item that can be used to quickly access most recent ChromeOS release notes. Continue section contains set of UI elements that are suggestions for continuing recent user workflows. Release notes element is shown after ChromeOS device updates to a new version. Clicking the relese notes element will redirect user to an app that gives the user more information about the ChromeOS update [CHAR_LIMIT=20]">
+      FydeOS update
+    </message>
     <message name="IDS_ASH_SHELF_OS_INSTALL_BUTTON" desc="Text shown on install cloudready button on login screen.">
       Install FydeOS
     </message>

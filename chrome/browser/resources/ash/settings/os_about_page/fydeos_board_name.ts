@@ -54,6 +54,7 @@ export const FydeOSBoardNameReleaseNameMap: {[index: string]: string} = {
   'amd64-fydeos': 'for PC',
   'amd64-fydeos_iris': 'for PC',
   'amd64-fydeos_apu': 'for PC',
+  'amd64-fydeos_slim': 'for PC',
   'amd64-vmware': 'for VMware',
   'rpi4-fydeos': 'for SBC',
   'rpi5-fydeos': 'for SBC',
