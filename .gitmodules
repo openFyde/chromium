@@ -874,10 +874,6 @@
 	path = third_party/android_tools_internal
 	url = https://chrome-internal.googlesource.com/clank/third_party/android_tools
 	gclient-condition = checkout_android and checkout_src_internal
-[submodule "third_party/widevine/cdm/chromeos"]
-	path = third_party/widevine/cdm/chromeos
-	url = https://chrome-internal.googlesource.com/chrome/deps/widevine/cdm/chromeos
-	gclient-condition = (checkout_chromeos or checkout_linux) and checkout_src_internal
 [submodule "third_party/widevine/cdm/linux"]
 	path = third_party/widevine/cdm/linux
 	url = https://chrome-internal.googlesource.com/chrome/deps/widevine/cdm/linux
