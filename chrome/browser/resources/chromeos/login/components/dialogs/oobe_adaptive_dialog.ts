@@ -10,6 +10,9 @@ import '../common_styles/oobe_dialog_host_styles.css.js';
 import '../oobe_vars/oobe_custom_vars.css.js';
 import '../oobe_vars/oobe_shared_vars.css.js';
 
+import '../../components/oobe_cr_lottie.js';
+import {OobeCrLottie} from '../../components/oobe_cr_lottie.js';
+
 import {CrButtonElement} from '//resources/ash/common/cr_elements/cr_button/cr_button.js';
 import {CrLazyRenderElement} from '//resources/ash/common/cr_elements/cr_lazy_render/cr_lazy_render.js';
 import {assert} from '//resources/js/assert.js';
@@ -83,6 +86,21 @@ export class OobeAdaptiveDialog extends PolymerElement {
         type: Boolean,
         value: false,
       },
+
+      fydeosLayout: {
+        type: Boolean,
+        value: false,
+      },
+
+      animationUrl: {
+        type: String,
+        value: '',
+      },
+
+      animationLoop: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -90,6 +108,9 @@ export class OobeAdaptiveDialog extends PolymerElement {
   private readMore: boolean;
   private singleColumn: boolean;
   private showReadMoreButton: boolean;
+  private fydeosLayout: boolean;
+  private animationUrl: string;
+  private animationLoop: boolean;
   private resizeObserver?: ResizeObserver;
   private readMoreState: ReadMoreState;
 
@@ -232,6 +253,15 @@ export class OobeAdaptiveDialog extends PolymerElement {
   onBeforeShow(): void {
     this.getLazyRender().get();
     this.addResizeObserver();
+    window.setTimeout(() => void this.playFydeAnimation(), 0);
+  }
+
+  private playFydeAnimation(): void {
+    const animation =
+        this.shadowRoot?.querySelector('#fydeos-illustration-animation');
+    if (animation instanceof OobeCrLottie) {
+      animation.playing = true;
+    }
   }
 
   /**

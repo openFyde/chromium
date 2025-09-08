@@ -70,6 +70,10 @@ bool NearbySharingServiceFactory::IsNearbyShareSupportedForBrowserContext(
     return false;
   }
 
+  if (user->IsFydeExtendAccountUser()) {
+    return false;
+  }
+
   return true;
 }
 

@@ -66,6 +66,7 @@
 #include "ui/views/style/typography.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
+#include "build/branding_buildflags.h"
 
 namespace ash {
 namespace {
@@ -280,10 +281,12 @@ class HomeButton::ButtonImageView : public views::View {
         image_model_ =
             ui::ImageModel::FromVectorIcon(kCampbell9dotIcon, GetIconColorId());
       }
+#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
     } else if (Shell::Get()->keyboard_capability()->GetMetaKeyToDisplay() ==
                ui::mojom::MetaKey::kLauncherRefresh) {
       image_model_ =
           ui::ImageModel::FromVectorIcon(kCampbellHeroIcon, GetIconColorId());
+#endif
     } else {
       image_model_ = std::nullopt;
       image_ = gfx::ImageSkia();

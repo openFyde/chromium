@@ -74,6 +74,12 @@ std::string GetPngDataUrl(base::span<const uint8_t> data) {
   return output;
 }
 
+std::string GetWebPDataUrl(base::span<const uint8_t> data) {
+  std::string output = "data:image/webp;base64,";
+  base::Base64EncodeAppend(data, &output);
+  return output;
+}
+
 WindowOpenDisposition GetDispositionFromClick(const base::Value::List& list,
                                               size_t start_index) {
   double button = list[start_index].GetDouble();

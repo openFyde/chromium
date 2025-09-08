@@ -258,6 +258,11 @@ class BASE_EXPORT SysInfo {
   // whether a USE flag is set or not). See https://goo.gl/BbBkzg for more
   // details.
   static std::string GetLsbReleaseBoard();
+  // ---***FYDEOS BEGIN***---
+  static std::string GetLsbFydeReleaseVersion();
+  // ---***FYDEOS END***---
+
+  static std::string GetLsbReleaseBoardWithoutSuffix();
 
   // Returns the creation time of /etc/lsb-release. (Used to get the date and
   // time of the Chrome OS build).

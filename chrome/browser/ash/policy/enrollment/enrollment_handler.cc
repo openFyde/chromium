@@ -81,6 +81,7 @@ em::DeviceRegisterRequest::Flavor EnrollmentModeToRegistrationFlavor(
     case EnrollmentConfig::MODE_MANUAL_REENROLLMENT:
       return em::DeviceRegisterRequest::FLAVOR_ENROLLMENT_MANUAL_RENEW;
     case EnrollmentConfig::MODE_LOCAL_FORCED:
+    case EnrollmentConfig::MODE_FYDE_LOCAL_FORCED:
       return em::DeviceRegisterRequest::FLAVOR_ENROLLMENT_LOCAL_FORCED;
     case EnrollmentConfig::MODE_LOCAL_ADVERTISED:
       return em::DeviceRegisterRequest::FLAVOR_ENROLLMENT_LOCAL_ADVERTISED;
@@ -452,6 +453,9 @@ void EnrollmentHandler::StartRegistration() {
   SetStep(STEP_REGISTRATION);
   if (enrollment_config_.is_mode_attestation()) {
     StartAttestationBasedEnrollmentFlow();
+  } else if (enrollment_config_.is_mode_fyde()) {
+   client_->RegisterWithFydeToken(*register_params_, client_id_,
+                                  dm_auth_.fyde_token());
   } else if (enrollment_config_.is_mode_token()) {
     client_->RegisterDeviceWithEnrollmentToken(*register_params_, client_id_,
                                                dm_auth_.Clone());

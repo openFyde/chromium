@@ -615,6 +615,15 @@ source_set("web_applications") {
     ]
   }
 
+  sources += [
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/remote_desktop.cc",
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/remote_desktop.h",
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/community.cc",
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/community.h",
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/notes.cc",
+    "../../../fydeos/chrome/browser/web_applications/preinstalled_web_apps/notes.h",
+  ]
+
   if (is_win) {
     deps += [
       "//chrome/browser/profiles:profile_util",

@@ -30,6 +30,7 @@ export class TestAuthenticator extends EventTarget {
   getDeviceIdResponseCalls: number = 0;
   getDeviceIdResponseResult: string = '';
   insecureContentBlockedCallback: ((url: string) => void)|null = null;
+  accountTypeGoogleSelectedCallback: (() => void)|null = null;
   missingGaiaInfoCallback: (() => void)|null = null;
   samlApiUsedCallback: ((isThirdPartyIdP: boolean) => void)|null = null;
   recordSamlProviderCallback: ((x509Certificate: string) => void)|null = null;

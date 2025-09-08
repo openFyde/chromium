@@ -166,6 +166,7 @@
 #include "ash/webui/boca_ui/mojom/boca.mojom.h"
 #include "ash/webui/camera_app_ui/camera_app_helper.mojom.h"
 #include "ash/webui/camera_app_ui/camera_app_ui.h"
+#include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_ui.h"
 #include "ash/webui/color_internals/color_internals_ui.h"
 #include "ash/webui/color_internals/mojom/color_internals.mojom.h"
 #include "ash/webui/common/mojom/accelerator_fetcher.mojom.h"
@@ -1349,6 +1350,10 @@ void PopulateChromeWebUIFrameInterfaceBrokers(
 
   registry.ForWebUI<ash::HelpAppUntrustedUI>()
       .Add<color_change_listener::mojom::PageHandler>();
+
+  if (ash::features::IsFydeAssistantEnabled()) {
+    registry.ForWebUI<ash::FydeAssistantAppUI>();
+  }
 
   registry.ForWebUI<ash::ScannerFeedbackUntrustedUI>()
       .Add<color_change_listener::mojom::PageHandler>()

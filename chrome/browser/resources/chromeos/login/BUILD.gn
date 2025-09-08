@@ -21,6 +21,18 @@ build_webui("build") {
     "animations/spinner.json",
     "animations/welcome_screen_animation.json",
 
+    "animations/fydeos_spinner.json",
+
+    "animations/fydeos_v21_welcome.mp4",
+
+    "animations/fydeos_choose_language.json",
+    "animations/fydeos_network_select.json",
+    "animations/fydeos_eula.json",
+    "animations/fydeos_signin.json",
+    "animations/fydeos_choose_pin.json",
+    "animations/fydeos_done.json",
+    "animations/fydeos_choose_account.json",
+
     # Vector resources
     "images/app_icons/a4.svg",
     "images/app_icons/calculator.svg",
@@ -28,6 +40,13 @@ build_webui("build") {
     "images/app_icons/files.svg",
     "images/app_icons/photos.svg",
     "images/app_icons/settings.svg",
+    "images/app_icons/fydeos/camera.svg",
+    "images/app_icons/fydeos/files.svg",
+    "images/app_icons/fydeos/settings.svg",
+    "images/app_icons/fydeos/rdp.svg",
+    # "images/app_icons/fydeos/onedrive.svg",
+    "images/app_icons/fydeos/store.svg",
+    "images/app_icons/fydeos/ai.svg",
     "images/arc_vm_data_migration_icon.svg",
     "images/browser_sync.svg",
     "images/cfm/enrollment.svg",
@@ -43,12 +62,23 @@ build_webui("build") {
     "images/2x/thumbnail-theme-dark-2x.png",
     "images/2x/thumbnail-theme-light-2x.png",
 
+    "images/1x/fydeos/thumbnail-theme-light-1x.png",
+    "images/2x/fydeos/thumbnail-theme-light-2x.png",
+    "images/1x/fydeos/thumbnail-theme-dark-1x.png",
+    "images/2x/fydeos/thumbnail-theme-dark-2x.png",
+    "images/1x/fydeos/thumbnail-theme-auto-1x.png",
+    "images/2x/fydeos/thumbnail-theme-auto-2x.png",
+
+    "images/fydeos_touchpad_scroll_illo.png",
+
     # Structure files
     "oobe.css",
     "oobe.html",
     "oobe_popup_overlay.css",
     "oobe_screen.css",
     "screens/common/throbber.css",
+
+    "images/eula_illustration.svg",
   ]
 
   mojo_files_deps = [
@@ -108,9 +138,13 @@ build_webui("build") {
     "screens/common/managed_terms_of_service.ts",
     "screens/common/marketing_opt_in.ts",
     "screens/common/multidevice_setup.ts",
+    "screens/common/fyde_local_signin.ts",
+    "screens/common/data_restore.ts",
     "screens/common/online_authentication_screen.ts",
     "screens/common/oobe_reset.ts",
+    "screens/common/oobe_eula.ts",
     "screens/common/os_install.ts",
+    "screens/common/fydeos_installer.ts",
     "screens/common/os_trial.ts",
     "screens/common/parental_handoff.ts",
     "screens/common/perks_discovery.ts",
@@ -131,6 +165,7 @@ build_webui("build") {
     "screens/common/tpm_error.ts",
     "screens/common/user_allowlist_check_screen.ts",
     "screens/common/user_creation.ts",
+    "screens/common/account_type_selection.ts",
     "screens/common/wrong_hwid.ts",
 
     # Login screens
@@ -223,6 +258,7 @@ build_webui("build") {
     "priority_screens_common_flow.ts",
     "priority_screens_oobe_flow.ts",
     "screens.ts",
+    "fydeos_shell_client.ts",
     "test_api/no_test_api.ts",
     "test_api/test_api.ts",
   ]
@@ -257,6 +293,7 @@ build_webui("build") {
     "//tools/typescript/definitions/tabs.d.ts",
     "//tools/typescript/definitions/web_request.d.ts",
     "//tools/typescript/definitions/webview_tag.d.ts",
+    "//tools/typescript/definitions/shell_client.d.ts",
   ]
   if (is_chrome_branded) {
     ts_definitions += [ "dummy.d.ts" ]

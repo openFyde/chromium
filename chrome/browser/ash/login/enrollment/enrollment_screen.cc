@@ -54,6 +54,10 @@
 #include "components/user_manager/user_manager.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/account/account_constants.h"
+#include "base/files/file_util.h"
+#include "base/strings/string_util.h"
+
 
 namespace ash {
 namespace {
@@ -195,6 +199,9 @@ void EnrollmentScreen::SetEnrollmentConfig(
       current_auth_ = AUTH_ATTESTATION;
       next_auth_ = AUTH_ATTESTATION;
     }
+  } else if (prescribed_config_.is_mode_fyde()) {
+    current_auth_ = AUTH_FYDE;
+    next_auth_ = AUTH_FYDE;
   } else if (prescribed_config_.is_mode_token()) {
     current_auth_ = AUTH_ENROLLMENT_TOKEN;
     next_auth_ = AUTH_OAUTH;
@@ -223,6 +230,7 @@ void EnrollmentScreen::SetConfig() {
 
 bool EnrollmentScreen::AdvanceToNextAuth() {
   if (current_auth_ != next_auth_ && (current_auth_ == AUTH_ATTESTATION ||
+                                      current_auth_ == AUTH_FYDE ||
                                       current_auth_ == AUTH_ENROLLMENT_TOKEN)) {
     LOG(WARNING) << "User stopped using auth: " << current_auth_
                  << ", current auth: " << next_auth_ << ".";
@@ -369,6 +377,9 @@ void EnrollmentScreen::ShowImpl() {
     case AUTH_ENROLLMENT_TOKEN:
       AuthenticateUsingEnrollmentToken();
       break;
+    case AUTH_FYDE:
+      AuthenticateUsingFyde();
+      break;
     default:
       NOTREACHED();
   }
@@ -494,6 +505,15 @@ void EnrollmentScreen::AuthenticateUsingEnrollmentToken() {
   }
   CreateEnrollmentLauncher();
   enrollment_launcher_->EnrollUsingEnrollmentToken();
+}
+
+void EnrollmentScreen::AuthenticateUsingFyde() {
+  LOG(WARNING) << "Authenticating using fyde enrollment token.";
+  elapsed_timer_ = std::make_unique<base::ElapsedTimer>();
+  if (view_)
+    view_->Show();
+  CreateEnrollmentLauncher();
+  enrollment_launcher_->EnrollUsingFydeToken();
 }
 
 void EnrollmentScreen::OnLoginDone(
@@ -974,6 +994,7 @@ void EnrollmentScreen::SetupAndShowOfflineMessage(
 
   if (LoginDisplayHost::default_host()->GetOobeUI()->current_screen() !=
       ErrorScreenView::kScreenId) {
+    error_screen_->AllowFydeLocalSignin(!policy::EnrollmentConfig::IsZeroTouchEnrollmentFydeForced());
     error_screen_->SetUIState(NetworkError::UI_STATE_SIGNIN);
     error_screen_->SetParentScreen(EnrollmentScreenView::kScreenId);
     error_screen_->SetHideCallback(

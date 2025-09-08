@@ -29,6 +29,8 @@ export enum EntryType {
   // Root for the Recent.
   RECENT = 'RECENT',
 
+  FYDEDROP = 'fydedrop',
+
   // A folder-like that doesn't have an entry linked to it.
   MATERIALIZED_VIEW = 'MATERIALIZED_VIEW',
 }
@@ -290,6 +292,7 @@ export enum NavigationType {
   DRIVE = 'drive',
   ANDROID_APPS = 'android_apps',
   TRASH = 'trash',
+  FYDEDROP = 'fydedrop',
   // Materialized view is used for Recent and in the future for Search.
   MATERIALIZED_VIEW = 'materialized_view',
 }

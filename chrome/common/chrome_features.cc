@@ -122,7 +122,7 @@ const base::FeatureParam<std::string> kBoardingPassDetectorUrlParam(
 
 #if BUILDFLAG(IS_CHROMEOS)
 // Enable Borealis on Chrome OS.
-BASE_FEATURE(kBorealis, "Borealis", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBorealis, "Borealis", base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 
 #if BUILDFLAG(CHROME_ROOT_STORE_CERT_MANAGEMENT_UI)
@@ -146,7 +146,7 @@ BASE_FEATURE(kEnableCertManagementUIV2EditCerts,
 
 #if BUILDFLAG(IS_CHROMEOS)
 // Enable project Crostini, Linux VMs on Chrome OS.
-BASE_FEATURE(kCrostini, "Crostini", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kCrostini, "Crostini", base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable advanced access controls for Crostini-related features
 // (e.g. restricting VM CLI tools access, restricting Crostini root access).

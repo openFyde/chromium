@@ -253,6 +253,7 @@ source_set("internal") {
     "//third_party/re2",
     "//ui/base",
     "//url",
+    "//fydeos/switches",
   ]
 
   allow_circular_includes_from = [
@@ -478,6 +479,10 @@ static_library("test_support") {
 source_set("common_constants") {
   configs += [ "//components/policy:component_implementation" ]
   deps = [ "//base" ]
+  deps += [
+    "//build:chromeos_buildflags",
+    "//fydeos/switches",
+  ]
   sources = [
     "../../policy_export.h",
     "cloud/cloud_policy_constants.cc",

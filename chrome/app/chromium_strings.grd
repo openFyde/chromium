@@ -268,12 +268,14 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/chromium_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/chromium_strings_zu.xtb" lang="zu" />
+    <file path="../../fydeos/i18n/chrome/app/resources/chromium_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
       <!-- Settings specific strings -->
       <if expr="not is_android">
         <part file="settings_chromium_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/settings_chromium_strings.override.grdp" />
       </if>
 
       <!--
@@ -2576,6 +2578,10 @@ Chromium is unable to recover your settings.
       <message name="IDS_BOOKMARK_INSTALLED_PROMO_EXPLICIT_SIGNIN_MESSAGE" desc="Text of the promo displayed at the bottom of the bookmark bubble asking the user to enable UNO.">
         To get this bookmark and more on all your devices, sign in to Chromium
       </message>
+
+      <part file="../../fydeos/i18n/chrome/app/chromium_strings.override.grdp" />
+      <part file="../../fydeos/i18n/chrome/app/chromium_strings.grdp" />
+
     </messages>
   </release>
 </grit>

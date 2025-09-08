@@ -444,6 +444,8 @@ class USER_MANAGER_EXPORT UserManager {
   // Returns true if we're logged in as a user with gaia account.
   virtual bool IsLoggedInAsUserWithGaiaAccount() const = 0;
 
+  virtual bool IsLoggedInAsUserWithFydeExtendedAccount() const = 0;
+
   // Returns true if we're logged in as a child user.
   virtual bool IsLoggedInAsChildUser() const = 0;
 

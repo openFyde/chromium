@@ -123,6 +123,7 @@ shown on non-ChromeOS platforms -->
         </template> <!-- if="[[!shouldShowSyncAccountControl_()]]" -->
 
         <cr-link-row id="sync-setup"
+            hidden="[[isFydeLocalAccount_]]"
             label="$i18n{syncAndNonPersonalizedServices}"
             on-click="onSyncClick_"
             role-description="$i18n{subpageArrowRoleDescription}">

@@ -17,6 +17,8 @@ import {assert} from '//resources/js/assert.js';
 import type {PolymerElementProperties} from '//resources/polymer/v3_0/polymer/interfaces.js';
 import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
+import '../../components/dialogs/oobe_adaptive_dialog.js';
+
 import {OobeIconButton} from '../../components/buttons/oobe_icon_button.js';
 import {OobeTextButton} from '../../components/buttons/oobe_text_button.js';
 import {OobeModalDialog} from '../../components/dialogs/oobe_modal_dialog.js';
@@ -41,6 +43,15 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
 
   static get properties(): PolymerElementProperties {
     return {
+      fydeosLayout: {
+        // when pass this property to child component oobe-adaptive-dialog,
+        // `$` should be used, since the property `fydeosLayout` is not defined in oobe-adaptive-dialog,
+        // oobe-adaptive-dialog will not get `fydeosLayout`. With `$`, it will be passed as attribute
+        type: Boolean,
+        value: true,
+        readOnly: true,
+        reflectToAttribute: true, // with this, in css of this component itself `:host([fydeos-layout])` will work
+      },
       /**
        * Currently selected system language (display name).
        */
@@ -110,6 +121,7 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
     };
   }
 
+  private fydeosLayout: boolean;
   private currentLanguage: string;
   private timezoneButtonVisible: boolean;
   private debuggingLinkVisible: boolean;
@@ -279,6 +291,12 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
    * @param play - whether play or pause welcome video.
    */
   private setVideoPlay(play: boolean): void {
+    const videoElement = this.shadowRoot?.querySelector('#video');
+    assert(videoElement instanceof HTMLVideoElement);
+    if (videoElement && play) {
+      videoElement.play();
+      return;
+    }
     // Postpone the call until OOBE is loaded, if necessary.
     if (!this.isOobeLoaded) {
       document.addEventListener(
@@ -352,7 +370,7 @@ export class OobeWelcomeDialog extends OobeWelcomeDialogBase {
    * Determines if AnimationSlot is needed for specific flow
    */
   private showAnimationSlot(): boolean {
-    return !this.isBootAnimation;
+    return !this.isBootAnimation && !this.fydeosLayout;
   }
 }
 

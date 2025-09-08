@@ -99,6 +99,19 @@ import './os_privacy_page/privacy_hub_geolocation_subpage.js';
 import './os_privacy_page/privacy_hub_microphone_subpage.js';
 import './os_privacy_page/privacy_hub_subpage.js';
 import './os_privacy_page/smart_privacy_subpage.js';
+import './os_fyde_page/components/backup_password_prompt_dialog.js';
+import './os_fyde_page/components/backup_intro_dialog.js';
+import './os_fyde_page/fydeos_account.js';
+// import './os_fyde_page/fydeos_drivers.js';
+import './os_fyde_page/fydeos_remoting.js';
+import './os_fyde_page/fydeos_tweak_ui.js';
+import './os_fyde_page/fydeos_more_info.js';
+import './os_fyde_page/fydeos_dev_mode.js';
+import './os_fyde_page/fydeos_experiment.js';
+// <if expr="use_fydeos_license">
+import './os_fyde_page/fydeos_license_info.js';
+// </if>
+import './os_fyde_page/os_fyde_page.js';
 
 export {ScreenAiInstallStatus} from '/shared/settings/a11y_page/ax_annotations_browser_proxy.js';
 export {CaptionsBrowserProxy, CaptionsBrowserProxyImpl, LiveCaptionLanguage, LiveCaptionLanguageList} from '/shared/settings/a11y_page/captions_browser_proxy.js';

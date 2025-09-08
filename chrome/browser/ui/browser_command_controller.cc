@@ -895,11 +895,9 @@ bool BrowserCommandController::ExecuteCommandWithDisposition(
     case IDC_TASK_MANAGER_MAIN_MENU:
       OpenTaskManager(browser_, task_manager::StartAction::kMainMenu);
       break;
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
     case IDC_FEEDBACK:
       OpenFeedbackDialog(browser_, feedback::kFeedbackSourceBrowserCommand);
       break;
-#endif
     case IDC_SHOW_CHROME_LABS:
       window()->ShowChromeLabs();
       break;
@@ -1924,10 +1922,8 @@ void BrowserCommandController::UpdateCommandsForFullscreenMode() {
 
   // Show various bits of UI
   command_updater_.UpdateCommandEnabled(IDC_DEVELOPER_MENU, show_main_ui);
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   command_updater_.UpdateCommandEnabled(
       IDC_FEEDBACK, show_main_ui || browser_->is_type_devtools());
-#endif
 
   command_updater_.UpdateCommandEnabled(IDC_EDIT_SEARCH_ENGINES, show_main_ui);
   command_updater_.UpdateCommandEnabled(IDC_VIEW_PASSWORDS, show_main_ui);

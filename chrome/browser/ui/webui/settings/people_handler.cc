@@ -80,6 +80,9 @@
 
 #if BUILDFLAG(IS_CHROMEOS)
 #include "ash/constants/ash_features.h"
+#include "components/prefs/pref_service.h"
+#include "chrome/browser/browser_process.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 #endif
 
 #if !BUILDFLAG(IS_CHROMEOS)
@@ -350,6 +353,10 @@ void PeopleHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "TurnOffSync", base::BindRepeating(&PeopleHandler::HandleTurnOffSync,
                                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+    "cleanLocalAutoSignin",
+    base::BindRepeating(&PeopleHandler::HandleCleanLocalAutoSignin,
+                        base::Unretained(this)));
 #else
   web_ui()->RegisterMessageCallback(
       "SyncSetupStartSignIn",
@@ -804,6 +811,17 @@ void PeopleHandler::HandleTurnOnSync(const base::Value::List& args) {
 void PeopleHandler::HandleTurnOffSync(const base::Value::List& args) {
   NOTREACHED() << "It is not possible to toggle Sync on Ash";
 }
+
+void PeopleHandler::HandleCleanLocalAutoSignin(const base::Value::List& args) {
+  if (!g_browser_process) {
+    return;
+  }
+  PrefService* prefs = g_browser_process->local_state();
+  prefs->SetString(fydeos::prefs::kOfflineAutoSigninPassword, std::string());
+  prefs->SetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey,
+      std::string());
+}
+
 #endif  // BUILDFLAG(IS_CHROMEOS)
 
 #if !BUILDFLAG(IS_CHROMEOS)

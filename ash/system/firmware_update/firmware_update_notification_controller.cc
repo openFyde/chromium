@@ -76,6 +76,9 @@ bool ShouldShowNotification() {
     case user_manager::UserType::kKioskIWA:
       return false;
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
     case user_manager::UserType::kChild:
       return true;
   }

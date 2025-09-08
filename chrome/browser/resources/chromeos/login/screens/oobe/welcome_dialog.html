@@ -5,7 +5,7 @@ found in the LICENSE file.
 -->
 
 <style include="cr-shared-style oobe-dialog-host-styles">
-  :host {
+  :host(:not([fydeos-layout])) {
     --oobe-welcome-dialog-horizontal-padding: 40px;
     box-sizing: border-box;
     height: var(--oobe-adaptive-dialog-height);
@@ -57,6 +57,10 @@ found in the LICENSE file.
     :host-context(.boot-animation-enabled) #content {
       grid-template-columns: auto;
     }
+  }
+
+  :host-context([orientation='horizontal']):host([fydeos-layout]) #content #buttons {
+    margin-left: -20px;
   }
 
   #getStarted[disabled] {
@@ -148,7 +152,7 @@ found in the LICENSE file.
     margin-top: 16px;
   }
 
-  #title {
+  :host(:not([fydeos-layout])) #title {
     color: var(--oobe-header-text-color);
     font-family: var(--oobe-header-font-family);
     font-size: var(--oobe-welcome-header-font-size);
@@ -156,7 +160,7 @@ found in the LICENSE file.
     margin-bottom: 0;
   }
   @media (orientation: landscape) {
-    #title {
+    :host(:not([fydeos-layout])) #title {
       margin-top: 48px;
     }
   }
@@ -172,7 +176,7 @@ found in the LICENSE file.
     margin-top: auto;
   }
 
-  #subtitle {
+  :host(:not([fydeos-layout])) #subtitle {
     color: var(--oobe-subheader-text-color);
     font-family: var(--oobe-header-font-family);
     font-size: var(--oobe-welcome-subheader-font-size);
@@ -181,7 +185,7 @@ found in the LICENSE file.
   }
 
   @media (orientation: landscape) {
-    #subtitle {
+    :host(:not([fydeos-layout])) #subtitle {
       margin-bottom: 64px;
     }
   }
@@ -238,17 +242,26 @@ found in the LICENSE file.
     display: none;
   }
 
+  #video {
+    border-radius: 50%;
+  }
 </style>
-<div id="dialog" class="layout vertical">
-  <h1 id="title" class="welcome-header-text">
-    [[i18nDynamic(locale, 'welcomeScreenGreeting')]]
+<oobe-adaptive-dialog id="dialog"
+    fydeos-layout$="[[fydeosLayout]]"
+    animation-loop
+    class="layout vertical">
+  <video id="video" slot="fydeos-illustration" class="oobe-illustration">
+    <source src="animations/fydeos_v21_welcome.mp4" />
+  </video>
+  <h1 id="title" slot="title" class="welcome-header-text">
+    [[i18nDynamic(locale, 'welcomeScreenGreeting')]] v21
   </h1>
   <template is="dom-if" if="[[!isBootAnimation]]">
-    <div id="subtitle" class="welcome-header-text">
-      [[i18nDynamic(locale, 'welcomeScreenGreetingSubtitle')]]
+    <div id="subtitle" slot="subtitle" class="welcome-header-text">
+      Sunlit Epiphany
     </div>
   </template>
-  <div id="content">
+  <div id="content" slot="content" class="landscape-header-aligned">
     <div id="buttons" class="layout vertical welcome-left-buttons">
       <oobe-icon-button
         class="bg-transparent"
@@ -291,6 +304,8 @@ found in the LICENSE file.
       >
       </oobe-icon-button>
     </div>
+  </div>
+  <div slot="bottom-buttons">
     <div id="bottomButtons" class="layout horizontal">
       <quick-start-entry-point
         id="quickStartWelcomeEntryPoint"
@@ -306,6 +321,7 @@ found in the LICENSE file.
       >
       </oobe-text-button>
     </div>
+  </div>
     <template is="dom-if" if="[[showAnimationSlot()]]">
       <div id="welcomeAnimationSlot">
         <template is="dom-if" if="[[!isMeet]]">
@@ -329,8 +345,7 @@ found in the LICENSE file.
         </template>
       </div>
     </template>
-  </div>
-</div>
+</oobe-adaptive-dialog>
 <oobe-modal-dialog id="chromeVoxHint">
   <div id="chromeVoxHintTitle"
     slot="title">

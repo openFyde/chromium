@@ -103,11 +103,22 @@
 #include "ui/views/style/typography.h"
 #include "ui/views/vector_icons.h"
 #include "ui/views/view.h"
+#include "fydeos/switches/misc/misc_switches.h"
+#include "base/system/sys_info.h"
+#include "base/timer/timer.h"
+#include "fydeos/prefs//fydeos_pref_names.h"
+#include "base/task/single_thread_task_runner.h"
+#include "ash/wm/lock_state_controller.h"
+
+// #include "chromeos/cryptohome/system_salt_getter.h"
+// #include "chrome/browser/ash/settings/token_encryptor.h"
 
 namespace ash {
 
 namespace {
 
+constexpr int kAutoSigninMaxTries = 2;
+constexpr int kAutoSigninRetryDelayInSeconds = 2;
 // Sets the preferred width for |view| with an arbitrary height.
 void SetPreferredWidthForView(views::View* view, int width) {
   view->SetPreferredSize(gfx::Size(width, kNonEmptyHeightDp));
@@ -427,7 +438,8 @@ LockContentsView::LockContentsView(
     std::unique_ptr<LoginDetachableBaseModel> detachable_base_model)
     : screen_type_(screen_type),
       data_dispatcher_(data_dispatcher),
-      detachable_base_model_(std::move(detachable_base_model)) {
+      detachable_base_model_(std::move(detachable_base_model)),
+      auto_signin_timer_(std::make_unique<base::OneShotTimer>()) {
   data_dispatcher_->AddObserver(this);
   Shell::Get()->system_tray_notifier()->AddSystemTrayObserver(this);
   keyboard::KeyboardUIController::Get()->AddObserver(this);
@@ -514,6 +526,9 @@ LockContentsView::LockContentsView(
     user_adding_screen_indicator_ =
         AddChildView(std::make_unique<UserAddingScreenIndicator>());
   }
+
+  is_last_chrome_signout_ = IsOfflineSigninLastChromeSignout();
+
   chromeos::PowerManagerClient::Get()->AddObserver(this);
   RegisterAccelerators();
 
@@ -653,6 +668,9 @@ void LockContentsView::ShowEnterpriseDomainManager(
 }
 
 void LockContentsView::ShowAdbEnabled() {
+  // ---***FYDEOS BEGIN***---
+  if (fydeos::switches::IsFydeCustomEnabled()) return;
+  // ---***FYDEOS END***---
   bottom_status_indicator_->SetText(
       l10n_util::GetStringUTF16(IDS_ASH_LOGIN_SCREEN_UNVERIFIED_CODE_WARNING));
   bottom_status_indicator_->GetViewAccessibility().SetRole(
@@ -777,7 +795,134 @@ bool LockContentsView::AcceleratorPressed(const ui::Accelerator& accelerator) {
   return true;
 }
 
+bool LockContentsView::IsOfflineSigninLastChromeSignout() const {
+  PrefService* local_state = Shell::Get()->local_state();
+  bool is_signout = false;
+  if (local_state->HasPrefPath(fydeos::prefs::kOfflineAutoSigninIsChromeLastSignout)) {
+    is_signout = local_state->GetBoolean(fydeos::prefs::kOfflineAutoSigninIsChromeLastSignout);
+    local_state->ClearPref(fydeos::prefs::kOfflineAutoSigninIsChromeLastSignout);
+  }
+  return is_signout;
+}
+
+bool LockContentsView::IsOfflineAutoSigninEnabled() const {
+  /*
+  const base::Time last_session_start_time = base::Time::FromInternalValue(
+      Shell::Get()->local_state()->GetInt64("session.start_time"));
+  const base::Time uptime = base::Time::NowFromSystemTime() - base::SysInfo::Uptime();
+  const bool should_enable_based_on_time = last_session_start_time <= uptime;
+  const bool should_enable_based_on_signout_mark = !is_last_chrome_signout_;
+  return should_enable_based_on_time || should_enable_based_on_signout_mark;
+  */
+  const bool should_enable_based_on_signout_mark = !is_last_chrome_signout_;
+  return should_enable_based_on_signout_mark;
+}
+
 void LockContentsView::OnUsersChanged(const std::vector<LoginUserInfo>& users) {
+  if (screen_type_ != LockScreen::ScreenType::kLogin) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  if (!IsOfflineAutoSigninEnabled()) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  if (Shell::Get()->local_state()->GetBoolean(fydeos::prefs::kFactoryResetRequested)) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  const std::string account_id_key = Shell::Get()->local_state()->GetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
+  const std::string encrypted_password = Shell::Get()->local_state()->GetString(fydeos::prefs::kOfflineAutoSigninPassword);
+  if (account_id_key.empty() || encrypted_password.empty()) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  // TODO use real system_salt, and encryptor
+  // SystemSaltGetter::Get()->GetSystemSalt(
+  //     base::BindOnce(&LockContentsView::OnGetSystemSalt,
+  //                    weak_ptr_factory_.GetWeakPtr(), users, account_id_key, encrypted_password));
+  const int64_t delay = fydeos::switches::GetFydeOSAutoSigninDelay();
+  if (delay == 0) {
+    OnGetSystemSalt(users, account_id_key, encrypted_password, "FYDEOS");
+    return;
+  }
+  VLOG(2) << "Delay " << delay << " seconds to auto signin";
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+          FROM_HERE,
+          base::BindOnce(&LockContentsView::OnGetSystemSalt, weak_ptr_factory_.GetWeakPtr(),
+                        users, account_id_key, encrypted_password, "FYDEOS"),
+          base::Seconds(delay));
+}
+
+void LockContentsView::OnGetSystemSalt(const std::vector<LoginUserInfo>& users,
+                                       const std::string& account_id_key,
+                                       const std::string& encrypted_password,
+                                       const std::string& system_salt) {
+  if (system_salt.empty()) {
+    OnUsersChangedInternal(users);
+    return;
+  }
+
+  // CryptohomeTokenEncryptor encryptor(system_salt);
+  // std::string password = encryptor.DecryptWithSystemSalt(encrypted_password);
+  // if (password.empty()) {
+  //   OnUsersChangedInternal(users);
+  //   return;
+  // }
+  std::string password = encrypted_password;
+
+  for (const LoginUserInfo& user : users) {
+    if (user.basic_user_info.account_id.HasAccountIdKey()
+     && user.basic_user_info.account_id.GetAccountIdKey() == account_id_key) {
+      TryToAutoSigninForLocalAccount(user.basic_user_info.account_id, password, users);
+      return;
+    }
+  }
+
+  OnUsersChangedInternal(users);
+}
+
+void LockContentsView::TryToAutoSigninForLocalAccount(const AccountId& account_id,
+                                                      const std::string& password,
+                                                      const std::vector<LoginUserInfo>& users) {
+  auto_signin_tries += 1;
+  VLOG(3) << "try to auto signin local account: " << account_id;
+    Shell::Get()->login_screen_controller()->AuthenticateUserWithPasswordOrPin(
+        account_id, password, false,
+        base::BindOnce(&LockContentsView::OnOfflineAutoSigninComplete,
+                       weak_ptr_factory_.GetWeakPtr(), account_id, password, users));
+}
+
+void LockContentsView::OnOfflineAutoSigninComplete(const AccountId& account_id,
+                                                   const std::string& password,
+                                                   const std::vector<LoginUserInfo>& users,
+                                                   std::optional<bool> auth_success) {
+  if (auth_success.has_value() && auth_success.value()) {
+    VLOG(3) << "auto signin successfully";
+    return;
+  }
+  if (auto_signin_tries < kAutoSigninMaxTries) {
+    VLOG(3) << "try to auto signin again after " << kAutoSigninRetryDelayInSeconds << " seconds";
+    auto_signin_timer_->Start(
+      FROM_HERE,
+      base::Seconds(kAutoSigninRetryDelayInSeconds),
+      base::BindOnce(&LockContentsView::TryToAutoSigninForLocalAccount,
+                     weak_ptr_factory_.GetWeakPtr(), account_id, password, users));
+  } else {
+    VLOG(3) << "auto signin failed, attempt to restart to fallback to normal login screen";
+    // OnUsersChangedInternal(users);
+    Shell::Get()->local_state()->SetString(fydeos::prefs::kOfflineAutoSigninPassword, std::string());
+    Shell::Get()->local_state()->SetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey,
+                     std::string());
+    Shell::Get()->lock_state_controller()->RequestRestart();
+  }
+}
+
+void LockContentsView::OnUsersChangedInternal(const std::vector<LoginUserInfo>& users) {
   if (Shell::Get()->login_screen_controller()->IsAuthenticating()) {
     // TODO(b/276246832): We should avoid re-layouting during Authentication.
     LOG(WARNING) << "LockContentsView::OnUsersChanged called during "
@@ -1942,7 +2087,7 @@ void LockContentsView::LayoutAuth(LoginBigUserView* to_update,
                 << ". Waiting for OnPinUnlock call.";
           }
           to_update_auth =
-              screen_type_ == LockScreen::ScreenType::kLogin
+              screen_type_ == LockScreen::ScreenType::kLogin && (view->auth_user()->current_user().basic_user_info.account_id.GetAccountType() != AccountType::FLINT_ACCOUNT)
                   ? LoginAuthUserView::AUTH_PIN_LOCKED_SHOW_RECOVERY
                   : LoginAuthUserView::AUTH_PIN_LOCKED;
           // The auth error message might be shown at the moment due to previous
@@ -2092,6 +2237,7 @@ void LockContentsView::ShowAuthErrorMessage(bool authenticated_by_pin) {
 
   auth_error_bubble_->ShowAuthError(
       /*anchor_view = */ big_view->auth_user()->GetActiveInputView(),
+      /*account_type = */ account_id.GetAccountType(),
       /*unlock_attempt = */ unlock_attempt,
       /*authenticated_by_pin = */ authenticated_by_pin,
       /*is_login_screen = */ screen_type_ == LockScreen::ScreenType::kLogin);

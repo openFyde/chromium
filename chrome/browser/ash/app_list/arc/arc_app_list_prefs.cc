@@ -1304,6 +1304,8 @@ void ArcAppListPrefs::SetDefaultAppsFilterLevel() {
   // one, we have no option but to ban all pre-installed apps on Android side.
   // Match this requirement and don't show pre-installed apps for managed users
   // in app list.
+  //---***FYDEOS BEGIN***---
+  /*
   if (arc::policy_util::IsAccountManaged(profile_)) {
     if (profile_->IsChild() || ash::switches::IsTabletFormFactor()) {
       // For child accounts, filter only optional apps.
@@ -1316,10 +1318,10 @@ void ArcAppListPrefs::SetDefaultAppsFilterLevel() {
               ? ArcDefaultAppList::FilterLevel::OPTIONAL_APPS
               : ArcDefaultAppList::FilterLevel::ALL);
     }
-  } else {
-    default_apps_->set_filter_level(ArcDefaultAppList::FilterLevel::NOTHING);
-  }
-
+  } else {*/
+    default_apps_->set_filter_level(ArcDefaultAppList::FilterLevel::ALL);
+  /*}*/
+  //---***FYDEOS END***---
   // Register default apps if it was not registered before.
   RegisterDefaultApps();
 }

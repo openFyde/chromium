@@ -68,6 +68,13 @@ export class FilesSettingsCardElement extends FilesSettingsCardElementBase {
         readOnly: true,
       },
 
+      hideGoogleDrive_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
       /**
        * Indicates whether the user is connected to OneDrive or not.
        */
@@ -131,6 +138,7 @@ export class FilesSettingsCardElement extends FilesSettingsCardElementBase {
   private shouldShowAddSmbDialog_: boolean;
   private shouldShowOneDriveSettings_: boolean;
   private shouldShowOfficeSettings_: boolean;
+  private hideGoogleDrive_: boolean;
 
 
   constructor() {

@@ -215,7 +215,10 @@ enum class NotificationCatalogName {
   kBocaSpotlightStarted = 196,
   kFaceGazeActive = 197,
   kUsbPeripheralDeviceOrEndpointLimit = 198,
-  kMaxValue = kUsbPeripheralDeviceOrEndpointLimit
+  kFydeOSDataBackup = 199,
+  kFydeOSLicenseEnforcement = 200,
+  kFydeOSCrostiniInstall = 201,
+  kMaxValue = kFydeOSCrostiniInstall
 };
 
 // A living catalog that registers system nudges.
@@ -339,7 +342,8 @@ enum class ToastCatalogName {
   kCameraNowAllowed = 61,
   kCameraNowDisallowed = 62,
   kCameraForceDisabled = 63,
-  kMaxValue = kCameraForceDisabled
+  kImeShowFydeLanguageState = 64,
+  kMaxValue = kImeShowFydeLanguageState
 };
 
 }  // namespace ash

@@ -38,6 +38,7 @@
 #include "components/policy/core/browser/cloud/message_util.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/storage_partition.h"
+#include "fydeos/switches/urls/urls_constants.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "google_apis/gaia/gaia_id.h"
 #include "google_apis/gaia/gaia_urls.h"
@@ -45,6 +46,8 @@
 #include "services/network/public/mojom/cookie_manager.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/account/account_constants.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace ash {
 namespace {
@@ -73,6 +76,7 @@ std::string EnrollmentModeToUIMode(policy::EnrollmentConfig::Mode mode) {
     case policy::EnrollmentConfig::MODE_ATTESTATION:
       return kEnrollmentModeUIManual;
     case policy::EnrollmentConfig::MODE_LOCAL_FORCED:
+    case policy::EnrollmentConfig::MODE_FYDE_LOCAL_FORCED:
     case policy::EnrollmentConfig::MODE_SERVER_FORCED:
     case policy::EnrollmentConfig::MODE_ATTESTATION_LOCAL_FORCED:
     case policy::EnrollmentConfig::MODE_ATTESTATION_SERVER_FORCED:
@@ -817,10 +821,28 @@ base::Value::Dict EnrollmentScreenHandler::ScreenDataForOAuthEnrollment() {
   base::Value::Dict screen_data = ScreenDataCommon();
 
   screen_data.Set("webviewPartitionName", signin_partition_name_);
-  screen_data.Set("gaiaUrl", GaiaUrls::GetInstance()->gaia_url().spec());
-  screen_data.Set(
-      "gaiaPath",
-      GaiaUrls::GetInstance()->embedded_setup_chromeos_url().path().substr(1));
+  bool set_default_url = false;
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    if (fydeos::switches::IsBasicLicenseDevice()) {
+      screen_data.Set("gaiaUrl", GURL(fydeos::switches::GetFydeAccountUrl()).spec());
+      screen_data.Set("gaiaPath", std::string(fydeos::constants::kFydeBlockEnrollFydePath).substr(1));
+    } else {
+      set_default_url = true;
+    }
+  } else {
+    if (fydeos::switches::IsBasicLicenseDevice()) {
+      set_default_url = true;
+    } else {
+      screen_data.Set("gaiaUrl", GURL(fydeos::switches::GetFydeAccountUrl()).spec());
+      screen_data.Set("gaiaPath", std::string(fydeos::constants::kFydeBlockEnrollGooglePath).substr(1));
+    }
+  }
+  if (set_default_url) {
+    screen_data.Set("gaiaUrl", GaiaUrls::GetInstance()->gaia_url().spec());
+    screen_data.Set(
+        "gaiaPath",
+        GaiaUrls::GetInstance()->embedded_setup_chromeos_url().path().substr(1));
+  }
   screen_data.Set("clientId",
                   GaiaUrls::GetInstance()->oauth2_chrome_client_id());
   screen_data.Set("management_domain", config_.management_domain);
@@ -846,6 +868,7 @@ base::Value::Dict EnrollmentScreenHandler::ScreenDataCommon() {
   // isAutomaticEnrollment now that this UI flow also encompasses token-based
   // auto-enrollment.
   screen_data.Set("attestationBased", config_.is_automatic_enrollment());
+  screen_data.Set("fydeBased", config_.is_mode_fyde());
   screen_data.Set("flow", GetFlowString(flow_type_));
 
   if (ash::features::IsOobeAddUserDuringEnrollmentEnabled()) {

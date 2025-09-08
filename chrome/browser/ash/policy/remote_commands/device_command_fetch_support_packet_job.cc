@@ -326,6 +326,7 @@ bool DeviceCommandFetchSupportPacketJob::IsPiiAllowed() const {
       return true;
 
     case UserSessionType::UNAFFILIATED_USER_SESSION:
+    case UserSessionType::FYDEOS_USER_SESSION:
     case UserSessionType::MANAGED_GUEST_SESSION:
     case UserSessionType::GUEST_SESSION:
     case UserSessionType::NO_SESSION:

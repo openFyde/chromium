@@ -74,6 +74,10 @@ bool HasAPIKeyConfigured() {
   return GetApiKeyCacheInstance().HasAPIKeyConfigured();
 }
 
+bool HasFydeOSAPIKeyConfigured() {
+  return GetApiKeyCacheInstance().HasFydeOSAPIKeyConfigured();
+}
+
 const std::string& GetAPIKey(version_info::Channel channel) {
   return channel == version_info::Channel::STABLE
              ? GetAPIKey()
@@ -82,6 +86,10 @@ const std::string& GetAPIKey(version_info::Channel channel) {
 
 const std::string& GetAPIKey() {
   return GetApiKeyCacheInstance().api_key();
+}
+
+const std::string& GetFydeOSAPIKey() {
+  return GetApiKeyCacheInstance().fydeos_api_key();
 }
 
 const std::string& GetRemotingAPIKey() {
@@ -130,6 +138,12 @@ const std::string& GetMetricsKey() {
 bool HasOAuthClientConfigured() {
   return GetApiKeyCacheInstance().HasOAuthClientConfigured();
 }
+
+#if BUILDFLAG(IS_OPENFYDE)
+bool HasFydeOAuthClientConfigured() {
+  return GetApiKeyCacheInstance().HasFydeOAuthClientConfigured();
+}
+#endif
 
 const std::string& GetOAuth2ClientID(OAuth2Client client) {
   return GetApiKeyCacheInstance().GetClientID(client);

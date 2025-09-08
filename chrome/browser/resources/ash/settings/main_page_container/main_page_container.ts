@@ -23,6 +23,7 @@ import '../os_people_page/os_people_page.js';
 import '../os_privacy_page/os_privacy_page.js';
 import '../personalization_page/personalization_page.js';
 import '../system_preferences_page/system_preferences_page.js';
+import '../crostini_page/crostini_page.js';
 // clang-format on
 
 import 'chrome://resources/ash/common/cr_elements/cr_button/cr_button.js';

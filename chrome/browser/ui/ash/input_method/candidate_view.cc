@@ -26,6 +26,8 @@ namespace ui::ime {
 
 namespace {
 
+const bool kUseModernSkin = true;
+
 // VerticalCandidateLabel is used for rendering candidate text in
 // the vertical candidate window.
 class VerticalCandidateLabel : public views::Label {
@@ -61,7 +63,7 @@ class ShortcutLabel : public views::Label {
   explicit ShortcutLabel(ui::CandidateWindow::Orientation orientation)
       : orientation_(orientation) {
     // TODO(tapted): Get this FontList from views::style.
-    if (orientation == ui::CandidateWindow::VERTICAL) {
+    if (orientation == ui::CandidateWindow::VERTICAL && !kUseModernSkin) {
       SetFontList(font_list().Derive(kFontSizeDelta, gfx::Font::NORMAL,
                                      gfx::Font::Weight::BOLD));
     } else {
@@ -71,7 +73,10 @@ class ShortcutLabel : public views::Label {
     // candidate_label, like Chinese font for Chinese input method?
 
     // Setup paddings.
-    const auto kVerticalShortcutLabelInsets = gfx::Insets::TLBR(1, 6, 1, 6);
+    const auto kVerticalShortcutLabelInsets =
+      kUseModernSkin
+      ? gfx::Insets::TLBR(8, 12, 8, 4)
+      : gfx::Insets::TLBR(1, 6, 1, 6);
     const auto kHorizontalShortcutLabelInsets = gfx::Insets::TLBR(1, 3, 1, 0);
     const gfx::Insets insets = (orientation == ui::CandidateWindow::VERTICAL
                                     ? kVerticalShortcutLabelInsets
@@ -88,7 +93,7 @@ class ShortcutLabel : public views::Label {
   void OnThemeChanged() override {
     Label::OnThemeChanged();
     // Add decoration based on the orientation.
-    if (orientation_ == ui::CandidateWindow::VERTICAL) {
+    if (orientation_ == ui::CandidateWindow::VERTICAL && !kUseModernSkin) {
       // Set the background color.
       SkColor blackish = color_utils::AlphaBlend(
           SK_ColorBLACK,
@@ -202,9 +207,22 @@ void CandidateView::SetHighlighted(bool highlighted) {
 
   highlighted_ = highlighted;
   if (highlighted) {
-    SetBackground(
-        views::CreateSolidBackground(ui::kColorTextfieldSelectionBackground));
-    SetBorder(views::CreateSolidBorder(1, ui::kColorFocusableBorderFocused));
+    if (!kUseModernSkin) {
+      SetBackground(
+          views::CreateSolidBackground(ui::kColorTextfieldSelectionBackground));
+      SetBorder(views::CreateSolidBorder(1, ui::kColorFocusableBorderFocused));
+    } else {
+      if (index_in_page_ == 0) {
+        SetBackground(views::CreateRoundedRectBackground(
+              kFydeColorTextfieldSelectionBackground, background_radius_, 0, 0));
+      } else if (index_in_page_ == page_size_ - 1) {
+        SetBackground(views::CreateRoundedRectBackground(
+              kFydeColorTextfieldSelectionBackground, 0, background_radius_, 0));
+      } else {
+        SetBackground(views::CreateSolidBackground(
+            ui::kFydeColorTextfieldSelectionBackground));
+      }
+    }
 
     // Cancel currently focused one.
     for (View* view : parent()->children()) {
@@ -214,7 +232,9 @@ void CandidateView::SetHighlighted(bool highlighted) {
     }
   } else {
     SetBackground(nullptr);
-    SetBorder(views::CreateEmptyBorder(1));
+    if (!kUseModernSkin) {
+      SetBorder(views::CreateEmptyBorder(1));
+    }
   }
   SchedulePaint();
 }
@@ -316,6 +336,15 @@ void CandidateView::SetPositionData(int index, int total) {
   // PosInSet needs to be incremented since |candidate_index_| is 0-based.
   GetViewAccessibility().SetPosInSet(candidate_index_ + 1);
   GetViewAccessibility().SetSetSize(total_candidates_);
+}
+
+void CandidateView::SetIndexData(int index, int total) {
+  index_in_page_ = index;
+  page_size_ = total;
+}
+
+void CandidateView::SetBackgroundRadius(float radius) {
+  background_radius_ = radius;
 }
 
 BEGIN_METADATA(CandidateView)

@@ -2605,6 +2605,8 @@ static_library("browser") {
     "//ui/strings",
     "//ui/surface",
     "//ui/webui",
+    "//fydeos/prefs",
+    "//fydeos/switches",
   ]
 
   if (is_win && is_chrome_branded) {
@@ -2613,6 +2615,14 @@ static_library("browser") {
       "//chrome/browser/win/installer_downloader:infobar",
       "//chrome/browser/win/installer_downloader:infobar_impl",
     ]
+  }
+
+  if (is_chromeos) {
+    if (use_fydeos_license) {
+      deps += [
+        "//fydeos/license",
+      ]
+    }
   }
 
   # Platforms that have a network diagnostics dialog. All others fall through

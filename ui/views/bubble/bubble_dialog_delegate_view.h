@@ -117,6 +117,7 @@ class PaletteWelcomeBubbleView;
 class QuickInsertCapsLockStateView;
 class QuickInsertPreviewBubbleView;
 class ShelfBubble;
+class FydeAssistantBubble;
 class TestBubbleDialogDelegateView;
 class TestBubbleDialogDelegate;
 class TrayBubbleView;
@@ -829,6 +830,7 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
   friend class ::ash::QuickInsertCapsLockStateView;
   friend class ::ash::QuickInsertPreviewBubbleView;
   friend class ::ash::ShelfBubble;
+  friend class ::ash::FydeAssistantBubble;
   friend class ::ash::TestBubbleDialogDelegateView;
   friend class ::ash::TestBubbleDialogDelegate;
   friend class ::ash::TrayBubbleView;

@@ -273,6 +273,7 @@ are declared in tools/grit/grit_args.gni.
     <file path="resources/generated_resources_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/generated_resources_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/generated_resources_zu.xtb" lang="zu" />
+    <file path="../../fydeos/i18n/chrome/app/resources/generated_resources_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <!-- IMPORTANT: .grdp files must be in the same directory as this file -->
@@ -305,7 +306,11 @@ are declared in tools/grit/grit_args.gni.
       <if expr="is_chromeos">
         <part file="chromeos_shared_strings.grdp" />
         <part file="chromeos_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/chromeos_strings.override.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/chromeos_strings.grdp" />
         <part file="os_settings_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/os_settings_strings.override.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/os_settings_strings.grdp" />
         <part file="os_settings_search_tag_strings.grdp" />
         <part file="sharesheet_strings.grdp" />
       </if>
@@ -313,7 +318,10 @@ are declared in tools/grit/grit_args.gni.
       <!-- Settings specific strings -->
       <if expr="not is_android">
         <part file="settings_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/settings_strings.override.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/settings_strings.grdp" />
         <part file="shared_settings_strings.grdp"/>
+        <part file="../../fydeos/i18n/chrome/app/shared_settings_strings.override.grdp" />
       </if>
 
       <if expr="chrome_root_store_cert_management_ui">
@@ -328,11 +336,14 @@ are declared in tools/grit/grit_args.gni.
       <!-- MD Extensions specific strings -->
       <if expr="enable_extensions_core">
         <part file="extensions_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/extensions_strings.override.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/extensions_strings.grdp" />
       </if>
 
       <!-- Nearby Share specific strings -->
       <if expr="not is_android">
         <part file="nearby_share_strings.grdp" />
+        <part file="../../fydeos/i18n/chrome/app/nearby_share_strings.override.grdp" />
       </if>
 
       <!-- What's New strings -->
@@ -18920,6 +18931,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Unpin
       </message>
     </if>
+
+    <part file="../../fydeos/i18n/chrome/app/generated_resources.override.grdp" />
+    <part file="../../fydeos/i18n/chrome/app/generated_resources.grdp" />
 
   </messages>
 </release>

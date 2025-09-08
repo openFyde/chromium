@@ -90,6 +90,9 @@ void AuthSessionAuthenticator::CompleteLoginImpl(
     std::unique_ptr<UserContext> context) {
   DCHECK(context);
   DCHECK(context->GetUserType() == user_manager::UserType::kRegular ||
+         context->GetUserType() == user_manager::UserType::kFlintAccount ||
+         context->GetUserType() == user_manager::UserType::kFydeAccount ||
+         context->GetUserType() == user_manager::UserType::kFydeChild ||
          context->GetUserType() == user_manager::UserType::kChild);
   // For now we don't support empty passwords:
   if (context->GetKey()->GetKeyType() == Key::KEY_TYPE_PASSWORD_PLAIN) {
@@ -394,7 +397,10 @@ void AuthSessionAuthenticator::AuthenticateToLogin(
     std::unique_ptr<UserContext> context) {
   DCHECK(context);
   DCHECK(context->GetUserType() == user_manager::UserType::kRegular ||
+         context->GetUserType() == user_manager::UserType::kFlintAccount ||
+         context->GetUserType() == user_manager::UserType::kFydeAccount ||
          context->GetUserType() == user_manager::UserType::kChild ||
+         context->GetUserType() == user_manager::UserType::kFydeChild ||
          context->GetUserType() == user_manager::UserType::kPublicAccount);
   PrepareForNewAttempt("AuthenticateToLogin", "Returning regular user");
 
@@ -418,7 +424,10 @@ void AuthSessionAuthenticator::AuthenticateToUnlock(
     std::unique_ptr<UserContext> user_context) {
   DCHECK(user_context);
   DCHECK(user_context->GetUserType() == user_manager::UserType::kRegular ||
+         user_context->GetUserType() == user_manager::UserType::kFlintAccount ||
+         user_context->GetUserType() == user_manager::UserType::kFydeAccount ||
          user_context->GetUserType() == user_manager::UserType::kChild ||
+         user_context->GetUserType() == user_manager::UserType::kFydeChild ||
          user_context->GetUserType() == user_manager::UserType::kPublicAccount);
   PrepareForNewAttempt("AuthenticateToUnlock", "Returning regular user");
 

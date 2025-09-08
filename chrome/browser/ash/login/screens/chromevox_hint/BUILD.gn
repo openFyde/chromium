@@ -32,5 +32,6 @@ source_set("unit_tests") {
     "//chromeos/dbus/constants",
     "//testing/gmock",
     "//ui/base",
+    "//fydeos/switches",
   ]
 }

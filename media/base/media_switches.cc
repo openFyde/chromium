@@ -852,7 +852,7 @@ BASE_FEATURE(kOnDeviceWebSpeech,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables the Live Caption feature on supported devices.
-BASE_FEATURE(kLiveCaption, "LiveCaption", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kLiveCaption, "LiveCaption", base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Logs a DumpWithoutCrashing() call each time the Speech On-Device API (SODA)
 // fails to load. Used to diagnose issues when rolling out new versions of the

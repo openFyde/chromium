@@ -103,6 +103,7 @@
 #include "components/user_manager/user.h"
 #include "components/user_manager/user_manager.h"
 #include "ui/events/ash/pref_names.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 #endif
 
 #if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_ANDROID)
@@ -873,6 +874,9 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[::ash::prefs::kOnDeviceAppControlsSetupCompleted] =
       settings_api::PrefType::kBoolean;
 
+  (*s_allowlist)[arc::prefs::kArcSignedIn] =
+      settings_api::PrefType::kBoolean;
+
   // Ambient Mode.
   (*s_allowlist)[ash::prefs::kDarkModeScheduleType] =
       settings_api::PrefType::kNumber;
@@ -893,6 +897,11 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[ash::ambient::prefs::kAmbientModeRunningDurationMinutes] =
       settings_api::PrefType::kNumber;
 
+  // Fyde Assistant.
+  (*s_allowlist)[fydeos::prefs::kFydeAssistantEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_allowlist)[fydeos::prefs::kFydeAssistantExtraAcceleratorEnabled] =
+      settings_api::PrefType::kBoolean;
   // Google Assistant.
   (*s_allowlist)[ash::assistant::prefs::kAssistantConsentStatus] =
       settings_api::PrefType::kNumber;
@@ -1216,10 +1225,8 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[proxy_config::prefs::kProxy] =
       settings_api::PrefType::kDictionary;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   (*s_allowlist)[::prefs::kUserFeedbackAllowed] =
       settings_api::PrefType::kBoolean;
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
   // Media Remoting settings.
   (*s_allowlist)[media_router::prefs::kMediaRouterMediaRemotingEnabled] =

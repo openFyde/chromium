@@ -54,6 +54,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_delegate.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace ash {
 namespace {
@@ -196,6 +197,7 @@ SigninErrorNotifier::SigninErrorNotifier(SigninErrorController* controller,
   error_controller_->AddObserver(this);
   const AccountId account_id =
       multi_user_util::GetAccountIdFromProfile(profile_);
+  fydeos::switches::ToggleFydeAccountFlagByAccountId(account_id);
   if (token_handle_store_->HasToken(account_id) &&
       !token_handle_store_->IsRecentlyChecked(account_id)) {
     token_handle_store_->IsReauthRequired(

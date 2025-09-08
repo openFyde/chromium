@@ -189,6 +189,14 @@ UserType UserManager::CalculateUserType(const AccountId& account_id,
                      << new_user_type;
       }
       return new_user_type;
+    } else if (user_type == UserType::kFydeChild || user_type == UserType::kFydeAccount) {
+      const UserType new_user_type =
+          is_child ? UserType::kFydeChild : UserType::kFydeAccount;
+      if (new_user_type != user_type) {
+        LOG(WARNING) << "FydeOS child user type has changed: " << user_type << " => "
+                     << new_user_type;
+      }
+      return new_user_type;
     } else if (is_child) {
       LOG(FATAL) << "Incorrect child user type " << user_type;
     }
@@ -198,7 +206,15 @@ UserType UserManager::CalculateUserType(const AccountId& account_id,
 
   // User is new
   if (is_child) {
-    return UserType::kChild;
+    return account_id.GetAccountType() == AccountType::FYDE_ACCOUNT ? UserType::kFydeChild : UserType::kChild;
+  }
+
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) {
+    return UserType::kFlintAccount;
+  }
+
+  if (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT) {
+    return UserType::kFydeAccount;
   }
 
   return UserType::kRegular;
@@ -208,7 +224,10 @@ bool UserManager::IsUserAllowed(const user_manager::User& user,
                                 bool is_guest_allowed,
                                 bool is_user_allowlisted) {
   DCHECK(user.GetType() == UserType::kRegular ||
+         user.GetType() == UserType::kFlintAccount ||
+         user.GetType() == UserType::kFydeAccount ||
          user.GetType() == UserType::kGuest ||
+         user.GetType() == UserType::kFydeChild ||
          user.GetType() == UserType::kChild);
 
   if (user.GetType() == UserType::kGuest && !is_guest_allowed) {

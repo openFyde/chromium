@@ -173,6 +173,10 @@ class COMPONENT_EXPORT(CHROMEOS_NETWORK) ShillPropertyHandler final
   void OnPropertyChanged(const std::string& key,
                          const base::Value& value) override;
 
+  base::WeakPtr<ShillPropertyHandler> GetWeakPtr() {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
  private:
   typedef std::map<ManagedState::ManagedType, std::set<std::string>>
       TypeRequestMap;

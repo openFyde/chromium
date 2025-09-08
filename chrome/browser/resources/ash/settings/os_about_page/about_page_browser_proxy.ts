@@ -153,12 +153,10 @@ export interface AboutPageBrowserProxy {
   /** Opens the release notes app. */
   launchReleaseNotes(): void;
 
-  // <if expr="_google_chrome">
   /**
    * Opens the feedback dialog.
    */
   openFeedbackDialog(): void;
-  // </if>
 
   /** Opens the diagnostics page. */
   openDiagnostics(): void;
@@ -172,6 +170,7 @@ export interface AboutPageBrowserProxy {
   /** Opens the firmware updates page. */
   openFirmwareUpdatesPage(): void;
 
+  getIsFirmwareUpdateSupported(): Promise<boolean>;
   /**
    * Requests the number of firmware updates.
    */
@@ -199,6 +198,9 @@ export interface AboutPageBrowserProxy {
    * the version updater is busy, for example with downloading updates.
    */
   getChannelInfo(): Promise<ChannelInfo>;
+
+  getEnabledFydeOTA(): Promise<boolean>;
+  enableFydeOTA(enabled: boolean): void;
 
   canChangeChannel(): Promise<boolean>;
 
@@ -282,11 +284,9 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
     chrome.send('launchReleaseNotes');
   }
 
-  // <if expr="_google_chrome">
   openFeedbackDialog(): void {
     chrome.send('openFeedbackDialog');
   }
-  // </if>
 
   openDiagnostics(): void {
     chrome.send('openDiagnostics');
@@ -308,6 +308,10 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
     return sendWithPromise('getFirmwareUpdateCount');
   }
 
+  getIsFirmwareUpdateSupported(): Promise<boolean> {
+    return sendWithPromise('getIsFirmwareUpdateSupported');
+  }
+
   requestUpdate(): void {
     chrome.send('requestUpdate');
   }
@@ -322,6 +326,14 @@ export class AboutPageBrowserProxyImpl implements AboutPageBrowserProxy {
 
   getChannelInfo(): Promise<ChannelInfo> {
     return sendWithPromise('getChannelInfo');
+  }
+
+  enableFydeOTA(enabled: boolean) {
+    chrome.send('enableFydeOTA', [enabled]);
+  }
+
+  getEnabledFydeOTA() {
+    return sendWithPromise('getEnabledFydeOTA');
   }
 
   canChangeChannel(): Promise<boolean> {

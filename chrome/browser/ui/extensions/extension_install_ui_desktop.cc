@@ -113,9 +113,9 @@ void ExtensionInstallUIDesktop::OnInstallSuccess(
   // Extensions aren't enabled by default in incognito so we confirm
   // the install in a normal window.
   Profile* current_profile = profile()->GetOriginalProfile();
-  Browser* browser = FindOrCreateVisibleBrowser(current_profile);
 
   if (!extension->is_app()) {
+    Browser* browser = FindOrCreateVisibleBrowser(current_profile);
     ShowBubble(extension, browser, *icon);
     return;
   }
@@ -125,6 +125,7 @@ void ExtensionInstallUIDesktop::OnInstallSuccess(
     return;
   }
 
+  Browser* browser = FindOrCreateVisibleBrowser(current_profile);
   if (browser) {
     ShowBubble(extension, browser, *icon);
   }

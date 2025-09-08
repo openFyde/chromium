@@ -56,6 +56,7 @@ class ASH_PUBLIC_EXPORT AppListViewDelegate {
   // Invoked to end a Google Assistant session.
   virtual void EndAssistant(assistant::AssistantExitPoint exit_point) = 0;
 
+  virtual void CloseFydeAssistant() = 0;
   // Returns the search categories that are available for users to choose if
   // they want to have the results in the categories displayed in launcher
   // search.

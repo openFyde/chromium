@@ -24,6 +24,8 @@ enum AccountType {
   [Default] kUnspecified = 0,
   kGaia = 1,
   // DEPRECATED kActiveDirectory = 2,
+  kFlint = 3,
+  kFyde = 4,
 };
 
 // Uniquely identifies an account in Account Manager.

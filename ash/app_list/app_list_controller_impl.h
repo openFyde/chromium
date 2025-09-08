@@ -172,6 +172,7 @@ class ASH_EXPORT AppListControllerImpl
       override;
   void StartAssistant(assistant::AssistantEntryPoint entry_point) override;
   void EndAssistant(assistant::AssistantExitPoint exit_point) override;
+  void CloseFydeAssistant() override;
   std::vector<AppListSearchControlCategory> GetToggleableCategories()
       const override;
   void StartSearch(const std::u16string& raw_query) override;
@@ -267,6 +268,7 @@ class ASH_EXPORT AppListControllerImpl
   void OnAssistantSettingsEnabled(bool enabled) override;
   void OnAssistantFeatureAllowedChanged(
       assistant::AssistantAllowedState state) override;
+  void OnFydeAssistantEnabled(bool enabled) override;
 
   // display::DisplayManagerObserver:
   void OnDidApplyDisplayChanges() override;
@@ -409,6 +411,8 @@ class ASH_EXPORT AppListControllerImpl
   // Returns true if home screen should be shown based on the current
   // configuration.
   bool ShouldShowHomeScreen() const;
+
+  bool IsFydeAssistantEnabled() const;
 
   // Updates home launcher scale and opacity when the overview mode state
   // changes. `show_home_launcher` - whether the home launcher should be shown.

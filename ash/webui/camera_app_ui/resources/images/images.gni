@@ -72,7 +72,7 @@ in_app_images = [
 ]
 
 icon_images = [
-  "camera_app_icons_128.png",
-  "camera_app_icons_192.png",
-  "camera_app_icons_48.png",
+  "fydeos/camera_app_icons_128.png",
+  "fydeos/camera_app_icons_192.png",
+  "fydeos/camera_app_icons_48.png",
 ]

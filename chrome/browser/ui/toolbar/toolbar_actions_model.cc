@@ -40,6 +40,12 @@
 #include "extensions/common/manifest_constants.h"
 #include "extensions/common/permissions/permissions_data.h"
 
+#include "build/chromeos_buildflags.h"
+#if BUILDFLAG(IS_CHROMEOS)
+#include "ui/base/ime/ash/extension_ime_util.h"
+#include "fydeos/constants/fydeos_constants.h"
+#endif
+
 ToolbarActionsModel::ToolbarActionsModel(
     Profile* profile,
     extensions::ExtensionPrefs* extension_prefs)
@@ -178,6 +184,15 @@ bool ToolbarActionsModel::ShouldAddExtension(
       !extensions::util::IsIncognitoEnabled(extension->id(), profile_)) {
     return false;
   }
+
+#if BUILDFLAG(IS_CHROMEOS)
+  if (ash::extension_ime_util::IsFydeOSProvidedIMEByExtensionId(extension->id())) {
+    return false;
+  }
+  if (fydeos::constants::ShouldHideExtensionById(extension->id())) {
+    return false;
+  }
+#endif
 
   // In this case, we don't care about the browser action visibility, because
   // we want to show each extension regardless.

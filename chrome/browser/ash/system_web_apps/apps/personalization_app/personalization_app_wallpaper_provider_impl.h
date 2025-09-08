@@ -229,6 +229,8 @@ class PersonalizationAppWallpaperProviderImpl
 
   void OnGetDefaultImage(GetDefaultImageThumbnailCallback callback,
                          const gfx::ImageSkia& image);
+  void OnGetFydeImage(GetDefaultImageThumbnailCallback callback,
+                         const gfx::ImageSkia& image);
 
   void OnGetLocalImages(GetLocalImagesCallback callback,
                         const std::vector<base::FilePath>& images);

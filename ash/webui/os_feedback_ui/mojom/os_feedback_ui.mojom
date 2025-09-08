@@ -241,7 +241,7 @@ interface FeedbackServiceProvider {
   // the feedback tool is launched.
   GetScreenshotPng() => (array<uint8> png_data);
   // Sends a feedback report and returns its status.
-  SendReport(Report report) => (SendReportStatus status);
+  SendReport(Report report) => (string unique_report_id, SendReportStatus status);
   // Open Diagnostics app.
   OpenDiagnosticsApp();
   // Open Explore app.

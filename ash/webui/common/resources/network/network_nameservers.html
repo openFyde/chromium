@@ -65,7 +65,7 @@
     </template>
 
     <!-- Google nameservers -->
-    <cr-radio-button name="[[nameserversTypeEnum_.GOOGLE]]"
+    <cr-radio-button hidden name="[[nameserversTypeEnum_.GOOGLE]]"
       disabled="[[!canChangeConfigType_]]">
       [[i18n('networkNameserversGoogle')]]
       <template is="dom-if"

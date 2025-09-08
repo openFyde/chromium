@@ -41,6 +41,7 @@ export enum OobeUiState {
   CHOOBE = 22,
   SETUP_CHILD = 23,
   ENROLL_TRIAGE = 24,
+  FYDE_LOCAL_SIGNIN = 25, // be careful, should be sync with login_types.h
 }
 
 // TODO(crbug.com/1229130) - Refactor/remove these constants.

@@ -1,0 +1,33 @@
+<style include="fyde-assistant-app-shared">
+  #container {
+    position:absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0px;
+      overflow: hidden;
+    }
+    #loading {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      width: 48px;
+      height: 48px;
+      text-align: center;
+      background-image: url('/loading.png');
+      background-size: cover;
+    }
+    @media (prefers-color-scheme: dark) {
+      #loading {
+        background-image: url('/loading_dark.png');
+      }
+    }
+
+</style>
+<div id="container">
+  <div id="loading" hidden="[[!showLoading_]]"></div>
+  <webview id="webview" name="fydeos-ai" hidden="[[!showWebview_]]"></webview>
+</div>

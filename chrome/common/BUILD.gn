@@ -347,6 +347,11 @@ static_library("common_lib") {
       "//components/printing/common",
       "//printing",
     ]
+    #---***FYDEOS BEGIN***--- add fydeos extensions api provider
+    if (is_chromeos) {
+      public_deps += [ "//fydeos/extensions/common" ]
+    }
+    #---***FYDEOS END***---
   }
 
   if (is_android) {

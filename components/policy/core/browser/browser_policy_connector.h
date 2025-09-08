@@ -13,6 +13,7 @@
 
 #include "base/memory/ref_counted.h"
 #include "components/policy/core/browser/browser_policy_connector_base.h"
+#include "components/policy/core/common/cloud/device_management_service.h"
 #include "components/policy/policy_export.h"
 
 class PrefRegistrySimple;
@@ -24,7 +25,6 @@ class SharedURLLoaderFactory;
 
 namespace policy {
 
-class DeviceManagementService;
 class PolicyStatisticsCollector;
 
 // The BrowserPolicyConnector keeps some shared components of the policy system.
@@ -78,6 +78,9 @@ class POLICY_EXPORT BrowserPolicyConnector : public BrowserPolicyConnectorBase {
   virtual bool IsCommandLineSwitchSupported() const = 0;
 
  protected:
+  // ---***FYDEOS BEGIN***---
+  void ResetDeviceManagementServiceConfiguration(std::unique_ptr<DeviceManagementService::Configuration> configuration);
+  // ---***FYDEOS END***---
   // Builds an uninitialized BrowserPolicyConnector.
   // Init() should be called to create and start the policy components.
   explicit BrowserPolicyConnector(

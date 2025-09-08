@@ -13,6 +13,7 @@ component("timezone") {
     "//google_apis",
     "//net",
     "//services/network/public/cpp",
+    "//fydeos/switches",
   ]
   sources = [
     "timezone_provider.cc",

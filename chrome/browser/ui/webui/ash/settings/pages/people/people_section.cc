@@ -66,6 +66,7 @@
 #include "ui/chromeos/devicetype_utils.h"
 #include "ui/chromeos/resources/grit/ui_chromeos_resources.h"
 #include "ui/webui/webui_util.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -186,6 +187,8 @@ void AddAccountManagerPageStrings(content::WebUIDataSource* html_source,
 
   user_manager::User* user = ProfileHelper::Get()->GetUserByProfile(profile);
   DCHECK(user);
+  html_source->AddString("fydeosAccountBaseUrl",
+                         fydeos::constants::kFydeOSAccountBaseUrl);
   html_source->AddString(
       "accountListChildDescription",
       l10n_util::GetStringFUTF16(
@@ -319,7 +322,7 @@ void AddLockScreenPageStrings(content::WebUIDataSource* html_source,
                              IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_NOTICE,
                              ui::GetChromeOSDeviceName()));
   html_source->AddString("fingerprintLearnMoreLink",
-                         chrome::kFingerprintLearnMoreURL);
+                         fydeos::constants::kFingerprintLearnMoreURL);
   html_source->AddString("recoveryLearnMoreUrl", chrome::kRecoveryLearnMoreURL);
 }
 
@@ -461,10 +464,18 @@ bool IsSameAccount(const ::account_manager::AccountKey& account_key,
   // Currently, we only support `kGaia` account type. Should a new type be added
   // in the future, consider removing the `CHECK_EQ()` below and handling the
   // new type accordingly.
-  CHECK_EQ(account_key.account_type(), account_manager::AccountType::kGaia);
-
-  return (account_id.GetAccountType() == AccountType::GOOGLE) &&
-         (account_id.GetGaiaId() == GaiaId(account_key.id()));
+  // CHECK_EQ(account_key.account_type(), account_manager::AccountType::kGaia);
+  switch (account_key.account_type()) {
+    case account_manager::AccountType::kGaia:
+      return (account_id.GetAccountType() == AccountType::GOOGLE) &&
+            (account_id.GetGaiaId() == GaiaId(account_key.id()));
+    case account_manager::AccountType::kFlint:
+      return (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) &&
+            (account_id.GetFlintId() == GaiaId(account_key.id()));
+    case account_manager::AccountType::kFyde:
+      return (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT) &&
+            (account_id.GetFydeId() == GaiaId(account_key.id()));
+  }
 }
 
 }  // namespace
@@ -490,7 +501,7 @@ PeopleSection::PeopleSection(Profile* profile,
 
   // TODO(jamescook): Sort out how account management is split between Chrome
   // OS and browser settings.
-  if (IsAccountManagerAvailable(profile)) {
+  if (IsAccountManagerAvailable(profile) && !profile->IsFydeProfile()) {
     // Some Account Manager search tags are added/removed dynamically.
     auto* factory =
         g_browser_process->platform_part()->GetAccountManagerFactory();
@@ -529,6 +540,7 @@ void PeopleSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       {"lockScreenFingerprintTitle",
        IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_SUBPAGE_TITLE},
       {"manageOtherPeople", IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE},
+      {"fydeLocalAccountChangePasswordLinkDesc", IDS_SETTINGS_OS_SETTINGS_FYDE_LOCAL_ACCOUNT_CHANGE_PASSWORD_LINK_DESC},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 

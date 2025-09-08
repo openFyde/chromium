@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/shared_settings_strings.grdp, included from generated_resources.grd -->
+
+<grit-part>
+  <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL" desc="Title for a section that shows options for various Google services">
+    Other services
+  </message>
+  <message name="IDS_SETTINGS_SYNC_SYNC_AND_NON_PERSONALIZED_SERVICES" desc="The name of the settings page and the label of the button that takes the user to manage their sync and non-personalized services settings.">
+    Sync and other services
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_OFF" desc="Label for the switch that toggles whether the device is visible to all devices around it for the Nearby Share feature.">
+    You will be visible to everyone for <ph name="MINUTES">$1<ex>5</ex></ph> minutes.
+  </message>
+  <if expr="is_chromeos">
+    <if expr="openfyde">
+      <message name="IDS_BROWSER_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the browser sync feature.">
+        Your data will be synced across all Chromium browsers where you have turned on sync for this account. For openFyde sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>openFyde settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+      </message>
+    </if>
+    <if expr="not openfyde">
+      <message name="IDS_BROWSER_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the browser sync feature.">
+        Your data will be synced across all Chromium browsers where you have turned on sync for this account. For FydeOS sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>FydeOS settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+      </message>
+    </if>
+  </if>
+</grit-part>

@@ -29,6 +29,8 @@
 #include "chrome/browser/ui/webui/ash/settings/pages/search/search_section.h"
 #include "chrome/browser/ui/webui/ash/settings/pages/system_preferences/system_preferences_section.h"
 #include "chromeos/ash/components/phonehub/phone_hub_manager.h"
+#include "fydeos/ui/webui/settings/ash/fyde_assistant_section.h"
+#include "fydeos/ui/webui/settings/ash/fydeos_section.h"
 
 namespace ash::settings {
 
@@ -89,9 +91,19 @@ OsSettingsSections::OsSettingsSections(
              std::make_unique<AccessibilitySection>(
                  profile, search_tag_registry, prefs));
 
+  AddSection(mojom::Section::kCrostini,
+             std::make_unique<CrostiniSection>(
+                profile, search_tag_registry, prefs));
+
   AddSection(
       mojom::Section::kAboutChromeOs,
       std::make_unique<AboutSection>(profile, search_tag_registry, prefs));
+
+  AddSection(mojom::Section::kFydeAssistant,
+      std::make_unique<FydeAssistantSection>(profile, search_tag_registry, prefs));
+
+  AddSection(mojom::Section::kFydeOs,
+      std::make_unique<FydeOsSection>(profile, search_tag_registry, prefs));
 
   AddSection(mojom::Section::kKerberos,
              std::make_unique<KerberosSection>(profile, search_tag_registry,

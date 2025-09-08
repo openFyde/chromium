@@ -42,6 +42,7 @@
 #include "components/prefs/pref_service.h"
 #include "google_apis/gaia/google_service_auth_error.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash {
 
@@ -406,6 +407,9 @@ void DemoSetupController::ClearDemoRequisition() {
 
 // static
 bool DemoSetupController::IsDemoModeAllowed() {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    return false;
+  }
   // Demo mode is only allowed on devices that support ARC++.
   return arc::IsArcAvailable();
 }

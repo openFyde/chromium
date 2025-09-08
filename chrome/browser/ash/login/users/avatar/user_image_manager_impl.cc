@@ -617,7 +617,7 @@ void UserImageManagerImpl::UserLoggedIn(bool user_is_new, bool user_is_local) {
   is_random_image_set_ = false;
   const user_manager::User* user = GetUser();
   if (user_is_new) {
-    if (!user_is_local) {
+    if (!user_is_local || user->IsFlintAccountUser()) {
       SetInitialUserImage();
       is_random_image_set_ = true;
       // We should download the user image in this case, but at this moment the

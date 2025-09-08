@@ -109,6 +109,21 @@ export class ExtensionsSidebarElement extends ExtensionsSidebarElementBase {
 
   protected onMoreExtensionsClick_(e: Event) {
     if ((e.target as HTMLElement).tagName === 'A') {
+      if (loadTimeData.valueExists('fydeosAccountEnabled')
+          && loadTimeData.getBoolean('fydeosAccountEnabled')) {
+        e.preventDefault();
+        chrome.management
+          .get('hidnajblbifdkmheebalalchohohmaef')
+          .then((app: chrome.management.ExtensionInfo) => {
+            if (!chrome.runtime.lastError && app.enabled) {
+              // chrome.management.launchApp is not declared
+              chrome.nativeWindows.create(app.id);
+            }
+          })
+          .catch((error: Error) => {
+            console.error(error);
+          });
+      }
       chrome.metricsPrivate.recordUserAction('Options_GetMoreExtensions');
     }
   }

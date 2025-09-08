@@ -1,0 +1,42 @@
+<style include="settings-shared">
+</style>
+<settings-card header-text="$i18n{fydeosSettingsSecuritySectionTitle}" section="devMode" hidden="[[!showDevModeTransition_]]">
+  <div class="settings-box first two-line">
+    <div class="start padded">
+      <localized-link
+        localized-string="[[i18nAdvanced('fydeosSettingsDevModeTransitionLabel')]]">
+      </localized-link>
+      <div class="secondary" hidden="[[!currentDevMode_]]">
+        $i18n{fydeosSettingsInDevModeTooltip}
+      </div>
+    </div>
+    <div class="separator"></div>
+    <cr-button on-click="onButtonClick_" disabled="[[buttonDisabled_]]" hidden="[[!showTransitButton_]]">
+      $i18n{fydeosSettingsEnableDevModeButtonText}
+    </cr-button>
+    <cr-button id="restart" on-click="onRestart_" hidden="[[!showRestartButton_]]">
+      $i18n{restart}
+    </cr-button>
+  </div>
+</settings-card>
+<template is="dom-if" if="[[showConfirmDialog_]]" restamp>
+  <cr-dialog id="confirmDialog"
+    close-text="$i18n{close}"
+    show-on-attach
+    on-cancel="onDialogCancel_">
+    <div slot="title">
+      $i18n{fydeosSettingsEnableDevModeConfirmTitle}
+    </div>
+    <div slot="body">
+      $i18n{fydeosSettingsEnableDevModeConfirmMessage}
+    </div>
+    <div slot="button-container">
+    <cr-button id="cancel" class="cancel-button" on-click="onDialogCancel_">
+      $i18n{cancel}
+    </cr-button>
+    <cr-button id="confirm" class="action-button" on-click="onDialogConfirm_">
+      $i18n{confirm}
+    </cr-button>
+    </div>
+  </cr-dialog>
+</template>

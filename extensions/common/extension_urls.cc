@@ -19,6 +19,7 @@
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace extensions {
 
@@ -77,6 +78,10 @@ GURL GetWebstoreExtensionsCategoryURL() {
   CHECK_EQ(base_url.path_piece(), "/")
       << "GURL::Resolve() won't work with a URL with a path.";
   return base_url.Resolve("category/extensions");
+}
+
+std::string GetFydeWebstoreExtensionsCategoryURL() {
+  return fydeos::switches::GetFydeOSAppStoreURL() + "/?init=extensions";
 }
 
 std::string GetWebstoreItemDetailURLPrefix() {
@@ -147,6 +152,13 @@ bool IsWebstoreApiUrl(const GURL& url) {
   url::Origin origin = url::Origin::Create(url);
   return origin.IsSameOriginWith(GURL(kChromeWebstoreApiURL));
 }
+
+// ---***FYDEOS BEGIN***---
+bool IsFydeOSWebstoreUpdateUrl(const GURL& update_url) {
+  GURL store_url = GURL(fydeos::switches::GetFydeOSWebStoreUpdateUrl());
+  return update_url.host_piece() == store_url.host_piece();
+}
+// ---***FYDEOS END***---
 
 bool IsBlocklistUpdateUrl(const GURL& url) {
   extensions::ExtensionsClient* client = extensions::ExtensionsClient::Get();

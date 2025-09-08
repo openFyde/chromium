@@ -36,6 +36,7 @@
 #include "ui/base/text/bytes_formatting.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -268,6 +269,7 @@ void CrostiniSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_BRUSCHETTA_MIC_DIALOG_SHUTDOWN_BUTTON},
       {"bruschettaRemoveButton", IDS_SETTINGS_BRUSCHETTA_REMOVE_BUTTON},
       {"crostiniPageTitle", IDS_SETTINGS_CROSTINI_TITLE},
+      {"crostiniMenuItemDescription", IDS_SETTINGS_CROSTINI_MENU_ITEM_DESCRIPTION},
       {"crostiniPageLabel", IDS_SETTINGS_CROSTINI_LABEL},
       {"crostiniEnable", IDS_OS_SETTINGS_CROSTINI_SET_UP},
       {"crostiniSharedPathsInstructionsAdd",
@@ -414,6 +416,26 @@ void CrostiniSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_ADD_CONTAINER_LABEL},
       {"crostiniExtraContainersCreateDialogAddContainerButtonLabel",
        IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_ADD_CONTAINER_BUTTON_LABEL},
+      {"crostiniVersion",
+       IDS_SETTINGS_CROSTINI_VERSION},
+      {"crostiniRelaunch",
+       IDS_SETTINGS_CROSTINI_RELAUNCH},
+      {"crostiniCheckForUpdates",
+       IDS_SETTINGS_CROSTINI_CHECK_FOR_UPDATES},
+      {"crostiniUpdate",
+       IDS_SETTINGS_CROSTINI_UPDATE},
+      {"crostiniUpgradeCheckStarted",
+        IDS_SETTINGS_CROSTINI_UPGRADE_CHECK_STARTED},
+      {"crostiniUpgradeUpToDate",
+       IDS_SETTINGS_CROSTINI_UPGRADE_UP_TO_DATE},
+      {"crostiniUpgradeRelaunch",
+        IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH},
+      {"crostiniUpgradeUpdating",
+        IDS_SETTINGS_UPGRADE_UPDATING},
+      {"crostiniUpgradeUpdatingPercent",
+        IDS_SETTINGS_UPGRADE_UPDATING_PERCENT},
+      {"crostiniUpdateAvailable",
+        IDS_SETTINGS_CROSTINI_UPDATE_AVAILABLE},
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
@@ -509,13 +531,13 @@ void CrostiniSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       "crostiniSubtext",
       l10n_util::GetStringFUTF16(
           IDS_OS_SETTINGS_CROSTINI_SUBTEXT,
-          GetHelpUrlWithBoard(chrome::kLinuxAppsLearnMoreURL)));
+          base::ASCIIToUTF16(fydeos::constants::kLinuxAppsLearnMoreURL)));
   html_source->AddString(
       "crostiniSubtextNotSupported",
       l10n_util::GetStringFUTF16(
           IDS_SETTINGS_CROSTINI_SUBTEXT_NOT_SUPPORTED,
           ui::GetChromeOSDeviceName(),
-          GetHelpUrlWithBoard(chrome::kLinuxAppsLearnMoreURL)));
+          base::ASCIIToUTF16(fydeos::constants::kLinuxAppsLearnMoreURL)));
   html_source->AddString(
       "crostiniArcAdbPowerwashRequiredSublabel",
       l10n_util::GetStringFUTF16(

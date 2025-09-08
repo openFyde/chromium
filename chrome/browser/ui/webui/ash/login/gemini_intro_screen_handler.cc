@@ -37,8 +37,7 @@ void GeminiIntroScreenHandler::DeclareLocalizedValues(
   } else
 #endif
   {
-    builder->AddF("geminiIntroScreenTitle", IDS_GEMINI_INTRO_TITLE,
-                  ui::GetChromeOSDeviceName());
+    builder->Add("geminiIntroScreenTitle", IDS_GEMINI_INTRO_TITLE);
   }
   builder->Add("geminiIntroScreenSubtitle", IDS_GEMINI_INTRO_SUBTITLE);
 }

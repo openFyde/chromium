@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<!-- settings_chromium_strings.override.grdp -->
+<translation id="8551772682046551906">关于浏览器</translation>
+<translation id="8490972672529577501">获取有关 Chromium 浏览器的帮助</translation>
+<translation id="5142122574074815690">关于 openFyde</translation>
+<translation id="6192687727981687833">关于 FydeOS</translation>
+<translation id="3844063200869349024">openFyde 版本</translation>
+<translation id="3090326719833936311">FydeOS 版本</translation>
+<translation id="2052041943247591012">获取 openFyde 使用帮助</translation>
+<translation id="1242566302196985287">获取 FydeOS 使用帮助</translation>
+<translation id="7400849558479249342">想用哪种在线账号登录系统？</translation>
+<translation id="3617027712666644574">请选择你想要用来登录 openFyde 的在线账号种类。请注意：登录系统之后账号种类不支持修改；仅可以添加新的不同种类的账号。</translation>
+<translation id="3335961305847260544">请选择你想要用来登录 FydeOS 的在线账号种类。请注意：登录系统之后账号种类不支持修改；仅可以添加新的不同种类的账号。</translation>
+<translation id="4733308832188623874">FydeOS 账号</translation>
+<translation id="5521171551853454842">使用 FydeOS 账号登录系统并使用由 FydeOS 在线账号所提供的附属云服务。</translation>
+<translation id="153879296658682960">Google 账号</translation>
+<translation id="9095510991952324841">使用 Google 账号登录系统并使用由 Google 提供的附属云服务。</translation>
+<translation id="6612493011368822295">浏览器会释放闲置标签页占用的内存。这可让使用中的标签页和其他应用获得更多计算机资源，并让浏览器保持快速运行。当您返回到闲置标签页时，它们会自动重新变为活跃状态。</translation>
+<translation id="3881521827899273698">浏览器会通过限制后台活动和视觉效果（例如流畅滚动和视频帧速率）来节省电池电量。</translation>
+<translation id="855000782089941672">浏览器会预加载网页，以便您更快速地浏览和搜索。</translation>
+<!-- chromium_strings.override.grdp -->
+<translation id="6165720105278553476">关于浏览器</translation>
+<translation id="1593197356125639191">将崩溃报告和<ph name="UMA_LINK" />发送给燧炻创新，帮助我们完善 Chromium。</translation>
+<translation id="2048909425194476151">燧炻科技创新（北京）有限责任公司，The Chromium Authors</translation>
+<translation id="5271316801269855654">版权所有<ph name="YEAR" /> 燧炻科技创新（北京）有限责任公司，The Chromium Authors。保留所有权利。</translation>
+<translation id="5926649962158120628">openFyde 的问世还有其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />的一份贡献。</translation>
+<translation id="3385313061592874598">FydeOS 的问世还有其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />的一份贡献。</translation>
+<translation id="2228658997317193454">openFyde 是借助了其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />才得以问世，<ph name="BEGIN_LINK_LINUX_OSS" />Linux（测试版）<ph name="END_LINK_LINUX_OSS" />也是如此。</translation>
+<translation id="4070822162072163669">FydeOS 是借助了其他<ph name="BEGIN_LINK_CROS_OSS" />开放源代码软件<ph name="END_LINK_CROS_OSS" />才得以问世，<ph name="BEGIN_LINK_LINUX_OSS" />Linux（测试版）<ph name="END_LINK_LINUX_OSS" />也是如此。</translation>
+<translation id="5088611196541725543">openFyde 无法打开此网页。</translation>
+<translation id="2228484718459357495">FydeOS 无法打开此网页。</translation>
+<translation id="336395185237469195">您的帐号登录详细信息已过期，openFyde 无法同步您的数据。</translation>
+<translation id="7512527828090063151">您的帐号登录详细信息已过期，FydeOS 无法同步您的数据。</translation>
+<translation id="4064902838680868225">由于您的网域停用了同步功能，openFyde 无法同步您的数据。</translation>
+<translation id="2097005686169361729">由于您的网域停用了同步功能，FydeOS 无法同步您的数据。</translation>
+<translation id="931542383891203592">登录时出现错误，openFyde 无法同步您的数据。</translation>
+<translation id="2235060919092532214">登录时出现错误，FydeOS 无法同步您的数据。</translation>
+<translation id="1193874611446390378">重启 openFyde</translation>
+<translation id="4969898409030013043">重启 FydeOS</translation>
+<translation id="6513806719187193842">需要重新启动 openFyde 以应用更新。</translation>
+<translation id="7262927632213367495">需要重新启动 FydeOS 以应用更新。</translation>
+<translation id="7066505978888286411">openFyde 正在安装最新的系统更新，请稍候。</translation>
+<translation id="6128582170344862928">FydeOS 正在安装最新的系统更新，请稍候。</translation>
+<translation id="2372501256806332249">openFyde 条款</translation>
+<translation id="7927587376034945676">FydeOS 条款</translation>
+<translation id="9134354281144465798">可选：将使用情况统计信息和崩溃报告自动发送给燧炻创新，帮助我们完善 openFyde。</translation>
+<translation id="1516196642595762973">可选：将使用情况统计信息和崩溃报告自动发送给燧炻创新，帮助我们完善 FydeOS。</translation>
+<translation id="5090652682257239087"><ph name="DOMAIN" /> 要求您必须先阅读并接受以下服务条款，才能使用此设备。这些条款不会扩大、修改或限制 openFyde 最终用户许可协议。</translation>
+<translation id="6143896503986353687"><ph name="DOMAIN" /> 要求您必须先阅读并接受以下服务条款，才能使用此设备。这些条款不会扩大、修改或限制 FydeOS 最终用户许可协议。</translation>
+<!-- chromium_strings.grdp -->
+<translation id="7127093527178692287">恢复备份 (beta)</translation>
+<translation id="7282815485960054027">要从备份文件中恢复 FydeOS，请将包含备份文件的 U 盘插入你的 FydeOS 设备中，然后指定要恢复的备份文件。请注意，备份文件需要位于 U 盘的根目录中才能被检测到。</translation>
+<translation id="2955409026764742995">选择需要恢复的备份文件：</translation>
+<translation id="7040434808685140085">抱歉，无法识别所选备份文件，请选择一个新的备份文件。</translation>
+<translation id="3821904670448449669"><ph name="BEGIN_PARAGRAPH1" />如需恢复此备份文件，需要填写此备份创建时的重要信息。请务必保证这些信息的准确，否则恢复过程将会失败。<ph name="END_PARAGRAPH1" /><ph name="BEGIN_PARAGRAPH2" />「账户名称」是创建备份文件时所使用的登录凭据，通常是你用于注册 FydeOS/Google 帐户的电子邮件地址；如果是本地帐户，则是本地账户的用户名后面拼接上 @fydeos.local。<ph name="END_PARAGRAPH2" /><ph name="BEGIN_PARAGRAPH3" />「备份密码」是在创建备份时要求输入的密码；通常是你用此账户登录到 FydeOS 桌面所需输入的密码。<ph name="END_PARAGRAPH3" /></translation>
+<translation id="3067168166931605141">账户名称</translation>
+<translation id="5490570429039308155">对不起，你输入的账户名称有误，请重新输入</translation>
+<translation id="6657585470893396449">备份密码</translation>
+<translation id="8200189938001188563">对不起，备份密码不能为空</translation>
+<translation id="3157931365184549694">开始恢复</translation>
+<translation id="8556278756526311953">正在恢复备份</translation>
+<translation id="6407461260359848947"><ph name="BEGIN_PARAGRAPH1" />正在恢复你的备份文件；这可能需要一些时间，请耐心等待。<ph name="END_PARAGRAPH1" /><ph name="BEGIN_PARAGRAPH2" />请注意，当还原过程成功完成时，用户界面将自动重新启动。<ph name="END_PARAGRAPH2" /></translation>
+<translation id="8250446925353310209">恢复备份失败</translation>
+<translation id="3260341977707949567">请点击下面的链接查看详细错误日志。如果此错误持续存在，请与 FydeOS 技术支持渠道取得联系并提供此错误日志。</translation>
+<translation id="6363786367719063276">查看日志</translation>
+<translation id="6276879052695618521">恢复备份时的错误日志</translation>
+<translation id="6339581207911044261"><ph name="BEGIN_LINK" />openFyde<ph name="END_LINK" /></translation>
+<translation id="6066618579973455158">FydeOS，来自 <ph name="BEGIN_LINK" />https://fydeos.com<ph name="END_LINK" /></translation>
+<translation id="4030243038655424404">FydeOS，来自 <ph name="BEGIN_LINK" />https://fydeos.io<ph name="END_LINK" /></translation>
+<translation id="5930613793425116883"><ph name="YEAR" />，燧炻创新，版权所有。</translation>
+<translation id="6644364876094631746">FydeOS 及其网络服务遵守 GDPR，并受英国数据保护法的约束。更多信息，请查阅我们的<ph name="BEGIN_LINK_PRIVACY" />隐私声明<ph name="END_LINK_PRIVACY" />和<ph name="BEGIN_LINK_TOS" />服务条款<ph name="END_LINK_TOS" />。</translation>
+<translation id="1482072102781423033">使用 FydeOS 及其网络服务，请查阅我们的<ph name="BEGIN_LINK_PRIVACY" />隐私声明<ph name="END_LINK_PRIVACY" />和<ph name="BEGIN_LINK_TOS" />服务条款<ph name="END_LINK_TOS" />。</translation>
+<translation id="4465701891825500184">openFyde 是 FydeOS 的基础开源项目。</translation>
+<translation id="5603933258494557073">FydeOS 是基于 <ph name="BEGIN_LINK" />openFyde<ph name="END_LINK" /> 开源项目的商业产品。</translation>
+<translation id="4672237181030062124">openFyde 和 FydeOS 的诞生离不开 <ph name="BEGIN_LINK" />Chromium<ph name="END_LINK" /> 开源项目。</translation>
+<translation id="171993882905858417">Chromium 的诞生也离不开其他<ph name="BEGIN_LINK_1" />开源软件<ph name="END_LINK_1" />，以及这些额外的<ph name="BEGIN_LINK_2" />开源软件<ph name="END_LINK_2" />的一份贡献。</translation>
+<translation id="8907532670717762818">由燧炻创新设计制造。</translation>
+<translation id="5280544666044397913">©<ph name="YEAR" />，Fyde Innovations LTD，保留一切权利。</translation>
+<translation id="3129972425452217725">©<ph name="YEAR" />，燧炻科技创新（北京）有限责任公司，保留一切权利。</translation>
+<translation id="7770846994000754827">Fyde Innovations 和燧炻创新是 Fyde Innovations LTD 和燧炻科技创新（北京）有限责任公司的商业名称。<ph name="LINE_BREAK" />Fyde Innovations LTD 是一家注册于英格兰和威尔士的公司，注册号为 12273803。</translation>
+<translation id="4851115775198886021">设备 SN：</translation>
+<translation id="1251589813188467292">重要设备维保及服务信息</translation>
+</translationbundle>

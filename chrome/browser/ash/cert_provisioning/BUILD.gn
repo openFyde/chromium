@@ -67,6 +67,7 @@ static_library("cert_provisioning") {
     "//components/prefs",
     "//components/user_manager:user_manager",
     "//content/public/browser",
+    "//fydeos/switches",
   ]
 
   allow_circular_includes_from = [ "//chrome/browser/ash/policy/core" ]

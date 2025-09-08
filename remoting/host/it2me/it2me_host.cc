@@ -921,6 +921,13 @@ void It2MeHost::ValidateConnectionDetails(
 
   // Show a confirmation dialog to the user to allow them to confirm/reject it.
   // If dialogs are suppressed, just call the callback directly.
+  // ---***FYDEOS BEGIN***---
+  std::string show_username;
+  if (base::EndsWith(client_username, "@fydeos",
+                     base::CompareCase::INSENSITIVE_ASCII)) {
+    client_username.erase(client_username.length() - 7);
+  }
+  // ---***FYDEOS END***---
   if (is_enterprise_session() &&
       chrome_os_enterprise_params_->suppress_user_dialogs) {
     base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(

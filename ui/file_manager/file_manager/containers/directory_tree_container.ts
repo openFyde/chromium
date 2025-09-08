@@ -11,6 +11,7 @@ import {vmTypeToIconName} from '../common/js/icon_util.js';
 import {recordEnum, recordUserAction} from '../common/js/metrics.js';
 import {str, strf} from '../common/js/translations.js';
 import {RootTypesForUMA, VolumeType} from '../common/js/volume_manager_types.js';
+import {RootType} from '../common/js/volume_manager_types.js';
 import {ICON_TYPES} from '../foreground/js/constants.js';
 import type {DirectoryModel} from '../foreground/js/directory_model.js';
 import type {Command} from '../foreground/js/ui/command.js';
@@ -913,6 +914,12 @@ export class DirectoryTreeContainer {
     }
 
     const fileKey = fileData.key;
+
+    if (fileData.rootType === RootType.FYDEDROP) {
+      this.directoryModel_.dispatchEvent(new CustomEvent('fydedrop-started'));
+    } else {
+      this.directoryModel_.dispatchEvent(new CustomEvent('fydedrop-stopped'));
+    }
 
     const navigationRootData = isRoot ?
         this.navigationRoots_.find(

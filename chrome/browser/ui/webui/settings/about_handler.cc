@@ -49,6 +49,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "fydeos/switches/misc/misc_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "v8/include/v8-version-string.h"
 
@@ -84,6 +85,11 @@
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 #include "ui/chromeos/devicetype_utils.h"
 #include "ui/webui/webui_util.h"
+#include "fydeos/misc/fydeos_toggle_ota.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
 #endif  // BUILDFLAG(IS_CHROMEOS)
 
 namespace {
@@ -143,6 +149,13 @@ bool CanChangeChannel(Profile* profile) {
     return user && user->IsAffiliated();
   }
 
+  // ---***FYDEOS BEGIN***---
+  PrefService* local_state = g_browser_process->local_state();
+  bool tpm_fallback = local_state->GetBoolean(fydeos::prefs::kCurrentForceTpmFallback);
+  if (tpm_fallback) {
+    return user_manager::UserManager::Get()->IsCurrentUserOwner();
+  }
+  // ---***FYDEOS END***---
   // On non-managed machines, only the local owner can change the channel.
   ash::OwnerSettingsServiceAsh* service =
       ash::OwnerSettingsServiceAshFactory::GetInstance()->GetForBrowserContext(
@@ -307,6 +320,11 @@ void AboutHandler::RegisterMessages() {
                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
+      "getIsFirmwareUpdateSupported",
+      base::BindRepeating(&AboutHandler::HandleGetIsFirmwareUpdateSupported,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
       "getFirmwareUpdateCount",
       base::BindRepeating(&AboutHandler::HandleGetFirmwareUpdateCount,
                           base::Unretained(this)));
@@ -389,6 +407,14 @@ void AboutHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "recordExtendedUpdatesShown",
       base::BindRepeating(&AboutHandler::HandleRecordExtendedUpdatesShown,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "enableFydeOTA",
+      base::BindRepeating(&AboutHandler::HandleEnableFydeOTA,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getEnabledFydeOTA",
+      base::BindRepeating(&AboutHandler::HandleGetEnabledFydeOTA,
                           base::Unretained(this)));
 #endif  // BUILDFLAG(IS_CHROMEOS)
 #if BUILDFLAG(IS_MAC)
@@ -527,6 +553,52 @@ void AboutHandler::HandleCheckInternetConnection(
                             base::Value(network && network->IsOnline()));
 }
 
+// ---***FYDEOS BEGIN***---
+void AboutHandler::HandleEnableFydeOTA(const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  bool enabled = args[0].GetBool();
+  /*
+  if (!user_manager::UserManager::Get()->IsCurrentUserOwner()) {
+    LOG(WARNING) << "Non-owner tried to set fydeos ota permission";
+    fydeos::misc::GetEnabledFydeOTA(
+        base::BindOnce(&AboutHandler::OnEnableFydeOTA,
+                       weak_factory_.GetWeakPtr()));
+    return;
+  }
+  */
+  fydeos::misc::EnableFydeOTA(enabled,
+      base::BindOnce(&AboutHandler::OnEnableFydeOTA,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void AboutHandler::OnEnableFydeOTA() {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&fydeos::misc::GetEnabledFydeOTA),
+      base::BindOnce(&AboutHandler::RefreshEnableFydeOTA,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void AboutHandler::RefreshEnableFydeOTA(const bool enabled) {
+  FireWebUIListener("fyde-ota-enabled-changed", base::Value(enabled));
+}
+
+void AboutHandler::HandleGetEnabledFydeOTA(const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  std::string callback_id = args[0].GetString();
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&fydeos::misc::GetEnabledFydeOTA),
+      base::BindOnce(&AboutHandler::OnGetEnabledFydeOTA,
+                     weak_factory_.GetWeakPtr(), callback_id));
+}
+
+void AboutHandler::OnGetEnabledFydeOTA(const std::string callback_id, const bool enabled) {
+  ResolveJavascriptCallback(base::Value(callback_id), base::Value(enabled));
+}
+// ---***FYDEOS END***---
+
 void AboutHandler::HandleLaunchReleaseNotes(const base::Value::List& args) {
   DCHECK(args.empty());
   // We can always show the release notes since the Help app caches it, or can
@@ -579,6 +651,25 @@ void AboutHandler::HandleGetVersionInfo(const base::Value::List& args) {
 void AboutHandler::OnGetVersionInfoReady(std::string callback_id,
                                          base::Value::Dict version_info) {
   ResolveJavascriptCallback(base::Value(callback_id), version_info);
+}
+
+void AboutHandler::HandleGetIsFirmwareUpdateSupported(const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(1U, args.size());
+  const std::string& callback_id = args[0].GetString();
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(
+        &base::PathExists,
+        base::FilePath(fydeos::constants::kFydeOSFirmwareUpdateBinPath)),
+      base::BindOnce(&AboutHandler::OnFydeOSUpdateBinCheckedChecked,
+                     weak_factory_.GetWeakPtr(), callback_id));
+}
+
+void AboutHandler::OnFydeOSUpdateBinCheckedChecked(const std::string& callback_id,
+                                                   bool is_supported) {
+  ResolveJavascriptCallback(
+      base::Value(callback_id), base::Value(is_supported));
 }
 
 void AboutHandler::HandleGetFirmwareUpdateCount(const base::Value::List& args) {
@@ -757,8 +848,8 @@ std::u16string AboutHandler::GetEndOfLifeMessage(base::Time eol_date) const {
   int eol_string_id = eol_passed
                           ? IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_PAST
                           : IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_FUTURE;
-  const char16_t* eol_url =
-      eol_passed ? chrome::kEolNotificationURL : chrome::kAutoUpdatePolicyURL;
+  const std::u16string eol_url =
+      eol_passed ? base::UTF8ToUTF16(fydeos::constants::kEolNotificationURL) : base::UTF8ToUTF16(fydeos::misc::BuildFydeReleaseNoteUrlWithPath());
   return l10n_util::GetStringFUTF16(eol_string_id,
                                     base::TimeFormatMonthAndYearForTimeZone(
                                         eol_date, icu::TimeZone::getGMT()),

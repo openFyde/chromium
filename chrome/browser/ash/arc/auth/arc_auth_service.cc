@@ -320,9 +320,14 @@ void ArcAuthService::OnConnectionClosed() {
 
 void ArcAuthService::OnAuthorizationResult(mojom::ArcSignInResultPtr result,
                                            mojom::ArcSignInAccountPtr account) {
+  if ((!account || !account->is_initial_signin()) && profile_->IsFydeProfile()) {
+    VLOG(1) << __func__ << "force arc sigin success";
+    result = arc::mojom::ArcSignInResult::NewSuccess(
+                 arc::mojom::ArcSignInSuccess::SUCCESS);
+  }
   ArcProvisioningResult provisioning_result(std::move(result));
 
-  if (account->is_initial_signin()) {
+  if (account->is_initial_signin() || profile_->IsFydeProfile()) {
     // UMA for initial signin is updated from ArcSessionManager.
     ArcSessionManager::Get()->OnProvisioningFinished(provisioning_result);
     return;
@@ -446,6 +451,20 @@ void ArcAuthService::RequestAccountInfo(const std::string& account_name,
 void ArcAuthService::FetchPrimaryAccountInfo(
     bool initial_signin,
     RequestPrimaryAccountInfoCallback callback) {
+  //---***FYDEOS BEGIN***---
+  //bypass fetching the real account.
+  if (profile_ && profile_->IsFydeProfile()) {
+    const user_manager::User* user =
+                     user_manager::UserManager::Get()->GetPrimaryUser();
+    std::move(callback).Run(
+        mojom::ArcAuthCodeStatus::SUCCESS,
+        CreateAccountInfo(false /* is_enforced */, std::string() /* auth_info */,
+                          user->display_email() /* auth_name */,
+                          mojom::ChromeAccountType::OFFLINE_DEMO_ACCOUNT,
+                          true /* is_managed */));
+    return;
+  }
+  //---***FYDEOS END***---
   const mojom::ChromeAccountType account_type = GetAccountType(profile_);
 
   if (IsArcOptInVerificationDisabled()) {

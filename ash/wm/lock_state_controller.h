@@ -122,6 +122,8 @@ class ASH_EXPORT LockStateController : public aura::WindowTreeHostObserver,
   // otherwise.
   void RequestSignOut();
 
+  void RequestRestart();
+
   // aura::WindowTreeHostObserver override:
   void OnHostCloseRequested(aura::WindowTreeHost* host) override;
 

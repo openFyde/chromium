@@ -206,6 +206,8 @@ class PeopleHandler : public SettingsPageUIHandler,
   void HandleAttemptUserExit(const base::Value::List& args);
   void HandleTurnOnSync(const base::Value::List& args);
   void HandleTurnOffSync(const base::Value::List& args);
+
+  void HandleCleanLocalAutoSignin(const base::Value::List& args);
 #else
   void HandleStartSignin(const base::Value::List& args);
 #endif

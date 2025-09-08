@@ -221,7 +221,8 @@ class MetricReportingManager : public policy::ManagedSessionService::Observer,
                                       const std::string& rate_setting_path,
                                       base::TimeDelta default_rate,
                                       int rate_unit_to_ms,
-                                      base::TimeDelta init_delay);
+                                      base::TimeDelta init_delay,
+                                      bool should_send_to_fyde = false);
 
   // Initializes an event data collector that collects periodically.
   //

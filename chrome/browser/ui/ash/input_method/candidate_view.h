@@ -42,6 +42,9 @@ class UI_CHROMEOS_EXPORT CandidateView : public views::Button {
 
   void SetPositionData(int index, int total);
 
+  void SetIndexData(int index, int total);
+
+  void SetBackgroundRadius(float radius);
  private:
   friend class CandidateWindowViewTest;
   FRIEND_TEST_ALL_PREFIXES(CandidateWindowViewTest, ShortcutSettingTest);
@@ -74,6 +77,9 @@ class UI_CHROMEOS_EXPORT CandidateView : public views::Button {
   int candidate_width_ = 0;
   bool highlighted_ = false;
 
+  int index_in_page_;
+  int page_size_;
+  float background_radius_;
   // 0-based index of this candidate e.g. [0, total_candidates_ -1].
   int candidate_index_ = 0;
   int total_candidates_ = 0;

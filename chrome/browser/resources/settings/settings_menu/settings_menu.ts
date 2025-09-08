@@ -40,6 +40,8 @@ export interface SettingsMenuElement {
 
 const SettingsMenuElementBase = RouteObserverMixin(PolymerElement);
 
+const FYDEOS_STORE_APPID: string = 'hidnajblbifdkmheebalalchohohmaef';
+
 export class SettingsMenuElement extends SettingsMenuElementBase {
   static get is() {
     return 'settings-menu';
@@ -60,11 +62,23 @@ export class SettingsMenuElement extends SettingsMenuElementBase {
         type: Boolean,
         value: () => loadTimeData.getBoolean('showAiPage'),
       },
+
+      storeAppExists_: {
+        type: Boolean,
+        value: true,
+      },
+
+      showExtensionsLink_: {
+        type: Boolean,
+        computed: 'shouldShowExtensionsLink_(pageVisibility, storeAppExists_)',
+      },
     };
   }
 
   declare pageVisibility?: PageVisibility;
   declare private showAiPage_: boolean;
+  declare private storeAppExists_: boolean;
+  declare private showExtensionsLink_: boolean;
   private metricsBrowserProxy_: MetricsBrowserProxy =
       MetricsBrowserProxyImpl.getInstance();
 
@@ -126,9 +140,29 @@ export class SettingsMenuElement extends SettingsMenuElementBase {
         route, /* dynamicParams */ undefined, /* removeSearch */ true);
   }
 
-  private onExtensionsLinkClick_() {
-    chrome.metricsPrivate.recordUserAction(
-        'SettingsMenu_ExtensionsLinkClicked');
+  private onExtensionsLinkClick_(e: Event) {
+    // chrome.metricsPrivate.recordUserAction(
+    //     'SettingsMenu_ExtensionsLinkClicked');
+    if (!loadTimeData.getBoolean('isFydeProfile') || !this.storeAppExists_) {
+      chrome.metricsPrivate.recordUserAction('SettingsMenu_ExtensionsLinkClicked');
+      return;
+    }
+    e.preventDefault();
+    chrome.nativeWindows.create(FYDEOS_STORE_APPID);
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    chrome.appManagement.getAppList(apps => {
+      const app = apps.find(app => app.appId === FYDEOS_STORE_APPID);
+      this.storeAppExists_ = !!app;
+    });
+  }
+
+  private shouldShowExtensionsLink_() {
+    const pageVisibility = this.pageVisibility || {};
+    return pageVisibility.extensions && (!loadTimeData.getBoolean('isFydeProfile') || this.storeAppExists_);
   }
 
   private onAiPageClick_() {

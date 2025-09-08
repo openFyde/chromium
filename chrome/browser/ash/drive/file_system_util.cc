@@ -133,6 +133,11 @@ base::FilePath GetCacheRootPath(const Profile* const profile) {
 DriveAvailability CheckDriveAvailabilityForProfile(
     const Profile* const profile) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  // ---***FYDEOS BEGIN***---
+  if (profile->IsFydeProfile()) {
+    return DriveAvailability::kNotAvailableForAccountType;
+  }
+  // ---***FYDEOS END***---
 
   // Disable Drive for non-Gaia accounts.
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(

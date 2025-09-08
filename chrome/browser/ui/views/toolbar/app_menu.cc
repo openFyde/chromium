@@ -1573,12 +1573,10 @@ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
         saved_tab_groups_menu_ = item;
         break;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
       case IDC_FEEDBACK:
         DCHECK(!feedback_menu_item_);
         feedback_menu_item_ = item;
         break;
-#endif
 
 #if BUILDFLAG(IS_CHROMEOS)
       case IDC_TAKE_SCREENSHOT:

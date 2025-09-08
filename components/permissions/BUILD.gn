@@ -153,6 +153,7 @@ source_set("permissions") {
     "//ui/base",
     "//ui/strings:ui_strings_grit",
     "//url",
+    "//fydeos/switches",
   ]
   if (enable_vr) {
     deps += [ "//device/vr/public/cpp" ]

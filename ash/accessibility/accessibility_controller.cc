@@ -110,6 +110,7 @@
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/wm/core/coordinate_conversion.h"
 #include "ui/wm/core/cursor_manager.h"
+#include "fydeos/build/config/buildflags.h"
 
 using session_manager::SessionState;
 
@@ -948,6 +949,14 @@ void AccessibilityController::Feature::SetEnabled(bool enabled) {
   PrefService* prefs = owner_->active_user_prefs_;
   if (!prefs) {
     return;
+  }
+#if BUILDFLAG(USE_FYDEOS_COM)
+  if (type_ == FeatureType::kDictation) {
+    enabled = false;
+  }
+#endif
+  if (type_ == FeatureType::kLiveCaption) {
+    enabled = false;
   }
   prefs->SetBoolean(pref_name_, enabled);
   prefs->CommitPendingWrite();
@@ -1825,7 +1834,11 @@ bool AccessibilityController::IsEnterpriseIconVisibleForCursorHighlight() {
 }
 
 bool AccessibilityController::IsDictationSettingVisibleInTray() {
+#if BUILDFLAG(USE_FYDEOS_COM)
+  return false;
+#else
   return dictation().IsVisibleInTray();
+#endif
 }
 
 bool AccessibilityController::IsEnterpriseIconVisibleForDictation() {

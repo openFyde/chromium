@@ -18,7 +18,7 @@ inline constexpr char kJapaneseFontName[] = "Noto Sans CJK JP";
 // The minimum width of candidate labels in the vertical candidate
 // window. We use this value to prevent the candidate window from being
 // too narrow when all candidates are short.
-inline constexpr int kMinCandidateLabelWidth = 100;
+inline constexpr int kMinCandidateLabelWidth = 140;
 // The maximum width of candidate labels in the vertical candidate
 // window. We use this value to prevent the candidate window from being
 // too wide when one of candidates are long.

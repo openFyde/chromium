@@ -34,6 +34,7 @@
 #include "ui/web_dialogs/web_dialog_ui.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 #include "ui/webui/webui_util.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace {
 void AddStringResources(content::WebUIDataSource* source) {
@@ -100,7 +101,9 @@ void AddStringResources(content::WebUIDataSource* source) {
                             crostini::disk::kDownloadSizeBytes,
                             ui::DATA_UNITS_MEBIBYTE, /*show_units=*/true)));
   source->AddString("learnMoreUrl",
-                    std::string{chrome::kLinuxAppsLearnMoreURL} +
+  //---***FYDEOS BEGIN***---
+                    std::string{fydeos::constants::kLinuxAppsLearnMoreURL} +
+  //---***FYDEOS END***---
                         "&b=" + base::SysInfo::GetLsbReleaseBoard());
 
   source->AddString(

@@ -40,6 +40,7 @@
 #include "ui/chromeos/resources/grit/ui_chromeos_resources.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace ash::settings {
 
@@ -63,8 +64,12 @@ constexpr char kAccountRemovedToastId[] =
   // in the future, consider removing the `CHECK_EQ()` below and handling the
   // new type accordingly.
   const int account_type_int = *account_type_value;
-  CHECK_EQ(account_type_int,
-           static_cast<int>(account_manager::AccountType::kGaia));
+  // CHECK_EQ(account_type_int,
+  //          static_cast<int>(account_manager::AccountType::kGaia));
+  CHECK((account_type_int >=
+        static_cast<int>(account_manager::AccountType::kGaia)) &&
+        (account_type_int <=
+        static_cast<int>(account_manager::AccountType::kFyde)));
   const account_manager::AccountType account_type =
       static_cast<account_manager::AccountType>(account_type_int);
 
@@ -76,10 +81,25 @@ bool IsSameAccount(const ::account_manager::AccountKey& account_key,
   // Currently, we only support `kGaia` account type. Should a new type be added
   // in the future, consider removing the `CHECK_EQ()` below and handling the
   // new type accordingly.
-  CHECK_EQ(account_key.account_type(), account_manager::AccountType::kGaia);
+  // CHECK_EQ(account_key.account_type(), account_manager::AccountType::kGaia);
+  switch (account_key.account_type()) {
+    case account_manager::AccountType::kGaia:
+      if (fydeos::switches::IsFydeAccountEnabled()) {
+        return (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT) &&
+               (account_id.GetFydeId() == GaiaId(account_key.id()));
+      }
+      return (account_id.GetAccountType() == AccountType::GOOGLE) &&
+            (account_id.GetGaiaId() == GaiaId(account_key.id()));
+    case account_manager::AccountType::kFyde:
+      return (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT) &&
+             (account_id.GetFydeId() == GaiaId(account_key.id()));
+    case account_manager::AccountType::kFlint:
+      return (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) &&
+            (account_id.GetFlintId() == GaiaId(account_key.id()));
+    default:
+      NOTREACHED();
+  }
 
-  return (account_id.GetAccountType() == AccountType::GOOGLE) &&
-         (account_id.GetGaiaId() == GaiaId(account_key.id()));
 }
 
 void ShowToast(const std::string& id,

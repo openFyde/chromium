@@ -149,7 +149,7 @@ void AssertChildStatusOfTheUser(Profile* profile, bool is_child) {
 #if BUILDFLAG(IS_CHROMEOS)
   user_manager::User* user =
       ash::ProfileHelper::Get()->GetUserByProfile(profile);
-  if (user && is_child != (user->GetType() == user_manager::UserType::kChild)) {
+  if (user && is_child != (user->GetType() == user_manager::UserType::kChild || user->GetType() == user_manager::UserType::kFydeChild)) {
     LOG(FATAL) << "User child flag has changed: " << is_child;
   }
   if (!user && ash::ProfileHelper::IsUserProfile(profile)) {

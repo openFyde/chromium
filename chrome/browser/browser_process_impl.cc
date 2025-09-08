@@ -268,6 +268,8 @@
 #include "chrome/browser/safe_browsing/safe_browsing_service.h"
 #endif
 
+#include "fydeos/prefs/fydeos_prefs.h"
+
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 // How often to check if the persistent instance of Chrome needs to restart
 // to install an update.
@@ -961,6 +963,10 @@ void BrowserProcessImpl::CreateDevToolsProtocolHandler() {
       break;
   }
 #endif
+
+  // ---***FYDEOS BEGIN***---
+  fydeos::prefs::KeepCurrentPrefs(local_state());
+  // ---***FYDEOS END***---
 }
 
 void BrowserProcessImpl::CreateDevToolsAutoOpener() {

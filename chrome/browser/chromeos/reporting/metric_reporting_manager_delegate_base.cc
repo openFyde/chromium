@@ -92,11 +92,12 @@ MetricReportingManagerDelegateBase::CreatePeriodicCollector(
     const std::string& rate_setting_path,
     base::TimeDelta default_rate,
     int rate_unit_to_ms,
-    base::TimeDelta init_delay) {
+    base::TimeDelta init_delay,
+    bool should_send_to_fyde) {
   return std::make_unique<PeriodicCollector>(
       sampler, metric_report_queue, reporting_settings, enable_setting_path,
       setting_enabled_default_value, rate_setting_path, default_rate,
-      rate_unit_to_ms, init_delay);
+      rate_unit_to_ms, init_delay, should_send_to_fyde);
 }
 
 std::unique_ptr<CollectorBase>

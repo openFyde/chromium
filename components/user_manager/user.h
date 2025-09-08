@@ -86,6 +86,10 @@ class USER_MANAGER_EXPORT User {
   // UserType::kRegular and UserType::kChild.
   bool HasGaiaAccount() const;
 
+  bool IsFydeAccountUser() const;
+  bool IsFlintAccountUser() const;
+  bool IsFydeExtendAccountUser() const;
+
   // Returns true if user is child.
   bool IsChild() const;
 

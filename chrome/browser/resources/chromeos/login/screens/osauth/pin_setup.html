@@ -9,9 +9,15 @@ found in the LICENSE file.
   setup-pin-keyboard {
     margin-top: 37px;
   }
+  #setup[fydeos-layout] setup-pin-keyboard {
+    margin-top: 0;
+  }
 </style>
 
-<oobe-adaptive-dialog id="setup" role="dialog" for-step="start,confirm">
+<oobe-adaptive-dialog
+  fydeos-layout
+  animation-url="animations/fydeos_choose_pin.json"
+  id="setup" role="dialog" for-step="start,confirm">
   <iron-icon slot="icon" icon="oobe-32:lock"></iron-icon>
   <h1 id="setupTitle" slot="title" for-step="start" aria-live="polite">
     <!-- REGULAR PIN SETUP -->
@@ -118,8 +124,13 @@ found in the LICENSE file.
 </oobe-adaptive-dialog>
 
 <oobe-adaptive-dialog id="doneDialog" role="dialog" for-step="done"
+    fydeos-layout
     footer-shrinkable>
   <iron-icon slot="icon" icon="oobe-32:lock"></iron-icon>
+  <iron-icon icon="oobe-illos:fydeos-pin-illo"
+      slot="fydeos-illustration"
+      class="illustration-jelly">
+  </iron-icon>
   <h1 slot="title" aria-live="polite">
     <!-- REGULAR PIN SETUP -->
     <div hidden="[[isRecoveryMode]]">

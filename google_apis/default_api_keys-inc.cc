@@ -4,6 +4,7 @@
 
 #include "build/branding_buildflags.h"
 #include "build/build_config.h"
+#include "fydeos/build/config/buildflags.h"
 #include "google_apis/default_api_keys.h"
 
 // This file contains a definition of `GetDefaultApiKeysFromDefinedValues()`
@@ -19,8 +20,22 @@
 #define GOOGLE_API_KEY google_apis::DefaultApiKeys::kUnsetApiToken
 #endif
 
+#if !defined(FYDEOS_API_KEY)
+#define FYDEOS_API_KEY google_apis::DefaultApiKeys::kUnsetApiToken
+#endif
+
 #if !defined(GOOGLE_METRICS_SIGNING_KEY)
 #define GOOGLE_METRICS_SIGNING_KEY google_apis::DefaultApiKeys::kUnsetApiToken
+#endif
+
+#if BUILDFLAG(IS_OPENFYDE)
+#if !defined(FYDEOS_CLIENT_ID_MAIN)
+#define FYDEOS_CLIENT_ID_MAIN google_apis::DefaultApiKeys::kUnsetApiToken
+#endif
+
+#if !defined(FYDEOS_CLIENT_SECRET_MAIN)
+#define FYDEOS_CLIENT_SECRET_MAIN google_apis::DefaultApiKeys::kUnsetApiToken
+#endif
 #endif
 
 #if !defined(GOOGLE_CLIENT_ID_MAIN)
@@ -107,6 +122,16 @@
 
 #endif  // BUILDFLAG(IS_CHROMEOS)
 
+#if BUILDFLAG(IS_OPENFYDE)
+#if !defined(FYDEOS_DEFAULT_CLIENT_ID)
+#define FYDEOS_DEFAULT_CLIENT_ID ""
+#endif
+
+#if !defined(FYDEOS_DEFAULT_CLIENT_SECRET)
+#define FYDEOS_DEFAULT_CLIENT_SECRET ""
+#endif
+#endif
+
 // These are used as shortcuts for developers and users providing
 // OAuth credentials via preprocessor defines or environment
 // variables.  If set, they will be used to replace any of the client
@@ -143,12 +168,21 @@ constexpr ::google_apis::DefaultApiKeys GetDefaultApiKeysFromDefinedValues() {
       .google_api_key_cros_system_geo_ = GOOGLE_API_KEY_CROS_SYSTEM_GEO,
       .google_api_key_cros_chrome_geo_ = GOOGLE_API_KEY_CROS_CHROME_GEO,
 #endif
+      .fydeos_api_key = FYDEOS_API_KEY,
+#if BUILDFLAG(IS_OPENFYDE)
+      .fydeos_client_id_main = FYDEOS_CLIENT_ID_MAIN,
+      .fydeos_client_secret_main = FYDEOS_CLIENT_SECRET_MAIN,
+#endif
       .google_client_id_main = GOOGLE_CLIENT_ID_MAIN,
       .google_client_secret_main = GOOGLE_CLIENT_SECRET_MAIN,
       .google_client_id_remoting = GOOGLE_CLIENT_ID_REMOTING,
       .google_client_secret_remoting = GOOGLE_CLIENT_SECRET_REMOTING,
       .google_client_id_remoting_host = GOOGLE_CLIENT_ID_REMOTING_HOST,
       .google_client_secret_remoting_host = GOOGLE_CLIENT_SECRET_REMOTING_HOST,
+#if BUILDFLAG(IS_OPENFYDE)
+      .fydeos_default_client_id = FYDEOS_DEFAULT_CLIENT_ID,
+      .fydeos_default_client_secret = FYDEOS_DEFAULT_CLIENT_SECRET,
+#endif
       .google_default_client_id = GOOGLE_DEFAULT_CLIENT_ID,
       .google_default_client_secret = GOOGLE_DEFAULT_CLIENT_SECRET};
 }

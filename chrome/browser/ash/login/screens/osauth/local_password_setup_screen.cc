@@ -21,6 +21,8 @@
 #include "chrome/browser/ash/login/screens/osauth/base_osauth_setup_screen.h"
 #include "chrome/browser/ash/login/wizard_context.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/webui/ash/login/local_password_setup_handler.h"
 #include "chromeos/ash/components/osauth/public/common_types.h"
 #include "chromeos/ash/services/auth_factor_config/auth_factor_config.h"
@@ -67,7 +69,60 @@ void LocalPasswordSetupScreen::ShowImpl() {
     return;
   }
   EstablishKnowledgeFactorGuard(base::BindOnce(
-      &LocalPasswordSetupScreen::DoShow, weak_factory_.GetWeakPtr()));
+      &LocalPasswordSetupScreen::PreDoShow, weak_factory_.GetWeakPtr()));
+}
+
+void LocalPasswordSetupScreen::PreDoShow() {
+  if (context()->knowledge_factor_setup.auth_setup_flow != WizardContext::AuthChangeFlow::kInitialSetup) {
+    DoShow();
+    return;
+  }
+  InspectContextAndContinue(
+      base::BindOnce(&LocalPasswordSetupScreen::InspectContext,
+                     weak_factory_.GetWeakPtr()),
+      base::BindOnce(&LocalPasswordSetupScreen::AfterContextInspected,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void LocalPasswordSetupScreen::InspectContext(UserContext* user_context) {
+  fyde_local_password_ = std::nullopt;
+  if (!user_context) {
+    LOG(ERROR) << "Session expired while waiting for user's decision";
+    context()->osauth_error = WizardContext::OSAuthErrorKind::kFatal;
+    exit_callback_.Run(Result::kNotApplicable);
+    return;
+  }
+  AccountType account_type = user_context->GetAccountId().GetAccountType();
+  if (account_type != AccountType::FLINT_ACCOUNT) {
+    // only flint account will have local password, and skip DoShow
+    return;
+  }
+  std::optional<LocalPasswordInput> password = user_context->GetFydeLocalPassword();
+  if (password) {
+    fyde_local_password_ = password->value();
+  }
+}
+
+void LocalPasswordSetupScreen::AfterContextInspected() {
+  if (!fyde_local_password_) {
+    DoShow();
+    return;
+  }
+  SetFydeLocalPassword();
+}
+
+void LocalPasswordSetupScreen::SetFydeLocalPassword() {
+  auth::mojom::PasswordFactorEditor& password_factor_editor =
+    auth::GetPasswordFactorEditor(
+      quick_unlock::QuickUnlockFactory::GetDelegate(),
+      g_browser_process->local_state());
+
+  // skip update mocified_factors, to skip factor_setup_success_screen automatically
+  update_modified_factors_ = false;
+  password_factor_editor.SetLocalPassword(
+    GetToken(), fyde_local_password_.value(),
+    base::BindOnce(&LocalPasswordSetupScreen::OnSetLocalPassword,
+                   weak_factory_.GetWeakPtr()));
 }
 
 void LocalPasswordSetupScreen::DoShow() {
@@ -80,8 +135,11 @@ void LocalPasswordSetupScreen::DoShow() {
                          WizardContext::PinSetupMode::kUserChosePasswordInstead;
   bool is_recovery_flow = context()->knowledge_factor_setup.auth_setup_flow ==
                           WizardContext::AuthChangeFlow::kRecovery;
+  Profile* profile = ProfileManager::GetPrimaryUserProfile();
+  bool is_fyde_profile = profile && profile->IsFydeProfile();
   view_->Show(/*can_go_back=*/can_go_back,
-              /*is_recovery_flow=*/is_recovery_flow);
+              /*is_recovery_flow=*/is_recovery_flow,
+              /*is_fyde_profile*/is_fyde_profile);
 }
 
 void LocalPasswordSetupScreen::OnUserAction(const base::Value::List& args) {
@@ -93,6 +151,7 @@ void LocalPasswordSetupScreen::OnUserAction(const base::Value::List& args) {
         auth::GetPasswordFactorEditor(
             quick_unlock::QuickUnlockFactory::GetDelegate(),
             g_browser_process->local_state());
+    update_modified_factors_ = true;
     switch (context()->knowledge_factor_setup.auth_setup_flow) {
       case WizardContext::AuthChangeFlow::kInitialSetup:
         password_factor_editor.SetLocalPassword(
@@ -127,8 +186,10 @@ void LocalPasswordSetupScreen::OnUpdateLocalPassword(
     base::debug::DumpWithoutCrashing();
     return;
   }
-  context()->knowledge_factor_setup.modified_factors.Put(
-      AshAuthFactor::kLocalPassword);
+  if (update_modified_factors_) {
+    context()->knowledge_factor_setup.modified_factors.Put(
+        AshAuthFactor::kLocalPassword);
+  }
   exit_callback_.Run(Result::kDone);
 }
 
@@ -142,8 +203,10 @@ void LocalPasswordSetupScreen::OnSetLocalPassword(
     base::debug::DumpWithoutCrashing();
     return;
   }
-  context()->knowledge_factor_setup.modified_factors.Put(
+  if (update_modified_factors_) {
+    context()->knowledge_factor_setup.modified_factors.Put(
       AshAuthFactor::kLocalPassword);
+  }
   exit_callback_.Run(Result::kDone);
 }
 

@@ -6,10 +6,20 @@
   parental-controls-settings-card {
     --cr-link-row-icon-width: var(--icon-width);
   }
+
+  #profile-icon {
+    background: center / cover no-repeat;
+    border-radius: 20px;
+    flex-shrink: 0;
+    height: 40px;
+    width: 40px;
+  }
 </style>
 
 <os-settings-animated-pages id="pages" section="[[section_]]">
   <div route-path="default">
+    <!-- upstream non fyde profile -->
+    <template is="dom-if" if="[[!isFydeProfile_]]" restamp>
     <account-manager-settings-card
         prefs="{{prefs}}"
         device-account="[[deviceAccount_]]">
@@ -25,6 +35,48 @@
     </template>
     <template is="dom-if" if="[[showGraduationApp_]]">
       <graduation-settings-card></graduation-settings-card>
+    </template>
+    </template>
+    <!-- end of upstream non fyde profile -->
+
+    <template is="dom-if" if="[[isFydeProfile_]]" restamp>
+      <settings-card header-text="$i18n{osPeoplePageTitle}">
+        <div class="settings-box first two-line">
+          <div id="profile-icon"
+              style="background-image: [[getIconImageSet_(profileIconUrl_)]]"
+              on-click="onFydeProfileClick_"
+              actionable$="[[isProfileActionable_]]">
+          </div>
+          <div class="middle two-line no-min-width"
+              id="profile-row"
+              on-click="onFydeProfileclick_"
+              actionable$="[[isProfileActionable_]]">
+            <div class="flex text-elide settings-box-text">
+              <span id="profile-name" aria-hidden="true">
+                [[getProfileName_(profileName_)]]
+              </span>
+              <div id="profile-label" class="secondary"
+                  aria-hidden="true">
+                <template is="dom-if" if="[[!isFydeLocalAccount_]]">
+                [[profileLabel_]]
+                </template>
+                <template is="dom-if" if="[[isFydeLocalAccount_]]">
+                <localized-link
+                  localized-string="[[i18nAdvanced('fydeLocalAccountChangePasswordLinkDesc')]]"
+                  on-link-clicked="openLocalAccountChangePasswordSystemSettings_">
+                </localized-link>
+                </template>
+              </div>
+            </div>
+            <cr-icon-button class$=[[profileActionButtonIcon_]]
+                hidden="[[!isProfileActionable_]]"
+                id="accountManagerSubpageTrigger"
+                aria-label="$i18n{accountManagerSubMenuLabel}"
+                aria-describedby="profile-name profile-label">
+            </cr-icon-button>
+          </div>
+        </div>
+      </settings-card>
     </template>
   </div>
 </os-settings-animated-pages>

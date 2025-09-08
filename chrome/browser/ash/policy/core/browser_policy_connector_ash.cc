@@ -18,6 +18,7 @@
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/overloaded.h"
 #include "base/location.h"
@@ -107,6 +108,9 @@
 #include "components/variations/pref_names.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/misc/misc_switches.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace policy {
 
@@ -164,8 +168,10 @@ CreateServiceProviderOrListener(
         std::get<std::unique_ptr<invalidation::InvalidationListener>>(
             listener));
   }
-
-  CHECK_EQ(project_number, kPolicyFCMInvalidationSenderID)
+  const int64_t sender_id = fydeos::switches::UseFydeInvalidationService()
+                                 ? fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID
+                                 : kPolicyFCMInvalidationSenderID;
+  CHECK_EQ(project_number, sender_id)
       << "Legacy kPolicyFCMInvalidationSenderID is required for legacy service "
          "provider";
 
@@ -249,7 +255,23 @@ BrowserPolicyConnectorAsh::~BrowserPolicyConnectorAsh() = default;
 void BrowserPolicyConnectorAsh::Init(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  if (base::PathExists(base::FilePath(fydeos::constants::kFydeOSOobeZteConfigFile))) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
   local_state_ = local_state;
+  // ---***FYDEOS BEGIN***---
+  auto install_attributes = ash::InstallAttributes::Get();
+  if (install_attributes &&(install_attributes->IsCloudManaged()
+                            || install_attributes->IsEnterpriseManaged())) {
+    const std::string management_service = install_attributes->GetServiceName();
+    VLOG(2) << "enterprise management_service: " << management_service;
+    if (management_service == "fydeos") {
+      fydeos::switches::EnableFydeAccountFlagForManagedDevice();
+    } else {
+      fydeos::switches::DisableFydeAccountFlagForManagedDevice();
+    }
+  }
+  // ---***FYDEOS END***---
   ChromeBrowserPolicyConnector::Init(local_state, url_loader_factory);
 
   instance_id_driver_ = std::make_unique<instance_id::InstanceIDDriver>(

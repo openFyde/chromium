@@ -46,6 +46,11 @@ mojom::PasswordComplexity CheckLocalPasswordComplexityImpl(
 
 }  // namespace
 
+// static
+mojom::PasswordComplexity PasswordFactorEditor::CheckLocalPasswordComplexity(const std::string& password) {
+  return CheckLocalPasswordComplexityImpl(password);
+}
+
 PasswordFactorEditor::PasswordFactorEditor(AuthFactorConfig* auth_factor_config)
     : auth_factor_config_(auth_factor_config),
       auth_factor_editor_(UserDataAuthClient::Get()) {

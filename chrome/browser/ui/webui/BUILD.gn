@@ -64,6 +64,7 @@ source_set("configs") {
     if (!is_chromeos) {
       deps += [ "//chrome/browser/ui/webui/app_home" ]
     }
+    deps += [ "//ash/webui/fyde_assistant_app_ui" ]
   }
 
   if (safe_browsing_mode != 0) {

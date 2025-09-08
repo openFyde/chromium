@@ -70,6 +70,14 @@ const UNAVAILABLE_USERNAMES = [
   'android-everybody',
 ];
 
+// chrome/browser/ash/crostini/crostini_util.h
+// enum class CrostiniUISurface
+const UI_SURFACE = {
+  SETTINGS: 0,
+  APPLIST: 1,
+  NOTIFICATION: 2,
+};
+
 Polymer({
   is: 'crostini-installer-app',
 
@@ -166,6 +174,25 @@ Polymer({
   },
 
   /** @override */
+  ready() {
+    const dialogArgs = chrome.getVariableValue('dialogArguments');
+
+    try {
+      const obj = JSON.parse(dialogArgs);
+      this.uiSurface_ = obj.uiSurface;
+    } catch {
+      this.uiSurface_ = UI_SURFACE.SETTINGS;
+    }
+
+    this.shouldShowInitPrompt_ = this.uiSurface_ !== UI_SURFACE.NOTIFICATION;
+    if (this.shouldShowInitPrompt_) {
+      this.state_ = State.PROMPT;
+    } else {
+      this.state_ = State.CONFIGURE;
+    }
+  },
+
+  /** @override */
   attached() {
     const callbackRouter = BrowserProxy.getInstance().callbackRouter;
 
@@ -202,6 +229,10 @@ Polymer({
     });
 
     this.$$('.action-button:not([hidden])').focus();
+
+    if (!this.shouldShowInitPrompt_) {
+      this.onNextButtonClick_();
+    }
   },
 
   /** @override */
@@ -213,7 +244,11 @@ Polymer({
   /** @private */
   async onNextButtonClick_() {
     if (!this.onNextButtonClickIsRunning_) {
-      assert(this.state_ === State.PROMPT);
+      if (this.shouldShowInitPrompt_) {
+        assert(this.state_ === State.PROMPT);
+      } else {
+        assert(this.state_ === State.CONFIGURE);
+      }
       this.onNextButtonClickIsRunning_ = true;
 
       // We should get the disk space very soon (if we have not already got it)
@@ -289,7 +324,7 @@ Polymer({
         this.closePage_();
         break;
       case State.CONFIGURE:
-        if (forceCancel) {
+        if (forceCancel || !this.shouldShowInitPrompt_) {
           this.closePage_();
         } else {
           this.state_ = State.PROMPT;
@@ -532,6 +567,9 @@ Polymer({
 
   /** @private */
   getCancelButtonLabel_(state) {
+    if (!this.shouldShowInitPrompt_) {
+      return loadTimeData.getString('cancel');
+    }
     return loadTimeData.getString(
         state === State.CONFIGURE ? 'back' : 'cancel');
   },

@@ -37,6 +37,8 @@
 #include "components/policy/core/common/cloud/cloud_policy_constants.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/user_manager/user.h"
+#include "fydeos/switches/misc/misc_switches.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace ash {
 namespace cert_provisioning {
@@ -404,6 +406,9 @@ bool ShouldOnlyUseInvalidations() {
 }
 
 int64_t GetCertProvisioningInvalidationProjectNumber(CertScope scope) {
+  if (fydeos::switches::UseFydeInvalidationService()) {
+    return fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID;
+  }
   if (IsDirectInvalidationEnabledForScope(scope)) {
     return kCertProvisioningInvalidationProjectNumber;
   }

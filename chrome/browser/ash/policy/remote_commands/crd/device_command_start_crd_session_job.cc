@@ -424,6 +424,7 @@ bool DeviceCommandStartCrdSessionJob::ShouldShowConfirmationDialog() const {
     case UserSessionType::AFFILIATED_USER_SESSION:
     case UserSessionType::MANAGED_GUEST_SESSION:
     case UserSessionType::UNAFFILIATED_USER_SESSION:
+    case UserSessionType::FYDEOS_USER_SESSION:
     case UserSessionType::GUEST_SESSION:
       return true;
 
@@ -440,6 +441,7 @@ bool DeviceCommandStartCrdSessionJob::ShouldTerminateUponInput() const {
   switch (GetCurrentUserSessionType()) {
     case UserSessionType::AFFILIATED_USER_SESSION:
     case UserSessionType::MANAGED_GUEST_SESSION:
+    case UserSessionType::FYDEOS_USER_SESSION:
       // We never terminate upon input for the user-session scenarios, because:
       //   1. There is no risk of the admin spying on the users, as they need to
       //       explicitly accept the connection request.

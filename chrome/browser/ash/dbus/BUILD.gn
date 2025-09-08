@@ -147,6 +147,7 @@ static_library("dbus") {
     "//chromeos/ash/components/dbus/userdataauth",
     "//chromeos/ash/components/dbus/virtual_file_provider",
     "//chromeos/ash/components/dbus/vm_plugin_dispatcher",
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
     "//chromeos/ash/components/install_attributes",
     "//chromeos/ash/components/language_packs",
     "//chromeos/ash/components/settings",

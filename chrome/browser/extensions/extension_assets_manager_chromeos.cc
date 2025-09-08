@@ -289,7 +289,7 @@ void ExtensionAssetsManagerChromeOS::CheckSharedExtension(
 
   if (user_manager->IsUserNonCryptohomeDataEphemeral(
           AccountId::FromUserEmail(user_id)) ||
-      !user_manager->IsLoggedInAsUserWithGaiaAccount()) {
+      (!user_manager->IsLoggedInAsUserWithGaiaAccount() && !user_manager->IsLoggedInAsUserWithFydeExtendedAccount())) {
     // Don't cache anything in shared location for ephemeral user or special
     // user types.
     GetExtensionFileTaskRunner()->PostTask(

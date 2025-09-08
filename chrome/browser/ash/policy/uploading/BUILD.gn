@@ -48,6 +48,7 @@ static_library("uploading") {
     "//ui/base",
     "//ui/base/metadata",
     "//url",
+    "//fydeos/switches",
   ]
 
   allow_circular_includes_from = [ "//chrome/browser/ash/policy/core" ]

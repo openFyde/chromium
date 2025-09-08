@@ -21,6 +21,7 @@
 #include "google_apis/gaia/google_service_auth_error.h"
 #include "google_apis/gaia/oauth2_access_token_fetcher.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 namespace {
 void RecordOAuth2TokenFetchResult(GoogleServiceAuthError::State state) {

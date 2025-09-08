@@ -34,6 +34,7 @@
 #include "ash/public/cpp/app_menu_constants.h"
 #include "ash/public/cpp/capture_mode/capture_mode_api.h"
 #include "ash/public/cpp/wallpaper/wallpaper_types.h"
+#include "ash/public/cpp/resources/grit/ash_public_unscaled_resources.h"
 #include "ash/resources/vector_icons/vector_icons.h"
 #include "ash/scanner/scanner_metrics.h"
 #include "ash/search_box/search_box_constants.h"
@@ -83,6 +84,8 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/image/image_util.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/menus/simple_menu_model.h"
@@ -829,8 +832,13 @@ void SearchBoxView::OnThemeChanged() {
   SunfishButtonVisibilityChanged();
   assistant_button()->SetImageModel(
       views::ImageButton::STATE_NORMAL,
-      ui::ImageModel::FromVectorIcon(
-          chromeos::kAssistantIcon, button_icon_color, GetSearchBoxIconSize()));
+      ui::ImageModel::FromImageSkia(
+          gfx::ImageSkiaOperations::CreateResizedImage(
+              ui::ResourceBundle::GetSharedInstance()
+                  .GetImageNamed(IDR_FYDEOS_AI_ICON_40)
+                  .AsImageSkia(),
+              skia::ImageOperations::RESIZE_BEST,
+              gfx::Size(GetSearchBoxIconSize(), GetSearchBoxIconSize()))));
 
   // Image model of `assistant_new_entry_point_button()` is set in
   // `SearchBoxView::ShowAssistantNewEntryPointChanged`.

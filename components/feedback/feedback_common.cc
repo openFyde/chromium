@@ -30,8 +30,8 @@ namespace {
 // The below thresholds were chosen arbitrarily to conveniently show small data
 // as part of the report itself without having to look into the system_logs.zip
 // file.
-constexpr size_t kFeedbackMaxLength = 1024;
-constexpr size_t kFeedbackMaxLineCount = 10;
+// constexpr size_t kFeedbackMaxLength = 1024;
+// constexpr size_t kFeedbackMaxLineCount = 10;
 
 constexpr base::FilePath::CharType kLogsFilename[] =
     FILE_PATH_LITERAL("system_logs.txt");
@@ -57,8 +57,11 @@ constexpr char kInitiatingDeviceNameValue[] = "Chromebook";
 
 constexpr char kIsOffensiveOrUnsafeKey[] = "is_offensive_or_unsafe";
 
+constexpr char kFydeOSLogName[] = "fydeos.log";
+
 // Determine if the given feedback value is small enough to not need to
 // be compressed.
+/*
 bool BelowCompressionThreshold(const std::string& content) {
   if (content.length() > kFeedbackMaxLength)
     return false;
@@ -66,6 +69,10 @@ bool BelowCompressionThreshold(const std::string& content) {
   if (line_count > kFeedbackMaxLineCount)
     return false;
   return true;
+}
+*/
+bool IncludedInFeedbackData(const std::string& key) {
+  return key == kFydeOSLogName || key == feedback::FeedbackReport::kFeedbackUserCtlConsentKey;
 }
 
 void AddFeedbackData(userfeedback::ExtensionSubmit* feedback_data,
@@ -171,10 +178,12 @@ void FeedbackCommon::PrepareReport(
 
   userfeedback::CommonData* common_data = feedback_data->mutable_common_data();
   // We're not using gaia ids, we're using the e-mail field instead.
-  common_data->set_gaia_id(0);
+  common_data->set_gaia_id(gaia_id());
   common_data->set_user_email(user_email());
+  common_data->set_account_type(account_type());
   common_data->set_description(description());
   common_data->set_source_description_language(locale());
+  common_data->set_unique_report_identifier(unique_id());
 
   userfeedback::WebData* web_data = feedback_data->mutable_web_data();
   if (!page_url().empty()) {
@@ -301,6 +310,14 @@ void FeedbackCommon::AddFilesAndLogsToReport(
     AddAttachment(feedback_data, file->name.c_str(), file->data);
   }
 
+  for (const auto& iter : logs_) {
+    if (IncludedInFeedbackData(iter.first)) {
+      AddFeedbackData(feedback_data, iter.first, iter.second);
+      continue;
+    }
+  }
+
+  /*
   const bool is_google_email = gaia::IsGoogleInternalAccountEmail(user_email());
   for (const auto& iter : logs_) {
     if (BelowCompressionThreshold(iter.second)) {
@@ -314,4 +331,5 @@ void FeedbackCommon::AddFilesAndLogsToReport(
       }
     }
   }
+  */
 }

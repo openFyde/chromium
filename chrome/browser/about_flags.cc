@@ -9013,6 +9013,11 @@ const FeatureEntry kFeatureEntries[] = {
      flag_descriptions::kTetheringExperimentalFunctionalityDescription, kOsCrOS,
      FEATURE_VALUE_TYPE(ash::features::kTetheringExperimentalFunctionality)},
 
+    {"enable-fydeos-ai",
+     flag_descriptions::kFydeOsAIName,
+     flag_descriptions::kFydeOsAIDescription, kOsCrOS,
+     FEATURE_VALUE_TYPE(ash::features::kFydeAssistant)},
+
     {"dynamic-search-update-animation",
      flag_descriptions::kDynamicSearchUpdateAnimationName,
      flag_descriptions::kDynamicSearchUpdateAnimationDescription, kOsCrOS,

@@ -45,6 +45,8 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_SYSTEM) StatisticsProviderImpl
     // Binary to fake crossystem tool with arguments. E.g. echo.
     base::CommandLine crossystem_tool{base::CommandLine::NO_PROGRAM};
 
+    base::CommandLine fydeos_hardward_id_tool{base::CommandLine::NO_PROGRAM};
+
     base::FilePath machine_info_filepath;
     base::FilePath oem_manifest_filepath;
     base::FilePath cros_regions_filepath;
@@ -125,6 +127,8 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_SYSTEM) StatisticsProviderImpl
 
   // Shorthand to check internal state if loading has already started.
   bool HasLoadingStarted() const;
+
+  std::string GetFallbackHardwareClass() const;
 
   StatisticsSources sources_;
 

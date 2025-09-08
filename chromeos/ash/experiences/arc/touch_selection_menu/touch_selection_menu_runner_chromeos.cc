@@ -7,7 +7,9 @@
 #include <utility>
 
 #include "ash/session/session_controller_impl.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ash/shell.h"
+#include "ash/shelf/shelf.h"
 #include "base/functional/bind.h"
 #include "base/metrics/user_metrics.h"
 #include "base/metrics/user_metrics_action.h"
@@ -53,8 +55,9 @@ void TouchSelectionMenuRunnerChromeOS::OpenMenuWithTextSelectionAction(
 
   // The menu manages its own lifetime and deletes itself when closed.
   TouchSelectionMenuChromeOS* menu = new TouchSelectionMenuChromeOS(
-      this, client, tracker->Pop(), std::move(top_action));
+      this, client, tracker->Pop(), CanHandleSendTextToAI(), std::move(top_action));
   ShowMenu(menu, anchor_rect, handle_image_size);
+  anchor_rect_ = menu->GetAnchorRect();
 }
 
 bool TouchSelectionMenuRunnerChromeOS::RequestTextSelection(
@@ -129,6 +132,24 @@ void TouchSelectionMenuRunnerChromeOS::OpenMenu(
   // The menu manages its own lifetime and deletes itself when closed.
   TouchSelectionMenuChromeOS* menu =
       new TouchSelectionMenuChromeOS(this, client, context,
+                                     CanHandleSendTextToAI(),
                                      /*action=*/nullptr);
   ShowMenu(menu, anchor_rect, handle_image_size);
+  anchor_rect_ = menu->GetAnchorRect();
+}
+
+bool TouchSelectionMenuRunnerChromeOS::CanHandleSendTextToAI() {
+  ash::Shelf* shelf = ash::Shelf::ForWindow(ash::Shell::GetPrimaryRootWindow());
+  if (!shelf || !shelf->fyde_assistant_view()) {
+    return false;
+  }
+  return shelf->fyde_assistant_view()->CanHandleTouchSelectionMenuAction();
+}
+
+void TouchSelectionMenuRunnerChromeOS::HandleSendTextToAI(const std::u16string& text) {
+  if (!CanHandleSendTextToAI()) {
+    return;
+  }
+  ash::Shelf* shelf = ash::Shelf::ForWindow(ash::Shell::GetPrimaryRootWindow());
+  shelf->fyde_assistant_view()->HandleSendTextToAI(anchor_rect_, text);
 }

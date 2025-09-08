@@ -91,6 +91,7 @@
 </if><!-- not chromeos -->
 </if><!-- _google_chrome -->
     <settings-toggle-button id="urlCollectionToggle"
+        hidden="[[isFydeProfile_]]"
         class="hr"
         pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
         label="$i18n{urlKeyedAnonymizedDataCollection}"

@@ -10,6 +10,7 @@
 
 #include "ash/app_list/app_list_view_provider.h"
 #include "ash/app_list/views/app_list_folder_controller.h"
+#include "ash/app_list/views/assistant/fyde_assistant_page.h"
 #include "ash/app_list/views/search_box_view_delegate.h"
 #include "ash/ash_export.h"
 #include "ash/public/cpp/app_list/app_list_types.h"
@@ -30,6 +31,7 @@ class AppListBubbleAppsPage;
 class AppListBubbleAppsCollectionsPage;
 class AppListBubbleAssistantPage;
 class AppListBubbleSearchPage;
+class FydeAssistantPage;
 class AppListFolderItem;
 class AppListFolderView;
 class AppListViewDelegate;
@@ -71,6 +73,8 @@ class ASH_EXPORT AppListBubbleView : public views::View,
 
   // Handles back action if it we have a use for it besides dismissing.
   bool Back();
+
+  void BackOrExit();
 
   // Shows a sub-page.
   void ShowPage(AppListBubblePage page);
@@ -184,6 +188,8 @@ class ASH_EXPORT AppListBubbleView : public views::View,
   // Focuses the search box if the view is not hiding.
   void MaybeFocusAndActivateSearchBox();
 
+  void ToggleBorderForAssistantPage(const AppListBubblePage current, const AppListBubblePage previous);
+
   const raw_ptr<AppListViewDelegate> view_delegate_;
 
   std::unique_ptr<AppListA11yAnnouncer> a11y_announcer_;
@@ -204,8 +210,8 @@ class ASH_EXPORT AppListBubbleView : public views::View,
   raw_ptr<views::View> separator_ = nullptr;
   raw_ptr<AppListBubbleAppsPage> apps_page_ = nullptr;
   raw_ptr<AppListBubbleSearchPage> search_page_ = nullptr;
-  raw_ptr<AppListBubbleAssistantPage> assistant_page_ = nullptr;
   raw_ptr<AppListBubbleAppsCollectionsPage> apps_collections_page_ = nullptr;
+  raw_ptr<FydeAssistantPage> assistant_page_ = nullptr;
 
   // Lives in this class because it can overlap the search box.
   raw_ptr<AppListFolderView, DanglingUntriaged> folder_view_ = nullptr;

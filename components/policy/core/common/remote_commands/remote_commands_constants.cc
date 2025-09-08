@@ -11,6 +11,8 @@
 #include "components/invalidation/invalidation_constants.h"
 #include "components/policy/core/common/cloud/cloud_policy_constants.h"
 #include "components/policy/core/common/cloud/policy_invalidation_scope.h"
+#include "fydeos/switches/misc/misc_switches.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace policy {
 
@@ -59,6 +61,9 @@ bool IsDirectInvalidationEnabledForScope(PolicyInvalidationScope scope) {
 
 int64_t GetRemoteCommandsInvalidationProjectNumber(
     PolicyInvalidationScope scope) {
+  if (fydeos::switches::UseFydeInvalidationService()) {
+    return fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID;
+  }
   if (IsDirectInvalidationEnabledForScope(scope)) {
     return kRemoteCommandsInvalidationsProjectNumber;
   }

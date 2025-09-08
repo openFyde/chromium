@@ -25,6 +25,7 @@
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_features.h"
+#include "fydeos/switches/services/services_switches.h"
 #include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
@@ -597,6 +598,10 @@ bool PermissionUtil::IsPermissionBlockedInPartition(
       content::StoragePartition* requesting_home_partition =
           render_process_host->GetBrowserContext()->GetStoragePartitionForUrl(
               requesting_origin);
+      GURL fydeAIURL(fydeos::switches::GetFydeOSAssistantWebUrl());
+      if ((url::Origin::Create(requesting_origin) == url::Origin::Create(fydeAIURL))) {
+        return false;
+      }
       return requesting_home_partition !=
              render_process_host->GetStoragePartition();
   }

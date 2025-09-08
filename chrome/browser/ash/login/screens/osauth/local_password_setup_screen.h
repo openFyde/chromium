@@ -53,8 +53,16 @@ class LocalPasswordSetupScreen : public BaseOSAuthSetupScreen {
   void DoShow();
   void OnUserAction(const base::Value::List& args) override;
 
+  void PreDoShow();
+  void InspectContext(UserContext* user_context);
+  void AfterContextInspected();
+  void SetFydeLocalPassword();
+
   void OnUpdateLocalPassword(auth::mojom::ConfigureResult result);
   void OnSetLocalPassword(auth::mojom::ConfigureResult result);
+
+  std::optional<std::string> fyde_local_password_;
+  bool update_modified_factors_ = false;
 
   base::WeakPtr<LocalPasswordSetupView> view_;
 

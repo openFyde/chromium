@@ -274,6 +274,10 @@ std::optional<account_manager::AccountType> FromMojoAccountType(
                         static_cast<int>(account_manager::AccountType::kGaia),
                     "Underlying enum values must match");
       return account_manager::AccountType::kGaia;
+    case crosapi::mojom::AccountType::kFyde:
+      return account_manager::AccountType::kFyde;
+    case crosapi::mojom::AccountType::kFlint:
+      return account_manager::AccountType::kFlint;
     default:
       // Don't consider this as as error to preserve forwards compatibility with
       // lacros.
@@ -287,9 +291,19 @@ crosapi::mojom::AccountType ToMojoAccountType(
   // Currently, we only support `kGaia` account type. Should a new type be added
   // in the future, consider removing the `CHECK_EQ()` below and handling the
   // new type accordingly.
-  CHECK_EQ(account_type, account_manager::AccountType::kGaia);
+  // CHECK_EQ(account_type, account_manager::AccountType::kGaia);
 
-  return crosapi::mojom::AccountType::kGaia;
+  switch (account_type) {
+    case account_manager::AccountType::kGaia:
+      return crosapi::mojom::AccountType::kGaia;
+    case account_manager::AccountType::kFyde:
+      return crosapi::mojom::AccountType::kFyde;
+    case account_manager::AccountType::kFlint:
+      return crosapi::mojom::AccountType::kFlint;
+    default:
+      NOTREACHED()
+          << "Unknown account type: " << static_cast<int>(account_type);
+  }
 }
 
 std::optional<GoogleServiceAuthError> FromMojoGoogleServiceAuthError(

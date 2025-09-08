@@ -45,6 +45,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_features.h"
+#include "fydeos/switches/services/services_switches.h"
 #include "services/network/public/cpp/is_potentially_trustworthy.h"
 #include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
 #include "url/gurl.h"
@@ -323,6 +324,8 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
     }
   }
 
+  GURL fydeAIURL(fydeos::switches::GetFydeOSAssistantWebUrl());
+
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   guest_view::GuestViewBase* guest =
       guest_view::GuestViewBase::FromRenderFrameHost(render_frame_host);
@@ -347,6 +350,7 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
     // StoragePartition.
     if (base::FeatureList::IsEnabled(
             features::kMitigateUnpartitionedWebviewPermissions) &&
+        url::Origin::Create(requesting_origin) != url::Origin::Create(fydeAIURL) &&
         !guest->IsPermissionRequestable(content_settings_type_)) {
       return content::PermissionResult(
           PermissionStatus::DENIED,
@@ -354,6 +358,15 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
     }
   }
 #endif
+
+  if ((url::Origin::Create(requesting_origin) == url::Origin::Create(fydeAIURL))
+    && (content_settings_type_ == ContentSettingsType::MEDIASTREAM_MIC
+      || content_settings_type_ == ContentSettingsType::CLIPBOARD_READ_WRITE
+      || content_settings_type_ == ContentSettingsType::CLIPBOARD_SANITIZED_WRITE
+      || content_settings_type_ == ContentSettingsType::NOTIFICATIONS)) {
+    return content::PermissionResult(PermissionStatus::GRANTED,
+                            content::PermissionStatusSource::UNSPECIFIED);
+  }
 
   ContentSetting content_setting = GetPermissionStatusInternal(
       render_frame_host, requesting_origin, embedding_origin);

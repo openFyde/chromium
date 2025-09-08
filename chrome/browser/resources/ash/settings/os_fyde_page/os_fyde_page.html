@@ -1,0 +1,55 @@
+<style include="cr-shared-style settings-shared os-settings-page-styles"></style>
+<!-- <os-settings-fydeos-drivers class="fydesettings-card-wrapper"></os-settings-fydeos-drivers> -->
+<os-settings-animated-pages id="pages" section="[[section_]]">
+  <div route-path="default">
+    <settings-card header-text="$i18n{fydeosSettingsAccountTitle}" section="fydeosAccount" hidden="[[!isFydeAccount_]]">
+      <os-settings-fydeos-account
+        on-auth-factor-has-password-changed="onAuthFactorHasPasswordChanged_">
+      </os-settings-fydeos-account>
+    </settings-card>
+    <if expr="use_fydeos_license">
+      <settings-card
+        header-text="$i18n{fydeosSettingsLicenseTitle}"
+        section="fydeosLicense"
+        hidden="[[!showFydeOsLicense_]]"
+      >
+        <cr-link-row class="hr" id="license-info-trigger"
+                                on-click="onLicenseInfoClick_"
+                                label="$i18n{fydeosSettingsLicenseLabel}">
+        </cr-link-row>
+      </settings-card>
+    </if>
+    <settings-card header-text="$i18n{fydeosSettingsRemoteAssistanceTitle}" section="remoteAssistance">
+      <os-settings-fydeos-remoting>
+      </os-settings-fydeos-remoting>
+    </settings-card>
+<template is="dom-if" if="[[!isGuest_]]">
+    <os-settings-fydeos-dev-mode></os-settings-fydeos-dev-mode>
+    <settings-card header-text="$i18n{fydeosSettingsOtherTweaksTitle}" section="tweakUI"
+                        hidden="[[!showFydeOsTweakUi_(showToggleRebootButtonInTray, showToggleRotateScreenButton, showToggleSwitchTabletLaptopButton)]]">
+      <os-settings-fydeos-tweak-ui
+        auth-factor-has-password="[[authFactorHasPassword_]]"
+        show-toggle-rotate-screen-button="[[showToggleRotateScreenButton]]"
+        show-toggle-reboot-button-in-tray="[[showToggleRebootButtonInTray]]"
+        show-toggle-switch-tablet-laptop-button="[[showToggleSwitchTabletLaptopButton]]">
+      </os-settings-fydeos-tweak-ui>
+    </settings-card>
+    <os-settings-fydeos-experiment class="fydeos-settings-section-wrapper"></os-settings-fydeos-experiment>
+</template>
+    <settings-card header-text="$i18n{fydeosSettingsMoreInfoTitle}" section="moreInfo">
+      <os-settings-fydeos-more-info>
+      </os-settings-fydeos-more-info>
+    </settings-card>
+    <if expr="_google_chrome">
+    <div>this is a test for build tools</div>
+    </if>
+  </div>
+  <if expr="use_fydeos_license">
+    <template is="dom-if" route-path="/fydeos/license">
+      <os-settings-subpage page-title="$i18n{fydeosSettingsLicenseTitle}">
+        <os-settings-fydeos-license-info>
+        </os-settings-fydeos-license-info>
+      </os-settings-subpage>
+    </template>
+  </if>
+</os-settings-animated-pages>

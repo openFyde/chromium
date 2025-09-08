@@ -24,12 +24,14 @@
 #include "components/invalidation/public/identity_provider.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace invalidation {
 
 namespace {
 constexpr auto kInvalidationProjects =
     base::MakeFixedFlatSet<int64_t>({kCriticalInvalidationsProjectNumber,
+                                     fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID,
                                      kNonCriticalInvalidationsProjectNumber});
 }
 

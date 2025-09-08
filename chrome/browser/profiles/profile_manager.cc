@@ -389,7 +389,9 @@ std::optional<bool> IsUserChild(Profile* profile) {
   const user_manager::User* user =
       ash::ProfileHelper::Get()->GetUserByProfile(profile);
   return user ? std::make_optional(user->GetType() ==
-                                   user_manager::UserType::kChild)
+                                   user_manager::UserType::kChild
+                                || user->GetType() ==
+                                   user_manager::UserType::kFydeChild)
               : std::nullopt;
 }
 #endif  // BUILDFLAG(IS_CHROMEOS)

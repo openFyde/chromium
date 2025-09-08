@@ -68,6 +68,7 @@ class AssistantBrowserDelegateImpl
       mojo::PendingReceiver<chromeos::network_config::mojom::CrosNetworkConfig>
           receiver) override;
   void OpenUrl(GURL url) override;
+  bool HandleQueryByFydeAssistant(const std::string& query) override;
   base::expected<bool, AssistantBrowserDelegate::Error>
   IsNewEntryPointEligibleForPrimaryProfile() override;
   void OpenNewEntryPoint() override;
@@ -131,6 +132,7 @@ class AssistantBrowserDelegateImpl
 
   // Non-owning pointers.
   raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<Profile> profile_for_fyde_assistant_ = nullptr;
   raw_ptr<signin::IdentityManager> identity_manager_ = nullptr;
 
   // Stores a profile for Assistant new entry point. Note that

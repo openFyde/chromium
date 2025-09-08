@@ -154,6 +154,7 @@ template("build_webui") {
       "*.jpg",
       "*.png",
       "*.svg",
+      "*.mp4",
     ]
     static_non_preprocessed_files =
         filter_include(invoker.static_files, non_preprocessed_files_filter)

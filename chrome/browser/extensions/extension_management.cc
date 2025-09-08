@@ -76,6 +76,8 @@
 #include "chrome/browser/extensions/management/management_util.h"
 #endif
 
+#include "fydeos/switches/services/services_switches.h"
+
 namespace extensions {
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
@@ -163,7 +165,7 @@ ManagedInstallationMode ExtensionManagement::GetInstallationMode(
   const std::string* update_url =
       extension->manifest()->FindStringPath(manifest_keys::kUpdateURL);
   return GetInstallationMode(extension->id(),
-                             update_url ? *update_url : std::string());
+                             update_url ? fydeos::switches::MayConvertWebStoreUpdateUrl(*update_url) : std::string());
 }
 
 ManagedInstallationMode ExtensionManagement::GetInstallationMode(
@@ -248,8 +250,9 @@ GURL ExtensionManagement::GetEffectiveUpdateURL(const Extension& extension) {
 }
 
 bool ExtensionManagement::UpdatesFromWebstore(const Extension& extension) {
-  const bool is_webstore_url = extension_urls::IsWebstoreUpdateUrl(
-      GURL(GetEffectiveUpdateURL(extension)));
+  const GURL url(GetEffectiveUpdateURL(extension));
+  const bool is_webstore_url = extension_urls::IsWebstoreUpdateUrl(url) ||
+                               extension_urls::IsFydeOSWebstoreUpdateUrl(url);
   if (is_webstore_url) {
     DCHECK(!IsUpdateUrlOverridden(extension.id()))
         << "An extension's update URL cannot be overridden to the webstore.";
@@ -489,7 +492,7 @@ APIPermissionSet ExtensionManagement::GetBlockedAPIPermissions(
   const std::string* update_url =
       extension->manifest()->FindStringPath(manifest_keys::kUpdateURL);
   return GetBlockedAPIPermissions(extension->id(),
-                                  update_url ? *update_url : std::string());
+                                  update_url ? fydeos::switches::MayConvertWebStoreUpdateUrl(*update_url) : std::string());
 }
 
 APIPermissionSet ExtensionManagement::GetBlockedAPIPermissions(
@@ -563,7 +566,7 @@ bool ExtensionManagement::IsPermissionSetAllowed(const Extension* extension,
   const std::string* update_url =
       extension->manifest()->FindStringPath(manifest_keys::kUpdateURL);
   return IsPermissionSetAllowed(
-      extension->id(), update_url ? *update_url : std::string(), perms);
+      extension->id(), update_url ? fydeos::switches::MayConvertWebStoreUpdateUrl(*update_url) : std::string(), perms);
 }
 
 bool ExtensionManagement::IsPermissionSetAllowed(

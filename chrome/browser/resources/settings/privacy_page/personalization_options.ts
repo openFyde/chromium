@@ -120,6 +120,13 @@ export class SettingsPersonalizationOptionsElement extends
         computed: 'computeSyncFirstSetupInProgress_(syncStatus)',
       },
 
+      isFydeProfile_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
+
       // <if expr="not is_chromeos">
       signinAvailable_: {
         type: Boolean,
@@ -155,6 +162,7 @@ export class SettingsPersonalizationOptionsElement extends
 
   declare private showSignoutDialog_: boolean;
   declare private syncFirstSetupInProgress_: boolean;
+  declare private isFydeProfile_: boolean;
 
   // <if expr="not is_chromeos">
   declare private signinAvailable_: boolean;

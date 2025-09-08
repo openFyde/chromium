@@ -22,10 +22,12 @@
 #include "ash/clipboard/scoped_clipboard_history_pause_impl.h"
 #include "ash/constants/ash_pref_names.h"
 #include "ash/display/display_util.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ash/public/cpp/clipboard_image_model_factory.h"
 #include "ash/public/cpp/window_tree_host_lookup.h"
 #include "ash/session/session_controller_impl.h"
 #include "ash/shell.h"
+#include "ash/shelf/shelf.h"
 #include "ash/strings/grit/ash_strings.h"
 #include "ash/style/color_util.h"
 #include "ash/wm/window_util.h"
@@ -772,6 +774,11 @@ void ClipboardHistoryControllerImpl::OnClipboardHistoryItemAdded(
     const ClipboardHistoryItem& item,
     bool is_duplicate) {
   PostItemUpdateNotificationTask();
+
+  if (ash::features::IsFydeAssistantEnabled()) {
+    Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+    shelf->fyde_assistant_view()->UpdateLastClipboardItem(item);
+  }
 }
 
 void ClipboardHistoryControllerImpl::OnClipboardHistoryItemRemoved(

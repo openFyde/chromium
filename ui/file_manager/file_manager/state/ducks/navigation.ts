@@ -10,6 +10,7 @@ import {Slice} from '../../lib/base_store.js';
 import {type AndroidApp, DialogType, type NavigationKey, type NavigationRoot, NavigationSection, NavigationType, type State, type Volume} from '../../state/state.js';
 import {getMyFiles} from '../ducks/all_entries.js';
 import {driveRootEntryListKey, oneDriveFakeRootKey, recentRootKey, trashRootKey} from '../ducks/volumes.js';
+import {fydeDropRootKey} from '../ducks/volumes.js';
 import {getEntry} from '../store.js';
 
 /**
@@ -79,6 +80,28 @@ function refreshNavigationRootsReducer(currentState: State): State {
   const roots: NavigationRoot[] = [];
   /** Set to avoid adding the same entry multiple times. */
   const processedEntryKeys = new Set<NavigationKey>();
+
+  const shouldShowFydeDrop = window.fileManager.dialogType === DialogType.FULL_PAGE;
+  if (shouldShowFydeDrop) {
+    // only show fydedrop when opening files app as a standalone app.
+    const fydeDropRoot = previousRoots.find(root => root.key === fydeDropRootKey);
+    if (fydeDropRoot) {
+      roots.push(fydeDropRoot);
+      processedEntryKeys.add(fydeDropRootKey);
+    } else {
+      const fydeDropEntry =
+          getEntry(currentState, fydeDropRootKey) as FilesAppEntry | null;
+      if (fydeDropEntry) {
+        roots.push({
+          key: fydeDropRootKey,
+          section: NavigationSection.TOP,
+          separator: false,
+          type: NavigationType.FYDEDROP,
+        });
+        processedEntryKeys.add(fydeDropRootKey);
+      }
+    }
+  }
 
   // Add the Recent/Materialized view root.
   const recentRoot = previousRoots.find(root => root.key === recentRootKey);

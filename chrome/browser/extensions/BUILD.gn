@@ -510,6 +510,8 @@ source_set("extensions") {
     "//storage/browser",
     "//third_party/zlib/google:zip",
     "//ui/shell_dialogs",
+    "//fydeos/build/config:buildflags",
+    "//fydeos/switches",
   ]
   public_deps = [
     "//components/safe_browsing/core/browser/db:util",
@@ -1522,6 +1524,11 @@ source_set("extensions") {
     if (!is_android && !is_chromeos) {
       deps += [ "//chrome/browser/ui/toasts" ]
     }
+
+    if (is_chromeos) {
+      deps += [ "//fydeos/extensions/browser" ]
+    }
+
   }  # if (enable_extensions)
 }
 

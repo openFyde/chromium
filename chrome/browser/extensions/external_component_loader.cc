@@ -28,6 +28,36 @@
 #include "chromeos/constants/chromeos_features.h"
 #endif
 
+#include "base/strings/stringprintf.h"
+#include "fydeos/switches/services/services_switches.h"
+#include "fydeos/build/config/buildflags.h"
+
+namespace {
+
+void AddFydeOSExtensions(base::Value::Dict& prefs) {
+  const char update_url_template[] =
+    "%s/update/%s/updates.xml";
+  std::vector<std::string> preinstalled_apps = {
+    "hidnajblbifdkmheebalalchohohmaef",  // system controller
+#if !BUILDFLAG(IS_OPENFYDE)
+    "iakadpgajjigiaojnbdmodlngmbkfhag",  // start arc settings, not force installed by default on openfyde
+#endif
+    "mofiofjpikncjaigmdlblhojbnkabako",  // store
+    // "fogdcaodknbhigpklbhepedofamkfbln", // rdp
+    "nfglebjgiflmmcdddkbcbgmdkomlfcpa",  // rime
+  };
+  const std::string base_update_url =
+    fydeos::switches::GetFydeOSWebStoreUpdateUrl();
+  std::string update_url;
+  for (const auto& app_id : preinstalled_apps) {
+    update_url = base::StringPrintf(update_url_template,
+        base_update_url.c_str(), app_id.c_str());
+    prefs.SetByDottedPath(app_id + ".external_update_url", update_url);
+  }
+}
+
+}  // namespace
+
 namespace extensions {
 
 ExternalComponentLoader::ExternalComponentLoader(Profile* profile)
@@ -60,6 +90,8 @@ void ExternalComponentLoader::StartLoading() {
     }
   }
 #endif
+
+  AddFydeOSExtensions(prefs);
 
   LoadFinished(std::move(prefs));
 }

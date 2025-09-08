@@ -45,7 +45,7 @@ class AboutSection : public OsSettingsSection {
   bool ShouldShowAUToggle(user_manager::User* active_user);
 
   raw_ptr<PrefService> pref_service_;
-  CrostiniSection crostini_subsection_;
+  // CrostiniSection crostini_subsection_;
 
 #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   void UpdateReportIssueSearchTags();

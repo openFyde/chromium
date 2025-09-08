@@ -13,6 +13,9 @@ enum AccountType {
   ACCOUNT_TYPE_GAIA = 1;
 
   reserved 2;  // Deprecated ACCOUNT_TYPE_ACTIVE_DIRECTORY.
+
+  ACCOUNT_TYPE_FLINT = 3;
+  ACCOUNT_TYPE_FYDE = 4;
 }
 
 message Account {

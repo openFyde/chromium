@@ -24,6 +24,7 @@
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 #if BUILDFLAG(IS_CHROMEOS)
 #include "ash/constants/ash_pref_names.h"
@@ -38,6 +39,10 @@ namespace {
 constexpr char kOnPrefChangeFormat[] = "types.ChromeSetting.%s.onChange";
 
 const PrefMappingEntry kMappings[] = {
+    {"fydeosImprovementPlanEnabled",
+     fydeos::prefs::kFydeOSImprovementPlanEnabled,
+     APIPermissionID::kFydeOSPrivate,
+     APIPermissionID::kFydeOSPrivate},
     {"alternateErrorPagesEnabled",
      embedder_support::kAlternateErrorPagesEnabled, APIPermissionID::kPrivacy,
      APIPermissionID::kPrivacy},

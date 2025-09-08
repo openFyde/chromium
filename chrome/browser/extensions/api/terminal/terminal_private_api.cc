@@ -743,8 +743,7 @@ TerminalPrivateOpenSettingsSubpageFunction::Run() {
         profile, chromeos::settings::mojom::kCrostiniDetailsSubpagePath);
   } else {
     chrome::SettingsWindowManager::GetInstance()->ShowOSSettings(
-        profile, chromeos::settings::mojom::kAboutChromeOsSectionPath,
-        chromeos::settings::mojom::Setting::kSetUpCrostini);
+        profile, chromeos::settings::mojom::kCrostiniSectionPath);
   }
   return RespondNow(NoArguments());
 }

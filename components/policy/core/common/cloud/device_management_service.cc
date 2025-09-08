@@ -445,6 +445,12 @@ JobConfigurationBase::GetResourceRequest(bool bypass_proxy, int last_error) {
           std::string(dm_protocol::kEnrollmentTokenAuthHeaderPrefix) +
               auth_data_.enrollment_token());
       break;
+    case DMAuthTokenType::kFyde:
+      rr->headers.SetHeader(
+          dm_protocol::kAuthHeader,
+          std::string(dm_protocol::kFydeEnrollmentTokenAuthHeaderPrefix) +
+              auth_data_.fyde_token());
+      break;
     case DMAuthTokenType::kOauth:
       // OAuth token is transferred as a HTTP query parameter.
       break;
@@ -828,6 +834,11 @@ void DeviceManagementService::JobImpl::Start() {
 void DeviceManagementService::SetRetryDelayForTesting(long retry_delay_ms) {
   CHECK_GE(retry_delay_ms, 0);
   g_retry_delay_ms = retry_delay_ms;
+}
+
+void DeviceManagementService::ResetConfiguration(std::unique_ptr<Configuration> configuration) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  configuration_ = std::move(configuration);
 }
 
 void DeviceManagementService::AddJob(JobImpl* job) {

@@ -309,6 +309,8 @@ class POLICY_EXPORT DeviceManagementService {
   // timing out.
   static void SetRetryDelayForTesting(long retryDelayMs);
 
+  void ResetConfiguration(std::unique_ptr<Configuration> configuration);
+
  protected:
   // Creates a new Job without starting it.
   // Used by `FakeDeviceManagementService` to avoid queueing/starting of

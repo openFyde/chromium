@@ -1,0 +1,104 @@
+<style include="settings-shared">
+  .toggleTitle {
+    flex: 1;
+  }
+  .icon-container {
+    margin-inline-end: var(--settings-controlled-by-spacing);
+  }
+</style>
+<div class="settings-box two-line first" hidden="[[!showBackup_]]">
+  <div class="start padded">
+    <localized-link
+      localized-string="[[i18nAdvanced('fydeosSettingsBackupLabel')]]">
+    </localized-link>
+    <!-- <div class="secondary"></div> -->
+  </div>
+  <div class="separator"></div>
+  <cr-button on-click="onBackupClick_" disabled="[[backupDisabled_(backupRunning_, authFactorHasPassword)]]">
+    $i18n{fydeosSettingsBackupButtonLabel}
+  </cr-button>
+</div>
+<template is="dom-if" if="[[showBackupIntroDialog_]]" restamp>
+  <backup-intro-dialog
+    on-close="onBackupIntroDialogClosed_"
+    on-cancel="onBackupIntroDialogCanceled_">
+  </backup-intro-dialog>
+</template>
+<template is="dom-if" if="[[showPasswordPromptDialog_]]" restamp>
+  <backup-password-prompt-dialog
+    on-backup-password-obtained="onBackupPasswordObtained_"
+    on-close="onPasswordPromptClosed_"
+    on-cancel="onPasswordPromptCanceled_">
+  </backup-password-prompt-dialog>
+</template>
+<div class="settings-box two-line" hidden=[[!showToggleRotateScreenButton]]>
+  <div class="start padded">
+    $i18n{rotateScreenButtonInTrayLabel}
+    <div class="secondary">[[getShowRotateScreenButtonMessage_(isInTabletPhysicalState_, showRotateScreenButton_)]]</div>
+  </div>
+  <cr-toggle id="toggleShowRotateScreenButton" disabled="[[!canToggleRotateScreenButton_]]"
+              role="button" checked="[[shouldShowRotateScreenButton_(showRotateScreenButton_, canToggleRotateScreenButton_)]]" on-change="onToggleShowRotateScreenButton_">
+  </cr-toggle>
+</div>
+<div class="settings-box two-line" hidden=[[!showToggleSwitchTabletLaptopButton]]>
+  <div class="start padded">
+    $i18n{switchTabletLaptopModeButtonInTrayLabel}
+    <div class="secondary">$i18n{displaySwitchTabletLaptopModeButton}</div>
+  </div>
+  <cr-toggle id="toggleShowSwitchTabletLaptopModeButton"
+             role="button" checked="[[showSwitchTabletLaptopButton_]]" on-change="onToggleShowSwitchTabletLaptopButton_">
+  </cr-toggle>
+</div>
+<div class="settings-box two-line">
+  <div class="start padded">
+    <localized-link
+      localized-string="[[i18nAdvanced('toggleArcMediaAutoScanLabel')]]">
+    </localized-link>
+  </div>
+  <cr-button id="restartForToggleArcMediaAutoScanButton" on-click="onRestartForToggleArcMediaAutoScanTap_" hidden="[[!rebootRequiredForToggleArcMediaAutoScan_]]">
+    $i18n{restart}
+  </cr-button>
+  <div class="separator" hidden="[[!rebootRequiredForToggleArcMediaAutoScan_]]"></div>
+  <cr-toggle id="toggleArcMediaAutoScan" disabled="[[disableToggleArcMediaAutoScan_]]"
+             role="button" checked="[[!arcMediaAutoScanEnabled_]]" on-change="onToggleArcMediaAutoScan_">
+  </cr-toggle>
+</div>
+<div class="settings-box two-line" hidden=[[!showToggleWidevine_]]>
+  <div class="start padded">
+    $i18n{enableLibwidevineLabel}
+    <div class="secondary">
+      <localized-link
+        localized-string="[[toggleWidevineHelpMsg_()]]">
+      </localized-link>
+    </div>
+  </div>
+  <div class="icon-container"
+       hidden="[[!togglingWidevine_]]">
+    <iron-icon src="chrome://resources/images/throbber_small.svg">
+    </iron-icon>
+  </div>
+  <cr-button id="restartForWidevineButton" on-click="onRestartForWidevineTap_" hidden="[[!shouldShowRebootButtonForWidevine_(togglingWidevine_, rebootRequiredForWidevine_)]]">
+    $i18n{restart}
+  </cr-button>
+  <div class="separator" hidden="[[!shouldShowRebootButtonForWidevine_(togglingWidevine_, rebootRequiredForWidevine_)]]"></div>
+  <cr-toggle id="toggleWidevine" disabled="[[togglingWidevine_]]"
+             role="button" checked="[[libwidevineEnabled_]]" on-change="onToggleLibwidevine_">
+  </cr-toggle>
+</div>
+<template is="dom-if" if="[[showWidevineErrorDialog_]]" restamp>
+  <cr-dialog id="widevineErrorDialog" close-text="$i18n{close}"
+      show-on-attach
+      on-close="onWidevineErrorDialogClose_">
+      ignore-enter-key>
+    <div slot="title">$i18n{failedEnableWidevineTitle}</div>
+    <div slot="body">
+      $i18n{failedEnableWidevineMessage}
+    </div>
+    <div slot="button-container">
+      <cr-button class="action-button" on-click="onWidevineErrorDialogClose_">
+        $i18n{confirm}
+      </cr-button>
+      </div>
+      </div>
+  </cr-dialog>
+</template>

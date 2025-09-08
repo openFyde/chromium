@@ -1,0 +1,41 @@
+# Copyright 2020 The FydeOS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/chromeos/rules.gni")
+import("//fydeos/build/config/buildflags.gni")
+
+assert(is_chromeos, "Non-Chrome-OS builds must not depend on //chromeos")
+
+static_library("misc") {
+  deps = [
+    "//base",
+    "//net",
+    "//content/public/browser",
+    "//fydeos/build/config:buildflags",
+  ]
+
+  sources = [
+    "fydeos_email_subscription.cc",
+    "fydeos_email_subscription.h",
+    "fydeos_misc_scheduler.cc",
+    "fydeos_misc_scheduler.h",
+    "fydeos_statistics_collector.cc",
+    "fydeos_statistics_collector.h",
+    "fydeos_release_note_url.cc",
+    "fydeos_release_note_url.h",
+    "fydeos_toggle_ota.cc",
+    "fydeos_toggle_ota.h",
+    "fydeos_dev_mode.cc",
+    "fydeos_dev_mode.h",
+  ]
+
+  if (use_fydeos_com) {
+    sources += [
+      "fydeos_crostini_notifier.cc",
+      "fydeos_crostini_notifier.h",
+    ]
+  }
+
+  defines = [ "CHROMEOS_IMPLEMENTATION" ]
+}

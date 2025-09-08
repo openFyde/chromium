@@ -36,6 +36,7 @@ import {mixinBehaviors, PolymerElement} from 'chrome://resources/polymer/v3_0/po
 
 import {assertExists, castExists} from '../assert_extras.js';
 import {androidAppsVisible, isInputDeviceSettingsSplitEnabled} from '../common/load_time_booleans.js';
+import {isAccountManagerEnabled} from '../common/load_time_booleans.js';
 import type {RouteObserverMixinInterface} from '../common/route_observer_mixin.js';
 import {RouteObserverMixin} from '../common/route_observer_mixin.js';
 import type {Constructor} from '../common/types.js';
@@ -170,6 +171,14 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
         value: '',
       },
 
+      isAccountManagerEnabled_: {
+        type: Boolean,
+        value() {
+          return isAccountManagerEnabled();
+        },
+        readOnly: true,
+      },
+
       accountsMenuItemDescription_: {
         type: String,
         value(this: OsSettingsMenuElement) {
@@ -220,6 +229,7 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
   isDrawerMenu: boolean;
   pageAvailability: OsPageAvailability;
   private menuItems_: MenuItemData[];
+  private isAccountManagerEnabled_: boolean;
   private isRtl_: boolean;
   private selectedItemPath_: string;
 
@@ -274,7 +284,7 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
     super.connectedCallback();
 
     // Accounts menu item is not available in guest mode.
-    if (this.pageAvailability[Section.kPeople]) {
+    if (this.pageAvailability[Section.kPeople] && this.isAccountManagerEnabled_) {
       this.updateAccountsMenuItemDescription_();
       this.addWebUiListener(
           'accounts-changed',
@@ -439,6 +449,13 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
             this.i18n('appsmenuItemDescriptionArcUnavailable'),
       },
       {
+        section: Section.kFydeAssistant,
+        path: `/${routesMojom.FYDE_ASSISTANT_SECTION_PATH}`,
+        icon: 'os-settings:fydeos-ai',
+        label: this.i18n('fydeAssistantPageTitle'),
+        sublabel: this.i18n('fydeAssistantMenuItemDescription'),
+      },
+      {
         section: Section.kAccessibility,
         path: `/${routesMojom.ACCESSIBILITY_SECTION_PATH}`,
         icon: 'os-settings:accessibility',
@@ -451,6 +468,20 @@ export class OsSettingsMenuElement extends OsSettingsMenuElementBase {
         icon: 'os-settings:system-preferences',
         label: this.i18n('systemPreferencesTitle'),
         sublabel: this.i18n('systemPreferencesMenuItemDescription'),
+      },
+      {
+        section: Section.kCrostini,
+        path: `/${routesMojom.CROSTINI_SECTION_PATH}`,
+        icon: 'os-settings:developer-tags',
+        label: this.i18n('crostiniPageTitle'),
+        sublabel: this.i18n('crostiniMenuItemDescription'),
+      },
+      {
+       section: Section.kFydeOs,
+       path: `/${routesMojom.FYDE_OS_SECTION_PATH}`,
+       icon: 'os-settings:fydeos',
+       label: this.i18n('fydeosSettingsPageTitle'),
+       sublabel: this.i18n('fydeosSettingsMenuItemDescription'),
       },
       {
         section: Section.kAboutChromeOs,

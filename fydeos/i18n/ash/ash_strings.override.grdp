@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+
+  <if expr="openfyde">
+    <message name="IDS_GESTURE_NOTIFICATION_MESSAGE_LEARN_MORE" desc="The body of the notification to show off new gestures. This notification body links to the help page for the gestures.">
+      Use gestures to quickly switch between apps and interact with your openFyde device in tablet mode.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_GESTURE_NOTIFICATION_MESSAGE_LEARN_MORE" desc="The body of the notification to show off new gestures. This notification body links to the help page for the gestures.">
+      Use gestures to quickly switch between apps and interact with your FydeOS device in tablet mode.
+    </message>
+  </if>
+  <if expr="not _google_chrome">
+    <if expr="openfyde">
+      <message name="IDS_ASH_MESSAGE_CENTER_SYSTEM_APP_NAME" desc="The source of a system-generated notification, as displayed to the user.">
+        openFyde
+      </message>
+    </if>
+    <if expr="not openfyde">
+      <message name="IDS_ASH_MESSAGE_CENTER_SYSTEM_APP_NAME" desc="The source of a system-generated notification, as displayed to the user.">
+        FydeOS
+      </message>
+    </if>
+  </if>
+
+  <message name="IDS_APP_LIST_START_ASSISTANT" desc="Tooltip for the button that starts FydeOS AI from the search box in the app list.">
+    FydeOS AI
+  </message>
+
+  <if expr="openfyde">
+    <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_TITLE" desc="The main label for the system tray Cast view when no Chromecast devices are available.">
+      Cast your screen from your openFyde device
+    </message>
+    <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_SUBTITLE" desc="The secondary label for the system tray Cast view when no Chromecast devices are available.">
+      Make sure your openFyde device is on the same Wi-Fi network as your Chromecast device.
+    </message>
+    <message name="IDS_ASH_STATUS_TRAY_AUDIO_NBS_MESSAGE" desc="label used to warn that NBS is in use">
+      Your openFyde or Bluetooth device is using an older version of Bluetooth. Use the internal microphone for better audio quality.
+    </message>
+    <message name="IDS_ASH_BIRCH_RELEASE_NOTES_TITLE" desc="Title for the suggestion chip that links to release notes">
+      openFyde Updated
+    </message>
+    <message name="IDS_ASH_IN_SESSION_AUTH_SETTINGS_PROMPT" desc="Text shown in the settings auth dialog.">
+      openFyde Settings would like to confirm it's you
+    </message>
+
+    <message name="IDS_ASH_INFORMED_RESTORE_DIALOG_CRASH_DESCRIPTION" desc="Label of the description for the informed restore dialog, if the previous session ended with a crash. Gives a little more information than the title.">
+      Your openFyde restarted unexpectedly. Open your previous windows and apps.
+    </message>
+    <message name="IDS_ASH_INFORMED_RESTORE_DIALOG_UPDATE_DESCRIPTION" desc="Label of the description for the informed restore dialog, if the previous session was on a earlier version.">
+      Your openFyde has been updated. Open your previous windows and apps.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_TITLE" desc="The main label for the system tray Cast view when no Chromecast devices are available.">
+      Cast your screen from your FydeOS device
+    </message>
+    <message name="IDS_ASH_STATUS_TRAY_CAST_ZERO_STATE_SUBTITLE" desc="The secondary label for the system tray Cast view when no Chromecast devices are available.">
+      Make sure your FydeOS device is on the same Wi-Fi network as your Chromecast device.
+    </message>
+    <message name="IDS_ASH_STATUS_TRAY_AUDIO_NBS_MESSAGE" desc="label used to warn that NBS is in use">
+      Your FydeOS or Bluetooth device is using an older version of Bluetooth. Use the internal microphone for better audio quality.
+    </message>
+    <message name="IDS_ASH_BIRCH_RELEASE_NOTES_TITLE" desc="Title for the suggestion chip that links to release notes">
+      FydeOS Updated
+    </message>
+    <message name="IDS_ASH_IN_SESSION_AUTH_SETTINGS_PROMPT" desc="Text shown in the settings auth dialog.">
+      FydeOS Settings would like to confirm it's you
+    </message>
+
+    <message name="IDS_ASH_INFORMED_RESTORE_DIALOG_CRASH_DESCRIPTION" desc="Label of the description for the informed restore dialog, if the previous session ended with a crash. Gives a little more information than the title.">
+      Your FydeOS restarted unexpectedly. Open your previous windows and apps.
+    </message>
+    <message name="IDS_ASH_INFORMED_RESTORE_DIALOG_UPDATE_DESCRIPTION" desc="Label of the description for the informed restore dialog, if the previous session was on a earlier version.">
+      Your FydeOS has been updated. Open your previous windows and apps.
+    </message>
+  </if>
+  <message name="IDS_SHELF_KIOSK_APP_SETUP" desc="Notifying users to ask their admins to setup the kiosk app.">
+    Ask your administrator to set up this device in the FydeOS Management Cloud
+  </message>
+
+</grit-part>

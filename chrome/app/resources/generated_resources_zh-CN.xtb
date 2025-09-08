@@ -1109,7 +1109,7 @@
 <translation id="176272781006230109">购物建议</translation>
 <translation id="1763046204212875858">创建应用快捷方式</translation>
 <translation id="1763808908432309942">在新标签页中打开</translation>
-<translation id="1764226536771329714">Beta 版</translation>
+<!-- <translation id="1764226536771329714">Beta 版</translation> -->
 <translation id="176587472219019965">打开新的窗口(&amp;N)</translation>
 <translation id="1766575458646819543">已退出全屏模式</translation>
 <translation id="1766957085594317166">将密码安全地保存到您的 Google 账号中，彻底为您免除再次输入的麻烦</translation>
@@ -3604,7 +3604,7 @@
 <translation id="3519382402703204668">选择标签页</translation>
 <translation id="3519564332031442870">打印后端服务</translation>
 <translation id="3519938335881974273">将页面另存为…</translation>
-<translation id="3520824492621090923">确认进行自助服务终端和数字标牌设备注册？</translation>
+<!-- <translation id="3520824492621090923">确认进行自助服务终端和数字标牌设备注册？</translation> -->
 <translation id="3521388823983121502">无法使用 <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE" /> 继续操作</translation>
 <translation id="3521405806571557477">删除 <ph name="SITE_NAME" /> 的已存数据</translation>
 <translation id="3521606918211282604">更改磁盘大小</translation>
@@ -9089,7 +9089,7 @@
 <translation id="7454744349230173024">贵组织已关闭密码保存功能</translation>
 <translation id="7455730275746867420">管理额外容器</translation>
 <translation id="7455988709578031708">根据您的浏览记录推测得出。此设置已开启。</translation>
-<translation id="7456142309650173560">开发者版本</translation>
+<!-- <translation id="7456142309650173560">开发者版本</translation> -->
 <translation id="7456774706094330779">扩展型预加载</translation>
 <translation id="7456847797759667638">打开位置...</translation>
 <translation id="7457027286267861992">磁盘空间不足。请释放更多的磁盘空间，然后重试。错误代码为 <ph name="ERROR" />。</translation>

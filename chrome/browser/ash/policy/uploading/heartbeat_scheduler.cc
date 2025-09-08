@@ -18,6 +18,8 @@
 #include "base/time/time.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/gcm_driver/gcm_driver.h"
+#include "fydeos/switches/misc/misc_switches.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace policy {
 
@@ -58,6 +60,9 @@ const char kHeartbeatSchedulerScope[] =
 // Returns the destination ID for GCM heartbeats.
 std::string GetDestinationID() {
   std::string receiver_id = kHeartbeatGCMDestinationID;
+  if (fydeos::switches::UseFydeInvalidationService()) {
+    receiver_id = base::NumberToString(fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID);
+  }
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kMonitoringDestinationID)) {
     receiver_id = base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(

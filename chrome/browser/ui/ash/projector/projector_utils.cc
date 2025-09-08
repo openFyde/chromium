@@ -25,6 +25,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace {
 
@@ -51,6 +52,10 @@ bool IsProjectorAllowedForProfile(const Profile* profile) {
 }
 
 bool IsProjectorAppEnabled(const Profile* profile) {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    return false;
+  }
+
   if (!IsProjectorAllowedForProfile(profile)) {
     return false;
   }

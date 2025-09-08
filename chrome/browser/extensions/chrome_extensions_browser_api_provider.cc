@@ -8,6 +8,7 @@
 #include "extensions/browser/extension_function_registry.h"
 #include "extensions/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/commands/commands.h"
+#include "fydeos/extensions/browser/api/generated_api_registration.h"
 
 namespace extensions {
 
@@ -23,6 +24,8 @@ void ChromeExtensionsBrowserAPIProvider::RegisterExtensionFunctions(
 
   // Generated APIs from Chrome.
   api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);
+
+  api::FydeOSGeneratedFunctionRegistry::RegisterAll(registry);
 }
 
 }  // namespace extensions

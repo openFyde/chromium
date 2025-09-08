@@ -46,6 +46,7 @@ static_library("release_notes") {
     "//ui/base",
     "//ui/chromeos",
     "//ui/message_center/public/cpp",
+    "//fydeos/build/config:buildflags",
   ]
 }
 

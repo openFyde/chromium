@@ -49,6 +49,7 @@ enum UserSessionType {
   MANAGED_GUEST_SESSION = 5;
   GUEST_SESSION = 6;
   NO_SESSION = 7;
+  FYDEOS_USER_SESSION = 8;
 }
 
 // The type of the CRD session. This enum is used in:

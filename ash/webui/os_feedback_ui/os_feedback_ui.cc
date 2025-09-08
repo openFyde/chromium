@@ -12,6 +12,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
 #include "ash/constants/ash_features.h"
 #include "ash/webui/common/trusted_types_util.h"
 #include "ash/webui/grit/ash_os_feedback_resources.h"
@@ -32,6 +33,8 @@
 #include "ui/webui/mojo_web_ui_controller.h"
 #include "ui/webui/resources/grit/webui_resources.h"
 #include "ui/webui/webui_allowlist.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash {
 
@@ -108,6 +111,9 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
       {"askCommunityLabel", IDS_FEEDBACK_TOOL_RESOURCES_ASK_COMMUNITY_LABEL},
       {"askCommunityDescription",
        IDS_FEEDBACK_TOOL_RESOURCES_ASK_COMMUNITY_DESCRIPTION},
+      {"helpPageLabel", IDS_FEEDBACK_TOOL_RESOURCES_HELP_PAGE_LABEL},
+      {"helpPageDescription",
+       IDS_FEEDBACK_TOOL_RESOURCES_HELP_PAGE_DESCRIPTION},
       {"userConsentLabel", IDS_FEEDBACK_TOOL_USER_CONSENT_LABEL},
       {"includeSystemInfoAndMetricsCheckboxLabel",
        IDS_FEEDBACK_TOOL_INCLUDE_SYSTEM_INFO_AND_METRICS_CHECKBOX_LABEL},
@@ -137,6 +143,20 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
   };
 
   source->AddLocalizedStrings(kLocalizedStrings);
+#if BUILDFLAG(USE_FYDEOS_COM)
+  source->AddString("fydeosFeedbackFeatureHelpMessage",
+                    l10n_util::GetStringUTF16(
+                      IDS_FEEDBACK_TOOL_FYDEOS_FEEDBACK_FEATURE_HELP_MESSAGE));
+#else
+  source->AddString("fydeosFeedbackFeatureHelpMessage",
+                    l10n_util::GetStringFUTF16(
+                      IDS_FEEDBACK_TOOL_FYDEOS_FEEDBACK_FEATURE_HELP_MESSAGE,
+                      base::ASCIIToUTF16(fydeos::constants::kFydeOSHelpURL),
+                      base::ASCIIToUTF16(fydeos::constants::kFydeOSForumURL),
+                      base::ASCIIToUTF16(fydeos::constants::kFydeOSDiscordServerURL),
+                      base::ASCIIToUTF16(fydeos::constants::kFydeOSTelegramGroupURL)
+  ));
+#endif
   source->UseStringsJs();
 
   source->AddBoolean("enableLinkCrossDeviceDogfoodFeedbackFlag",

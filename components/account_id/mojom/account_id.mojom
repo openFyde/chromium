@@ -9,6 +9,8 @@ enum AccountType {
   UNKNOWN,
   GOOGLE,
   // ACTIVE_DIRECTORY account type was deprecated.
+  FLINT_ACCOUNT = 99,
+  FYDE_ACCOUNT = 100,
 };
 
 // Mirror of AccountId in Mojo.

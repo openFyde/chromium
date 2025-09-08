@@ -221,6 +221,7 @@ export class FeedbackFlowElement extends PolymerElement {
   /**  Whether there is no help content shown(offline or search is down). */
   private noHelpContentDisplayed: boolean;
 
+  private uniqueReportId: string;
   /**
    * When the feedback tool is opened as a dialog, feedback context is passed
    * to front end via dialog args.
@@ -504,9 +505,10 @@ export class FeedbackFlowElement extends PolymerElement {
         // TODO(xiangdongkong): Show a spinner or the like for sendReport could
         // take a while.
         this.feedbackServiceProvider.sendReport(report).then(
-            (response: {status: SendReportStatus}) => {
+            (response: {status: SendReportStatus, uniqueReportId: string}) => {
               this.currentState = FeedbackFlowState.CONFIRMATION;
               this.sendReportStatus = response.status;
+              this.uniqueReportId = response.uniqueReportId;
               const confirmationPage = strictQuery(
                   'confirmation-page', this.shadowRoot,
                   ConfirmationPageElement);

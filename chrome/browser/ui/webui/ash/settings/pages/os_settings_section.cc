@@ -11,6 +11,7 @@
 #include "chrome/browser/ui/webui/ash/settings/search/search_tag_registry.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "chrome/browser/ash/profiles/profile_helper.h"
 
 namespace ash::settings {
 
@@ -96,6 +97,10 @@ std::string OsSettingsSection::GetDefaultModifiedUrl(
   // Add deep link to query i.e. "settingId=4".
   ss << kSettingIdUrlParam << '=' << static_cast<int32_t>(id.setting);
   return ss.str();
+}
+
+bool OsSettingsSection::IsFydeProfile() const {
+  return ProfileHelper::Get()->IsFydeProfile(profile());
 }
 
 }  // namespace ash::settings

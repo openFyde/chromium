@@ -172,6 +172,7 @@ static_library("main_parts") {
     "//ui/base/ime/ash",
     "//ui/events",
     "//ui/events/ash",
+    "//fydeos/misc",
   ]
 
   if (is_cfm) {

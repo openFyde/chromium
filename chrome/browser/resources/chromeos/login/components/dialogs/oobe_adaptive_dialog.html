@@ -252,6 +252,29 @@ found in the LICENSE file.
     --iron-icon-width: var(--oobe-adaptive-dialog-icon-size);
     --iron-icon-fill-color: var(--oobe-adaptive-dialog-icon-fill-color);
   }
+
+  :host-context(.jelly-enabled) :host([fydeos-layout]) #oobe-subtitle ::slotted(*) {
+    padding-top: 16px;
+  }
+  :host([fydeos-layout]) #oobe-fydeos-illustration {
+    overflow: hidden;
+    height: 72%;
+  }
+  :host([fydeos-layout]) #oobe-fydeos-illustration.oobe-fydeos-non-animation-container {
+    width: fit-content;
+    margin: 0 auto;
+  }
+  :host([fydeos-layout]) #oobe-fydeos-illustration ::slotted(img) {
+    width: 100%;
+    height: 100%;
+  }
+  :host([fydeos-layout]) #contentContainer {
+    width: 100%;
+    padding-top: var(--oobe-adaptive-dialog-item-vertical-padding);
+  }
+  :host([fydeos-layout]) #contentContainer ::slotted(*) {
+    max-width: 100%;
+  }
 </style>
 <cr-lazy-render id="lazy">
   <template>
@@ -259,6 +282,7 @@ found in the LICENSE file.
       <slot name="back-navigation"></slot>
     </div>
     <div id="main-container" class="layout vertical flex">
+     <template is="dom-if" if="[[!fydeosLayout]]">
       <div id="header-container">
         <div id="oobe-icon-div" class="vertical-mode-centering">
           <slot name="icon"></slot>
@@ -289,6 +313,43 @@ found in the LICENSE file.
           </template>
         </div>
       </div>
+     </template>
+     <template is="dom-if" if="[[fydeosLayout]]">
+      <div id="header-container" class="layout vertical flex center-justified">
+        <template is="dom-if" if="[[animationUrl]]">
+          <div id="oobe-fydeos-illustration" class="vertical-mode-centering">
+            <slot name="fydeos-illustration">
+              <oobe-cr-lottie id="fydeos-illustration-animation"
+                hide-play-pause-icon
+                loop="[[animationLoop]]"
+                animation-url="[[animationUrl]]">
+              </oobe-cr-lottie>
+            </slot>
+          </div>
+        </template>
+        <template is="dom-if" if="[[!animationUrl]]">
+          <div id="oobe-fydeos-illustration" class="vertical-mode-centering oobe-fydeos-non-animation-container">
+            <slot name="fydeos-illustration"></slot>
+          </div>
+        </template>
+      </div>
+      <div id="scrollContainer" class="layout vertical flex scrollable">
+        <div id="oobe-title-container">
+          <div id="oobe-title" class="vertical-mode-centering">
+            <slot name="title"></slot>
+          </div>
+          <div id="oobe-subtitle" class="vertical-mode-centering">
+            <slot name="subtitle"></slot>
+          </div>
+        </div>
+        <div id="oobe-progress" class="vertical-mode-centering">
+          <slot name="progress"></slot>
+        </div>
+        <div id="contentContainer" class="layout vertical flex">
+          <slot name="content"></slot>
+        </div>
+      </div>
+     </template>
     </div>
     <div class="buttons-common bottom-buttons-container
         vertical-mode-centering">

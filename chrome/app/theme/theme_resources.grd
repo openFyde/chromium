@@ -401,6 +401,14 @@
       <if expr="not is_android">
         <structure type="chrome_scaled_image" name="IDR_SUCCESS_GREEN_CHECKMARK" file="common/success_green_checkmark.png" />
       </if>
+      <!--FYDEOS BEGIN-->
+      <if expr="openfyde">
+        <part file="../../../openfyde/resources/theme/app/fydeos_theme_resources.grdp" />
+      </if>
+      <if expr="not openfyde">
+        <part file="../../../fydeos/resources/theme/app/fydeos_theme_resources.grdp" />
+      </if>
+      <!--FYDEOS END-->
     </structures>
   </release>
 </grit>

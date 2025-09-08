@@ -279,6 +279,7 @@ template("chrome_extra_paks") {
         "$root_gen_dir/ash/webui/ash_color_internals_resources.pak",
         "$root_gen_dir/ash/webui/ash_demo_mode_app_resources.pak",
         "$root_gen_dir/ash/webui/ash_diagnostics_app_resources.pak",
+        "$root_gen_dir/ash/webui/ash_fyde_assistant_app_resources.pak",
         "$root_gen_dir/ash/webui/ash_eche_app_resources.pak",
         "$root_gen_dir/ash/webui/ash_eche_bundle_resources.pak",
         "$root_gen_dir/ash/webui/ash_files_internals_resources.pak",
@@ -383,6 +384,7 @@ template("chrome_extra_paks") {
         "//ash/webui/connectivity_diagnostics/resources:resources",
         "//ash/webui/demo_mode_app_ui/resources:resources",
         "//ash/webui/diagnostics_ui/resources:resources",
+        "//ash/webui/fyde_assistant_app_ui/resources:resources",
         "//ash/webui/file_manager/resources:file_manager_swa_resources",
         "//ash/webui/file_manager/untrusted_resources:file_manager_untrusted_resources",
         "//ash/webui/firmware_update_ui/resources:resources",
@@ -506,6 +508,14 @@ template("chrome_extra_paks") {
       deps += [
         "//chrome/browser/resources/extensions:resources",
         "//extensions:extensions_resources",
+      ]
+
+      sources += [
+        "$root_gen_dir/fydeos/extensions/common/fydeos_extensions_resources.pak",
+      ]
+
+      deps += [
+        "//fydeos/extensions/common:resources",
       ]
     }
 

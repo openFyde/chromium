@@ -21,6 +21,10 @@ struct EnumTraits<signin::mojom::AccountType, AccountType> {
         return signin::mojom::AccountType::UNKNOWN;
       case AccountType::GOOGLE:
         return signin::mojom::AccountType::GOOGLE;
+      case AccountType::FYDE_ACCOUNT:
+        return signin::mojom::AccountType::FYDE_ACCOUNT;
+      case AccountType::FLINT_ACCOUNT:
+        return signin::mojom::AccountType::FLINT_ACCOUNT;
     }
     NOTREACHED();
   }
@@ -32,6 +36,12 @@ struct EnumTraits<signin::mojom::AccountType, AccountType> {
         return true;
       case signin::mojom::AccountType::GOOGLE:
         *out = AccountType::GOOGLE;
+        return true;
+      case signin::mojom::AccountType::FYDE_ACCOUNT:
+        *out = AccountType::FYDE_ACCOUNT;
+        return true;
+      case signin::mojom::AccountType::FLINT_ACCOUNT:
+        *out = AccountType::FLINT_ACCOUNT;
         return true;
     }
     NOTREACHED();
@@ -47,6 +57,10 @@ struct StructTraits<signin::mojom::AccountIdDataView, AccountId> {
     switch (r.GetAccountType()) {
       case AccountType::GOOGLE:
         return r.GetGaiaId().ToString();
+      case AccountType::FYDE_ACCOUNT:
+        return r.GetFydeId().ToString();
+      case AccountType::FLINT_ACCOUNT:
+        return r.GetFlintId().ToString();
       case AccountType::UNKNOWN:
         // UNKNOWN type is used for users that have only email (e.g. in tests
         // or legacy users that have not run through migration code).
@@ -69,6 +83,12 @@ struct StructTraits<signin::mojom::AccountIdDataView, AccountId> {
     switch (account_type) {
       case AccountType::GOOGLE:
         *out = AccountId::FromUserEmailGaiaId(user_email, GaiaId(id));
+        break;
+      case AccountType::FLINT_ACCOUNT:
+        *out = AccountId::FtFromUserEmailFlintId(user_email, GaiaId(id));
+        break;
+      case AccountType::FYDE_ACCOUNT:
+        *out = AccountId::FyFromUserEmailFydeId(user_email, GaiaId(id));
         break;
       case AccountType::UNKNOWN:
         // UNKNOWN type is used for users that have only email (e.g. in tests

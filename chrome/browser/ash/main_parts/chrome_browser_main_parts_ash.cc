@@ -46,6 +46,7 @@
 #include "base/task/thread_pool.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "build/branding_buildflags.h"
+#include "fydeos/build/config/buildflags.h"
 #include "build/config/chromebox_for_meetings/buildflags.h"  // PLATFORM_CFM
 #include "chrome/browser/ash/accessibility/accessibility_event_rewriter_delegate_impl.h"
 #include "chrome/browser/ash/accessibility/accessibility_manager.h"
@@ -294,6 +295,12 @@
 #include "ui/base/ui_base_features.h"
 #include "ui/events/ash/pref_names.h"
 #include "ui/events/event_utils.h"
+//---***FYDEOS BEGIN***---
+#include "fydeos/misc/fydeos_misc_scheduler.h"
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+#include "fydeos/license/fydeos_license_manager.h"
+#endif
+//---***FYDEOS END***---
 
 #if BUILDFLAG(PLATFORM_CFM)
 #include "chrome/browser/ash/chromebox_for_meetings/cfm_chrome_services.h"
@@ -551,6 +558,12 @@ class DBusServices {
     DeviceSettingsService::Get()->SetSessionManager(
         SessionManagerClient::Get(),
         OwnerSettingsServiceAshFactory::GetInstance()->GetOwnerKeyUtil());
+    //---***FYDEOS BEGIN***---
+    fydeos::misc::FydeMiscScheduler::Initialize();
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+    fydeos::license::LicenseManager::Initialize();
+#endif
+    //---***FYDEOS END***---
   }
 
   void CreateMachineLearningDecisionProvider() {
@@ -572,6 +585,12 @@ class DBusServices {
   ~DBusServices() {
     rollback_network_config::Shutdown();
     chromeos::sensors::SensorHalDispatcher::Shutdown();
+    //---***FYDEOS BEGIN***---
+    fydeos::misc::FydeMiscScheduler::Shutdown();
+#if BUILDFLAG(USE_FYDEOS_LICENSE)
+    fydeos::license::LicenseManager::Shutdown();
+#endif
+    //---***FYDEOS END***---
     NetworkHandler::Shutdown();
     WifiP2PController::Shutdown();
     disks::DiskMountManager::Shutdown();

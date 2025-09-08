@@ -47,6 +47,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace ash {
 namespace {
@@ -166,6 +167,10 @@ void LockScreenReauthHandler::LoadAuthenticatorParam(
                         ->GetPrimaryUser()
                         ->GetAccountId()
                         .GetGaiaId();
+
+  if (user_manager::UserManager::Get()->GetPrimaryUser()->GetAccountId().GetAccountType() == AccountType::FYDE_ACCOUNT) {
+    context.gaia_id = user_manager::UserManager::Get()->GetPrimaryUser()->GetAccountId().GetFydeId();
+  }
 
   user_manager::KnownUser known_user(g_browser_process->local_state());
   if (!context.email.empty()) {

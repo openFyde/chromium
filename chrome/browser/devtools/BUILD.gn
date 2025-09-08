@@ -141,6 +141,7 @@ static_library("devtools") {
     "//services/viz/privileged/mojom/compositing",
     "//third_party/blink/public:buildflags",
     "//ui/events:dom_keycode_converter",
+    "//fydeos/constants",
   ]
 
   if (enable_devtools_frontend) {

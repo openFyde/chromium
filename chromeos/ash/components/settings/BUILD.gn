@@ -15,6 +15,7 @@ component("settings") {
     "//components/user_manager:common",
     "//google_apis",
     "//third_party/icu",
+    "//fydeos/switches",
   ]
   sources = [
     "cros_settings.cc",

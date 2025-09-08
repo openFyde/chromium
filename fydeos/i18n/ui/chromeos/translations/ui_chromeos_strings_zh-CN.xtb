@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<!-- ui_chromeos_strings.override.grdp -->
+<translation id="39672719749661261">openFyde 设备</translation>
+<translation id="924128306905269697">openFyde 设备</translation>
+<translation id="8384638494645614970">FydeOS 设备</translation>
+<translation id="1341338423757176396">FydeOS 设备</translation>
+<!-- file_manager_strings.override.grdp -->
+<translation id="1978885974203610082">Android 文件</translation>
+<translation id="15784306981872050">显示所有 Android 文件夹</translation>
+<translation id="8411736069741605651">此文件类型不受支持。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
+<translation id="3066512636093156324">此文件类型不受支持。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
+<translation id="2191358521510072305">此文件适用于运行 Windows 软件的 PC，不适用于运行 openFyde 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
+<translation id="3719093789181227709">此文件适用于运行 Windows 软件的 PC，不适用于运行 FydeOS 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
+<translation id="4510277529649429143">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 openFyde 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 openFyde 中打开文件。</translation>
+<translation id="7582064793720640739">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 FydeOS 的设备。<ph name="BEGIN_LINK_HELP" />详细了解<ph name="END_LINK_HELP" />如何在 FydeOS 中打开文件。</translation>
+<translation id="9113848927422449689">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 openFyde 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
+<translation id="7944500333171967397">此文件适用于运行 Macintosh 软件的计算机，不适用于运行 FydeOS 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
+<translation id="2796340402401368720">此文件适用于运行 Windows 软件的 PC，不适用于运行 openFyde 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
+<translation id="5758099459203549695">此文件适用于运行 Windows 软件的 PC，不适用于运行 FydeOS 的设备。请在 FydeOS 应用商店中搜索合适的替代应用。</translation>
+<translation id="6092746107434295994">不支持此文件类型。请访问 FydeOS 应用商店，找到能打开此文件类型的应用。</translation>
+<translation id="3544837910192955131">无法直接打开 .apk 类型的文件；请检查安卓子系统已激活，且确保目前 FydeOS 处在开发者模式下。</translation>
+<translation id="1214892496854604663">我们在不断寻找各种方式来提高上网安全。之前，任何网站都可以提示您在浏览器中添加扩展程序；而在最新版本的 Chromium 中，您必须明确告诉 Chromium 您想要安装这些扩展程序（即：在“扩展程序”页添加它们）后才可以。<ph name="BEGIN_LINK" />了解详情<ph name="END_LINK" /></translation>
+<!-- file_manager_strings.grdp -->
+<translation id="3164186517475962793">FydeOS × 坚果云</translation>
+<translation id="6598736015900593922">注册坚果云账号即可在 FydeOS 上让你的文件实现云同步。</translation>
+<translation id="8672291834743661083">注册坚果云账号</translation>
+<translation id="5103639294476249880">在账户信息的安全选项中点击「添加应用」按钮</translation>
+<translation id="8371020157576651120">创建并复制应用程序密码</translation>
+<translation id="3855250998276979579">打开坚果云应用</translation>
+<translation id="6540892254325675878">并使用邮箱和应用密码将坚果云账号绑定至 FydeOS</translation>
+<translation id="1515216958533722634">燧炻传送</translation>
+<translation id="2913757480900231592">你需要激活该 openFyde 设备上的 Android 子系统方可执行该操作，请点击<ph name="BEGIN_LINK_HELP" />此处<ph name="END_LINK_HELP" />完成激活操作。</translation>
+<translation id="8997186008376436820">你需要激活该 FydeOS 设备上的 Android 子系统方可执行该操作，请点击<ph name="BEGIN_LINK_HELP" />此处<ph name="END_LINK_HELP" />完成激活操作。</translation>
+<translation id="5541694001704515807">如需执行这一操作，你需要<ph name="BEGIN_LINK_ARC_APP" />激活该 FydeOS 设备上的 Android 子系统<ph name="END_LINK_ARC_APP" /> ，并且将你的 FydeOS 设备 <ph name="BEGIN_LINK_HELP" />置成「开发者模式」<ph name="END_LINK_HELP" />。</translation>
+<translation id="3576151496197730029">如需执行这一操作，你需要<ph name="BEGIN_LINK_ARC_APP" />激活该 openFyde 设备上的 Android 子系统<ph name="END_LINK_ARC_APP" /> ，并且将你的 openFyde 设备 <ph name="BEGIN_LINK_HELP" />置成「开发者模式」<ph name="END_LINK_HELP" />。</translation>
+<translation id="8917432843439850484">使用 FydeOS AI 打开</translation>
+</translationbundle>

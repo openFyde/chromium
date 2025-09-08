@@ -640,6 +640,36 @@ void CloudPolicyClient::RegisterWithOidcResponse(
   unique_request_job_ = service_->CreateJob(std::move(config));
 }
 
+void CloudPolicyClient::RegisterWithFydeToken(
+    const RegistrationParameters& parameters,
+    const std::string& client_id,
+    const std::string& token) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(service_);
+  DCHECK(!token.empty());
+  DCHECK(!is_registered());
+
+  SetClientId(client_id);
+
+  auto params = DMServerJobConfiguration::CreateParams::WithClient(
+      DeviceManagementService::JobConfiguration::TYPE_REGISTRATION,
+      this);
+  params.auth_data = DMAuth::FromFydeToken(token);
+  params.callback = base::BindOnce(&CloudPolicyClient::OnRegisterCompleted,
+                                   weak_ptr_factory_.GetWeakPtr());
+  std::unique_ptr<RegistrationJobConfiguration> config =
+      std::make_unique<RegistrationJobConfiguration>(std::move(params));
+
+  em::DeviceRegisterRequest* request =
+      config->request()->mutable_register_request();
+  CreateDeviceRegisterRequest(parameters, client_id, request);
+
+  if (requires_reregistration())
+    request->set_reregistration_dm_token(reregistration_dm_token_);
+
+  unique_request_job_ = service_->CreateJob(std::move(config));
+}
+
 void CloudPolicyClient::OnRegisterWithCertificateRequestSigned(
     std::unique_ptr<SigningService> signing_service,
     bool success,

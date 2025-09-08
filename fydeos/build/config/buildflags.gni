@@ -1,0 +1,26 @@
+# Copyright 2023 Fyde Innovations
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+declare_args() {
+  use_fydeos_com = false
+  is_openfyde = false
+  fydeos_device = false
+}
+
+declare_args() {
+  use_fydeos_license = !is_openfyde && !fydeos_device
+}
+
+if (is_openfyde) {
+  assert(!use_fydeos_license)
+}
+
+if (fydeos_device) {
+  assert(!use_fydeos_license)
+}
+
+if (use_fydeos_license) {
+  assert(!is_openfyde)
+  assert(!fydeos_device)
+}

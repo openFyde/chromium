@@ -161,6 +161,7 @@ static_library("file_manager") {
     "//ui/message_center/public/cpp",
     "//ui/shell_dialogs",
     "//url",
+    "//fydeos/prefs",
   ]
 
   allow_circular_includes_from = [

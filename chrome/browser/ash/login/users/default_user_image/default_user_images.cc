@@ -30,6 +30,7 @@
 #include "ui/chromeos/resources/grit/ui_chromeos_resources.h"
 #include "ui/chromeos/strings/grit/ui_chromeos_strings.h"
 #include "url/gurl.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace ash {
 namespace default_user_image {
@@ -299,8 +300,13 @@ const DefaultImageSourceInfoIds kDefaultImageSourceInfoIds[] = {
     {IDS_LOGIN_DEFAULT_USER_AUTHOR_33, IDS_LOGIN_DEFAULT_USER_WEBSITE_33},
 };
 
+#if BUILDFLAG(USE_FYDEOS_COM)
+constexpr char kGstaticImagePrefix[] =
+    "https://www-img.fydeos.com/chromeos/avatars/";
+#else
 constexpr char kGstaticImagePrefix[] =
     "https://www.gstatic.com/chromecast/home/chromeos/avatars/";
+#endif
 constexpr char k100PercentPrefix[] = "default_100_percent/";
 constexpr char k200PercentPrefix[] = "default_200_percent/";
 

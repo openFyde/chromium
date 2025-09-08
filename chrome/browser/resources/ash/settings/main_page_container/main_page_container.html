@@ -233,6 +233,14 @@
     </page-displayer>
   </template>
   <template is="dom-if"
+      if="[[shouldStampPage_(pageAvailability, SectionEnum_.kFydeAssistant)]]"
+      restamp>
+    <page-displayer section="[[SectionEnum_.kFydeAssistant]]">
+      <os-settings-fyde-assistant-page prefs="{{prefs}}">
+      </os-settings-fyde-assistant-page>
+    </page-displayer>
+  </template>
+  <template is="dom-if"
       if="[[shouldStampPage_(pageAvailability, SectionEnum_.kAccessibility)]]"
       restamp>
     <page-displayer section="[[SectionEnum_.kAccessibility]]"
@@ -252,6 +260,20 @@
           languages="[[languages_]]"
           language-helper="[[languageHelper_]]">
       </settings-system-preferences-page>
+    </page-displayer>
+  </template>
+  <template is="dom-if"
+      if="[[shouldStampPage_(pageAvailability, SectionEnum_.kCrostini)]]"
+      restamp>
+    <page-displayer section="[[SectionEnum_.kCrostini]]">
+      <settings-crostini-page prefs="{{prefs}}"></settings-crostini-page>
+    </page-displayer>
+  </template>
+  <template is="dom-if"
+      if="[[shouldStampPage_(pageAvailability, SectionEnum_.kFydeOs)]]"
+      restamp>
+    <page-displayer section="[[SectionEnum_.kFydeOs]]">
+      <os-fyde-page></os-fyde-page>
     </page-displayer>
   </template>
   <template is="dom-if"

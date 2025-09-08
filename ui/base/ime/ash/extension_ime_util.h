@@ -76,6 +76,12 @@ std::string COMPONENT_EXPORT(UI_BASE_IME_ASH)
 bool COMPONENT_EXPORT(UI_BASE_IME_ASH)
     IsExtensionIME(const std::string& input_method_id);
 
+bool COMPONENT_EXPORT(UI_BASE_IME_ASH)
+    IsFydeOSProvidedIME(const std::string& input_method_id);
+
+bool COMPONENT_EXPORT(UI_BASE_IME_ASH)
+    IsFydeOSProvidedIMEByExtensionId(const std::string& extension_id);
+
 // Returns true if |input_method_id| is component extension IME ID. This
 // function does not check |input_method_id| is really allowlisted one or not.
 // If you want to check |input_method_id| is allowlisted component extension

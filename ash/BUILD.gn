@@ -760,6 +760,10 @@ component("ash") {
     "frame_throttler/frame_throttling_controller.cc",
     "frame_throttler/frame_throttling_controller.h",
     "frame_throttler/frame_throttling_observer.h",
+    "fydeos_ai/fydeos_ai_view.cc",
+    "fydeos_ai/fydeos_ai_view.h",
+    "fydeos_ai/fydeos_ai_bubble.cc",
+    "fydeos_ai/fydeos_ai_bubble.h",
     "game_dashboard/game_dashboard_battery_view.cc",
     "game_dashboard/game_dashboard_battery_view.h",
     "game_dashboard/game_dashboard_button.cc",
@@ -2698,6 +2702,10 @@ component("ash") {
     "system/unified/user_chooser_detailed_view_controller.h",
     "system/unified/user_chooser_view.cc",
     "system/unified/user_chooser_view.h",
+    "../fydeos/ash/system/unified/rotate_screen_feature_pod_controller.cc",
+    "../fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h",
+    "../fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.cc",
+    "../fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.h",
     "system/update/eol_notice_quick_settings_view.cc",
     "system/update/eol_notice_quick_settings_view.h",
     "system/update/extended_updates_notice_quick_settings_view.cc",
@@ -3618,6 +3626,8 @@ component("ash") {
     "//ui/wm",
     "//ui/wm/public",
     "//url",
+    "//fydeos/prefs",
+    "//fydeos/build/config:buildflags",
   ]
 
   data_deps = [ ":dbus_service_files" ]

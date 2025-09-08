@@ -97,6 +97,13 @@ export class HistorySideBarElement extends PolymerElement {
             'historyClustersEnabled, historyClustersVisible)',
       },
 
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
+
       compareHistoryEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('compareHistoryEnabled'),
@@ -113,6 +120,7 @@ export class HistorySideBarElement extends PolymerElement {
   declare private historyClustersVisibleManagedByPolicy_: boolean;
   declare private showFooter_: boolean;
   declare private showHistoryClusters_: boolean;
+  declare private isFydeLocalAccount_: boolean;
   declare private compareHistoryEnabled_: boolean;
 
   override ready() {

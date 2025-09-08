@@ -186,7 +186,7 @@ void SessionManager::CreateSessionInternal(const AccountId& user_account_id,
   // rather than UserManager. Move the field.
   // Note: For KioskApp user, this may be updated later in UserSessionManager.
   user_manager_->SetIsCurrentUserNew(
-      (new_user && user.HasGaiaAccount()) ||
+      (new_user && (user.HasGaiaAccount() || user.IsFydeExtendAccountUser())) ||
       user.GetType() == user_manager::UserType::kPublicAccount);
 
   observers_.Notify(&SessionManagerObserver::OnSessionCreationStarted,

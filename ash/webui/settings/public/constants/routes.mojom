@@ -17,6 +17,7 @@ enum Section {
   kPersonalization = 5,
   // Note: Value 6 was for deprecated kSearchAndAssistant. Do not reuse.
   kApps = 7,
+  kCrostini = 8,
   // Note: Value 8 was for deprecated kCrostini. Do not reuse.
   // Note: Value 9 was for deprecated Plugin VM section - see
   // https://crbug.com/1074101. Do not reuse.
@@ -31,6 +32,8 @@ enum Section {
   kAboutChromeOs = 17,
   kKerberos = 18,
   kSystemPreferences = 19,
+  kFydeOs = 20,
+  kFydeAssistant = 21,
 };
 
 // Chrome OS Settings subpages (i.e., nested pages within a section). Each
@@ -193,6 +196,11 @@ enum Subpage {
 
   // Kerberos section.
   kKerberosAccountsV2 = 1800,
+
+  //---***FYDEOS BEGIN***---
+  kFydeOsMain = 1900,
+  kFydeOsLicenseInfo = 1901,
+  //---***FYDEOS END***---
 };
 
 // Network section.
@@ -276,6 +284,7 @@ const string kManageIsolatedWebAppsSubpagePath = "manage-isolated-web-apps";
 const string kAppParentalControlsSubpagePath = "app-parental-controls";
 
 // Crostini section.
+const string kCrostiniSectionPath = "crostini";
 const string kCrostiniDetailsSubpagePath = "crostini/details";
 const string kCrostiniManageSharedFoldersSubpagePath = "crostini/sharedPaths";
 const string kCrostiniUsbPreferencesSubpagePath = "crostini/sharedUsbDevices";
@@ -325,6 +334,9 @@ const string kNetworkFileSharesSubpagePath = "smbShares";
 // Printing section.
 const string kPrintingDetailsSubpagePath = "cupsPrinters";
 
+// Fyde Assistant section.
+const string kFydeAssistantSectionPath = "osFydeAssistant";
+
 // Accessibility section.
 const string kAccessibilitySectionPath = "osAccessibility";
 const string kManageAccessibilitySubpagePath = "manageAccessibility";
@@ -356,3 +368,8 @@ const string kSystemPreferencesSectionPath = "systemPreferences";
 
 // Internal pages (under About section).
 const string kInternalStorybookSubpagePath = "_internal/_storybook";
+
+// FydeOS section.
+const string kFydeOsSectionPath = "fydeos";
+const string kFydeOsSubpagePath = "fydeos/main";
+const string kFydeOsLicenseInfoSubpagePath = "fydeos/license";

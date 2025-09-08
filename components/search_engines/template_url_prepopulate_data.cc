@@ -27,6 +27,7 @@
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "third_party/search_engines_data/resources/definitions/prepopulated_engines.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace TemplateURLPrepopulateData {
 
@@ -222,7 +223,7 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
     std::vector<const TemplateURLPrepopulateData::PrepopulatedEngine*>
         regional_prepopulated_engines) {
   return FindPrepopulatedEngineInternal(prefs, regional_prepopulated_engines,
-                                        google.id,
+                                        fydeos::switches::IsFydeExtendAccountEnabled() ? bing.id : google.id,
                                         /*use_first_as_fallback=*/true);
 }
 

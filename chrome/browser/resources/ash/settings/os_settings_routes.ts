@@ -14,6 +14,7 @@ import {assert} from 'chrome://resources/js/assert.js';
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 
 import {androidAppsVisible, isAppParentalControlsFeatureAvailable, isArcVmEnabled, isCrostiniSupported, isGuest, isInputDeviceSettingsSplitEnabled, isKerberosEnabled, isPluginVmAvailable} from './common/load_time_booleans.js';
+import {isFydeAssistantFeatureEnabled} from './common/load_time_booleans.js';
 import * as routesMojom from './mojom-webui/routes.mojom-webui.js';
 
 /**
@@ -155,6 +156,7 @@ export interface OsSettingsRoutes extends MinimumRoutes {
   ANDROID_APPS_DETAILS: Route;
   ANDROID_APPS_DETAILS_ARC_VM_SHARED_USB_DEVICES: Route;
   AUDIO: Route;
+  CROSTINI: Route;
   CROSTINI_ANDROID_ADB: Route;
   CROSTINI_DETAILS: Route;
   CROSTINI_DISK_RESIZE: Route;
@@ -180,6 +182,10 @@ export interface OsSettingsRoutes extends MinimumRoutes {
   DISPLAY: Route;
   EXTERNAL_STORAGE_PREFERENCES: Route;
   FINGERPRINT: Route;
+  FYDEOS: Route,
+// <if expr="use_fydeos_license">
+  FYDEOS_LICENSE_INFO: Route,
+// </if>
   GOOGLE_ASSISTANT: Route;
   GOOGLE_DRIVE: Route;
   GRAPHICS_TABLET: Route;
@@ -203,6 +209,7 @@ export interface OsSettingsRoutes extends MinimumRoutes {
   NETWORK_DETAIL: Route;
   OFFICE: Route;
   ONE_DRIVE: Route;
+  OS_FYDE_ASSISTANT: Route;
   OS_ACCESSIBILITY: Route;
   OS_LANGUAGES: Route;
   OS_LANGUAGES_APP_LANGUAGES: Route;
@@ -440,6 +447,13 @@ export function createRoutes(): OsSettingsRoutes {
         Subpage.kAppParentalControls);
   }
 
+  // Fyde Assistant section.
+  if (!isGuest() && isFydeAssistantFeatureEnabled()) {
+    r.OS_FYDE_ASSISTANT = createSection(
+        r.BASIC, routesMojom.FYDE_ASSISTANT_SECTION_PATH, Section.kFydeAssistant);
+  }
+
+
   // Accessibility section.
   r.OS_ACCESSIBILITY = createSection(
       r.BASIC, routesMojom.ACCESSIBILITY_SECTION_PATH, Section.kAccessibility);
@@ -529,6 +543,14 @@ export function createRoutes(): OsSettingsRoutes {
       r.ABOUT, routesMojom.INTERNAL_STORYBOOK_SUBPAGE_PATH,
       Subpage.kInternalStorybook);
 
+  r.FYDEOS = createSection(null, routesMojom.FYDE_OS_SECTION_PATH, Section.kFydeOs);
+
+// <if expr="use_fydeos_license">
+  r.FYDEOS_LICENSE_INFO = createSubpage(
+      r.FYDEOS, routesMojom.FYDE_OS_LICENSE_INFO_SUBPAGE_PATH,
+      Subpage.kFydeOsLicenseInfo);
+// </if>
+
   // Device section, Input subpages.
   const inputParentRoute =
       isInputDeviceSettingsSplitEnabled() ? r.PER_DEVICE_KEYBOARD : r.KEYBOARD;
@@ -609,12 +631,15 @@ export function createRoutes(): OsSettingsRoutes {
 
   // Crostini subpages.
   if (isCrostiniSupported()) {
+    r.CROSTINI = createSection(
+        r.ADVANCED, routesMojom.CROSTINI_SECTION_PATH, Section.kCrostini);
+
     r.CROSTINI_DETAILS = createSubpage(
-        r.ABOUT, routesMojom.CROSTINI_DETAILS_SUBPAGE_PATH,
+        r.CROSTINI, routesMojom.CROSTINI_DETAILS_SUBPAGE_PATH,
         Subpage.kCrostiniDetails);
 
     r.BRUSCHETTA_DETAILS = createSubpage(
-        r.ABOUT, routesMojom.BRUSCHETTA_DETAILS_SUBPAGE_PATH,
+        r.CROSTINI, routesMojom.BRUSCHETTA_DETAILS_SUBPAGE_PATH,
         Subpage.kBruschettaDetails);
   }
 

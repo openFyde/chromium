@@ -96,6 +96,7 @@ export class SettingsSetLocalPasswordDialogElement extends PolymerElement {
     switch (result) {
       case ConfigureResult.kSuccess:
         this.$.dialog.close();
+        chrome.send('cleanLocalAutoSignin');
         return;
       case ConfigureResult.kInvalidTokenError:
         fireAuthTokenInvalidEvent(this);

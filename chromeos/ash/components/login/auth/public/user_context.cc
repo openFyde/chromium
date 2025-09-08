@@ -22,7 +22,9 @@ UserContext::UserContext(const UserContext& other) = default;
 
 UserContext::UserContext(const user_manager::User& user)
     : account_id_(user.GetAccountId()), user_type_(user.GetType()) {
-  if (user_type_ == user_manager::UserType::kRegular) {
+  if (user_type_ == user_manager::UserType::kRegular ||
+      user_type_ == user_manager::UserType::kFydeAccount ||
+      user_type_ == user_manager::UserType::kFlintAccount) {
     account_id_.SetUserEmail(
         user_manager::CanonicalizeUserID(account_id_.GetUserEmail()));
   }
@@ -31,7 +33,9 @@ UserContext::UserContext(const user_manager::User& user)
 UserContext::UserContext(user_manager::UserType user_type,
                          const AccountId& account_id)
     : account_id_(account_id), user_type_(user_type) {
-  if (user_type_ == user_manager::UserType::kRegular) {
+  if (user_type_ == user_manager::UserType::kRegular ||
+      user_type_ == user_manager::UserType::kFydeAccount ||
+      user_type_ == user_manager::UserType::kFlintAccount) {
     account_id_.SetUserEmail(
         user_manager::CanonicalizeUserID(account_id_.GetUserEmail()));
   }
@@ -192,7 +196,7 @@ const AccountId& UserContext::GetAccountId() const {
 }
 
 GaiaId UserContext::GetGaiaID() const {
-  return account_id_.GetGaiaId();
+  return account_id_.GetAccountType() == AccountType::FYDE_ACCOUNT ? account_id_.GetFydeId() : account_id_.GetGaiaId();
 }
 
 const Key* UserContext::GetKey() const {
@@ -381,6 +385,14 @@ std::optional<PasswordInput> UserContext::GetPassword() const {
   } else {
     return std::nullopt;
   }
+}
+
+void UserContext::SetFydeLocalPasswordInput(const LocalPasswordInput& password) {
+  SetLocalPasswordInput(password);
+}
+
+std::optional<LocalPasswordInput> UserContext::GetFydeLocalPassword() const {
+  return local_input_;
 }
 
 void UserContext::SetAuthCode(const std::string& auth_code) {

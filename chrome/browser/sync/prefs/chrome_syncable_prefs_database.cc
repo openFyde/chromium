@@ -394,6 +394,7 @@ enum {
   kPinSplitTabButton = 100327,
   kGlicRolloutEligibility = 100328,
   kShelfNotebookLmAppPinRolls = 100329,
+  kLanguageImeMenuActivated = 100330,
   // See components/sync_preferences/README.md about adding new entries here.
   // vvvvv IMPORTANT! vvvvv
   // Note to the reviewer: IT IS YOUR RESPONSIBILITY to ensure that new syncable
@@ -1109,6 +1110,10 @@ constexpr auto kChromeSyncablePrefsAllowlist = base::MakeFixedFlatMap<
       sync_preferences::MergeBehavior::kNone}},
     {prefs::kLanguagePreloadEnginesSyncable,
      {syncable_prefs_ids::kLanguagePreloadEnginesSyncable,
+      syncer::OS_PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+      sync_preferences::MergeBehavior::kNone}},
+    {prefs::kLanguageImeMenuActivated,
+     {syncable_prefs_ids::kLanguageImeMenuActivated,
       syncer::OS_PREFERENCES, sync_preferences::PrefSensitivity::kNone,
       sync_preferences::MergeBehavior::kNone}},
     {prefs::kLanguageRemapAltKeyTo,

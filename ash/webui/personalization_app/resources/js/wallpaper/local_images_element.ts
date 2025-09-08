@@ -27,9 +27,11 @@ import {WallpaperType} from '../../personalization_app.mojom-webui.js';
 import {WithPersonalizationStore} from '../personalization_store.js';
 
 import type {DefaultImageSymbol, DisplayableImage} from './constants.js';
+import type {FydeImage} from './constants.js';
 import {kDefaultImageSymbol} from './constants.js';
 import {getTemplate} from './local_images_element.html.js';
 import {getPathOrSymbol, isDefaultImage} from './utils.js';
+import {toggleLightDarkImagePath, generateFydeImage, isFydeImage} from './utils.js';
 import {selectWallpaper} from './wallpaper_controller.js';
 import {getWallpaperProvider} from './wallpaper_interface_provider.js';
 
@@ -65,6 +67,10 @@ export class LocalImagesElement extends WithPersonalizationStore {
         type: Array,
         value: [],
       },
+      finalImagesToDisplay_: {
+        type: Array,
+        value: [],
+      },
     };
   }
 
@@ -80,6 +86,7 @@ export class LocalImagesElement extends WithPersonalizationStore {
   private currentSelected_: CurrentWallpaper|null;
   private pendingSelected_: DisplayableImage|null;
   private imagesToDisplay_: Array<FilePath|DefaultImageSymbol>;
+  private finalImagesToDisplay_: Array<FydeImage|FilePath|DefaultImageSymbol>;
 
   constructor() {
     super();
@@ -117,6 +124,7 @@ export class LocalImagesElement extends WithPersonalizationStore {
       }
       return true;
     });
+    this.finalImagesToDisplay_ = this.computeFinalImagesToDisplay_(this.imagesToDisplay_);
   }
 
   /**
@@ -140,10 +148,50 @@ export class LocalImagesElement extends WithPersonalizationStore {
         this.splice('imagesToDisplay_', i, 1);
       }
     }
+    this.finalImagesToDisplay_ = this.computeFinalImagesToDisplay_(this.imagesToDisplay_);
   }
 
+  private computeFinalImagesToDisplay_(images: LocalImagesElement['imagesToDisplay_']) {
+    const finalImagesToDisplay = [];
+    const handledImages: Array<string|DefaultImageSymbol> = [];
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
+      const key = getPathOrSymbol(image);
+      if (handledImages.includes(key)) {
+        continue;
+      }
+      const pairPath = toggleLightDarkImagePath(image);
+      if (!pairPath) {
+        // If the image is not a light/dark pair, just add it to the final list.
+        finalImagesToDisplay.push(image);
+        handledImages.push(key);
+        continue;
+      }
+
+      const find = images.find((item) => getPathOrSymbol(item) === pairPath);
+      if (find) {
+        const fydeImage = generateFydeImage(image, find);
+        if (fydeImage) {
+          finalImagesToDisplay.push(fydeImage);
+        } else {
+          finalImagesToDisplay.push(image);
+          finalImagesToDisplay.push(find);
+        }
+        handledImages.push(key);
+        handledImages.push(pairPath);
+      } else {
+        // If the image is a light/dark pair but the other image is not in the
+        // images list, just add it to the final list.
+        finalImagesToDisplay.push(image);
+        handledImages.push(key);
+      }
+    }
+    console.log('finalImagesToDisplay', finalImagesToDisplay);
+    return finalImagesToDisplay;
+   }
+
   private isImageSelected_(
-      image: FilePath|DefaultImageSymbol|null,
+      image: FydeImage|FilePath|DefaultImageSymbol|null,
       currentSelected: LocalImagesElement['currentSelected_'],
       pendingSelected: LocalImagesElement['pendingSelected_']): boolean {
     if (!image || (!currentSelected && !pendingSelected)) {
@@ -155,6 +203,15 @@ export class LocalImagesElement extends WithPersonalizationStore {
           (!pendingSelected && !!currentSelected &&
            currentSelected.type === WallpaperType.kDefault));
     }
+    if (isFydeImage(image)) {
+      const lightSelected = isNonEmptyFilePath(pendingSelected) && image.light.path === pendingSelected.path ||
+          !!currentSelected && image.light.path === currentSelected.key &&
+            !pendingSelected;
+      const darkSelected = isNonEmptyFilePath(pendingSelected) && image.dark.path === pendingSelected.path ||
+          !!currentSelected && image.dark.path === currentSelected.key &&
+            !pendingSelected;
+      return lightSelected || darkSelected;
+    }
     return (
         isNonEmptyFilePath(pendingSelected) &&
             image.path === pendingSelected.path ||
@@ -163,13 +220,16 @@ export class LocalImagesElement extends WithPersonalizationStore {
   }
 
   private getAriaLabel_(
-      image: FilePath|DefaultImageSymbol|null,
+      image: FydeImage|FilePath|DefaultImageSymbol|null,
       imageDataLoading: LocalImagesElement['imageDataLoading_']): string {
     if (this.isImageLoading_(image, imageDataLoading)) {
       return this.i18n('ariaLabelLoading');
     }
     if (isDefaultImage(image)) {
       return this.i18n('defaultWallpaper');
+    }
+    if (isFydeImage(image)) {
+      return image.name;
     }
     if (!isNonEmptyFilePath(image)) {
       return '';
@@ -179,10 +239,14 @@ export class LocalImagesElement extends WithPersonalizationStore {
   }
 
   private isImageLoading_(
-      image: FilePath|DefaultImageSymbol|null,
+      image: FydeImage|FilePath|DefaultImageSymbol|null,
       imageDataLoading: LocalImagesElement['imageDataLoading_']): boolean {
     if (!image || !imageDataLoading) {
       return true;
+    }
+    if (isFydeImage(image)) {
+      return this.isImageLoading_(image.dark, imageDataLoading) ||
+          this.isImageLoading_(image.light, imageDataLoading);
     }
     const key = getPathOrSymbol(image);
     // If key is not present, then loading has not yet started. Still show a
@@ -192,11 +256,25 @@ export class LocalImagesElement extends WithPersonalizationStore {
   }
 
   private getImageData_(
-      image: FilePath|DefaultImageSymbol|null,
+      image: FydeImage|FilePath|DefaultImageSymbol|null,
       imageData: LocalImagesElement['imageData_'],
-      imageDataLoading: LocalImagesElement['imageDataLoading_']): Url|null {
+      imageDataLoading: LocalImagesElement['imageDataLoading_']): Url[]|Url|null {
     if (!image || this.isImageLoading_(image, imageDataLoading)) {
       return null;
+    }
+    if (isFydeImage(image)) {
+      let dark = imageData[getPathOrSymbol(image.dark)];
+      let light = imageData[getPathOrSymbol(image.light)];
+      if (!isImageDataUrl(dark)) {
+        dark = { url: '' };
+      }
+      if (!isImageDataUrl(light)) {
+        light = { url: '' };
+      }
+      return [
+        light,
+        dark
+      ]
     }
     const data = imageData[getPathOrSymbol(image)];
     // Return a "fail" url that will not load.
@@ -206,17 +284,21 @@ export class LocalImagesElement extends WithPersonalizationStore {
     return data;
   }
 
-  private getImageDataId_(image: FilePath|DefaultImageSymbol|null): string {
+  private getImageDataId_(image: FydeImage|FilePath|DefaultImageSymbol|null): string {
     if (!image) {
       return '';
+    }
+    if (isFydeImage(image)) {
+      return image.name;
     }
     return isNonEmptyFilePath(image) ? image.path : image.toString();
   }
 
   private onImageSelected_(event: WallpaperGridItemSelectedEvent&
-                           {model: {item: FilePath | DefaultImageSymbol}}) {
+                           {model: {item: FydeImage | FilePath | DefaultImageSymbol}}) {
     assert(
         event.model.item === kDefaultImageSymbol ||
+            isFydeImage(event.model.item) ||
             isNonEmptyFilePath(event.model.item),
         'local image is a file path or default image');
     selectWallpaper(event.model.item, this.wallpaperProvider_, this.getStore());

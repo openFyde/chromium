@@ -80,6 +80,8 @@ void StorageSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_EMPTY_LIST_HEADER},
       {"storageExternalStorageListHeader",
        IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER},
+      {"storageAndroidAppsExternalDrivesNote",
+       IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE},
       {"storageItemApps", IDS_OS_SETTINGS_STORAGE_ITEM_APPS},
       {"storageItemOffline", IDS_SETTINGS_STORAGE_ITEM_OFFLINE},
       {"storageItemAvailable", IDS_SETTINGS_STORAGE_ITEM_AVAILABLE},
@@ -108,11 +110,11 @@ void StorageSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
   };
   html_source->AddLocalizedStrings(kStorageStrings);
 
-  html_source->AddString(
-      "storageAndroidAppsExternalDrivesNote",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE,
-          chrome::kArcExternalStorageLearnMoreURL));
+  // html_source->AddString(
+  //     "storageAndroidAppsExternalDrivesNote",
+  //     l10n_util::GetStringFUTF16(
+  //         IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE,
+  //         chrome::kArcExternalStorageLearnMoreURL));
 
   html_source->AddString(
       "storageItemBrowsingData",

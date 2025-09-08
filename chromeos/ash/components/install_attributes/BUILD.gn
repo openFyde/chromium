@@ -20,6 +20,7 @@ component("install_attributes") {
     "//chromeos/dbus/tpm_manager",
     "//components/policy/proto:proto",
     "//google_apis:google_apis",
+    "//fydeos/switches/account/base:account_base",
   ]
   sources = [
     "install_attributes.cc",

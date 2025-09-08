@@ -101,11 +101,12 @@
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "url/gurl.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace {
 
-const char kKeyboardShortcutHelpPageUrl[] =
-    "https://support.google.com/chromebook/answer/183101";
+// const char kKeyboardShortcutHelpPageUrl[] =
+//     "https://support.google.com/chromebook/answer/183101";
 
 // Browser tests are always started with --disable-logging-redirect, so we need
 // independent option here.
@@ -257,7 +258,7 @@ ChromeShellDelegate::GetBrowserProcessUrlLoaderFactory() const {
 
 void ChromeShellDelegate::OpenKeyboardShortcutHelpPage() const {
   ash::NewWindowDelegate::GetPrimary()->OpenUrl(
-      GURL(kKeyboardShortcutHelpPageUrl),
+      GURL(fydeos::constants::kKeyboardShortcutHelpPageUrl),
       ash::NewWindowDelegate::OpenUrlFrom::kUserInteraction,
       ash::NewWindowDelegate::Disposition::kNewForegroundTab);
 }

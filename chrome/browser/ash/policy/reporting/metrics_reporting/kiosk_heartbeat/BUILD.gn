@@ -16,6 +16,16 @@ static_library("kiosk_heartbeat") {
     "//base",
     "//components/reporting/metrics:metrics_data_collection",
     "//components/reporting/proto:metric_data_proto",
+
+    "//chrome/browser/ash/settings",
+
+    "//fydeos/build/config:buildflags",
+
+    "//net",
+    "//services/network/public/cpp:cpp_base",
+    "//chrome/browser:browser_process",
+    "//services/network/public/mojom:url_loader_base",
+    "//fydeos/switches",
   ]
 }
 

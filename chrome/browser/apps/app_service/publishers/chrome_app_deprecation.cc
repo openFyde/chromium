@@ -35,13 +35,18 @@ BASE_FEATURE(kAllowUserInstalledChromeApps,
 
 BASE_FEATURE(kAllowChromeAppsInKioskSessions,
              "AllowChromeAppsInKioskSessions",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kChromeAppsDeprecationComponentUpdater,
              "ChromeAppsDeprecationComponentUpdater",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 namespace {
+constexpr auto kFydeAllowlist = base::MakeFixedFlatSet<std::string_view>(
+    // store, start arc settings, installer, gapps
+    {"hidnajblbifdkmheebalalchohohmaef", "iakadpgajjigiaojnbdmodlngmbkfhag",
+     "lhmcdeiaijhielknligmjhdfepjgoelf", "gpnlbpiaddglbmgfpenojdjkknmbjmki"});
+
 constexpr auto kCommonAllowlist = base::MakeFixedFlatSet<std::string_view>(
     {"aakfkoilmhehmmadlkedfbcelkbamdkj", "aepgaekjheajlcifmpjcnpbjcencoefn",
      "afoipjmffplafpbfjopglheidddioiai", "afpnehpifljbjjplppeplamalioanmio",
@@ -233,6 +238,7 @@ bool IsAllowlisted(std::string_view app_id, AllowlistContext context) {
   switch (context) {
     case AllowlistContext::UserInstalled:
       return kCommonAllowlist.contains(app_id) ||
+             kFydeAllowlist.contains(app_id) ||
              commonAllowlistFromComponentUpdater->contains(app_id.data()) ||
              kUserInstalledAllowlist.contains(app_id) ||
              userInstalledAllowlistFromComponentUpdater->contains(

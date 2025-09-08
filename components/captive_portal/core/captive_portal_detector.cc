@@ -15,11 +15,17 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace captive_portal {
 
+#if BUILDFLAG(USE_FYDEOS_COM)
+const char CaptivePortalDetector::kDefaultURL[] =
+    "http://store.fydeos.com/204";
+#else
 const char CaptivePortalDetector::kDefaultURL[] =
     "http://www.gstatic.com/generate_204";
+#endif
 
 CaptivePortalDetector::CaptivePortalDetector(
     network::mojom::URLLoaderFactory* loader_factory)

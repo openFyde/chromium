@@ -54,6 +54,7 @@ source_set("unit_tests") {
     "//chromeos/ash/components/dbus/concierge",
     "//chromeos/ash/components/dbus/constants",
     "//chromeos/ash/components/dbus/update_engine",
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
     "//chromeos/ash/components/install_attributes:test_support",
     "//chromeos/ash/components/login/login_state",
     "//chromeos/ash/components/mojo_service_manager:test_support",

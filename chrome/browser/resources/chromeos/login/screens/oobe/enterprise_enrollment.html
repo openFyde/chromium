@@ -102,7 +102,7 @@ found in the LICENSE file.
   <div slot="back-navigation">
     <!-- BACK - Shown when the generic cancel button is hidden -->
     <oobe-back-button id="errorCancelBackButton"
-        hidden$="[[isGenericCancel(isAutoEnroll, isForced)]]"
+        hidden$="[[isGenericCancel(isAutoEnroll, isForced, isFallbackEnabled)]]"
         on-click="cancel"></oobe-back-button>
   </div>
   <div slot="bottom-buttons">
@@ -111,7 +111,7 @@ found in the LICENSE file.
         class="flex layout horizontal end-justified" for-step="error">
       <!-- GENERAL CANCEL BUTTON (SKIP / ENROLL MANUALLY) -->
       <oobe-text-button id="errorGenericCancelButton"
-          hidden$="[[!isGenericCancel(isAutoEnroll, isForced)]]"
+          hidden$="[[!isGenericCancel(isAutoEnroll, isForced, isFallbackEnabled)]]"
           on-click="cancel" inverse$="[[!canRetryAfterError]]"
           text-key="[[getCancelButtonLabel(isAutoEnroll)]]">
       </oobe-text-button>

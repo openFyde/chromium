@@ -6,6 +6,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/notreached.h"
 #include "google_apis/gaia/gaia_id.h"
 
 namespace account_manager {
@@ -25,9 +26,21 @@ std::ostream& operator<<(std::ostream& os, const AccountType& account_type) {
   // Currently, we only support `kGaia` account type. Should a new type be added
   // in the future, consider removing the `CHECK_EQ()` below and handling the
   // new type accordingly.
-  CHECK_EQ(account_type, account_manager::AccountType::kGaia);
+  // CHECK_EQ(account_type, account_manager::AccountType::kGaia);
+  switch (account_type) {
+    case account_manager::AccountType::kGaia:
+      os << "Gaia";
+      break;
+    case account_manager::AccountType::kFlint:
+      os << "Flint";
+      break;
+    case account_manager::AccountType::kFyde:
+      os << "Fyde";
+      break;
+    default:
+      NOTREACHED() << "Unknown account type: " << static_cast<int>(account_type);
+  }
 
-  os << "Gaia";
   return os;
 }
 

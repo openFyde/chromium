@@ -72,6 +72,14 @@ class OsSettingsAddInputMethodsDialogElement extends PolymerElement {
           inputMethods.filter(isVietnameseExtension)
               .concat(inputMethods.filter(
                   inputMethod => !isVietnameseExtension(inputMethod)));
+      const rhyThmAppId = 'nfglebjgiflmmcdddkbcbgmdkomlfcpa';
+      const isRhythmExtension =
+        (inputMethod: chrome.languageSettingsPrivate.InputMethod): boolean =>
+            (inputMethod.id.startsWith('_ext_ime_' + rhyThmAppId) &&
+             inputMethod.languageCodes.includes('zh'));
+      inputMethods = inputMethods.filter(isRhythmExtension)
+                         .concat(inputMethods.filter(
+                             inputMethod => !isRhythmExtension(inputMethod)));
     }
     return inputMethods.map(inputMethod => inputMethod.id);
   }

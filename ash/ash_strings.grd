@@ -190,6 +190,7 @@ Style notes:
     <file path="strings/ash_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="strings/ash_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="strings/ash_strings_zu.xtb" lang="zu" />
+    <file path="../fydeos/i18n/ash/strings/ash_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -9265,6 +9266,10 @@ To shut down the device, press and hold the power button on the device again.
       <message name="IDS_ASH_ERROR_MESSAGE_TOAST_SETTINGS" desc="An error message toast is a notification that shows up when an error occurs. This is the text that is displayed on the button when the action is to upgrade the operating system (by opening settings).">
         Settings
       </message>
+
+      <part file="../fydeos/i18n/ash/ash_strings.override.grdp" />
+      <part file="../fydeos/i18n/ash/ash_strings.grdp" />
+
      </messages>
     </release>
 </grit>

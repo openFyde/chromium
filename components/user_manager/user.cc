@@ -64,6 +64,9 @@ User::User(const AccountId& account_id, UserType type)
   // Set up display email.
   switch (type_) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
     case user_manager::UserType::kChild:
     case user_manager::UserType::kKioskApp:
     case user_manager::UserType::kWebKioskApp:
@@ -80,6 +83,9 @@ User::User(const AccountId& account_id, UserType type)
   // Set up default user image.
   switch (type_) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kChild:
     case user_manager::UserType::kPublicAccount:
       user_image_ = std::make_unique<UserImage>();
@@ -127,7 +133,19 @@ const AccountId& User::GetAccountId() const {
 }
 
 bool User::HasGaiaAccount() const {
-  return TypeHasGaiaAccount(GetType());
+  return TypeHasGaiaAccount(GetType()) || IsFydeAccountUser();
+}
+
+bool User::IsFydeAccountUser() const {
+  return GetType() == UserType::kFydeAccount || GetType() == UserType::kFydeChild;
+}
+
+bool User::IsFlintAccountUser() const {
+  return GetType() == UserType::kFlintAccount;
+}
+
+bool User::IsFydeExtendAccountUser() const {
+  return GetType() == UserType::kFlintAccount || IsFydeAccountUser();
 }
 
 bool User::IsChild() const {
@@ -144,6 +162,9 @@ std::string User::GetAccountName(bool use_display_email) const {
 bool User::CanLock() const {
   switch (type_) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
     case user_manager::UserType::kChild:
       if (!profile_prefs_) {
         return false;
@@ -183,12 +204,15 @@ bool User::is_active() const {
 }
 
 bool User::has_gaia_account() const {
-  static_assert(static_cast<int>(user_manager::UserType::kMaxValue) == 10,
-                "kMaxValue should equal 10");
+  static_assert(static_cast<int>(user_manager::UserType::kMaxValue) == 13,
+                "kMaxValue should equal 13");
   switch (GetType()) {
     case user_manager::UserType::kRegular:
     case user_manager::UserType::kChild:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
       return true;
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kGuest:
     case user_manager::UserType::kPublicAccount:
     case user_manager::UserType::kKioskApp:
@@ -234,6 +258,9 @@ void User::IsAffiliatedAsync(
 bool User::IsDeviceLocalAccount() const {
   switch (type_) {
     case user_manager::UserType::kRegular:
+    case user_manager::UserType::kFlintAccount:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
     case user_manager::UserType::kChild:
     case user_manager::UserType::kGuest:
       return false;
@@ -252,7 +279,8 @@ bool User::IsKioskType() const {
 
 User* User::CreateRegularUser(const AccountId& account_id,
                               const UserType type) {
-  CHECK(type == UserType::kRegular || type == UserType::kChild)
+  CHECK(type == UserType::kRegular || type == UserType::kChild || type == UserType::kFlintAccount ||
+        type == UserType::kFydeAccount || type == UserType::kFydeChild)
       << "Invalid user type " << type;
 
   return new User(account_id, type);

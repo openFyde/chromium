@@ -113,6 +113,8 @@ class GaiaView {
   // Reset authenticator.
   virtual void Reset() = 0;
 
+  virtual void RequestUseLocalAccount() = 0;
+
   // Gets a WeakPtr to the instance.
   virtual base::WeakPtr<GaiaView> AsWeakPtr() = 0;
 };
@@ -163,6 +165,8 @@ class GaiaScreenHandler final
 
   void Reset() override;
   base::WeakPtr<GaiaView> AsWeakPtr() override;
+
+  void RequestUseLocalAccount() override;
 
   // SecurityTokenPinDialogHost:
   void ShowSecurityTokenPinDialog(
@@ -227,6 +231,7 @@ class GaiaScreenHandler final
   void DeclareJSCallbacks() override;
   void InitAfterJavascriptAllowed() override;
 
+  void HandleFydeLocalSignin();
   // WebUI message handlers.
   void HandleWebviewLoadAborted(int error_code);
 
@@ -259,6 +264,11 @@ class GaiaScreenHandler final
       const ash::login::OnlineSigninArtifacts& artifacts);
 
   void HandleLaunchSAMLPublicSession(const std::string& email);
+
+  // ---***FYDEOS BEGIN***---
+  void HandleUserSelectGoogleAccount();
+  void HandleResetAccountFlag();
+  // ---***FYDEOS END***---
 
   // Handles SAML/GAIA login flow metrics
   // is_third_party_idp == false means GAIA-based authentication

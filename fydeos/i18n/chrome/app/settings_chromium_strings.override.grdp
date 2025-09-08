@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/settings_chromium_strings.grdp, included from chromium_strings.grd -->
+<grit-part>
+  <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Chromium page.">
+    About Browser
+  </message>
+  <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Chrome help page.">
+    Get help with Chromium browser
+  </message>
+  <if expr="chromeos_ash">
+    <if expr="openfyde">
+      <message name="IDS_SETTINGS_ABOUT_OS" desc="Menu title for the About Chromium OS page.">
+        About openFyde
+      </message>
+      <message name="IDS_OS_SETTINGS_TAG_OS_VERSION" desc="Text for search result item which, when clicked, navigates the user to about Chrome OS settings, which gives information about the current Chrome OS version.">
+        openFyde version
+      </message>
+      <message name="IDS_SETTINGS_GET_HELP_USING_CHROME_OS" desc="Text of the button which takes the user to the Chrome help page.">
+        Get help with openFyde
+      </message>
+    </if>
+    <if expr="not openfyde">
+      <message name="IDS_SETTINGS_ABOUT_OS" desc="Menu title for the About Chromium OS page.">
+        About FydeOS
+      </message>
+      <message name="IDS_OS_SETTINGS_TAG_OS_VERSION" desc="Text for search result item which, when clicked, navigates the user to about Chrome OS settings, which gives information about the current Chrome OS version.">
+        FydeOS version
+      </message>
+      <message name="IDS_SETTINGS_GET_HELP_USING_CHROME_OS" desc="Text of the button which takes the user to the Chrome help page.">
+        Get help with FydeOS
+      </message>
+    </if>
+  </if>
+  <message name="IDS_SETTINGS_PERFORMANCE_MEMORY_SAVER_MODE_SETTING_DESCRIPTION" desc="Description for the memory saver mode setting">
+    The browser frees up memory from inactive tabs. This gives active tabs and other apps more computer resources and keeps the browser fast. Your inactive tabs automatically become active again when you go back to them.
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_BATTERY_SAVER_MODE_SETTING_DESCRIPTION" desc="Description for the energy saver mode setting">
+    The browser conserves battery power by limiting background activity and visual effects, such as smooth scrolling and video frame rates.
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_PRELOAD_TOGGLE_SUMMARY" desc="Summary for the preload pages setting">
+    The browser preloads pages which makes browsing and searching faster.
+  </message>
+</grit-part>

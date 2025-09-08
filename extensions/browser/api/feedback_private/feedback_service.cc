@@ -127,6 +127,19 @@ std::string_view GetAttachmentName(debugd::FeedbackBinaryLogType log_type) {
       return "bluetooth_firmware_dumps.tar.zst";
   }
 }
+
+constexpr base::FilePath::CharType kFydeOSLogFilePath[] =
+    FILE_PATH_LITERAL("/var/log/fydeos.log");
+constexpr char kFydeOSLogFileName[] = "fydeos.log";
+void FetchFydeOSLog(scoped_refptr<feedback::FeedbackData> feedback_data) {
+  std::string fydeos_log;
+  if (base::ReadFileToString(base::FilePath(kFydeOSLogFilePath),
+                             &fydeos_log)) {
+    feedback_data->AddLog(kFydeOSLogFileName,
+                           std::move(fydeos_log));
+  }
+}
+
 #endif
 
 #if !BUILDFLAG(IS_CHROMEOS)
@@ -238,6 +251,17 @@ void FeedbackService::FetchAttachedFileAndScreenshot(
 }
 
 void FeedbackService::OnAttachedFileAndScreenshotFetched(
+    const FeedbackParams& params,
+    scoped_refptr<feedback::FeedbackData> feedback_data,
+    SendFeedbackCallback callback) {
+  base::ThreadPool::PostTaskAndReply(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&FetchFydeOSLog, feedback_data),
+      base::BindOnce(&FeedbackService::OnFydeOSLogCollected, this, params,
+                     feedback_data, std::move(callback)));
+}
+
+void FeedbackService::OnFydeOSLogCollected(
     const FeedbackParams& params,
     scoped_refptr<feedback::FeedbackData> feedback_data,
     SendFeedbackCallback callback) {

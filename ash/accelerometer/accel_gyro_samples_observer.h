@@ -97,6 +97,8 @@ class ASH_EXPORT AccelGyroSamplesObserver
   // enable.
   std::array<int32_t, kNumberOfAxes> channel_indices_;
 
+  std::array<int32_t, kNumberOfAxes> revert_;
+
   mojo::Receiver<chromeos::sensors::mojom::SensorDeviceSamplesObserver>
       receiver_{this};
 

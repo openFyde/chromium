@@ -63,6 +63,7 @@ static_library("birch") {
     "//net/traffic_annotation",
     "//ui/base",
     "//url",
+    "//fydeos/misc",
   ]
 
   if (is_chrome_branded) {

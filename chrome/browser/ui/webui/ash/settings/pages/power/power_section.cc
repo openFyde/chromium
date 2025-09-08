@@ -15,6 +15,7 @@
 #include "chromeos/dbus/power/power_manager_client.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -188,7 +189,7 @@ void PowerSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       u"https://support.google.com/chromebook/?p=settings_adaptive_charging");
 
   html_source->AddString("powerBatterySaverLearnMoreUrl",
-                         chrome::kCrosBatterySaverLearnMoreURL);
+                         fydeos::constants::kCrosBatterySaverLearnMoreURL);
 
   html_source->AddBoolean("isAdaptiveChargingEnabled",
                           ash::features::IsAdaptiveChargingEnabled() &&

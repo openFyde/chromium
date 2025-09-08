@@ -34,8 +34,17 @@ build_webui("build") {
     "images/notification_access_finished_dark.svg",
     "images/notification_access_setup.svg",
     "images/notification_access_setup_dark.svg",
+    "images/icon_backup.png",
+    "images/backup_intro.png",
+    "images/backup_intro_dark.png",
     "os_settings.html",
   ]
+
+  if (fydeos_device) {
+    static_files += [
+      "images/icon_fyde_certification.png",
+    ]
+  }
 
   web_component_files = [
     "common/app_language_selection_dialog/app_language_selection_dialog.ts",
@@ -54,6 +63,7 @@ build_webui("build") {
     "controls/v2/settings_slider_row.ts",
     "controls/v2/settings_slider_v2.ts",
     "controls/v2/settings_toggle_v2.ts",
+    "crostini_page/crostini_page.ts",
     "crostini_page/bruschetta_subpage.ts",
     "crostini_page/crostini_arc_adb.ts",
     "crostini_page/crostini_arc_adb_confirmation_dialog.ts",
@@ -174,6 +184,7 @@ build_webui("build") {
     "nearby_share_page/nearby_share_high_visibility_page.ts",
     "nearby_share_page/nearby_share_receive_dialog.ts",
     "nearby_share_page/nearby_share_subpage.ts",
+    "fyde_assistant_page/fyde_assistant_page.ts",
     "os_a11y_page/audio_and_captions_page.ts",
     "os_a11y_page/ax_annotations_section.ts",
     "os_a11y_page/bluetooth_braille_display_ui.ts",
@@ -206,6 +217,16 @@ build_webui("build") {
     "os_about_page/eol_offer_section.ts",
     "os_about_page/os_about_page.ts",
     "os_about_page/update_warning_dialog.ts",
+    "os_fyde_page/fydeos_account.ts",
+    "os_fyde_page/fydeos_drivers.ts",
+    "os_fyde_page/fydeos_more_info.ts",
+    "os_fyde_page/fydeos_dev_mode.ts",
+    "os_fyde_page/fydeos_remoting.ts",
+    "os_fyde_page/fydeos_tweak_ui.ts",
+    "os_fyde_page/fydeos_experiment.ts",
+    "os_fyde_page/os_fyde_page.ts",
+    "os_fyde_page/components/backup_password_prompt_dialog.ts",
+    "os_fyde_page/components/backup_intro_dialog.ts",
     "os_apps_page/android_apps_subpage.ts",
     "os_apps_page/app_management_page/app_content_dialog.ts",
     "os_apps_page/app_management_page/app_content_item.ts",
@@ -361,6 +382,12 @@ build_webui("build") {
     "system_preferences_page/system_preferences_page.ts",
   ]
 
+  if (use_fydeos_license) {
+    web_component_files += [
+      "os_fyde_page/fydeos_license_info.ts",
+    ]
+  }
+
   ts_files = [
     "assert_extras.ts",
     "common/app_management/actions.ts",
@@ -432,6 +459,9 @@ build_webui("build") {
     "os_about_page/about_page_browser_proxy.ts",
     "os_about_page/device_name_browser_proxy.ts",
     "os_about_page/device_name_util.ts",
+    "os_about_page/popup_license_window.ts",
+    "os_about_page/fydeos_board_name.ts",
+    "os_fyde_page/shell_client.ts",
     "os_apps_page/android_apps_browser_proxy.ts",
     "os_apps_page/app_management_page/plugin_vm_page/plugin_vm_browser_proxy.ts",
     "os_apps_page/app_management_page/privacy_hub_mixin.ts",

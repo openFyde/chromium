@@ -40,7 +40,8 @@ class PeriodicCollector : public CollectorBase {
                     const std::string& rate_setting_path,
                     base::TimeDelta default_rate,
                     int rate_unit_to_ms,
-                    base::TimeDelta init_delay);
+                    base::TimeDelta init_delay,
+                    bool should_send_to_fyde = false);
 
   // Start periodic collection immediately.
   PeriodicCollector(Sampler* sampler,
@@ -69,6 +70,8 @@ class PeriodicCollector : public CollectorBase {
   void StopPeriodicCollection();
 
   void SetReportingControllerCb();
+
+  const bool should_send_to_fyde_;
 
   const raw_ptr<MetricReportQueue> metric_report_queue_;
 

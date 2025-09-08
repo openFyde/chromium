@@ -50,6 +50,7 @@ class FakeLoginDisplayHost : public LoginDisplayHost {
       const AccountId& account_id,
       const std::optional<user_manager::UserType>& user_type) override;
   void ShowGaiaDialog(const AccountId& prefilled_account) override;
+  void ShowLocalDialog() override;
   void StartUserRecovery(const AccountId& account_to_recover) override;
   void ShowAllowlistCheckFailedError() override;
   void ShowOsInstallScreen() override;

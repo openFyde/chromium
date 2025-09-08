@@ -154,6 +154,10 @@ class USER_MANAGER_EXPORT KnownUser final {
   // Find GAIA ID for user with `account_id`, returns `nullptr` if not found.
   const std::string* FindGaiaID(const AccountId& account_id);
 
+  const std::string* FindFydeID(const AccountId& account_id);
+
+  bool FindFydeID(const AccountId& account_id, std::string* out_value);
+
   // Setter and getter for DeviceId known user string preference.
   void SetDeviceId(const AccountId& account_id, const std::string& device_id);
 

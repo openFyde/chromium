@@ -4,6 +4,8 @@
 
 import("//chrome/common/features.gni")
 
+import("//fydeos/build/config/buildflags.gni")
+
 ts_definition_files = [
   "//tools/typescript/definitions/bluetooth.d.ts",
   "//tools/typescript/definitions/bluetooth_private.d.ts",
@@ -19,6 +21,10 @@ ts_definition_files = [
   "//tools/typescript/definitions/system_display.d.ts",
   "//tools/typescript/definitions/tabs.d.ts",
   "//tools/typescript/definitions/users_private.d.ts",
+  "//tools/typescript/definitions/app_management.d.ts",
+  "//tools/typescript/definitions/native_windows.d.ts",
+  "//tools/typescript/definitions/shell_client.d.ts",
+  "//tools/typescript/definitions/runtime_sendmessage.d.ts",
 ]
 
 if (is_chrome_branded) {

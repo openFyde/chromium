@@ -459,7 +459,8 @@ void MetricReportingManager::InitPeriodicTelemetryCollector(
     const std::string& rate_setting_path,
     base::TimeDelta default_rate,
     int rate_unit_to_ms,
-    base::TimeDelta init_delay) {
+    base::TimeDelta init_delay,
+    bool should_send_to_fyde) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!base::Contains(telemetry_collectors_, collector_name));
   if (!metric_report_queue) {
@@ -469,7 +470,7 @@ void MetricReportingManager::InitPeriodicTelemetryCollector(
   auto collector = delegate_->CreatePeriodicCollector(
       sampler, metric_report_queue, &reporting_settings_, enable_setting_path,
       enable_default_value, rate_setting_path, default_rate, rate_unit_to_ms,
-      init_delay);
+      init_delay, should_send_to_fyde);
   telemetry_collectors_.insert({collector_name, std::move(collector)});
 }
 
@@ -827,7 +828,7 @@ void MetricReportingManager::InitKioskHeartbeatTelemetryCollector() {
       metrics::GetDefaultCollectionRate(
           metrics::kDefaultHeartbeatTelemetryCollectionRate),
       /*rate_unit_to_ms=*/1,
-      /*init_delay=*/base::TimeDelta());
+      /*init_delay=*/base::TimeDelta(), true);
   samplers_.push_back(std::move(heartbeat_sampler));
 }
 

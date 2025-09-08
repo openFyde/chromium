@@ -48,6 +48,7 @@
 #include "ui/events/ash/keyboard_layout_util.h"
 #include "ui/events/devices/device_data_manager.h"
 #include "ui/webui/webui_util.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -1684,10 +1685,10 @@ void DeviceSection::AddDevicePointersStrings(
   html_source->AddLocalizedStrings(kPointersStrings);
 
   html_source->AddString("naturalScrollLearnMoreLink",
-                         GetHelpUrlWithBoard(chrome::kNaturalScrollHelpURL));
+                         base::ASCIIToUTF16(fydeos::constants::kNaturalScrollHelpURL));
   html_source->AddString(
       "controlledScrollingLearnMoreLink",
-      GetHelpUrlWithBoard(chrome::kControlledScrollingHelpURL));
+      base::ASCIIToUTF16(fydeos::constants::kNaturalScrollHelpURL));
   html_source->AddString("hapticFeedbackLearnMoreLink",
                          GetHelpUrlWithBoard(chrome::kHapticFeedbackHelpURL));
 

@@ -25,6 +25,7 @@
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/system/sys_info.h"
 #include "base/task/task_traits.h"
@@ -51,10 +52,19 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/zlib/google/compression_utils.h"
 #include "url/gurl.h"
+#include "base/json/json_reader.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/fydeos_shell_client.h"
 
 namespace ash {
 
 namespace {
+
+fydeos::ash::FydeOSShellClient* GetShellClient() {
+  return fydeos::ash::FydeOSShellClient::Get();
+}
+const char kShellCmdGetDevices[] = "/usr/bin/fydeos-update-firmware -l";
+const char kShellCmdUpdateFirmware[] = "/usr/bin/fydeos-update-firmware";
+const char kShellUpdateFirmwareProgressIntervalInSeconds = 1;
 
 static constexpr auto FwupdStatusStringMap =
     base::MakeFixedFlatMap<FwupdStatus, const char*>(
@@ -580,6 +590,7 @@ void FirmwareUpdateManager::PrepareForUpdate(
   install_controller_receiver_.set_disconnect_handler(base::BindOnce(
       &FirmwareUpdateManager::ResetInstallState, base::Unretained(this)));
   std::move(callback).Run(std::move(pending_remote));
+
 }
 
 void FirmwareUpdateManager::FetchInProgressUpdate(
@@ -590,7 +601,7 @@ void FirmwareUpdateManager::FetchInProgressUpdate(
 // Query all updates for all devices.
 void FirmwareUpdateManager::RequestAllUpdates(Source source) {
   // Return if FwupdClient or NetworkHandler not initialized for unittests
-  if (!FwupdClient::Get() || !NetworkHandler::IsInitialized()) {
+  if (!FwupdClient::Get() || !NetworkHandler::IsInitialized() || !GetShellClient()) {
     return;
   }
 
@@ -635,12 +646,187 @@ void FirmwareUpdateManager::MaybeRefreshRemote(bool refresh_allowed) {
 }
 
 void FirmwareUpdateManager::RequestDevices() {
-  if (FwupdClient::Get()) {
+  // if shellClient is  available, then skip fwupd_client
+  if (FwupdClient::Get() && !GetShellClient()) {
     FIRMWARE_LOG(USER) << "RequestDevices";
     FwupdClient::Get()->RequestDevices();
   } else {
     FIRMWARE_LOG(USER) << "RequestDevices: No FwupdCleint";
   }
+  ShellClientRequestUpdates();
+}
+
+void FirmwareUpdateManager::ShellClientRequestUpdates() {
+  if (!GetShellClient()) {
+    return;
+  }
+  GetShellClient()->SyncExec(kShellCmdGetDevices,
+      base::BindOnce(&FirmwareUpdateManager::OnShellClientGetUpdates,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void FirmwareUpdateManager::OnShellClientGetUpdates(std::optional<fydeos::ash::ShellState> state) {
+  if (!state || state->code != 0) {
+    LOG(ERROR) << "get upgradable devices task error, "
+               << (state ? state->result : "state is null");
+    return;
+  }
+  VLOG(4) << "firmware udpate get upgradable devices, state->result: " << state->result;
+  std::optional<base::Value> json = base::JSONReader::Read(state->result);
+  if (!json || !json->is_list()) {
+    LOG(ERROR) << "Failed to parse shell client output";
+    return;
+  }
+  updates_.clear();
+  const std::string* device_id = nullptr;
+  const std::string* device_name = nullptr;
+  const std::string* version = nullptr;
+  const std::string* checksum = nullptr;
+  const std::string* file = nullptr;
+  for (const auto& elem : json->GetList()) {
+    if (!elem.is_dict()) {
+      continue;
+    }
+    const base::Value::Dict& dict = elem.GetDict();
+    device_id = dict.FindString("device_id");
+    device_name = dict.FindString("device_name");
+    version = dict.FindString("version");
+    checksum = dict.FindString("checksum");
+    file = dict.FindString("file");
+    if (!device_id || !device_name || !version || !checksum || !file) {
+      continue;
+    }
+    updates_.push_back(CreateUpdate(
+      { *version, "", 0, base::FilePath(*file), *checksum },
+      FwupdDevice(*device_id, *device_name, false)));
+  }
+
+  NotifyUpdateListObservers();
+ }
+
+void FirmwareUpdateManager::OnShellClientUpdateFirmwareStarted(std::optional<fydeos::ash::ShellState> state) {
+  if (!state || state->code == -1) {
+    LOG(ERROR) << "update firmware task error, "
+               << (state ? state->result : "state is null");
+    auto update = ash::firmware_update::mojom::InstallationProgress::New(100, firmware_update::mojom::UpdateState::kFailed);
+
+    if (update_progress_observer_.is_bound()) {
+      update_progress_observer_->OnStatusChanged(std::move(update));
+    }
+
+    is_updating_ = false;
+
+    ResetInstallState();
+    RequestAllUpdates(FirmwareUpdateManager::Source::kInstallComplete);
+    return;
+  }
+  QueryShellTaskState(state->code);
+}
+
+void FirmwareUpdateManager::QueryShellTaskState(int32_t task_id) {
+  auto callback = base::BindOnce(
+    [](base::WeakPtr<FirmwareUpdateManager> self, int32_t task_id, std::optional<fydeos::ash::ShellState> state) {
+      if (self) {
+        self->OnGetShellClientTaskState(task_id, state);
+      }
+    },
+    weak_ptr_factory_.GetWeakPtr(), task_id);
+  GetShellClient()->GetTaskOutput(task_id, 10, std::move(callback));
+}
+
+void FirmwareUpdateManager::ScheduleGetTaskOutputAndState(int32_t task_id) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+                 FROM_HERE,
+            base::BindOnce(
+        &FirmwareUpdateManager::QueryShellTaskState,
+        weak_ptr_factory_.GetWeakPtr(), task_id),
+             base::Seconds(kShellUpdateFirmwareProgressIntervalInSeconds));
+}
+
+void FirmwareUpdateManager::OnGetShellClientTaskState(int32_t task_id, std::optional<fydeos::ash::ShellState> state) {
+  auto updateState = firmware_update::mojom::UpdateState::kUnknown;
+  bool finished = false;
+
+  if (!state || state->code == -1) {
+    LOG(ERROR) << "get update firmware task output/state error, "
+               << (state ? state->result : "state is null");
+    updateState = firmware_update::mojom::UpdateState::kFailed;
+    finished = true;
+  }
+
+  VLOG(4) << "firmware update shell client state->code: " << state->code << ", state->result: " << state->result;
+
+  int percentage = current_updating_percentage_;
+
+  if (!finished) {
+    switch (state->code) {
+      case 0:
+        // ON_NONE
+        updateState = firmware_update::mojom::UpdateState::kFailed;
+        finished = true;
+        break;
+      case 1:
+        // ON_PROGRESS
+        if (state->result.find("===Preparing===") != std::string::npos) {
+          percentage = 10;
+        }
+        if (state->result.find("===Downloading===") != std::string::npos) {
+          percentage = 30;
+        }
+        if (state->result.find("===Writing===") != std::string::npos) {
+          percentage = 70;
+        }
+        if (state->result.find("===Almost done===") != std::string::npos) {
+          percentage = 90;
+        }
+        updateState = firmware_update::mojom::UpdateState::kUpdating;
+        ScheduleGetTaskOutputAndState(task_id);
+        current_updating_percentage_ = percentage;
+        finished = false;
+        break;
+      case 2:
+        // ON_CLOSED
+        updateState = firmware_update::mojom::UpdateState::kSuccess;
+        finished = true;
+        break;
+      case 3:
+        // ON_ERROR
+        updateState = firmware_update::mojom::UpdateState::kFailed;
+        finished = true;
+        break;
+      default:
+        DUMP_WILL_BE_NOTREACHED();
+        break;
+    }
+  }
+
+  current_updating_percentage_ = finished ? 100 : percentage;
+  auto update = ash::firmware_update::mojom::InstallationProgress::New(current_updating_percentage_, updateState);
+
+  if (update_progress_observer_.is_bound()) {
+    update_progress_observer_->OnStatusChanged(std::move(update));
+  }
+
+  if (!finished) {
+    return;
+  }
+
+  is_updating_ = false;
+
+  ResetInstallState();
+
+  RequestAllUpdates(FirmwareUpdateManager::Source::kInstallComplete);
+}
+
+void FirmwareUpdateManager::StartInstallByShellClient(const std::string& device_id) {
+  if (!GetShellClient()) {
+    return;
+  }
+  is_updating_ = true;
+  current_updating_percentage_ = 0;
+  GetShellClient()->AsyncExec(base::StringPrintf("%s -u %s", kShellCmdUpdateFirmware, device_id.c_str()),
+                base::BindOnce(&FirmwareUpdateManager::OnShellClientUpdateFirmwareStarted,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void FirmwareUpdateManager::RequestUpdates(const std::string& device_id) {
@@ -1037,6 +1223,11 @@ void FirmwareUpdateManager::OnPropertiesChangedResponse(
 
 void FirmwareUpdateManager::BeginUpdate(const std::string& device_id,
                                         const base::FilePath& filepath) {
+  if (filepath.IsAbsolute()) {
+    StartInstallByShellClient(device_id);
+    return;
+  }
+
   DCHECK(!filepath.empty());
 
   if (!IsValidFirmwarePatchFile(filepath)) {

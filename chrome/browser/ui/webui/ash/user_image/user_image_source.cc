@@ -155,7 +155,11 @@ scoped_refptr<base::RefCountedMemory> GetUserImageInternal(
       return LoadUserImageFrameForScaleFactor(IDR_LOGIN_DEFAULT_USER, frame,
                                               scale_factor);
     }
-    NOTREACHED() << "User with custom image missing data bytes";
+    // fyde account or flint account will use getProfileInfo in ProfileInfoHandler
+    // ProfileInfoHandler will observe OnUserImageChanged, and the image might not be downloaded yet
+    if (!user->IsFydeExtendAccountUser()) {
+      NOTREACHED() << "User with custom image missing data bytes";
+    }
   } else {
     LOG(ERROR) << "User not found: " << account_id.GetUserEmail();
   }
@@ -169,6 +173,16 @@ scoped_refptr<base::RefCountedMemory> GetUserImageInternal(
 scoped_refptr<base::RefCountedMemory> UserImageSource::GetUserImage(
     const AccountId& account_id) {
   return GetUserImageInternal(account_id, -1);
+}
+
+user_manager::UserImage::ImageFormat UserImageSource::GetUserImageFormat(
+      const AccountId& account_id) {
+  const user_manager::User* user =
+      user_manager::UserManager::Get()->FindUser(account_id);
+  if (!user) {
+    return user_manager::UserImage::FORMAT_UNKNOWN;
+  }
+  return user->image_format();
 }
 
 UserImageSource::UserImageSource() = default;

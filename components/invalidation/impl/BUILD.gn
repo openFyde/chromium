@@ -60,6 +60,7 @@ static_library("impl") {
     "//net:net",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//fydeos/switches",
   ]
 }
 

@@ -332,6 +332,13 @@ export function isBasicRoute(route: Route|null): boolean {
   return routes.BASIC.contains(route);
 }
 
+export function isFydeOsSettingsRoute(route: Route|null): boolean {
+  if (!route) {
+    return false;
+  }
+  return routes.FYDEOS.contains(route);
+}
+
 /**
  * @returns true if |route| is able to be directly navigated to (ie. there
  * is a dedicated page or subpage that exists for the given route).

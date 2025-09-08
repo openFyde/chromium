@@ -52,6 +52,8 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
+#include "fydeos/switches/services/services_constants.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/current_channel_logo.h"
@@ -111,7 +113,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
       {"appsTitle", IDS_EXTENSIONS_APPS_TITLE},
       {"noExtensionsOrApps", IDS_EXTENSIONS_NO_INSTALLED_ITEMS},
       {"noDescription", IDS_EXTENSIONS_NO_DESCRIPTION},
-      {"viewInStore", IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE},
+      {"viewInStore", IDS_EXTENSIONS_ITEM_VIEW_IN_STORE},
       {"extensionWebsite", IDS_EXTENSIONS_ITEM_EXTENSION_WEBSITE},
       {"dropToInstall", IDS_EXTENSIONS_INSTALL_DROP_TARGET},
       {"editSitePermissionsAllowAllExtensions",
@@ -242,6 +244,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
       {"itemSourceSideloaded", IDS_EXTENSIONS_ITEM_SOURCE_SIDELOADED},
       {"itemSourceUnpacked", IDS_EXTENSIONS_ITEM_SOURCE_UNPACKED},
       {"itemSourceWebstore", IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE},
+      {"itemSourceFydeOSStore", IDS_EXTENSIONS_ITEM_SOURCE_FYDEOS_STORE},
       {"itemVersion", IDS_EXTENSIONS_ITEM_VERSION},
       {"itemReloaded", IDS_EXTENSIONS_ITEM_RELOADED},
       {"itemReloading", IDS_EXTENSIONS_ITEM_RELOADING},
@@ -427,6 +430,10 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
 #endif  // BUILDFLAG(IS_CHROMEOS)
       {"pendingChangeWarning", IDS_PENDING_CHANGE_WARNING},
   };
+
+  source->AddString("fydeosStoreBaseUrl",
+      fydeos::constants::kFydeOSStoreBaseUrl);
+
   source->AddLocalizedStrings(kLocalizedStrings);
 
   // Add localized generic strings that need '&' to be removed from them.
@@ -456,7 +463,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
       base::ASCIIToUTF16(
           google_util::AppendGoogleLocaleParam(
               extension_urls::AppendUtmSource(
-                  extension_urls::GetWebstoreExtensionsCategoryURL(),
+                  GURL(extension_urls::GetFydeWebstoreExtensionsCategoryURL()),
                   extension_urls::kExtensionsSidebarUtmSource),
               g_browser_process->GetApplicationLocale())
               .spec()));
@@ -470,11 +477,14 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
                              .spec()));
   source->AddString(
       "hostPermissionsLearnMoreLink",
-      extension_permissions_constants::kRuntimeHostPermissionsHelpURL);
+      fydeos::constants::kRuntimeHostPermissionsHelpURL);
   source->AddBoolean(kInDevModeKey, in_dev_mode);
   source->AddBoolean(kShowActivityLogKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          ::switches::kEnableExtensionActivityLogging));
+  // ---***FYDEOS BEGIN***---
+  source->AddBoolean("fydeosAccountEnabled", profile && profile->IsFydeProfile());
+  // ---***FYDEOS END***---
 
   source->AddString(kLoadTimeClassesKey, GetLoadTimeClasses(in_dev_mode));
 

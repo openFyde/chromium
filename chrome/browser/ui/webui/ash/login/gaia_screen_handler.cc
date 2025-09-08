@@ -72,6 +72,7 @@
 #include "chrome/browser/ui/webui/ash/login/enrollment_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/error_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/network_state_informer.h"
+#include "chrome/browser/ui/webui/ash/login/fyde_local_signin_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/online_login_utils.h"
 #include "chrome/browser/ui/webui/ash/login/reset_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/saml_challenge_key_handler.h"
@@ -125,6 +126,8 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/chromeos/devicetype_utils.h"
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 
 // Enable VLOG level 1.
 #undef ENABLED_VLOG_LEVEL
@@ -520,6 +523,23 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
   params.Set("recordAccountCreation",
              ash::features::IsGaiaRecordAccountCreationEnabled());
 
+  params.Set("enableFydeAccount", fydeos::switches::IsFydeAccountEnabled());
+  // add all user email and account_type
+  user_manager::KnownUser known_user(g_browser_process->local_state());
+  const std::vector<AccountId> known_account_ids =
+    known_user.GetKnownAccountIds();
+
+  base::Value::List emailList;
+
+  for (const AccountId& known_id : known_account_ids) {
+    base::Value::Dict account;
+    account.Set("email", known_id.GetUserEmail());
+    account.Set("type",
+        AccountId::AccountTypeToString(known_id.GetAccountType()));
+    emailList.Append(std::move(account));
+  }
+  params.Set("knownAccountList", std::move(emailList));
+
   if (public_saml_url_fetcher_) {
     params.Set("startsOnSamlPage", true);
     DCHECK(base::CommandLine::ForCurrentProcess()->HasSwitch(
@@ -541,7 +561,7 @@ void GaiaScreenHandler::LoadGaiaWithPartitionAndVersionAndConsent(
   bool is_reauth = !context.email.empty();
   if (is_reauth) {
     const AccountId account_id = login::GetAccountId(
-        context.email, context.gaia_id.ToString(), AccountType::GOOGLE);
+        context.email, context.gaia_id.ToString(), fydeos::switches::IsFydeAccountEnabled() ? AccountType::FYDE_ACCOUNT : AccountType::GOOGLE);
     auto* user = user_manager::UserManager::Get()->FindUser(account_id);
     DCHECK(user);
     bool is_child_account = user && user->IsChild();
@@ -640,6 +660,19 @@ void GaiaScreenHandler::DeclareLocalizedValues(
 
   builder->Add("signinScreenQuickStart",
                IDS_LOGIN_QUICK_START_SETUP_SIGNIN_SCREEN_ENTRY_POINT);
+
+  builder->Add("fydeosAddUserDupEmailErrorMessage",
+               IDS_FYDEOS_ADD_USER_DUP_EMAIL_ERROR_MESSAGE);
+  builder->Add("fydeosConfirmGotoLocalAccountTitle",
+							 IDS_FYDEOS_CONFIRM_GOTO_LOCAL_ACCOUNT_TITLE);
+  builder->Add("fydeosUseLocalAccount",
+							 IDS_FYDEOS_USE_LOCAL_ACCOUNT_BUTTON_TEXT);
+  builder->Add("fydeosUseOnlineAccount",
+						   IDS_FYDEOS_USE_ONLINE_ACCOUNT_BUTTON_TEXT);
+  builder->Add("fydeosConfirmGotoLocalAccountHintMessage1",
+							 IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_1);
+  builder->Add("fydeosConfirmGotoLocalAccountHintMessage2",
+					     IDS_FYDEOS_CONFIRM_GOTO_LOCAL_HINT_MESSAGE_2);
 }
 
 void GaiaScreenHandler::InitAfterJavascriptAllowed() {
@@ -651,6 +684,12 @@ void GaiaScreenHandler::InitAfterJavascriptAllowed() {
 }
 
 void GaiaScreenHandler::DeclareJSCallbacks() {
+  // ---***FYDEOS BEGIN***---
+  AddCallback("userSelectGoogleAccount",
+              &GaiaScreenHandler::HandleUserSelectGoogleAccount);
+  AddCallback("resetAccountFlag",
+              &GaiaScreenHandler::HandleResetAccountFlag);
+  // ---***FYDEOS END***---
   AddCallback("webviewLoadAborted",
               &GaiaScreenHandler::HandleWebviewLoadAborted);
   AddCallback("launchSAMLPublicSession",
@@ -676,6 +715,13 @@ void GaiaScreenHandler::DeclareJSCallbacks() {
   AddCallback("showLoadingTimeoutError",
               &GaiaScreenHandler::HandleShowLoadingTimeoutError);
   AddCallback("getDeviceIdForLogin", &GaiaScreenHandler::HandleGetDeviceId);
+  AddCallback("fydeLocalSignin", &GaiaScreenHandler::HandleFydeLocalSignin);
+}
+
+void GaiaScreenHandler::HandleFydeLocalSignin() {
+  HideOfflineMessage(NetworkStateInformer::OFFLINE,
+                     NetworkError::ERROR_REASON_NONE);
+  LoginDisplayHost::default_host()->StartWizard(FydeLocalSigninView::kScreenId);
 }
 
 void GaiaScreenHandler::HandleAuthenticatorLoaded() {
@@ -898,7 +944,7 @@ void GaiaScreenHandler::CompleteAuthentication(
 
   const AccountId account_id = login::GetAccountId(
       signin_artifacts.email, signin_artifacts.gaia_id.ToString(),
-      AccountType::GOOGLE);
+      fydeos::switches::IsFydeAccountEnabled() ? AccountType::FYDE_ACCOUNT : AccountType::GOOGLE);
   // Execute delayed allowlist check that is based on user type. If Gaia done
   // times out and doesn't provide us with services list try to use a saved
   // UserType.
@@ -963,6 +1009,20 @@ void GaiaScreenHandler::OnCookieWaitTimeout() {
   LoadAuthenticator(true /* force */);
   LoginDisplayHost::default_host()->GetSigninUI()->ShowSigninError(
       SigninError::kCookieWaitTimeout, /*details=*/std::string());
+}
+
+void GaiaScreenHandler::HandleUserSelectGoogleAccount() {
+  fydeos::switches::DisableFydeAccountFlag();
+  LoadGaiaAsync(EmptyAccountId());
+  LoginDisplayHost::default_host()->StartWizard(UserCreationView::kScreenId);
+}
+
+void GaiaScreenHandler::HandleResetAccountFlag() {
+  if (g_browser_process->platform_part()
+      ->browser_policy_connector_ash()
+      ->IsDeviceEnterpriseManaged()) return;
+  fydeos::switches::EnableFydeAccountFlag();
+  ReloadGaia(true/* force_reload */);
 }
 
 void GaiaScreenHandler::HandleLaunchSAMLPublicSession(
@@ -1304,6 +1364,10 @@ base::WeakPtr<GaiaView> GaiaScreenHandler::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
+void GaiaScreenHandler::RequestUseLocalAccount() {
+  CallExternalAPI("requestUseLocalAccount");
+}
+
 void GaiaScreenHandler::ShowSecurityTokenPinDialog(
     const std::string& /*caller_extension_name*/,
     chromeos::security_token_pin::CodeType code_type,
@@ -1442,9 +1506,16 @@ void GaiaScreenHandler::LoadAuthenticator(bool force) {
     // TODO(http://b/314902371): Figure out if we can read
     // `populated_account_id_.GetGaiaId()` instead of searching inside
     // `known_user`.
-    if (const std::string* gaia_id =
-            known_user.FindGaiaID(AccountId::FromUserEmail(context.email))) {
-      context.gaia_id = GaiaId(*gaia_id);
+    if (fydeos::switches::IsFydeAccountEnabled()) {
+      if (const std::string* fyde_id =
+            known_user.FindFydeID(AccountId::FromUserEmail(context.email))) {
+        context.gaia_id = GaiaId(*fyde_id);
+      }
+    } else {
+      if (const std::string* gaia_id =
+              known_user.FindGaiaID(AccountId::FromUserEmail(context.email))) {
+        context.gaia_id = GaiaId(*gaia_id);
+      }
     }
 
     // TODO(http://b/314902371): This may be dangerous.

@@ -51,6 +51,7 @@
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/image/image_skia.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 
 namespace user_manager {
 namespace {
@@ -151,6 +152,7 @@ const UserList& UserManagerImpl::GetPersistedUsers() const {
 UserList UserManagerImpl::GetUsersAllowedForMultiUserSignIn() const {
   // Supervised users are not allowed to use multi-user sign-in.
   if (logged_in_users_.size() == 1 &&
+      primary_user_->GetType() != UserType::kFydeAccount && // FYDEOS_NOTE, might want to remove this line, fyde account do not allow multi-profile
       primary_user_->GetType() != UserType::kRegular) {
     return {};
   }
@@ -301,6 +303,9 @@ bool UserManagerImpl::EnsureUser(const AccountId& account_id,
   User* user = FindUserInListAndModify(account_id);
   switch (user_type) {
     case UserType::kRegular:
+    case UserType::kFydeAccount:
+    case UserType::kFlintAccount:
+    case UserType::kFydeChild:
     case UserType::kChild:
       if (user) {
         KnownUser known_user(local_state_.get());
@@ -363,7 +368,7 @@ void UserManagerImpl::OnPrimaryUserLoggedIn(User& user) {
 
   const auto& account_id = user.GetAccountId();
   delegate_->OverrideDirHome(user);
-  if (user.HasGaiaAccount()) {
+  if (user.HasGaiaAccount() || user.IsFydeExtendAccountUser()) {
     // Move the user to the front of the list.
     auto it = std::ranges::find(persisted_users_, account_id,
                                 [](auto& ptr) { return ptr->GetAccountId(); });
@@ -373,7 +378,7 @@ void UserManagerImpl::OnPrimaryUserLoggedIn(User& user) {
                                               prefs::kRegularUsersPref);
       prefs_users_update->clear();
       for (const User* u : persisted_users_) {
-        if (u->HasGaiaAccount()) {
+        if (u->HasGaiaAccount() || u->IsFydeExtendAccountUser()) {
           prefs_users_update->Append(u->GetAccountId().GetUserEmail());
         }
       }
@@ -386,7 +391,7 @@ void UserManagerImpl::OnPrimaryUserLoggedIn(User& user) {
 
   local_state_->SetString(
       prefs::kLastLoggedInGaiaUser,
-      user.HasGaiaAccount() ? account_id.GetUserEmail() : "");
+      (user.HasGaiaAccount() || user.IsFydeExtendAccountUser()) ? account_id.GetUserEmail() : "");
 
   delegate_->CheckProfileOnLogin(user);
 }
@@ -405,7 +410,7 @@ void UserManagerImpl::SwitchActiveUser(const AccountId& account_id) {
     DUMP_WILL_BE_NOTREACHED() << "Switching to a user that is not logged in";
     return;
   }
-  if (!user->HasGaiaAccount()) {
+  if (!user->HasGaiaAccount() && !user->IsFydeExtendAccountUser()) {
     DUMP_WILL_BE_NOTREACHED()
         << "Switching to a user without gaia account (non-regular one)";
     return;
@@ -605,7 +610,7 @@ bool UserManagerImpl::RemoveStaleEphemeralUsers() {
   std::vector<User*> users(persisted_users_.begin(), persisted_users_.end());
   for (user_manager::User* user : users) {
     const AccountId account_id = user->GetAccountId();
-    if (user->HasGaiaAccount() && account_id != owner_id &&
+    if ((user->HasGaiaAccount() || user->IsFydeExtendAccountUser()) && account_id != owner_id &&
         IsEphemeralAccountId(account_id)) {
       RemoveUserFromListImpl(
           account_id,
@@ -656,6 +661,7 @@ void UserManagerImpl::RemoveUserFromListImpl(
 
   RemoveNonCryptohomeData(account_id);
   KnownUser(local_state_.get()).RemovePrefs(account_id);
+  RemoveLocalAutoSigninCredential(account_id);
 
   // After the User object is deleted from memory in DeleteUser() here,
   // the account_id reference will be invalid if the reference points
@@ -746,6 +752,10 @@ void UserManagerImpl::SaveForceOnlineSignin(const AccountId& account_id,
                                             bool force_online_signin) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  if (account_id.GetAccountType() == AccountType::FLINT_ACCOUNT) {
+    return;
+  }
+
   User* const user = FindUserAndModify(account_id);
   if (user) {
     user->set_force_online_signin(force_online_signin);
@@ -805,10 +815,21 @@ void UserManagerImpl::SaveUserDisplayEmail(const AccountId& account_id,
   display_email_update->Set(account_id.GetUserEmail(), display_email);
 }
 
+UserType FixUserTypeForFyde(const UserType user_type, const AccountId& account_id) {
+  switch (account_id.GetAccountType()) {
+    case AccountType::FLINT_ACCOUNT:
+      return UserType::kFlintAccount;
+    case AccountType::FYDE_ACCOUNT:
+      return UserType::kFydeAccount;
+    default:
+      return user_type;
+  }
+}
+
 UserType UserManagerImpl::GetUserType(const AccountId& account_id) {
   const base::Value::Dict& prefs_user_types =
       local_state_->GetDict(prefs::kUserType);
-  return GetStoredUserType(prefs_user_types, account_id);
+  return FixUserTypeForFyde(GetStoredUserType(prefs_user_types, account_id), account_id);
 }
 
 void UserManagerImpl::SaveUserType(const User* user) {
@@ -976,9 +997,15 @@ bool UserManagerImpl::IsLoggedInAsUserWithGaiaAccount() const {
   return IsUserLoggedIn() && active_user_->HasGaiaAccount();
 }
 
+bool UserManagerImpl::IsLoggedInAsUserWithFydeExtendedAccount() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return IsUserLoggedIn() && active_user_->IsFydeExtendAccountUser();
+}
+
 bool UserManagerImpl::IsLoggedInAsChildUser() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return IsUserLoggedIn() && active_user_->GetType() == UserType::kChild;
+  return IsUserLoggedIn() && (active_user_->GetType() == UserType::kChild ||
+                              active_user_->GetType() == UserType::kFydeChild);
 }
 
 bool UserManagerImpl::IsLoggedInAsManagedGuestSession() const {
@@ -1049,7 +1076,7 @@ bool UserManagerImpl::IsUserNonCryptohomeDataEphemeral(
   if (user && user == active_user_ &&
       ((user->GetType() == UserType::kRegular &&
         std::ranges::find(persisted_users_, user) == persisted_users_.end()) ||
-       !user->HasGaiaAccount())) {
+       (!user->HasGaiaAccount() && !user->IsFydeExtendAccountUser()))) {
     return true;
   }
 
@@ -1213,6 +1240,9 @@ bool UserManagerImpl::IsGaiaUserAllowed(const User& user) const {
 bool UserManagerImpl::IsUserAllowed(const User& user) const {
   DCHECK(user.GetType() == UserType::kRegular ||
          user.GetType() == UserType::kGuest ||
+         user.GetType() == UserType::kFlintAccount ||
+         user.GetType() == UserType::kFydeAccount ||
+         user.GetType() == UserType::kFydeChild ||
          user.GetType() == UserType::kChild);
 
   return UserManager::IsUserAllowed(
@@ -1234,7 +1264,7 @@ bool UserManagerImpl::IsDeviceLocalAccountMarkedForRemoval(
 
 bool UserManagerImpl::CanUserBeRemoved(const User* user) const {
   // Only regular users are allowed to be manually removed.
-  if (!user || !user->HasGaiaAccount()) {
+  if (!user || !(user->HasGaiaAccount() || user->IsFydeExtendAccountUser())) {
     return false;
   }
 
@@ -1330,7 +1360,7 @@ void UserManagerImpl::EnsureUsersLoaded() {
         kLegacySupervisedUsersHistogramName,
         LegacySupervisedUserStatus::kGaiaUserDisplayed);
     User* user =
-        User::CreateRegularUser(*it, GetStoredUserType(prefs_user_types, *it));
+        User::CreateRegularUser(*it, FixUserTypeForFyde(GetStoredUserType(prefs_user_types, *it), *it));
     user->set_oauth_token_status(LoadUserOAuthStatus(*it));
     user->set_force_online_signin(LoadForceOnlineSignin(*it));
     KnownUser known_user(local_state_.get());
@@ -1629,7 +1659,7 @@ User* UserManagerImpl::RemoveRegularOrSupervisedUserFromList(
       user = *it;
       it = persisted_users_.erase(it);
     } else {
-      if ((*it)->HasGaiaAccount()) {
+      if ((*it)->HasGaiaAccount() || (*it)->IsFydeExtendAccountUser()) {
         const std::string user_email = (*it)->GetAccountId().GetUserEmail();
         prefs_users_update->Append(user_email);
       }
@@ -1836,6 +1866,22 @@ bool UserManagerImpl::IsEnterpriseManaged() const {
     return false;
   }
   return ash::InstallAttributes::Get()->IsEnterpriseManaged();
+}
+
+void UserManagerImpl::RemoveLocalAutoSigninCredential(const AccountId& account_id) {
+  if (account_id.GetAccountType() != AccountType::FLINT_ACCOUNT) {
+    return;
+  }
+  // See FydeOsHandler::HandleSaveOfflineLoginPassword
+  PrefService* prefs = GetLocalState();
+  const std::string& account_id_key = prefs->GetString(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
+  if (account_id_key != account_id.GetAccountIdKey()) {
+    return;
+  }
+
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninPassword);
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninPasswordFormat);
+  prefs->ClearPref(fydeos::prefs::kOfflineAutoSigninAccountIdKey);
 }
 
 }  // namespace user_manager

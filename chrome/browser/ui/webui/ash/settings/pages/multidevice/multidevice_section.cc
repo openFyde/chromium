@@ -453,8 +453,8 @@ MultiDeviceSection::MultiDeviceSection(
   }
 
   multidevice_setup_client_->AddObserver(this);
-  OnHostStatusChanged(multidevice_setup_client_->GetHostStatus());
-  OnFeatureStatesChanged(multidevice_setup_client_->GetFeatureStates());
+  // OnHostStatusChanged(multidevice_setup_client_->GetHostStatus());
+  // OnFeatureStatesChanged(multidevice_setup_client_->GetFeatureStates());
 }
 
 MultiDeviceSection::~MultiDeviceSection() {

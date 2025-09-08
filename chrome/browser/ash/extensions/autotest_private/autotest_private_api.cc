@@ -2560,6 +2560,7 @@ AutotestPrivateRunCrostiniInstallerFunction::Run() {
   // queue and be notified on success/otherwise of installation.
   ash::CrostiniInstallerDialog::Show(
       profile,
+      crostini::CrostiniUISurface::kSettings,
       base::BindOnce([](base::WeakPtr<ash::CrostiniInstallerUI> installer_ui) {
         installer_ui->ClickInstallForTesting();
       }));

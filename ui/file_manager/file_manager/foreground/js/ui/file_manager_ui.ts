@@ -44,6 +44,7 @@ import {FilesAlertDialog} from './files_alert_dialog.js';
 import {FilesConfirmDialog} from './files_confirm_dialog.js';
 import {FilesMenuItem} from './files_menu.js';
 import {GearMenu} from './gear_menu.js';
+import {FydeDropView} from './fydedrop_view.js';
 import {ImportCrostiniImageDialog} from './import_crostini_image_dialog.js';
 import {InstallLinuxPackageDialog} from './install_linux_package_dialog.js';
 import {ListContainer, ListType} from './list_container.js';
@@ -270,6 +271,8 @@ export class FileManagerUI {
    */
   private a11yMessage_: HTMLElement;
 
+  fydeDropView: FydeDropView|null = null;
+
   searchContainer: SearchContainer|null = null;
 
   a11yAnnounces: string[]|null = null;
@@ -486,6 +489,8 @@ export class FileManagerUI {
     splitterContainer.addEventListener(
         XfSplitter.events.SPLITTER_DRAGMOVE, this.relayout.bind(this));
 
+    this.fydeDropView =
+        new FydeDropView(queryRequiredElement('#fydedrop-view', this.element));
 
     /**
      * Search container, which controls search UI elements.

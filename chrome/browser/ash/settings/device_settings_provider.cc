@@ -48,6 +48,9 @@
 #include "components/user_manager/user_manager.h"
 #include "third_party/re2/src/re2/re2.h"
 
+#include "ui/display/display.h"
+#include "fydeos/switches/accelerometer/accelerometer_switches.h"
+
 using google::protobuf::RepeatedField;
 using google::protobuf::RepeatedPtrField;
 
@@ -339,8 +342,8 @@ void DecodeAllowedUsers(const em::ChromeDeviceSettingsProto& policy,
 
   new_values_cache->SetBoolean(
       kAccountsPrefAllowGuest,
-      !policy.has_guest_mode_enabled() ||
-          !policy.guest_mode_enabled().has_guest_mode_enabled() ||
+      policy.has_guest_mode_enabled() &&
+          policy.guest_mode_enabled().has_guest_mode_enabled() &&
           policy.guest_mode_enabled().guest_mode_enabled());
 }
 
@@ -1023,6 +1026,22 @@ void DecodeGenericPolicies(const em::ChromeDeviceSettingsProto& policy,
     new_values_cache->SetInteger(
         kDisplayRotationDefault,
         policy.display_rotation_default().display_rotation_default());
+  }else{
+    display::Display::Rotation default_rotate = display::Display::ROTATE_0;
+
+    if (fydeos::switches::IsRotate_90()){
+      default_rotate = display::Display::ROTATE_90;
+    }else if (fydeos::switches::IsRotate_180()){
+      default_rotate = display::Display::ROTATE_180;
+    }else if (fydeos::switches::IsRotate_270()){
+      default_rotate = display::Display::ROTATE_270;
+    }
+
+    if (default_rotate != display::Display::ROTATE_0){
+      new_values_cache->SetInteger(
+        kDisplayRotationDefault,
+        default_rotate);
+    }
   }
 
   if (policy.has_device_display_resolution() &&

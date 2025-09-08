@@ -93,6 +93,20 @@ std::optional<::account_manager::AccountType> FromProtoAccountType(
               static_cast<int>(::account_manager::AccountType::kGaia),
           "Underlying enum values must match");
       return ::account_manager::AccountType::kGaia;
+    case internal::AccountType::ACCOUNT_TYPE_FLINT:
+      static_assert(
+          static_cast<int>(internal::AccountType::ACCOUNT_TYPE_FLINT) ==
+              static_cast<int>(::account_manager::AccountType::kFlint),
+          "Underlying enum values must match");
+      return ::account_manager::AccountType::kFlint;
+    case internal::AccountType::ACCOUNT_TYPE_FYDE:
+      static_assert(
+          static_cast<int>(
+              internal::AccountType::ACCOUNT_TYPE_FYDE) ==
+              static_cast<int>(
+                  ::account_manager::AccountType::kFyde),
+                    "Underlying enum values must match");
+      return ::account_manager::AccountType::kFyde;
   }
 }
 
@@ -101,9 +115,18 @@ internal::AccountType ToProtoAccountType(
   // Currently, we only support `kGaia` account type. Should a new type be added
   // in the future, consider removing the `CHECK_EQ()` below and handling the
   // new type accordingly.
-  CHECK_EQ(account_type, account_manager::AccountType::kGaia);
-
-  return internal::AccountType::ACCOUNT_TYPE_GAIA;
+  // CHECK_EQ(account_type, account_manager::AccountType::kGaia);
+  switch (account_type) {
+    case ::account_manager::AccountType::kGaia:
+      return internal::AccountType::ACCOUNT_TYPE_GAIA;
+    case ::account_manager::AccountType::kFyde:
+      return internal::AccountType::ACCOUNT_TYPE_FYDE;
+    case ::account_manager::AccountType::kFlint:
+      return internal::AccountType::ACCOUNT_TYPE_FLINT;
+    default:
+      NOTREACHED()
+          << "Unsupported account type: " << static_cast<int>(account_type);
+  }
 }
 
 // Returns a Base16 encoded SHA1 digest of `data`.

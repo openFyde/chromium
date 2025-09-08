@@ -14,6 +14,7 @@ import {getDlpRestrictionDetails, getHoldingSpaceState, startIOTask} from '../..
 import {isModal} from '../../common/js/dialog_type.js';
 import {getFocusedTreeItem} from '../../common/js/dom_utils.js';
 import {entriesToURLs, getTreeItemEntry, isDirectoryEntry, isFakeEntry, isGrandRootEntryInDrive, isNonModifiable, isReadOnlyForDelete, isRecentRootType, isTeamDriveRoot, isTeamDrivesGrandRoot, isTrashEntry, isTrashRoot, unwrapEntry} from '../../common/js/entry_utils.js';
+import {isNativeEntry} from '../../common/js/entry_utils.js';
 import {getExtension, getType, isEncrypted} from '../../common/js/file_type.js';
 import type {FakeEntry, FilesAppDirEntry, FilesAppEntry} from '../../common/js/files_app_entry_types.js';
 import {EntryList} from '../../common/js/files_app_entry_types.js';
@@ -34,6 +35,7 @@ import type {FilesTooltip} from '../elements/files_tooltip.js';
 import {type ActionsModel, CommonActionId, InternalActionId} from './actions_model.js';
 import {type CommandHandlerDeps, MenuCommandsForUma, recordMenuItemSelected} from './command_handler.js';
 import {canExecuteVisibleOnDriveInNormalAppModeOnly, containsNonInteractiveEntry, currentVolumeIsInteractive, getCommandEntries, getCommandEntry, getElementVolumeInfo, getEventEntry, getOnlyOneSelectedDirectory, getParentEntry, getSharesheetLaunchSource, hasCapability, isDriveEntries, isFromSelectionMenu, isOnlyMyDriveEntries, isOnTrashRoot, isRootEntry, shouldIgnoreEvents, shouldShowMenuItemsForEntry} from './file_manager_commands_util.js';
+import {isOnFydeDropRoot} from './file_manager_commands_util.js';
 import type {PasteWithDestDirectoryEvent} from './file_transfer_controller.js';
 import {getAllowedVolumeTypes, maybeStoreTimeOfFirstPin} from './holding_space_util.js';
 import {PathComponent} from './path_component.js';
@@ -291,7 +293,7 @@ export class NewFolderCommand extends FilesCommand {
   private busy_ = false;
 
   execute(event: CommandEvent, fileManager: CommandHandlerDeps) {
-    if (isOnTrashRoot(fileManager)) {
+    if (isOnTrashRoot(fileManager) || isOnFydeDropRoot(fileManager)) {
       return;
     }
     let targetDirectory: DirectoryEntry|FilesAppDirEntry|null|undefined;
@@ -392,7 +394,7 @@ export class NewFolderCommand extends FilesCommand {
   }
 
   override canExecute(event: CanExecuteEvent, fileManager: CommandHandlerDeps) {
-    if (isOnTrashRoot(fileManager)) {
+    if (isOnTrashRoot(fileManager) || isOnFydeDropRoot(fileManager)) {
       event.canExecute = false;
       event.command.setHidden(true);
       return;
@@ -1742,6 +1744,62 @@ export class ExtractAllCommand extends FilesCommand {
       event.command.setHidden(true);
       event.canExecute = false;
     }
+  }
+}
+export class OpenWithFydeosAICommand extends FilesCommand {
+  execute(_event: CommandEvent, fileManager: CommandHandlerDeps) {
+    if (isOnTrashRoot(fileManager)) {
+      return;
+    }
+    if (!fileManager.fydeAssistantEnabled) {
+      return;
+    }
+    const dirEntry = fileManager.getCurrentDirectoryEntry();
+    const selection = fileManager.getSelection();
+    if (!dirEntry ||
+        !fileManager.getSelection().entries.every(
+            shouldShowMenuItemsForEntry.bind(
+                null, fileManager.volumeManager))) {
+      return;
+    }
+    fileManager.taskController.openFileWithFydeosAI(selection.entries);
+  }
+
+  override canExecute(event: CanExecuteEvent, fileManager: CommandHandlerDeps) {
+    if (isOnTrashRoot(fileManager)) {
+      event.canExecute = false;
+      event.command.setHidden(true);
+      return;
+    }
+    if (!fileManager.fydeAssistantEnabled) {
+      event.canExecute = false;
+      event.command.setHidden(true);
+      return;
+    }
+
+    const dirEntry = fileManager.getCurrentDirectoryEntry();
+    if (!dirEntry) {
+      event.canExecute = false;
+      event.command.setHidden(true);
+      return;
+    }
+    const selection = fileManager.getSelection();
+
+    let enable = false;
+
+    for (let i = 0; i < selection.entries.length; i++) {
+      const entry = selection.entries[i];
+      if (!entry || !entry.isFile || entry.isDirectory
+        || !isNativeEntry(entry)
+        || !shouldShowMenuItemsForEntry(fileManager.volumeManager, entry)) {
+        enable = false;
+        break;
+      }
+      enable = true;
+    }
+
+    event.command.setHidden(!enable);
+    event.canExecute = enable;
   }
 }
 

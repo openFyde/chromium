@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<translation id="599991153802693165">在平板电脑模式下，使用手势快速切换应用以及与 openFyde 设备互动。</translation>
+<translation id="8504544056037928244">在平板电脑模式下，使用手势快速切换应用以及与 FydeOS 设备互动。</translation>
+<translation id="7632338088504850157">从 openFyde 中投放屏幕</translation>
+<translation id="8496850753695776477">从 FydeOS 中投放屏幕</translation>
+<translation id="2243637753979269769">确保你的 openFyde 设备与 Chromecast 设备连接到同一个 Wi-Fi 网络。</translation>
+<translation id="1575956079896038781">确保你的 FydeOS 设备与 Chromecast 设备连接到同一个 Wi-Fi 网络。</translation>
+<translation id="4463105096332878535">桌面模式</translation>
+<translation id="5367350932098892883">平板模式</translation>
+<translation id="102310946874312210">默认模式</translation>
+<translation id="3304408958020366228">重要信息</translation>
+<translation id="431777047441474186">很抱歉，由于订阅到期，您的 FydeOS 会话将在 <ph name="LOGOUT_DELAY" /> 秒后自动登出。</translation>
+<translation id="1158692750402729892">激活 Linux 子系统功能</translation>
+<translation id="434906341977187420">在你的 FydeOS 设备上配置 Linux 子系统模块，完成后可运行 Linux 下的常用软件和开发者工具</translation>
+<translation id="4791749635395006456">在你的 openFyde 设备上配置 Linux 子系统模块，完成后可运行 Linux 下的常用软件和开发者工具</translation>
+<translation id="6547968619199601917">如果您忘记了密码，或最近更改过自己的 FydeOS 账号密码，请尝试让此用户恢复登录。</translation>
+<translation id="5839089877961090859">如果您忘记了 PIN 码和密码，或最近更改过自己的 FydeOS 账号密码，请尝试让此用户恢复登录。</translation>
+<translation id="6807231490754486030">您的 openFyde 或蓝牙设备使用的是旧版蓝牙。请使用内置麦克风以获得更好的音质。</translation>
+<translation id="6963915107365107725">您的 FydeOS 或蓝牙设备使用的是旧版蓝牙。请使用内置麦克风以获得更好的音质。</translation>
+<translation id="5357528784593669521">FydeOS 已更新</translation>
+<translation id="7705234841478603172">openFyde 已更新</translation>
+<translation id="7711241794117966575">openFyde 设置想确认您的身份</translation>
+<translation id="9180862091867194570">FydeOS 设置想确认您的身份</translation>
+<translation id="9010685208646652701">openFyde 意外重启了。打开之前的窗口和应用。</translation>
+<translation id="6644903886400430379">FydeOS 意外重启了。打开之前的窗口和应用。</translation>
+<translation id="2797463152267168940">openFyde 已更新。是否打开之前的窗口和应用？</translation>
+<translation id="44605201350599526">FydeOS 已更新。是否打开之前的窗口和应用？</translation>
+<translation id="6689118966813770247">请让您的管理员在 FydeOS 云集管平台中设置此设备</translation>
+</translationbundle>

@@ -1997,6 +1997,8 @@ void AppMenuModel::Build() {
 #else
 #if BUILDFLAG(IS_CHROMEOS)
   AddItem(IDC_ABOUT, l10n_util::GetStringUTF16(IDS_ABOUT));
+  if (browser_->profile()->GetPrefs()->GetBoolean(prefs::kUserFeedbackAllowed))
+    AddItemWithStringId(IDC_FEEDBACK, IDS_FEEDBACK);
 #else
   AddItemWithStringIdAndVectorIcon(this, IDC_ABOUT, IDS_ABOUT,
                                    vector_icons::kInfoRefreshIcon);

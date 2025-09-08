@@ -205,6 +205,14 @@ class ASH_EXPORT TabletModeController
   // for more details.
   void SetEnabledForDev(bool enabled);
 
+  void SetEnabledByFyde(bool enabled);
+  bool IsInFydeForceOnMode();
+  bool IsInFydeForceOffMode();
+  void SetDefaultBehaviorByFyde();
+  void ResetBehaviorByFyde();
+  void OnResetBehaviorGetSwitchStates(
+      std::optional<chromeos::PowerManagerClient::SwitchStates> result);
+
   // Returns true if the system tray should have a overview button.
   bool ShouldShowOverviewButton() const;
 

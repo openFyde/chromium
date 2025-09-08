@@ -416,6 +416,11 @@ bool Profile::IsGuestSession() const {
 PrefService* Profile::GetReadOnlyOffTheRecordPrefs() {
   return nullptr;
 }
+//---***FYDEOS BEGIN***---
+bool Profile::IsFydeProfile() const {
+  return is_fyde_profile_;
+}
+//---***FYDEOS END***---
 
 bool Profile::IsSystemProfile() const {
 #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)

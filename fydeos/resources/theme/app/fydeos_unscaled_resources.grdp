@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+    <!--refered by chrome/app/theme/chrome_unscaled_resources.grd the relative path "../../../fydeos/resources/theme/app"   -->
+    <include name="IDR_PRODUCT_LOGO_64" file="../../../fydeos/resources/theme/app/product_logo_64.png" type="BINDATA" />
+    <include name="IDR_PRODUCT_LOGO_128" file="../../../fydeos/resources/theme/app/product_logo_128.png" type="BINDATA" />
+    <include name="IDR_PRODUCT_LOGO_256" file="../../../fydeos/resources/theme/app/product_logo_256.png" type="BINDATA" />
+    <!-- NOTE: product_logo_*.* files beyond what's listed above are
+         referenced by installer code; don't remove them unless you know
+         what you're doing! -->
+    <include name="IDR_STATUS_TRAY_ICON" file="../../../fydeos/resources/theme/app/product_logo_22.png" type="BINDATA" />
+    <include name="IDR_CHROME_APP_ICON_32" file="../../../fydeos/resources/theme/app/chrome_app_icon_32.png" type="BINDATA" />
+    <include name="IDR_CHROME_APP_ICON_192" file="../../../fydeos/resources/theme/app/chrome_app_icon_192.png" type="BINDATA" />
+    <include name="IDR_FYDEOS_WEBSTORE_APP_ICON_16" file="../../../fydeos/resources/theme/app/webstore_app_icon_16.png" type="BINDATA" />
+    <include name="IDR_FYDEOS_WEBSTORE_APP_ICON_128" file="../../../fydeos/resources/theme/app/webstore_app_icon_128.png" type="BINDATA" />
+</grit-part>

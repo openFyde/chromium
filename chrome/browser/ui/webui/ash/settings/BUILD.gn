@@ -15,6 +15,14 @@ static_library("settings") {
     "os_settings_ui.h",
     "pref_names.cc",
     "pref_names.h",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler.cc",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler.h",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_section.cc",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_section.h",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler_backup_task_manager.cc",
+    "../../../../../../fydeos/ui/webui/settings/ash/fydeos_handler_backup_task_manager.h",
+    "../../../../../../fydeos/ui/webui/settings/ash/fyde_assistant_section.cc",
+    "../../../../../../fydeos/ui/webui/settings/ash/fyde_assistant_section.h",
   ]
 
   public_deps = [

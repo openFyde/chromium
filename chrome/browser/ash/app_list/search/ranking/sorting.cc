@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "chrome/browser/ash/app_list/search/ranking/sorting.h"
+#include "ash/public/cpp/app_list/app_list_types.h"
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
@@ -50,6 +51,12 @@ void SortResults(
   std::sort(
       results.begin(), results.end(),
       [&](const ChromeSearchResult* a, const ChromeSearchResult* b) {
+        const bool a_assistant_text = a->result_type() == ash::AppListSearchResultType::kAssistantText;
+        const bool b_assistant_text = b->result_type() == ash::AppListSearchResultType::kAssistantText;
+        if (a_assistant_text != b_assistant_text) {
+          return a_assistant_text;
+        }
+
         const int a_best_match_rank = a->scoring().best_match_rank();
         const int b_best_match_rank = b->scoring().best_match_rank();
         if (a_best_match_rank != b_best_match_rank) {

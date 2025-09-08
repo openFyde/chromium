@@ -35,6 +35,7 @@
 #include "ash/webui/help_app_ui/help_app_ui.h"
 #include "ash/webui/mall/mall_ui.h"
 #include "ash/webui/media_app_ui/media_app_ui.h"
+#include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_ui.h"
 #include "ash/webui/os_feedback_ui/os_feedback_ui.h"
 #include "ash/webui/personalization_app/personalization_app_ui.h"
 #include "ash/webui/print_management/print_management_ui.h"
@@ -62,6 +63,7 @@
 #include "chrome/browser/ash/system_web_apps/apps/help_app/help_app_ui_delegate.h"
 #include "chrome/browser/ash/system_web_apps/apps/media_app/chrome_media_app_ui_delegate.h"
 #include "chrome/browser/ash/system_web_apps/apps/personalization_app/personalization_app_utils.h"
+#include "chrome/browser/ash/system_web_apps/apps/fyde_assistant_app_ui_delegate.h"
 #include "chrome/browser/ash/system_web_apps/apps/recorder_app/chrome_recorder_app_ui_delegate.h"
 #include "chrome/browser/ash/system_web_apps/apps/vc_background_ui/vc_background_ui_utils.h"
 #include "chrome/browser/ui/ash/holding_space/holding_space_keyed_service.h"
@@ -363,6 +365,11 @@ void RegisterAshChromeWebUIConfigs() {
       base::BindRepeating(vc_background_ui::CreateVcBackgroundUI)));
   map.AddWebUIConfig(std::make_unique<GrowthInternalsUIConfig>());
   map.AddWebUIConfig(std::make_unique<FloatingWorkspaceUIConfig>());
+  if (base::FeatureList::IsEnabled(ash::features::kFydeAssistant)) {
+    map.AddWebUIConfig(
+        MakeComponentConfigWithDelegate<FydeAssistantAppUIConfig, FydeAssistantAppUI,
+                                        ChromeFydeAssistantAppUIDelegate>());
+  }
 #if !defined(OFFICIAL_BUILD)
   map.AddWebUIConfig(std::make_unique<SampleSystemWebAppUIConfig>());
   map.AddWebUIConfig(std::make_unique<StatusAreaInternalsUIConfig>());

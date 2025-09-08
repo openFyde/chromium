@@ -508,6 +508,8 @@ ProfileImpl::ProfileImpl(
   // TODO(crbug.com/40225390): Move this into
   // ProfileUserManagerController::OnProfileCreationStarted().
   if (ash::ProfileHelper::IsUserProfile(this)) {
+    auto user = ash::ProfileHelper::Get()->GetUserByProfile(this);
+    set_is_fyde_profile(user->IsFydeExtendAccountUser());
     // |ash::InitializeAccountManager| is called during a User's session
     // initialization but some tests do not properly login to a User Session.
     // This invocation of |ash::InitializeAccountManager| is used only during
@@ -969,6 +971,13 @@ ProfileImpl::~ProfileImpl() {
 }
 
 std::string ProfileImpl::GetProfileUserName() const {
+  // ---***FYDEOS BEGIN***---
+  const user_manager::User* user =
+      ash::ProfileHelper::Get()->GetUserByProfile(this);
+  if (user && user->IsFlintAccountUser()) {
+    return user->display_email();
+  }
+  // ---***FYDEOS END***---
   const signin::IdentityManager* identity_manager =
       IdentityManagerFactory::GetForProfileIfExists(this);
   if (identity_manager) {

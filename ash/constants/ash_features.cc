@@ -12,6 +12,7 @@
 #include "build/build_config.h"
 #include "chromeos/components/libsegmentation/buildflags.h"
 #include "chromeos/constants/chromeos_features.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 #if defined(ARCH_CPU_ARM_FAMILY)
 #include "base/command_line.h"
@@ -43,7 +44,7 @@ BASE_FEATURE(kAllowAmbientEQ,
 // IsCrossDeviceFeatureSuiteAllowed().
 BASE_FEATURE(kAllowCrossDeviceFeatureSuite,
              "AllowCrossDeviceFeatureSuite",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Always reinstall system web apps, instead of only doing so after version
 // upgrade or locale changes.
@@ -581,7 +582,7 @@ BASE_FEATURE(kCrostiniMultiContainer,
 // Enables or disables Crostini Qt application IME support.
 BASE_FEATURE(kCrostiniQtImeSupport,
              "CrostiniQtImeSupport",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables or disables Crostini Virtual Keyboard support.
 BASE_FEATURE(kCrostiniVirtualKeyboardSupport,
@@ -754,7 +755,7 @@ BASE_FEATURE(kEcheSWACheckAndroidNetworkInfo,
 // may have choppier app list animations while in this mode. crbug.com/765292.
 BASE_FEATURE(kEnableBackgroundBlur,
              "EnableBackgroundBlur",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables settings to control internal display brightness and auto-brightness.
 BASE_FEATURE(kEnableBrightnessControlInSettings,
@@ -2184,7 +2185,7 @@ BASE_FEATURE(kOobeLazyLoading,
 // Enables OOBE perks discovery feature.
 BASE_FEATURE(kOobePerksDiscovery,
              "OobePerksDiscovery",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables OOBE ai intro feature.
 BASE_FEATURE(kFeatureManagementOobeAiIntro,
@@ -2381,6 +2382,9 @@ BASE_FEATURE(kPcieBillboardNotification,
 // currently active desk.
 BASE_FEATURE(kPerDeskShelf, "PerDeskShelf", base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kFydeAssistant,
+             "FydeAssistant",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 // Provides a UI for users to view information about their Android phone
 // and perform phone-side actions within ChromeOS.
 BASE_FEATURE(kPhoneHub, "PhoneHub", base::FEATURE_ENABLED_BY_DEFAULT);
@@ -3348,7 +3352,7 @@ BASE_FEATURE(kEnableDozeModePowerScheduler,
 // Enables fwupd developer mode, disabling all firmware authentication checks.
 BASE_FEATURE(kFwupdDeveloperMode,
              "FwupdDeveloperMode",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -4344,6 +4348,10 @@ bool IsOobePerksDiscoveryEnabled() {
 }
 
 bool IsOobeQuickStartOnLoginScreenEnabled() {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    return false;
+  }
+
   return IsCrossDeviceFeatureSuiteAllowed() &&
          base::FeatureList::IsEnabled(kOobeQuickStartOnLoginScreen);
 }
@@ -4394,6 +4402,11 @@ bool IsPeripheralNotificationEnabled() {
 
 bool IsPhoneHubCameraRollEnabled() {
   return base::FeatureList::IsEnabled(kPhoneHubCameraRoll);
+}
+
+bool IsFydeAssistantEnabled() {
+  return base::FeatureList::IsEnabled(kFydeAssistant) &&
+         fydeos::switches::IsFydeCustomEnabled();
 }
 
 bool IsPhoneHubMonochromeNotificationIconsEnabled() {

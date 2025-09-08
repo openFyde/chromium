@@ -34,8 +34,10 @@ PeriodicCollector::PeriodicCollector(Sampler* sampler,
                                      const std::string& rate_setting_path,
                                      base::TimeDelta default_rate,
                                      int rate_unit_to_ms,
-                                     base::TimeDelta init_delay)
+                                     base::TimeDelta init_delay,
+                                     bool should_send_to_fyde)
     : CollectorBase(sampler),
+      should_send_to_fyde_(should_send_to_fyde),
       metric_report_queue_(metric_report_queue),
       rate_controller_(std::make_unique<MetricRateController>(
           base::BindRepeating(&PeriodicCollector::Collect,
@@ -77,7 +79,7 @@ PeriodicCollector::PeriodicCollector(Sampler* sampler,
                         rate_setting_path,
                         default_rate,
                         rate_unit_to_ms,
-                        base::TimeDelta()) {}
+                        base::TimeDelta(), false) {}
 
 PeriodicCollector::~PeriodicCollector() = default;
 
@@ -101,6 +103,10 @@ void PeriodicCollector::OnMetricDataCollected(
   metric_data->set_timestamp_ms(
       base::Time::Now().InMillisecondsSinceUnixEpoch());
   metric_report_queue_->Enqueue(std::move(metric_data.value()));
+
+  if (should_send_to_fyde_) {
+    FydeHeartBeat();
+  }
 }
 
 bool PeriodicCollector::CanCollect() const {

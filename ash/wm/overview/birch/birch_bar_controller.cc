@@ -164,6 +164,9 @@ void BirchBarController::ShowChipContextMenu(
     BirchSuggestionType chip_type,
     const gfx::Point& point,
     ui::mojom::MenuSourceType source_type) {
+#if BUILDFLAG(IS_CHROMEOS)
+  return;
+#else
   chip_menu_model_adapter_ = std::make_unique<BirchBarMenuModelAdapter>(
       std::make_unique<BirchChipContextMenuModel>(
           /*delegate=*/chip, chip_type),
@@ -177,6 +180,7 @@ void BirchBarController::ShowChipContextMenu(
                                 views::MenuRunner::CONTEXT_MENU |
                                     views::MenuRunner::USE_ASH_SYS_UI_LAYOUT |
                                     views::MenuRunner::FIXED_ANCHOR);
+#endif
 }
 
 void BirchBarController::OnItemHiddenByUser(BirchItem* item) {

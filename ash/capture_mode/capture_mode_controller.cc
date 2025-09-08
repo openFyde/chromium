@@ -1044,6 +1044,9 @@ bool CaptureModeController::CanShowSunfishRegionNudge() const {
   switch (*user_type) {
     case user_manager::UserType::kRegular:
     case user_manager::UserType::kChild:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
+    case user_manager::UserType::kFlintAccount:
       // We only allow regular and child accounts to see the nudge.
       break;
     case user_manager::UserType::kGuest:

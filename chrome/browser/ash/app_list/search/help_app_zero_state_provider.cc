@@ -18,6 +18,7 @@
 #include "chrome/browser/ash/release_notes/release_notes_storage.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/ash/system_web_apps/system_web_app_ui_utils.h"
+#include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/common/pref_names.h"
 #include "chromeos/strings/grit/chromeos_strings.h"
 #include "components/prefs/pref_service.h"
@@ -71,12 +72,7 @@ void HelpAppZeroStateResult::Open(int event_flags) {
 
     ash::ReleaseNotesStorage(profile_).StopShowingSuggestionChip();
 
-    ash::SystemAppLaunchParams params;
-    params.url = GURL("chrome://help-app/updates");
-    params.launch_source = apps::LaunchSource::kFromAppListRecommendation;
-    ash::LaunchSystemWebAppAsync(
-        profile_, ash::SystemWebAppType::HELP, params,
-        std::make_unique<apps::WindowInfo>(display::kDefaultDisplayId));
+    chrome::LaunchReleaseNotes(profile_, apps::LaunchSource::kFromChromeInternal);
     // NOTE: Launching the result may dismiss the app list, which may delete
     // this result.
   }

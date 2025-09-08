@@ -189,6 +189,7 @@
     <file path="strings/components_chromium_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="strings/components_chromium_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="strings/components_chromium_strings_zu.xtb" lang="zu" />
+    <file path="../fydeos/i18n/components/strings/components_chromium_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -317,6 +318,9 @@
       <message name="IDS_INTERNAL_DEBUG_PAGES_DISABLED_BODY" desc="This is the text, with a link, that appears below the heading for the page that appears when the user attempts to load an internal developer debugging page when such pages are disabled by a pref. It instructs the user on how to enable the pref if they wish.">
         These pages are intended for use by Chromium developers, and may not be actively maintained or tested. To enable them, navigate to <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>chrome://chrome-urls<ph name="LINK_END">&lt;/a&gt;</ph>, click the button to enable debug pages, and then navigate to this page again.
       </message>
+
+      <part file="../fydeos/i18n/components/components_chromium_strings.override.grdp" />
+
     </messages>
   </release>
 </grit>

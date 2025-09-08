@@ -118,6 +118,8 @@ class COMPONENT_EXPORT(ASSISTANT_SERVICE_PUBLIC) AssistantBrowserDelegate {
   // error cases, e.g., the new entry point is not installed.
   virtual std::optional<std::string> GetNewEntryPointName() = 0;
 
+  virtual bool HandleQueryByFydeAssistant(const std::string& query) { return true; }
+
 #if BUILDFLAG(ENABLE_CROS_LIBASSISTANT)
   // Requests a connection to Libassistant service interface via the browser.
   virtual void RequestLibassistantService(

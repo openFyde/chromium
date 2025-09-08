@@ -36,6 +36,7 @@
 #include "google_apis/gaia/google_service_auth_error.h"
 #include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace {
 
@@ -113,6 +114,10 @@ AmbientClientImpl::AmbientClientImpl() = default;
 AmbientClientImpl::~AmbientClientImpl() = default;
 
 bool AmbientClientImpl::IsAmbientModeAllowed() {
+  if (fydeos::switches::IsFydeCustomEnabled()) {
+    return false;
+  }
+
   if (is_allowed_for_testing_.has_value()) {
     return is_allowed_for_testing_.value();
   }

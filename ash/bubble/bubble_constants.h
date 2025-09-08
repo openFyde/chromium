@@ -17,6 +17,8 @@ inline constexpr int kBubbleCornerRadius = 16;
 // tray bubble or the switch access menu.
 inline constexpr int kBubbleMenuPadding = 8;
 
+constexpr int kBubbleCornerRadiusForAI = 20;
+
 // The elevation used for system tray bubble.
 inline constexpr SystemShadow::Type kBubbleShadowType =
     SystemShadow::Type::kElevation12;

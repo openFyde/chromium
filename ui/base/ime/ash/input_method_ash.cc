@@ -191,7 +191,7 @@ ui::EventDispatchDetails InputMethodAsh::DispatchKeyEvent(ui::KeyEvent* event) {
   // normal input field (not a password field).
   // Note: We need to send the key event to ibus even if the |context_| is not
   // enabled, so that ibus can have a chance to enable the |context_|.
-  if (IsPasswordOrNoneInputFieldFocused() || !GetEngine()) {
+  if ((event->key_code() != ui::VKEY_SHIFT && IsPasswordOrNoneInputFieldFocused()) || !GetEngine()) {
     if (event->type() == ui::EventType::kKeyPressed) {
       if (ExecuteCharacterComposer(*event)) {
         // Treating as PostIME event if character composer handles key event and

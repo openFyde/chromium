@@ -77,6 +77,11 @@
 #else
 #include "chrome/browser/ui/signin/signin_view_controller.h"
 #endif
+//---***FYDEOS BEGIN***---
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
+#include "fydeos/switches/services/services_switches.h"
+//---***FYDEOS END***---
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/metrics/histogram_functions.h"
@@ -132,6 +137,14 @@ void LaunchReleaseNotesImpl(Profile* profile, apps::LaunchSource source) {
   LaunchSystemWebAppAsync(profile, ash::SystemWebAppType::HELP, params);
 }
 #endif
+
+//---***FYDEOS BEGIN***---
+void LaunchReleaseNotesInTab(Profile* profile) {
+  GURL url(fydeos::misc::BuildFydeReleaseNoteUrlWithPath());
+  auto displayer = std::make_unique<ScopedTabbedBrowserDisplayer>(profile);
+  ShowSingletonTab(displayer->browser(), url);
+}
+//---***FYDEOS END***---
 
 // Shows either the help app or the appropriate help page for |source|. If
 // |browser| is NULL and the help page is used (vs the app), the help page is
@@ -189,6 +202,7 @@ void ShowHelpImpl(Browser* browser, Profile* profile, HelpSource source) {
     default:
       NOTREACHED() << "Unhandled help source " << source;
   }
+  url = GURL(fydeos::constants::kFydeOSHelpURL);
   if (browser) {
     ShowSingletonTab(browser, url);
   } else {
@@ -393,10 +407,15 @@ void LaunchReleaseNotes(Profile* profile, apps::LaunchSource source) {
 #if BUILDFLAG(IS_CHROMEOS) && BUILDFLAG(GOOGLE_CHROME_BRANDING)
   LaunchReleaseNotesImpl(profile, source);
 #endif
+  // ---***FYDEOS BEGIN***---
+  LaunchReleaseNotesInTab(profile);
+  // ---***FYDEOS END***---
 }
 
 void ShowBetaForum(Browser* browser) {
-  ShowSingletonTab(browser, GURL(kChromeBetaForumURL));
+  //---***FYDEOS BEGIN***---
+  ShowSingletonTab(browser, GURL(fydeos::constants::kFydeOSForumURL));
+  //---***FYDEOS END***---
 }
 
 void ShowSlow(Browser* browser) {
@@ -584,9 +603,16 @@ void ShowSearchEngineSettings(Browser* browser) {
 }
 
 void ShowWebStore(Browser* browser, std::string_view utm_source_value) {
-  GURL webstore_url = extension_urls::GetNewWebstoreLaunchURL();
-  ShowSingletonTabIgnorePathOverwriteNTP(
-      browser, extension_urls::AppendUtmSource(webstore_url, utm_source_value));
+  GURL webstore_url = GURL(fydeos::switches::GetFydeOSAppStoreURL() + "/?init=");
+  NavigateParams params(browser, webstore_url, ui::PAGE_TRANSITION_AUTO_BOOKMARK);
+  params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  params.window_action = NavigateParams::NO_ACTION;
+  params.opened_by_another_window = true;
+  params.should_replace_current_entry = false;
+  params.user_gesture = true;
+  params.tabstrip_add_types |= AddTabTypes::ADD_NONE;
+  params.path_behavior = NavigateParams::IGNORE_AND_NAVIGATE;
+  Navigate(&params);
 }
 
 void ShowPrivacySandboxSettings(Browser* browser) {

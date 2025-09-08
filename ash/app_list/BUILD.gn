@@ -94,6 +94,8 @@ source_set("app_list") {
     "views/apps_grid_view_folder_delegate.h",
     "views/assistant/app_list_bubble_assistant_page.cc",
     "views/assistant/app_list_bubble_assistant_page.h",
+    "views/assistant/fyde_assistant_page.cc",
+    "views/assistant/fyde_assistant_page.h",
     "views/assistant/assistant_dialog_plate.cc",
     "views/assistant/assistant_dialog_plate.h",
     "views/assistant/assistant_main_stage.cc",

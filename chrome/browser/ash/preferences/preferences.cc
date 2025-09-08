@@ -434,7 +434,8 @@ void Preferences::RegisterProfilePrefs(
   registry->RegisterBooleanPref(
       chromeos::prefs::kCaptivePortalAuthenticationIgnoresProxy, true);
 
-  registry->RegisterBooleanPref(::prefs::kLanguageImeMenuActivated, false);
+  registry->RegisterBooleanPref(::prefs::kLanguageImeMenuActivated, true,
+                                user_prefs::PrefRegistrySyncable::SYNCABLE_OS_PREF);
 
   registry->RegisterInt64Pref(::prefs::kHatsLastInteractionTimestamp, 0);
 
@@ -590,7 +591,7 @@ void Preferences::RegisterProfilePrefs(
                                 true);
 
   registry->RegisterBooleanPref(
-      prefs::kSuggestedContentEnabled, true,
+      prefs::kSuggestedContentEnabled, false,
       user_prefs::PrefRegistrySyncable::SYNCABLE_OS_PREF);
 
   registry->RegisterBooleanPref(prefs::kMagicBoostEnabled, true);

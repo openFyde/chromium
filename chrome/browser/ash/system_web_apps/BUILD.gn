@@ -74,6 +74,8 @@ static_library("system_web_apps") {
     "//ui/native_theme",
   ]
 
+  deps += [ "//ash/webui/fyde_assistant_app_ui" ]
+
   allow_circular_includes_from = [
     "//chrome/browser/ash/login/demo_mode",
     "//chrome/browser/ash/system_web_apps/apps/camera_app",
@@ -170,4 +172,5 @@ if (is_chromeos_device) {
 
     deps = [ "//chrome/browser/ash/system_web_apps/apps:integration_tests" ]
   }
+
 }

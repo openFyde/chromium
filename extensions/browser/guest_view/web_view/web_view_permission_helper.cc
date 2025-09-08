@@ -24,6 +24,7 @@
 #include "extensions/browser/guest_view/web_view/web_view_permission_types.h"
 #include "extensions/common/extension_features.h"
 #include "ppapi/buildflags/buildflags.h"
+#include "fydeos/switches/services/services_switches.h"
 #include "third_party/blink/public/mojom/mediastream/media_stream.mojom-shared.h"
 #include "third_party/blink/public/mojom/mediastream/media_stream.mojom.h"
 
@@ -191,13 +192,18 @@ WebViewPermissionHelper* WebViewPermissionHelper::FromRenderFrameHostId(
 void WebViewPermissionHelper::RequestMediaAccessPermission(
     const content::MediaStreamRequest& request,
     content::MediaResponseCallback callback) {
+  bool default_media_access_permission = false;
+  GURL fydeAIURL(fydeos::switches::GetFydeOSAssistantWebUrl());
+  if ((url::Origin::Create(request.security_origin) == url::Origin::Create(fydeAIURL))) {
+    default_media_access_permission = true;
+  }
   base::Value::Dict request_info;
   request_info.Set(guest_view::kUrl, request.security_origin.spec());
   RequestPermission(
       WEB_VIEW_PERMISSION_TYPE_MEDIA, std::move(request_info),
       base::BindOnce(&WebViewPermissionHelper::OnMediaPermissionResponse,
                      weak_factory_.GetWeakPtr(), request, std::move(callback)),
-      /*allowed_by_default=*/false);
+      /*allowed_by_default=*/default_media_access_permission);
 }
 
 void WebViewPermissionHelper::RequestMediaAccessPermissionForControlledFrame(

@@ -50,6 +50,8 @@ class TerminaInstaller {
   // check the result of this.
   void Install(base::OnceCallback<void(InstallResult)> callback);
 
+  void InstallFydemina(base::OnceCallback<void(InstallResult)> callback);
+
   // Remove termina entirely. This will also attempt to remove any
   // other instances of termina that may be installed.
   void Uninstall(base::OnceCallback<void(bool)> callback);

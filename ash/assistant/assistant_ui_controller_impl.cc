@@ -103,6 +103,19 @@ void AssistantUiControllerImpl::SetKeyboardTraversalMode(
 }
 
 void AssistantUiControllerImpl::ShowUi(AssistantEntryPoint entry_point) {
+  if (ash::features::IsFydeAssistantEnabled()) {
+    if (AssistantState::Get()->fyde_assistant_enabled().value_or(false)) {
+      if (entry_point == AssistantEntryPoint::kDeepLink || entry_point == AssistantEntryPoint::kHotkey || entry_point == AssistantEntryPoint::kLauncherSearchBoxIcon) {
+        model_.SetVisible(entry_point);
+        return;
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  }
+
   if (ash::assistant::features::IsNewEntryPointEnabled()) {
     assistant::AssistantBrowserDelegate::Get()->OpenNewEntryPoint();
     return;

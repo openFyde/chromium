@@ -13,6 +13,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
+#include "fydeos/switches/urls/urls_constants.h"
+#include "ui/chromeos/devicetype_utils.h"
 
 namespace ash::bluetooth {
 
@@ -60,7 +62,6 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       {"bluetoothA11yDeviceTypeMouse", IDS_BLUETOOTH_A11Y_DEVICE_TYPE_MOUSE},
       {"bluetoothA11yDeviceTypeTablet", IDS_BLUETOOTH_A11Y_DEVICE_TYPE_TABLET},
       {"bluetoothA11yDeviceName", IDS_BLUETOOTH_A11Y_DEVICE_NAME},
-      {"bluetoothPairingDescription", IDS_BLUETOOTH_PAIRING_DESCRIPTION},
       {"bluetoothPairingDeviceItemSecondaryErrorA11YLabel",
        IDS_BLUETOOTH_PAIRINGS_DEVICE_ITEM_SECONDARY_ERROR_A11Y_LABEL},
       {"bluetoothPairingDeviceItemSecondaryPairingA11YLabel",
@@ -68,9 +69,14 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
   html_source->AddString(
+      "bluetoothPairingDescription",
+      l10n_util::GetStringFUTF16(IDS_BLUETOOTH_PAIRING_DESCRIPTION,
+                                 ui::GetChromeOSDeviceName()));
+  html_source->AddString(
       "bluetoothPairingLearnMoreLabel",
       l10n_util::GetStringFUTF16(IDS_BLUETOOTH_PAIRING_LEARN_MORE,
-                                 chrome::kBluetoothPairingLearnMoreUrl));
+                                 ui::GetChromeOSDeviceName(),
+                                 base::ASCIIToUTF16(fydeos::constants::kBluetoothPairingLearnMoreUrl)));
 }
 
 void AddLoadTimeData(content::WebUIDataSource* html_source) {

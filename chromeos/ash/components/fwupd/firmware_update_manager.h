@@ -28,6 +28,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/shell_state.h"
 
 namespace network {
 
@@ -219,6 +220,14 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_FWUPD) FirmwareUpdateManager
   // Query the fwupd DBus client for currently connected devices.
   void RequestDevices();
 
+  void ShellClientRequestUpdates();
+  void OnShellClientGetUpdates(std::optional<fydeos::ash::ShellState> state);
+  void OnShellClientUpdateFirmwareStarted(std::optional<fydeos::ash::ShellState> state);
+  void ScheduleGetTaskOutputAndState(int32_t task_id);
+  void QueryShellTaskState(int32_t task_id);
+  void OnGetShellClientTaskState(int32_t task_id, std::optional<fydeos::ash::ShellState> state);
+  void StartInstallByShellClient(const std::string& device_id);
+
   // Query the fwupd DBus client for updates for a certain device.
   void RequestUpdates(const std::string& device_id);
 
@@ -394,6 +403,10 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_FWUPD) FirmwareUpdateManager
   base::FilePath firmware_filepath_;
   base::File checksum_file_;
   base::File firmware_file_;
+
+  bool is_updating_ = false;
+
+  int current_updating_percentage_ = 0;
 
   // Used only for testing to force notification to appear.
   bool should_show_notification_for_test_ = false;

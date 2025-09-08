@@ -22,7 +22,7 @@ class PasswordSelectionScreenView {
   virtual ~PasswordSelectionScreenView() = default;
 
   // Shows the contents of the screen.
-  virtual void Show() = 0;
+  virtual void Show(bool is_fyde_profile) = 0;
 
   virtual void ShowProgress() = 0;
   virtual void ShowPasswordChoice() = 0;
@@ -48,7 +48,7 @@ class PasswordSelectionScreenHandler final : public PasswordSelectionScreenView,
 
  private:
   // PasswordSelectionScreenView
-  void Show() override;
+  void Show(bool is_fyde_profile) override;
   void ShowProgress() override;
   void ShowPasswordChoice() override;
   void ShowBackButton() override;

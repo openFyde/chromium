@@ -14,7 +14,7 @@ package userfeedback;
 // Data present in all kinds of feedbacks, regardless of source (Web, Android,
 // other).
 message CommonData {
-  optional fixed64 gaia_id = 1;
+  optional string gaia_id = 1;
 
   // Description of the problem entered by user.
   optional string description = 2;
@@ -23,6 +23,8 @@ message CommonData {
   optional string ui_language = 6 [ default = "en_US" ];
 
   optional string user_email = 3;
+
+  optional string account_type = 8;
   
   // Unique identifier of feedback report. If set than only one report
   // with the same identifier is stored in the system.

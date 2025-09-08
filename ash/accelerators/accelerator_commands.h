@@ -274,6 +274,8 @@ ASH_EXPORT void RotateActiveWindow();
 // Rotates pane focus on next/previous pane.
 ASH_EXPORT void RotatePaneFocus(FocusCycler::Direction direction);
 
+ASH_EXPORT void RotateScreenWithoutConfirmation();
+
 // Rotates screen 90 degrees.
 ASH_EXPORT void RotateScreen();
 
@@ -346,6 +348,8 @@ ASH_EXPORT void ToggleGeminiApp();
 // Enables Select to Speak if the feature is currently disabled. Does nothing if
 // the feature is currently enabled.
 ASH_EXPORT void EnableSelectToSpeak();
+
+ASH_EXPORT void ToggleFydeOSAssistant();
 
 // Enables Dictation if the feature is currently disabled. Toggles (either
 // starts or stops) Dictation if the feature is currently enabled.

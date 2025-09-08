@@ -23,6 +23,9 @@ enum class AccountType {
   // aka Gaia account.
   GOOGLE,
 
+  FLINT_ACCOUNT = 99,
+  FYDE_ACCOUNT = 100,
+
   // ACTIVE_DIRECTORY account type was deprecated.
 };
 
@@ -92,6 +95,14 @@ class COMPONENT_EXPORT(COMPONENTS_ACCOUNT_ID) AccountId {
   std::string Serialize() const;
   static std::optional<AccountId> Deserialize(std::string_view serialized);
 
+  const GaiaId& GetFlintId() const;
+  static AccountId FtFromUserEmailFlintId(const std::string& email,
+                                          const GaiaId& flint_id);
+  static AccountId FtFromFlintId(const GaiaId& flint_id);
+  const GaiaId& GetFydeId() const;
+  static AccountId FyFromUserEmailFydeId(const std::string& email,
+                                          const GaiaId& fyde_id);
+  static AccountId FyFromFydeId(const GaiaId& fyde_id);
  private:
   COMPONENT_EXPORT(COMPONENTS_ACCOUNT_ID)
   friend std::ostream& operator<<(std::ostream&, const AccountId&);
