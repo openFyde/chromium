@@ -370,18 +370,32 @@ void CandidateWindowView::UpdateCandidates(
         candidate_view->SetEnabled(false);
         candidate_view->SetInfolistIcon(false);
       }
-      if (new_candidate_window.orientation() == ui::CandidateWindow::VERTICAL) {
+      // Calculate preferred widths for both vertical and horizontal modes
+      // Fix: Previously this was only done for vertical mode, causing
+      // candidate_width_ to remain 0 in horizontal mode, making candidates invisible
+      int shortcut_width = 0;
+      int candidate_width = 0;
+      candidate_views_[i]->GetPreferredWidths(&shortcut_width,
+                                              &candidate_width);
+      max_shortcut_width = std::max(max_shortcut_width, shortcut_width);
+      max_candidate_width = std::max(max_candidate_width, candidate_width);
+    }
+    // Set widths for both vertical and horizontal modes
+    // In vertical mode, all candidates align to the same width
+    // In horizontal mode, each candidate can have its natural width
+    if (new_candidate_window.orientation() == ui::CandidateWindow::VERTICAL) {
+      for (ui::ime::CandidateView* view : candidate_views_) {
+        view->SetWidths(max_shortcut_width, max_candidate_width);
+      }
+    } else {
+      // For horizontal mode, set the widths so labels are visible
+      // Each candidate uses its natural width instead of max width
+      for (size_t i = 0; i < candidate_views_size; ++i) {
         int shortcut_width = 0;
         int candidate_width = 0;
         candidate_views_[i]->GetPreferredWidths(&shortcut_width,
                                                 &candidate_width);
-        max_shortcut_width = std::max(max_shortcut_width, shortcut_width);
-        max_candidate_width = std::max(max_candidate_width, candidate_width);
-      }
-    }
-    if (new_candidate_window.orientation() == ui::CandidateWindow::VERTICAL) {
-      for (ui::ime::CandidateView* view : candidate_views_) {
-        view->SetWidths(max_shortcut_width, max_candidate_width);
+        candidate_views_[i]->SetWidths(shortcut_width, candidate_width);
       }
     }
 
