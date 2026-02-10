@@ -57,6 +57,9 @@ class ChromeBrowserPolicyConnector : public BrowserPolicyConnector {
   void Init(PrefService* local_state,
             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
       override;
+  // ---***FYDEOS BEGIN***---
+  void ResetDeviceManagementServiceConfiguration();
+  // ---***FYDEOS END***---
 
   // Called to signal the browser has started.
   virtual void OnBrowserStarted();

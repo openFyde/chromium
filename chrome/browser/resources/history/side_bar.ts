@@ -101,6 +101,14 @@ export class HistorySideBarElement extends CrLitElement {
       showGMAAndGAA_: {type: Boolean},
 
       showHistoryClusters_: {type: Boolean},
+
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
+
     };
   }
 
@@ -118,6 +126,7 @@ export class HistorySideBarElement extends CrLitElement {
   protected accessor showGAAOnly_: boolean = false;
   protected accessor showGMAAndGAA_: boolean = false;
   private accessor showHistoryClusters_: boolean = false;
+  private accessor isFydeLocalAccount_: boolean;
 
   override connectedCallback() {
     super.connectedCallback();

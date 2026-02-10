@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override ui/chromeos/ui_chromeos_strings.grd -->
+<grit-part>
+  <if expr="openfyde">
+    <message name="IDS_CHROMEBASE_DEVICE_NAME" desc="The device name for a Chromebase (versus say Chromebox)">
+      openFyde device
+    </message>
+    <message name="IDS_CHROMEBIT_DEVICE_NAME" desc="The device name for a Chromebit (versus say Chromebox)">
+      openFyde device
+    </message>
+    <message name="IDS_CHROMEBOOK_DEVICE_NAME" desc="The device name for a Chromebook (versus say Chromebox)">
+      openFyde device
+    </message>
+    <message name="IDS_CHROMEBOX_DEVICE_NAME" desc="The device name for a Chromebox (versus say Chromebook)">
+      openFyde device
+    </message>
+    <message name="IDS_GENERIC_CHROMEOS_DEVICE_NAME" desc="The device name for a generic Chrome device">
+      openFyde device
+    </message>
+    <message name="IDS_CHROMEBASE_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for Chromebase (versus say Chromeboxes)">
+      openFyde devices
+    </message>
+    <message name="IDS_CHROMEBIT_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for Chromebit (versus say Chromeboxes)">
+      openFyde devices
+    </message>
+    <message name="IDS_CHROMEBOOK_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for Chromebook (versus say Chromeboxes)">
+      openFyde devices
+    </message>
+    <message name="IDS_CHROMEBOX_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for Chromebox (versus say Chromebooks)">
+      openFyde devices
+    </message>
+    <message name="IDS_GENERIC_CHROMEOS_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for generic Chrome device">
+      openFyde devices
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_CHROMEBASE_DEVICE_NAME" desc="The device name for a Chromebase (versus say Chromebox)">
+      FydeOS device
+    </message>
+    <message name="IDS_CHROMEBIT_DEVICE_NAME" desc="The device name for a Chromebit (versus say Chromebox)">
+      FydeOS device
+    </message>
+    <message name="IDS_CHROMEBOOK_DEVICE_NAME" desc="The device name for a Chromebook (versus say Chromebox)">
+      FydeOS device
+    </message>
+    <message name="IDS_CHROMEBOX_DEVICE_NAME" desc="The device name for a Chromebox (versus say Chromebook)">
+      FydeOS device
+    </message>
+    <message name="IDS_GENERIC_CHROMEOS_DEVICE_NAME" desc="The device name for a generic Chrome device">
+      FydeOS device
+    </message>
+    <message name="IDS_CHROMEBASE_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for Chromebase (versus say Chromeboxes)">
+      FydeOS devices
+    </message>
+    <message name="IDS_CHROMEBIT_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for Chromebit (versus say Chromeboxes)">
+      FydeOS devices
+    </message>
+    <message name="IDS_CHROMEBOOK_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for Chromebook (versus say Chromeboxes)">
+      FydeOS devices
+    </message>
+    <message name="IDS_CHROMEBOX_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for Chromebox (versus say Chromebooks)">
+      FydeOS devices
+    </message>
+    <message name="IDS_GENERIC_CHROMEOS_DEVICE_NAME_IN_PLURAL" desc="The device name (plural) for generic Chrome device">
+      FydeOS devices
+    </message>
+  </if>
+</grit-part>

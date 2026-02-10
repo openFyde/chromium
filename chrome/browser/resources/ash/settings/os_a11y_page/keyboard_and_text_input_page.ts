@@ -108,9 +108,10 @@ export class SettingsKeyboardAndTextInputPageElement extends
       dictationLearnMoreUrl_: {
         type: String,
         value() {
+          const url = loadTimeData.getString("a11yLearnMoreUrl")
           return loadTimeData.getBoolean('isKioskModeActive') ?
               '' :
-              'https://support.google.com/chromebook?p=text_dictation_m100';
+              `${url}/turn-on-fydeos-device-accessibility-features/`;
         },
       },
 

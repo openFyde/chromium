@@ -75,6 +75,7 @@ cast_source_set("connectivity_checker") {
     "//chromecast/base/metrics",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//fydeos/build/config:buildflags",
   ]
 }
 

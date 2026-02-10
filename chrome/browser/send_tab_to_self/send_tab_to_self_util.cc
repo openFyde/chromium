@@ -25,6 +25,12 @@ std::optional<EntryPointDisplayReason> GetEntryPointDisplayReason(
     return std::nullopt;
   }
 
+  auto* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (profile && profile->IsFydeProfile()) {
+    return std::nullopt;
+  }
+
   send_tab_to_self::SendTabToSelfSyncService* service =
       SendTabToSelfSyncServiceFactory::GetForProfile(
           Profile::FromBrowserContext(web_contents->GetBrowserContext()));

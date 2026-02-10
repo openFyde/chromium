@@ -21,6 +21,8 @@ enum class AccountType : int {
   // accounts.
   kGaia = 1,
   // Value 2 was used for the deprecated `kActiveDirectory` account type.
+  kFlint = 3,
+  kFyde = 4,
 };
 
 // Uniquely identifies an account.

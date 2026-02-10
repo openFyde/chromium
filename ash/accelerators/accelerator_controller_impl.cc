@@ -22,6 +22,7 @@
 #include "ash/constants/ash_features.h"
 #include "ash/constants/devicetype.h"
 #include "ash/debug.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ash/ime/ime_controller_impl.h"
 #include "ash/ime/ime_switch_type.h"
 #include "ash/public/cpp/accelerator_actions.h"
@@ -29,6 +30,7 @@
 #include "ash/public/mojom/input_device_settings.mojom-shared.h"
 #include "ash/session/session_controller_impl.h"
 #include "ash/shell.h"
+#include "ash/shelf/shelf.h"
 #include "ash/system/input_device_settings/input_device_settings_notification_controller.h"
 #include "ash/system/power/power_button_controller.h"
 #include "ash/wm/mru_window_tracker.h"
@@ -46,6 +48,8 @@
 #include "base/system/sys_info.h"
 #include "chromeos/ash/components/audio/cras_audio_handler.h"
 #include "chromeos/ash/components/dbus/biod/fake_biod_client.h"
+#include "components/prefs/pref_service.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 #include "ui/accessibility/accessibility_features.h"
 #include "ui/aura/env.h"
 #include "ui/base/accelerators/accelerator.h"
@@ -444,6 +448,25 @@ bool IsShortcutBlockedByPolicy(ui::Accelerator accelerator) {
 
   return kSystemShortcutPolicyBlockedAccelerators.contains(
       {accelerator.key_code(), accelerator.modifiers()});
+}
+
+bool CanHandleToggleFydeOSAssistant() {
+  if (!ash::features::IsFydeAssistantEnabled()) {
+    return false;
+  }
+  PrefService* prefs =
+      Shell::Get()->session_controller()->GetActivePrefService();
+  if (!prefs ||
+      !prefs->FindPreference(fydeos::prefs::kFydeAssistantEnabled) ||
+      !prefs->FindPreference(
+          fydeos::prefs::kFydeAssistantExtraAcceleratorEnabled) ||
+      !prefs->GetBoolean(fydeos::prefs::kFydeAssistantEnabled) ||
+      !prefs->GetBoolean(
+          fydeos::prefs::kFydeAssistantExtraAcceleratorEnabled)) {
+    return false;
+  }
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  return shelf->fyde_assistant_view() && shelf->fyde_assistant_view()->CanHandleToggleFydeOSAssistant();
 }
 
 }  // namespace
@@ -1012,6 +1035,8 @@ bool AcceleratorControllerImpl::CanPerformAction(
       return features::IsDoNotDisturbShortcutEnabled();
     case AcceleratorAction::kEnableSelectToSpeak:
       return true;
+    case AcceleratorAction::kToggleFydeosAssistant:
+      return CanHandleToggleFydeOSAssistant();
     case AcceleratorAction::kEnableOrToggleDictation:
       return accelerators::CanEnableOrToggleDictation();
     case AcceleratorAction::kToggleDockedMagnifier:
@@ -1101,7 +1126,6 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kNewTab:
     case AcceleratorAction::kNewWindow:
     case AcceleratorAction::kOpenCalculator:
-    case AcceleratorAction::kOpenCrosh:
     case AcceleratorAction::kOpenDiagnostics:
     case AcceleratorAction::kOpenFeedbackPage:
     case AcceleratorAction::kOpenFileManager:
@@ -1129,6 +1153,8 @@ bool AcceleratorControllerImpl::CanPerformAction(
     case AcceleratorAction::kVolumeUp:
     case AcceleratorAction::kWindowMinimize:
       return true;
+    case AcceleratorAction::kOpenCrosh:
+      return !Shell::Get()->session_controller()->IsUserGuest();
     case AcceleratorAction::kTouchFingerprintSensor1:
     case AcceleratorAction::kTouchFingerprintSensor2:
     case AcceleratorAction::kTouchFingerprintSensor3:
@@ -1590,6 +1616,9 @@ void AcceleratorControllerImpl::PerformAction(
     case AcceleratorAction::kEnableSelectToSpeak:
       accelerators::EnableSelectToSpeak();
       break;
+    case AcceleratorAction::kToggleFydeosAssistant:
+      accelerators::ToggleFydeOSAssistant();
+      break;
     case AcceleratorAction::kEnableOrToggleDictation:
       // UMA metrics are recorded later in the call stack.
       accelerators::EnableOrToggleDictation();
@@ -1841,6 +1870,10 @@ bool AcceleratorControllerImpl::ShouldPreventProcessingAccelerators() const {
 
 void AcceleratorControllerImpl::RecordVolumeSource() {
   accelerators::RecordVolumeSource();
+}
+
+void RotateScreenFydeOS() {
+  accelerators::RotateScreenWithoutConfirmation();
 }
 
 }  // namespace ash

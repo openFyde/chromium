@@ -119,7 +119,7 @@ void CertProvisioningUserInvalidator::Register(
   invalidation_handler_ =
       std::make_unique<internal::CertProvisioningInvalidationHandler>(
           invalidation_provider->GetInvalidationListener(
-              kCertProvisioningInvalidationProjectNumber),
+              GetCertProvisioningInvalidationProjectNumber()),
           listener_type, std::move(on_invalidation_event_callback));
 }
 

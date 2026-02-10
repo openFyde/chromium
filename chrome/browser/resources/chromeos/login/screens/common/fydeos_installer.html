@@ -1,0 +1,259 @@
+<!-- FydeOS Installer -->
+
+<style include="cr-shared-style md-select oobe-dialog-host-styles cr-card-radio-group-styles cros-color-overrides">
+  .step-loading {
+    z-index: 1;
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    min-height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  #shellclient-error {
+    z-index: 100;
+    bottom: 0;
+    display: block;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .layout.config-selection-entry {
+    min-height: 60px;
+  }
+
+  .config-selection-entry:last-of-type {
+  }
+
+  .config-selection-title {
+    color: var(--google-grey-900);
+    font-size: 13px;
+  }
+
+  #normalConfigMessage {
+    text-align: right;
+    padding: 20px 0;
+  }
+  #installProgress {
+    height: 8px;
+  }
+  .shell-output {
+    color: var(--google-grey-100);
+    background-color: var(--google-grey-900);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.16), 0 1px 2px rgba(0,0,0,0.23);
+    border-radius: 2px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 8px;
+    margin: 0 0 8px 0;
+    line-height: 20px;
+    max-height: 280px;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+  }
+  .progress-message {
+    font-size: 12.5px;
+  }
+
+  .progress-error {
+    color: var(--google-red-700);
+  }
+
+  .dualboot-config-select-subtitle {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .dualboot-config-select {
+    border-top: var(--oobe-dialog-list-item-border);
+  }
+
+  .dualboot-config-select:last-of-type {
+    border-bottom: var(--oobe-dialog-list-item-border);
+    margin-bottom: 0;
+  }
+
+  .dualboot-config-message {
+    color: var(--google-red-500);
+  }
+
+  #multiBootOptionList {
+    width: 100%;
+    margin: 8px 0;
+  }
+
+  :host-context(.jelly-enabled) select.md-select {
+    --md-select-bg-color: var(--cros-sys-input_field_on_shaded);
+  }
+</style>
+<div for-step="prepare">
+  <div id="installer-loading" class="step-loading"
+                              hidden="[[!isLoading_]]">
+    <throbber-notice text-key="gaiaLoading">
+    </throbber-notice>
+  </div>
+  <notification-card id="shellclient-error" type="fail" class="fit"
+                                            hidden="[[!shouldShowShellClientError_(isShellClientError_, isLoading_)]]"
+                                            button-label="[[i18nDynamic(locale, 'back')]]">
+    [[i18nDynamic(locale, 'fydeosInstallerGetDiskInfoFailed')]]
+  </notification-card>
+</div>
+<oobe-adaptive-dialog has-buttons for-step="portal">
+  <h1 slot="title">[[i18nDynamic(locale, 'fydeosInstallerAppName')]]</h1>
+  <div slot="subtitle">
+    <p>[[i18nDynamic(locale, 'fydeosInstallerAppDesc')]]</p>
+    <p>[[i18nDynamic(locale, 'fydeosInstallerAppDisclaimer')]]</p>
+  </div>
+  <div slot="content" class="layout vertical landscape-vertical-centered">
+    <cr-radio-group id="installType" selected="{{selectedInstallType_}}">
+      <cr-card-radio-button id="normalInstall" class="flex" name="normal">
+        <div class="card-container">
+          <div class="card-content">
+            <div class="card-label">
+              [[i18nDynamic(locale, 'fydeosInstallerFullDiskInstallationTitle')]]
+            </div>
+            <div class="card-text">
+              [[i18nDynamic(locale, 'fydeosInstallerFullDiskInstallationHelperText')]]
+            </div>
+          </div>
+        </div>
+      </cr-card-radio-button>
+      <cr-card-radio-button id="dualbootInstall" class="flex" name="dualboot" disabled=[[!isDualbootInstallEnabled_]]>
+        <div class="card-container">
+          <div class="card-content">
+            <div class="card-label">
+              [[i18nDynamic(locale, 'fydeosInstallerDualbootInstallationTitle')]]
+            </div>
+            <div class="card-text">
+              [[i18nDynamic(locale, 'fydeosInstallerDualbootInstallationHelperText')]]
+            </div>
+          </div>
+        </div>
+      </cr-card-radio-button>
+    </cr-radio-group>
+  </div>
+  <div slot="back-navigation">
+    <oobe-back-button on-click="onBackClicked_">
+    </oobe-back-button>
+  </div>
+  <div slot="bottom-buttons" class="layout horizontal end-justified">
+    <oobe-next-button class="focus-on-show" on-click="onConfigClicked_">
+    </oobe-next-button>
+  </div>
+</oobe-adaptive-dialog>
+<oobe-adaptive-dialog has-buttons for-step="normal-config">
+  <h1 slot="title">[[i18nDynamic(locale, 'fydeosInstallerFullDiskInstallationTitle')]]</h1>
+  <div slot="subtitle">[[i18nDynamic(locale, 'fydeosInstallerFullDiskInstallationDisclaimer')]]</div>
+  <div slot="content" class="layout vertical landscape-header-aligned">
+    <div class="layout vertical">
+      <div class="flex layout center horizontal justified config-selection-entry">
+        <div class="config-selection-title layout vertical center-justified">
+          [[i18nDynamic(locale, 'fydeosInstallerConfigDiskSelectLabel')]]
+        </div>
+        <select id="normalConfigDiskList" class="md-select"
+                                          value=[[normalConfigSelectedDisk_]]
+                                          >
+        </select>
+      </div>
+    </div>
+    <div id="normalConfigMessage">[[normalConfigMessage_]]</div>
+  </div>
+  <div slot="back-navigation">
+    <oobe-back-button on-click="onBackClicked_">
+    </oobe-back-button>
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-text-button inverse on-click="onInstallClicked_" disabled="[[!isNormalSetup_]]" text-key="fydeosInstallerInstallButton">
+    </oobe-text-button>
+  </div>
+</oobe-adaptive-dialog>
+<oobe-adaptive-dialog has-buttons for-step="dualboot-config">
+  <h1 slot="title">[[i18nDynamic(locale, 'fydeosInstallerDualbootInstallationTitle')]]</h1>
+  <div slot="subtitle">
+    <p>[[i18nDynamic(locale, 'fydeosInstallerDualbootInstallationDesc')]]</p>
+    <p>[[i18nDynamic(locale, 'fydeosInstallerDualbootInstallationDisclaimer')]]</p>
+  </div>
+  <div slot="content" class="layout vertical landscape-header-aligned">
+    <div class="dualboot-config-select">
+      <div class="flex layout center horizontal justified config-selection-entry">
+        <div class="flex layout vertical center-justified">
+          <div class="config-selection-title layout vertical center-justified">
+            [[i18nDynamic(locale, 'fydeosInstallDualbootConfigSelectOSPart')]]
+          </div>
+          <div id="dualbootConfigOSMessage" class="dualboot-config-message">[[dualbootConfigSelectOSPartMessage_]]</div>
+        </div>
+        <select id="dualbootConfigOSPartList" class="md-select"
+                                              value=[[dualbootConfigSelectedOSPart_]]
+                                              >
+        </select>
+      </div>
+    </div>
+    <div class="dualboot-config-select">
+      <div class="flex layout center horizontal justified config-selection-entry">
+        <div class="flex layout vertical center-justified">
+          <div class="config-selection-title layout vertical center-justified">
+            [[i18nDynamic(locale, 'fydeosInstallDualbootConfigSelectEFIPart')]]
+          </div>
+          <div id="dualbootConfigEFIMessage" class="dualboot-config-message">[[dualbootConfigSelectEFIMessage_]]</div>
+        </div>
+        <select id="dualbootConfigEFIPartList" class="md-select"
+                                                value=[[dualbootConfigSelectedEFIPart_]]
+                                                >
+        </select>
+      </div>
+    </div>
+    <div class="dualboot-config-select">
+      <div class="config-selection-entry">
+        <div class="flex layout vertical center-justified">
+          <div class="config-selection-title layout vertical center-justified">
+            [[i18nDynamic(locale, 'fydeosInstallerMultiBootOptionTitle')]]
+          </div>
+        </div>
+        <select id="multiBootOptionList" class="md-select"
+                                          value=[[multiBootOptionSelected_]]
+                                          >
+        </select>
+      </div>
+      <div>
+        <div class="multi-boot-option-desc">
+          [[multiBootOptionDesc_]]
+        </div>
+      </div>
+    </div>
+  </div>
+  <div slot="back-navigation">
+    <oobe-back-button on-click="onBackClicked_">
+    </oobe-back-button>
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-text-button inverse on-click="onInstallClicked_" disabled="[[!isDualbootSetup_]]" text-key="fydeosInstallerInstallButton">
+    </oobe-text-button>
+  </div>
+</oobe-adaptive-dialog>
+<oobe-adaptive-dialog has-buttons for-step="installing,aborting,done">
+  <h1 slot="title" id="installingTitle">[[installingTitle_]]</h1>
+  <paper-progress id="installProgress" slot="progress" min="0" max="100" indeterminate="[[shouldProgressIndeterminate_(uiStep, progressValue_)]]"
+                                                                value="[[progressValue_]]">
+  </paper-progress>
+  <div slot="content" class="layout vertical landscape-header-aligned">
+    <pre id="installShellOutput" class="shell-output" hidden="[[!trimedInstallOutput_]]">[[trimedInstallOutput_]]</pre>
+    <div id="progressMessage" class$="[[progressMessageClass_(result_)]]">
+      [[progressMessage_]]
+    </div>
+  </div>
+  <div slot="back-navigation">
+    <oobe-back-button on-click="onBackClicked_" disabled="[[!shouldEnableBackButton_(uiStep)]]" hidden="[[!shouldShowBackButton_(uiStep, result_)]]">
+    </oobe-back-button>
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-text-button on-click="onAbortClicked_" hidden="[[!shouldShowAbortButton_(uiStep)]]" disabled="[[!shouldEnableAbortButton_(uiStep)]]" text-key="fydeosInstallerAbortButton">
+    </oobe-text-button>
+    <oobe-text-button inverse on-click="onShutdownClicked_" hidden="[[!shouldShowShutdownButton_(uiStep, result_)]]" text-key="fydeosInstallerShutdownButton">
+    </oobe-text-button>
+  </div>
+</oobe-adaptive-dialog>

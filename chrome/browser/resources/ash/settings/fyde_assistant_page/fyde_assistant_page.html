@@ -1,0 +1,30 @@
+<style include="settings-shared">
+</style>
+
+<os-settings-animated-pages id="pages" section="[[section_]]">
+  <div route-path="default">
+    <settings-card header-text="$i18n{fydeAssistantPageTitle}">
+      <settings-toggle-button
+          pref="{{prefs.fyde_assistant_enabled}}"
+          id="fydeAssistantToggle"
+          label="$i18n{fydeAssistantToggleLabel}"
+          sub-label="$i18n{fydeAssistantToggleSublabel}">
+      </settings-toggle-button>
+      <div class="hr"></div>
+      <settings-toggle-button
+          disabled="[[!prefs.fyde_assistant_enabled.value]]"
+          pref="{{prefs.fyde_assistant_extra_accelerator_enabled}}"
+          id="fydeAssistantExtraAcceleratorToggle"
+          label="$i18n{fydeAssistantBubbleShortcutToggleLabel}"
+          sub-label="$i18n{fydeAssistantBubbleShortcutToggleSublabel}">
+      </settings-toggle-button>
+      <div class="hr"></div>
+      <cr-link-row id="fydeosAiSettingsLink"
+          disabled="[[!prefs.fyde_assistant_enabled.value]]"
+          label="$i18n{fydeAssistantSettingsInAppLabel}"
+          sub-label="$i18n{fydeAssistantSettingsInAppSublabel}"
+          on-click="onSettingsClicked_"
+          external>
+      </cr-link-row>
+  </div>
+</os-settings-animated-pages>

@@ -42,7 +42,7 @@ void UserRemoteCommandsServiceBase::
                                     PolicyInvalidationScope::kUser);
   invalidator_ = std::make_unique<RemoteCommandsInvalidator>(
       invalidation_provider->GetInvalidationListener(
-          kRemoteCommandsInvalidationsProjectNumber),
+          GetRemoteCommandsInvalidationsProjectNumber()),
       core_, base::DefaultClock::GetInstance(), PolicyInvalidationScope::kUser);
 }
 

@@ -1,0 +1,17 @@
+# Copyright 2023 Fyde Innovations
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/buildflag_header.gni")
+import("//fydeos/build/config/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "USE_FYDEOS_COM=$use_fydeos_com",
+    "IS_OPENFYDE=$is_openfyde",
+    "FYDEOS_DEVICE=$fydeos_device",
+    "USE_FYDEOS_LICENSE=$use_fydeos_license",
+    "FYDEOS_DEVICE=$fydeos_device",
+  ]
+}

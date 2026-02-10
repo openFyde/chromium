@@ -14,6 +14,8 @@ import {WallpaperLayout, WallpaperType} from '../../personalization_app.mojom-we
 import {getNumberOfGridItemsPerRow, isNonEmptyString} from '../utils.js';
 
 import type {DefaultImageSymbol, DisplayableImage} from './constants.js';
+import {kFydeLightDarkImageSuffixes} from './constants.js';
+import type {FydeImage} from './constants.js';
 import {kDefaultImageSymbol} from './constants.js';
 import type {DailyRefreshState} from './wallpaper_state.js';
 
@@ -41,6 +43,9 @@ export function isImageAMatchForKey(
   }
   if (isNonEmptyFilePath(image)) {
     return key === image.path;
+  }
+  if (isFydeImage(image)) {
+    return key === image.dark.path || key === image.light.path;
   }
   assert(isGooglePhotosPhoto(image));
   // NOTE: Old clients may not support |dedupKey| when setting Google Photos
@@ -199,4 +204,59 @@ export function findAlbumById(
     return albums.find(album => album.id === albumId) ?? null;
   }
   return null;
+}
+
+export function toggleLightDarkImagePath(image: FilePath|DefaultImageSymbol): string | null {
+  if (!isNonEmptyFilePath(image)) {
+    return null;
+  }
+  if (!image.path.startsWith('/usr/share/chromeos-assets/fydeos_wallpapers')) {
+    return null;
+  }
+  const suffix = kFydeLightDarkImageSuffixes.find(
+    suffix => image.path.endsWith(suffix));
+  if (!suffix) return null;
+
+  const isLight = suffix.includes('light');
+  const newSuffix = isLight ?
+    suffix.replace('light', 'dark') :
+    suffix.replace('dark', 'light');
+  const prefix = image.path.slice(0, -suffix.length);
+  return prefix + newSuffix;
+}
+
+class FydeImageImpl implements FydeImage {
+  name: string;
+  light: FilePath;
+  dark: FilePath;
+  constructor(name: string, light: FilePath, dark: FilePath) {
+    this.name = name;
+    this.light = light;
+    this.dark = dark;
+  }
+}
+
+export function generateFydeImage(image1: FilePath|DefaultImageSymbol, image2: FilePath|DefaultImageSymbol): FydeImage | null {
+  if (!isNonEmptyFilePath(image1) || !isNonEmptyFilePath(image2)) {
+    return null;
+  }
+  const suffix1 = kFydeLightDarkImageSuffixes.find(
+    suffix => image1.path.endsWith(suffix));
+  if (!suffix1) return null;
+
+  const suffix2 = kFydeLightDarkImageSuffixes.find(
+    suffix => image2.path.endsWith(suffix));
+  if (!suffix2) return null;
+
+  if (suffix1 === suffix2) return null;
+
+  const isLight1 = suffix1.includes('light');
+  const name = image1.path.slice(0, -suffix1.length);
+  const light = isLight1 ? image1: image2;
+  const dark = isLight1 ? image2: image1;
+  return new FydeImageImpl(name, light, dark);
+}
+
+export function isFydeImage(obj: any): obj is FydeImage {
+  return obj instanceof FydeImageImpl;
 }

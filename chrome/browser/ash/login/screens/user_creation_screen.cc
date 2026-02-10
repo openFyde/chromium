@@ -14,6 +14,7 @@
 #include "chromeos/ash/components/install_attributes/install_attributes.h"
 #include "chromeos/ash/components/network/network_state.h"
 #include "chromeos/ash/components/network/network_state_handler.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace ash {
 
@@ -104,8 +105,10 @@ void UserCreationScreen::ShowImpl() {
   // Back button is only available in login screen (add user flow) which is
   // indicated by if the device has users. Back button is hidden in the oobe
   // flow.
+  // ---***FYDEOS BEGIN***---
   view_->SetIsBackButtonVisible(
-      LoginDisplayHost::default_host()->HasUserPods());
+      LoginDisplayHost::default_host()->HasUserPods() || !fydeos::switches::IsFydeAccountEnabled());
+  // ---***FYDEOS END***---
 
   UpdateState(NetworkError::ERROR_REASON_UPDATE);
 

@@ -28,6 +28,8 @@ export enum EntryType {
 
   // Root for the Recent.
   RECENT = 'RECENT',
+
+  FYDEDROP = 'fydedrop',
 }
 
 /**
@@ -287,6 +289,7 @@ export enum NavigationType {
   DRIVE = 'drive',
   ANDROID_APPS = 'android_apps',
   TRASH = 'trash',
+  FYDEDROP = 'fydedrop',
 }
 
 /**

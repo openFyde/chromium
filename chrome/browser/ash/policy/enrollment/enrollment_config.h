@@ -114,6 +114,8 @@ struct EnrollmentConfig {
     // Forced manual enrollment triggered as a fallback to a failed remote
     // deployment enrollment.
     MODE_REMOTE_DEPLOYMENT_MANUAL_FALLBACK = 22,
+
+    MODE_FYDE_LOCAL_FORCED = 23,
   };
 
   // An enumeration of assigned upgrades that a device can after initial
@@ -148,6 +150,8 @@ struct EnrollmentConfig {
 
   static EnrollmentConfig GetDemoModeEnrollmentConfig();
 
+  static bool IsZeroTouchEnrollmentFydeForced();
+
   EnrollmentConfig();
   EnrollmentConfig(const EnrollmentConfig& config);
   ~EnrollmentConfig();
@@ -171,6 +175,7 @@ struct EnrollmentConfig {
            mode == MODE_ATTESTATION_LOCAL_FORCED ||
            mode == MODE_ATTESTATION_SERVER_FORCED ||
            mode == MODE_INITIAL_SERVER_FORCED ||
+           mode == MODE_FYDE_LOCAL_FORCED ||
            mode == MODE_ATTESTATION_INITIAL_SERVER_FORCED ||
            mode == MODE_ATTESTATION_ROLLBACK_FORCED || mode == MODE_RECOVERY ||
            mode == MODE_ENROLLMENT_TOKEN_INITIAL_SERVER_FORCED ||
@@ -206,10 +211,13 @@ struct EnrollmentConfig {
            mode == MODE_REMOTE_DEPLOYMENT_SERVER_FORCED;
   }
 
+  bool is_mode_fyde() const {
+    return mode == MODE_FYDE_LOCAL_FORCED;
+  }
   // Whether this configuration's mode causes the device to automatically
   // enroll without user interaction.
   bool is_automatic_enrollment() const {
-    return is_mode_attestation() || is_mode_token();
+    return is_mode_attestation() || is_mode_token() || is_mode_fyde();
   }
 
   // Whether this configuration is an automatic enrollment mode that has a
@@ -267,6 +275,8 @@ struct EnrollmentConfig {
 
   // Enrollment token to use for authentication (for Flex Auto Enrollment).
   std::string enrollment_token;
+
+  std::string fyde_enrollment_token;
 
   // Source of OOBE config, if the device has an OOBE configuration file and
   // that config influences enrollment.

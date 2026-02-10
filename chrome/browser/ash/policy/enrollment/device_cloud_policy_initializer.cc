@@ -22,6 +22,7 @@
 #include "components/policy/core/common/cloud/cloud_policy_client.h"
 #include "components/policy/core/common/cloud/cloud_policy_core.h"
 #include "components/policy/core/common/cloud/device_management_service.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace policy {
 
@@ -131,7 +132,10 @@ void DeviceCloudPolicyInitializer::TryToStartConnection() {
     return;
   }
 
+  const bool allow_init_without_state_keys = fydeos::switches::IsInitDevicePolicyWithoutStateKeysAllowed();
+
   if (state_keys_broker_->available() ||
+      allow_init_without_state_keys ||
       !AutoEnrollmentTypeChecker::AreFREStateKeysSupported()) {
     StartConnection(CreateClient(enterprise_service_));
   }

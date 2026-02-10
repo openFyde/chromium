@@ -205,6 +205,7 @@ class USER_MANAGER_EXPORT UserManagerImpl : public UserManager {
   bool IsCurrentUserCryptohomeDataEphemeral() const override;
   bool IsUserLoggedIn() const override;
   bool IsLoggedInAsUserWithGaiaAccount() const override;
+  bool IsLoggedInAsUserWithFydeExtendedAccount() const override;
   bool IsLoggedInAsChildUser() const override;
   bool IsLoggedInAsManagedGuestSession() const override;
   bool IsLoggedInAsGuest() const override;
@@ -459,6 +460,8 @@ class USER_MANAGER_EXPORT UserManagerImpl : public UserManager {
 
   // Returns whether the device is enterprise managed.
   bool IsEnterpriseManaged() const;
+
+  void RemoveLocalAutoSigninCredential(const AccountId& account_id);
 
   std::unique_ptr<Delegate> delegate_;
 

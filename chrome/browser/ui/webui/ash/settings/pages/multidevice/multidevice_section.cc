@@ -453,8 +453,8 @@ MultiDeviceSection::MultiDeviceSection(
   }
 
   multidevice_setup_client_->AddObserver(this);
-  OnHostStatusChanged(multidevice_setup_client_->GetHostStatus());
-  OnFeatureStatesChanged(multidevice_setup_client_->GetFeatureStates());
+  // OnHostStatusChanged(multidevice_setup_client_->GetHostStatus());
+  // OnFeatureStatesChanged(multidevice_setup_client_->GetFeatureStates());
 }
 
 MultiDeviceSection::~MultiDeviceSection() {
@@ -758,10 +758,24 @@ void MultiDeviceSection::AddLoadTimeData(
   // supported.
   AddNearbyShareStrings(html_source);
   RegisterNearbySharedStrings(html_source);
-  html_source->AddBoolean(
-      "isNearbyShareSupported",
+  bool is_nearby_share_supported =
       NearbySharingServiceFactory::IsNearbyShareSupportedForBrowserContext(
-          profile()));
+          profile());
+  html_source->AddBoolean("isNearbyShareSupported", is_nearby_share_supported);
+
+  // Check if Nearby Share is in limited mode
+  bool is_nearby_share_limited_mode = false;
+  if (is_nearby_share_supported) {
+    NearbySharingService* nearby_sharing_service =
+        NearbySharingServiceFactory::GetForBrowserContext(profile());
+    if (nearby_sharing_service && nearby_sharing_service->GetSettings()) {
+      is_nearby_share_limited_mode =
+          nearby_sharing_service->GetSettings()->IsLimitedMode();
+    }
+  }
+  html_source->AddBoolean("isNearbyShareLimitedMode",
+                          is_nearby_share_limited_mode);
+
   html_source->AddBoolean("isEcheAppEnabled", features::IsEcheSWAEnabled());
   OnEnableScreenLockChanged();
   OnScreenLockStatusChanged();

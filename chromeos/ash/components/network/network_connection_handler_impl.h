@@ -15,6 +15,9 @@
 #include "chromeos/ash/components/network/network_state_handler.h"
 #include "chromeos/ash/components/network/network_state_handler_observer.h"
 #include "chromeos/dbus/common/dbus_callback.h"
+#include "fydeos/chromeos/ash/components/dbus/fydeos_shell_client/shell_state.h"
+
+using fydeos::ash::ShellState;
 
 namespace ash {
 
@@ -184,6 +187,13 @@ class COMPONENT_EXPORT(CHROMEOS_NETWORK) NetworkConnectionHandlerImpl
       const std::string& service_path,
       CellularConfigurationFailureType failure_type);
 
+  //---***FYDEOS BEGIN***---
+  void ShellStateCallback(base::OnceClosure callback,
+                          std::optional<ShellState> state);
+  void InvokeExecuteReloadWifiDrv(base::OnceClosure callback);
+  bool need_reload_wifidrv_ = false;
+  bool on_reload_wifidrv_ = false;
+  //---***FYDEOS END***---
   // Local references to the associated handler instances.
   raw_ptr<NetworkCertLoader> network_cert_loader_ = nullptr;
   raw_ptr<NetworkStateHandler> network_state_handler_ = nullptr;

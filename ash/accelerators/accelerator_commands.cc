@@ -24,6 +24,7 @@
 #include "ash/display/screen_orientation_controller.h"
 #include "ash/focus/focus_cycler.h"
 #include "ash/frame/frame_view_ash.h"
+#include "ash/fydeos_ai/fydeos_ai_view.h"
 #include "ash/game_dashboard/game_dashboard_controller.h"
 #include "ash/glanceables/glanceables_controller.h"
 #include "ash/ime/ime_controller_impl.h"
@@ -106,6 +107,7 @@
 #include "chromeos/ui/wm/window_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/session_manager/session_manager_types.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 #include "ui/accessibility/accessibility_features.h"
 #include "ui/aura/client/aura_constants.h"
 #include "ui/base/emoji/emoji_panel_helper.h"
@@ -1176,6 +1178,10 @@ void RotatePaneFocus(FocusCycler::Direction direction) {
   Shell::Get()->focus_cycler()->RotateFocus(direction);
 }
 
+void RotateScreenWithoutConfirmation() {
+  RotateScreenImpl();
+}
+
 void RotateScreen() {
   if (Shell::Get()->display_manager()->IsInUnifiedMode())
     return;
@@ -1450,6 +1456,21 @@ void ToggleQuickInsert(base::TimeTicks accelerator_timestamp) {
 
 void EnableSelectToSpeak() {
   Shell::Get()->accessibility_controller()->EnableSelectToSpeakWithDialog();
+}
+
+void ToggleFydeOSAssistant() {
+  if (!ash::features::IsFydeAssistantEnabled()) {
+    return;
+  }
+  PrefService* prefs =
+      Shell::Get()->session_controller()->GetActivePrefService();
+  if (!prefs ||
+      !prefs->FindPreference(fydeos::prefs::kFydeAssistantEnabled) ||
+      !prefs->GetBoolean(fydeos::prefs::kFydeAssistantEnabled)) {
+    return;
+  }
+  Shelf* shelf = Shelf::ForWindow(Shell::GetPrimaryRootWindow());
+  shelf->fyde_assistant_view()->ShowBubble();
 }
 
 void EnableOrToggleDictation() {

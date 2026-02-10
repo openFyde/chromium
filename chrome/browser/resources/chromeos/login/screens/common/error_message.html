@@ -86,6 +86,9 @@
               'ui-state-kiosk-mode')]]">
       </span>
     </div>
+    <div hidden="[[!isOneOf_(uiState_, 'ui-state-signin')]]">
+      <span id="fyde-local-signin" hidden="[[!fydeLocalSigninAllowed]]"></span>
+    </div>
     <span hidden="[[!isOneOf(uiState,'ui-state-auto-enrollment-error')]]">
       [[i18nDynamic(locale, 'autoEnrollmentOfflineMessageBody')]]
     </span>

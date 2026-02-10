@@ -81,6 +81,9 @@ class ASH_PUBLIC_EXPORT NearbyShareDelegate {
 
   // Sets the device's Visibility.
   virtual void SetVisibility(::nearby_share::mojom::Visibility visibility) = 0;
+
+  // Is limited mode.
+  virtual bool IsLimitedMode() const = 0;
 };
 
 }  // namespace ash

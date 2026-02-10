@@ -64,6 +64,8 @@
 #include "ash/system/input_device_settings/input_device_tracker.h"
 #include "ash/system/keyboard_brightness/keyboard_backlight_color_controller.h"
 #include "ash/system/keyboard_brightness/keyboard_brightness_controller.h"
+#include "fydeos/ash/system/unified/rotate_screen_feature_pod_controller.h"
+#include "fydeos/ash/system/unified/switch_tablet_laptop_feature_pod_controller.h"
 #include "ash/system/mahi/mahi_nudge_controller.h"
 #include "ash/system/mahi/mahi_utils.h"
 #include "ash/system/media/media_tray.h"
@@ -208,7 +210,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry,
     quick_answers::prefs::RegisterProfilePrefs(registry);
     registry->RegisterBooleanPref(prefs::kMouseReverseScroll, false);
     registry->RegisterBooleanPref(prefs::kSendFunctionKeys, false);
-    registry->RegisterBooleanPref(prefs::kSuggestedContentEnabled, true);
+    registry->RegisterBooleanPref(prefs::kSuggestedContentEnabled, false);
     registry->RegisterBooleanPref(prefs::kMagicBoostEnabled, true);
     registry->RegisterBooleanPref(prefs::kHmrEnabled, true);
     registry->RegisterIntegerPref(
@@ -275,6 +277,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry, bool for_test) {
   InputDeviceSettingsMetadataManager::RegisterLocalStatePrefs(registry);
   BluetoothDeviceStatusUiHandler::RegisterLocalStatePrefs(registry);
   management_disclosure_field_trial::RegisterLocalStatePrefs(registry);
+  RotateScreenFeaturePodController::RegisterLocalStatePrefs(registry);
+  SwitchTabletLabtopFeaturePodController::RegisterLocalStatePrefs(registry);
 
   if (for_test) {
     registry->RegisterBooleanPref(prefs::kOwnerPrimaryMouseButtonRight, false);

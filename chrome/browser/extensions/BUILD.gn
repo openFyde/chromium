@@ -606,6 +606,8 @@ source_set("extensions") {
     "//ui/menus",
     "//ui/native_window_tracker",
     "//ui/shell_dialogs",
+    "//fydeos/build/config:buildflags",
+    "//fydeos/switches",
   ]
   public_deps = [
     "//chrome/browser/media/webrtc",
@@ -1558,6 +1560,11 @@ source_set("extensions") {
     if (!is_android && !is_chromeos) {
       deps += [ "//chrome/browser/ui/toasts" ]
     }
+
+    if (is_chromeos) {
+      deps += [ "//fydeos/extensions/browser" ]
+    }
+
   }  # if (enable_extensions)
 
   if (enable_platform_apps) {

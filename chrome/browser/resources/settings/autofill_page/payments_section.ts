@@ -29,6 +29,7 @@ import './your_saved_info_shared.css.js';
 import type {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
 import {AnchorAlignment} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
 import type {CrLazyRenderElement} from 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.js';
+import {BaseMixin} from '../base_mixin.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {assert} from 'chrome://resources/js/assert.js';
 import {focusWithoutInk} from 'chrome://resources/js/focus_without_ink.js';
@@ -86,7 +87,7 @@ export interface SettingsPaymentsSectionElement {
 }
 
 const SettingsPaymentsSectionElementBase =
-    SettingsViewMixin(I18nMixin(PolymerElement));
+    SettingsViewMixin(I18nMixin(BaseMixin(PolymerElement)));
 
 export class SettingsPaymentsSectionElement extends
     SettingsPaymentsSectionElementBase {
@@ -313,6 +314,16 @@ export class SettingsPaymentsSectionElement extends
             'Autofill.PaymentMethodsSettingsPage.ManagePaymentMethodsLinkClicked');
       });
     }
+
+    const isFydeProfile = loadTimeData.getBoolean('isFydeProfile');
+    setTimeout(() => {
+      if (!isFydeProfile) return;
+      const id = 'manageLink';
+      const node = this.$$(`#${id}`) as HTMLElement;
+      if (node) {
+        node.style.display = 'none';
+      }
+    }, 0);
   }
 
   override disconnectedCallback() {

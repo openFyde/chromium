@@ -1220,6 +1220,7 @@
       name: "ControlledFrame",
       public: true,
       status: "stable",
+      base_feature_status: "enabled",
     },
     {
       // Experimental support for requesting SecurityInfo

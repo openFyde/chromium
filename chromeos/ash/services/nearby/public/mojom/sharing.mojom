@@ -47,7 +47,8 @@ struct WifiDirectDependencies {
 struct NearbyDependencies {
   pending_remote<bluetooth.mojom.Adapter>? bluetooth_adapter;
 
-  WebRtcDependencies webrtc_dependencies;
+  // Optional, null for fydeos users,
+  WebRtcDependencies? webrtc_dependencies;
 
   // Null if the WifiLan feature flag is disabled.
   WifiLanDependencies? wifilan_dependencies;

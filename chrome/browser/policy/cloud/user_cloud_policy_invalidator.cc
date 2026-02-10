@@ -69,7 +69,7 @@ void UserCloudPolicyInvalidator::OnProfileInitializationComplete(
   invalidator_ = std::make_unique<CloudPolicyInvalidator>(
       PolicyInvalidationScope::kUser,
       invalidation_provider->GetInvalidationListener(
-          policy::kPolicyInvalidationProjectNumber),
+          policy::GetPolicyInvalidationProjectNumber()),
       policy_manager_->core(),
       base::SingleThreadTaskRunner::GetCurrentDefault(),
       base::DefaultClock::GetInstance());

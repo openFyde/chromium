@@ -8,6 +8,7 @@
 
 import '//resources/ash/common/cr_elements/icons.html.js';
 import '//resources/polymer/v3_0/iron-icon/iron-icon.js';
+import '//resources/ash/common/cr_elements/cr_dialog/cr_dialog.js';
 import '../../components/security_token_pin.js';
 import '../../components/oobe_icons.html.js';
 import '../../components/buttons/oobe_text_button.js';
@@ -16,6 +17,9 @@ import '../../components/common_styles/oobe_dialog_host_styles.css.js';
 import '../../components/dialogs/oobe_loading_dialog.js';
 import '../../components/dialogs/oobe_modal_dialog.js';
 import '../../components/gaia_dialog.js';
+import './account_type_selection.js';
+
+import {CrDialogElement} from '//resources/ash/common/cr_elements/cr_dialog/cr_dialog.js';
 
 import type {Authenticator} from '//oobe/gaia_auth_host/authenticator.js';
 import {AuthFlow, AuthMode, SUPPORTED_PARAMS} from '//oobe/gaia_auth_host/authenticator.js';
@@ -62,15 +66,17 @@ enum ScreenAuthMode {
  * UI mode for the dialog.
  */
 enum DialogMode {
+  ACCOUNT_TYPE_SELECTION = 'account-type-selection',
   GAIA = 'online-gaia',
   LOADING = 'loading',
   PIN_DIALOG = 'pin',
+  GAIA_DUP_EMAIL_ERROR = 'dup-email-error',
 }
 
 /**
  * Steps that could be the first one in the flow.
  */
-const POSSIBLE_FIRST_SIGNIN_STEPS = [DialogMode.GAIA, DialogMode.LOADING];
+const POSSIBLE_FIRST_SIGNIN_STEPS = [DialogMode.ACCOUNT_TYPE_SELECTION, DialogMode.GAIA, DialogMode.LOADING];
 
 /**
  * This enum is tied directly to the `EnrollmentNudgeUserAction` UMA enum
@@ -241,6 +247,24 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       emailDomain: {
         type: String,
       },
+
+      isDupEmailErrorShown: {
+        type: Boolean,
+        value: false,
+      },
+      isAccountTypeSelectionRequired: {
+        type: Boolean,
+        // <if expr="openfyde or not use_fydeos_com">
+        value: true,
+        // </if>
+        // <if expr="not openfyde and use_fydeos_com">
+        value: false,
+        // </if>
+      },
+      isAccountTypeSelected: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -260,6 +284,9 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   private isDefaultSsoProvider: boolean;
   private isClosable: boolean;
   private emailDomain: string;
+  private dupEmail: string;
+  private knownAccountList: Array<{email: string, type: string}>;
+  private isDupEmailErrorShown: boolean;
   private authenticatorParams: null|any;
   private email: string;
   private loadingTimer: number|undefined;
@@ -269,6 +296,16 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   private authCompleted: boolean;
   private pinDialogResultReported: boolean;
 
+  private confirmGotoLocalAccountDlg: CrDialogElement;
+
+  private userCreationContext_: boolean;
+  private initAccountTypeSelectionRequired: boolean;
+  private isAccountTypeSelectionRequired: boolean;
+  private isAccountTypeSelected: boolean;
+
+  private onUserCreationNextWithThis_: () => void;
+  private onUserCreationCanceledWithThis_: () => void;
+
   constructor() {
     super();
     /**
@@ -276,6 +313,10 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
      */
     this.authenticatorParams = null;
 
+    this.dupEmail = '';
+    this.knownAccountList = [];
+
+    this.userCreationContext_ = false;
     /**
      * Email of the user, which is logging in using offline mode.
      */
@@ -313,6 +354,13 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
      * dialog.
      */
     this.pinDialogResultReported = false;
+
+    // <if expr="openfyde or not use_fydeos_com">
+    this.initAccountTypeSelectionRequired = true;
+    // </if>
+    // <if expr="not openfyde and use_fydeos_com">
+    this.initAccountTypeSelectionRequired = false;
+    // </if>
   }
 
   override get EXTERNAL_API(): string[] {
@@ -327,19 +375,26 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       'reset',
       'toggleLoadingUi',
       'setQuickStartEntryPointVisibility',
+      'requestUseLocalAccount',
     ];
   }
 
   static get observers() {
     return [
       'refreshDialogStep(isShown, pinDialogParameters,' +
-          'isLoadingUiShown)',
+          'isAccountTypeSelectionRequired, isAccountTypeSelected,' +
+          'isLoadingUiShown, isDupEmailErrorShown)',
     ];
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   override defaultUIStep(): string {
+    // <if expr="openfyde or not use_fydeos_com">
+    return DialogMode.ACCOUNT_TYPE_SELECTION;
+    // </if>
+    // <if expr="not openfyde and use_fydeos_com">
     return DialogMode.GAIA;
+    // </if>
   }
 
   override get UI_STEPS() {
@@ -359,6 +414,8 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
         this.onInsecureContentBlocked.bind(this);
     this.authenticator.missingGaiaInfoCallback =
         this.missingGaiaInfo.bind(this);
+    this.authenticator.accountTypeGoogleSelectedCallback =
+        this.accountTypeGoogleSelectedCallback.bind(this);
     this.authenticator.samlApiUsedCallback = this.samlApiUsed.bind(this);
     this.authenticator.recordSamlProviderCallback =
         this.recordSamlProvider.bind(this);
@@ -366,6 +423,11 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       sendWithPromise('getDeviceIdForLogin')
           .then(deviceId => this.authenticator.getDeviceIdResponse(deviceId));
     });
+
+    const confirmGotoLocalAccountDlg =
+        this.shadowRoot?.querySelector<CrDialogElement>('#confirmGotoLocalAccountDlg');
+    assert(confirmGotoLocalAccountDlg instanceof CrDialogElement);
+    this.confirmGotoLocalAccountDlg = confirmGotoLocalAccountDlg;
 
     this.initializeLoginScreen('GaiaSigninScreen');
   }
@@ -392,6 +454,10 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
    */
   private onBackButtonCancel(): void {
     if (!this.authCompleted) {
+      if (!this.userCreationContext_ && this.isAccountTypeSelectionRequired) {
+        // from fydoe signin page back to account type selection page
+        this.isAccountTypeSelected = false;
+      }
       this.cancel(true /* isBackClicked */);
     }
   }
@@ -560,6 +626,9 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   loadAuthenticator(data: any) {
     this.authenticator.setWebviewPartition(data.webviewPartitionName);
 
+    this.knownAccountList = data.knownAccountList;
+    this.dupEmail = '';
+
     this.authCompleted = false;
     this.navigationButtonsHidden = false;
 
@@ -578,7 +647,17 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
         !(data.enterpriseManagedDevice || data.hasDeviceOwner);
     params.isFirstUser = !(data.enterpriseManagedDevice || data.hasDeviceOwner);
 
+    params.enableFydeAccount = data.enableFydeAccount;
+    params.disableResetFydeAccountFlag = data.enterpriseManagedDevice;
+
     this.authenticatorParams = params;
+
+    if (data.email && data.readOnlyEmail) {
+      this.isAccountTypeSelectionRequired = false;
+    }
+    if (data.enterpriseManagedDevice) {
+      this.isAccountTypeSelectionRequired = false;
+    }
 
     this.loadAuthenticator_(params.doSamlRedirect);
     chrome.send('authenticatorLoaded');
@@ -729,6 +808,11 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
    *     payload.
    */
   private onAuthCompletedMessage(e: CustomEvent) {
+    if (this.checkIsDupEmail_(e.detail)) {
+      this.onDupEmailError_();
+      this.dupEmail = e.detail.email;
+      return;
+    }
     const credentials = e.detail;
     if (credentials.publicSAML) {
       this.email = credentials.email;
@@ -753,6 +837,49 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
 
     this.clearVideoTimer();
     this.authCompleted = true;
+  }
+
+  checkIsDupEmail_(credentials: {email: string}) {
+    const { email } = credentials;
+    let targetAccountType = '';
+    if (this.authenticatorParams.enableFydeAccount) {
+      // kFyde in account_id.cc
+      targetAccountType = 'fy';
+    } else {
+      // kGoogle in account_id.cc
+      targetAccountType = 'google';
+    }
+    const dup = this.knownAccountList.find(a => a.email === email && a.type !== targetAccountType);
+    return !!dup;
+  }
+
+  onDupEmailError_() {
+    this.isDupEmailErrorShown = true;
+  }
+
+  onDupEmailErrorButtonClicked_() {
+    this.isDupEmailErrorShown = false;
+    this.userActed('retry');
+  }
+
+  dupEmailErrorMessage_(dupEmail: string) {
+    return this.i18nAdvanced('fydeosAddUserDupEmailErrorMessage', {
+      substitutions: [dupEmail],
+    });
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.onUserCreationCanceledWithThis_ = this.onUserCreationCanceled_.bind(this);
+    this.onUserCreationNextWithThis_ = this.onUserCreationNext_.bind(this);
+    document.addEventListener('user-creation-canceled', this.onUserCreationCanceledWithThis_);
+    document.addEventListener('user-creation-next', this.onUserCreationNextWithThis_);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('user-creation-canceled', this.onUserCreationCanceledWithThis_);
+    document.removeEventListener('user-creation-next', this.onUserCreationNextWithThis_);
   }
 
   /**
@@ -824,7 +951,16 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       this.userActed(['reloadGaia', /*force_default_gaia_page*/ false]);
       return;
     }
+    if (this.initAccountTypeSelectionRequired && !this.isAccountTypeSelectionRequired) {
+      // force quit
+      this.userActed('accountTypeSelectionBack');
+      return;
+    }
     this.userActed(isBackClicked ? 'back' : 'cancel');
+  }
+
+  private accountTypeGoogleSelectedCallback() {
+    chrome.send('userSelectGoogleAccount');
   }
 
   /**
@@ -944,6 +1080,30 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
     }
   }
 
+  requestUseLocalAccount() {
+    if (this.authCompleted) return;
+    this.showConfirmGotoLocalAccountDlg_();
+  }
+
+  showConfirmGotoLocalAccountDlg_() {
+    if (this.confirmGotoLocalAccountDlg.open) return;
+    chrome.send('enableShelfButtons', [false]);
+    this.confirmGotoLocalAccountDlg.showModal();
+  }
+
+  onConfirmGotoLocalAccountClosed_() {
+    chrome.send('enableShelfButtons', [true]);
+  }
+
+  onUseOnlineAccountTap_() {
+    this.confirmGotoLocalAccountDlg.close();
+  }
+
+  onUseLocalAccountTap_() {
+    this.confirmGotoLocalAccountDlg.close();
+    this.userActed('useLocalAccount');
+  }
+
   /**
    * Invoked when the user cancels the PIN dialog.
    */
@@ -967,8 +1127,15 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
   private refreshDialogStep(
       isScreenShown: boolean,
       pinParams: OobeTypes.SecurityTokenPinDialogParameters,
-      isLoading: boolean): void {
+      isAccountTypeSelectionRequired: boolean,
+      isAccountTypeSelected: boolean,
+      isLoading: boolean,
+      isDupEmailError: boolean): void {
     if (!isScreenShown) {
+      return;
+    }
+    if (isAccountTypeSelectionRequired && !isAccountTypeSelected) {
+      this.setUIStep(DialogMode.ACCOUNT_TYPE_SELECTION);
       return;
     }
     if (pinParams !== null) {
@@ -977,6 +1144,10 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
     }
     if (isLoading) {
       this.setUIStep(DialogMode.LOADING);
+      return;
+    }
+    if (isDupEmailError) {
+      this.setUIStep(DialogMode.GAIA_DUP_EMAIL_ERROR);
       return;
     }
     this.setUIStep(DialogMode.GAIA);
@@ -1049,6 +1220,34 @@ export class GaiaSigninElement extends GaiaSigninElementBase {
       userAction,
       EnrollmentNudgeUserAction.MAX,
     ]);
+  }
+
+  onAccountTypeSelectionBack_() {
+    this.userActed('accountTypeSelectionBack');
+  }
+
+  onAccountTypeSelected_(e: CustomEvent) {
+    this.isAccountTypeSelected = true;
+    if (e.detail === 'google') {
+      chrome.send('userSelectGoogleAccount');
+    } else if (e.detail === 'fyde') {
+      chrome.send('resetAccountFlag');
+    }
+  }
+
+  onUserCreationCanceled_() {
+    // back from user creation page
+    if (this.isAccountTypeSelectionRequired) {
+      this.isAccountTypeSelected = false;
+    }
+    this.userCreationContext_ = false;
+  }
+
+  onUserCreationNext_() {
+    // user may enter signin page from user_creation,
+    // and back to user_creation, (set userCreationContext_ true, cannot set isAccountTypeSelected false)
+    // then goto signin page again, (otherwise, this page will show account type selection again)
+    this.userCreationContext_ = true;
   }
 }
 

@@ -424,7 +424,7 @@ class NearbySharingServiceImpl
   void UnregisterShareTarget(const ShareTarget& share_target);
 
   void OnStartAdvertisingResult(
-      bool used_device_name,
+      bool is_high_visibility,
       NearbyConnectionsManager::ConnectionsStatus status);
   void OnStopAdvertisingResult(
       NearbyConnectionsManager::ConnectionsStatus status);
@@ -469,6 +469,12 @@ class NearbySharingServiceImpl
   std::unique_ptr<FastInitiationScanner> fast_initiation_scanner_;
   std::unique_ptr<NearbyNotificationManager> nearby_notification_manager_;
   NearbyShareHttpNotifier nearby_share_http_notifier_;
+
+// True if the user does not have a Gaia account (e.g., FydeOS local account).
+  // In limited mode, contact sync and certificate server sync are disabled.
+  // Only high visibility (everyone) mode is supported.
+  bool is_limited_mode_ = false;
+
   std::unique_ptr<NearbyShareClientFactory> http_client_factory_;
   std::unique_ptr<NearbyShareLocalDeviceDataManager> local_device_data_manager_;
   std::unique_ptr<NearbyShareContactManager> contact_manager_;

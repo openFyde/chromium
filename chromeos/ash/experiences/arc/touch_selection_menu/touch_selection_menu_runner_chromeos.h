@@ -32,6 +32,8 @@ class TouchSelectionMenuRunnerChromeOS
 
   ~TouchSelectionMenuRunnerChromeOS() override;
 
+  void HandleSendTextToAI(const std::u16string& text) override;
+
  private:
   // Called asynchronously with the result from the container.
   void OpenMenuWithTextSelectionAction(
@@ -53,6 +55,10 @@ class TouchSelectionMenuRunnerChromeOS
                 const gfx::Rect& anchor_rect,
                 const gfx::Size& handle_image_size,
                 aura::Window* context) override;
+
+  bool CanHandleSendTextToAI();
+
+  gfx::Rect anchor_rect_;
 
   base::WeakPtrFactory<TouchSelectionMenuRunnerChromeOS> weak_ptr_factory_{
       this};

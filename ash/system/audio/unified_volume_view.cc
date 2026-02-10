@@ -30,6 +30,10 @@
 
 namespace ash {
 
+namespace {
+const bool kDisableLiveCaption = true;
+}
+
 using Style = QuickSettingsSlider::Style;
 
 UnifiedVolumeView::UnifiedVolumeView(
@@ -59,6 +63,11 @@ UnifiedVolumeView::UnifiedVolumeView(
   auto* window = Shell::Get()->screen_pinning_controller()->pinned_window();
   if (window && WindowState::Get(window)->IsLockedFullscreen()) {
     more_button_->SetEnabled(false);
+  }
+
+  if (kDisableLiveCaption) {
+    Update(/*by_user=*/false);
+    return;
   }
 
   more_button_->SetIconColor(cros_tokens::kCrosSysSecondary);
@@ -257,6 +266,9 @@ void UnifiedVolumeView::OnActiveInputNodeChanged() {
 }
 
 void UnifiedVolumeView::OnAccessibilityStatusChanged() {
+  if (kDisableLiveCaption) {
+    return;
+  }
   const bool enabled =
       Shell::Get()->accessibility_controller()->live_caption().enabled();
 

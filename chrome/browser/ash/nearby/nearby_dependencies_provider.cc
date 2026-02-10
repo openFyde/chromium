@@ -24,6 +24,7 @@
 #include "chrome/browser/nearby_sharing/tcp_socket/nearby_connections_tcp_socket_factory.h"
 #include "chrome/browser/nearby_sharing/webrtc_signaling_messenger.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/signin/public/identity_manager/identity_manager.h"
 #include "chromeos/ash/services/nearby/public/mojom/firewall_hole.mojom.h"
 #include "chromeos/ash/services/nearby/public/mojom/mdns.mojom.h"
 #include "chromeos/ash/services/nearby/public/mojom/nearby_connections.mojom.h"
@@ -237,6 +238,11 @@ NearbyDependenciesProvider::GetNearbyPresenceCredentialStoragePendingRemote() {
 
 ::sharing::mojom::WebRtcDependenciesPtr
 NearbyDependenciesProvider::GetWebRtcDependencies() {
+  if (!identity_manager_ ||
+      !identity_manager_->HasPrimaryAccount(signin::ConsentLevel::kSignin)) {
+    return nullptr;
+  }
+
   MojoPipe<network::mojom::P2PTrustedSocketManagerClient> socket_manager_client;
   MojoPipe<network::mojom::P2PTrustedSocketManager> trusted_socket_manager;
   MojoPipe<network::mojom::P2PSocketManager> socket_manager;

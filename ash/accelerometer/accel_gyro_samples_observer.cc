@@ -9,12 +9,22 @@
 
 #include "ash/accelerometer/accelerometer_constants.h"
 #include "base/functional/bind.h"
+#include "fydeos/switches/accelerometer/accelerometer_switches.h"
 
 namespace ash {
 
 namespace {
 
 constexpr int kTimeoutToleranceInMilliseconds = 500;
+
+const char kFydeOSConfig[6][3][8] = {
+  {"accel_x", "accel_y", "accel_z"},
+  {"accel_y", "accel_x", "accel_z"},
+  {"accel_z", "accel_y", "accel_x"},
+  {"accel_z", "accel_x", "accel_y"},
+  {"accel_x", "accel_z", "accel_y"},
+  {"accel_y", "accel_z", "accel_x"}
+};
 
 }  // namespace
 
@@ -38,6 +48,9 @@ AccelGyroSamplesObserver::AccelGyroSamplesObserver(
   sensor_device_remote_->GetAllChannelIds(
       base::BindOnce(&AccelGyroSamplesObserver::GetAllChannelIdsCallback,
                      weak_factory_.GetWeakPtr()));
+  revert_[0] = fydeos::switches::IsAccelRevertX() ? -1 : 1;
+  revert_[1] = fydeos::switches::IsAccelRevertY() ? -1 : 1;
+  revert_[2] = fydeos::switches::IsAccelRevertZ() ? -1 : 1;
 }
 
 AccelGyroSamplesObserver::~AccelGyroSamplesObserver() = default;
@@ -79,7 +92,7 @@ void AccelGyroSamplesObserver::OnSampleUpdated(
       return;
     }
 
-    output_sample.push_back(it->second * scale_);
+    output_sample.push_back(it->second * scale_ * revert_[axes]);
   }
 
   on_sample_updated_callback_.Run(iio_device_id_, output_sample);
@@ -160,6 +173,8 @@ void AccelGyroSamplesObserver::GetAllChannelIdsCallback(
   DCHECK(sensor_device_remote_.is_bound());
 
   iio_channel_ids_ = std::move(iio_channel_ids);
+  int config = fydeos::switches::GetAccelConfig();
+  /*
   std::vector<std::string> channels;
   if (device_type_ == chromeos::sensors::mojom::DeviceType::ACCEL){
     for (uint i = 0; i < kNumberOfAxes; i++){
@@ -170,11 +185,12 @@ void AccelGyroSamplesObserver::GetAllChannelIdsCallback(
       channels.push_back(std::string(kGyroscopeChannels[i]));
     }
   }
+  */
   for (size_t axis = 0; axis < kNumberOfAxes; ++axis) {
     bool found = false;
     for (size_t channel_index = 0; channel_index < iio_channel_ids_.size();
          ++channel_index) {
-      if (iio_channel_ids_[channel_index].compare(channels[axis]) == 0) {
+      if (iio_channel_ids_[channel_index].compare(kFydeOSConfig[config][axis]) == 0) {
         found = true;
         channel_indices_[axis] = channel_index;
         break;

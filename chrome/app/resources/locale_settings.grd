@@ -185,6 +185,8 @@
         </message>
       </if>
 
+      <part file="../../../fydeos/i18n/chrome/app/resources/locale_settings.override.grdp" />
+
     </messages>
   </release>
 </grit>

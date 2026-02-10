@@ -94,6 +94,7 @@
 
 #if BUILDFLAG(IS_CHROMEOS)
 #include "ash/constants/url_constants.h"
+#include "ash/webui/fyde_assistant_app_ui/url_constants.h"
 #include "ash/webui/camera_app_ui/url_constants.h"
 #include "ash/webui/file_manager/url_constants.h"
 #include "ash/webui/files_internals/url_constants.h"

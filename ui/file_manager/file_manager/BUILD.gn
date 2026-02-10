@@ -135,5 +135,8 @@ generate_grd("build_static_grdp") {
     "foreground/images/volumes/smb.svg",
     "foreground/images/volumes/team_drive.svg",
     "foreground/images/volumes/usb.svg",
+
+    "foreground/css/file_manager_fydeos_patch.css",
+    "foreground/images/volumes/fydedrop.svg",
   ]
 }

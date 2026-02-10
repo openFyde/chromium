@@ -92,8 +92,8 @@ constexpr char kInvalidationListenerLogPrefix[] =
 // Returns a set of all project numbers that will be used by user.
 std::set<int64_t> GetAllInvalidationProjectNumbers() {
   return {
-      policy::kPolicyInvalidationProjectNumber,
-      policy::kRemoteCommandsInvalidationsProjectNumber,
+      policy::GetPolicyInvalidationProjectNumber(),
+      policy::GetRemoteCommandsInvalidationsProjectNumber(),
   };
 }
 
@@ -336,7 +336,7 @@ void ChromeBrowserCloudManagementControllerDesktop::StartInvalidations() {
 
   invalidation::InvalidationListener* policy_invalidation_listener =
       invalidation_listener_per_project_
-          [policy::kPolicyInvalidationProjectNumber]
+          [policy::GetPolicyInvalidationProjectNumber()]
               .get();
   policy_invalidator_ = std::make_unique<CloudPolicyInvalidator>(
       PolicyInvalidationScope::kCBCM, policy_invalidation_listener, core,
@@ -349,7 +349,7 @@ void ChromeBrowserCloudManagementControllerDesktop::StartInvalidations() {
 
   invalidation::InvalidationListener* remote_commands_invalidation_listener =
       invalidation_listener_per_project_
-          [policy::kRemoteCommandsInvalidationsProjectNumber]
+          [policy::GetRemoteCommandsInvalidationsProjectNumber()]
               .get();
   commands_invalidator_ = std::make_unique<RemoteCommandsInvalidator>(
       remote_commands_invalidation_listener, core,

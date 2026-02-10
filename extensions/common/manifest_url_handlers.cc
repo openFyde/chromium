@@ -9,6 +9,7 @@
 
 #include "base/files/file_util.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "extensions/common/error_utils.h"
@@ -19,8 +20,14 @@
 #include "extensions/common/manifest_handlers/shared_module_info.h"
 #include "extensions/strings/grit/extensions_strings.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "fydeos/switches/services/services_switches.h"
+#include "fydeos/constants/fydeos_constants.h"
 
 namespace extensions {
+
+namespace {
+const char kFydeExtensionUpdateUrlTemplate[] = "%s/update/%s/updates.xml";
+}
 
 namespace keys = manifest_keys;
 namespace errors = manifest_errors;
@@ -52,6 +59,13 @@ const GURL& ManifestURL::GetManifestHomePageURL(const Extension* extension) {
 
 // static
 GURL ManifestURL::GetWebStoreURL(const Extension* extension) {
+  bool use_fydeos_webstore_url = UpdatesFromFydeOSGallery(extension) &&
+                                 !SharedModuleInfo::IsSharedModule(extension);
+  if (use_fydeos_webstore_url) {
+    return GURL(fydeos::switches::GetFydeOSAppStoreURL() + "/?appid=" +
+                extension->id());
+  }
+
   bool use_webstore_url = UpdatesFromGallery(extension) &&
                           !SharedModuleInfo::IsSharedModule(extension);
   return use_webstore_url
@@ -69,6 +83,13 @@ const GURL& ManifestURL::GetUpdateURL(const Extension* extension) {
 bool ManifestURL::UpdatesFromGallery(const Extension* extension) {
   return extension_urls::IsWebstoreUpdateUrl(GetUpdateURL(extension));
 }
+
+// ---***FYDEOS BEGIN***---
+bool ManifestURL::UpdatesFromFydeOSGallery(const Extension* extension) {
+  return extension_urls::IsFydeOSWebstoreUpdateUrl(GetUpdateURL(extension));
+}
+
+// ---***FYDEOS END***---
 
 // static
 const GURL& ManifestURL::GetAboutPage(const Extension* extension) {
@@ -125,13 +146,28 @@ bool UpdateURLHandler::Parse(Extension* extension, std::u16string* error) {
 
   const std::string* tmp_update_url =
       extension->manifest()->FindStringPath(keys::kUpdateURL);
+  std::string tmp_fyde_hidden_extension_update_url;
   if (tmp_update_url == nullptr) {
-    *error = ErrorUtils::FormatErrorMessageUTF16(errors::kInvalidUpdateURL,
-                                                 std::string());
-    return false;
+    if (!fydeos::constants::ShouldHideExtensionById(extension->id())) {
+      *error = ErrorUtils::FormatErrorMessageUTF16(errors::kInvalidUpdateURL,
+                                                   std::string());
+      return false;
+    }
+    const std::string base_update_url =
+      fydeos::switches::GetFydeOSWebStoreUpdateUrl();
+    tmp_fyde_hidden_extension_update_url = base::StringPrintf(kFydeExtensionUpdateUrlTemplate,
+        base_update_url.c_str(), extension->id().c_str());
+    if (tmp_fyde_hidden_extension_update_url.empty()) {
+      *error = ErrorUtils::FormatErrorMessageUTF16(errors::kInvalidUpdateURL,
+                                                   std::string());
+      return false;
+    } else {
+      tmp_update_url = &tmp_fyde_hidden_extension_update_url;
+    }
   }
 
-  manifest_url->url_ = GURL(*tmp_update_url);
+  manifest_url->url_ = GURL(fydeos::switches::MayConvertWebStoreUpdateUrl(
+                              *tmp_update_url));
   if (!manifest_url->url_.is_valid() ||
       manifest_url->url_.has_ref()) {
     *error = ErrorUtils::FormatErrorMessageUTF16(errors::kInvalidUpdateURL,

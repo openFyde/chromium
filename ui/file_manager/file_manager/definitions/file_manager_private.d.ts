@@ -562,6 +562,7 @@ declare global {
         driveFsBulkPinningEnabled: boolean;
         localUserFilesAllowed: boolean;
         defaultLocation: DefaultLocation;
+        fydeAssistantEnabled: boolean;
         skyVaultMigrationDestination: MigrationDestination;
         skyVaultMigrationStartTime?: string;
       }
@@ -572,6 +573,7 @@ declare global {
         arcRemovableMediaAccessEnabled?: boolean;
         folderShortcuts?: string[];
         driveFsBulkPinningEnabled?: boolean;
+        fydeAssistantEnabled?: boolean;
       }
 
       export interface SearchParams {

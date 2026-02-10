@@ -70,6 +70,8 @@ class LoginDisplayHostCommon : public LoginDisplayHost,
   bool HandleAccelerator(LoginAcceleratorAction action) override;
   void SkipPostLoginScreensForDemoMode() override;
 
+  void HandlePlayStartupSound() override;
+
   // SigninUI:
   void SetAuthSessionForOnboarding(const UserContext& user_context) final;
   void ClearOnboardingAuthSession() final;
@@ -121,6 +123,8 @@ class LoginDisplayHostCommon : public LoginDisplayHost,
 
   // Triggers |on_wizard_controller_created_for_tests_| callback.
   void NotifyWizardCreated();
+
+  void ShowLocalDialogCommon();
 
  private:
   void Cleanup();

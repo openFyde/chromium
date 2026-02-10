@@ -130,6 +130,7 @@ enum AcceleratorAction {
   kToggleCalendar,
   kToggleCapsLock,
   kToggleClipboardHistory,
+  kToggleFydeosAssistant,
   kToggleDockedMagnifier,
   kToggleFloating,
   kToggleFullscreen,

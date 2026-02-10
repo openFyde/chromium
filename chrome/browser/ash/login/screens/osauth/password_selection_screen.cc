@@ -85,7 +85,8 @@ void PasswordSelectionScreen::ShowImpl() {
   if (!view_) {
     return;
   }
-  view_->Show();
+  Profile* profile = ProfileManager::GetPrimaryUserProfile();
+  view_->Show(profile && profile->IsFydeProfile());
   InspectContextAndContinue(
       base::BindOnce(&PasswordSelectionScreen::InspectContext,
                      weak_ptr_factory_.GetWeakPtr()),

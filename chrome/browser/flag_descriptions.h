@@ -6627,7 +6627,7 @@ inline constexpr char kAllowApnModificationPolicyDescription[] =
 inline constexpr char kAllowCrossDeviceFeatureSuiteName[] =
     "Allow the use of Cross-Device features";
 inline constexpr char kAllowCrossDeviceFeatureSuiteDescription[] =
-    "Allow features such as Nearby Share, PhoneHub, Fast Pair, and Smart Lock, "
+    "Allow features such as Quick Share, PhoneHub, Fast Pair, and Smart Lock, "
     "that require communication with a nearby device. This should be enabled "
     "by default on most platforms, and only disabled in cases where we cannot "
     "guarantee a good experience with the stock Bluetooth hardware (e.g. "
@@ -8073,6 +8073,9 @@ inline constexpr char kTetheringExperimentalFunctionalityName[] =
 inline constexpr char kTetheringExperimentalFunctionalityDescription[] =
     "Feature to enable Chromebook hotspot functionality for experimental "
     "carriers, modem and modem FW.";
+
+inline constexpr char kFydeOsAIName[] = "Enable FydeOS AI";
+inline constexpr char kFydeOsAIDescription[] = "Enable FydeOS AI feature";
 
 // Prefer keeping this section sorted to adding new definitions down here.
 

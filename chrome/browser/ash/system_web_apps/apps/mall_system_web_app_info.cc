@@ -53,14 +53,7 @@ MallSystemAppDelegate::GetWebAppInfo() const {
 }
 
 bool MallSystemAppDelegate::IsAppEnabled() const {
-  if (apps::DetermineUserType(profile()) != apps::kUserTypeUnmanaged) {
-    return false;
-  }
-  // Do not enable Mall on Flex devices, which do  not support apps on ARC.
-  if (ash::switches::IsRevenBranding()) {
-    return false;
-  }
-  return true;
+  return false;
 }
 
 std::vector<std::string> MallSystemAppDelegate::GetAppIdsToUninstallAndReplace()

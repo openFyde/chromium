@@ -20,5 +20,6 @@ static_library("motd") {
     "//ui/views/controls/webview",
     "//ui/web_dialogs",
     "//ui/webui",
+    "//fydeos/switches",
   ]
 }

@@ -2622,6 +2622,8 @@ static_library("browser") {
     "//ui/snapshot",
     "//ui/strings",
     "//ui/webui",
+    "//fydeos/prefs",
+    "//fydeos/switches",
 
     # TODO(crbug.com/430804948): Remove this dependency when profiles/profile_manager.h
     # gets componentized.
@@ -2642,6 +2644,14 @@ static_library("browser") {
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/webui/omnibox_popup/mojom",
     ]
+  }
+
+  if (is_chromeos) {
+    if (use_fydeos_license) {
+      deps += [
+        "//fydeos/license",
+      ]
+    }
   }
 
   # Platforms that have a network diagnostics dialog. All others fall through

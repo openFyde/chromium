@@ -25,6 +25,8 @@ export class TestAboutPageBrowserProxy extends TestBrowserProxy implements
     targetChannel: BrowserChannel.BETA,
     isLts: false,
   };
+  private fydeOtaEnabled_ = false;
+  private firmwareUpdateSupported_ = false;
   private canChangeChannel_ = true;
   private canChangeFirmware_ = true;
   private regulatoryInfo_: RegulatoryInfo|null = null;
@@ -56,6 +58,8 @@ export class TestAboutPageBrowserProxy extends TestBrowserProxy implements
       'getChannelInfo',
       'getVersionInfo',
       'getRegulatoryInfo',
+      'getEnabledFydeOTA',
+      'getIsFirmwareUpdateSupported',
       'checkInternetConnection',
       'getEndOfLifeInfo',
       'endOfLifeIncentiveButtonClicked',
@@ -66,6 +70,7 @@ export class TestAboutPageBrowserProxy extends TestBrowserProxy implements
       'refreshTpmFirmwareUpdateStatus',
       'requestUpdate',
       'requestUpdateOverCellular',
+      'enableFydeOTA',
       'setChannel',
       'getFirmwareUpdateCount',
       'openFirmwareUpdatesPage',
@@ -195,6 +200,16 @@ export class TestAboutPageBrowserProxy extends TestBrowserProxy implements
     return Promise.resolve(this.regulatoryInfo_);
   }
 
+  getEnabledFydeOTA(): Promise<boolean> {
+    this.methodCalled('getEnabledFydeOTA');
+    return Promise.resolve(this.fydeOtaEnabled_);
+  }
+
+  getIsFirmwareUpdateSupported(): Promise<boolean> {
+    this.methodCalled('getIsFirmwareUpdateSupported');
+    return Promise.resolve(this.firmwareUpdateSupported_);
+  }
+
   getEndOfLifeInfo(): Promise<EndOfLifeInfo> {
     this.methodCalled('getEndOfLifeInfo');
     return Promise.resolve(this.endOfLifeInfo_);
@@ -206,6 +221,10 @@ export class TestAboutPageBrowserProxy extends TestBrowserProxy implements
 
   setChannel(channel: BrowserChannel, isPowerwashAllowed: boolean): void {
     this.methodCalled('setChannel', [channel, isPowerwashAllowed]);
+  }
+
+  enableFydeOTA(enabled: boolean) {
+    this.methodCalled('enableFydeOTA', [enabled]);
   }
 
   setTpmFirmwareUpdateStatus(status: TpmFirmwareUpdateStatusChangedEvent):

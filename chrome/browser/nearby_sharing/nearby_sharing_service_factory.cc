@@ -65,8 +65,8 @@ bool NearbySharingServiceFactory::IsNearbyShareSupportedForBrowserContext(
     return false;
   }
 
-  // Guest/kiosk users cannot use Nearby Share.
-  if (!user->HasGaiaAccount()) {
+  // Gaia accounts and FydeOS online and local accounts only.
+  if ((!user->HasGaiaAccount()) && (!user->IsFydeExtendAccountUser())) {
     return false;
   }
 

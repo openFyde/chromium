@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chromeos/chromeos_strings.grd -->
+<grit-part>
+  <if expr="openfyde">
+    <message name="IDS_HELP_APP_WHATS_NEW_CONTINUE_TASK_TITLE" desc="Title for a ChromeOS launcher continue section item that can be used to quickly access most recent ChromeOS release notes. Continue section contains set of UI elements that are suggestions for continuing recent user workflows. Release notes element is shown after ChromeOS device updates to a new version. Clicking the relese notes element will redirect user to an app that gives the user more information about the ChromeOS update [CHAR_LIMIT=20]">
+      openFyde update
+    </message>
+    <message name="IDS_ASH_SHELF_OS_INSTALL_BUTTON" desc="Text shown on install cloudready button on login screen.">
+      Install openFyde
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_HELP_APP_WHATS_NEW_CONTINUE_TASK_TITLE" desc="Title for a ChromeOS launcher continue section item that can be used to quickly access most recent ChromeOS release notes. Continue section contains set of UI elements that are suggestions for continuing recent user workflows. Release notes element is shown after ChromeOS device updates to a new version. Clicking the relese notes element will redirect user to an app that gives the user more information about the ChromeOS update [CHAR_LIMIT=20]">
+      FydeOS update
+    </message>
+    <message name="IDS_ASH_SHELF_OS_INSTALL_BUTTON" desc="Text shown on install cloudready button on login screen.">
+      Install FydeOS
+    </message>
+  </if>
+  <message name="IDS_FEEDBACK_TOOL_PAGE_TITLE" desc="Label showing the title of the feedback tool before a report has been sent">
+    Send feedback to the FydeOS support team
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_ATTACH_FILE_LABEL_TOOLTIP" desc="Label for the tooltip content on attach files icon.">
+    Files will be sent to FydeOS development team for debugging; you can also choose an additional file(less than 5MB) to submit.
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_USER_CONSENT_LABEL" desc="Label for checkbox indicating whether the user agrees to be contacted back.">
+    Allow the FydeOS development team to email you about this issue
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_FILE_TOO_BIG_ERROR_MESSAGE" desc="Error message when the upload file is larger than 10MB.">
+    Can't upload file larger than 5 MB
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_SHARE_PAGE_URL_LABEL" desc="Label showing the share page url.">
+    Share recent URL:
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_PRIVACY_NOTE" desc="Text for the privacy note included in the feedback app">
+    Clicking the "Send" button will submit your selected information and data to the FydeOS development team. We will use the information you give us to help address technical issues and improve the user experience of FydeOS. We promise to handle the data in strict accordance with our <ph name="BEGIN_LINK1">&lt;a id="privacyPolicyUrl"&gt;</ph>Privacy Policy<ph name="END_LINK1">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK2">&lt;a id="termsOfServiceUrl"&gt;</ph>Terms of Use<ph name="END_LINK2">&lt;/a&gt;</ph>.
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_FEEDBACK_TOOL_THANK_YOU_NOTE_OFFLINE" desc="Thank you note when feedback tool is offline">
+      Your feedback helps us improve the experience of using openFyde and will be reviewed by our team soon. If you wish to mention your feedback to a member of the FydeOS support team in the public communities, please include the following unique reference:
+    </message>
+    <message name="IDS_FEEDBACK_TOOL_THANK_YOU_NOTE_ONLINE" desc="Thank you note when feedback tool is online">
+      Your feedback helps us improve the experience of using openFyde and will be reviewed by our team soon. If you wish to mention your feedback to a member of the FydeOS support team in the public communities, please include the following unique reference:
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_FEEDBACK_TOOL_THANK_YOU_NOTE_OFFLINE" desc="Thank you note when feedback tool is offline">
+      Your feedback helps us improve the experience of using FydeOS and will be reviewed by our team soon. If you wish to mention your feedback to a member of the FydeOS support team in the public communities, please include the following unique reference:
+    </message>
+    <message name="IDS_FEEDBACK_TOOL_THANK_YOU_NOTE_ONLINE" desc="Thank you note when feedback tool is online">
+      Your feedback helps us improve the experience of using FydeOS and will be reviewed by our team soon. If you wish to mention your feedback to a member of the FydeOS support team in the public communities, please include the following unique reference:
+    </message>
+  </if>
+  <message name="IDS_FEEDBACK_TOOL_RESOURCES_ASK_COMMUNITY_LABEL" desc="Label of the ask community that opens an external link to the Chromebook community.">
+    FydeOS Community
+  </message>
+  <message name="IDS_FEEDBACK_TOOL_RESOURCES_ASK_COMMUNITY_DESCRIPTION" desc="Description of the ask community link">
+    Ask other experienced users in the community forum
+  </message>
+  <message name="IDS_SANITIZE_WARNING" desc="Warning text in the safety reset">
+    Safety reset turns off browser extensions and resets network and other settings to safe defaults.
+    Your tabs, files, cookies, and history won’t be changed.
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_SANITIZE_DONE_DESCRIPTION" desc="Description of the safety reset done dialog">
+      Your openFyde was reset to safe defaults. You can adjust these changes anytime in Settings.
+    </message>
+    <message name="IDS_SANITIZE_DONE_ACCORDION_CHROMEOS_TITLE" desc="Accordion title for ChromeOS resets">
+      openFyde Settings
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_SANITIZE_DONE_DESCRIPTION" desc="Description of the safety reset done dialog">
+      Your FydeOS was reset to safe defaults. You can adjust these changes anytime in Settings.
+    </message>
+    <message name="IDS_SANITIZE_DONE_ACCORDION_CHROMEOS_TITLE" desc="Accordion title for ChromeOS resets">
+      FydeOS Settings
+    </message>
+  </if>
+  <message name="IDS_SANITIZE_DONE_ACCORDION_CHROME_TITLE" desc="Accordion title for Chrome resets">
+    Browser Settings
+  </message>
+</grit-part>

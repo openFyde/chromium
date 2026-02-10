@@ -27,10 +27,10 @@ namespace {
 // Returns a set of all project numbers that will be used by user.
 std::set<int64_t> GetAllInvalidationProjectNumbers() {
   return {
-      policy::kPolicyInvalidationProjectNumber,
-      policy::kRemoteCommandsInvalidationsProjectNumber,
+      policy::GetPolicyInvalidationProjectNumber(),
+      policy::GetRemoteCommandsInvalidationsProjectNumber(),
 #if BUILDFLAG(IS_CHROMEOS)
-      ash::cert_provisioning::kCertProvisioningInvalidationProjectNumber,
+      ash::cert_provisioning::GetCertProvisioningInvalidationProjectNumber(),
 #endif
   };
 }

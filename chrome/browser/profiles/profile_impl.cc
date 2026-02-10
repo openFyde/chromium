@@ -502,6 +502,8 @@ ProfileImpl::ProfileImpl(
   // TODO(crbug.com/40225390): Move this into
   // ProfileUserManagerController::OnProfileCreationStarted().
   if (ash::ProfileHelper::IsUserProfile(this)) {
+    auto user = ash::ProfileHelper::Get()->GetUserByProfile(this);
+    set_is_fyde_profile(user->IsFydeExtendAccountUser());
     // TODO(crbug.com/404133029): Avoid g_browser_process usage.
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory =
         g_browser_process->shared_url_loader_factory();
@@ -948,6 +950,13 @@ ProfileImpl::~ProfileImpl() {
 }
 
 std::string ProfileImpl::GetProfileUserName() const {
+  // ---***FYDEOS BEGIN***---
+  const user_manager::User* user =
+      ash::ProfileHelper::Get()->GetUserByProfile(this);
+  if (user && user->IsFlintAccountUser()) {
+    return user->display_email();
+  }
+  // ---***FYDEOS END***---
   const signin::IdentityManager* identity_manager =
       IdentityManagerFactory::GetForProfileIfExists(this);
   if (identity_manager) {

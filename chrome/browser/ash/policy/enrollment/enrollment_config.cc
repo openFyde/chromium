@@ -31,6 +31,8 @@
 namespace policy {
 namespace {
 
+const char kZeroTouchEnrollmentFydeForced[] = "enterprise-enable-zero-touch-enrollment-fyde-forced";
+
 std::string GetString(const base::Value::Dict& dict, std::string_view key) {
   const std::string* value = dict.FindString(key);
   return value ? *value : std::string();
@@ -84,6 +86,7 @@ std::string_view ToStringView(EnrollmentConfig::Mode mode) {
     CASE(MODE_ATTESTATION_LOCAL_FORCED);
     CASE(MODE_ATTESTATION_SERVER_FORCED);
     CASE(MODE_ATTESTATION_MANUAL_FALLBACK);
+    CASE(MODE_FYDE_LOCAL_FORCED);
     CASE(MODE_INITIAL_SERVER_FORCED);
     CASE(MODE_ATTESTATION_INITIAL_SERVER_FORCED);
     CASE(MODE_ATTESTATION_INITIAL_MANUAL_FALLBACK);
@@ -165,6 +168,7 @@ EnrollmentConfig::Mode GetManualFallbackMode(
     case EnrollmentConfig::MODE_LOCAL_ADVERTISED:
     case EnrollmentConfig::MODE_SERVER_FORCED:
     case EnrollmentConfig::MODE_SERVER_ADVERTISED:
+    case EnrollmentConfig::MODE_FYDE_LOCAL_FORCED:
     case EnrollmentConfig::MODE_RECOVERY:
     case EnrollmentConfig::MODE_ATTESTATION:
     case EnrollmentConfig::MODE_ATTESTATION_LOCAL_FORCED:
@@ -185,6 +189,7 @@ struct EnrollmentConfig::PrescribedConfig {
   EnrollmentConfig::Mode mode = MODE_NONE;
   std::string management_domain;
   std::string enrollment_token;
+  std::string fyde_enrollment_token;
   OOBEConfigSource oobe_config_source = OOBEConfigSource::kNone;
 
   static PrescribedConfig GetPrescribedConfig(
@@ -201,6 +206,13 @@ EnrollmentConfig::PrescribedConfig::GetPrescribedConfig(
     ash::system::StatisticsProvider* statistics_provider,
     const base::Value::Dict& device_state,
     const ash::OobeConfiguration* oobe_configuration) {
+  std::optional<std::string> fyde_enrollment_token =
+    GetFydeEnrollmentToken(oobe_configuration);
+  if (fyde_enrollment_token.has_value()) {
+    return {.mode = EnrollmentConfig::MODE_FYDE_LOCAL_FORCED,
+            .fyde_enrollment_token = std::move(fyde_enrollment_token.value()),
+            .oobe_config_source = policy::OOBEConfigSource::kPackagingTool};
+  }
   // Decide enrollment mode. Give precedence to forced variants.
   if (IsEnrollingAfterRollback()) {
     return {.mode = EnrollmentConfig::MODE_ATTESTATION_ROLLBACK_FORCED};
@@ -324,6 +336,12 @@ struct EnrollmentConfig::PrescribedLicense {
 EnrollmentConfig::PrescribedLicense
 EnrollmentConfig::PrescribedLicense::GetPrescribedLicense(
     const base::Value::Dict& device_state) {
+  if (EnrollmentConfig::IsZeroTouchEnrollmentFydeForced()) {
+    return {.is_license_packaged_with_device = false,
+            .assigned_upgrade_type = EnrollmentConfig::AssignedUpgradeType::
+                kAssignedUpgradeTypeChromeEnterprise,
+            .license_type = LicenseType::kEnterprise};
+  }
   EnrollmentConfig::AssignedUpgradeType assigned_upgrade_type =
       EnrollmentConfig::AssignedUpgradeType::
           kAssignedUpgradeTypeChromeEnterprise;
@@ -368,7 +386,14 @@ EnrollmentConfig::EnrollmentConfig(PrescribedConfig prescribed_config,
       license_type(prescribed_license.license_type),
       assigned_upgrade_type(prescribed_license.assigned_upgrade_type),
       enrollment_token(std::move(prescribed_config.enrollment_token)),
+      fyde_enrollment_token(std::move(prescribed_config.fyde_enrollment_token)),
       oobe_config_source(prescribed_config.oobe_config_source) {}
+
+// static
+bool EnrollmentConfig::IsZeroTouchEnrollmentFydeForced() {
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  return command_line->HasSwitch(kZeroTouchEnrollmentFydeForced);
+}
 
 // static
 EnrollmentConfig EnrollmentConfig::GetPrescribedEnrollmentConfig() {
@@ -397,6 +422,12 @@ EnrollmentConfig EnrollmentConfig::GetPrescribedEnrollmentConfig(
 
   const base::Value::Dict& device_state =
       local_state->GetDict(prefs::kServerBackedDeviceState);
+
+  std::optional<std::string> fyde_enrollment_token =
+    GetFydeEnrollmentToken(oobe_configuration);
+  if (fyde_enrollment_token.has_value()) {
+    base::CommandLine::ForCurrentProcess()->AppendSwitch(kZeroTouchEnrollmentFydeForced);
+  }
 
   return EnrollmentConfig(
       PrescribedConfig::GetPrescribedConfig(local_state, statistics_provider,

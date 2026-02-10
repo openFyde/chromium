@@ -1,0 +1,106 @@
+<style include="settings-shared">
+  .root {
+    height: 70vh;
+  }
+  .mask-wrapper {
+    position: relative;
+    top: -35vh;
+  }
+  #license-info,
+  #license-info-container {
+    height: 100%;
+    width: 100%;
+  }
+  #license-info {
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  .error-info-container,
+  .step-loading {
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    min-height: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .hidden {
+    display: none;
+  }
+  .spinner-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  paper-spinner-lite {
+    height: 38px;
+    margin-bottom: 28px;
+    width: 38px;
+  }
+  #spinner-comment {
+    color: #747474;
+    font-size: 13px;
+  }
+  .transparent {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+  }
+  .non-transparent {
+    opacity: 1;
+    transition: opacity 500ms ease-out;
+  }
+  .error-info {
+    margin-right: 12px;
+  }
+  .license-id-uppercase {
+    text-transform: uppercase;
+  }
+</style>
+<div class="root">
+  <div id="license-info-container" class$="[[getFrameContainerClass_(isLoading, isOffline)]]">
+    <webview id="license-info" name="license-info"></webview>
+  </div>
+  <template is="dom-if" if="[[shouldShowOffline_(isOffline, licenseID)]]">
+    <div class="settings-box two-line">
+      <div class="start">
+        <div role="heading">$i18n{fydeosSettingsLicenseIdLabel}</div>
+        <div class="secondary license-id-uppercase">[[licenseID]]</div>
+      </div>
+    </div>
+    <div class="settings-box two-line">
+      <div class="start">
+        <div role="heading">$i18n{fydeosSettingsLicenseExpireDateLabel}</div>
+        <div class="secondary">[[expireDate]]</div>
+      </div>
+    </div>
+    <div class="settings-box">
+      <div class="start">
+        <div class="secondary">$i18n{fydeosSettingsLicenseOfflineHintMessage}</div>
+      </div>
+      <cr-button id="retry-webview" on-click="onRetryClick_">$i18n{fydeosSettingsLicenseRetryWebviewButtonText}</div>
+    </div>
+  </template>
+</div>
+<div class="mask-wrapper">
+  <div id="loading" class$="[[getLoadingContainerClass_(isLoading, isOffline)]]">
+    <div class="spinner-container">
+      <paper-spinner-lite dir="ltr" active></paper-spinner-lite>
+      <div id="spinner-comment"><span>[[loadingText]]</span></div>
+    </div>
+  </div>
+  <template is="dom-if" if="[[getIdError]]">
+    <div class="error-info-container">
+        <div class="error-info">
+          [[errorMessage]]
+        </div>
+        <cr-button id="retry" on-click="onRetryClick_">
+          $i18n{fydeosSettingsLicenseRetryButtonText}
+        </cr-button>
+    </div>
+  </template>
+</div>

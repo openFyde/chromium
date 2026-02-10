@@ -228,6 +228,13 @@ void NearbyShareSettings::SetVisibility(
     nearby_share::mojom::Visibility visibility) {
   DCHECK(pref_service_);
 
+  if (is_limited_mode_) {
+    if (visibility == nearby_share::mojom::Visibility::kAllContacts ||
+        visibility == nearby_share::mojom::Visibility::kSelectedContacts) {
+      visibility = nearby_share::mojom::Visibility::kYourDevices;
+    }
+  }
+
   pref_service_->SetInteger(prefs::kNearbySharingBackgroundVisibilityName,
                             static_cast<int>(visibility));
 }

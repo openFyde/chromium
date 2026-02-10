@@ -59,7 +59,7 @@ export class FakeFeedbackServiceProvider implements
     return this.callCounts.sendReport;
   }
 
-  sendReport(_report: Report): Promise<{status: SendReportStatus}> {
+  sendReport(_report: Report): Promise<{status: SendReportStatus, uniqueReportId: string}> {
     this.callCounts.sendReport++;
     return this.methods.resolveMethod('sendReport');
   }

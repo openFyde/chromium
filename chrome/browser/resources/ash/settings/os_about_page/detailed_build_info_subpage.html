@@ -27,6 +27,7 @@
   </div>
   <template is="dom-if" if="[[!canChangeChannel_]]">
     <cr-policy-indicator
+        hidden="[[!showChangeChannel_]]"
         id="changeChannelPolicyIndicator"
         indicator-source-name="[[getChangeChannelIndicatorSourceName_(
             canChangeChannel_)]]"
@@ -37,6 +38,7 @@
   <cr-button id="changeChannelButton"
       on-click="onChangeChannelClick_"
       aria-describedby="currentlyOnChannelText"
+      hidden="[[!showChangeChannel_]]"
       disabled="[[!canChangeChannel_]]"
       deep-link-focus-id$="[[Setting.kChangeChromeChannel]]">
     $i18n{aboutChangeChannel}

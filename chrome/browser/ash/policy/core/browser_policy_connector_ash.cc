@@ -17,6 +17,7 @@
 #include "base/check_deref.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/memory/ptr_util.h"
@@ -105,6 +106,8 @@
 #include "components/variations/pref_names.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
+#include "fydeos/switches/account/policy_constants.h"
 
 namespace policy {
 
@@ -118,9 +121,9 @@ constexpr char kInvalidationListenerLogPrefix[] = "BrowserPolicyConnectorAsh";
 // Returns a set of all project numbers that will be used by user.
 std::set<int64_t> GetAllInvalidationProjectNumbers() {
   return {
-      policy::kPolicyInvalidationProjectNumber,
-      policy::kRemoteCommandsInvalidationsProjectNumber,
-      ash::cert_provisioning::kCertProvisioningInvalidationProjectNumber,
+      policy::GetPolicyInvalidationProjectNumber(),
+      policy::GetRemoteCommandsInvalidationsProjectNumber(),
+      ash::cert_provisioning::GetCertProvisioningInvalidationProjectNumber(),
   };
 }
 
@@ -197,7 +200,23 @@ BrowserPolicyConnectorAsh::~BrowserPolicyConnectorAsh() = default;
 void BrowserPolicyConnectorAsh::Init(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  if (base::PathExists(base::FilePath(fydeos::constants::kFydeOSOobeZteConfigFile))) {
+    fydeos::switches::EnableFydeAccountFlag();
+  }
   local_state_ = local_state;
+  // ---***FYDEOS BEGIN***---
+  auto install_attributes = ash::InstallAttributes::Get();
+  if (install_attributes &&(install_attributes->IsCloudManaged()
+                            || install_attributes->IsEnterpriseManaged())) {
+    const std::string management_service = install_attributes->GetServiceName();
+    VLOG(2) << "enterprise management_service: " << management_service;
+    if (management_service == "fydeos") {
+      fydeos::switches::EnableFydeAccountFlagForManagedDevice();
+    } else {
+      fydeos::switches::DisableFydeAccountFlagForManagedDevice();
+    }
+  }
+  // ---***FYDEOS END***---
   ChromeBrowserPolicyConnector::Init(local_state, url_loader_factory);
 
   instance_id_driver_ = std::make_unique<instance_id::InstanceIDDriver>(
@@ -227,7 +246,7 @@ void BrowserPolicyConnectorAsh::Init(
           ash::SessionManagerClient::Get(), ash::DeviceSettingsService::Get(),
           ash::CrosSettings::Get(),
           invalidation_listener_per_project_
-              [policy::kPolicyInvalidationProjectNumber]
+              [policy::GetPolicyInvalidationProjectNumber()]
                   .get(),
           /*store_background_task_runner=*/CreateBackgroundTaskRunner(),
           /*store_first_load_task_runner=*/CreateUserVisibleTaskRunner(),
@@ -239,7 +258,7 @@ void BrowserPolicyConnectorAsh::Init(
   if (device_cloud_policy_manager_) {
     invalidation::InvalidationListener* policy_invalidation_listener =
         invalidation_listener_per_project_
-            [policy::kPolicyInvalidationProjectNumber]
+            [policy::GetPolicyInvalidationProjectNumber()]
                 .get();
     device_cloud_policy_invalidator_ = std::make_unique<CloudPolicyInvalidator>(
         PolicyInvalidationScope::kDevice, policy_invalidation_listener,
@@ -249,7 +268,7 @@ void BrowserPolicyConnectorAsh::Init(
 
     invalidation::InvalidationListener* remote_commands_invalidation_listener =
         invalidation_listener_per_project_
-            [policy::kRemoteCommandsInvalidationsProjectNumber]
+            [policy::GetRemoteCommandsInvalidationsProjectNumber()]
                 .get();
     device_remote_commands_invalidator_ =
         std::make_unique<RemoteCommandsInvalidator>(
@@ -630,7 +649,7 @@ void BrowserPolicyConnectorAsh::OnDeviceCloudPolicyManagerConnected() {
             local_state_.get(), cloud_policy_client,
             invalidation_listener_per_project_
                 [ash::cert_provisioning::
-                     kCertProvisioningInvalidationProjectNumber]
+                     GetCertProvisioningInvalidationProjectNumber()]
                     .get());
   }
 }

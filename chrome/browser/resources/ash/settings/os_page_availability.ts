@@ -35,6 +35,9 @@ export type OsPageAvailability = Record<Section, boolean>;
 export function createPageAvailability(): OsPageAvailability {
   return {
     [Section.kAboutChromeOs]: !!routes.ABOUT,
+    [Section.kCrostini]: !!routes.CROSTINI,
+    [Section.kFydeOs]: !!routes.FYDEOS,
+    [Section.kFydeAssistant]: !!routes.OS_FYDE_ASSISTANT,
     [Section.kAccessibility]: !!routes.OS_ACCESSIBILITY,
     [Section.kApps]: !!routes.APPS,
     [Section.kBluetooth]: !!routes.BLUETOOTH,

@@ -26,6 +26,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
+#include "chrome/browser/ash/profiles/profile_helper.h"
+#include "components/user_manager/user.h"
 
 // Static
 content::WebUIDataSource* HistoryUtil::PopulateCommonSourceForHistory(
@@ -78,6 +80,11 @@ content::WebUIDataSource* HistoryUtil::PopulateCommonSourceForHistory(
   bool allow_deleting_history =
       prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory);
   source->AddBoolean("allowDeletingHistory", allow_deleting_history);
+
+  const user_manager::User* user =
+      ash::ProfileHelper::Get()->GetUserByProfile(profile);
+  source->AddBoolean("isFydeLocalAccount",
+      user->GetType() == user_manager::UserType::kFlintAccount);
 
   source->AddBoolean("isGuestSession", profile->IsGuestSession());
   source->AddBoolean("isSignInAllowed",

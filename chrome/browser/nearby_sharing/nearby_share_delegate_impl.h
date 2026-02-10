@@ -70,6 +70,7 @@ class NearbyShareDelegateImpl
   std::u16string GetPlaceholderFeatureName() const override;
   ::nearby_share::mojom::Visibility GetVisibility() const override;
   void SetVisibility(::nearby_share::mojom::Visibility visibility) override;
+  bool IsLimitedMode() const override;
 
   // ash::SessionObserver
   void OnLockStateChanged(bool locked) override;
@@ -79,6 +80,7 @@ class NearbyShareDelegateImpl
   void OnHighVisibilityChangeRequested() override;
   void OnHighVisibilityChanged(bool high_visibility_on) override;
   void OnShutdown() override;
+  void OnStartAdvertisingFailure() override;
 
   void SetNearbyShareServiceForTest(NearbySharingService* service);
   void SetNearbyShareSettingsForTest(NearbyShareSettings* settings);

@@ -114,6 +114,10 @@ class NearbyShareSettings : public nearby_share::mojom::NearbyShareSettings,
                                 bool did_full_name_change,
                                 bool did_icon_change) override;
 
+  // Set limited mode for fydeos accounts and local accounts.
+  void SetLimitedMode(bool is_limited) { is_limited_mode_ = is_limited; }
+  bool IsLimitedMode() const { return is_limited_mode_; }
+
  private:
   void OnEnabledPrefChanged();
   void OnFastInitiationNotificationStatePrefChanged();
@@ -130,6 +134,10 @@ class NearbyShareSettings : public nearby_share::mojom::NearbyShareSettings,
   // This is false by default and gets updated in NearbySharingServiceImpl when
   // the bluetooth adapter availablility changes.
   bool is_fast_initiation_hardware_supported_ = false;
+
+  // Limited mode for fydeos accounts and local accounts.
+  bool is_limited_mode_ = false;
+
   mojo::RemoteSet<nearby_share::mojom::NearbyShareSettingsObserver>
       observers_set_;
   mojo::ReceiverSet<nearby_share::mojom::NearbyShareSettings> receiver_set_;
@@ -137,6 +145,9 @@ class NearbyShareSettings : public nearby_share::mojom::NearbyShareSettings,
   raw_ptr<NearbyShareLocalDeviceDataManager> local_device_data_manager_ =
       nullptr;
   PrefChangeRegistrar pref_change_registrar_;
+
+ public:
+
 };
 
 #endif  // CHROME_BROWSER_NEARBY_SHARING_NEARBY_SHARE_SETTINGS_H_

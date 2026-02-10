@@ -49,6 +49,8 @@ class VIEWS_EXPORT TouchSelectionMenuRunnerViews
 
   ~TouchSelectionMenuRunnerViews() override;
 
+  virtual void HandleSendTextToAI(const std::u16string& text) {}
+
  protected:
   // Sets the menu as the currently runner menu and shows it.
   void ShowMenu(TouchSelectionMenuViews* menu,

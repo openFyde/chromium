@@ -104,8 +104,10 @@ class LoginScreenClientImpl : public ash::LoginScreenClient,
   void OnMaxIncorrectPasswordAttempted(const AccountId& account_id) override;
   void FocusOobeDialog() override;
   void ShowGaiaSignin(const AccountId& prefilled_account) override;
+  void ShowLocalSignin() override;
   void StartUserRecovery(const AccountId& account_to_recover) override;
   void ShowOsInstallScreen() override;
+  void ShowDataRestoreScreen() override;
   void OnRemoveUserWarningShown() override;
   void RemoveUser(const AccountId& account_id) override;
   void LaunchPublicSession(const AccountId& account_id,

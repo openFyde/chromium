@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- override chrome/app/nearby_share_strings.grdp, included from generated_resources.grd -->
+<grit-part>
+
+  <message name="IDS_SETTINGS_NEARBY_SHARE_DESCRIPTION" desc="A description of nearby share that helps users understand what the feature is used for.">
+    Share files with people around you
+  </message>
+  <message name="IDS_NEARBY_CONTACT_VISIBILITY_ZERO_STATE_TEXT" desc="Zero state help text to explain how the visibility settings control the Nearby Share feature.">
+    Your device visibility controls who can share with you while your screen is unlocked.
+  </message>
+
+  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NO_CONTACTS_SUBTITLE" desc="Help text shown when there are no reachable contacts with a Google Account to select from. Nearby Share is the feature name.">
+    To use Quick Share with these contacts, add the email address linked with their Google Account to your contacts.
+  </message>
+  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NUM_UNREACHABLE" desc="Informational message indicating that there are contacts that are not connectable for sharing with the Nearby Share feature.">
+    {COUNT, plural,
+      =1 {# contact is not available. To use Quick Share with them, add the email address associated with their Google Account to your contacts.}
+      other {# contacts are not available. To use Quick Share with them, add the email addresses associated with their Google Accounts to your contacts.}
+    }
+  </message>
+  <message name="IDS_NEARBY_DISCOVERY_PAGE_TITLE" desc="Title of the Nearby Share device discovery page. This is where users select a device to share files with. Nearby Share is the feature name.">
+    Quick Share
+  </message>
+  <message name="IDS_NEARBY_ONBOARDING_PAGE_TITLE" desc="Title of the Nearby Share onboarding page that sets up the local device for the feature. Nearby Share is the feature name.">
+    Set up Quick Share
+  </message>
+  <message name="IDS_NEARBY_SHARE_FEATURE_NAME" desc="This is the name of the Nearby Share feature which provides a way for nearby devices to share files, text, and urls">
+    Quick Share
+  </message>
+  <message name="IDS_NEARBY_HIGH_VISIBILITY_CONNECTION_MEDIUM_DESCRIPTION" desc="When the Nearby Share receive dialog is open, an error title telling the user that there is no available connection medium such as wifi or Bluetooth">
+    To use Quick Share, turn on Bluetooth and Wi-Fi
+  </message>
+  <message name="IDS_NEARBY_ACCOUNT_ROW_LABEL" desc="Label to describe the account row which displays the user's full name and their email which will identify them when using the Nearby Share feature." is_accessibility_with_no_ui="true">
+      Quick Share settings for <ph name="USER_NAME">$1<ex>Jane Doe</ex></ph>'s device, sharing under the account <ph name="USER_EMAIL">$2<ex>example@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_NEARBY_SETTINGS_HELP_CAPTION_TOP" desc="Brief explanation shown at the bottom of the settings page. Meant to give context on what conditions have to be met to use Nearby Share and how to toggle the high visibility state in the system tray. Provides a link with more detailed information.">
+    Quick Share uses Bluetooth scanning to find nearby devices.
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_CONNECTION_REQUEST_TITLE" desc="Text shown as the title of a notfication when a nearby device requests a connection via Nearby Share.">
+    Receive with Quick Share?
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_ONBOARDING_MESSAGE" desc="Text shown as the message of a notification when a nearby device is attempting to share data via Nearby Share but the user has not yet set up the Nearby Share feature.">
+    Set up Quick Share to receive and send files with people around you
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_SOURCE" desc="Text shown as the source of a Nearby Share notification.">
+    Quick Share
+  </message>
+
+  <if expr="openfyde">
+    <message name="IDS_NEARBY_ONBOARDING_PAGE_SUBTITLE" desc="Subtitle of the Nearby Share onboarding page that sets up the local device for the feature which provides a way for nearby devices to share files, text, and urls.">
+      Share files with openFyde devices and Android devices around you
+    </message>
+    <message name="IDS_NEARBY_DISCOVERY_PAGE_INFO" desc="Help text on how to use the Nearby Share feature. Explains how to enable it on a nearby Chromebook to share with it.">
+      Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a openFyde device not in your contacts, make sure it has Quick Share visibility turned on (open the status area, then turn on Visible to everyone).
+    </message>
+    <message name="IDS_NEARBY_SETTINGS_HELP_CAPTION" desc="Brief explanation shown at the bottom of the settings page. Meant to give context on what conditions have to be met to use Nearby Share, and how to toggle the high visibility state in the system tray. Provides a link with more detailed information.">
+      To use Quick Share, make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a openFyde device that is not in your contacts, make sure it has Visible to everyone turned on (open the status area by selecting the time, then turn on Visible to everyone).
+    </message>
+    <message name="IDS_NEARBY_SETTINGS_HELP_CAPTION_BOTTOM" desc="Brief explanation shown at the bottom of the settings page. Meant to give context on what conditions have to be met to use Nearby Share, and how to toggle the high visibility state in the system tray. Provides a link with more detailed information.">
+      If you're sharing with a openFyde device that is not in your contacts, make sure the openFyde device has “Visible to everyone” turned on. To turn on “Visible to everyone,” select the bottom right corner and then select to turn on “Visible to everyone.” <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_NEARBY_ONBOARDING_PAGE_SUBTITLE" desc="Subtitle of the Nearby Share onboarding page that sets up the local device for the feature which provides a way for nearby devices to share files, text, and urls.">
+      Share files with FydeOS devices and Android devices around you
+    </message>
+    <message name="IDS_NEARBY_DISCOVERY_PAGE_INFO" desc="Help text on how to use the Nearby Share feature. Explains how to enable it on a nearby Chromebook to share with it.">
+      Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a FydeOS device not in your contacts, make sure it has Quick Share visibility turned on (open the status area, then turn on Visible to everyone).
+    </message>
+    <message name="IDS_NEARBY_SETTINGS_HELP_CAPTION" desc="Brief explanation shown at the bottom of the settings page. Meant to give context on what conditions have to be met to use Nearby Share, and how to toggle the high visibility state in the system tray. Provides a link with more detailed information.">
+      To use Quick Share, make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a FydeOS device that is not in your contacts, make sure it has Visible to everyone turned on (open the status area by selecting the time, then turn on Visible to everyone).
+    </message>
+    <message name="IDS_NEARBY_SETTINGS_HELP_CAPTION_BOTTOM" desc="Brief explanation shown at the bottom of the settings page. Meant to give context on what conditions have to be met to use Nearby Share, and how to toggle the high visibility state in the system tray. Provides a link with more detailed information.">
+      If you're sharing with a FydeOS device that is not in your contacts, make sure the FydeOS device has “Visible to everyone” turned on. To turn on “Visible to everyone,” select the bottom right corner and then select to turn on “Visible to everyone.” <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    </message>
+  </if>
+
+</grit-part>

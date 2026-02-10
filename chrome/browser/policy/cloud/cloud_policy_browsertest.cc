@@ -339,7 +339,7 @@ class CloudPolicyTest : public PlatformBrowserTest,
             invalidation::ProfileInvalidationProviderFactory::GetInstance()
                 ->GetForProfile(profile())
                 ->GetInvalidationListener(
-                    policy::kPolicyInvalidationProjectNumber));
+                    policy::GetPolicyInvalidationProjectNumber()));
     invalidation_listener->FireInvalidation(invalidation::DirectInvalidation(
         kPolicyInvalidationType, now.InMicroseconds(), "payload"));
   }

@@ -1,0 +1,41 @@
+# Copyright 2020 The FydeOS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/chromeos/rules.gni")
+import("//fydeos/build/config/buildflags.gni")
+
+assert(is_chromeos, "Non-Chrome-OS builds must not depend on //chromeos")
+assert(use_fydeos_license)
+
+source_set("license") {
+  deps = [
+    "//base",
+    "//crypto",
+    "//net",
+    "//content/public/browser",
+    "//dbus",
+    "//chromeos/ash/components/dbus/update_engine",
+    "//chrome/browser/ash/policy/enrollment",
+    "//chrome/browser/ash/login",
+    "//fydeos/chromeos/ash/components/dbus/fydeos_shell_client",
+    "//fydeos/constants",
+    "//fydeos/prefs",
+  ]
+
+  sources = [
+    "fydeos_callback_status.h",
+    "fydeos_license_validator.cc",
+    "fydeos_license_validator.h",
+    "fydeos_license_fetcher.cc",
+    "fydeos_license_fetcher.h",
+    "fydeos_license_manager.cc",
+    "fydeos_license_manager.h",
+    "fydeos_license_enforcement.cc",
+    "fydeos_license_enforcement.h",
+    "fydeos_license_user_util.cc",
+    "fydeos_license_user_util.h",
+  ]
+
+  defines = [ "CHROMEOS_IMPLEMENTATION" ]
+}

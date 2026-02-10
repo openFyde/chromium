@@ -155,6 +155,7 @@ def validateJavaScriptAllowed(source_dir, out_dir, platform):
         'chrome/test/data/webui/chromeos/nearby_share',
         'chrome/test/data/webui/cr_components/chromeos',
         'ui/file_manager/',
+        'ash/webui/fyde_assistant_app_ui/',
     ]
     for directory in ash_directories:
       if directory in source_dir:

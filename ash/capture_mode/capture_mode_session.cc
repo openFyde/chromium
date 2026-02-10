@@ -3721,7 +3721,7 @@ CaptureModeSession::ShowDefaultActionButtonsOrPerformSearch() {
   }
 
   // Separate out the feature checks so metrics can be captured.
-  if (!CanShowSunfishOrScannerUi()) {
+  if (!CanShowSunfishOrScannerUi() && !CanShowTextExtractionUi()) {
     if (active_behavior_->behavior_type() == BehaviorType::kDefault) {
       RecordScannerFeatureUserState(
           ScannerFeatureUserState::
@@ -3788,7 +3788,7 @@ bool CaptureModeSession::ShouldShowActionContainerWidgetWithoutFeatureChecks()
 
 bool CaptureModeSession::ShouldShowActionContainerWidget() const {
   return ShouldShowActionContainerWidgetWithoutFeatureChecks() &&
-         CanShowSunfishOrScannerUi();
+         (CanShowSunfishOrScannerUi() || CanShowTextExtractionUi());
 }
 
 void CaptureModeSession::MaybeRemoveGlowAnimation() {

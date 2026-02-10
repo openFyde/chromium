@@ -1,0 +1,56 @@
+# Copyright 2018 The FydeOS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/chromeos/rules.gni")
+
+assert(is_chromeos, "Non-Chrome-OS builds must not depend on //chromeos")
+
+source_set("switches") {
+  public_deps = []
+  deps = [
+    "//base",
+    "//fydeos/build/config:buildflags",
+  ]
+  sources = [
+    "display/display_switches.cc",
+    "display/display_switches.h",
+
+    "urls/urls_constants.cc",
+    "urls/urls_constants.h",
+
+    "account/account_switches.cc",
+    "account/account_switches.h",
+    "account/account_constants.cc",
+    "account/account_constants.h",
+    "account/policy_constants.cc",
+    "account/policy_constants.h",
+
+    "misc/misc_switches.cc",
+    "misc/misc_switches.h",
+    "misc/misc_constants.cc",
+    "misc/misc_constants.h",
+
+    "services/services_switches.cc",
+    "services/services_switches.h",
+    "services/services_constants.cc",
+    "services/services_constants.h",
+
+    "accelerometer/accelerometer_switches.cc",
+    "accelerometer/accelerometer_switches.h",
+
+    "features/network_switches.cc",
+    "features/network_switches.h",
+    "features/network_constants.cc",
+    "features/network_constants.h",
+
+    "arc/arc_switches.cc",
+    "arc/arc_switches.h",
+
+    "license/license_switches.cc",
+    "license/license_switches.h",
+    "license/license_constants.cc",
+    "license/license_constants.h",
+  ]
+  defines = [ "CHROMEOS_IMPLEMENTATION" ]
+}

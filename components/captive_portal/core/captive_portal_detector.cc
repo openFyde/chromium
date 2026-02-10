@@ -19,11 +19,17 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace {
 constexpr char kLegacyURL[] = "http://www.gstatic.com/generate_204";
+#if BUILDFLAG(USE_FYDEOS_COM)
+constexpr char kDefaultURL[] =
+    "http://store.fydeos.com/204";
+#else
 constexpr char kDefaultURL[] =
     "http://connectivitycheck.gstatic.com/generate_204";
+#endif
 }  // namespace
 
 namespace captive_portal {

@@ -357,7 +357,11 @@ ash::BrowserDelegate* MediaSystemAppDelegate::GetWindowForLaunch(
 }
 
 bool MediaSystemAppDelegate::ShouldHandleFileOpenIntents() const {
-  return true;
+  return false;
+}
+
+bool MediaSystemAppDelegate::IsAppEnabled() const {
+  return false;
 }
 
 ash::BrowserDelegate* MediaSystemAppDelegate::LaunchAndNavigateSystemWebApp(

@@ -115,6 +115,7 @@ constexpr static auto kAcceleratorActionToName = base::MakeFixedFlatMap<
     {AcceleratorAction::kToggleCalendar, "ToggleCalendar"},
     {AcceleratorAction::kToggleCapsLock, "ToggleCapsLock"},
     {AcceleratorAction::kToggleClipboardHistory, "ToggleClipboardHistory"},
+    {AcceleratorAction::kToggleFydeosAssistant, "ToggleFydeosAssistant"},
     {AcceleratorAction::kToggleDockedMagnifier, "ToggleDockedMagnifier"},
     {AcceleratorAction::kToggleFloating, "ToggleFloating"},
     {AcceleratorAction::kToggleFullscreen, "ToggleFullscreen"},

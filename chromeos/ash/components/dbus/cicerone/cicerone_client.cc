@@ -29,11 +29,11 @@ namespace {
 CiceroneClient* g_instance = nullptr;
 
 // How long to wait before timing out on regular RPCs.
-constexpr base::TimeDelta kDefaultTimeout = base::Minutes(1);
+constexpr base::TimeDelta kDefaultTimeout = base::Minutes(2);
 
 // How long to wait while doing more complex operations like starting or
 // creating a container.
-constexpr base::TimeDelta kLongOperationTimeout = base::Minutes(3);
+constexpr base::TimeDelta kLongOperationTimeout = base::Minutes(4);
 
 }  // namespace
 

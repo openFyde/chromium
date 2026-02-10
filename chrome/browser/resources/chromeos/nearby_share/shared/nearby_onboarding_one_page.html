@@ -39,41 +39,7 @@
     position: relative;
   }
 
-  #device-visibility-group {
-    margin: 10px;
-    position: relative;
-  }
-
-  #deviceVisibilityHelp {
-    color: var(--cros-text-color-secondary);
-    font-size: 10px;
-    line-height: 12px;
-    position: relative;
-  }
-
-  .card-icon {
-    fill: var(--cros-icon-color-prominent);
-    margin-inline-end: 12px;
-  }
-
-  #arrowForward {
-    fill: var(--cros-icon-color-prominent);
-    margin-inline-start: auto;
-  }
-
-  #visibilityButton {
-    align-items: center;
-    display: flex;
-    margin-block-end: 6px;
-    padding-block-end: 6px;
-    padding-block-start: 6px;
-    padding-inline-end: 9px;
-    padding-inline-start: 9px;
-    position: relative;
-  }
-
-  cr-input,
-  .cr-form-field-label {
+  cr-input {
     color: var(--cros-text-color-secondary);
   }
 </style>
@@ -103,33 +69,6 @@
         <div id="deviceNameHelp" hidden="[[hasErrorMessage_(errorMessage)]]"
           aria-hidden="true">
           $i18n{nearbyShareOnboardingPageDeviceNameHelp}
-        </div>
-      </div>
-      <div id="device-visibility-group">
-        <div id="visibilityLabel" class="cr-form-field-label"
-          aria-hidden="true">
-          $i18n{nearbyShareOnboardingPageDeviceVisibility}
-        </div>
-        <cr-button id="visibilityButton"
-            on-click="switchToVisibilitySelectionView_"
-            aria-label="$i18n{nearbyShareOnboardingPageDeviceVisibility}
-                [[getVisibilitySelectionButtonText_()]]
-                [[getVisibilitySelectionButtonHelpText_()]]">
-          <iron-icon slot="prefix-icon"
-              icon="nearby20:[[getVisibilitySelectionButtonIcon_()]]"
-              class="card-icon">
-          </iron-icon>
-          <div id="visibilityModeLabel" class="card-label"
-            aria-hidden="true">
-            [[getVisibilitySelectionButtonText_()]]
-          </div>
-          <iron-icon slot="suffix-icon"
-              id="arrowForward"
-              icon="nearby20:chevron-right">
-          </iron-icon>
-        </cr-button>
-        <div id="deviceVisibilityHelp" aria-hidden="true">
-          [[getVisibilitySelectionButtonHelpText_()]]
         </div>
       </div>
     </div>

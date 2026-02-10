@@ -874,6 +874,7 @@ dictionary Preferences {
   boolean driveFsBulkPinningEnabled;
   boolean localUserFilesAllowed;
   DefaultLocation defaultLocation;
+  boolean fydeAssistantEnabled;
   MigrationDestination skyVaultMigrationDestination;
   DOMString? skyVaultMigrationStartTime;
 };
@@ -884,6 +885,7 @@ dictionary PreferencesChange {
   boolean? arcRemovableMediaAccessEnabled;
   DOMString[]? folderShortcuts;
   boolean? driveFsBulkPinningEnabled;
+  boolean? fydeAssistantEnabled;
 };
 
 dictionary SearchParams {

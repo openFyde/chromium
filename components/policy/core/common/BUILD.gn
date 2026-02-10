@@ -244,6 +244,7 @@ source_set("internal") {
     "//components/user_manager",
     "//components/version_info",
     "//extensions/buildflags",
+    "//fydeos/switches",
     "//google_apis",
     "//net",
     "//services/network/public/cpp",
@@ -485,6 +486,10 @@ static_library("test_support") {
 source_set("common_constants") {
   configs += [ "//components/policy:component_implementation" ]
   deps = [ "//base" ]
+  deps += [
+    "//build:chromeos_buildflags",
+    "//fydeos/switches",
+  ]
   sources = [
     "../../policy_export.h",
     "cloud/cloud_policy_constants.cc",

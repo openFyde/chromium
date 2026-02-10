@@ -38,6 +38,7 @@ const PREFERENCES = {
   arcEnabled: false,
   arcRemovableMediaAccessEnabled: false,
   folderShortcuts: [],
+  fydeAssistantEnabled: false,
   trashEnabled: false,
   officeFileMovedOneDrive: 0,
   officeFileMovedGoogleDrive: 0,

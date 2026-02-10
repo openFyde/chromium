@@ -126,6 +126,13 @@ export class OsSettingsLanguagesPageV2Element extends
       },
 
       languageSettingsV2Update2Enabled_: Boolean,
+
+      isFydeProfile_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        },
+      },
     };
   }
 
@@ -161,6 +168,7 @@ export class OsSettingsLanguagesPageV2Element extends
   private isPerAppLanguageEnabled_: boolean;
   // TODO: b/263823772 - Inline this variable.
   private languageSettingsV2Update2Enabled_ = true;
+  private isFydeProfile_: boolean;
 
   override currentRouteChanged(route: Route): void {
     // Does not apply to this page.
@@ -442,6 +450,10 @@ export class OsSettingsLanguagesPageV2Element extends
   private onLanguagePreferenceDescriptionLinkClick_(): void {
     this.languagesMetricsProxy_.recordInteraction(
         LanguagesPageInteraction.OPEN_WEB_LANGUAGES_LEARN_MORE);
+  }
+
+  showManageGoogleAccountLanguage_(update2Enabled: boolean, isFydeProfile: boolean) {
+    return update2Enabled && !isFydeProfile;
   }
 }
 

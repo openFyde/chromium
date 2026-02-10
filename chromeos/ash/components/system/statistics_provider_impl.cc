@@ -48,6 +48,8 @@ const char kCrosSystemValueError[] = "(error)";
 // Path to the tool to get VPD info.
 const char kFilteredVpdTool[] = "/usr/sbin/dump_filtered_vpd";
 
+const char kFydeosHardwareIdTool[] = "/usr/sbin/fydeos_hardware_id";
+
 // Exit codes for the dump_filtered_vpd tool.
 enum class DumpVpdExitCodes : int {
   kValid = 0,
@@ -190,6 +192,7 @@ StatisticsProviderImpl::StatisticsSources CreateDefaultSources() {
   StatisticsProviderImpl::StatisticsSources sources;
   sources.crossystem_tool = base::CommandLine(base::FilePath(kCrosSystemTool));
   sources.vpd_tool = base::CommandLine(base::FilePath(kFilteredVpdTool));
+  sources.fydeos_hardward_id_tool = base::CommandLine(base::FilePath(kFydeosHardwareIdTool));
   sources.machine_info_filepath = GetFilePathIgnoreFailure(FILE_MACHINE_INFO);
   sources.oem_manifest_filepath = base::FilePath(kOemManifestFilePath);
   sources.cros_regions_filepath = base::FilePath(kCrosRegions);
@@ -522,7 +525,7 @@ void StatisticsProviderImpl::LoadMachineStatistics(bool load_oem_manifest) {
   // key name, and if it couldn't be retrieved, that the value is "unknown".
   std::string hardware_class = machine_info_[kHardwareClassCrosSystemKey];
   machine_info_[kHardwareClassKey] =
-      !hardware_class.empty() ? hardware_class : kHardwareClassValueUnknown;
+      !hardware_class.empty() ? hardware_class : GetFallbackHardwareClass();
 
   if (base::SysInfo::IsRunningOnChromeOS()) {
     // By default, assume that this is *not* a VM. If crossystem is not present,
@@ -792,6 +795,26 @@ void StatisticsProviderImpl::OnVpdChange(
       {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&StatisticsProviderImpl::LoadVpd, base::Unretained(this)));
+}
+
+std::string StatisticsProviderImpl::GetFallbackHardwareClass() const {
+  std::string output;
+  int exit_code;
+  if (!base::GetAppOutputWithExitCode(sources_.fydeos_hardward_id_tool, &output, &exit_code)) {
+    LOG(ERROR) << "Failed to run fydeos hardware_id tool: " << sources_.fydeos_hardward_id_tool.GetProgram();
+    return kHardwareClassValueUnknown;
+  }
+  if (exit_code != 0) {
+    LOG(ERROR) << "Failed to get hardware class: " << exit_code;
+    return kHardwareClassValueUnknown;
+  }
+  if (output.empty()) {
+    LOG(ERROR) << "Get empty result from fydeos hardware_id tool";
+    return kHardwareClassValueUnknown;
+  }
+  std::string trimmed_output;
+  base::TrimWhitespaceASCII(output, base::TRIM_ALL, &trimmed_output);
+  return trimmed_output;
 }
 
 }  // namespace ash::system

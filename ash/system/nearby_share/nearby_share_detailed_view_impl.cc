@@ -156,20 +156,17 @@ void NearbyShareDetailedViewImpl::CreateExtraTitleRowButtons() {
 }
 
 void NearbyShareDetailedViewImpl::HandleViewClicked(views::View* view) {
-  CHECK(your_devices_row_);
-  CHECK(contacts_row_);
-
-  if (view == your_devices_row_) {
+  if (your_devices_row_ && view == your_devices_row_) {
     OnYourDevicesSelected();
     return;
   }
 
-  if (view == contacts_row_) {
+  if (contacts_row_ && view == contacts_row_) {
     OnContactsSelected();
     return;
   }
 
-  if (view == hidden_row_) {
+  if (hidden_row_ && view == hidden_row_) {
     OnHiddenSelected();
     return;
   }
@@ -231,9 +228,12 @@ void NearbyShareDetailedViewImpl::CreateVisibilitySelectionContainer() {
   visibility_selection_container_->GetViewAccessibility().SetRole(
       ax::mojom::Role::kRadioGroup);
 
-  CreateYourDevicesRow();
-  CreateContactsRow();
-  CreateHiddenRow();
+  // In limited mode, hide the three visibility options
+  if (!nearby_share_delegate_->IsLimitedMode()) {
+    CreateYourDevicesRow();
+    CreateContactsRow();
+    CreateHiddenRow();
+  }
   CreateEveryoneRow();
   FormatVisibilitySelectionContainer(
       nearby_share_delegate_->IsHighVisibilityOn());
@@ -342,19 +342,30 @@ void NearbyShareDetailedViewImpl::FormatVisibilitySelectionContainer(
                                              ? cros_tokens::kCrosSysOnSurface
                                              : cros_tokens::kCrosSysDisabled;
 
-  FormatVisibilityRow(your_devices_row_,
-                      kQuickSettingsQuickShareYourDevicesIcon,
-                      /*label=*/GetYourDevicesLabel(),
-                      /*sublabel=*/GetYourDevicesSublabel(user_email_),
-                      /*color_id=*/background_visibility_row_color);
-  FormatVisibilityRow(contacts_row_, kQuickSettingsQuickShareContactsIcon,
-                      /*label=*/GetContactsLabel(),
-                      /*sublabel=*/GetContactsSublabel(),
-                      /*color_id=*/background_visibility_row_color);
-  FormatVisibilityRow(hidden_row_, kQuickSettingsQuickShareHiddenIcon,
-                      /*label=*/GetHiddenLabel(),
-                      /*sublabel=*/GetHiddenSublabel(),
-                      /*color_id=*/background_visibility_row_color);
+  // In limited mode, the visibility rows don't exist.
+  if (your_devices_row_) {
+    FormatVisibilityRow(your_devices_row_,
+                        kQuickSettingsQuickShareYourDevicesIcon,
+                        /*label=*/GetYourDevicesLabel(),
+                        /*sublabel=*/GetYourDevicesSublabel(user_email_),
+                        /*color_id=*/background_visibility_row_color);
+    your_devices_row_->SetEnabled(is_background_visibility_enabled);
+  }
+  if (contacts_row_) {
+    FormatVisibilityRow(contacts_row_, kQuickSettingsQuickShareContactsIcon,
+                        /*label=*/GetContactsLabel(),
+                        /*sublabel=*/GetContactsSublabel(),
+                        /*color_id=*/background_visibility_row_color);
+    contacts_row_->SetEnabled(is_background_visibility_enabled);
+  }
+  if (hidden_row_) {
+    FormatVisibilityRow(hidden_row_, kQuickSettingsQuickShareHiddenIcon,
+                        /*label=*/GetHiddenLabel(),
+                        /*sublabel=*/GetHiddenSublabel(),
+                        /*color_id=*/background_visibility_row_color);
+    hidden_row_->SetEnabled(is_background_visibility_enabled);
+  }
+
   FormatEveryoneRow(/*color_id=*/everyone_row_color, in_high_visibility,
                     /*is_row_enabled=*/is_quick_share_enabled);
   SetCheckCircle(in_high_visibility);
@@ -427,15 +438,22 @@ void NearbyShareDetailedViewImpl::SetCheckCircle(
     const bool in_high_visibility) {
   CHECK(nearby_share_delegate_);
 
-  your_devices_row_->SetRightViewVisible(false);
-  your_devices_row_->SetAccessibilityState(
-      HoverHighlightView::AccessibilityState::UNCHECKED_CHECKBOX);
-  contacts_row_->SetRightViewVisible(false);
-  contacts_row_->SetAccessibilityState(
-      HoverHighlightView::AccessibilityState::UNCHECKED_CHECKBOX);
-  hidden_row_->SetRightViewVisible(false);
-  hidden_row_->SetAccessibilityState(
-      HoverHighlightView::AccessibilityState::UNCHECKED_CHECKBOX);
+  // In limited mode, the visibility rows don't exist.
+  if (your_devices_row_) {
+    your_devices_row_->SetRightViewVisible(false);
+    your_devices_row_->SetAccessibilityState(
+        HoverHighlightView::AccessibilityState::UNCHECKED_CHECKBOX);
+  }
+  if (contacts_row_) {
+    contacts_row_->SetRightViewVisible(false);
+    contacts_row_->SetAccessibilityState(
+        HoverHighlightView::AccessibilityState::UNCHECKED_CHECKBOX);
+  }
+  if (hidden_row_) {
+    hidden_row_->SetRightViewVisible(false);
+    hidden_row_->SetAccessibilityState(
+        HoverHighlightView::AccessibilityState::UNCHECKED_CHECKBOX);
+  }
 
   const bool is_enabled =
       nearby_share_delegate_->IsEnabled() && !in_high_visibility;
@@ -445,22 +463,25 @@ void NearbyShareDetailedViewImpl::SetCheckCircle(
 
   switch (nearby_share_delegate_->GetVisibility()) {
     case ::nearby_share::mojom::Visibility::kYourDevices:
-      CHECK(your_devices_row_);
-      your_devices_row_->SetRightViewVisible(true);
-      your_devices_row_->SetAccessibilityState(
-          HoverHighlightView::AccessibilityState::CHECKED_CHECKBOX);
+      if (your_devices_row_) {
+        your_devices_row_->SetRightViewVisible(true);
+        your_devices_row_->SetAccessibilityState(
+            HoverHighlightView::AccessibilityState::CHECKED_CHECKBOX);
+      }
       break;
     case ::nearby_share::mojom::Visibility::kAllContacts:
-      CHECK(contacts_row_);
-      contacts_row_->SetRightViewVisible(true);
-      contacts_row_->SetAccessibilityState(
-          HoverHighlightView::AccessibilityState::CHECKED_CHECKBOX);
+      if (contacts_row_) {
+        contacts_row_->SetRightViewVisible(true);
+        contacts_row_->SetAccessibilityState(
+            HoverHighlightView::AccessibilityState::CHECKED_CHECKBOX);
+      }
       break;
     case ::nearby_share::mojom::Visibility::kNoOne:
-      CHECK(hidden_row_);
-      hidden_row_->SetRightViewVisible(true);
-      hidden_row_->SetAccessibilityState(
-          HoverHighlightView::AccessibilityState::CHECKED_CHECKBOX);
+      if (hidden_row_) {
+        hidden_row_->SetRightViewVisible(true);
+        hidden_row_->SetAccessibilityState(
+            HoverHighlightView::AccessibilityState::CHECKED_CHECKBOX);
+      }
       break;
     default:
       break;

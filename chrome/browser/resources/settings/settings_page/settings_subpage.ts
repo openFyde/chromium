@@ -80,6 +80,11 @@ export class SettingsSubpageElement extends SettingsSubpageElementBase {
 
       learnMoreUrl: String,
 
+      showLearnMoreUrl: {
+        type: Boolean,
+        computed: 'computeShowLearnMoreUrl_(learnMoreUrl)',
+      },
+
       /** Setting a |searchLabel| will enable search. */
       searchLabel: String,
 
@@ -120,6 +125,7 @@ export class SettingsSubpageElement extends SettingsSubpageElementBase {
   declare titleIcon: string;
   declare faviconSiteUrl: string;
   declare learnMoreUrl: string;
+  declare showLearnMoreUrl: boolean;
   declare searchLabel: string;
   declare searchIcon: string;
   declare searchTerm: string;
@@ -291,6 +297,10 @@ export class SettingsSubpageElement extends SettingsSubpageElementBase {
   override searchInputHasFocus() {
     const field = this.shadowRoot!.querySelector('cr-search-field')!;
     return field.getSearchInput() === field.shadowRoot.activeElement;
+  }
+
+  computeShowLearnMoreUrl_() {
+    return this.learnMoreUrl && !loadTimeData.getBoolean('isFydeProfile');
   }
 }
 

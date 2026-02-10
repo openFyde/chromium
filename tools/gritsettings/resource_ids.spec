@@ -314,7 +314,7 @@
     "includes": [3340],
   },
   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/login/resources.grd": {
-    "META": {"sizes": {"includes": [320],}},
+    "META": {"sizes": {"includes": [360],}},
     "includes": [3360],
   },
   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/manage_mirrorsync/resources.grd": {
@@ -1627,6 +1627,16 @@
 
   "third_party/search_engines_data/resources_internal/search_engine_descriptions_strings.grd": {
     "messages": [10120],
+  },
+
+  "fydeos/extensions/common/fydeos_extensions_resources.grd": {
+    "includes": [10130],
+    "messages": [10140],
+  },
+
+  "<(SHARED_INTERMEDIATE_DIR)/ash/webui/fyde_assistant_app_ui/resources/resources.grd": {
+    "META": {"sizes": {"includes": [50],}},
+    "includes": [10160],
   },
 
   # END "everything else" section.

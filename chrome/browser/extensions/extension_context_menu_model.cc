@@ -79,6 +79,8 @@
 #include "chrome/common/extensions/api/side_panel.h"
 #endif
 
+#include "fydeos/switches/urls//urls_constants.h"
+
 static_assert(BUILDFLAG(ENABLE_EXTENSIONS_CORE));
 
 namespace extensions {
@@ -627,7 +629,7 @@ void ExtensionContextMenuModel::ExecuteCommand(int command_id,
       OpenUrl(
           GetActiveWebContents(),
           GURL(
-              extension_permissions_constants::kRuntimeHostPermissionsHelpURL));
+              fydeos::constants::kRuntimeHostPermissionsHelpURL));
 
       break;
     default:

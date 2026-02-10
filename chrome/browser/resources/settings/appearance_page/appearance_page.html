@@ -41,9 +41,9 @@
     <settings-section page-title="$i18n{appearancePageTitle}">
       <div route-path="default">
         <div class="settings-row first" id="themeRow"
-            hidden="[[!pageVisibility.setTheme]]">
+            hidden="[[!showThemesURL_(pageVisibility.setTheme, storeAppExists_)]]">
           <cr-link-row id="openTheme" class="first"
-              hidden="[[!pageVisibility.setTheme]]"
+              hidden="[[!showThemesURL_(pageVisibility.setTheme, storeAppExists_)]]"
               label="$i18n{themes}" sub-label="[[themeSublabel_]]"
               on-click="onThemeClick_" external></cr-link-row>
 <if expr="not is_linux">
@@ -118,11 +118,13 @@
             </template>
           </select>
         </div>
+        <!-- FYDEOS BEGIN -->
         <div
             class="hr"
-            hidden="[[!showHr_(
-                pageVisibility.setTheme, pageVisibility.homeButton)]]">
+            hidden="[[!showThemesHr_(
+                pageVisibility.setTheme, storeAppExists_, pageVisibility.homeButton)]]">
         </div>
+        <!-- FYDEOS END -->
         <settings-toggle-button elide-label
             hidden="[[!pageVisibility.homeButton]]"
             pref="{{prefs.browser.show_home_button}}"

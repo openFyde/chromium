@@ -42,6 +42,7 @@ export class ConfirmationPageElement extends ConfirmationPageElementBase {
     return {
       sendReportStatus: {type: SendReportStatus, readOnly: false, notify: true},
       isUserLoggedIn: {type: Boolean, readOnly: false, notify: true},
+      uniqueReportId: {type: String, readOnly: false},
     };
   }
 
@@ -54,6 +55,7 @@ export class ConfirmationPageElement extends ConfirmationPageElementBase {
   isFirstAction = true;
   /** Whether the user has logged in (not on oobe or on the login screen). */
   isUserLoggedIn = false;
+  private uniqueReportId: string;
   private feedbackServiceProvider: FeedbackServiceProviderInterface;
 
   constructor() {
@@ -67,6 +69,10 @@ export class ConfirmationPageElement extends ConfirmationPageElementBase {
     window.addEventListener('beforeunload', () => {
       this.handleEmitMetrics(FeedbackAppPostSubmitAction.kCloseFeedbackApp);
     });
+  }
+
+  hideHelpLink_() {
+    return this.isOffline() || !this.isUserLoggedIn;
   }
 
   /**
@@ -111,23 +117,31 @@ export class ConfirmationPageElement extends ConfirmationPageElementBase {
   /** Open links, including SWA app link and web link. */
   protected handleLinkClicked(e: Event): void {
     e.stopPropagation();
+    let url = '';
     const currentTarget = e.currentTarget as HTMLElement;
     switch (currentTarget.id) {
       case 'diagnostics':
         this.feedbackServiceProvider.openDiagnosticsApp();
         this.handleEmitMetrics(FeedbackAppPostSubmitAction.kOpenDiagnosticsApp);
         break;
-      case 'explore':
-        this.feedbackServiceProvider.openExploreApp();
-        this.handleEmitMetrics(FeedbackAppPostSubmitAction.kOpenExploreApp);
+      case 'help':
+        // <if expr="not use_fydeos_com">
+        url = 'https://fydeos.io/help';
+        // </if>
+        // <if expr="use_fydeos_com">
+        url = 'https://fydeos.com/help';
+        // </if>
+        OpenWindowProxyImpl.getInstance().openUrl(`${url}?hl=${this.i18n('language') || 'en'}`);
         break;
-      case 'chromebookCommunity':
+      case 'fydeosCommunity':
+        // <if expr="not use_fydeos_com">
+        url = 'https://community.fydeos.io';
+        // </if>
+        // <if expr="use_fydeos_com">
+        url = 'https://community.fydeos.com';
+        // </if>
         // If app locale is not available, default to en.
-        OpenWindowProxyImpl.getInstance().openUrl(
-            `https://support.google.com/chromebook/?hl=${
-                this.i18n('language') || 'en'}#topic=3399709`);
-        this.handleEmitMetrics(
-            FeedbackAppPostSubmitAction.kOpenChromebookCommunity);
+        OpenWindowProxyImpl.getInstance().openUrl(`${url}?hl=${this.i18n('language') || 'en'}`);
         break;
       default:
         console.warn('unexpected caller id: ', currentTarget.id);

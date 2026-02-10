@@ -435,6 +435,7 @@ enum {
   kClassManagementToolsOOBEAccessCountSetting = 100367,
   kClassManagementToolsKioskReceiverCodes = 100368,
   kPinContextualTaskButton = 100369,
+  kLanguageImeMenuActivated = 100370,
   // See components/sync_preferences/README.md about adding new entries here.
   // vvvvv IMPORTANT! vvvvv
   // Note to the reviewer: IT IS YOUR RESPONSIBILITY to ensure that new syncable
@@ -1222,6 +1223,10 @@ constexpr auto kChromeSyncablePrefsAllowlist = base::MakeFixedFlatMap<
       sync_preferences::MergeBehavior::kNone}},
     {prefs::kLanguagePreloadEnginesSyncable,
      {syncable_prefs_ids::kLanguagePreloadEnginesSyncable,
+      syncer::OS_PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+      sync_preferences::MergeBehavior::kNone}},
+    {prefs::kLanguageImeMenuActivated,
+     {syncable_prefs_ids::kLanguageImeMenuActivated,
       syncer::OS_PREFERENCES, sync_preferences::PrefSensitivity::kNone,
       sync_preferences::MergeBehavior::kNone}},
     {prefs::kLanguageRemapAltKeyTo,

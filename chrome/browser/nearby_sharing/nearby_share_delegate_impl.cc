@@ -279,3 +279,14 @@ void NearbyShareDelegateImpl::SetVisibility(
   DCHECK(nearby_share_settings_);
   return nearby_share_settings_->SetVisibility(visibility);
 }
+
+void NearbyShareDelegateImpl::OnStartAdvertisingFailure() {
+  is_enable_high_visibility_request_active_ = false;
+}
+
+bool NearbyShareDelegateImpl::IsLimitedMode() const {
+  if (!nearby_share_settings_) {
+    return false;
+  }
+  return nearby_share_settings_->IsLimitedMode();
+}

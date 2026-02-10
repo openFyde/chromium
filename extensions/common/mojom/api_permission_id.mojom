@@ -288,6 +288,8 @@ enum APIPermissionID {
   kOmniboxDirectInput = 261,
   kExperimentalActor = 262,
   kEnterpriseLogin = 263,
+  kFydeOSPrivate = 264,
+  kFydeOSShellClient = 265,
 
   // Add new entries at the end of the enum and be sure to update the
   // "ExtensionPermission3" enum in

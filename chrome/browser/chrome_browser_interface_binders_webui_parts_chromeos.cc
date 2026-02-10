@@ -14,6 +14,7 @@
 #include "ash/webui/boca_ui/mojom/boca.mojom.h"
 #include "ash/webui/camera_app_ui/camera_app_helper.mojom.h"
 #include "ash/webui/camera_app_ui/camera_app_ui.h"
+#include "ash/webui/fyde_assistant_app_ui/fyde_assistant_app_ui.h"
 #include "ash/webui/color_internals/color_internals_ui.h"
 #include "ash/webui/color_internals/mojom/color_internals.mojom.h"
 #include "ash/webui/common/mojom/accelerator_fetcher.mojom.h"
@@ -648,6 +649,10 @@ void PopulateChromeWebUIFrameInterfaceBrokersUntrustedPartsCros(
       .Add<ash::media_app_ui::mojom::UntrustedServiceFactory>();
 
   registry.ForWebUI<ash::HelpAppUntrustedUI>();
+
+  if (ash::features::IsFydeAssistantEnabled()) {
+    registry.ForWebUI<ash::FydeAssistantAppUI>();
+  }
 
   registry.ForWebUI<ash::ScannerFeedbackUntrustedUI>()
       .Add<ash::mojom::scanner_feedback_ui::PageHandler>();

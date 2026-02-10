@@ -111,6 +111,11 @@ void ErrorScreen::DisallowOfflineLogin() {
   ShowOfflineLoginOption(false);
 }
 
+void ErrorScreen::AllowFydeLocalSignin(bool allowed) {
+  if (view_)
+    view_->SetFydeLocalSigninAllowed(allowed);
+}
+
 void ErrorScreen::ShowOfflineLoginOption(bool show) {
   is_offline_login_link_shown_ = show;
   if (view_) {

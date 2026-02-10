@@ -183,10 +183,13 @@ bool GlicEnabling::IsProfileEligible(const Profile* profile) {
   switch (user->GetType()) {
     case user_manager::UserType::kRegular:
     case user_manager::UserType::kChild:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
       // These are ok to use glic.
       break;
     case user_manager::UserType::kGuest:
     case user_manager::UserType::kPublicAccount:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kKioskChromeApp:
     case user_manager::UserType::kKioskWebApp:
     case user_manager::UserType::kKioskIWA:

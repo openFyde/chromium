@@ -8,6 +8,8 @@
 #include <stdint.h>
 
 #include "components/invalidation/invalidation_constants.h"
+#include "fydeos/switches/account/policy_constants.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 class GURL;
 class PrefService;
@@ -18,6 +20,13 @@ namespace policy {
 // considered critical to receive invalidation.
 inline constexpr int64_t kPolicyInvalidationProjectNumber =
     invalidation::kNonCriticalInvalidationsProjectNumber;
+
+inline int64_t GetPolicyInvalidationProjectNumber() {
+  if (fydeos::switches::UseFydeInvalidationService()) {
+    return fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID;
+  }
+  return kPolicyInvalidationProjectNumber;
+}
 
 // Check if the origin provided by `url` is in the allowlist for a given
 // policy-controlled feature by its `allowlist_pref_name`. The optional

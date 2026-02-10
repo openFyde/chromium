@@ -36,7 +36,17 @@ import type {Account} from './account_manager_browser_proxy.js';
 import {getGraduationHandlerProvider} from './graduation/mojo_interface_provider.js';
 import {getTemplate} from './os_people_page.html.js';
 
-const OsSettingsPeoplePageElementBase = WebUiListenerMixin(PolymerElement);
+import 'chrome://resources/ash/common/cr_elements/localized_link/localized_link.js';
+import {I18nMixin} from 'chrome://resources/ash/common/cr_elements/i18n_mixin.js';
+import {getImage} from 'chrome://resources/js/icon.js';
+import {convertImageSequenceToPng} from 'chrome://resources/ash/common/cr_picture/png.js';
+import type {SyncStatus} from '/shared/settings/people_page/sync_browser_proxy.js';
+import {SignedInState, SyncBrowserProxyImpl} from '/shared/settings/people_page/sync_browser_proxy.js';
+import type {ProfileInfo} from '/shared/settings/people_page/profile_info_browser_proxy.js';
+import {ProfileInfoBrowserProxyImpl} from '/shared/settings/people_page/profile_info_browser_proxy.js';
+import {Router, routes} from '../router.js';
+
+const OsSettingsPeoplePageElementBase = WebUiListenerMixin(I18nMixin(PolymerElement));
 
 export class OsSettingsPeoplePageElement extends
     OsSettingsPeoplePageElementBase {
@@ -83,11 +93,52 @@ export class OsSettingsPeoplePageElement extends
         readOnly: true,
       },
 
+      isProfileActionable_: {
+        type: Boolean,
+        value: function() {
+          if (loadTimeData.getBoolean('isFydeProfile')) {
+            return !loadTimeData.getBoolean('isFydeLocalAccount');
+          }
+          return false;
+        },
+      },
+
+      profileActionButtonIcon_: {
+        type: String,
+          value: function() {
+            if (loadTimeData.getBoolean('isFydeProfile')) {
+              return 'icon-external';
+            }
+            return 'subpage-arrow';
+          },
+      },
+
+      isFydeProfile_: {
+        value() {
+          return loadTimeData.getBoolean('isFydeProfile');
+        }
+      },
+
+      isFydeLocalAccount_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('isFydeLocalAccount');
+        },
+      },
+
+      profileIconUrl_: String,
+
+      profileName_: String,
+
+      profileLabel_: String,
+
       showParentalControls_: {
         type: Boolean,
         value() {
           return loadTimeData.valueExists('showParentalControls') &&
-              loadTimeData.getBoolean('showParentalControls');
+              loadTimeData.getBoolean('showParentalControls') &&
+             (!loadTimeData.valueExists('isFydeProfile') ||
+              !loadTimeData.getBoolean('isFydeProfile'));
         },
       },
 
@@ -111,6 +162,14 @@ export class OsSettingsPeoplePageElement extends
   private showParentalControls_: boolean;
   private section_: Section;
 
+  private isProfileActionable_: boolean;
+  private profileActionButtonIcon_: string;
+  private isFydeProfile_: boolean;
+  private isFydeLocalAccount_: boolean;
+  private profileIconUrl_: string;
+  private profileName_: string;
+  private profileLabel_: string;
+
   constructor() {
     super();
 
@@ -125,6 +184,15 @@ export class OsSettingsPeoplePageElement extends
       this.addWebUiListener(
           'accounts-changed', this.updateAccounts_.bind(this));
       this.updateAccounts_();
+    } else if (this.isFydeProfile_) {
+      ProfileInfoBrowserProxyImpl.getInstance().getProfileInfo().then(
+          this.handleProfileInfo_.bind(this));
+      this.addWebUiListener(
+          'profile-info-changed', this.handleProfileInfo_.bind(this));
+      SyncBrowserProxyImpl.getInstance().getSyncStatus().then(
+          this.handleSyncStatus_.bind(this));
+      this.addWebUiListener(
+          'sync-status-changed', this.handleSyncStatus_.bind(this));
     }
 
     this.graduationObserverReceiver_ = new GraduationObserverReceiver(this);
@@ -155,6 +223,48 @@ export class OsSettingsPeoplePageElement extends
   onGraduationAppUpdated(isAppEnabled: boolean): void {
     this.showGraduationApp_ =
         loadTimeData.getBoolean('isGraduationFlagEnabled') && isAppEnabled;
+  }
+
+  private handleProfileInfo_(info: ProfileInfo) {
+    this.profileName_ = info.name;
+    if (info.iconUrl.startsWith('data:image/png;base64')) {
+      this.profileIconUrl_ = convertImageSequenceToPng([info.iconUrl]);
+      return;
+    }
+    this.profileIconUrl_ = info.iconUrl;
+  }
+
+  private handleSyncStatus_(syncStatus: SyncStatus): void {
+    if (!this.isAccountManagerEnabled_ && syncStatus &&
+        syncStatus.signedInState === SignedInState.SYNCING &&
+        syncStatus.signedInUsername) {
+      this.profileLabel_ = syncStatus.signedInUsername;
+    }
+  }
+
+  private getIconImageSet_(iconUrl: string): string {
+    return getImage(iconUrl);
+  }
+
+  private getProfileName_(): string {
+    return this.profileName_;
+  }
+
+  private onFydeProfileClick_(): void {
+    if (loadTimeData.getBoolean('isFydeProfile')) {
+      if (loadTimeData.getBoolean('isFydeLocalAccount')) {
+        return;
+      }
+      const baseUrl = loadTimeData.getString('fydeosAccountBaseUrl');
+      const url = `${baseUrl}/personalInfo/`;
+      window.open(url);
+      return;
+    }
+  }
+
+  private openLocalAccountChangePasswordSystemSettings_(event: CustomEvent<{event: Event}>): void {
+    event.detail.event.preventDefault();
+    Router.getInstance().navigateTo(routes.LOCK_SCREEN);
   }
 }
 

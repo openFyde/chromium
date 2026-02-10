@@ -8,6 +8,7 @@
 #include "components/account_id/account_id.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "google_apis/gaia/gaia_id.h"
+#include "fydeos/switches/account/account_switches.h"
 
 #if BUILDFLAG(IS_CHROMEOS)
 #include "chrome/browser/browser_process.h"
@@ -18,7 +19,10 @@ AccountId AccountIdFromAccountInfo(const CoreAccountInfo& account_info) {
 #if BUILDFLAG(IS_CHROMEOS)
   user_manager::KnownUser known_user(g_browser_process->local_state());
   return known_user.GetAccountId(
-      account_info.email, account_info.gaia.ToString(), AccountType::GOOGLE);
+      account_info.email, account_info.gaia.ToString(),
+    fydeos::switches::IsFydeAccountEnabled()
+                    ? AccountType::FYDE_ACCOUNT
+                    : AccountType::GOOGLE);
 #else
   if (account_info.email.empty() || account_info.gaia.empty())
     return EmptyAccountId();

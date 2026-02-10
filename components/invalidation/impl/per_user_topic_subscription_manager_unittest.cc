@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/barrier_callback.h"
 #include "base/functional/bind.h"
 #include "base/json/json_string_value_serializer.h"
@@ -235,6 +236,8 @@ class PerUserTopicSubscriptionManagerTest : public testing::Test {
   ~PerUserTopicSubscriptionManagerTest() override = default;
 
   void SetUp() override {
+    base::CommandLine::ForCurrentProcess()->AppendSwitch(
+        "no-use-fyde-invalidation-service");
     PerUserTopicSubscriptionManager::RegisterProfilePrefs(
         pref_service_.registry());
     AccountInfo account = identity_test_env_.MakePrimaryAccountAvailable(

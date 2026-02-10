@@ -18,11 +18,15 @@ namespace user_manager {
 
 const char kCanonicalEmail[] = "email";
 const char kGAIAIdKey[] = "gaia_id";
+const char kFlintIdKey[] = "flint_id";
+const char kFydeIdKey[] = "fyde_id";
 const char kAccountTypeKey[] = "account_type";
 
 std::optional<AccountId> LoadAccountId(const base::Value::Dict& dict) {
   const std::string* email = dict.FindString(kCanonicalEmail);
   const std::string* gaia_id = dict.FindString(kGAIAIdKey);
+  const std::string* flint_id = dict.FindString(kFlintIdKey);
+  const std::string* fyde_id = dict.FindString(kFydeIdKey);
   AccountType account_type = AccountType::GOOGLE;
   if (const std::string* account_type_string =
           dict.FindString(kAccountTypeKey)) {
@@ -34,6 +38,16 @@ std::optional<AccountId> LoadAccountId(const base::Value::Dict& dict) {
         return AccountId::FromUserEmailGaiaId(
             email ? *email : std::string(),
             gaia_id ? GaiaId(*gaia_id) : GaiaId());
+      }
+      break;
+    case AccountType::FYDE_ACCOUNT:
+      if (email && fyde_id) {
+        return AccountId::FyFromUserEmailFydeId(*email, GaiaId(*fyde_id));
+      }
+      break;
+    case AccountType::FLINT_ACCOUNT:
+      if (email && flint_id) {
+        return AccountId::FtFromUserEmailFlintId(*email, GaiaId(*flint_id));
       }
       break;
     default:
@@ -61,6 +75,20 @@ bool AccountIdMatches(const AccountId& account_id,
       }
       break;
     }
+    case AccountType::FYDE_ACCOUNT: {
+      const std::string* fyde_id = dict.FindString(kFydeIdKey);
+      if (fyde_id && account_id.GetFydeId() == GaiaId(*fyde_id)) {
+        return true;
+      }
+      break;
+    }
+    case AccountType::FLINT_ACCOUNT: {
+      const std::string* flint_id = dict.FindString(kFlintIdKey);
+      if (flint_id && account_id.GetFlintId() == GaiaId(*flint_id)) {
+        return true;
+      }
+      break;
+    }
     case AccountType::UNKNOWN: {
       break;
     }
@@ -83,6 +111,16 @@ void StoreAccountId(const AccountId& account_id, base::Value::Dict& dict) {
     case AccountType::GOOGLE:
       if (!account_id.GetGaiaId().empty()) {
         dict.Set(kGAIAIdKey, account_id.GetGaiaId().ToString());
+      }
+      break;
+    case AccountType::FYDE_ACCOUNT:
+      if (!account_id.GetFydeId().empty()) {
+        dict.Set(kFydeIdKey, account_id.GetFydeId().ToString());
+      }
+      break;
+    case AccountType::FLINT_ACCOUNT:
+      if (!account_id.GetFlintId().empty()) {
+        dict.Set(kFlintIdKey, account_id.GetFlintId().ToString());
       }
       break;
     case AccountType::UNKNOWN:

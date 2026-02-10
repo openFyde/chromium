@@ -16,6 +16,7 @@
 #include "components/signin/public/identity_manager/tribool.h"
 #include "google_apis/gaia/gaia_auth_util.h"
 #include "google_apis/gaia/google_service_auth_error.h"
+#include "fydeos/switches/account/account_switches.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/callback_android.h"
@@ -485,6 +486,9 @@ bool AccountManagedStatusFinder::MayBeEnterpriseDomain(
     return false;
   }
 
+  if (fydeos::switches::IsPolicyManagedByFyde()) {
+    return true;
+  }
   return !kKnownConsumerDomains.contains(email_domain);
 }
 

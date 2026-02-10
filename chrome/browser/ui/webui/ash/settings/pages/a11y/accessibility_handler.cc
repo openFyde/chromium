@@ -9,6 +9,7 @@
 
 #include "ash/constants/ash_pref_names.h"
 #include "ash/public/cpp/new_window_delegate.h"
+#include "ash/public/cpp/tablet_mode.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -37,6 +38,7 @@
 #include "ui/base/ime/ash/input_method_manager.h"
 #include "ui/base/ime/ash/input_method_util.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/display/screen.h"
 
 namespace ash::settings {
 namespace {
@@ -51,11 +53,18 @@ void RecordShowShelfNavigationButtonsValueChange(bool enabled) {
 }  // namespace
 
 AccessibilityHandler::AccessibilityHandler(Profile* profile)
-    : profile_(profile) {}
+    : profile_(profile) {
+  if (TabletMode::Get()) {
+    TabletMode::Get()->AddObserver(this);
+  }
+}
 
 AccessibilityHandler::~AccessibilityHandler() {
   if (a11y_nav_buttons_toggle_metrics_reporter_timer_.IsRunning()) {
     a11y_nav_buttons_toggle_metrics_reporter_timer_.FireNow();
+  }
+  if (TabletMode::Get()) {
+    TabletMode::Get()->RemoveObserver(this);
   }
 }
 
@@ -76,6 +85,11 @@ void AccessibilityHandler::RegisterMessages() {
           &AccessibilityHandler::
               HandleRecordSelectedShowShelfNavigationButtonsValue,
           base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+    "getTabletModeEnabled",
+    base::BindRepeating(&AccessibilityHandler::GetTabletModeEnabled,
+                      base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "manageA11yPageReady",
@@ -131,6 +145,13 @@ void AccessibilityHandler::HandleRecordSelectedShowShelfNavigationButtonsValue(
   a11y_nav_buttons_toggle_metrics_reporter_timer_.Start(
       FROM_HERE, base::Seconds(10),
       base::BindOnce(&RecordShowShelfNavigationButtonsValueChange, enabled));
+}
+
+void AccessibilityHandler::GetTabletModeEnabled(const base::Value::List& args) {
+  AllowJavascript();
+  FireWebUIListener(
+    "tablet-mode-changed",
+    base::Value(display::Screen::Get()->InTabletMode()));
 }
 
 void AccessibilityHandler::HandleManageA11yPageReady(
@@ -329,6 +350,14 @@ std::u16string AccessibilityHandler::GetDictationLocaleDisplayName() {
       /*locale=*/dictation_locale,
       /*display_locale=*/g_browser_process->GetApplicationLocale(),
       /*is_ui=*/true);
+}
+
+void AccessibilityHandler::OnTabletModeEventsBlockingChanged() {
+  if (IsJavascriptAllowed()) {
+    FireWebUIListener(
+      "tablet-mode-changed",
+      base::Value(display::Screen::Get()->InTabletMode()));
+  }
 }
 
 }  // namespace ash::settings

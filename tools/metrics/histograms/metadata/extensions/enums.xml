@@ -797,6 +797,15 @@ Called by update_extension_histograms.py.-->
   <int value="570" label="SIDE_PANEL_ON_CLOSED"/>
   <int value="571" label="ACCESSIBILITY_PRIVATE_ON_KEY_DOWN"/>
   <int value="572" label="ACCESSIBILITY_PRIVATE_ON_KEY_UP"/>
+  <int value="573" label="FYDEOS_SHELL_CLIENT_SYSTEM_NOTIFICATION"/>
+  <int value="574" label="FYDEOS_SHELL_CLIENT_COMMAND_NOTIFICATION"/>
+  <int value="575" label="FYDEOS_SHELL_CLIENT_CUSTOM_NOTIFICATION"/>
+  <int value="576" label="ARC_APPS_PRIVATE_ON_REMOVED"/>
+  <int value="577" label="ARC_APPS_PRIVATE_ON_INSTALLATION_STARTED"/>
+  <int value="578" label="ARC_APPS_PRIVATE_ON_INSTALLATION_PROGRESS_CHANGED"/>
+  <int value="579" label="ARC_APPS_PRIVATE_ON_INSTALLATION_FINISHED"/>
+  <int value="580" label="FYDEOS_LICENSE_INVALID_NOTIFICATION"/>
+  <int value="581" label="FYDEOS_LICENSE_VALID_NOTIFICATION"/>
 </enum>
 
 <!-- LINT.ThenChange(//extensions/browser/extension_event_histogram_value.h:HistogramValue) -->
@@ -2867,6 +2876,30 @@ Called by update_extension_histograms.py.-->
   <int value="1952"
       label="AUTOFILLPRIVATE_SETWALLETABLEPASSDETECTIONOPTINSTATUS"/>
   <int value="1953" label="METRICSPRIVATE_RECORDEXTENSIONUSAGEUKM"/>
+  <int value="1954" label="NATIVE_WINDOWS_GET"/>
+  <int value="1955" label="NATIVE_WINDOWS_GETALL"/>
+  <int value="1956" label="NATIVE_WINDOWS_UPDATE"/>
+  <int value="1957" label="NATIVE_WINDOWS_REMOVE"/>
+  <int value="1958" label="NATIVE_WINDOWS_CREATE"/>
+  <int value="1959" label="APP_MANAGEMENT_GETAPPLIST"/>
+  <int value="1960" label="APP_MANAGEMENT_INSTALLWEBAPP"/>
+  <int value="1961" label="APP_MANAGEMENT_INSTALLARCAPP"/>
+  <int value="1962" label="COMMAND_LINE_HASSWITCH"/>
+  <int value="1963" label="COMMAND_LINE_REMOVESWITCH"/>
+  <int value="1964" label="COMMAND_LINE_ADDSWITCH"/>
+  <int value="1965" label="APP_MANAGEMENT_GETARCPOLICY"/>
+  <int value="1966" label="SHELL_SYNC_EXEC"/>
+  <int value="1967" label="SHELL_ASYNC_EXEC"/>
+  <int value="1968" label="SHELL_GET_TASK_STATE"/>
+  <int value="1969" label="SHELL_GET_TASK_OUTPUT"/>
+  <int value="1970" label="SHELL_GET_DAEMON_STATE"/>
+  <int value="1971" label="SHELL_FORCE_CLOSE_TASK"/>
+  <int value="1972" label="FYDEOS_ARC_STATUS_GET"/>
+  <int value="1973" label="INPUT_IME_SHOW_FYDE_LANGUAGE_STATE"/>
+  <int value="1974" label="ARCAPPSPRIVATE_REMOVEPACKAGE"/>
+  <int value="1975" label="ARCAPPSPRIVATE_INSTALLPACKAGE_FROM_PATH"/>
+  <int value="1976" label="FYDEOS_PRIVATE_GET_FYDEOS_INFO"/>
+  <int value="1977" label="LICENSE_MANAGEMENT_REFRESH"/>
 </enum>
 
 <!-- LINT.ThenChange(//extensions/browser/extension_function_histogram_value.h:HistogramValue) -->
@@ -3255,6 +3288,8 @@ Called by update_extension_permission.py.-->
   <int value="261" label="kOmniboxDirectInput"/>
   <int value="262" label="kExperimentalActor"/>
   <int value="263" label="kEnterpriseLogin"/>
+  <int value="264" label="kFydeOSPrivate"/>
+  <int value="265" label="kFydeOSShellClient"/>
 </enum>
 
 <enum name="ExtensionPolicyReinstallReason">

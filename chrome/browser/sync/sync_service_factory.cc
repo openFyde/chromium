@@ -114,6 +114,7 @@
 #include "chrome/browser/sync/desk_sync_service_factory.h"
 #include "chrome/browser/sync/wifi_configuration_sync_service_factory.h"
 #include "chromeos/ash/experiences/arc/arc_util.h"
+#include "fydeos/switches/account/toggle/account_type_toggle.h"
 #endif  // BUILDFLAG(IS_CHROMEOS)
 
 #if BUILDFLAG(IS_ANDROID)
@@ -367,6 +368,8 @@ std::unique_ptr<KeyedService> BuildSyncService(
   if (create_http_post_provider_factory_for_test.has_value()) {
     CHECK_IS_TEST();
   }
+
+  fydeos::switches::ToggleFydeAccountFlagByActiveUser();
 
   syncer::SyncServiceImpl::InitParams init_params;
 

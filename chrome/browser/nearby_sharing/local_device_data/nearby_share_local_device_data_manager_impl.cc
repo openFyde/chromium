@@ -207,6 +207,11 @@ void NearbyShareLocalDeviceDataManagerImpl::DownloadDeviceData() {
 void NearbyShareLocalDeviceDataManagerImpl::UploadContacts(
     std::vector<nearby::sharing::proto::Contact> contacts,
     UploadCompleteCallback callback) {
+  // Skip upload in limited mode
+  if (!device_data_updater_) {
+    std::move(callback).Run(false);
+    return;
+  }
   device_data_updater_->UpdateDeviceData(
       std::move(contacts),
       /*certificates=*/std::nullopt,
@@ -218,6 +223,11 @@ void NearbyShareLocalDeviceDataManagerImpl::UploadContacts(
 void NearbyShareLocalDeviceDataManagerImpl::UploadCertificates(
     std::vector<nearby::sharing::proto::PublicCertificate> certificates,
     UploadCompleteCallback callback) {
+  // Skip upload in limited mode
+  if (!device_data_updater_) {
+    std::move(callback).Run(false);
+    return;
+  }
   device_data_updater_->UpdateDeviceData(
       /*contacts=*/std::nullopt, std::move(certificates),
       base::BindOnce(
@@ -257,6 +267,11 @@ std::string NearbyShareLocalDeviceDataManagerImpl::GetDefaultDeviceName()
 }
 
 void NearbyShareLocalDeviceDataManagerImpl::OnDownloadDeviceDataRequested() {
+  // Skip download in limited mode
+  if (!device_data_updater_) {
+    download_device_data_scheduler_->HandleResult(false);
+    return;
+  }
   device_data_updater_->UpdateDeviceData(
       /*contacts=*/std::nullopt,
       /*certificates=*/std::nullopt,

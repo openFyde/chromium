@@ -1,0 +1,21 @@
+import("//build/config/chromeos/ui_mode.gni")
+
+assert(is_chromeos_ash, "Fyde Assistant is ash-chrome only")
+
+static_library("fyde_assistant_app_ui") {
+  sources = [
+    "fyde_assistant_app_ui.cc",
+    "fyde_assistant_app_ui.h",
+    "fyde_assistant_app_ui_delegate.h",
+    "fyde_assistant_app_webui_handler.cc",
+    "fyde_assistant_app_webui_handler.h",
+    "url_constants.cc",
+    "url_constants.h",
+  ]
+
+  deps = [
+    "//ash/webui/fyde_assistant_app_ui/resources:resources",
+    "//content/public/browser",
+    "//ui/webui",
+  ]
+}

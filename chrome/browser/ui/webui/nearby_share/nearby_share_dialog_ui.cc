@@ -126,6 +126,13 @@ NearbyShareDialogUI::NearbyShareDialogUI(content::WebUI* web_ui)
 
   html_source->AddBoolean("isQuickShareV2Enabled",
                           chromeos::features::IsQuickShareV2Enabled());
+
+  // Check if Nearby Share is in limited mode
+  bool is_nearby_share_limited_mode = false;
+  if (nearby_service_ && nearby_service_->GetSettings()) {
+    is_nearby_share_limited_mode = nearby_service_->GetSettings()->IsLimitedMode();
+  }
+  html_source->AddBoolean("isNearbyShareLimitedMode", is_nearby_share_limited_mode);
 }
 
 NearbyShareDialogUI::~NearbyShareDialogUI() = default;

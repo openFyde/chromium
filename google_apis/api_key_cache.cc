@@ -120,6 +120,12 @@ ApiKeyCache::ApiKeyCache(const DefaultApiKeys& default_api_keys) {
       default_api_keys.allow_override_via_environment,
       default_api_keys.allow_unset_values);
 
+  fydeos_api_key_ = CalculateKeyValue(
+      default_api_keys.fydeos_api_key, STRINGIZE_NO_EXPANSION(FYDEOS_API_KEY),
+      nullptr, std::string(), environment.get(), command_line, gaia_config,
+      default_api_keys.allow_override_via_environment,
+      default_api_keys.allow_unset_values);
+
 // A special non-stable key is at the moment defined only for Android Chrome.
 #if BUILDFLAG(IS_ANDROID)
   api_key_non_stable_ = CalculateKeyValue(
@@ -219,6 +225,21 @@ ApiKeyCache::ApiKeyCache(const DefaultApiKeys& default_api_keys) {
       default_api_keys.allow_override_via_environment,
       default_api_keys.allow_unset_values);
 
+#if BUILDFLAG(IS_OPENFYDE)
+  std::string fydeos_default_client_id = CalculateKeyValue(
+      default_api_keys.fydeos_default_client_id,
+      STRINGIZE_NO_EXPANSION(FYDEOS_DEFAULT_CLIENT_ID), nullptr, std::string(),
+      environment.get(), command_line, gaia_config,
+      default_api_keys.allow_override_via_environment,
+      default_api_keys.allow_unset_values);
+   std::string fydeos_default_client_secret = CalculateKeyValue(
+      default_api_keys.fydeos_default_client_secret,
+      STRINGIZE_NO_EXPANSION(FYDEOS_DEFAULT_CLIENT_SECRET), nullptr,
+      std::string(), environment.get(), command_line, gaia_config,
+      default_api_keys.allow_override_via_environment,
+      default_api_keys.allow_unset_values);
+#endif
+
   // We currently only allow overriding the baked-in values for the
   // default OAuth2 client ID and secret using a command-line
   // argument and gaia config, since that is useful to enable testing against
@@ -239,6 +260,23 @@ ApiKeyCache::ApiKeyCache(const DefaultApiKeys& default_api_keys) {
                         environment.get(), command_line, gaia_config,
                         default_api_keys.allow_override_via_environment,
                         default_api_keys.allow_unset_values);
+
+#if BUILDFLAG(IS_OPENFYDE)
+  client_ids_[CLIENT_FYDEOS_MAIN] =
+      CalculateKeyValue(default_api_keys.fydeos_client_id_main,
+                        STRINGIZE_NO_EXPANSION(FYDEOS_CLIENT_ID_MAIN),
+                        ::switches::kOAuth2FydeOsClientID, fydeos_default_client_id,
+                        environment.get(), command_line, gaia_config,
+                        default_api_keys.allow_override_via_environment,
+                        default_api_keys.allow_unset_values);
+  client_secrets_[CLIENT_FYDEOS_MAIN] =
+      CalculateKeyValue(default_api_keys.fydeos_client_secret_main,
+                        STRINGIZE_NO_EXPANSION(FYDEOS_CLIENT_SECRET_MAIN),
+                        ::switches::kOAuth2FydeOsClientSecret, fydeos_default_client_secret,
+                        environment.get(), command_line, gaia_config,
+                        default_api_keys.allow_override_via_environment,
+                        default_api_keys.allow_unset_values);
+#endif
 
   client_ids_[CLIENT_REMOTING] = CalculateKeyValue(
       default_api_keys.google_client_id_remoting,
@@ -295,6 +333,11 @@ bool ApiKeyCache::HasAPIKeyConfigured() const {
   return api_key_ != DefaultApiKeys::kUnsetApiToken;
 }
 
+bool ApiKeyCache::HasFydeOSAPIKeyConfigured() const {
+  return fydeos_api_key_ != DefaultApiKeys::kUnsetApiToken;
+}
+
+#if !BUILDFLAG(IS_OPENFYDE)
 bool ApiKeyCache::HasOAuthClientConfigured() const {
   auto is_unset = [](const std::string& value) {
     return value == DefaultApiKeys::kUnsetApiToken;
@@ -302,5 +345,32 @@ bool ApiKeyCache::HasOAuthClientConfigured() const {
   return std::ranges::none_of(client_ids_, is_unset) &&
          std::ranges::none_of(client_secrets_, is_unset);
 }
+#endif
+
+#if BUILDFLAG(IS_OPENFYDE)
+bool ApiKeyCache::HasOAuthClientConfigured() const {
+  for (size_t client_id = 0; client_id < CLIENT_NUM_ITEMS; ++client_id) {
+    if (client_id == CLIENT_FYDEOS_MAIN) {
+      continue;
+    }
+    OAuth2Client client = static_cast<OAuth2Client>(client_id);
+    if (GetOAuth2ClientID(client) == DefaultApiKeys::kUnsetApiToken ||
+        GetOAuth2ClientSecret(client) == DefaultApiKeys::kUnsetApiToken) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool ApiKeyCache::HasFydeOAuthClientConfigured() const {
+  OAuth2Client client = CLIENT_FYDEOS_MAIN;
+  if (GetOAuth2ClientID(client) == DefaultApiKeys::kUnsetApiToken ||
+      GetOAuth2ClientSecret(client) == DefaultApiKeys::kUnsetApiToken) {
+    return false;
+  }
+  return true;
+}
+#endif
 
 }  // namespace google_apis

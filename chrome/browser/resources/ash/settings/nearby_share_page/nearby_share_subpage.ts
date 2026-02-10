@@ -132,6 +132,17 @@ export class SettingsNearbyShareSubpageElement extends
         type: String,
         value: 'Contacts',
       },
+
+      /**
+       * Determines whether Nearby Share is in limited mode
+       */
+      isLimitedMode_: {
+        type: Boolean,
+        value: () => {
+          return loadTimeData.valueExists('isNearbyShareLimitedMode') &&
+              loadTimeData.getBoolean('isNearbyShareLimitedMode');
+        },
+      },
     };
   }
 
@@ -167,6 +178,7 @@ export class SettingsNearbyShareSubpageElement extends
   private showVisibilityDialog_: boolean;
   private yourDevicesLabel_: string;
   private contactsLabel_: string;
+  private isLimitedMode_: boolean;
 
   constructor() {
     super();
@@ -204,7 +216,10 @@ export class SettingsNearbyShareSubpageElement extends
       // nearby is enabled complete to improve consistency. This should help
       // avoid scenarios where a share is attempted and contacts are stale on
       // the receiver.
-      getContactManager().downloadContacts();
+      // Skip contact sync in limited mode (non-Gaia users).
+      if (!this.isLimitedMode_) {
+        getContactManager().downloadContacts();
+      }
     }
   }
 
@@ -509,6 +524,11 @@ export class SettingsNearbyShareSubpageElement extends
       default:
         return Visibility.kUnknown;
     }
+  }
+
+  private getHighVisibilityContainerClass_(isLimitedMode: boolean): string {
+    return isLimitedMode ? 'settings-box two-line no-indent' :
+                           'settings-box two-line';
   }
 }
 

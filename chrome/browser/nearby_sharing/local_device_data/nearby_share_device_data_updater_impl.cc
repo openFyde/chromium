@@ -35,6 +35,10 @@ NearbyShareDeviceDataUpdaterImpl::Factory::Create(
   if (test_factory_)
     return test_factory_->CreateInstance(device_id, timeout, client_factory);
 
+  // Return nullptr if client_factory is null, this means limited mode.
+  if (!client_factory)
+    return nullptr;
+
   return base::WrapUnique(
       new NearbyShareDeviceDataUpdaterImpl(device_id, timeout, client_factory));
 }

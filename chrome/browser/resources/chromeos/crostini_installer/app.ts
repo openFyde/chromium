@@ -71,6 +71,14 @@ const UNAVAILABLE_USERNAMES: string[] = [
   'android-everybody',
 ];
 
+// chrome/browser/ash/crostini/crostini_util.h
+// enum class CrostiniUISurface
+const UI_SURFACE = {
+  SETTINGS: 0,
+  APPLIST: 1,
+  NOTIFICATION: 2,
+} as const;
+
 interface CrostiniInstallerAppElement {
   $: {
     username: CrInputElement,
@@ -161,6 +169,15 @@ class CrostiniInstallerAppElement extends PolymerElement {
         type: Number,
         value: MAX_USERNAME_LENGTH,
       },
+
+      uiSurface_: {
+        type: Number,
+      },
+
+      shouldShowInitPrompt_: {
+        type: Boolean,
+        value: true,
+      },
     };
   }
 
@@ -179,6 +196,8 @@ class CrostiniInstallerAppElement extends PolymerElement {
   private username_: string;
   private usernameError_: string;
   private MAX_USERNAME_LENGTH: number;
+  private uiSurface_: number;
+  private shouldShowInitPrompt_: boolean;
   private listenerIds_: number[];
   private diskSpacePromise_: Promise<{
     ticks: DiskSliderTick[],
@@ -186,6 +205,26 @@ class CrostiniInstallerAppElement extends PolymerElement {
     isLowSpaceAvailable: boolean,
   }>;
   private onNextButtonClickIsRunning_: boolean = false;
+
+  override ready(): void {
+    super.ready();
+
+    const dialogArgs = chrome.getVariableValue('dialogArguments');
+
+    try {
+      const obj = JSON.parse(dialogArgs);
+      this.uiSurface_ = obj.uiSurface;
+    } catch {
+      this.uiSurface_ = UI_SURFACE.SETTINGS;
+    }
+
+    this.shouldShowInitPrompt_ = this.uiSurface_ !== UI_SURFACE.NOTIFICATION;
+    if (this.shouldShowInitPrompt_) {
+      this.state_ = State.PROMPT;
+    } else {
+      this.state_ = State.CONFIGURE;
+    }
+  }
 
   override connectedCallback() {
     super.connectedCallback();
@@ -226,6 +265,10 @@ class CrostiniInstallerAppElement extends PolymerElement {
 
     this.shadowRoot!.querySelector<HTMLElement>(
                         '.action-button:not([hidden])')!.focus();
+
+    if (!this.shouldShowInitPrompt_) {
+      this.onNextButtonClick_();
+    }
   }
 
   override disconnectedCallback() {
@@ -236,7 +279,11 @@ class CrostiniInstallerAppElement extends PolymerElement {
 
   private async onNextButtonClick_() {
     if (!this.onNextButtonClickIsRunning_) {
-      assert(this.state_ === State.PROMPT);
+      if (this.shouldShowInitPrompt_) {
+        assert(this.state_ === State.PROMPT);
+      } else {
+        assert(this.state_ === State.CONFIGURE);
+      }
       this.onNextButtonClickIsRunning_ = true;
 
       // We should get the disk space very soon (if we have not already got it)
@@ -306,7 +353,7 @@ class CrostiniInstallerAppElement extends PolymerElement {
         this.closePage_();
         break;
       case State.CONFIGURE:
-        if (forceCancel) {
+        if (forceCancel || !this.shouldShowInitPrompt_) {
           this.closePage_();
         } else {
           this.state_ = State.PROMPT;
@@ -496,6 +543,9 @@ class CrostiniInstallerAppElement extends PolymerElement {
   }
 
   private getCancelButtonLabel_(): string {
+    if (!this.shouldShowInitPrompt_) {
+      return loadTimeData.getString('cancel');
+    }
     return loadTimeData.getString(
         this.state_ === State.CONFIGURE ? 'back' : 'cancel');
   }

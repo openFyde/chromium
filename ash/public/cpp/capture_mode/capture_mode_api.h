@@ -37,6 +37,8 @@ bool ASH_EXPORT CanShowSunfishUi();
 // `SunfishScannerFeatureWatcher`, use its identically named method instead.
 bool ASH_EXPORT CanShowSunfishOrScannerUi();
 
+bool ASH_EXPORT CanShowTextExtractionUi();
+
 }  // namespace ash
 
 #endif  // ASH_PUBLIC_CPP_CAPTURE_MODE_CAPTURE_MODE_API_H_

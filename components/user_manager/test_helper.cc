@@ -49,6 +49,9 @@ bool IsUserIdMatchingKioskType(std::string_view user_id,
   switch (expected_kiosk_type) {
     case UserType::kRegular:
     case UserType::kChild:
+    case UserType::kFlintAccount:
+    case UserType::kFydeAccount:
+    case UserType::kFydeChild:
     case UserType::kGuest:
     case UserType::kPublicAccount:
       NOTREACHED() << "Provided UserType is not kiosk: " << expected_kiosk_type;

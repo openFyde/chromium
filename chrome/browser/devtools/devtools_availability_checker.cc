@@ -29,6 +29,7 @@
 #if BUILDFLAG(IS_CHROMEOS)
 #include "chromeos/constants/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "fydeos/constants/fydeos_constants.h"
 #endif
 
 namespace {
@@ -136,6 +137,9 @@ bool IsInspectionAllowed(Profile* profile,
   if (extension) {
     availability =
         policy::DeveloperToolsPolicyHandler::GetEffectiveAvailability(profile);
+    if (fydeos::constants::ShouldHideExtensionById(extension->id())) {
+      availability = Availability::kDisallowed;
+    }
   } else {
     // Perform additional checks for browser windows (extension == null).
     availability = GetDevToolsAvailability(profile);

@@ -97,6 +97,10 @@ class FeedbackService : public base::RefCountedThreadSafe<FeedbackService> {
       const FeedbackParams& params,
       scoped_refptr<feedback::FeedbackData> feedback_data,
       SendFeedbackCallback callback);
+  void OnFydeOSLogCollected(
+      const FeedbackParams& params,
+      scoped_refptr<feedback::FeedbackData> feedback_data,
+      SendFeedbackCallback callback);
   void FetchSystemInformation(
       const FeedbackParams& params,
       scoped_refptr<feedback::FeedbackData> feedback_data);

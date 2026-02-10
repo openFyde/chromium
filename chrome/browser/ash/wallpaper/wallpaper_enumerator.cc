@@ -15,6 +15,7 @@
 #include "base/task/thread_pool.h"
 #include "chrome/browser/ash/file_manager/path_util.h"
 #include "chrome/browser/ash/file_manager/trash_common_util.h"
+#include "fydeos/switches/misc/misc_constants.h"
 
 namespace {
 
@@ -59,6 +60,12 @@ std::vector<base::FilePath> EnumerateAllImages(
   for (const auto& pattern : patterns) {
     EnumerateFiles(search_path, trash_paths, pattern, &image_paths);
   }
+
+  const base::FilePath fyde_search_path =
+    base::FilePath(fydeos::constants::kFydeOSWallpapersBasePath);
+  EnumerateFiles(fyde_search_path, trash_paths, kPngFilePattern, &image_paths);
+  EnumerateFiles(fyde_search_path, trash_paths, kJpgFilePattern, &image_paths);
+  EnumerateFiles(fyde_search_path, trash_paths, kJpegFilePattern, &image_paths);
 
   return image_paths;
 }

@@ -1,0 +1,81 @@
+<!--
+Copyright 2016 The Chromium Authors
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<style include="oobe-dialog-host-styles">
+  #fydeosPrivacyFrame,
+  #crosEulaFrame {
+    min-height: 200px;
+  }
+
+</style>
+<oobe-adaptive-dialog id="eulaLoadingDialog" for-step="loading" role="dialog"
+  fydeos-layout
+  animation-url="animations/fydeos_eula.json"
+  aria-label$="[[i18nDynamic(locale, 'termsOfServiceLoading')]]">
+  <h1 slot="title">
+    [[i18nDynamic(locale, 'termsOfServiceLoading')]]
+  </h1>
+</oobe-adaptive-dialog>
+<!-- As this dialog have pre-loading logic that require access to elements,
+      dialog is marked as no-lazy. -->
+<oobe-adaptive-dialog id="eulaDialog" for-step="eula" role="dialog"
+  fydeos-layout
+  aria-label$="[[i18nDynamic(locale, 'oobeEulaSectionTitle')]]"
+  aria-describedby="crosEulaFrame" no-lazy>
+  <iron-icon icon="oobe-illos:fydeos-eula-illo"
+      slot="fydeos-illustration"
+      class="illustration-jelly">
+  </iron-icon>
+  <h1 slot="title">
+    [[i18nDynamic(locale, 'oobeEulaSectionTitle')]]
+  </h1>
+  <div slot="content" class="flex layout vertical">
+    <webview id="crosEulaFrame" role="document"
+      class="flex oobe-tos-webview"
+      aria-label$="[[i18nDynamic(locale, 'oobeEulaIframeLabel')]]"
+      on-contentload="onEulaLoad_">
+    </webview>
+  </div>
+  <div slot="back-navigation">
+    <oobe-back-button id="backButton" hidden="[[backButtonHidden_]]"
+      on-click="onEulaBackButtonPressed_">
+    </oobe-back-button>
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-text-button id="acceptButton" inverse on-click="eulaFirstStepAccepted_"
+      class="focus-on-show"
+      text-key="oobeEulaAcceptAndContinueButtonText">
+    </oobe-text-button>
+  </div>
+</oobe-adaptive-dialog>
+<oobe-adaptive-dialog id="privacyDialog" for-step="privacy" role="dialog"
+    fydeos-layout
+    aria-label$="[[i18nDynamic(locale, 'oobePrivacySectionTitle')]]"
+    aria-describedby="fydeosPrivacyFrame" no-lazy>
+  <iron-icon icon="oobe-illos:fydeos-eula-illo"
+      slot="fydeos-illustration"
+      class="illustration-jelly">
+  </iron-icon>
+  <h1 slot="title">
+    [[i18nDynamic(locale, 'oobePrivacySectionTitle')]]
+  </h1>
+  <div slot="content" class="flex layout vertical">
+    <webview id="fydeosPrivacyFrame"
+        role="document" class="flex oobe-tos-webview focus-on-show"
+        aria-label$="[[i18nDynamic(locale, 'oobePrivacyIframeLabel')]]"
+        on-contentload="onPrivacyFrameLoad_">
+    </webview>
+  </div>
+  <div slot="back-navigation">
+    <oobe-back-button
+        on-click="onPrivacyBackButtonPressed_"></oobe-back-button>
+  </div>
+  <div slot="bottom-buttons">
+    <oobe-text-button id="privacyAcceptButton" inverse on-click="privacyAccepted_"
+        text-key="oobeEulaAcceptAndContinueButtonText">
+    </oobe-text-button>
+  </div>
+</oobe-adaptive-dialog>

@@ -21,6 +21,9 @@ namespace policy {
 std::optional<std::string> GetEnrollmentToken(
     const ash::OobeConfiguration* oobe_config);
 
+std::optional<std::string> GetFydeEnrollmentToken(
+    const ash::OobeConfiguration* oobe_config);
+
 }  // namespace policy
 
 #endif  // CHROME_BROWSER_ASH_POLICY_ENROLLMENT_ENROLLMENT_TOKEN_PROVIDER_H_

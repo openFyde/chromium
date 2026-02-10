@@ -102,6 +102,7 @@
 #include "chromeos/ash/experiences/arc/arc_prefs.h"
 #include "chromeos/components/quick_answers/public/cpp/quick_answers_prefs.h"
 #include "components/account_manager_core/pref_names.h"
+#include "fydeos/prefs/fydeos_pref_names.h"
 #include "components/user_manager/user.h"
 #include "components/user_manager/user_manager.h"
 #include "ui/events/ash/pref_names.h"
@@ -894,6 +895,9 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[::ash::prefs::kOnDeviceAppControlsSetupCompleted] =
       settings_api::PrefType::kBoolean;
 
+  (*s_allowlist)[arc::prefs::kArcSignedIn] =
+      settings_api::PrefType::kBoolean;
+
   // Ambient Mode.
   (*s_allowlist)[ash::prefs::kDarkModeScheduleType] =
       settings_api::PrefType::kNumber;
@@ -913,6 +917,12 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kNumber;
   (*s_allowlist)[ash::ambient::prefs::kAmbientModeRunningDurationMinutes] =
       settings_api::PrefType::kNumber;
+
+  // Fyde Assistant.
+  (*s_allowlist)[fydeos::prefs::kFydeAssistantEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_allowlist)[fydeos::prefs::kFydeAssistantExtraAcceleratorEnabled] =
+      settings_api::PrefType::kBoolean;
 
   // Quick Answers.
   (*s_allowlist)[quick_answers::prefs::kQuickAnswersEnabled] =
@@ -1224,10 +1234,8 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlistedKeys() {
   (*s_allowlist)[proxy_config::prefs::kProxyOverrideRules] =
       settings_api::PrefType::kList;
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   (*s_allowlist)[::prefs::kUserFeedbackAllowed] =
       settings_api::PrefType::kBoolean;
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
   // Media Remoting settings.
   (*s_allowlist)[media_router::prefs::kMediaRouterMediaRemotingEnabled] =

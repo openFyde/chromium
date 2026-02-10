@@ -75,6 +75,7 @@
 #include "chrome/browser/ui/webui/ash/login/oobe_ui.h"
 #include "chrome/browser/ui/webui/ash/login/os_install_screen_handler.h"
 #include "chrome/browser/ui/webui/ash/login/welcome_screen_handler.h"
+#include "chrome/browser/ui/webui/ash/login/data_restore_screen_handler.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
@@ -618,7 +619,7 @@ void LoginDisplayHostWebUI::StartWizard(OobeScreenId first_screen) {
 
   DisableKeyboardOverscroll();
 
-  TryToPlayOobeStartupSound();
+  // TryToPlayOobeStartupSound();
 
   first_screen_ = first_screen;
 
@@ -902,6 +903,14 @@ bool LoginDisplayHostWebUI::HandleAccelerator(LoginAcceleratorAction action) {
   return LoginDisplayHostCommon::HandleAccelerator(action);
 }
 
+void LoginDisplayHostWebUI::HandlePlayStartupSound() {
+  // Reset timer
+  // Perhaps we should consider altering the name of this variable, since we're
+  // not playing sound after the login prompt is visible.
+  login_prompt_visible_time_ = base::TimeTicks::Now();
+  TryToPlayOobeStartupSound();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // LoginDisplayHostWebUI, private
 
@@ -1060,7 +1069,7 @@ void LoginDisplayHostWebUI::OnLoginPromptVisible() {
     return;
   }
   login_prompt_visible_time_ = base::TimeTicks::Now();
-  TryToPlayOobeStartupSound();
+  // TryToPlayOobeStartupSound();
 }
 
 void LoginDisplayHostWebUI::CreateExistingUserController() {
@@ -1076,12 +1085,20 @@ void LoginDisplayHostWebUI::ShowOsInstallScreen() {
   StartWizard(OsInstallScreenView::kScreenId);
 }
 
+void LoginDisplayHostWebUI::ShowDataRestoreScreen() {
+  StartWizard(DataRestoreScreenView::kScreenId);
+}
+
 void LoginDisplayHostWebUI::ShowGuestTosScreen() {
   StartWizard(GuestTosScreenView::kScreenId);
 }
 
 void LoginDisplayHostWebUI::ShowRemoteActivityNotificationScreen() {
   StartWizard(RemoteActivityNotificationView::kScreenId);
+}
+
+void LoginDisplayHostWebUI::ShowLocalDialog() {
+  ShowLocalDialogCommon();
 }
 
 void LoginDisplayHostWebUI::HideOobeDialog(bool saml_page_closed) {

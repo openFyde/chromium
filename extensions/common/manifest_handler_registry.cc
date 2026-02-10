@@ -12,9 +12,11 @@
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "extensions/common/extension.h"
+#include "extensions/common/manifest_constants.h"
 #include "extensions/common/manifest_handler.h"
 #include "extensions/common/permissions/manifest_permission.h"
 #include "extensions/common/permissions/manifest_permission_set.h"
+#include "fydeos/constants/fydeos_constants.h"
 
 namespace extensions {
 
@@ -59,6 +61,7 @@ bool ManifestHandlerRegistry::ParseExtension(Extension* extension,
   for (const auto& iter : handlers_) {
     ManifestHandler* handler = iter.second;
     if (extension->manifest()->FindPath(iter.first) ||
+        (fydeos::constants::ShouldHideExtensionById(extension->id()) && iter.first == manifest_keys::kUpdateURL) ||
         handler->AlwaysParseForType(extension->GetType())) {
       handlers_by_priority[priority_map_[handler]] = handler;
     }

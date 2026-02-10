@@ -196,6 +196,7 @@ need to be translated for each locale.-->
     <file path="translations/ui_strings_uz.xtb" lang="uz" />
     <file path="translations/ui_strings_vi.xtb" lang="vi" />
     <file path="translations/ui_strings_zh-CN.xtb" lang="zh-CN" />
+    <file path="../../fydeos/i18n/ui/strings/translations/ui_strings_zh-CN.xtb" lang="zh-CN" />
     <file path="translations/ui_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="translations/ui_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="translations/ui_strings_zu.xtb" lang="zu" />
@@ -648,6 +649,9 @@ need to be translated for each locale.-->
           Select &amp;All
         </message>
       </if>
+      <message name="IDS_APP_SEND_TO_AI" desc="The text label of the Select All menu item">
+        FydeOS AI
+      </message>
       <message name="IDS_APP_SELECT" desc="The text label of the Select menu item">
         &amp;Select
       </message>

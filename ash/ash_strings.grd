@@ -190,6 +190,7 @@ Style notes:
     <file path="strings/ash_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="strings/ash_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="strings/ash_strings_zu.xtb" lang="zu" />
+    <file path="../fydeos/i18n/ash/strings/ash_strings_zh-CN.xtb" lang="zh-CN" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -9069,6 +9070,10 @@ To shut down the device, press and hold the power button on the device again.
       <message name="IDS_ASH_BOREALIS_MOTD_TITLE_TEXT" desc="Title text for Borealis MOTD. Shown at the top of the dialog.">
         Steam for Chromebook News
       </message>
+
+      <part file="../fydeos/i18n/ash/ash_strings.override.grdp" />
+      <part file="../fydeos/i18n/ash/ash_strings.grdp" />
+
      </messages>
     </release>
 </grit>

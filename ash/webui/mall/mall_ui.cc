@@ -23,7 +23,7 @@
 namespace ash {
 
 bool MallUIConfig::IsWebUIEnabled(content::BrowserContext* browser_context) {
-  return ChromeOSWebUIConfig::IsWebUIEnabled(browser_context);
+  return false;
 }
 
 MallUI::MallUI(content::WebUI* web_ui, std::unique_ptr<MallUIDelegate> delegate)

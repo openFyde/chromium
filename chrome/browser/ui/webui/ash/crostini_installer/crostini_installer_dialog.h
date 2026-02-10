@@ -12,6 +12,10 @@
 
 class Profile;
 
+namespace crostini {
+enum class CrostiniUISurface;
+}
+
 namespace ash {
 
 class CrostiniInstallerUI;
@@ -23,6 +27,7 @@ class CrostiniInstallerDialog : public SystemWebDialogDelegate {
 
   // |on_loaded_callback| is ignored if the dialog is already showing.
   static void Show(Profile* profile,
+                   crostini::CrostiniUISurface ui_surface,
                    OnLoadedCallback on_loaded_callback = OnLoadedCallback());
 
  private:
@@ -39,6 +44,8 @@ class CrostiniInstallerDialog : public SystemWebDialogDelegate {
   bool OnDialogCloseRequested() override;
   void OnDialogShown(content::WebUI* webui) override;
   void OnWebContentsFinishedLoad() override;
+
+  std::string GetDialogArgs() const override;
 
   raw_ptr<Profile> profile_;
   base::WeakPtr<CrostiniInstallerUI> installer_ui_ = nullptr;

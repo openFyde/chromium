@@ -24,6 +24,7 @@ export function getHtml(this: HistorySideBarElement) {
   </a>
   <a id="syncedTabs" role="menuitem" href="/syncedTabs"
       class="page-item cr-nav-menu-item"
+      hidden="[[isFydeLocalAccount_]]"
       path="syncedTabs" @click="${this.onItemClick_}">
     <cr-icon icon="cr:phonelink"></cr-icon>
     $i18n{openTabsMenuItem}

@@ -694,6 +694,13 @@ void NearbyShareCertificateManagerImpl::OnDownloadPublicCertificatesRequest(
     size_t certificate_count) {
   DCHECK(!client_);
 
+    // Skip download in limited mode
+  if (!client_factory_) {
+    OnListPublicCertificatesFailure(page_number, certificate_count,
+                                    ash::nearby::NearbyHttpError::kOffline);
+    return;
+  }
+
   nearby::sharing::proto::ListPublicCertificatesRequest request;
   request.set_parent(kDeviceIdPrefix + local_device_data_manager_->GetId());
   if (page_token) {

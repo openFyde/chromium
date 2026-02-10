@@ -17,7 +17,7 @@ namespace ash {
 // TPM initialization process. When the preparation process is done, invoke
 // `preparation_finished_callback`.
 COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_TPM)
-void PrepareTpm(base::OnceClosure preparation_finished_callback);
+void PrepareTpm(base::OnceCallback<void(bool)> preparation_finished_callback);
 
 }  // namespace ash
 

@@ -29,6 +29,12 @@ const int kExtensionIdLength = 32;
 
 namespace extension_ime_util {
 
+const char kFydeOSRimeExtensionId[] = "nfglebjgiflmmcdddkbcbgmdkomlfcpa";
+
+const char* const kFydeOSImeExtensionIds[] = {
+  kFydeOSRimeExtensionId,
+};
+
 std::string GetInputMethodID(const std::string& extension_id,
                              const std::string& engine_id) {
   DCHECK(!extension_id.empty());
@@ -117,6 +123,20 @@ std::string GetInputMethodIDByEngineID(const std::string& engine_id) {
   }
 
   return engine_id;
+}
+
+bool IsFydeOSProvidedIMEByExtensionId(const std::string& extension_id) {
+  for (const auto& id : kFydeOSImeExtensionIds) {
+    if (extension_id == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool IsFydeOSProvidedIME(const std::string& input_method_id) {
+  const std::string extension_id = GetExtensionIDFromInputMethodID(input_method_id);
+  return IsFydeOSProvidedIMEByExtensionId(extension_id);
 }
 
 bool IsExtensionIME(const std::string& input_method_id) {

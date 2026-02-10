@@ -56,8 +56,14 @@ enum class UserType {
   // Kiosk type for ARCVM.
   kKioskArcvmApp = 11,
 
+  kFlintAccount = 12,
+
+  kFydeAccount = 13,
+
+  kFydeChild = 14,
+
   // Alias for histogram.
-  kMaxValue = kKioskArcvmApp,
+  kMaxValue = kFydeChild,
 };
 // LINT.ThenChange(//components/policy/proto/device_management_backend.proto:UserType)
 

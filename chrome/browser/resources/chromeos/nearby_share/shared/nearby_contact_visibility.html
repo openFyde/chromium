@@ -237,7 +237,7 @@
     disabled="[[disableRadioGroup_(contactsState)]]"
     selected="{{selectedVisibility}}">
     <cr-card-radio-button id="contacts" class="flex" name="contacts"
-        aria-labelledby="contactsLabel" >
+        aria-labelledby="contactsLabel" hidden$="[[isLimitedMode_]]">
       <div class="card-contents">
         <iron-icon icon="nearby20:contact-all" class="card-icon">
         </iron-icon>

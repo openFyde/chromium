@@ -29,9 +29,6 @@ std::vector<StaticAppId> GetDefaultPinnedApps(
   }
 #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
-  // Pin Mall after AI offerings.
-  app_ids.push_back(ash::kMallSystemAppId);
-
   app_ids.insert(app_ids.end(), {
                                     ash::kGmailAppId,
                                     ash::kGoogleCalendarAppId,

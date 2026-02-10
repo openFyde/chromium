@@ -500,6 +500,9 @@ AccountId AshTestHelper::SimulateUserLogin(
   switch (login_info.user_type) {
     case user_manager::UserType::kRegular:
     case user_manager::UserType::kChild:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kPublicAccount:
       break;
     case user_manager::UserType::kKioskChromeApp:

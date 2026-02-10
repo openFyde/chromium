@@ -22,7 +22,7 @@ import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 import {DeviceNameValidationResult, Visibility} from 'chrome://resources/mojo/chromeos/ash/services/nearby/public/mojom/nearby_share_settings.mojom-webui.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
-import {getOnboardingEntryPoint, NearbyShareOnboardingEntryPoint, NearbyShareOnboardingFinalState, processOnePageOnboardingCancelledMetrics, processOnePageOnboardingCompleteMetrics, processOnePageOnboardingInitiatedMetrics, processOnePageOnboardingVisibilityButtonOnInitialPageClickedMetrics} from './nearby_metrics_logger.js';
+import {getOnboardingEntryPoint, NearbyShareOnboardingEntryPoint, NearbyShareOnboardingFinalState, processOnePageOnboardingCancelledMetrics, processOnePageOnboardingCompleteMetrics, processOnePageOnboardingInitiatedMetrics} from './nearby_metrics_logger.js';
 import {getTemplate} from './nearby_onboarding_one_page.html.js';
 import {getNearbyShareSettings} from './nearby_share_settings.js';
 import type {NearbySettings} from './nearby_share_settings_mixin.js';
@@ -149,24 +149,6 @@ export class NearbyOnboardingOnePageElement extends
     }
   }
 
-  /**
-   * Switch to visibility selection page when the button is clicked
-   */
-  private switchToVisibilitySelectionView_(): void {
-    /**
-     * TODO(crbug.com/1265562): remove this line once the old onboarding is
-     * deprecated and default visibility is changed in
-     * nearby_share_prefs.cc:kNearbySharingBackgroundVisibilityName
-     */
-    this.set('settings.visibility', this.getDefaultVisibility_());
-    processOnePageOnboardingVisibilityButtonOnInitialPageClickedMetrics();
-
-    const changePageEvent = new CustomEvent(
-        'change-page',
-        {bubbles: true, composed: true, detail: {page: 'visibility'}});
-    this.dispatchEvent(changePageEvent);
-  }
-
   private updateErrorMessage_(validationResult: DeviceNameValidationResult):
       void {
     switch (validationResult) {
@@ -190,94 +172,8 @@ export class NearbyOnboardingOnePageElement extends
     return errorMessage !== '';
   }
 
-  /**
-   * Temporary workaround to set default visibility. Changing the
-   * kNearbySharingBackgroundVisibilityName in nearby_share_prefs.cc results in
-   * setting visibility selection to 'all contacts' in nearby_visibility_page in
-   * existing onboarding workflow.
-   *
-   * TODO(crbug.com/1265562): remove this function once the old onboarding is
-   * deprecated and default visibility is changed in
-   * nearby_share_prefs.cc:kNearbySharingBackgroundVisibilityName
-   */
-  private getDefaultVisibility_(): Visibility|null {
-    if (this.settings!.visibility === Visibility.kUnknown) {
-      return Visibility.kAllContacts;
-    }
-    return this.settings!.visibility;
-  }
-
-  private getVisibilitySelectionButtonText_(): string {
-    const visibility = this.getDefaultVisibility_();
-
-    if (this.isQuickShareV2Enabled_) {
-      switch (visibility) {
-        case Visibility.kAllContacts:
-          return this.i18n('nearbyShareContactVisiblityContactsButton');
-        case Visibility
-            .kSelectedContacts:  // Selected Contacts does not exist in Quick
-        // Share v2. Your devices set instead.
-        case Visibility.kYourDevices:
-          return this.i18n('nearbyShareContactVisibilityYourDevices');
-        case Visibility.kNoOne:
-          return this.i18n('nearbyShareContactVisibilityNone');
-        default:
-          return this.i18n('nearbyShareContactVisiblityContactsButton');
-      }
-    }
-
-    switch (visibility) {
-      case Visibility.kAllContacts:
-        return this.i18n('nearbyShareContactVisiblityContactsButton');
-      case Visibility.kSelectedContacts:
-        return this.i18n('nearbyShareContactVisibilitySome');
-      case Visibility.kYourDevices:
-        return this.i18n('nearbyShareContactVisibilityYourDevices');
-      case Visibility.kNoOne:
-        return this.i18n('nearbyShareContactVisibilityNone');
-      default:
-        return this.i18n('nearbyShareContactVisiblityContactsButton');
-    }
-  }
-
-  private getVisibilitySelectionButtonIcon_(): string {
-    const visibility = this.getDefaultVisibility_();
-    if (this.isQuickShareV2Enabled_) {
-      switch (visibility) {
-        case Visibility.kAllContacts:
-          return 'contact-all';
-        case Visibility
-            .kSelectedContacts:  // Selected Contacts does not exist in Quick
-                                 // Share v2. Your devices set instead.
-        case Visibility.kYourDevices:
-          return 'your-devices';
-        case Visibility.kNoOne:
-          return 'visibility-off';
-        default:
-          return 'contact-all';
-      }
-    }
-    switch (visibility) {
-      case Visibility.kAllContacts:
-        return 'contact-all';
-      case Visibility.kSelectedContacts:
-        return 'contact-group';
-      case Visibility.kYourDevices:
-        return 'your-devices';
-      case Visibility.kNoOne:
-        return 'visibility-off';
-      default:
-        return 'contact-all';
-    }
-  }
-
-  /**
-   * TODO(crbug.com/1265562): Add strings for other modes and switch based on
-   * default visibility selection
-   */
-  private getVisibilitySelectionButtonHelpText_(): string {
-    return this.i18n(
-        'nearbyShareOnboardingPageDeviceVisibilityHelpAllContacts');
+  private getDefaultVisibility_(): Visibility {
+    return Visibility.kYourDevices;
   }
 }
 

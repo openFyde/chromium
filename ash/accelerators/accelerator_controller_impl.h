@@ -300,6 +300,10 @@ class ASH_EXPORT AcceleratorControllerImpl
       notification_controller_;
 };
 
+// ---***FYDEOS BEGIN***---
+void RotateScreenFydeOS();
+// ---***FYDEOS END***---
+
 }  // namespace ash
 
 #endif  // ASH_ACCELERATORS_ACCELERATOR_CONTROLLER_IMPL_H_

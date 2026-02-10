@@ -44,5 +44,11 @@ component("constants") {
     "//build:branding_buildflags",
     "//build:chromeos_buildflags",
     "//chromeos/components/libsegmentation:buildflags",
+    "//fydeos/switches",
+  ]
+
+  deps += [
+    "//fydeos/switches",
+    "//fydeos/build/config:buildflags",
   ]
 }

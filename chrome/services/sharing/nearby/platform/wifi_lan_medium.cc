@@ -47,13 +47,13 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
             "and authenticated communication channel. Both devices must be "
             "using the same router or possibly access point."
           trigger:
-            "User's Chromebook uses a feature such as Nearby Share or "
+            "User's Chromebook uses a feature such as Quick Share or "
             "Phone Hub that leverages Nearby Connections to establish a "
             "communication channel between devices."
           data:
             "After the WLAN connection between devices is established, "
             "encrypted, and authenticated, feature-specific bytes are "
-            "transferred. For example, Nearby Share might send/receive files "
+            "transferred. For example, Quick Share might send/receive files "
             "and Phone Hub might receive message notification data from the "
             "phone."
           destination: OTHER
@@ -63,7 +63,7 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
         policy {
           cookies_allowed: NO
           setting:
-            "Features that use WLAN such as Nearby Share and Phone Hub can be "
+            "Features that use WLAN such as Quick Share and Phone Hub can be "
             "enabled/disabled in Chromebook settings."
           policy_exception_justification:
             "The individual features that leverage Nearby Connections have "

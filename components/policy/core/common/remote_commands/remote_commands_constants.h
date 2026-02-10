@@ -8,6 +8,8 @@
 #include <stdint.h>
 
 #include "components/invalidation/invalidation_constants.h"
+#include "fydeos/switches/account/policy_constants.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace policy {
 
@@ -15,6 +17,13 @@ namespace policy {
 // are considered critical to receive invalidation.
 inline constexpr int64_t kRemoteCommandsInvalidationsProjectNumber =
     invalidation::kCriticalInvalidationsProjectNumber;
+
+inline int64_t GetRemoteCommandsInvalidationsProjectNumber() {
+  if (fydeos::switches::UseFydeInvalidationService()) {
+    return fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID;
+  }
+  return kRemoteCommandsInvalidationsProjectNumber;
+}
 
 }  // namespace policy
 

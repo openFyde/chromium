@@ -132,9 +132,15 @@ export class SettingsLockScreenElement extends SettingsLockScreenElementBase {
       recovery_: {
         type: Object,
         value: null,
+        observer: 'onRecoveryChanged_',
       },
 
       recoveryChangeInProcess_: {
+        type: Boolean,
+        value: false,
+      },
+
+      showRecoveryToggle_: {
         type: Boolean,
         value: false,
       },
@@ -187,6 +193,7 @@ export class SettingsLockScreenElement extends SettingsLockScreenElementBase {
   private recovery_: chrome.settingsPrivate.PrefObject|null;
   private noRecoveryVirtualPref_: chrome.settingsPrivate.PrefObject;
   private recoveryChangeInProcess_: boolean;
+  private showRecoveryToggle_: boolean;
   private showPasswordSettings_: boolean;
   private showDisableRecoveryDialog_: boolean;
   private fingerprintBrowserProxy_: FingerprintBrowserProxy;
@@ -316,6 +323,10 @@ export class SettingsLockScreenElement extends SettingsLockScreenElementBase {
 
   private onEditFingerprints_(): void {
     Router.getInstance().navigateTo(routes.FINGERPRINT);
+  }
+
+  private onRecoveryChanged_(): void {
+    this.showRecoveryToggle_ = (this.recovery_ !== null);
   }
 
   /**

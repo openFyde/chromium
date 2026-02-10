@@ -70,6 +70,13 @@ static_library("apps") {
     "terminal_ui.h",
   ]
 
+  sources += [
+    "fyde_assistant_app_info.cc",
+    "fyde_assistant_app_info.h",
+    "fyde_assistant_app_ui_delegate.cc",
+    "fyde_assistant_app_ui_delegate.h",
+  ]
+
   public_deps = [
     "//ash/public/cpp",
     "//ash/webui/connectivity_diagnostics",
@@ -90,6 +97,10 @@ static_library("apps") {
     "//ui/base",
     "//ui/gfx/geometry",
     "//ui/webui",
+  ]
+
+  public_deps += [
+    "//ash/webui/fyde_assistant_app_ui",
   ]
 
   deps = [
@@ -182,6 +193,10 @@ static_library("apps") {
     "//ui/display",
     "//ui/file_manager:resources",
     "//url",
+  ]
+
+  deps += [
+    "//ash/webui/fyde_assistant_app_ui/resources:resources",
   ]
 
   if (!is_official_build) {

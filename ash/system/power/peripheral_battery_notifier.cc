@@ -33,6 +33,7 @@
 #include "ui/message_center/message_center.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_delegate.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash {
 
@@ -131,6 +132,14 @@ void PeripheralBatteryNotifier::OnUpdatedBatteryLevel(
   // charging.
   if (battery_info.type == PeripheralBatteryListener::BatteryInfo::
                                PeripheralType::kStylusViaCharger) {
+    return;
+  }
+  if ((battery_info.type != PeripheralBatteryListener::BatteryInfo::
+                                PeripheralType::kStylusViaCharger &&
+       battery_info.type != PeripheralBatteryListener::BatteryInfo::
+                                PeripheralType::kStylusViaScreen) &&
+      *battery_info.level == 0 &&
+      fydeos::switches::IsUnknownPeripheralBatteryNotificationDisabled()) {
     return;
   }
   UpdateBattery(battery_info);

@@ -105,15 +105,12 @@ export class OobeDisplaySizeSelector extends OobeDisplaySizeSelectorBase {
     this.markerCounts = this.availableSizesTicks.length;
 
     this.apps = [
-      {icon: 'images/app_icons/files.svg', name: 'displaySizeFilesApp'},
-      {icon: 'images/app_icons/photos.svg', name: 'displaySizePhotosApp'},
-      {
-        icon: 'images/app_icons/calculator.svg',
-        name: 'displaySizeCalculatorApp',
-      },
-      {icon: 'images/app_icons/camera.svg', name: 'displaySizeCameraApp'},
-      {icon: 'images/app_icons/settings.svg', name: 'displaySizeSettingsApp'},
-      {icon: 'images/app_icons/a4.svg', name: 'displaySizeA4App'},
+      {icon: 'images/app_icons/fydeos/files.svg', name: 'displaySizeFilesApp'},
+      {icon: 'images/app_icons/fydeos/rdp.svg', name: 'displaySizeRdpApp'},
+      {icon: 'images/app_icons/fydeos/store.svg', name: 'displaySizeStoreApp'},
+      {icon: 'images/app_icons/fydeos/camera.svg', name: 'displaySizeCameraApp'},
+      {icon: 'images/app_icons/fydeos/settings.svg', name: 'displaySizeSettingsApp'},
+      {icon: 'images/app_icons/fydeos/ai.svg', name: 'displaySizeFydeosAiApp'},
     ];
   }
 

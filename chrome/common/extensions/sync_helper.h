@@ -9,6 +9,10 @@
 
 static_assert(BUILDFLAG(ENABLE_EXTENSIONS_CORE));
 
+// ---***FYDEOS BEGIN***---
+class Profile;
+// ---***FYDEOS END***---
+
 namespace extensions {
 
 class Extension;
@@ -20,7 +24,7 @@ namespace sync_helper {
 // should be synced, you probably want to use util::ShouldSync.
 
 // Returns true if |extension| should be synced.
-bool IsSyncable(const Extension* extension);
+bool IsSyncable(const Extension* extension, Profile* profile = nullptr);
 
 // Component extensions usually aren't synced, but some are so that they'll
 // retain their position in the app list. Returns true for component extensions

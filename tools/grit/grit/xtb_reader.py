@@ -105,6 +105,20 @@ class XtbContentHandler(xml.sax.handler.ContentHandler):
       assert self.current_gender is not None, 'unmatched </branch> tag'
       self.current_gender = None
 
+  def shouldRemoveSpaceAfterDeviceType(self, content):
+    # If DEVICE_TYPE zh-CN does not end with Chinese characters,
+    # this function should not be used,
+    # or return False, but it seems that there's no easy way to check
+    # the real value of DEVICE_TYPE here
+    try:
+      previous_item_is_device_type = (len(self.current_structure) > 0
+                                        and self.current_structure[-1][0] is True
+                                        and self.current_structure[-1][1] == 'DEVICE_TYPE')
+      current_not_empty = (len(content) > 1 and content[0] == ' '  and content[1] != ' ')
+      return previous_item_is_device_type and current_not_empty
+    except Exception:
+      return False
+
   def characters(self, content):
     if self.current_id != 0:
       # We are inside a <translation> node so just add the characters to our
@@ -113,7 +127,17 @@ class XtbContentHandler(xml.sax.handler.ContentHandler):
       # This naive way of handling characters is OK because in the XTB format,
       # <ph> nodes are always empty (always <ph name="XXX"/>) and whitespace
       # inside the <translation> node should be preserved.
-      self.get_current_structure().append((False, content))
+      # replace double quotation(\u201c, \u201d) with Chinese quotation (\u300c, \u300d)
+      if self.language == 'zh-CN':
+        if self.shouldRemoveSpaceAfterDeviceType(content):
+          content = content[1:]
+        self.get_current_structure().append((False,
+          content.replace(u'\u201c', u'\u300c')
+          .replace(u'\u201d', u'\u300d')
+          .replace(u'\u60a8', u'\u4f60')
+          .replace(u'\u5e10\u53f7', u'\u8d26\u53f7')))
+      else:
+        self.get_current_structure().append((False, content))
 
   # Gets the current gender, or DEFAULT_GENDER if the current gender is None.
   def get_effective_gender(self):

@@ -20,6 +20,8 @@
 #include "chromeos/ash/components/platform_keys/platform_keys.h"
 #include "components/invalidation/invalidation_constants.h"
 #include "components/policy/proto/device_management_backend.pb.h"
+#include "fydeos/switches/account/policy_constants.h"
+#include "fydeos/switches/misc/misc_switches.h"
 #include "net/cert/x509_certificate.h"
 
 class PrefRegistrySimple;
@@ -55,6 +57,13 @@ inline constexpr char kKeyNamePrefix[] = "cert-provis-";
 // considered critical to receive invalidation.
 inline constexpr int64_t kCertProvisioningInvalidationProjectNumber =
     invalidation::kCriticalInvalidationsProjectNumber;
+
+inline int64_t GetCertProvisioningInvalidationProjectNumber() {
+  if (fydeos::switches::UseFydeInvalidationService()) {
+    return fydeos::constants::kFydeOSPolicyFCMInvalidationSenderID;
+  }
+  return kCertProvisioningInvalidationProjectNumber;
+}
 
 // The type for variables containing an error from DM Server response.
 using CertProvisioningResponseErrorType =

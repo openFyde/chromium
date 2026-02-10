@@ -28,6 +28,7 @@
 #include "ui/web_dialogs/web_dialog_ui.h"
 #include "ui/web_dialogs/web_dialog_web_contents_delegate.h"
 #include "ui/webui/webui_util.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace borealis {
 
@@ -78,6 +79,11 @@ int GetMilestone() {
 void MaybeShowBorealisMOTDDialog(base::OnceCallback<void()> cb,
                                  content::BrowserContext* context) {
   if (!base::FeatureList::IsEnabled(features::kShowBorealisMotd)) {
+    std::move(cb).Run();
+    return;
+  }
+
+  if (fydeos::switches::IsFydeCustomEnabled()) {
     std::move(cb).Run();
     return;
   }

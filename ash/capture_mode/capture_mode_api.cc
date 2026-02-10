@@ -20,7 +20,9 @@ void CaptureScreenshotsOfAllDisplays() {
   CaptureModeController::Get()->CaptureScreenshotsOfAllDisplays();
 }
 
-bool CanShowSunfishUi() {
+namespace {
+
+bool CanShowSunfishUi_(bool allowNonGoogle) {
   if (!features::IsSunfishFeatureEnabled()) {
     return false;
   }
@@ -51,9 +53,19 @@ bool CanShowSunfishUi() {
   // This can only be called while a user is logged in, so `user_type` should
   // never be empty.
   CHECK(user_type);
-  if (user_type != user_manager::UserType::kRegular &&
-      user_type != user_manager::UserType::kChild) {
-    return false;
+  if (allowNonGoogle) {
+    if (user_type != user_manager::UserType::kRegular &&
+        user_type != user_manager::UserType::kFydeAccount &&
+        user_type != user_manager::UserType::kFlintAccount &&
+        user_type != user_manager::UserType::kFydeChild &&
+        user_type != user_manager::UserType::kChild) {
+      return false;
+    }
+  } else {
+    if (user_type != user_manager::UserType::kRegular &&
+        user_type != user_manager::UserType::kChild) {
+      return false;
+    }
   }
 
   // The controller may have already been reset while the shell is shutting
@@ -63,11 +75,21 @@ bool CanShowSunfishUi() {
   }
 
   auto* controller = CaptureModeController::Get();
-  if (!controller->ActiveUserDefaultSearchProviderIsGoogle()) {
+  if (!allowNonGoogle && !controller->ActiveUserDefaultSearchProviderIsGoogle()) {
     return false;
   }
 
   return controller && controller->IsSearchAllowedByPolicy();
+}
+
+}
+
+bool CanShowSunfishUi() {
+  return CanShowSunfishUi_(false);
+}
+
+bool CanShowTextExtractionUi() {
+  return CanShowSunfishUi_(true);
 }
 
 bool CanShowSunfishOrScannerUi() {

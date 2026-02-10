@@ -35,6 +35,11 @@ DMAuth DMAuth::FromOidcResponse(const std::string& oidc_id_token) {
 }
 
 // static
+DMAuth DMAuth::FromFydeToken(const std::string& token) {
+  return DMAuth(token, DMAuthTokenType::kFyde);
+}
+
+// static
 DMAuth DMAuth::NoAuth() {
   return {};
 }

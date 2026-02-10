@@ -11,6 +11,7 @@
 #include "base/functional/callback_helpers.h"
 #include "build/build_config.h"
 #include "google_apis/buildflags.h"
+#include "fydeos/build/config/buildflags.h"
 
 namespace version_info {
 enum class Channel;
@@ -71,6 +72,8 @@ COMPONENT_EXPORT(GOOGLE_APIS) extern const char kAPIKeysDevelopersHowToURL[];
 // Returns true if no dummy API key is set.
 COMPONENT_EXPORT(GOOGLE_APIS) bool HasAPIKeyConfigured();
 
+COMPONENT_EXPORT(GOOGLE_APIS) bool HasFydeOSAPIKeyConfigured();
+
 // Retrieves the API key, a.k.a. developer key, or a dummy string
 // if not set.
 //
@@ -83,6 +86,7 @@ COMPONENT_EXPORT(GOOGLE_APIS) bool HasAPIKeyConfigured();
 COMPONENT_EXPORT(GOOGLE_APIS)
 const std::string& GetAPIKey(version_info::Channel channel);
 
+COMPONENT_EXPORT(GOOGLE_APIS) const std::string& GetFydeOSAPIKey();
 // Retrieves the API key, for the stable channel.
 //
 // DEPRECATED: Use `GetAPIKey(channel)` to get the right key for your
@@ -132,12 +136,19 @@ enum OAuth2Client {
   CLIENT_REMOTING,
   CLIENT_REMOTING_HOST,
 
+#if BUILDFLAG(IS_OPENFYDE)
+  CLIENT_FYDEOS_MAIN,
+#endif
+
   CLIENT_NUM_ITEMS  // Must be last item.
 };
 
 // Returns true if no dummy OAuth2 client ID and secret are set.
 COMPONENT_EXPORT(GOOGLE_APIS) bool HasOAuthClientConfigured();
 
+#if BUILDFLAG(IS_OPENFYDE)
+COMPONENT_EXPORT(GOOGLE_APIS) bool HasFydeOAuthClientConfigured();
+#endif
 // Retrieves the OAuth2 client ID for the specified client, or the
 // empty string if not set.
 //

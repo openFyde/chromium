@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend ash/ash_strings.grd -->
+<grit-part>
+  <!-- rotate screen button -->
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_ROTATE_SCREEN" desc="label of unified menu rotate screen">
+    Rotate Screen
+  </message>
+  <!-- switch tablet/laptop mode -->
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_TABLET_MODE" desc="label of unified menu switch to tablet mode">
+    Tablet mode
+  </message>
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_LAPTOP_MODE" desc="label of unified menu switch to laptop mode">
+    Laptop mode
+  </message>
+  <message name="IDS_ASH_FYDEOS_UNIFIED_MENU_LABEL_SWITCH_TO_DEFAULT_MODE" desc="label of unified menu switch to default mode">
+    Default mode
+  </message>
+  <if expr="use_fydeos_license">
+    <!-- fydeos license -->
+    <message name="IDS_ASH_FYDEOS_ENFORCEMENT_FORCE_QUIT_NOTIFICATION_TITLE" desc="title of license enforcement for quit notification">
+      Important information
+    </message>
+    <message name="IDS_ASH_FYDEOS_ENFORCEMENT_FORCE_QUIT_NOTIFICATION_MESSAGE" desc="message of license enforcement for quit notification">
+      Apologies, your subscription has ended. Your current FydeOS session will be signed out in <ph name="LOGOUT_DELAY">$1<ex>900</ex></ph> seconds.
+    </message>
+  </if>
+  <if expr="use_fydeos_com">
+    <message name="IDS_ASH_FYDEOS_CROSTINI_INSTALL_NOTIFICATION_TITLE" desc="title of crostini install notification">
+      Activate the Linux subsystem
+    </message>
+    <if expr="openfyde">
+      <message name="IDS_ASH_FYDEOS_CROSTINI_INSTALL_NOTIFICATION_MESSAGE" desc="message of crostini install notification">
+        Configure the Linux subsystem module on your openFyde device, so that you can use common Linux applications and developer tools.
+      </message>
+    </if>
+    <if expr="not openfyde">
+      <message name="IDS_ASH_FYDEOS_CROSTINI_INSTALL_NOTIFICATION_MESSAGE" desc="message of crostini install notification">
+        Configure the Linux subsystem module on your FydeOS device, so that you can use common Linux applications and developer tools.
+      </message>
+    </if>
+  </if>
+  <message name="IDS_ASH_LOGIN_ERROR_RECOVER_USER_FYDEOS" desc="Message to let the user know what to do when the user couldn't sign in because password or PIN is invalid for the 2nd time">
+    If you forgot your PIN and password or changed your FydeOS Account password recently, try recovering this user.
+  </message>
+  <message name="IDS_ASH_LOGIN_ERROR_RECOVER_USER_PWD_FYDEOS" desc="Message to let the user know what to do when the user couldn't sign in because password is invalid for the 2nd time">
+    If you forgot your password or changed your FydeOS Account password recently, try recovering this user.
+  </message>
+</grit-part>

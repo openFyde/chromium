@@ -178,6 +178,9 @@ void MainSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
       {"medium", IDS_SETTINGS_MEDIUM_FONT},
       {"large", IDS_SETTINGS_LARGE_FONT},
       {"veryLarge", IDS_SETTINGS_VERY_LARGE_FONT},
+      // ---***FYDEOS BEGIN***---
+      {"fydeOSRemoteDesktopAppName", IDS_SETTINGS_FYDEOS_REMOTE_DESKTOP_APP_NAME}
+      // ---***FYDEOS END***---
   };
   html_source->AddLocalizedStrings(kLocalizedStrings);
 
@@ -195,6 +198,9 @@ void MainSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
                           IsKioskOldA11ySettingsRedirectionEnabled(user));
   html_source->AddBoolean("isChild", IsChildUser(user));
 
+  html_source->AddBoolean("isFydeProfile", IsFydeProfile());
+  html_source->AddBoolean("isFydeLocalAccount",
+                          user.GetType() == user_manager::UserType::kFlintAccount);
   // Add the System Web App resources for Settings.
   html_source->AddResourcePath("icon-192.png", IDR_SETTINGS_LOGO_192);
 

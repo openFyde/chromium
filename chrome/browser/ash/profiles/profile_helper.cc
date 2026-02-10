@@ -275,5 +275,11 @@ void ProfileHelperImpl::SetUserToProfileMappingForTesting(
   DCHECK(user);
   user_to_profile_for_testing_[user] = profile;
 }
+// ---***FYDEOS BEGIN***---
+// static
+bool ProfileHelper::IsFydeProfile(const Profile* profile) {
+  return profile && profile->IsFydeProfile();
+}
+// ---***FYDEOS END***---
 
 }  // namespace ash

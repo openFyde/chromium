@@ -46,11 +46,11 @@ CameraSystemAppDelegate::GetWebAppInfo() const {
       info->start_url(),
       {
           {"camera_app_icons_48.png", 48,
-           IDR_ASH_CAMERA_APP_IMAGES_CAMERA_APP_ICONS_48_PNG},
+           IDR_ASH_CAMERA_APP_IMAGES_FYDEOS_CAMERA_APP_ICONS_48_PNG},
           {"camera_app_icons_128.png", 128,
-           IDR_ASH_CAMERA_APP_IMAGES_CAMERA_APP_ICONS_128_PNG},
+           IDR_ASH_CAMERA_APP_IMAGES_FYDEOS_CAMERA_APP_ICONS_128_PNG},
           {"camera_app_icons_192.png", 192,
-           IDR_ASH_CAMERA_APP_IMAGES_CAMERA_APP_ICONS_192_PNG},
+           IDR_ASH_CAMERA_APP_IMAGES_FYDEOS_CAMERA_APP_ICONS_192_PNG},
       },
       *info);
   info->theme_color = cros_styles::ResolveColor(

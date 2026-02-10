@@ -38,6 +38,8 @@
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "fydeos/switches/urls/urls_constants.h"
+#include "fydeos/misc/fydeos_release_note_url.h"
 
 namespace ash {
 namespace {
@@ -185,8 +187,8 @@ void EolNotification::Click(const std::optional<int>& button_index,
     switch (*button_index) {
       case BUTTON_MORE_INFO: {
         const GURL url(dismiss_pref_ == prefs::kEolNotificationDismissed
-                           ? chrome::kEolNotificationURL
-                           : chrome::kAutoUpdatePolicyURL);
+                           ? (fydeos::constants::kEolNotificationURL)
+                           : fydeos::misc::BuildFydeReleaseNoteUrlWithPath());
         // Show eol link.
         NewWindowDelegate::GetInstance()->OpenUrl(
             url, NewWindowDelegate::OpenUrlFrom::kUserInteraction,

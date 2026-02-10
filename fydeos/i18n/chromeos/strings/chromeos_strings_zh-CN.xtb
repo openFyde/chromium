@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<!-- chromeos_strings.grdp -->
+<translation id="7215016743510876720">使用本地帐号</translation>
+<translation id="6703254819490889819">恢复备份</translation>
+<translation id="5328957394079998261">FydeOS 帮助中心</translation>
+<translation id="2812272711783038973">查找帮助文章及常见的 FydeOS 问题解答</translation>
+<translation id="3160172848211257835">发送<ph name="BEGIN_LINK1" />系统和应用信息<ph name="END_LINK1" />以及<ph name="BEGIN_LINK2" />系统运行数据<ph name="END_LINK2" /></translation>
+<!-- chromeos_strings.override.grdp -->
+<translation id="4363460497103457018">openFyde 更新</translation>
+<translation id="6285517448888170195">FydeOS 更新</translation>
+<translation id="676750809707619649">安装 openFyde</translation>
+<translation id="8896685659418072052">安装 FydeOS</translation>
+<translation id="6538994383867720138">发送反馈给 FydeOS 技术支持团队</translation>
+<translation id="2644661138445081049">文件将被发送到 FydeOS 开发团队用作调试；你还可以选择提交一个额外的文件（小于 5MB）。</translation>
+<translation id="5421266769139586778">允许 FydeOS 开发团队就此问题向你发送电子邮件询问</translation>
+<translation id="8846546224306486587">无法上传大于 5 MB 的文件</translation>
+<translation id="7046718307718135760">分享最近的网址</translation>
+<translation id="4681832384506414051">点击「发送」按钮会将你选择的账号信息和系统信息发送给 FydeOS 开发团队。我们会借助你向我们提供的信息来解决技术问题和提升 FydeOS 的体验。我们承诺会在使用这些信息的过程中严格遵守我们的<ph name="BEGIN_LINK1" />隐私政策<ph name="END_LINK1" />和<ph name="BEGIN_LINK2" />服务条款<ph name="END_LINK2" />。</translation>
+<translation id="2064644040578633605">你的反馈有助于我们改进 openFyde 的使用体验，FydeOS 的开发团队会尽快查阅及审核你的反馈。如果你希望在社区联系 FydeOS 团队的技术支持人员并提到此反馈，请附上以下此次反馈的回执码以方便 FydeOS 的技术支持团队辨认你的提交：</translation>
+<translation id="4427333491213840844">你的反馈有助于我们改进 FydeOS 的使用体验，FydeOS 的开发团队会尽快查阅及审核你的反馈。如果你希望在社区联系 FydeOS 团队的技术支持人员并提到此反馈，请附上以下此次反馈的回执码以方便 FydeOS 的技术支持团队辨认你的提交：</translation>
+<translation id="7007591396946013730">FydeOS 社区</translation>
+<translation id="3237490965909420766">在社区论坛里提问求助</translation>
+<translation id="441643487029123054">温馨提示：
+    <ph name="BEGIN_LIST" />
+    <ph name="LIST_ITEM" />你正在向 FydeOS 团队提交反馈以帮助提升 FydeOS 的使用体验。
+    <ph name="LIST_ITEM" />通过该渠道提交的反馈无法获得来自 FydeOS 团队的回复，如果你遇到了技术问题或者需要帮助，请阅读 &lt;a target="_blank" href="https://fydeos.com/help/"&gt;FydeOS 的帮助页面&lt;/a&gt;或者移步至 &lt;a target="_blank" href="https://community.fydeos.com/"&gt;FydeOS 社区&lt;/a&gt;提问。
+    <ph name="LIST_ITEM" />再次感谢你愿意为提升 FydeOS 的使用体验出一份力。
+    <ph name="END_LIST" />
+</translation>
+<translation id="6462446693866825903">温馨提示：
+    <ph name="BEGIN_LIST" />
+    <ph name="LIST_ITEM" />你正在向 FydeOS 团队提交反馈以帮助提升 FydeOS 的使用体验。
+    <ph name="LIST_ITEM" />通过该渠道提交的反馈无法获得来自 FydeOS 团队的回复，如果你遇到了技术问题或者需要帮助，请阅读 <ph name="BEGIN_LINK_HELP_PAGE" />FydeOS 的帮助页面<ph name="END_LINK_HELP_PAGE" />或者加入我们公开的社群向其它用户提问，比如 <ph name="BEGIN_LINK_COMMUNITY" />FydeOS Community<ph name="END_LINK_COMMUNITY" />、<ph name="BEGIN_LINK_DISCORD_SERVER" />Discord Server<ph name="END_LINK_DISCORD_SERVER" /> 和 <ph name="BEGIN_LINK_TELEGRAM_GROUP" />Telegram 小组<ph name="END_LINK_TELEGRAM_GROUP" />。
+    <ph name="LIST_ITEM" />再次感谢你愿意为提升 FydeOS 的使用体验出一份力。
+    <ph name="END_LIST" />
+</translation>
+<translation id="7197603148392530336">安全重置会关闭浏览器扩展程序，并将网络和其他设置重置为安全的默认设置。
+          标签页、文件、Cookie 和历史记录不会更改。</translation>
+<translation id="7095692272156034947">openFyde 已重置为安全的默认设置。您可以随时在“设置”中调整这些设置。</translation>
+<translation id="160810443451206697">FydeOS 已重置为安全的默认设置。您可以随时在“设置”中调整这些设置。</translation>
+<translation id="96830970519341589">openFyde 设置</translation>
+<translation id="448831382522909186">FydeOS 设置</translation>
+<translation id="1588240398285670601">浏览器设置</translation>
+</translationbundle>

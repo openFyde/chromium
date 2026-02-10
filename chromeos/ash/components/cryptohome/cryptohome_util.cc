@@ -15,6 +15,9 @@ const std::string GetCryptohomeId(const AccountId& account_id) {
     case AccountType::UNKNOWN:
     case AccountType::GOOGLE:
       return account_id.GetUserEmail();
+    case AccountType::FYDE_ACCOUNT:
+    case AccountType::FLINT_ACCOUNT:
+      return account_id.GetUserEmail();
   }
 }
 

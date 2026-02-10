@@ -43,19 +43,19 @@ std::string GetChannelEnv() {
 // function returns `channel` = UNKNOWN and `is_extended_stable` = false for any
 // unexpected $CHROME_VERSION_EXTRA value.
 ChannelState GetChannelImpl() {
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   auto env = base::Environment::Create();
   return {version_info::nix::GetChannel(*env),
           version_info::nix::IsExtendedStable(*env)};
-#else
-  return {version_info::Channel::UNKNOWN, /*is_extended_stable=*/false};
-#endif
+//#else
+//  return {version_info::Channel::UNKNOWN, /*is_extended_stable=*/false};
+//#endif
 }
 
 }  // namespace
 
 std::string GetChannelName(WithExtendedStable with_extended_stable) {
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
   const auto channel_state = GetChannelImpl();
   switch (channel_state.channel) {
     case version_info::Channel::UNKNOWN:
@@ -72,9 +72,9 @@ std::string GetChannelName(WithExtendedStable with_extended_stable) {
       }
       return std::string();
   }
-#else   // BUILDFLAG(GOOGLE_CHROME_BRANDING)
-  return GetChannelEnv();
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//#else   // BUILDFLAG(GOOGLE_CHROME_BRANDING)
+//  return GetChannelEnv();
+//#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 }
 
 std::string GetChannelSuffixForDataDir() {

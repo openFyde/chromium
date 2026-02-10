@@ -60,6 +60,7 @@
 #include "components/cross_device/logging/logging.h"
 #include "components/cross_device/nearby/nearby_features.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_manager/user.h"
 #include "content/public/browser/download_manager.h"
 #include "content/public/browser/storage_partition.h"
 #include "crypto/random.h"
@@ -321,10 +322,15 @@ NearbySharingServiceImpl::NearbySharingServiceImpl(
       process_manager_(process_manager),
       power_client_(std::move(power_client)),
       wifi_network_handler_(std::move(wifi_network_handler)),
-      http_client_factory_(std::make_unique<NearbyShareClientFactoryImpl>(
-          IdentityManagerFactory::GetForProfile(profile),
-          profile->GetURLLoaderFactory(),
-          &nearby_share_http_notifier_)),
+
+      is_limited_mode_(user.IsFydeExtendAccountUser()),
+      // http_client_factory_ will be nullptr in limited mode
+      http_client_factory_(!is_limited_mode_
+          ? std::make_unique<NearbyShareClientFactoryImpl>(
+                IdentityManagerFactory::GetForProfile(profile),
+                profile->GetURLLoaderFactory(),
+                &nearby_share_http_notifier_)
+          : nullptr),
       local_device_data_manager_(
           NearbyShareLocalDeviceDataManagerImpl::Factory::Create(
               user,
@@ -400,12 +406,16 @@ NearbySharingServiceImpl::NearbySharingServiceImpl(
 
   if (settings_.GetEnabled()) {
     local_device_data_manager_->Start();
-    contact_manager_->Start();
+    // In limited mode, skip contact sync.
+    if (!is_limited_mode_) {
+      contact_manager_->Start();
+    }
     certificate_manager_->Start();
     BindToNearbyProcess();
   }
   UpdateVisibilityReminderTimer(/*reset_timestamp=*/false);
   user_visibility_ = settings_.GetVisibility();
+  settings_.SetLimitedMode(is_limited_mode_);
 }
 
 NearbySharingServiceImpl::~NearbySharingServiceImpl() {
@@ -1344,7 +1354,12 @@ void NearbySharingServiceImpl::OnEnabledChanged(bool enabled) {
   if (enabled) {
     CD_LOG(VERBOSE, Feature::NS) << __func__ << ": Nearby sharing enabled!";
     local_device_data_manager_->Start();
-    contact_manager_->Start();
+
+    // In limited mode, skip contact sync
+    if (!is_limited_mode_) {
+      contact_manager_->Start();
+    }
+
     certificate_manager_->Start();
     BindToNearbyProcess();
   } else {
@@ -1353,7 +1368,9 @@ void NearbySharingServiceImpl::OnEnabledChanged(bool enabled) {
     StopScanning();
     nearby_connections_manager_->Shutdown();
     local_device_data_manager_->Stop();
-    contact_manager_->Stop();
+    if (!is_limited_mode_) {
+      contact_manager_->Stop();
+    }
     certificate_manager_->Stop();
     process_reference_.reset();
   }
@@ -1389,13 +1406,18 @@ void NearbySharingServiceImpl::OnDataUsageChanged(
 void NearbySharingServiceImpl::OnVisibilityChanged(
     nearby_share::mojom::Visibility new_visibility) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CD_LOG(WARNING, Feature::NS) << "[NearbyShare] OnVisibilityChanged called, visibility="
+        << static_cast<int>(new_visibility);
   CD_LOG(INFO, Feature::NS)
       << __func__ << ": Nearby sharing visibility changed to "
       << new_visibility;
 
+  CD_LOG(WARNING, Feature::NS) << "[NearbyShare] Updating visibility reminder timer...";
   UpdateVisibilityReminderTimer(/*reset_timestamp=*/true);
 
+  CD_LOG(WARNING, Feature::NS) << "[NearbyShare] StopAdvertisingAndInvalidateSurfaceState...";
   StopAdvertisingAndInvalidateSurfaceState();
+  CD_LOG(WARNING, Feature::NS) << "[NearbyShare] OnVisibilityChanged completed";
 }
 
 void NearbySharingServiceImpl::OnAllowedContactsChanged(
@@ -2250,7 +2272,9 @@ void NearbySharingServiceImpl::InvalidateAdvertisingState() {
   }
 
   std::optional<std::string> device_name;
-  if (!foreground_receive_callbacks_.empty()) {
+  // In limited mode include device name in advertisements,
+  // allows other devices to discover this device in background mode.
+  if (!foreground_receive_callbacks_.empty() || is_limited_mode_) {
     device_name = local_device_data_manager_->GetDeviceName();
   }
 
@@ -2276,8 +2300,8 @@ void NearbySharingServiceImpl::InvalidateAdvertisingState() {
   // alerts the user that their device is discoverable, but it exposes Nearby
   // Share logic to external components. We should clean this up with a better
   // abstraction.
-  bool used_device_name = device_name.has_value();
-  if (used_device_name) {
+  bool is_high_visibility = !foreground_receive_callbacks_.empty();
+  if (is_high_visibility) {
     for (auto& observer : observers_) {
       observer.OnHighVisibilityChangeRequested();
     }
@@ -2287,7 +2311,7 @@ void NearbySharingServiceImpl::InvalidateAdvertisingState() {
       *endpoint_info,
       /*listener=*/this, power_level, data_usage,
       base::BindOnce(&NearbySharingServiceImpl::OnStartAdvertisingResult,
-                     weak_ptr_factory_.GetWeakPtr(), used_device_name));
+                     weak_ptr_factory_.GetWeakPtr(), is_high_visibility));
 
   advertising_power_level_ = power_level;
   CD_LOG(VERBOSE, Feature::NS)
@@ -2295,7 +2319,9 @@ void NearbySharingServiceImpl::InvalidateAdvertisingState() {
       << " power level: " << PowerLevelToString(power_level)
       << " visibility: " << settings_.GetVisibility()
       << " data usage: " << data_usage << " advertise device name?: "
-      << (device_name.has_value() ? "yes" : "no");
+      << (device_name.has_value() ? "yes" : "no")
+      << " high_visibility: " << (is_high_visibility ? "yes" : "no")
+      << " limited_mode: " << (is_limited_mode_ ? "yes" : "no");
 
   ScheduleRotateBackgroundAdvertisementTimer();
 }
@@ -4800,16 +4826,15 @@ void NearbySharingServiceImpl::UnregisterShareTarget(
 }
 
 void NearbySharingServiceImpl::OnStartAdvertisingResult(
-    bool used_device_name,
+    bool is_high_visibility,
     NearbyConnectionsManager::ConnectionsStatus status) {
-  RecordNearbyShareStartAdvertisingResultMetric(
-      /*is_high_visibility=*/used_device_name, status);
+  RecordNearbyShareStartAdvertisingResultMetric(is_high_visibility, status);
 
   if (status == NearbyConnectionsManager::ConnectionsStatus::kSuccess) {
     CD_LOG(VERBOSE, Feature::NS)
         << __func__
         << ": StartAdvertising over Nearby Connections was successful.";
-    SetInHighVisibility(used_device_name);
+    SetInHighVisibility(is_high_visibility);
   } else {
     RecordNearbyShareError(NearbyShareError::kStartAdvertisingFailed);
     CD_LOG(ERROR, Feature::NS)

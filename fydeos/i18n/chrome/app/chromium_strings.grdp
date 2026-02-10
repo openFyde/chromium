@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <message name="IDS_DATA_RESTORE_SCREEN_SELECT_FILE_TITLE" desc="Title of data restore screen select-file page">
+    Restore backup (beta)
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SELECT_FILE_MESSAGE" desc="Message of data restore screen select-file page">
+    To restore FydeOS from a backup file, please insert the removable drive that contains the backup file into your FydeOS device now and specify which backup file you would like to restore. Please note that your backup file needs to be in the root directory of your removable drive to be detected by this wizard.
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_BACKUP_FILE_SELECTION_LABEL" desc="Backup file selection label of data restore screen setup page">
+    Select the backup file to restore:
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_INVALID_BACKUP_FILE_MESSAGE" desc="Invalid backup file message of data restore screen setup page">
+    Sorry, the selected backup file cannot be recognized; please select a new one.
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_TITLE" desc="Title of data restore screen setup page">
+    Restore backup (beta)
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_SUBTITLE" desc="Subtitle of data restore screen setup page">
+    <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>To restore FydeOS from the selected backup file, it is essential to have accurate information about the backup when it was created. Otherwise, the restore process will fail.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
+    <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>The "account name" is the primary login credential of the account that your backup file was created under. It's usually the email address you used to sign up for your FydeOS/Google account. If it were a local account, it would be the username appended with "@fydeos.local".<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
+    <ph name="BEGIN_PARAGRAPH3">&lt;p&gt;</ph>The password is the passphrase you were asked to input when the backup was created. It's usually the same password you used to sign in to the FydeOS desktop for this account.<ph name="END_PARAGRAPH3">&lt;/p&gt;</ph>
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_ACCOUNT_NAME_LABEL" desc="Account name label of data restore screen setup page">
+    Account name
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_INVALID_ACCOUNT_NAME_MESSAGE" desc="Invalid account name message of data restore screen setup page">
+    Sorry, please enter the correct account name
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_PASSWORD_LABEL" desc="Password label of data restore screen setup page">
+    Password
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_INVALID_PASSWORD_MESSAGE" desc="Invalid password message of data restore screen setup page">
+    Sorry, the password cannot be empty
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SETUP_NEXT_BUTTON" desc="Next button of data restore screen setup page">
+    Restore
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_IN_PROGRESS_TITLE" desc="Title of data restore screen in progress page">
+    Restoring backup
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_IN_PROGRESS_SUBTITLE" desc="Subtitle of data restore screen in progress page">
+    <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>We are now working on restoring your backup file; this may take a while, so please be patient.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
+    <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>Please note that the UI will restart automatically when the restore process completes successfully.<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_ERROR_TITLE" desc="Title of data restore screen error page">
+    Restore backup has failed
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_ERROR_SUBTITLE" desc="Subtitle of data restore screen error page">
+    For more details, please click the link below to view the logs. If this error persists, please get in touch with the FydeOS technical support channels and provide the error logs.
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_ERROR_VIEW_LOGS" desc="View logs button of data restore screen error page">
+    View logs
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SUCCESS_TITLE" desc="Title of data restore screen success page">
+    Done
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SUCCESS_SUBTITLE" desc="Subtitle of data restore screen success page">
+    Restore data success
+  </message>
+  <message name="IDS_DATA_RESTORE_SCREEN_SERVICE_LOGS_TITLE" desc="Title of data restore screen service logs page">
+    Restore backup logs
+  </message>
+  <if expr="use_fydeos_com">
+    <message name="IDS_VERSION_UI_FYDEOS_PRODUCT_TITLE_WITH_LINK" desc="First line of product copyright area in os-settings about page">
+      FydeOS, offered by <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>https://fydeos.com<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_VERSION_UI_FYDEOS_PRODUCT_TOS" desc="Tos information on the about pages">
+      To use FydeOS and its services, please consult our <ph name="BEGIN_LINK_PRIVACY">&lt;a target="_blank" href="$1"&gt;</ph>Privacy Statement<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$2"&gt;</ph>Terms of Service.<ph name="END_LINK_TOS">&lt;/a&gt;</ph>
+    </message>
+  </if>
+  <if expr="not use_fydeos_com">
+    <if expr="openfyde">
+      <message name="IDS_VERSION_UI_FYDEOS_PRODUCT_TITLE_WITH_LINK" desc="First line of product copyright area in os-settings about page">
+        <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>openFyde<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
+    </if>
+    <if expr="not openfyde">
+      <message name="IDS_VERSION_UI_FYDEOS_PRODUCT_TITLE_WITH_LINK" desc="First line of product copyright area in os-settings about page">
+        FydeOS, offered by <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>https://fydeos.io<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_VERSION_UI_FYDEOS_PRODUCT_TOS" desc="Tos information on the about pages">
+        FydeOS and its services comply with the GDPR and adhere to the provisions of the UK Data Protection Act. For more information, please consult our <ph name="BEGIN_LINK_PRIVACY">&lt;a target="_blank" href="$1"&gt;</ph>Privacy Statement<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$2"&gt;</ph>Terms of Service.<ph name="END_LINK_TOS">&lt;/a&gt;</ph>
+      </message>
+    </if>
+  </if>
+  <message name="IDS_SETTINGS_FYDEOS_PRODUCT_COPYRIGHT" desc="Copyright information on the about pages">
+    <ph name="YEAR">{0,date,y}<ex>2016</ex></ph>, Fyde Innovations, all rights reserved.
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_VERSION_UI_FYDEOS_OPENFYDE_LICENSE_DESC" desc="Description of relationship between fydeos and openfyde">
+      openFyde is the foundation of FydeOS.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_VERSION_UI_FYDEOS_OPENFYDE_LICENSE_DESC" desc="Description of relationship between fydeos and openfyde">
+      FydeOS is a commercial offering based on <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>openFyde<ph name="END_LINK">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+  <message name="IDS_VERSION_UI_FYDEOS_OPENFYDE_PRODUCT_LICENSE" desc="Chromium project and fydeos and openfyde">
+    openFyde and FydeOS are made possible by the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Chromium<ph name="END_LINK">&lt;/a&gt;</ph> open source project.
+  </message>
+  <message name="IDS_VERSION_UI_FYDEOS_PRODUCT_CHROMIUM_LICENSE" desc="Chromium and other open source project and fydeos and openfyde">
+    Chromium is also made possible by other <ph name="BEGIN_LINK_1">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_1">&lt;/a&gt;</ph> and additional <ph name="BEGIN_LINK_2">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_2">&lt;/a&gt;</ph>.
+  </message>
+
+  <if expr="fydeos_device">
+    <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_REGULATORY_INFO" desc="regulatory info for fyde device">
+      Designed and manufactured by Fyde Innovations.
+    </message>
+    <if expr="use_fydeos_com">
+      <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_COPYRIGHT_INFO" desc="copyright info for fyde device">
+        ©<ph name="YEAR">{0,date,y}<ex>2016</ex></ph>, Fyde Innovations (Beijing) Limited, all rights reserved.
+      </message>
+    </if>
+    <if expr="not use_fydeos_com">
+      <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_COPYRIGHT_INFO" desc="copyright info for fyde device">
+        ©<ph name="YEAR">{0,date,y}<ex>2016</ex></ph>, Fyde Innovations LTD, all rights reserved.
+      </message>
+      <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_COPYRIGHT_INFO_EXTRA" desc="extra copyright info for fyde device">
+        Fyde Innovations is the trading name of Fyde Innovations LTD and Fyde Innovations (Beijing) Limited.
+        <ph name="LINE_BREAK">&lt;br&gt;</ph>
+        Fyde Innovations LTD is a company registered in England and Wales with company number 12273803.
+      </message>
+    </if>
+    <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_WARRANTY_URL_TITLE" desc="warranty url title info for fyde device">
+      Important device warranty and service information
+    </message>
+    <message name="IDS_VERSION_UI_FYDEOS_DEVICE_PRODUCT_SERIAL_NUMBER_LABEL" desc="label of sn for fyde device">
+      Device SN:
+    </message>
+  </if>
+</grit-part>

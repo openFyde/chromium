@@ -24,6 +24,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace ash::settings {
 
@@ -140,9 +141,7 @@ void DateTimeSection::AddLoadTimeData(content::WebUIDataSource* html_source) {
 
   html_source->AddString(
       "timeZoneSettingsLearnMoreURL",
-      base::ASCIIToUTF16(base::StringPrintf(
-          chrome::kTimeZoneSettingsLearnMoreURL,
-          g_browser_process->GetApplicationLocale().c_str())));
+      base::ASCIIToUTF16(fydeos::constants::kTimeZoneSettingsLearnMoreURL));
 
   // Set the initial time zone to show.
   html_source->AddString("timeZoneName", system::GetCurrentTimezoneName());

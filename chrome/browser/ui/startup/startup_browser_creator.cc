@@ -623,6 +623,9 @@ std::optional<ash::KioskAppId> GetAppId(const base::CommandLine& command_line,
       return ash::KioskAppId::ForIsolatedWebApp(user->GetAccountId());
     case user_manager::UserType::kRegular:
     case user_manager::UserType::kChild:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
+    case user_manager::UserType::kFlintAccount:
     case user_manager::UserType::kGuest:
     case user_manager::UserType::kPublicAccount:
     case user_manager::UserType::kKioskArcvmApp:

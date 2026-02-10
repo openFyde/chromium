@@ -16,6 +16,10 @@
 #include "google_apis/gaia/gaia_config.h"
 #include "ui/base/device_form_factor.h"
 #include "url/gurl.h"
+// ---***FYDEOS BEGIN***---
+#include "fydeos/switches/account/account_switches.h"
+#include "fydeos/switches/account/account_constants.h"
+// ---***FYDEOS END***---
 
 namespace {
 
@@ -78,6 +82,30 @@ GURL GetSyncServiceURL(const base::CommandLine& command_line,
   // 1. Explicitly specified --sync-url
   // 2. Specified as part of the --gaia-config
   // 3. Default URL (different for Stable/Beta vs. Dev/Canary/unbranded)
+  // ---***FYDEOS BEGIN***---
+  if (fydeos::switches::IsFydeAccountEnabled()) {
+    GURL result(fydeos::constants::kFydeOSSyncDevServerUrl);
+    if (channel == version_info::Channel::STABLE ||
+        channel == version_info::Channel::BETA) {
+      result = GURL(fydeos::constants::kFydeOSSyncServerUrl);
+    }
+    if (command_line.HasSwitch(fydeos::switches::kFydeOSSyncServiceURL)) {
+      std::string value(
+          command_line.GetSwitchValueASCII(fydeos::switches::kFydeOSSyncServiceURL));
+      if (!value.empty()) {
+        GURL custom_sync_url(value);
+        if (custom_sync_url.is_valid()) {
+          result = custom_sync_url;
+        } else {
+          LOG(WARNING) << "The following FydeOS sync URL specified at the command-line "
+            << "is invalid: " << value;
+        }
+      }
+    }
+    return result;
+  }
+  // ---***FYDEOS END***---
+  GURL result(internal::kSyncDevServerUrl);
 
   // 1. Get the sync server URL from the --sync-url command-line param, if
   // specified.

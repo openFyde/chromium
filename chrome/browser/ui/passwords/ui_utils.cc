@@ -51,6 +51,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/user_education/show_promo_in_page.h"
 #endif
+#include "fydeos/switches/urls/urls_constants.h"
 
 namespace {
 

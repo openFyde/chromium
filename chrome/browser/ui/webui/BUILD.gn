@@ -105,6 +105,7 @@ source_set("configs") {
         "//chrome/browser/ui/webui/whats_new",
       ]
     }
+    deps += [ "//ash/webui/fyde_assistant_app_ui" ]
   }
 
   if (is_chromeos) {

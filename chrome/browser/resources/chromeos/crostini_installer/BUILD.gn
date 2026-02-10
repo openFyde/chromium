@@ -23,6 +23,8 @@ build_webui("build") {
 
   webui_context_type = "trusted"
 
+  ts_definitions = [ "//tools/typescript/definitions/chrome_send.d.ts" ]
+
   ts_deps = [
     "//ash/webui/common/resources:build_ts",
     "//ash/webui/common/resources/cr_elements:build_ts",

@@ -584,6 +584,7 @@ static_library("common") {
     "//ui/gfx/ipc/geometry",
     "//ui/gfx/ipc/skia",
     "//url",
+    "//fydeos/switches",
   ]
 
   if (is_chromeos) {

@@ -72,4 +72,8 @@ void TestNearbyShareDelegate::SetVisibility(
   visibility_ = visibility;
 }
 
+bool TestNearbyShareDelegate::IsLimitedMode() const {
+  return is_limited_mode_;
+}
+
 }  // namespace ash

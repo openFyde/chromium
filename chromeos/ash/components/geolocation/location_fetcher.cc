@@ -22,13 +22,14 @@
 #include "chromeos/ash/components/network/network_handler.h"
 #include "chromeos/ash/components/network/network_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "fydeos/switches/services/services_switches.h"
 
 namespace ash {
 
 LocationFetcher::LocationFetcher(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : LocationFetcher(url_loader_factory,
-                      GURL(kDefaultGeolocationProviderUrl),
+                      GURL(fydeos::switches::DisableFydeOSGeolocationAPI() ? kDefaultGeolocationProviderUrl : fydeos::switches::GetFydeOSGeolocationAPIUrl()),
                       nullptr) {}
 
 LocationFetcher::LocationFetcher(

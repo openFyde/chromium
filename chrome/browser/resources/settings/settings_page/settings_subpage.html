@@ -94,7 +94,7 @@
       </template>
       <h1 class="cr-title-text">[[pageTitle]]</h1>
       <slot name="subpage-title-extra"></slot>
-      <template is="dom-if" if="[[learnMoreUrl]]">
+      <template is="dom-if" if="[[showLearnMoreUrl]]">
         <cr-icon-button iron-icon="cr:help-outline" suppress-rtl-flip
             aria-label="[[getLearnMoreAriaLabel_(pageTitle)]]"
             aria-description="$i18n{opensInNewTab}" on-click="onHelpClick_">

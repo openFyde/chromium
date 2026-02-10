@@ -143,6 +143,7 @@ export {getReceiveManager, observeReceiveManager, setReceiveManagerForTesting} f
 export {dataUsageStringToEnum, NearbyShareDataUsage} from './nearby_share_page/types.js';
 export {ChromeVoxSubpageBrowserProxy, ChromeVoxSubpageBrowserProxyImpl} from './os_a11y_page/chromevox_subpage_browser_proxy.js';
 export {FaceGazeSubpageBrowserProxy, FaceGazeSubpageBrowserProxyImpl} from './os_a11y_page/facegaze_subpage_browser_proxy.js';
+export {OsSettingsFydeAssistantPageElement} from './fyde_assistant_page/fyde_assistant_page.js';
 export {OsSettingsA11yPageElement} from './os_a11y_page/os_a11y_page.js';
 export {OsA11yPageBrowserProxy, OsA11yPageBrowserProxyImpl} from './os_a11y_page/os_a11y_page_browser_proxy.js';
 export {SelectToSpeakSubpageBrowserProxy, SelectToSpeakSubpageBrowserProxyImpl} from './os_a11y_page/select_to_speak_subpage_browser_proxy.js';
@@ -153,6 +154,10 @@ export {AboutPageBrowserProxy, AboutPageBrowserProxyImpl, BrowserChannel, Channe
 export {DeviceNameBrowserProxy, DeviceNameBrowserProxyImpl, DeviceNameMetadata} from './os_about_page/device_name_browser_proxy.js';
 export {DeviceNameState, SetDeviceNameResult} from './os_about_page/device_name_util.js';
 export {OsAboutPageElement} from './os_about_page/os_about_page.js';
+export {OsSettingsFydePageElement} from './os_fyde_page/os_fyde_page.js';
+export {ShellClient} from './os_fyde_page/shell_client.js';
+export {PopupLicenseWindowProxy, PopupLicenseWindowProxyImpl, RenewalStatus} from './os_about_page/popup_license_window.js';
+export {FydeOSBoardNameTitleMap} from './os_about_page/fydeos_board_name.js';
 export {AndroidAppsBrowserProxy, AndroidAppsBrowserProxyImpl} from './os_apps_page/android_apps_browser_proxy.js';
 export {AppManagementFileHandlingItemElement} from './os_apps_page/app_management_page/file_handling_item.js';
 export {PluginVmBrowserProxy, PluginVmBrowserProxyImpl} from './os_apps_page/app_management_page/plugin_vm_page/plugin_vm_browser_proxy.js';

@@ -33,6 +33,7 @@ source_set("prefs") {
     "//services/preferences/public/mojom",
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//url",
+    "//fydeos/prefs",
   ]
 
   if (!is_android) {

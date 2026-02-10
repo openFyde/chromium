@@ -39,6 +39,7 @@ static_library("uploading") {
     "//components/prefs",
     "//components/user_manager",
     "//content/public/browser",
+    "//fydeos/switches",
     "//google_apis",
     "//net",
     "//net/traffic_annotation",

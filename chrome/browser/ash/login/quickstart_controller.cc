@@ -47,6 +47,7 @@
 #include "components/session_manager/core/session_manager.h"
 #include "components/session_manager/session_manager_types.h"
 #include "components/user_manager/user_type.h"
+#include "fydeos/switches/misc/misc_switches.h"
 
 namespace ash::quick_start {
 
@@ -194,6 +195,11 @@ QuickStartController::QuickStartController() {
     if (should_resume_quick_start_after_update_) {
       ForceEnableQuickStart();
     }
+    return;
+  }
+
+  // Disable QuickStart during OOBE when FydeOS custom is enabled.
+  if (fydeos::switches::IsFydeCustomEnabled()) {
     return;
   }
 

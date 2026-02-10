@@ -16,10 +16,12 @@
 #include "chrome/browser/ash/login/quick_unlock/quick_unlock_factory.h"
 #include "chrome/browser/ash/login/quick_unlock/quick_unlock_storage.h"
 #include "chrome/browser/ash/phonehub/browser_tabs_model_provider_impl.h"
+#include "chrome/browser/ash/profiles/profile_helper.h"
 #include "chrome/browser/nearby_sharing/common/nearby_share_prefs.h"
 #include "chrome/browser/nearby_sharing/nearby_share_feature_status.h"
 #include "chrome/browser/nearby_sharing/nearby_sharing_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/user_manager/user_manager.h"
 #include "chrome/browser/ui/ash/session/session_controller_client_impl.h"
 #include "chrome/browser/ui/webui/ash/multidevice_setup/multidevice_setup_dialog.h"
 #include "chromeos/ash/components/multidevice/logging/logging.h"
@@ -706,11 +708,17 @@ base::Value::Dict MultideviceHandler::GeneratePageContentDataDictionary() {
   page_content_dictionary.Set(kIsCameraRollFilePermissionGranted,
                               is_camera_roll_file_permission_granted);
 
-  bool is_nearby_share_disallowed_by_policy =
-      NearbySharingServiceFactory::IsNearbyShareSupportedForBrowserContext(
-          Profile::FromWebUI(web_ui())) &&
-      (GetNearbyShareEnabledState(prefs_) ==
-       NearbyShareEnabledState::kDisallowedByPolicy);
+  // local user skip policy check.
+  bool is_nearby_share_disallowed_by_policy = false;
+  Profile* profile = Profile::FromWebUI(web_ui());
+  const user_manager::User* user = ProfileHelper::Get()->GetUserByProfile(profile);
+  bool has_gaia = user && user->HasGaiaAccount();
+  if (has_gaia) {
+    is_nearby_share_disallowed_by_policy =
+        (NearbySharingServiceFactory::IsNearbyShareSupportedForBrowserContext(profile)) &&
+        ((GetNearbyShareEnabledState(prefs_) ==
+         NearbyShareEnabledState::kDisallowedByPolicy));
+  }
   page_content_dictionary.Set(kIsNearbyShareDisallowedByPolicy,
                               is_nearby_share_disallowed_by_policy);
 

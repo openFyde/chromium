@@ -67,10 +67,16 @@ static_library("login") {
     "enter_old_password_screen_handler.h",
     "error_screen_handler.cc",
     "error_screen_handler.h",
+    "eula_screen_handler.cc",
+    "eula_screen_handler.h",
     "family_link_notice_screen_handler.cc",
     "family_link_notice_screen_handler.h",
     "fingerprint_setup_screen_handler.cc",
     "fingerprint_setup_screen_handler.h",
+    "fyde_local_signin_screen_handler.cc",
+    "fyde_local_signin_screen_handler.h",
+    "data_restore_screen_handler.cc",
+    "data_restore_screen_handler.h",
     "fjord_oobe_util.cc",
     "fjord_oobe_util.h",
     "fjord_station_setup_screen_handler.cc",
@@ -338,6 +344,8 @@ static_library("login") {
     "//ui/display/manager",
     "//ui/strings:ui_strings",
     "//ui/webui/resources:resources_grit",
+    "//fydeos/switches/account/toggle:account_toggle",
+    "//fydeos/build/config:buildflags",
   ]
 
   allow_circular_includes_from = [

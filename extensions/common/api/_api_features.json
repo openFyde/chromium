@@ -53,7 +53,8 @@
     "allowlist": [
       "B9EF10DDFEA11EF77873CC5009809E5037FC4C7A",  // Google input tools
       "06BE211D5F014BAB34BC22D9DDA09C63A81D828E",  // Official xkb extension
-      "F94EE6AB36D6C6588670B2B01EB65212D9C64E33"   // Open source xkb extension
+      "F94EE6AB36D6C6588670B2B01EB65212D9C64E33",   // Open source xkb extension
+      "7576E2B5BFBC3893C37DB1532F305BCE04270880" // rime 2
     ]
   }],
   "app.currentWindowInternal": {
@@ -243,6 +244,14 @@
       "matches": [
         "chrome://feedback/*"
       ]
+    },
+    {
+      "channel": "stable",
+      "contexts": ["privileged_extension"],
+      "platforms": ["chromeos"],
+      "allowlist": [
+        "F3C1CDC64C6AAB9E1DF4219AC2242C0505A14A9E"  //FydeOS System Control Extension
+      ]
     }
   ],
   "fileSystem": {
@@ -263,6 +272,8 @@
       "contexts": ["webui"],
       "matches": [
         "chrome://add-supervision/*",
+        "chrome://fydeos-ai/*",
+        "chrome://file-manager/*",
         "chrome://contextual-tasks/*",
         "chrome://extensions/*",
         "chrome://glic/*",
@@ -275,7 +286,8 @@
         "chrome://os-settings/*",
         "chrome://parent-access/*",
         "chrome://password-change/*",
-        "chrome://lock-reauth/*"
+        "chrome://lock-reauth/*",
+        "chrome://os-settings/*"        // required by webview, FYDEOS BEGIN, FYDEOS END
       ],
       // "desktop_android" is not supported.
       "platforms": ["chromeos", "linux", "mac", "win"]
@@ -337,7 +349,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://extensions/*",
-      "chrome://settings/*"
+      "chrome://settings/*",
+      "chrome://file-manager/*"
     ]
   }, {
     "channel": "stable",
@@ -905,6 +918,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
+      "chrome://fydeos-ai/*",
+      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://contextual-tasks/*",
       "chrome://glic/*",
@@ -916,7 +931,8 @@
       "chrome://os-settings/*",
       "chrome://parent-access/*",
       "chrome://password-change/*",
-      "chrome://lock-reauth/*"
+      "chrome://lock-reauth/*",
+      "chrome://os-settings/*"        // required by webview.request.xxxx.addListener, FYDEOS BEGIN, FYDEOS END
     ]
   }, {
     "internal": true,
@@ -951,6 +967,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
+      "chrome://fydeos-ai/*",
+      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://contextual-tasks/*",
       "chrome://glic/*",
@@ -962,7 +980,8 @@
       "chrome://os-settings/*",
       "chrome://parent-access/*",
       "chrome://password-change/*",
-      "chrome://lock-reauth/*"
+      "chrome://lock-reauth/*",
+      "chrome://os-settings/*" // without this, webview tag won't work, FYDEOS BEGIN, FYDEOS END
     ]
   }, {
     "internal": true,
@@ -995,6 +1014,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://add-supervision/*",
+      "chrome://fydeos-ai/*",
+      "chrome://file-manager/*",
       "chrome://chrome-signin/*",
       "chrome://contextual-tasks/*",
       "chrome://glic/*",

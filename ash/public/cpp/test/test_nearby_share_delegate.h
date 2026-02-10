@@ -27,6 +27,7 @@ class ASH_PUBLIC_EXPORT TestNearbyShareDelegate : public NearbyShareDelegate {
 
   // NearbyShareDelegate
   bool IsEnabled() override;
+  bool IsLimitedMode() const override;
   void SetEnabled(bool enabled) override;
   bool IsPodButtonVisible() override;
   bool IsHighVisibilityOn() override;
@@ -76,6 +77,7 @@ class ASH_PUBLIC_EXPORT TestNearbyShareDelegate : public NearbyShareDelegate {
   bool is_enable_high_visibility_request_active_ = false;
   bool is_high_visibility_on_ = false;
   bool is_onboarding_complete_ = true;
+  bool is_limited_mode_ = false;
   base::TimeTicks high_visibility_shutoff_time_;
   std::vector<Method> method_calls_;
   ::nearby_share::mojom::Visibility visibility_ =

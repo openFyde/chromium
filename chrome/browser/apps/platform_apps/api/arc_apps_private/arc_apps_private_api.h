@@ -40,6 +40,14 @@ class ArcAppsPrivateAPI : public extensions::BrowserContextKeyedAPI,
   // ArcAppListPrefs::Observer:
   void OnAppRegistered(const std::string& app_id,
                        const ArcAppListPrefs::AppInfo& app_info) override;
+  void OnPackageRemoved(const std::string& package_name,
+                        bool uninstalled) override;
+  void OnInstallationProgressChanged(const std::string& package_name,
+                                     float progress) override;
+  void OnInstallationStarted(const std::string& package_name) override;
+  void OnInstallationFinished(const std::string& package_name,
+                              bool success,
+                              bool is_launchable_app) override;
 
  private:
   friend class extensions::BrowserContextKeyedAPIFactory<ArcAppsPrivateAPI>;
@@ -88,6 +96,36 @@ class ArcAppsPrivateLaunchAppFunction : public ExtensionFunction {
   ~ArcAppsPrivateLaunchAppFunction() override;
 
   // ExtensionFunction:
+  ResponseAction Run() override;
+};
+
+class ArcAppsPrivateRemovePackageFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("arcAppsPrivate.removePackage",
+                             ARCAPPSPRIVATE_REMOVEPACKAGE)
+
+  ArcAppsPrivateRemovePackageFunction();
+  ArcAppsPrivateRemovePackageFunction(const ArcAppsPrivateRemovePackageFunction&) = delete;
+  ArcAppsPrivateRemovePackageFunction& operator=(
+      const ArcAppsPrivateRemovePackageFunction&) = delete;
+ protected:
+  ~ArcAppsPrivateRemovePackageFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class ArcAppsPrivateInstallPackageFromPathFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("arcAppsPrivate.installPackageFromPath",
+                             ARCAPPSPRIVATE_INSTALLPACKAGE_FROM_PATH)
+
+  ArcAppsPrivateInstallPackageFromPathFunction();
+  ArcAppsPrivateInstallPackageFromPathFunction(const ArcAppsPrivateInstallPackageFromPathFunction&) = delete;
+  ArcAppsPrivateInstallPackageFromPathFunction& operator=(
+      const ArcAppsPrivateInstallPackageFromPathFunction&) = delete;
+ protected:
+  ~ArcAppsPrivateInstallPackageFromPathFunction() override;
+
   ResponseAction Run() override;
 };
 

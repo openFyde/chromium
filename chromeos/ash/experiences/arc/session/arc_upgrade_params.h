@@ -47,6 +47,8 @@ struct UpgradeParams {
   // Whether the account is managed.
   bool is_account_managed;
 
+  bool is_device_managed;
+
   // Whether adb sideloading is allowed when the account and/or the device is
   // managed.
   bool is_managed_adb_sideloading_allowed = false;

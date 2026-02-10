@@ -7,6 +7,7 @@
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "components/supervised_user/core/common/pref_names.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace supervised_user {
 

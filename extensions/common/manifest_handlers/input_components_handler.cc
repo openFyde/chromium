@@ -71,6 +71,13 @@ bool InputComponentsHandler::Parse(Extension* extension,
       return false;
     }
 
+    // Get input_components[i].indicator.
+    std::string indicator_str;
+    const std::string* maybe_indicator_str =
+      module_value->FindString(keys::kIndicator);
+    if (maybe_indicator_str)
+      indicator_str = *maybe_indicator_str;
+
     // Get input_components[i].id.
     std::string id_str;
     const std::string* maybe_id_str = module_value->FindString(keys::kId);
@@ -144,6 +151,7 @@ bool InputComponentsHandler::Parse(Extension* extension,
 
     InputComponentInfo component;
     component.name = *name_str;
+    component.indicator = std::move(indicator_str);
     component.id = std::move(id_str);
     component.languages = std::move(languages);
     component.layouts = std::move(layouts);

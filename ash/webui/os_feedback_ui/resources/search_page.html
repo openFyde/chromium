@@ -108,6 +108,22 @@
     height: 148px;
     overflow: visible;
   }
+
+  #fydeosHelpMessage {
+    color: var(--cros-text-color-secondary);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    margin-top: 28px;
+  }
+  #fydeosHelpMessage ul {
+    padding-inline-start: 20px;
+    margin-block-start: 6px;
+    margin-block-end: 0;
+  }
+  #fydeosHelpMessage ul li {
+    padding: 4px 0;
+  }
 </style>
 <div id="container">
   <div id="header">
@@ -138,12 +154,7 @@
         </p>
       </div>
     </div>
-    <div>
-      <iframe on-load="resolveIframeLoaded"
-          src="chrome-untrusted://os-feedback/untrusted_index.html"
-          scrolling="no" hidden$="[[!isUserLoggedIn(feedbackContext)]]">
-      </iframe>
-    </div>
+    <div id="fydeosHelpMessage" inner-h-t-m-l="[[fydeosFeedbackFeatureHelpMessage()]]"></div>
     <div id="shadowShield"></div>
   </div>
   <div id="separator"></div>

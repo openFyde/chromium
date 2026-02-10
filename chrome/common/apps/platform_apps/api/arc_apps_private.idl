@@ -9,6 +9,7 @@ namespace arcAppsPrivate {
   dictionary AppInfo {
     // The app package name.
     DOMString packageName;
+    DOMString? version;
   };
 
   callback VoidCallback = void ();
@@ -26,10 +27,19 @@ namespace arcAppsPrivate {
     static void launchApp(
         DOMString packageName,
         optional VoidCallback callback);
+
+    static void removePackage(DOMString packageName, optional VoidCallback callback);
+    static void installPackageFromPath(DOMString relativePath, DOMString verifyUrl,
+    	optional VoidCallback callback);
   };
 
   interface Events {
     // Fires when a new app can be launched via $(ref:launchApp).
     static void onInstalled(AppInfo app_info);
+    static void onRemoved(AppInfo app_info);
+    static void onInstallationStarted(AppInfo app_info);
+    // Notifies that package installation has a new progress percentage.
+    static void onInstallationProgressChanged(AppInfo app_info, double progress);
+    static void onInstallationFinished(AppInfo app_info, boolean success);
   };
 };

@@ -126,35 +126,37 @@ void SharingImpl::InitializeNearbySharedRemotes(NearbyDependenciesPtr deps) {
             base::SequencedTaskRunner::GetCurrentDefault());
   }
 
-  nearby_shared_remotes_->socket_manager.Bind(
-      std::move(deps->webrtc_dependencies->socket_manager), io_task_runner_);
-  nearby_shared_remotes_->socket_manager.set_disconnect_handler(
-      base::BindOnce(&SharingImpl::OnDisconnect, weak_ptr_factory_.GetWeakPtr(),
-                     MojoDependencyName::kSocketManager),
-      base::SequencedTaskRunner::GetCurrentDefault());
+  if (deps->webrtc_dependencies) {
+    nearby_shared_remotes_->socket_manager.Bind(
+        std::move(deps->webrtc_dependencies->socket_manager), io_task_runner_);
+    nearby_shared_remotes_->socket_manager.set_disconnect_handler(
+        base::BindOnce(&SharingImpl::OnDisconnect, weak_ptr_factory_.GetWeakPtr(),
+                       MojoDependencyName::kSocketManager),
+        base::SequencedTaskRunner::GetCurrentDefault());
 
-  nearby_shared_remotes_->mdns_responder_factory.Bind(
-      std::move(deps->webrtc_dependencies->mdns_responder_factory),
-      io_task_runner_);
-  nearby_shared_remotes_->mdns_responder_factory.set_disconnect_handler(
-      base::BindOnce(&SharingImpl::OnDisconnect, weak_ptr_factory_.GetWeakPtr(),
-                     MojoDependencyName::kMdnsResponder),
-      base::SequencedTaskRunner::GetCurrentDefault());
+    nearby_shared_remotes_->mdns_responder_factory.Bind(
+        std::move(deps->webrtc_dependencies->mdns_responder_factory),
+        io_task_runner_);
+    nearby_shared_remotes_->mdns_responder_factory.set_disconnect_handler(
+        base::BindOnce(&SharingImpl::OnDisconnect, weak_ptr_factory_.GetWeakPtr(),
+                       MojoDependencyName::kMdnsResponder),
+        base::SequencedTaskRunner::GetCurrentDefault());
 
-  nearby_shared_remotes_->ice_config_fetcher.Bind(
-      std::move(deps->webrtc_dependencies->ice_config_fetcher),
-      io_task_runner_);
-  nearby_shared_remotes_->ice_config_fetcher.set_disconnect_handler(
-      base::BindOnce(&SharingImpl::OnDisconnect, weak_ptr_factory_.GetWeakPtr(),
-                     MojoDependencyName::kIceConfigFetcher),
-      base::SequencedTaskRunner::GetCurrentDefault());
+    nearby_shared_remotes_->ice_config_fetcher.Bind(
+        std::move(deps->webrtc_dependencies->ice_config_fetcher),
+        io_task_runner_);
+    nearby_shared_remotes_->ice_config_fetcher.set_disconnect_handler(
+        base::BindOnce(&SharingImpl::OnDisconnect, weak_ptr_factory_.GetWeakPtr(),
+                       MojoDependencyName::kIceConfigFetcher),
+        base::SequencedTaskRunner::GetCurrentDefault());
 
-  nearby_shared_remotes_->webrtc_signaling_messenger.Bind(
-      std::move(deps->webrtc_dependencies->messenger), io_task_runner_);
-  nearby_shared_remotes_->webrtc_signaling_messenger.set_disconnect_handler(
-      base::BindOnce(&SharingImpl::OnDisconnect, weak_ptr_factory_.GetWeakPtr(),
-                     MojoDependencyName::kWebRtcSignalingMessenger),
-      base::SequencedTaskRunner::GetCurrentDefault());
+    nearby_shared_remotes_->webrtc_signaling_messenger.Bind(
+        std::move(deps->webrtc_dependencies->messenger), io_task_runner_);
+    nearby_shared_remotes_->webrtc_signaling_messenger.set_disconnect_handler(
+        base::BindOnce(&SharingImpl::OnDisconnect, weak_ptr_factory_.GetWeakPtr(),
+                       MojoDependencyName::kWebRtcSignalingMessenger),
+        base::SequencedTaskRunner::GetCurrentDefault());
+  }
 
   // TODO(https://crbug.com/1261238): This should always be true when the
   // WifiLan feature flag is enabled. Remove when flag is enabled by default.

@@ -22,6 +22,7 @@ namespace {
 // Bluetooth setting instead.
 bool ShouldApplyUserBluetoothSetting(user_manager::UserType user_type) {
   return user_type == user_manager::UserType::kRegular ||
+         user_type == user_manager::UserType::kFlintAccount ||
          user_type == user_manager::UserType::kChild;
 }
 

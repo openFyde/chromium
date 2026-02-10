@@ -19,6 +19,8 @@ namespace {
 
 constexpr char kOptInVisibility[] = "optInVisibility";
 constexpr char kOptInDefaultState[] = "optInDefaultState";
+constexpr char kFydeOptInVisibility[] = "fydeOptInVisibility";
+constexpr char kFydeOptInDefaultState[] = "fydeOptInDefaultState";
 constexpr char kLegalFooterVisibility[] = "legalFooterVisibility";
 constexpr char kCloudGamingDevice[] = "cloudGamingDevice";
 
@@ -67,15 +69,24 @@ void MarketingOptInScreenHandler::DeclareLocalizedValues(
       IDS_MARKETING_OPT_IN_ACCESSIBILITY_NAV_BUTTON_SETTING_DESCRIPTION);
   builder->Add("finalA11yPageDoneButtonTitle",
                IDS_MARKETING_OPT_IN_ACCESSIBILITY_DONE_BUTTON);
+  builder->Add(
+      "marketingOptInGetFydeUpdates",
+      IDS_LOGIN_MARKETING_OPT_IN_SCREEN_GET_FYDE_UPDATES_SIGN_ME_UP);
+  builder->Add("fydeOSImprovementPlanOptionLabel",
+               IDS_MARKETING_OPT_IN_FYDEOS_IMPROVEMENT_PLAN);
 }
 
 void MarketingOptInScreenHandler::Show(bool opt_in_visible,
                                        bool opt_in_default_state,
+                                       bool fyde_opt_in_visible,
+                                       bool fyde_opt_in_default_state,
                                        bool legal_footer_visible,
                                        bool cloud_gaming_enabled) {
   base::Value::Dict data;
   data.Set(kOptInVisibility, opt_in_visible);
   data.Set(kOptInDefaultState, opt_in_default_state);
+  data.Set(kFydeOptInVisibility, fyde_opt_in_visible);
+  data.Set(kFydeOptInDefaultState, fyde_opt_in_default_state);
   data.Set(kLegalFooterVisibility, legal_footer_visible);
   data.Set(kCloudGamingDevice, cloud_gaming_enabled);
 

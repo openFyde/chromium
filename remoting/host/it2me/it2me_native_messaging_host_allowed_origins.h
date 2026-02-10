@@ -11,6 +11,10 @@ namespace remoting {
 // The set of origins which are allowed to instantiate an It2Me host.
 // LINT.IfChange(it2me_origins)
 inline constexpr const char* kIt2MeOrigins[] = {
+    // remote desktop extension id, old, new, and dev
+    "chrome-extension://ljkfnggfkjcmfpcpoomhmhkgeeakhgig/",
+    "chrome-extension://fogdcaodknbhigpklbhepedofamkfbln/",
+    "chrome-extension://ljacajndfccfgnfohlgkdphmbnpkjflk/",
     "chrome-extension://inomeogfingihgjfjlpeplalcfajhgai/",
     "chrome-extension://pbnaomcgbfiofkfobmlhmdobjchjkphi/"};
 // LINT.ThenChange(/remoting/host/BUILD.gn:extension_ids)

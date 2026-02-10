@@ -151,6 +151,18 @@ export class NearbyContactVisibilityElement extends
         type: Boolean,
         value: () => loadTimeData.getBoolean('isQuickShareV2Enabled'),
       },
+
+      /**
+       * Determines whether Nearby Share is in limited mode.
+       */
+      isLimitedMode_: {
+        type: Boolean,
+        value: () => {
+          // Default to false
+          return loadTimeData.valueExists('isNearbyShareLimitedMode') &&
+              loadTimeData.getBoolean('isNearbyShareLimitedMode');
+        },
+      },
     };
   }
 
@@ -178,6 +190,7 @@ export class NearbyContactVisibilityElement extends
   private isDarkModeActive_: boolean;
   private isAllContactsToggledOn_: boolean;
   private isQuickShareV2Enabled_: boolean;
+  private isLimitedMode_: boolean;
   private numUnreachable_: number;
   private numUnreachableMessage_: string;
 
@@ -190,6 +203,11 @@ export class NearbyContactVisibilityElement extends
 
   override connectedCallback(): void {
     super.connectedCallback();
+
+    if (this.isLimitedMode_) {
+      this.contactsState = ContactsState.ZERO_CONTACTS;
+      return;
+    }
 
     this.contactManager_ = getContactManager();
     this.downloadContactsObserverReceiver_ = observeContactManager(this);
@@ -271,11 +289,14 @@ export class NearbyContactVisibilityElement extends
    * Makes a mojo request to download the latest version of contacts.
    */
   private downloadContacts_(): void {
+    if (this.isLimitedMode_ || !this.contactManager_) {
+      return;
+    }
     // Don't show pending UI if we already have some contacts.
     if (!this.contacts) {
       this.contactsState = ContactsState.PENDING;
     }
-    this.contactManager_!.downloadContacts();
+    this.contactManager_.downloadContacts();
     // Time out after 30 seconds and show the failure page if we don't get a
     // response.
     this.downloadTimeoutId_ =
@@ -622,8 +643,13 @@ export class NearbyContactVisibilityElement extends
       this.set('settings.visibility', visibility);
     }
 
+    // In limited mode, skip contact sync
+    if (this.isLimitedMode_ || !this.contactManager_) {
+      return;
+    }
+
     if (!this.contacts) {
-      this.contactManager_!.setAllowedContacts([]);
+      this.contactManager_.setAllowedContacts([]);
       return;
     }
 
@@ -645,7 +671,7 @@ export class NearbyContactVisibilityElement extends
       default:
         break;
     }
-    this.contactManager_!.setAllowedContacts(allowedContacts);
+    this.contactManager_.setAllowedContacts(allowedContacts);
   }
 
   /**

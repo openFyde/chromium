@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend ui/chromeos/file_manager_strings.grdp, included from ui/chromeos/ui_chromeos_strings.grd -->
+<grit-part>
+  <message name="IDS_FILE_BROWSER_NUTSTORE_HINT_BANNER_TITLE" desc="Title for Nutstore hint banner">
+    FydeOS × Nutstore
+  </message>
+  <message name="IDS_FILE_BROWSER_NUTSTORE_HINT_BANNER_DESCRIPTION" desc="Description for Nutstore hint banner">
+    Sign-up Nutstore to cloud-sync your files in FydeOS.
+  </message>
+  <message name="IDS_FILE_BROWSER_NUTSTORE_HINT_CONFIRM_BUTTON_TEXT" desc="Text on confirm button to dismiss Nutstore hint">
+    Got it
+  </message>
+  <message name="IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_SIGUNUP" desc="Steps to setup Nutstore account - signup nutstore account">
+    Sign-up Nutstore
+  </message>
+  <message name="IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_ADD_APPLICATION" desc="Steps to setup Nutstore account - add an application on nutstore website">
+    Click "Add Application" button in the Security settings
+  </message>
+  <message name="IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_CREATE_PASSWORD" desc="Steps to setup Nutstore account - create password">
+    Generate and copy your application password
+  </message>
+  <message name="IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_OPEN_NUTSTORE" desc="Steps to setup Nutstore account - open nutstore app">
+    Open Nutstore App
+  </message>
+  <message name="IDS_FILE_BROWSER_NUTSTORE_HINT_STEPS_CONNECT_ACCOUNT" desc="Steps to setup Nutstore account - fill account and password to connect nutstore to fydeos">
+    and connect Nutstore account to FydeOS with your email and application password
+  </message>
+  <message name="IDS_FILE_BROWSER_FYDEDROP_ROOT_LABEL" desc="A label for FyDrop in file manager sidebar">
+    FyDrop
+  </message>
+  <if expr="openfyde">
+    <message name="IDS_FILE_BROWSER_NO_TASK_FOR_APK" desc="Message shown when a user tries to open a *.apk file, which we don't handle in the Files app.">
+      To continue with this action you will need to <ph name="BEGIN_LINK_ARC_APP">&lt;a href="#"&gt;</ph>>activate the Android subsystem<ph name="END_LINK_ARC_APP">&lt;/a&gt;</ph> on your openFyde device; also your openFyde device needs to be <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$1'&gt;</ph>switched to Developer Mode<ph name="END_LINK_HELP">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+  <if expr="not openfyde">
+    <message name="IDS_FILE_BROWSER_NO_TASK_FOR_APK" desc="Message shown when a user tries to open a *.apk file, which we don't handle in the Files app.">
+      To continue with this action you will need to <ph name="BEGIN_LINK_ARC_APP">&lt;a href="#"&gt;</ph>>activate the Android subsystem<ph name="END_LINK_ARC_APP">&lt;/a&gt;</ph> on your FydeOS device; also your FydeOS device needs to be <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$1'&gt;</ph>switched to Developer Mode<ph name="END_LINK_HELP">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+  <message name="IDS_FILE_BROWSER_ERROR_VIEWING_FILE_FOR_APK" desc="Error message when user attempts to open a apk file in the Files app via Downloads panel.">
+    Unable to sideload .apk files. Please ensure that the Android subsystem has been activated and you are in FydeOS Developer mode.
+  </message>
+  <message name="IDS_FILE_BROWSER_OPEN_WITH_FYDEOS_AI_BUTTON_LABEL" desc="Menu item label, open with fydeo ai">
+    Open with FydeOS AI
+  </message>
+</grit-part>

@@ -142,7 +142,9 @@ void CloudPolicyValidatorBase::ValidateTimestamp(
 void CloudPolicyValidatorBase::ValidateUser(const AccountId& account_id) {
   validation_flags_ |= VALIDATE_USER;
   username_ = account_id.GetUserEmail();
-  gaia_id_ = account_id.GetGaiaId();
+  // ---***FYDEOS BEGIN***---
+  gaia_id_ = (account_id.GetAccountType() == AccountType::FYDE_ACCOUNT ? account_id.GetFydeId() : account_id.GetGaiaId());
+  // ---***FYDEOS END***---
   // Always canonicalize when falls back to username check,
   // because it checks only for regular users.
   canonicalize_user_ = true;

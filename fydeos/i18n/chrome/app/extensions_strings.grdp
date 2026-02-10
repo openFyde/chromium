@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- extend chrome/app/extensions_strings.grdp, included from generated_resources.grd -->
+<grit-part>
+
+  <message name="IDS_EXTENSIONS_ITEM_SOURCE_FYDEOS_STORE" desc="The text to indicate that an extension is from the FydeOS Store.">
+    FydeOS App Store
+  </message>
+
+  <message name="IDS_EXTENSIONS_ITEM_VIEW_IN_STORE" desc="Label for button to visit the fydeos app store or chrome web store.">
+    View in Store
+  </message>
+
+</grit-part>

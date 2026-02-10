@@ -33,6 +33,15 @@ constexpr const char* const kKeysExemptOfRedaction[] = {
     "perfetto-data",
     // Contains URL-like app-ids which should not be redacted.
     "app_service",
+    "fydeos.log",
+    "update_engine.log",
+    "chrome_user_log",
+    "chrome_user_log.PREVIOUS",
+    "chrome_system_log",
+    "chrome_system_log.PREVIOUS",
+    "powerd.LATEST",
+    "powerd.PREVIOUS",
+    "syslog",
 };
 
 // Returns true if the given |key| and its corresponding value are exempt from

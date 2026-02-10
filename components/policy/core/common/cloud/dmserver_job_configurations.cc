@@ -16,6 +16,8 @@
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
+#include "chromeos/ash/components/system/statistics_provider.h"
+#include "fydeos/switches/account/account_switches.h"
 
 namespace em = enterprise_management;
 
@@ -118,6 +120,30 @@ const char* JobTypeToRequestType(
   NOTREACHED() << "Invalid job type " << type;
 }
 
+std::string GetFydeOsLicenseId() {
+  ash::system::StatisticsProvider* provider =
+      ash::system::StatisticsProvider::GetInstance();
+  std::string fydeos_license_id = "";
+  const std::optional<std::string_view> str =
+    provider->GetMachineStatistic(ash::system::kFydeOsLicenseIdKey);
+  if (str) {
+    fydeos_license_id = std::string(str.value());
+  }
+  return fydeos_license_id;
+}
+
+std::string GetFydeDeviceId() {
+  ash::system::StatisticsProvider* provider =
+      ash::system::StatisticsProvider::GetInstance();
+  std::string fyde_device_id = "";
+  const std::optional<std::string_view> str =
+    provider->GetMachineStatistic(ash::system::kFydeDeviceIdKey);
+  if (str) {
+    fyde_device_id = std::string(str.value());
+  }
+  return fyde_device_id;
+}
+
 }  // namespace
 
 // static
@@ -195,6 +221,11 @@ DMServerJobConfiguration::DMServerJobConfiguration(CreateParams params)
   AddParameter(dm_protocol::kParamPlatform,
                params.service->configuration()->GetPlatformParameter());
   AddParameter(dm_protocol::kParamDeviceID, params.client_id);
+
+  if (fydeos::switches::IsFydeDMServerUrl(server_url_)) {
+    AddParameter(dm_protocol::kParamFydeOsLicenseId, GetFydeOsLicenseId());
+    AddParameter(dm_protocol::kParamFydeDeviceId, GetFydeDeviceId());
+  }
 
   if (params.profile_id) {
     AddParameter(dm_protocol::kParamProfileID, *params.profile_id);

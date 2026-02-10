@@ -27,7 +27,8 @@ namespace {
 constexpr int kForceMaximizeWidthLimit = 1366;
 
 bool ShouldForceMaximizeOnFirstRun(Profile* profile) {
-  return profile->GetPrefs()->GetBoolean(prefs::kForceMaximizeOnFirstRun);
+  return profile->GetPrefs()->GetBoolean(prefs::kForceMaximizeOnFirstRun) ||
+         profile->IsGuestSession();
 }
 
 }  // namespace

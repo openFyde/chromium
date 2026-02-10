@@ -24,15 +24,21 @@ void PasswordSelectionScreenHandler::DeclareLocalizedValues(
                 ui::GetChromeOSDeviceName());
   builder->AddF("passwordSelectionSubtitile", IDS_PASSWORD_SELECTION_SUBTITLE,
                 ui::GetChromeOSDeviceName());
+  builder->AddF("passwordSelectionFydeSubtitle", IDS_PASSWORD_SELECTION_FYDE_SUBTITLE,
+                ui::GetChromeOSDeviceName());
   builder->AddF("localPasswordSelectionLabel",
                 IDS_PASSWORD_SELECTION_LOCAL_PASSWORD_LABEL,
                 ui::GetChromeOSDeviceName());
   builder->Add("gaiaPasswordSelectionLabel",
                IDS_PASSWORD_SELECTION_GAIA_PASSWORD_LABEL);
+  builder->Add("gaiaPasswordSelectionFydeLabel",
+               IDS_PASSWORD_SELECTION_FYDE_PASSWORD_LABEL);
 }
 
-void PasswordSelectionScreenHandler::Show() {
-  ShowInWebUI();
+void PasswordSelectionScreenHandler::Show(bool is_fyde_profile) {
+  base::Value::Dict dict;
+  dict.Set("isFydeProfile", is_fyde_profile);
+  ShowInWebUI(std::move(dict));
 }
 
 void PasswordSelectionScreenHandler::ShowProgress() {

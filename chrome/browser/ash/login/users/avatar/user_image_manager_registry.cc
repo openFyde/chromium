@@ -83,8 +83,14 @@ void UserImageManagerRegistry::OnUserLoggedIn(const user_manager::User& user) {
   switch (user_type) {
     case user_manager::UserType::kRegular:
     case user_manager::UserType::kChild:
+    case user_manager::UserType::kFydeAccount:
+    case user_manager::UserType::kFydeChild:
       user_is_new = user_manager_->IsCurrentUserNew();
       user_is_local = false;
+      break;
+    case user_manager::UserType::kFlintAccount:
+      user_is_new = user_manager_->IsCurrentUserNew();
+      user_is_local = true;
       break;
     case user_manager::UserType::kPublicAccount:
       // The UserImageManager chooses a random avatar picture when a user logs
